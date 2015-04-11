@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>Edit Product Sub Category - Vikas Associate Order Automation System</title>
+	<title>Add Product Sub Category - Vikas Associate Order Automation System</title>
 	
 	<!-- bootstrap -->
 	<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css" />
@@ -269,7 +269,7 @@
 										</a>
 										<ul class="submenu">
 											<li>
-												<a href="orders.html" >
+												<a href="orders.html" class="active">
 													Order
 												</a>
 											</li>
@@ -299,12 +299,12 @@
 										</a>
 										<ul  class="submenu">
 											<li>
-												<a href="product_category.html" class="active" >
+												<a href="product_category.html" >
 													Product Category
 												</a>
 											</li>
 											<li>
-												<a href="product_sub_category.html">
+												<a href="product_sub_category.html" class="active">
 													Product Sub Category
 												</a>
 											</li>
@@ -320,7 +320,7 @@
 										</a>
 										<ul  class="submenu">
 											<li>
-												<a href="location.html" >
+												<a href="location.html" class="active">
 													Delivery Location
 												</a>
 											</li>
@@ -378,24 +378,35 @@
                                                 
                 <form method="POST" action="" accept-charset="UTF-8" >
                 <div class="form-group">
-                    <label for="status">Select Product</label>
+                    <label for="status">Select Product Category</label>
                     
                     <select class="form-control" name="type" id="add_status_type">
                        
-                                                <option value="2">CRP Pipe</option>
-                                                <option value="3">CRP Structure</option>
+                        <option value="2" id="pip"> Pipe</option>
+                                                <option value="3" id="struct"> Structure</option>
                                             </select>
                 </div>
+                    <div class="form-group">
+                    <label for="status">Sub Product Name</label>
+                    
+                    <select class="form-control" name="type" id="add_status_type">
+                       
+                        <option value="2" id="sp1"> Sub Product 1</option>
+                                                <option value="3" id="sp2"> Sub Product 2</option>
+                                            </select>
+                </div>
+                    
                     <div class="form-group">
                     <label for="size">Product Size</label>
                     <input id="size" class="form-control" placeholder="Product Size" name="size" value="" type="text">
                 </div>
                
-                    
-                <div class="form-group">
+                    <div class="thick">   
+                <div class="form-group ">
                     <label for="thickness">Product Thickness</label>
                     <input id="thickness" class="form-control" placeholder="Product Thickness" name="thickness" value="" type="text">
                 </div>
+            </div>
                 <div class="form-group">
                     <label for="weight">Product Weight</label>
                     <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="" type="text">
@@ -480,6 +491,15 @@
 	<script src="js/pace.min.js"></script>
 	
 	<!-- this page specific inline scripts -->
-	
+	<script>
+$(document).ready(function(){
+    $("#struct").click(function(){
+        $(".thick").hide();
+    });
+    $("#pip").click(function(){
+        $(".thick").show();
+    });
+});
+</script>
 </body>
 </html>

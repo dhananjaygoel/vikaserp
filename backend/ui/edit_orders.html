@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>Edit Orders - Vikas Associate Order Automation System</title>
+	<title>Place Orders - Vikas Associate Order Automation System</title>
 	
 	<!-- bootstrap -->
 	<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css" />
@@ -261,7 +261,7 @@
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
-                                                                        <li class="active">
+                                                                        <li class="active" >
 										<a href="#" class="dropdown-toggle">
 											<i class="fa fa-shopping-cart"></i>
 											<span>Order</span>
@@ -299,7 +299,7 @@
 										</a>
 										<ul  class="submenu">
 											<li>
-												<a href="product_category.html" >
+												<a href="product_category.html" class="active">
 													Product Category
 												</a>
 											</li>
@@ -320,7 +320,7 @@
 										</a>
 										<ul  class="submenu">
 											<li>
-												<a href="location.html" >
+												<a href="location.html" class="active">
 													Delivery Location
 												</a>
 											</li>
@@ -402,7 +402,6 @@
                     </div>
                     
                 </div>
-                    
                     <div class="exist_field">
                     <div class="form-group">
                     <label for="name">Name</label>
@@ -418,10 +417,11 @@
                     <input id="period" class="form-control" placeholder="Credit Period" name="period" value="" type="text">
                 </div>
             </div>
+                    <div class="row row1">
                     <div class="product_details">
                     <div class="form-group pull-left">
                         <div class="col-md-12">
-                          <label for="status">Category</label>
+                          
                           
                            <select class="form-control" id="user_filter" name="user_filter">
                          <option value="" selected="">Select Category</option>
@@ -433,7 +433,7 @@
                           </div>
                     <div class="form-group pull-left">
                     <div class="col-md-12">
-                        <label for="status">Sub Category</label>
+                        
                     
                     <select class="form-control" name="type" id="add_status_type">
                        <option value="" selected="">Select Sub Category</option>
@@ -445,7 +445,7 @@
                     <div class="form-group pull-left">
                    
                     <div class="col-md-12">
-                         <label for="status">Product </label>
+                        
                     <select class="form-control" name="type" id="add_status_type">
                        <option value="" selected="">Select Product</option>
                                                 <option value="2">CRP Pipe 3.0</option>
@@ -457,16 +457,16 @@
                     
                     <div class="form-group pull-left">
                         <div class="col-md-12">
-                    <label for="quantity">Quantity</label>
+                    
                     <input id="quantity" class="form-control" placeholder="Quantity" name="quantity" value="" type="text">
                 </div>
                     </div>
                     <div class="form-group pull-left">
                         <div class="col-md-12">
-                    <label for="status">Select Unit</label>
+                    
                     
                     <select class="form-control" name="type" id="add_status_type">
-                       
+                       <option value="" selected="">Unit</option>
                                                 <option value="2">Kg</option>
                                                 <option value="3">mm</option>
                                                 <option value="3">cm</option>
@@ -475,76 +475,19 @@
                 </div>
                     <div class="form-group pull-left">
                         <div class="col-md-12">
-                    <label for="remark">Remark</label>
+                    
                     <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
                 </div>
             </div>
-            </div>
-                    
-                    <div class="product_details" style="display: none;">
-                    <div class="form-group pull-left">
+                        <div class="form-group pull-left">
                         <div class="col-md-12">
-                          <label for="status">Category</label>
-                          
-                           <select class="form-control" id="user_filter" name="user_filter">
-                         <option value="" selected="">Select Category</option>
-                         <option value="2">Pipe</option>
-                         <option value="2">Structure</option>
-                              
-                         </select>
-                           </div>
-                          </div>
-                    <div class="form-group pull-left">
-                    <div class="col-md-12">
-                        <label for="status">Sub Category</label>
                     
-                    <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Select Sub Category</option>
-                                                <option value="2">CRP Pipe</option>
-                                                <option value="3">CRP Structure</option>
-                                            </select>
-                    </div>
-                </div>
-                    <div class="form-group pull-left">
-                   
-                    <div class="col-md-12">
-                         <label for="status">Product </label>
-                    <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Select Product</option>
-                                                <option value="2">CRP Pipe 3.0</option>
-                                                <option value="3">CRP Structure 3.0</option>
-                                            </select>
-                    </div>
-                </div>
-                    
-                    
-                    <div class="form-group pull-left">
-                        <div class="col-md-12">
-                    <label for="quantity">Quantity</label>
-                    <input id="quantity" class="form-control" placeholder="Quantity" name="quantity" value="" type="text">
-                </div>
-                    </div>
-                    <div class="form-group pull-left">
-                        <div class="col-md-12">
-                    <label for="status">Select Unit</label>
-                    
-                    <select class="form-control" name="type" id="add_status_type">
-                       
-                                                <option value="2">Kg</option>
-                                                <option value="3">mm</option>
-                                                <option value="3">cm</option>
-                                            </select>
-                        </div>
-                </div>
-                    <div class="form-group pull-left">
-                        <div class="col-md-12">
-                    <label for="remark">Remark</label>
-                    <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
+                    <input id="price" class="form-control" placeholder="Price" name="price" value="" type="text">
                 </div>
             </div>
             </div>
-                    
-                    <div class="form-group pull-left">
+                        <div class="add_button1">
+                        <div class="form-group pull-left">
                         <div class="col-md-12">
                              <label for="addmore"></label>
                              <a href="#" class="table-link" title="add more" id="addmore1">
@@ -555,13 +498,358 @@
                                             </a>
                 </div>
             </div>
+                    </div>
+                        <hr>
+                    </div>
                     
                     
                     
+                    <div class="row row2" style="display: none">
+                    <div class="product_details">
+                    <div class="form-group pull-left">
+                        <div class="col-md-12">
+                          
+                          
+                           <select class="form-control" id="user_filter" name="user_filter">
+                         <option value="" selected="">Select Category</option>
+                         <option value="2">Pipe</option>
+                         <option value="2">Structure</option>
+                              
+                         </select>
+                           </div>
+                          </div>
+                    <div class="form-group pull-left">
+                    <div class="col-md-12">
+                        
+                    
+                    <select class="form-control" name="type" id="add_status_type">
+                       <option value="" selected="">Select Sub Category</option>
+                                                <option value="2">CRP Pipe</option>
+                                                <option value="3">CRP Structure</option>
+                                            </select>
+                    </div>
+                </div>
+                    <div class="form-group pull-left">
+                   
+                    <div class="col-md-12">
+                        
+                    <select class="form-control" name="type" id="add_status_type">
+                       <option value="" selected="">Select Product</option>
+                                                <option value="2">CRP Pipe 3.0</option>
+                                                <option value="3">CRP Structure 3.0</option>
+                                            </select>
+                    </div>
+                </div>
+                    
+                    
+                    <div class="form-group pull-left">
+                        <div class="col-md-12">
+                    
+                    <input id="quantity" class="form-control" placeholder="Quantity" name="quantity" value="" type="text">
+                </div>
+                    </div>
+                    <div class="form-group pull-left">
+                        <div class="col-md-12">
+                    
+                    
+                    <select class="form-control" name="type" id="add_status_type">
+                       <option value="" selected="">Unit</option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select>
+                        </div>
+                </div>
+                    <div class="form-group pull-left">
+                        <div class="col-md-12">
+                    
+                    <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
+                </div>
+            </div>
+                        <div class="form-group pull-left">
+                        <div class="col-md-12">
+                    
+                    <input id="price" class="form-control" placeholder="Price" name="price" value="" type="text">
+                </div>
+            </div>
+            </div>
+                        <div class="add_button2">
+                        <div class="form-group pull-left">
+                        <div class="col-md-12">
+                             <label for="addmore"></label>
+                             <a href="#" class="table-link" title="add more" id="addmore2">
+                                                <span class="fa-stack more_button" >
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                </div>
+            </div>
+                    </div>
+                    
+                    </div>
+                    
+                    <div class="row row3" style="display: none">
+                    <div class="product_details">
+                    <div class="form-group pull-left">
+                        <div class="col-md-12">
+                          
+                          
+                           <select class="form-control" id="user_filter" name="user_filter">
+                         <option value="" selected="">Select Category</option>
+                         <option value="2">Pipe</option>
+                         <option value="2">Structure</option>
+                              
+                         </select>
+                           </div>
+                          </div>
+                    <div class="form-group pull-left">
+                    <div class="col-md-12">
+                        
+                    
+                    <select class="form-control" name="type" id="add_status_type">
+                       <option value="" selected="">Select Sub Category</option>
+                                                <option value="2">CRP Pipe</option>
+                                                <option value="3">CRP Structure</option>
+                                            </select>
+                    </div>
+                </div>
+                    <div class="form-group pull-left">
+                   
+                    <div class="col-md-12">
+                        
+                    <select class="form-control" name="type" id="add_status_type">
+                       <option value="" selected="">Select Product</option>
+                                                <option value="2">CRP Pipe 3.0</option>
+                                                <option value="3">CRP Structure 3.0</option>
+                                            </select>
+                    </div>
+                </div>
+                    
+                    
+                    <div class="form-group pull-left">
+                        <div class="col-md-12">
+                    
+                    <input id="quantity" class="form-control" placeholder="Quantity" name="quantity" value="" type="text">
+                </div>
+                    </div>
+                    <div class="form-group pull-left">
+                        <div class="col-md-12">
+                    
+                    
+                    <select class="form-control" name="type" id="add_status_type">
+                       <option value="" selected="">Unit</option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select>
+                        </div>
+                </div>
+                    <div class="form-group pull-left">
+                        <div class="col-md-12">
+                    
+                    <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
+                </div>
+            </div>
+                        <div class="form-group pull-left">
+                        <div class="col-md-12">
+                    
+                    <input id="price" class="form-control" placeholder="Price" name="price" value="" type="text">
+                </div>
+            </div>
+            </div>
+                        <div class="add_button3">
+                        <div class="form-group pull-left">
+                        <div class="col-md-12">
+                             <label for="addmore"></label>
+                             <a href="#" class="table-link" title="add more" id="addmore3">
+                                                <span class="fa-stack more_button" >
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                </div>
+            </div>
+                    </div>
+                   
+                    </div>
+                    
+                    <div class="row row4" style="display: none">
+                    <div class="product_details">
+                    <div class="form-group pull-left">
+                        <div class="col-md-12">
+                          
+                          
+                           <select class="form-control" id="user_filter" name="user_filter">
+                         <option value="" selected="">Select Category</option>
+                         <option value="2">Pipe</option>
+                         <option value="2">Structure</option>
+                              
+                         </select>
+                           </div>
+                          </div>
+                    <div class="form-group pull-left">
+                    <div class="col-md-12">
+                        
+                    
+                    <select class="form-control" name="type" id="add_status_type">
+                       <option value="" selected="">Select Sub Category</option>
+                                                <option value="2">CRP Pipe</option>
+                                                <option value="3">CRP Structure</option>
+                                            </select>
+                    </div>
+                </div>
+                    <div class="form-group pull-left">
+                   
+                    <div class="col-md-12">
+                        
+                    <select class="form-control" name="type" id="add_status_type">
+                       <option value="" selected="">Select Product</option>
+                                                <option value="2">CRP Pipe 3.0</option>
+                                                <option value="3">CRP Structure 3.0</option>
+                                            </select>
+                    </div>
+                </div>
+                    
+                    
+                    <div class="form-group pull-left">
+                        <div class="col-md-12">
+                    
+                    <input id="quantity" class="form-control" placeholder="Quantity" name="quantity" value="" type="text">
+                </div>
+                    </div>
+                    <div class="form-group pull-left">
+                        <div class="col-md-12">
+                    
+                    
+                    <select class="form-control" name="type" id="add_status_type">
+                       <option value="" selected="">Unit</option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select>
+                        </div>
+                </div>
+                    <div class="form-group pull-left">
+                        <div class="col-md-12">
+                    
+                    <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
+                </div>
+            </div>
+                        <div class="form-group pull-left">
+                        <div class="col-md-12">
+                    
+                    <input id="price" class="form-control" placeholder="Price" name="price" value="" type="text">
+                </div>
+            </div>
+            </div>
+                        <div class="add_button4">
+                        <div class="form-group pull-left">
+                        <div class="col-md-12">
+                             <label for="addmore"></label>
+                             <a href="#" class="table-link" title="add more" id="addmore4">
+                                                <span class="fa-stack more_button" >
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                </div>
+            </div>
+                    </div>
+                   
+                    </div>
+                  
+                    <div class="row row5" style="display: none">
+                    <div class="product_details">
+                    <div class="form-group pull-left">
+                        <div class="col-md-12">
+                          
+                          
+                           <select class="form-control" id="user_filter" name="user_filter">
+                         <option value="" selected="">Select Category</option>
+                         <option value="2">Pipe</option>
+                         <option value="2">Structure</option>
+                              
+                         </select>
+                           </div>
+                          </div>
+                    <div class="form-group pull-left">
+                    <div class="col-md-12">
+                        
+                    
+                    <select class="form-control" name="type" id="add_status_type">
+                       <option value="" selected="">Select Sub Category</option>
+                                                <option value="2">CRP Pipe</option>
+                                                <option value="3">CRP Structure</option>
+                                            </select>
+                    </div>
+                </div>
+                    <div class="form-group pull-left">
+                   
+                    <div class="col-md-12">
+                        
+                    <select class="form-control" name="type" id="add_status_type">
+                       <option value="" selected="">Select Product</option>
+                                                <option value="2">CRP Pipe 3.0</option>
+                                                <option value="3">CRP Structure 3.0</option>
+                                            </select>
+                    </div>
+                </div>
+                    
+                    
+                    <div class="form-group pull-left">
+                        <div class="col-md-12">
+                    
+                    <input id="quantity" class="form-control" placeholder="Quantity" name="quantity" value="" type="text">
+                </div>
+                    </div>
+                    <div class="form-group pull-left">
+                        <div class="col-md-12">
+                    
+                    
+                    <select class="form-control" name="type" id="add_status_type">
+                       <option value="" selected="">Unit</option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select>
+                        </div>
+                </div>
+                    <div class="form-group pull-left">
+                        <div class="col-md-12">
+                    
+                    <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
+                </div>
+            </div>
+                        <div class="form-group pull-left">
+                        <div class="col-md-12">
+                    
+                    <input id="price" class="form-control" placeholder="Price" name="price" value="" type="text">
+                </div>
+            </div>
+            </div>
+                        <div class="add_button5">
+                        <div class="form-group pull-left">
+                        <div class="col-md-12">
+                             <label for="addmore"></label>
+                             <a href="#" class="table-link" title="add more" id="addmore5">
+                                                <span class="fa-stack more_button" >
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                </div>
+            </div>
+                    </div>
+                    
+                    </div>
+                    
+                    <div class="row">   
                 <div class="form-group">
                     <div >
                     <label for="del_loc">Delivery Location</label>
                     <input id="del_loc" class="form-control" placeholder="Delivery Location" name="del_loc" value="" type="text">
+                    </div>
                     </div>
                     </div>
                     <div class="form-group">
@@ -575,14 +863,14 @@
                 </div>
                     <div class="form-group form_width">
                         
-                    <label for="price">Price</label>
-                    <input id="price" class="form-control" placeholder="Price" name="price" value="" type="text">
+                    <label for="price">Total Price</label>
+                    <input id="price" class="form-control" placeholder="Total Price" name="price" value="" type="text">
                
             </div>
                     <div class="form-group form_width">
                         
-                    <label for="time">Estimated delivery time</label>
-                    <input id="time" class="form-control" placeholder="Estimated delivery time" name="time" value="" type="text">
+                    <label for="time">Estimated Delivery Time</label>
+                    <input id="time" class="form-control" placeholder="Time" name="time" value="" type="text">
                
             </div>
                     
@@ -624,7 +912,7 @@
                 <div >
                     <button type="button" class="btn btn-primary form_button_footer" >Submit</button>
                     
-                    <a href="enquiry.html" class="btn btn-default form_button_footer">Back</a>
+                    <a href="orders.html" class="btn btn-default form_button_footer">Back</a>
                 </div>
                 
                 <div class="clearfix"></div>
@@ -681,10 +969,36 @@ $(document).ready(function(){
 <script>
 $(document).ready(function(){
     $("#addmore1").click(function(){
-        $(".product_details").show();
+        $(".row1").show();
+        $(".row2").show();
+        $(".add_button1").hide();
     });
-    $("#optionsRadios2").click(function(){
-        $(".exist_field").show();
+    $("#addmore2").click(function(){
+        $(".row1").show();
+        $(".row2").show();
+        $(".row3").show();
+        $(".add_button1").hide();
+        $(".add_button2").hide();
+    });
+    $("#addmore3").click(function(){
+        $(".row1").show();
+        $(".row2").show();
+        $(".row3").show();
+        $(".row4").show();
+        $(".add_button1").hide();
+        $(".add_button2").hide();
+        $(".add_button3").hide();
+    });
+    $("#addmore4").click(function(){
+        $(".row1").show();
+        $(".row2").show();
+        $(".row3").show();
+        $(".row4").show();
+        $(".row5").show();
+        $(".add_button1").hide();
+        $(".add_button2").hide();
+        $(".add_button3").hide();
+        $(".add_button4").hide();
     });
 });
 </script>
