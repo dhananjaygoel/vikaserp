@@ -7912,6 +7912,28 @@ svg {
 }
 .category_div
 {
-   padding-left: 40px;
+   margin-left: 20px;
+margin-top: -20px;
    display: none;
+}
+.row1
+{
+    border-bottom: 1px solid #CBCFD2;
+}
+.row2
+{
+    border-bottom: 1px solid #CBCFD2;
+}
+.row3
+{
+    border-bottom: 1px solid #CBCFD2;
+}
+.row4
+{
+    border-bottom: 1px solid #CBCFD2;
+}
+
+.product_details
+{
+   padding-top: 20px;
 }
