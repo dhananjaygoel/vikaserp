@@ -7896,7 +7896,7 @@ svg {
 }
 .more_button
 {
-    margin-top: 28px;
+    margin-top: 0px;
 }
 .form_width
 {
@@ -7909,4 +7909,9 @@ svg {
 .customer_select
 {
     padding-bottom: 15px !important;
+}
+.category_div
+{
+   padding-left: 40px;
+   display: none;
 }
