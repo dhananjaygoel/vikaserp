@@ -261,7 +261,7 @@
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
-                                                                        <li class="active">
+                                                                               <li class="active" >
 										<a href="#" class="dropdown-toggle">
 											<i class="fa fa-shopping-cart"></i>
 											<span>Order</span>
@@ -269,7 +269,7 @@
 										</a>
 										<ul class="submenu">
 											<li>
-												<a href="orders.html" >
+												<a href="orders.html">
 													Order
 												</a>
 											</li>
@@ -279,8 +279,18 @@
 												</a>
 											</li>
                                                                                         <li>
-                                                                                            <a href="daily_del_orders.html" class="active">
+												<a href="delivery_orders_challan.html">
+													Delivery Order Challan
+												</a>
+											</li>
+                                                                                        <li>
+												<a href="daily_del_orders.html" class="active">
 													Daily Delivery Order
+												</a>
+											</li>
+                                                                                         <li>
+												<a href="delivery_orders_challan_report.html">
+													Delivery Order Challan Report
 												</a>
 											</li>
 											<li>
@@ -290,7 +300,45 @@
 											</li>
 										</ul>
 									</li>
-                                                                        
+                                                                         <li>
+										<a href="#" class="dropdown-toggle">
+											<i class="fa fa-shopping-cart"></i>
+											<span>Purchase Order</span>
+											<i class="fa fa-chevron-circle-right drop-icon"></i>
+										</a>
+										<ul class="submenu">
+											<li>
+												<a href="purchaseorders.html" class="active">
+													Purchase Order
+												</a>
+											</li>
+											<li>
+												<a href="purchaseorder_advise.html">
+													Purchase Order Advice
+												</a>
+											</li>
+                                                                                        <li>
+												<a href="purchaseorder_challan.html">
+													Purchase Order Challan
+												</a>
+											</li>
+											<li>
+												<a href="purchaseorder_report.html">
+													Purchase Order Report
+												</a>
+											</li>
+                                                                                        <li>
+												<a href="purchaseorder_advisereport.html">
+													Purchase Order Advise Report
+												</a>
+											</li>
+                                                                                        <li>
+												<a href="purchaseorder_challanreport.html">
+													Purchase Order Challan Report
+												</a>
+											</li>
+										</ul>
+									</li>
                                                                         <li >
 										<a href="#" class="dropdown-toggle">
                                                                                     <i class="fa fa-codepen"></i>
@@ -380,18 +428,19 @@
                                                         <table id="table-example" class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th class="col-md-1">#</th>
-                                       
-                                        <th>Name Of Party</th>
+                                        <th>#</th>
+                                        <th>Date</th>
+                                        <th>Serial</th>
+                                        <th>Party</th>
                                         <th>Truck Number</th>
                                         <th>Status </th>
                                         <th>Order By </th> 
-                                        <th>Delivery Chalan </th>
+                                        <th>Delivery Challan </th>
                                         <th>Loaded By </th>
                                         <th>Labors </th>
                                         <th>Actual Quantity </th>
                                         <th>Amount </th>
-                                        <th>Bill  </th> 
+                                        <th>Bill </th> 
                                         <th>Remarks </th> 
                                         
                                     </tr>
@@ -399,40 +448,27 @@
                                 <tbody>                    
 
 
+                                    
                                         <tr>
-                                        <td class="col-md-1">1</td>
-                                        
+                                        <td>1</td>
+                                        <td>16/04/2015</td>
+                                        <td>PO/Apr15/04/01</td>
                                         <td>Party Name 1</td>
                                         <td>MH 14 BS 3022</td>                                        
                                         <td>completed </td>
                                         <td>Name 1 </td>
                                         <td> </td>
-                                        <td> </td>
-                                        <td> </td>
-                                        <td> </td>
-                                        <td> </td>
-                                        <td> </td>
-                                        <td> </td>
+                                        <td><a href="#" id="username" data-type="text" data-pk="1" data-title="loadedby" class="editable editable-click"></a></td>
+                                        <td><a href="#" id="labours" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">50</a></td>
+                                        <td>50 </td>
+                                        <td>500 </td>
+                                        <td ><a href="#" id="bill" data-type="text" data-pk="1" data-title="bill" class="editable editable-click">500</a></td>
+                                        <td><a href="#" id="remarks" data-type="text" data-pk="1" data-title="remarks" class="editable editable-click">Generated</a></td>
                                         
                                         
                                     </tr>
-                                                                        <tr>
-                                        <td class="col-md-1">2</td>
-                                        
-                                        <td>Party Name 2</td>
-                                        <td>MH 12 BS 6225</td>                                        
-                                        <td>In Process </td>
-                                        <td>Name 2 </td>
-                                        <td> </td>
-                                        <td> </td>
-                                        <td> </td>
-                                        <td> </td>
-                                        <td> </td>
-                                        <td> </td>
-                                        <td> </td>
-                                        
-                                        
-                                    </tr>
+                                         
+                                         
                                     
                                         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -606,5 +642,21 @@
 	  $('#reportrange span').html(moment().subtract('days', 29).format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
 	});
 	</script>
+           <script>
+            $(document).ready(function(){
+		//toggle `popup` / `inline` mode
+		$.fn.editable.defaults.mode = 'popup';     
+		
+		//make username editable
+		$('#username').editable();
+		
+		$('#remarks').editable();
+                $('#labours').editable();
+                $('#bill').editable();
+		
+                });
+              
+        </script> 
+        	<script src="js/bootstrap-editable.min.js"></script>
 </body>
 </html>

@@ -66,7 +66,6 @@ a {
 a:hover, a:focus {
   color: #3498db;
 }
-
 .container {
   padding-left: 8px;
   padding-right: 8px;
@@ -979,7 +978,7 @@ h3 .small {
 }
 #sidebar-nav .nav li .submenu > li > a {
   display: block;
-  font-size: 0.875em;
+  font-size: 0.775em;
   line-height: 38px;
   padding-left: 66px;
   color: #fff;
@@ -7936,4 +7935,10 @@ margin-top: -20px;
 .product_details
 {
    padding-top: 20px;
+}
+
+.supplier{width:30%}
+@media (max-width: 1000px)
+{
+   .supplier{ width:100%}
 }

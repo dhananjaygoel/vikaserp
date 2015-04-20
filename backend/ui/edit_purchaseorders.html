@@ -95,7 +95,7 @@
 								<li class="item">
 									<a href="#">
 										<i class="fa fa-comment"></i>
-										<span class="content">New comment on ‘Awesome P...</span>
+										<span class="content">New comment on â€˜Awesome P...</span>
 										<span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
 									</a>
 								</li>
@@ -261,7 +261,7 @@
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
-                                                                        <li class="active" >
+                                                                        <li>
 										<a href="#" class="dropdown-toggle">
 											<i class="fa fa-shopping-cart"></i>
 											<span>Order</span>
@@ -279,28 +279,18 @@
 												</a>
 											</li>
                                                                                         <li>
-												<a href="delivery_orders_challan.html">
-													Delivery Order Challan
-												</a>
-											</li>
-                                                                                        <li>
 												<a href="daily_del_orders.html">
 													Daily Delivery Order
 												</a>
 											</li>
-                                                                                         <li>
-												<a href="delivery_orders_challan_report.html">
-													Delivery Order Challan Report
-												</a>
-											</li>
 											<li>
-												<a href="pending_orders.html" >
+												<a href="pending_orders.html">
 													Pending Order
 												</a>
 											</li>
 										</ul>
 									</li>
-                                                                          <li>
+                                                                          <li class="active">
 										<a href="#" class="dropdown-toggle">
 											<i class="fa fa-shopping-cart"></i>
 											<span>Purchase Order</span>
@@ -426,7 +416,14 @@
                                                 
                 <form method="POST" action="" accept-charset="UTF-8" >
                     <div class="form-group">
-                    <label>Customer</label>
+                      <div class="supplier">
+                        <select class="form-control" id="user_filter" name="user_filter">
+                         <option value="" selected="">Select supplier</option>
+                         <option value="2">Supplier1</option>
+                         <option value="2">Supplier2</option>
+                              
+                         </select>
+                      </div>
                     <div class="radio">
                         <input checked="" value="new" id="optionsRadios2" name="status" type="radio">
                         <label for="optionsRadios2">New</label>
@@ -975,7 +972,8 @@
                     </div>
                     
                     </div>
-                     <div class="row row7" style="display: none">
+                    
+                          <div class="row row7" style="display: none">
                     <div class="product_details">
                     <div class="form-group pull-left">
                         <div class="col-md-12">
@@ -1059,7 +1057,7 @@
                     </div>
                     
                     </div>       
-                    <div class="row row8" style="display: none">
+                                <div class="row row8" style="display: none">
                     <div class="product_details">
                     <div class="form-group pull-left">
                         <div class="col-md-12">
@@ -1345,7 +1343,13 @@
 			<label for="inquiry_remark">Remark</label>
                         <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3"></textarea>
                     </div>
-
+  <div class="form-group">
+                        
+                <div >
+                    <button type="button" class="btn btn-primary form_button_footer" >SMS</button>
+                    
+                    <a href="purchaseadvise_button.html" class="btn btn-primary form_button_footer">Create Purchase Order Advise</a>
+                </div>
                                     
                <!--     <div class="form-group">
                     <label for="status">Verified Status</label>
@@ -1467,7 +1471,7 @@ $(document).ready(function(){
         $(".add_button3").hide();
         $(".add_button4").hide();
     });
-    $("#addmore5").click(function(){
+     $("#addmore5").click(function(){
         $(".row1").show();
         $(".row2").show();
         $(".row3").show();

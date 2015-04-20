@@ -261,26 +261,35 @@
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
-                                                                        <li class="active">
+                                                                              <li class="active" >
 										<a href="#" class="dropdown-toggle">
 											<i class="fa fa-shopping-cart"></i>
 											<span>Order</span>
 											<i class="fa fa-chevron-circle-right drop-icon"></i>
 										</a>
 										<ul class="submenu">
-											<li>
-												<a href="orders.html" >
+                                                                                    <li><a href="orders.html">
 													Order
 												</a>
 											</li>
 											<li>
-												<a href="delivery_orders.html" class="active">
+                                                                                            <a href="delivery_orders.html" class="active" >
 													Delivery Order
+												</a>
+											</li>
+                                                                                        <li>
+												<a href="delivery_orders_challan.html">
+													Delivery Order Challan
 												</a>
 											</li>
                                                                                         <li>
 												<a href="daily_del_orders.html">
 													Daily Delivery Order
+												</a>
+											</li>
+                                                                                         <li>
+												<a href="delivery_orders_challan_report.html">
+													Delivery Order Challan Report
 												</a>
 											</li>
 											<li>
@@ -290,7 +299,45 @@
 											</li>
 										</ul>
 									</li>
-                                                                        
+                                                                         <li>
+										<a href="#" class="dropdown-toggle">
+											<i class="fa fa-shopping-cart"></i>
+											<span>Purchase Order</span>
+											<i class="fa fa-chevron-circle-right drop-icon"></i>
+										</a>
+										<ul class="submenu">
+											<li>
+												<a href="purchaseorders.html" class="active">
+													Purchase Order
+												</a>
+											</li>
+											<li>
+												<a href="purchaseorder_advise.html">
+													Purchase Order Advice
+												</a>
+											</li>
+                                                                                        <li>
+												<a href="purchaseorder_challan.html">
+													Purchase Order Challan
+												</a>
+											</li>
+											<li>
+												<a href="purchaseorder_report.html">
+													Purchase Order Report
+												</a>
+											</li>
+                                                                                        <li>
+												<a href="purchaseorder_advisereport.html">
+													Purchase Order Advise Report
+												</a>
+											</li>
+                                                                                        <li>
+												<a href="purchaseorder_challanreport.html">
+													Purchase Order Challan Report
+												</a>
+											</li>
+										</ul>
+									</li>
                                                                         <li >
 										<a href="#" class="dropdown-toggle">
                                                                                     <i class="fa fa-codepen"></i>
@@ -379,10 +426,10 @@
                                                         <table id="table-example" class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th class="col-md-1">#</th>
+                                        <th>#</th>
                                         <th>Date</th>
                                         <th>Product Name</th>
-                                        <th>Quantity</th>
+                                        <th>Serial Number</th>
                                         <th>Pending Order</th>
                                         <th>Present Shipping </th> 
                                         <th class="text-center">Status</th>
@@ -393,10 +440,10 @@
 
 
                                         <tr>
-                                        <td class="col-md-1">1</td>
+                                        <td>1</td>
                                         <td>09 Apr 2015</td>
                                         <td>CRP Pipe</td>
-                                        <td>5</td>                                        
+                                        <td>Apr16/04/01</td>                                        
                                         <td>5</td> 
                                         <td ><a href="#" id="username" data-type="text" data-pk="1" data-title="Enter shipping" class="editable editable-click">50</a></td>
 														
@@ -418,15 +465,21 @@
 							<i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                              <a href="delivery_orders_challanbutton.html" class="table-link" title="Delivery order challan">
+                                                <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
                                             
                                         </td>
                                         
                                     </tr>
                                                                         <tr>
-                                        <td class="col-md-1">2</td>
+                                        <td>2</td>
                                         <td>08 Apr 2015</td>
                                         <td>CRP Structure</td>
-                                        <td>5</td>                                        
+                                        <td>Apr16/04/01</td>                                        
                                         <td>5</td> 
                                         <td ><a href="#" id="firstname" data-type="text" data-pk="1" data-title="Enter shipping" class="editable editable-click">50</a></td>
                                         <td class="text-center">
@@ -445,6 +498,12 @@
                                                 <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
 							<i class="fa fa-print fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                               <a href="" class="table-link" title="Delivery order challan">
+                                                <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
                                             
