@@ -7942,3 +7942,7 @@ margin-top: -20px;
 {
    .supplier{ width:100%}
 }
+.button_indexright{margin-left:5px}
+.input_price input[type="text"]{width:50%}
+.input_price input[type="checkbox"]{margin-left:5px!important}
+.division{padding:0px 6px;margin:6px 15px }

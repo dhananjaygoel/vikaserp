@@ -422,7 +422,7 @@
                             <input  value="exist" id="optionsRadios1" name="status" type="radio">
                         <label for="optionsRadios1">Existing Supplier</label>
                            </div>
-                 <div class="supplier">
+                 <div class="supplier" style="display:none">
                         <select class="form-control" name="type" id="add_status_type">
                          <option value="" selected="">Select supplier</option>
                          <option value="2">Supplier1</option>
@@ -1438,6 +1438,14 @@ $(document).ready(function(){
     $("#optionsRadios3").click(function(){
         $(".exist_field").show();
         $(".customer_select").hide();
+    });
+     $("#optionsRadios1").click(function(){
+        $(".supplier").show();
+        
+    });
+     $("#optionsRadios3").click(function(){
+        $(".supplier").hide();
+        
     });
 });
 
