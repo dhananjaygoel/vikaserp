@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>Add Customer - Vikas Associate Order Automation System</title>
+	<title>Edit Customer - Vikas Associate Order Automation System</title>
 	
 	<!-- bootstrap -->
 	<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css" />
@@ -238,7 +238,7 @@
 											<span class="label label-info label-circle pull-right">28</span>
 										</a>
 									</li>-->
-                                                                <li >
+                                                                <li>
 										<a href="users.html">
 											<i class="fa fa-user"></i>
 											<span>Users</span>
@@ -252,7 +252,13 @@
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
-                                                                        
+                                                                        <li >
+										<a href="pendingcustomers.html">
+											<i class="fa fa-book"></i>
+											<span>Pending customers</span>
+											<span class="label label-info label-circle pull-right"></span>
+										</a>
+									</li>
                                                                         
                                                                         <li >
 										<a href="enquiry.html">
@@ -261,7 +267,7 @@
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
-                                                                        <li >
+                                                                       <li>
 										<a href="#" class="dropdown-toggle">
 											<i class="fa fa-shopping-cart"></i>
 											<span>Order</span>
@@ -269,7 +275,7 @@
 										</a>
 										<ul class="submenu">
 											<li>
-												<a href="orders.html" >
+												<a href="orders.html" class="active">
 													Order
 												</a>
 											</li>
@@ -279,18 +285,66 @@
 												</a>
 											</li>
                                                                                         <li>
+												<a href="delivery_orders_challan.html">
+													Delivery Challan
+												</a>
+											</li>
+                                                                                        <li>
 												<a href="daily_del_orders.html">
-													Daily Delivery Order
+													Pending Delivery Order Report
+												</a>
+											</li>
+                                                                                         <li>
+												<a href="delivery_orders_challan_report.html">
+													Sales Day book
 												</a>
 											</li>
 											<li>
 												<a href="pending_orders.html">
-													Pending Order
+													Pending Order Report
 												</a>
 											</li>
 										</ul>
 									</li>
-                                                                        
+                                                                        <li>
+										<a href="#" class="dropdown-toggle">
+											<i class="fa fa-shopping-cart"></i>
+											<span>Purchase Order</span>
+											<i class="fa fa-chevron-circle-right drop-icon"></i>
+										</a>
+										<ul class="submenu">
+											<li>
+												<a href="purchaseorders.html" class="active">
+													Purchase Order
+												</a>
+											</li>
+											<li>
+												<a href="purchaseorder_advise.html">
+													Purchase Advice
+												</a>
+											</li>
+                                                                                        <li>
+												<a href="purchaseorder_challan.html">
+													Purchase Challan
+												</a>
+											</li>
+											<li>
+												<a href="purchaseorder_report.html">
+													Purchase Order Report
+												</a>
+											</li>
+                                                                                        <li>
+												<a href="purchaseorder_advisereport.html">
+													Pending Purchase Advise Report
+												</a>
+											</li>
+                                                                                        <li>
+												<a href="purchaseorder_challanreport.html">
+													Purchase Day Book
+												</a>
+											</li>
+										</ul>
+									</li>
                                                                         <li >
 										<a href="#" class="dropdown-toggle">
                                                                                     <i class="fa fa-codepen"></i>
@@ -355,7 +409,7 @@
 								<div class="col-lg-12">
 									<ol class="breadcrumb">
 										<li><a href="#">Home</a></li>
-										<li class="active"><span>Add Customer</span></li>
+										<li class="active"><span>Edit Customer</span></li>
 									</ol>
 									
 									<div class="clearfix">
@@ -370,7 +424,7 @@
     <div class="col-lg-12">
         <div class="main-box">
             <header class="main-box-header clearfix">
-                <h2><i class="fa fa-user"></i> &nbsp; Add Customer Details</h2>
+                <h2><i class="fa fa-user"></i> &nbsp; Edit Customer Details</h2>
             </header>            
 
             <div class="main-box-body clearfix">
@@ -406,10 +460,13 @@
                     <input id="zip" class="form-control" placeholder="Zip" name="zip" value="" type="text">
                 </div>
                     <div class="form-group">
-                    <label for="email">Email ID</label>
-                    <input id="email" class="form-control" placeholder="Email ID" name="email" value="" type="text">
+                    <label for="email">Email</label>
+                    <input id="email" class="form-control" placeholder="Email" name="email" value="" type="text">
                 </div>
-                                              
+                    <div class="form-group">
+                    <label for="tally">Tally Name<span class="mandatory">*</span></label>
+                    <input id="tally" class="form-control" placeholder="Tally Name " name="tally" value="" type="text">
+                </div>                           
 
                 <div class="form-group">
                     <label for="Phone_number">Phone number 1<span class="mandatory">*</span></label>
@@ -428,10 +485,16 @@
                     <label for="excise_number">Excise Number</label>
                     <input id="excise_number" class="form-control" placeholder="Excise Number" name="excise_number" value="" type="text">
                 </div>
-                    <div class="form-group">
-                    <label for="del_loc">Delivery Location<span class="mandatory">*</span></label>
-                    <input id="del_loc" class="form-control" placeholder="ex warehouse" name="del_loc" value="ex warehouse" type="text">
+                    <div class="form-group col-md-4 del_loc ">
+                    <label for="del_loc">Delivery Location:</label>
+                        <select class="form-control" id="del_loc">
+                          <option>Location1</option>
+                          <option>Location2</option>
+                          <option>Location3</option>
+                          <option>Location4</option>
+                        </select>
                 </div>
+                    <div class="clearfix"></div>
                      <div class="form-group">
                     <label for="user_name">User Name</label>
                     <input id="user_name" class="form-control" placeholder="User Name" name="user_name" value="" type="text">
@@ -450,67 +513,77 @@
                     <label for="period">Credit Period</label>
                     <input id="period" class="form-control" placeholder="Credit Period" name="period" value="" type="text">
                 </div>
+                        <div class="form-group col-md-4 del_loc ">
+                    <label for="manager">Relationship Manager:</label>
+                        <select class="form-control" id="manager">
+                          <option>Super Admin</option>
+                          <option>Admin1</option>
+                          <option>Admin2</option>
+                          <option>Admin3</option>
+                          <option>Admin4</option>
+                          <option>Admin5</option>
+                          <option>Admin6</option>
+                          <option>Admin7</option>
+                        </select>
+                </div>
+                    <div class="clearfix"></div>
                     <div class="form-group">
 				<label>Set Prices</label>
 				<br>
-					<div class="checkbox-nice checkbox-inline">
+					<div class="checkbox-nice">
                                             <input id="checkbox-inl-1" type="checkbox">
-					<label for="checkbox-inl-1">
-						
-					</label>
-                                            <div class="category_div">
-                                            <div class="form-group pull-left " >
-                   <div class="col-md-12">
+					<label for="checkbox-inl-1"> </label>
+					  </div>
+                                <br>
+                                            <div class="category_div col-md-5">
+                          
+                                            <div class="table-responsive">
+                                            <table id="table-example" class="table table-hover table-bordered ">
+                                
+                                            <thead>
+                                                <tr>
+
+                                                    <th>Category</th>
+                                                    <th>Difference</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>       
+                                                <tr>
+                                                    <td>Name1</td>
+                                                    <td><input type="text" value="" ></td>
+                                                </tr>
+                                                  <tr>
+                                                    <td>Name2</td>
+                                                    <td><input type="text" value="" ></td>
+                                                </tr>
+                                                  <tr>
+                                                    <td>Name3</td>
+                                                    <td><input type="text" value="" ></td>
+                                                </tr>
+                                                  <tr>
+                                                    <td>Name4</td>
+                                                    <td><input type="text" value="" ></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                        </div>
                     
-                    <select class="form-control" name="type" id="add_status_type">
-                        <option value="">Select Product Category</option>
-                                                <option value="2">Product Category 1</option>
-                                                <option value="3">Product Category 2</option>
-                                            </select>
-                                            </div>
-                </div>
-                                                <div class="form-group pull-left" >
-                                                    <div class="col-md-12">
-                    <input id="difference" class="form-control" placeholder="Difference" name="difference" value="" type="text">
-                </div>
-                                                </div>
+                                              
+                                        
+                                               
 					</div>
-                    </div>
+            
 												
 					</div>
                     
 
                                     
-               <!--     <div class="form-group">
-                    <label for="status">Verified Status</label>
-                    
-                    <select class="form-control" name="type" id="add_status_type">
-                       
-                                                <option value="2">Yes</option>
-                                                <option value="3">No</option>
-                                            </select>
-                </div>
-                                <div class="checkbox">
-                                    <label for="exampleInputEmail1">Active</label>
-                                    <label>
-                                        <input name="status" type="radio" value="yes"> Yes
-                                    </label>
-                                    <label>
-                                        <input name="status" type="radio" value="no"> No
-                                    </label>
-                                </div>
-                <div class="form-group">
-                    <label>Block Status</label>
-                    <div class="radio">
-                        <input checked="" value="block" id="optionsRadios1" name="status" type="radio">
-                        <label for="optionsRadios1">Block</label>
-                        <input value="unblock" id="optionsRadios2" name="status" type="radio">
-                        <label for="optionsRadios2">Unblock</label>
-                    </div>
-                </div>-->
-                
+               
+                    <div class="clearfix"></div>
+                   
                 <hr>
-                <div >
+                <div>
                     <button type="button" class="btn btn-primary form_button_footer" >Submit</button>
                     <a href="customers.html" class="btn btn-default form_button_footer">Back</a>
                 </div>
@@ -558,7 +631,7 @@
 $(document).ready(function(){
     $("#checkbox-inl-1").click(function(){
        
-        $(".category_div").fadeIn("slow");
+        $(".category_div").toggle("slow");
         
     });
 });

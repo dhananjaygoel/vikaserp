@@ -288,6 +288,7 @@ a:hover, a:focus {
   /* overflow: hidden; */
   border-radius: 3px;
   background-clip: padding-box;
+  min-height:111px
   /* stops bg color from leaking outside the border: */
 }
 @media (max-width: 767px) {
@@ -980,7 +981,7 @@ h3 .small {
   display: block;
   font-size: 0.775em;
   line-height: 38px;
-  padding-left: 66px;
+  padding-left: 56px;
   color: #fff;
   outline: none;
   text-decoration: none;
@@ -1990,7 +1991,7 @@ blockquote.pull-right:before {
   padding: 12px 8px;
 }
 .table tbody > tr > td:first-child {
-  font-size: 1.125em;
+  font-size: 1em;
   font-weight: 300;
 }
 .table tbody > tr td .call-type {
@@ -4092,12 +4093,12 @@ input[type="radio"] {
 }
 .infographic-box .headline {
   display: block;
-  font-size: 1.2em;
+  font-size: 1em;
   font-weight: 300;
   text-align: right;
 }
 .infographic-box .value {
-  font-size: 2.1em;
+  font-size: 1.8em;
   font-weight: 600;
   margin-top: -5px;
   display: block;
@@ -5052,7 +5053,7 @@ input[type="radio"] {
 .filter-block .form-group .search-icon {
   position: absolute;
   color: #707070;
-  right: 8px;
+  right: 14px;
   top: 11px;
 }
 .filter-block .btn {
@@ -7911,8 +7912,7 @@ svg {
 }
 .category_div
 {
-   margin-left: 20px;
-margin-top: -20px;
+  
    display: none;
 }
 .row1
@@ -7946,3 +7946,30 @@ margin-top: -20px;
 .input_price input[type="text"]{width:50%}
 .input_price input[type="checkbox"]{margin-left:5px!important}
 .division{padding:0px 6px;margin:6px 15px }
+.del_loc{padding-left:0px!important}
+.inquiry_table{padding-left:0px!important}
+.inquiry_table .form-control{padding-left:2px!important;font-size:0.9em}
+.row6{display:none}
+.row7{display:none}
+.row8{display:none}
+.row9{display:none}
+.row10{display:none}
+.row11{display:none}
+.row12{display:none}
+.addlocation{position:relative;top:24px}
+.locationtext{display:none}
+.editprice{margin-bottom: 0px;}
+.pshipping{width:70%;margin-bottom: 0px}
+.dropdown-menu{cursor:pointer}
+#table_direct{display:none}
+#table2{display:none}
+.productcategory{padding-left: 0px}
+.purchase_product{padding-left: 0px}
+.product-price .form-group{margin-bottom: 0px!important}
+.productsub_filter{margin-top: 0px}
+.purchaseorder_table .form-group{margin-bottom:0px!important}
+.purchaseorder_table .form-group input[type=text]{width:80%}
+.print_time{font-weight:bold}
+.difference_form{margin-top:2px}
+.difference_form .btn-primary{background-color:#2980b9!important}
+.difference_form .btn{padding:3px 5px!important}

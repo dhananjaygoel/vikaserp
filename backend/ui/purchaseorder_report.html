@@ -252,7 +252,13 @@
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
-                                                                        
+                                                                        <li >
+										<a href="pendingcustomers.html">
+											<i class="fa fa-book"></i>
+											<span>Pending customers</span>
+											<span class="label label-info label-circle pull-right"></span>
+										</a>
+									</li>
                                                                         
                                                                         <li >
 										<a href="enquiry.html">
@@ -269,7 +275,7 @@
 										</a>
 										<ul class="submenu">
 											<li>
-												<a href="orders.html" class="active">
+												<a href="orders.html">
 													Order
 												</a>
 											</li>
@@ -279,23 +285,23 @@
 												</a>
 											</li>
                                                                                         <li>
-												<a href="delivery_orders_challan.html">
-													Delivery Order Challan
+												<a href="delivery_orders_challan.html"  >
+													Delivery Challan
 												</a>
 											</li>
                                                                                         <li>
-												<a href="daily_del_orders.html">
-													Daily Delivery Order
+												<a href="daily_del_orders.html" >
+													Pending Delivery Order Report
 												</a>
 											</li>
                                                                                          <li>
-												<a href="delivery_orders_challan_report.html">
-													Delivery Order Challan Report
+												<a href="delivery_orders_challan_report.html" class="active">
+													Sales Day book
 												</a>
 											</li>
 											<li>
 												<a href="pending_orders.html">
-													Pending Order
+													Pending Order Report
 												</a>
 											</li>
 										</ul>
@@ -314,12 +320,12 @@
 											</li>
 											<li>
 												<a href="purchaseorder_advise.html">
-													Purchase Order Advice
+													Purchase Advice
 												</a>
 											</li>
                                                                                         <li>
 												<a href="purchaseorder_challan.html">
-													Purchase Order Challan
+													Purchase Challan
 												</a>
 											</li>
 											<li>
@@ -329,12 +335,12 @@
 											</li>
                                                                                         <li>
 												<a href="purchaseorder_advisereport.html">
-													Purchase Order Advise Report
+													Pending Purchase Advise Report
 												</a>
 											</li>
                                                                                         <li>
 												<a href="purchaseorder_challanreport.html">
-													Purchase Order Challan Report
+													Purchase Day Book
 												</a>
 											</li>
 										</ul>
@@ -347,7 +353,7 @@
 										</a>
 										<ul  class="submenu">
 											<li>
-												<a href="product_category.html" >
+												<a href="product_category.html" class="active">
 													Product Category
 												</a>
 											</li>
@@ -368,7 +374,7 @@
 										</a>
 										<ul  class="submenu">
 											<li>
-												<a href="location.html" >
+												<a href="location.html" class="active">
 													Delivery Location
 												</a>
 											</li>
@@ -424,10 +430,10 @@
                                                                                         </div>
                                                                                     <div class="form-group pull-left">
                                                                                         <div class="col-md-12">
-                                                                                        <select class="form-control" id="user_filter" name="user_filter">
-                                                                                    <option value="" selected="">Select Location</option>
-                                                                                    <option value="2">Delhi</option>
-                                                                                     <option value="2">Mumbai</option>
+                                                                                        <select class="form-control" id="user_filter1" name="user_filter">
+                                                                                    <option value="" selected="">Order For</option>
+                                                                                    <option value="1">Warehouse</option>
+                                                                                    <option value="2">Direct</option>
                                                                                      
                                                                                     
                                                                                                                 
@@ -455,7 +461,7 @@
 								</div>
 							</div>
 							
-							<div class="row">
+							<div class="row" id="table1">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
@@ -468,9 +474,9 @@
                                         <th>Order No</th>
                                         <th>Date</th>
                                         <th>Party Name</th>
-                                        <th>Size</th>
-                                        <th>qty</th>
-                                        <th>Rate</th>
+                                      
+                                        <th>Total Qty</th>
+                                       
                                         <th>Remarks</th>
                                         <th>Delivery Location </th> 
                                         <th>Order By </th> 
@@ -485,10 +491,10 @@
                                         <td>09 Apr 2015</td>
                                         
                                         <td>Party Name 1</td>
-                                        <td>400 kg</td>
-                                        <td>5</td>                                        
+                                        
+                                                                            
                                         <td><i class="fa fa-inr"></i> 50,000 </td>
-                                         <td>fhsdhfjfdf</td>
+                                         <td>Lorem Ipsum..</td>
                                          <td>Pune</td>  
                                         <td>Name 1</td>
                                                                                 
@@ -498,10 +504,85 @@
                                         <td>mum02 </td>
                                         <td>19 Apr 2015</td>
                                         <td>Party Name 2</td>
-                                        <td>200 kg</td>
-                                        <td>9</td>                                        
+                                     
+                                                                               
                                         <td><i class="fa fa-inr"></i> 50,000 </td>
-                                         <td>fhsdhfjfdf</td>
+                                        <td>Lorem Ipsum..</td>
+                                         <td>Mumbai</td>  
+                                        <td>Name 2</td>
+                                                                                
+                                    </tr>
+                                    
+                                                                        
+                                                                    </tbody>
+                            </table>
+
+                            <span class="pull-right">
+                                <ul class="pagination pull-right">
+												<li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
+												<li><a href="#">1</a></li>
+												<li><a href="#">2</a></li>
+												<li><a href="#">3</a></li>
+												<li><a href="#">4</a></li>
+												<li><a href="#">5</a></li>
+												<li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
+											</ul>
+                  
+                            </span>
+
+                                                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                                                    				
+							<div class="row" id="table2">
+            <div class="col-lg-12">
+                <div class="main-box clearfix">
+                    <div class="main-box-body main_contents clearfix">
+                        
+                        <div class="table-responsive">
+                                                        <table id="table-example" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Order No</th>
+                                        <th>Date</th>
+                                        <th>Party Name</th>
+                                        <th>Customer Name</th>
+                                        <th>Total Qty</th>
+                                       
+                                        <th>Remarks</th>
+                                        <th>Delivery Location </th> 
+                                        <th>Order By </th> 
+                                    </tr>
+                                </thead>
+                                <tbody>                    
+
+
+                                        <tr>
+                                        <td>1</td>
+                                        <td>pun01 </td>
+                                        <td>09 Apr 2015</td>
+                                        
+                                        <td>Party1</td>
+                                        <td>Customer1</td>
+                                                                            
+                                        <td><i class="fa fa-inr"></i> 50,000 </td>
+                                         <td>Lorem ipsum..</td>
+                                         <td>Pune</td>  
+                                        <td>Name 1</td>
+                                                                                
+                                    </tr>
+                                                                        <tr>
+                                        <td>2</td>
+                                        <td>mum02 </td>
+                                        <td>19 Apr 2015</td>
+                                        <td>Party2</td>
+                                        <td>Customer2</td>
+                                                                               
+                                        <td><i class="fa fa-inr"></i> 50,000 </td>
+                                         <td>Lorem ipsum..</td>
                                          <td>Mumbai</td>  
                                         <td>Name 2</td>
                                                                                 
@@ -551,16 +632,44 @@
 	<script src="js/jquery.js"></script>
 	<script src="js/bootstrap.js"></script>
 	<script src="js/jquery.nanoscroller.min.js"></script>
-	
+	 <script src="js/jquery.maskedinput.min.js"></script>
 	<script src="js/demo.js"></script> <!-- only for demo -->
 	
 	<!-- this page specific scripts -->
-	
+        <script src="js/select2.min.js"></script>
+	<script src="js/moment.min.js"></script>
+	<script src="js/daterangepicker.js"></script>
+        <script src="js/bootstrap-editable.min.js"></script>
+        <script src="js/bootstrap-datepicker.js"></script>
 	<!-- theme scripts -->
 	<script src="js/scripts.js"></script>
 	<script src="js/pace.min.js"></script>
 	
 	<!-- this page specific inline scripts -->
+        <script>
+          
+            $(document).ready(function(){     
+   $('#user_filter1').change(function(){
+         if($('#user_filter1').val()=='1'){
+           $('#table1').show();
+           $('#table2').hide();           
+        }
+    });
+});
+          $(document).ready(function(){     
+   $('#user_filter1').change(function(){
+         if($('#user_filter1').val()=='2'){
+            $('#table2').show(); 
+            $('#table1').hide();
+                      
+        }
+    });
+});
+
+
+
+      
+        </script>
 	
 </body>
 </html>

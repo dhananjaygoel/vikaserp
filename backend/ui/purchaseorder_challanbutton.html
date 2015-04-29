@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>Delivery Orders Challan - Vikas Associate Order Automation System</title>
+	<title>Purchase Orders Challan - Vikas Associate Order Automation System</title>
 	
 	<!-- bootstrap -->
 	<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css" />
@@ -252,7 +252,13 @@
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
-                                                                        
+                                                                        <li >
+										<a href="pendingcustomers.html">
+											<i class="fa fa-book"></i>
+											<span>Pending customers</span>
+											<span class="label label-info label-circle pull-right"></span>
+										</a>
+									</li>
                                                                         
                                                                         <li >
 										<a href="enquiry.html">
@@ -261,7 +267,7 @@
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
-                                                                              <li >
+                                                                        <li>
 										<a href="#" class="dropdown-toggle">
 											<i class="fa fa-shopping-cart"></i>
 											<span>Order</span>
@@ -269,38 +275,38 @@
 										</a>
 										<ul class="submenu">
 											<li>
-												<a href="orders.html" >
+												<a href="orders.html">
 													Order
 												</a>
 											</li>
-											<li class="active">
-												<a href="delivery_orders.html ">
+											<li>
+												<a href="delivery_orders.html">
 													Delivery Order
 												</a>
 											</li>
                                                                                         <li>
-												<a href="delivery_orders_challan.html">
-													Delivery Order Challan
+												<a href="delivery_orders_challan.html"  >
+													Delivery Challan
 												</a>
 											</li>
                                                                                         <li>
-												<a href="daily_del_orders.html">
-													Daily Delivery Order
+												<a href="daily_del_orders.html" >
+													Pending Delivery Order Report
 												</a>
 											</li>
                                                                                          <li>
-												<a href="delivery_orders_challan_report.html">
-													Delivery Order Challan Report
+												<a href="delivery_orders_challan_report.html" class="active">
+													Sales Day book
 												</a>
 											</li>
 											<li>
-												<a href="pending_orders.html" >
-													Pending Order
+												<a href="pending_orders.html">
+													Pending Order Report
 												</a>
 											</li>
 										</ul>
 									</li>
-                                                                          <li class="active" >
+                                                                        <li class="active">
 										<a href="#" class="dropdown-toggle">
 											<i class="fa fa-shopping-cart"></i>
 											<span>Purchase Order</span>
@@ -312,14 +318,14 @@
 													Purchase Order
 												</a>
 											</li>
-											<li class="active">
-												<a href="purchaseorder_advise.html">
-													Purchase Order Advice
+											<li>
+												<a href="purchaseorder_advise.html" class="active">
+													Purchase Advice
 												</a>
 											</li>
                                                                                         <li>
 												<a href="purchaseorder_challan.html">
-													Purchase Order Challan
+													Purchase Challan
 												</a>
 											</li>
 											<li>
@@ -329,12 +335,12 @@
 											</li>
                                                                                         <li>
 												<a href="purchaseorder_advisereport.html">
-													Purchase Order Advise Report
+													Pending Purchase Advise Report
 												</a>
 											</li>
                                                                                         <li>
 												<a href="purchaseorder_challanreport.html">
-													Purchase Order Challan Report
+													Purchase Day Book
 												</a>
 											</li>
 										</ul>
@@ -414,7 +420,7 @@
 								</div>
 							</div>
 							
-							<div style="opacity: 1;" class="row">
+				<div class="row">
     <div class="col-lg-12">
         <div class="main-box">
             <header class="main-box-header clearfix">
@@ -422,627 +428,113 @@
             </header>            
 
             <div class="main-box-body clearfix">
-                <hr>
-                                                
-                <form method="POST" action="" accept-charset="UTF-8" >
-             
-                    <div class="row row1">
-                    <div class="product_details">
-                     <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Selected Product</h4> 
-                   
-                </div>
-            </div>
-                     <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Quantity</h4> 
-                   
-                </div>
-            </div>
-                       <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Unit</h4> 
-                   
-                </div>
-            </div>
-                      <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Present shipping</h4> 
-                   
-                </div>
-            </div>
-                       <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Actual Quantity</h4> 
-                   
-                </div>
-            </div>
-                          <div class="form-group pull-left">
-                        <div class="col-md-12">
-                        <a href="#" id="labours" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">Actual pieces</a>
-                    
-                        </div>
-                          </div>
-                         <div class="form-group pull-left">
-                        <div class="col-md-12">
-                        <a href="#" id="rate" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">Rate</a>
-                    
-                        </div>
-                          </div>
-                   
-                  
-                 
-                 
-            </div>
-                     
-                        
-                    </div>
-                    
-                    
-                    
-                    <div class="row row2" >
-                    <div class="product_details">
-                     <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Selected Product</h4> 
-                   
-                </div>
-            </div>
-                     <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Quantity</h4> 
-                   
-                </div>
-            </div>
-                       <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Unit</h4> 
-                   
-                </div>
-            </div>
-                      <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Present shipping</h4> 
-                   
-                </div>
-            </div>
-                       <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Actual Quantity</h4> 
-                   
-                </div>
-            </div>
-                          <div class="form-group pull-left">
-                        <div class="col-md-12">
-                        <a href="#" id="labours" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">Actual pieces</a>
-                    
-                        </div>
-                          </div>
-                         <div class="form-group pull-left">
-                        <div class="col-md-12">
-                        <a href="#" id="rate" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">Rate</a>
-                    
-                        </div>
-                          </div>
-                   
-                  
-                 
-                 
-            </div>
-                     
-                        
-                     
-                    
-                    </div>
-                    
-                    <div class="row row3" >
-                   <div class="product_details">
-                     <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Selected Product</h4> 
-                   
-                </div>
-            </div>
-                     <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Quantity</h4> 
-                   
-                </div>
-            </div>
-                       <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Unit</h4> 
-                   
-                </div>
-            </div>
-                      <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Present shipping</h4> 
-                   
-                </div>
-            </div>
-                       <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Actual Quantity</h4> 
-                   
-                </div>
-            </div>
-                          <div class="form-group pull-left">
-                        <div class="col-md-12">
-                        <a href="#" id="labours" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">Actual pieces</a>
-                    
-                        </div>
-                          </div>
-                         <div class="form-group pull-left">
-                        <div class="col-md-12">
-                        <a href="#" id="rate" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">Rate</a>
-                    
-                        </div>
-                          </div>
-                   
-                  
-                 
-                 
-            </div>
-                     
-                        
-                    
-                   
-                    </div>
-                    
-                    <div class="row row4">
-                   <div class="product_details">
-                     <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Selected Product</h4> 
-                   
-                </div>
-            </div>
-                     <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Quantity</h4> 
-                   
-                </div>
-            </div>
-                       <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Unit</h4> 
-                   
-                </div>
-            </div>
-                      <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Present shipping</h4> 
-                   
-                </div>
-            </div>
-                       <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Actual Quantity</h4> 
-                   
-                </div>
-            </div>
-                          <div class="form-group pull-left">
-                        <div class="col-md-12">
-                        <a href="#" id="labours" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">Actual pieces</a>
-                    
-                        </div>
-                          </div>
-                         <div class="form-group pull-left">
-                        <div class="col-md-12">
-                        <a href="#" id="rate" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">Rate</a>
-                    
-                        </div>
-                          </div>
-                   
-                  
-                 
-                 
-            </div>
-                     
-                        
-                   
-                    </div>
-                  
-                    <div class="row row5" >
-                <div class="product_details">
-                     <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Selected Product</h4> 
-                   
-                </div>
-            </div>
-                     <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Quantity</h4> 
-                   
-                </div>
-            </div>
-                       <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Unit</h4> 
-                   
-                </div>
-            </div>
-                      <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Present shipping</h4> 
-                   
-                </div>
-            </div>
-                       <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Actual Quantity</h4> 
-                   
-                </div>
-            </div>
-                          <div class="form-group pull-left">
-                        <div class="col-md-12">
-                        <a href="#" id="labours" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">Actual pieces</a>
-                    
-                        </div>
-                          </div>
-                         <div class="form-group pull-left">
-                        <div class="col-md-12">
-                        <a href="#" id="rate" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">Rate</a>
-                    
-                        </div>
-                          </div>
-                   
-                  
-                 
-                 
-            </div>
-                     
-                       
-                        <div class="add_button5">
-                        <div class="form-group pull-left">
-                        <div class="col-md-12">
-                             <label for="addmore"></label>
-                             <a href="#" class="table-link" title="add more" id="addmore5">
-                                                <span class="fa-stack more_button" >
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-plus fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                </div>
-            </div>
-                    </div>
-                    
-                    </div>
-                    
-                                 <div class="row row6" style="display: none">
-                   <div class="product_details">
-                     <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Selected Product</h4> 
-                   
-                </div>
-            </div>
-                     <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Quantity</h4> 
-                   
-                </div>
-            </div>
-                       <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Unit</h4> 
-                   
-                </div>
-            </div>
-                      <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Present shipping</h4> 
-                   
-                </div>
-            </div>
-                       <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Actual Quantity</h4> 
-                   
-                </div>
-            </div>
-                          <div class="form-group pull-left">
-                        <div class="col-md-12">
-                        <a href="#" id="labours" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">Actual pieces</a>
-                    
-                        </div>
-                          </div>
-                         <div class="form-group pull-left">
-                        <div class="col-md-12">
-                        <a href="#" id="rate" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">Rate</a>
-                    
-                        </div>
-                          </div>
-                   
-                  
-                 
-                 
-            </div>
-                     
-                       
-                        <div class="add_button6">
-                        <div class="form-group pull-left">
-                        <div class="col-md-12">
-                             <label for="addmore"></label>
-                             <a href="#" class="table-link" title="add more" id="addmore6">
-                                                <span class="fa-stack more_button" >
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-plus fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                </div>
-            </div>
-                    </div>
-                    
-                    </div>
-                    
-                          <div class="row row7" style="display: none">
-                <div class="product_details">
-                     <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Selected Product</h4> 
-                   
-                </div>
-            </div>
-                     <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Quantity</h4> 
-                   
-                </div>
-            </div>
-                       <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Unit</h4> 
-                   
-                </div>
-            </div>
-                      <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Present shipping</h4> 
-                   
-                </div>
-            </div>
-                       <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Actual Quantity</h4> 
-                   
-                </div>
-            </div>
-                          <div class="form-group pull-left">
-                        <div class="col-md-12">
-                        <a href="#" id="labours" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">Actual pieces</a>
-                    
-                        </div>
-                          </div>
-                         <div class="form-group pull-left">
-                        <div class="col-md-12">
-                        <a href="#" id="rate" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">Rate</a>
-                    
-                        </div>
-                          </div>
-                   
-                  
-                 
-                 
-            </div>
-                     
-                        
-                        <div class="add_button7">
-                        <div class="form-group pull-left">
-                        <div class="col-md-12">
-                             <label for="addmore"></label>
-                             <a href="#" class="table-link" title="add more" id="addmore7">
-                                                <span class="fa-stack more_button" >
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-plus fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                </div>
-            </div>
-                    </div>
-                    
-                    </div>       
-                                <div class="row row8" style="display: none">
-                  <div class="product_details">
-                     <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Selected Product</h4> 
-                   
-                </div>
-            </div>
-                     <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Quantity</h4> 
-                   
-                </div>
-            </div>
-                       <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Unit</h4> 
-                   
-                </div>
-            </div>
-                      <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Present shipping</h4> 
-                   
-                </div>
-            </div>
-                       <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Actual Quantity</h4> 
-                   
-                </div>
-            </div>
-                          <div class="form-group pull-left">
-                        <div class="col-md-12">
-                        <a href="#" id="labours" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">Actual pieces</a>
-                    
-                        </div>
-                          </div>
-                         <div class="form-group pull-left">
-                        <div class="col-md-12">
-                        <a href="#" id="rate" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">Rate</a>
-                    
-                        </div>
-                          </div>
-                   
-                  
-                 
-                 
-            </div>
-                     
-                        
-                        <div class="add_button8">
-                        <div class="form-group pull-left">
-                        <div class="col-md-12">
-                             <label for="addmore"></label>
-                             <a href="#" class="table-link" title="add more" id="addmore8">
-                                                <span class="fa-stack more_button" >
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-plus fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                </div>
-            </div>
-                    </div>
-                    
-                    </div> 
-                                 <div class="row row9" style="display: none">
-                  <div class="product_details">
-                     <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Selected Product</h4> 
-                   
-                </div>
-            </div>
-                     <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Quantity</h4> 
-                   
-                </div>
-            </div>
-                       <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Unit</h4> 
-                   
-                </div>
-            </div>
-                      <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Present shipping</h4> 
-                   
-                </div>
-            </div>
-                       <div class="division pull-left">
-                        <div class="col-md-12">
-                            <h4>Actual Quantity</h4> 
-                   
-                </div>
-            </div>
-                          <div class="form-group pull-left">
-                        <div class="col-md-12">
-                        <a href="#" id="labours" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">Actual pieces</a>
-                    
-                        </div>
-                          </div>
-                         <div class="form-group pull-left">
-                        <div class="col-md-12">
-                        <a href="#" id="rate" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">Rate</a>
-                    
-                        </div>
-                          </div>
-                   
-                  
-                 
-                 
-            </div>
-                     
-                    
-                        <div class="add_button9">
-                        <div class="form-group pull-left">
-                        <div class="col-md-12">
-                             <label for="addmore"></label>
-                             <a href="#" class="table-link" title="add more" id="addmore9">
-                                                <span class="fa-stack more_button" >
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-plus fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                </div>
-            </div>
-                    </div>
-                    
-                    </div>
-                                 <div class="row row10" style="display: none">
-                 
-                        <div class="add_button10">
-                        <div class="form-group pull-left">
-                        <div class="col-md-12">
-                             <label for="addmore"></label>
-                             <a href="#" class="table-link" title="add more" id="addmore10">
-                                                <span class="fa-stack more_button" >
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-plus fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                </div>
-            </div>
-                    </div>
-                    
-                    </div>
-                  
-                 
-                
-                    
-                  
-                         
-                                    
-               <!--     <div class="form-group">
-                    <label for="status">Verified Status</label>
-                    
-                    <select class="form-control" name="type" id="add_status_type">
-                       
-                                                <option value="2">Yes</option>
-                                                <option value="3">No</option>
-                                            </select>
-                </div>
-                                <div class="checkbox">
-                                    <label for="exampleInputEmail1">Active</label>
-                                    <label>
-                                        <input name="status" type="radio" value="yes"> Yes
-                                    </label>
-                                    <label>
-                                        <input name="status" type="radio" value="no"> No
-                                    </label>
-                                </div>
-                <div class="form-group">
-                    <label>Block Status</label>
-                    <div class="radio">
-                        <input checked="" value="block" id="optionsRadios1" name="status" type="radio">
-                        <label for="optionsRadios1">Block</label>
-                        <input value="unblock" id="optionsRadios2" name="status" type="radio">
-                        <label for="optionsRadios2">Unblock</label>
-                    </div>
-                </div>-->
-                
-                
-                <div >
-                    <button type="button" class="btn btn-primary form_button_footer" >Submit</button>
-                    
-                    <a href="purchaseorders.html" class="btn btn-default form_button_footer">Back</a>
-                </div>
-                
-                <div class="clearfix"></div>
-                </form>
+               
+                       <div class="inquiry_table col-md-12">
+                          
+                                            <div class="table-responsive">
+                                            <table id="table-example" class="table table-hover  ">
+                                
+                                        
+                                            <tbody>       
+                                                <tr>
+                                                   <td class="col-md-2">
+                                                   Selected Product
+                                                    </td>
+                                                   <td class="col-md-2">
+                                                    Quantity
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                    Unit
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                     <a href="#" id="rate" data-type="text" data-pk="1" data-title="edit" class="editable editable-click">Rate</a>
+                                                    </td>
+                                                     
+                                                     
+                                                    
+                                                </tr>
+                                                    <tr>
+                                                   <td class="col-md-2">
+                                                   Selected Product
+                                                    </td>
+                                                   <td class="col-md-2">
+                                                    Quantity
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                    Unit
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                     <a href="#" id="user" data-type="text" data-pk="1" data-title="edit" class="editable editable-click">Rate</a>
+                                                    </td>
+                                                     
+                                                     
+                                                    
+                                                </tr>
+                                                    <tr>
+                                                   <td class="col-md-2">
+                                                   Selected Product
+                                                    </td>
+                                                   <td class="col-md-2">
+                                                    Quantity
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                    Unit
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                     <a href="#" id="bill" data-type="text" data-pk="1" data-title="edit" class="editable editable-click">Rate</a>
+                                                    </td>
+                                                     
+                                                     
+                                                    
+                                                </tr>
+                                                    <tr>
+                                                   <td class="col-md-2">
+                                                   Selected Product
+                                                    </td>
+                                                   <td class="col-md-2">
+                                                    Quantity
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                    Unit
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                     <a href="#" id="labours" data-type="text" data-pk="1" data-title="edit" class="editable editable-click">Rate</a>
+                                                    </td>
+                                                     
+                                                     
+                                                    
+                                                </tr>
+                                                    <tr>
+                                                   <td class="col-md-2">
+                                                   Selected Product
+                                                    </td>
+                                                   <td class="col-md-2">
+                                                    Quantity
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                    Unit
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                     <a href="#" id="edit" data-type="text" data-pk="1" data-title="edit" class="editable editable-click">Rate</a>
+                                                    </td>
+                                                     
+                                                     
+                                                    
+                                                </tr>
+                                             
+                                                </tbody>
+                                                </table>
+                                                </div>
+
+                                                </div>
+                                                                          
+              
                 <div class="clearfix"></div>
             </div>
         </div>
     </div>
 </div>
+	
 						
 						</div>
 					</div>
@@ -1096,142 +588,16 @@ $(document).ready(function(){
 });
 </script>
 
-<script>
-$(document).ready(function(){
-    $("#addmore1").click(function(){
-        $(".row1").show();
-        $(".row2").show();
-        $(".add_button1").hide();
-    });
-    $("#addmore2").click(function(){
-        $(".row1").show();
-        $(".row2").show();
-        $(".row3").show();
-        $(".add_button1").hide();
-        $(".add_button2").hide();
-    });
-    $("#addmore3").click(function(){
-        $(".row1").show();
-        $(".row2").show();
-        $(".row3").show();
-        $(".row4").show();
-        $(".add_button1").hide();
-        $(".add_button2").hide();
-        $(".add_button3").hide();
-    });
-    $("#addmore4").click(function(){
-        $(".row1").show();
-        $(".row2").show();
-        $(".row3").show();
-        $(".row4").show();
-        $(".row5").show();
-        $(".add_button1").hide();
-        $(".add_button2").hide();
-        $(".add_button3").hide();
-        $(".add_button4").hide();
-    });
-     $("#addmore5").click(function(){
-        $(".row1").show();
-        $(".row2").show();
-        $(".row3").show();
-        $(".row4").show();
-        $(".row5").show();
-        $(".row6").show();
-        $(".add_button1").hide();
-        $(".add_button2").hide();
-        $(".add_button3").hide();
-        $(".add_button4").hide();
-        $(".add_button5").hide();
-   
-    });
-    $("#addmore6").click(function(){
-        $(".row1").show();
-        $(".row2").show();
-        $(".row3").show();
-        $(".row4").show();
-        $(".row5").show();
-        $(".row6").show();
-        $(".row7").show();
-        $(".add_button1").hide();
-        $(".add_button2").hide();
-        $(".add_button3").hide();
-        $(".add_button4").hide();
-        $(".add_button5").hide();
-        $(".add_button6").hide();
-   
-    });
-      $("#addmore7").click(function(){
-        $(".row1").show();
-        $(".row2").show();
-        $(".row3").show();
-        $(".row4").show();
-        $(".row5").show();
-        $(".row6").show();
-        $(".row7").show();
-        $(".row8").show();
-        $(".add_button1").hide();
-        $(".add_button2").hide();
-        $(".add_button3").hide();
-        $(".add_button4").hide();
-        $(".add_button5").hide();
-        $(".add_button6").hide();
-        $(".add_button7").hide();
-        
-    });
-     $("#addmore8").click(function(){
-        $(".row1").show();
-        $(".row2").show();
-        $(".row3").show();
-        $(".row4").show();
-        $(".row5").show();
-        $(".row6").show();
-        $(".row7").show();
-        $(".row8").show();
-        $(".row9").show();
-        $(".add_button1").hide();
-        $(".add_button2").hide();
-        $(".add_button3").hide();
-        $(".add_button4").hide();
-        $(".add_button5").hide();
-        $(".add_button6").hide();
-        $(".add_button7").hide();
-         $(".add_button8").hide();
-        
-    });
-    $("#addmore9").click(function(){
-        $(".row1").show();
-        $(".row2").show();
-        $(".row3").show();
-        $(".row4").show();
-        $(".row5").show();
-        $(".row6").show();
-        $(".row7").show();
-        $(".row8").show();
-        $(".row9").show();
-        $(".row10").show();
-        $(".add_button1").hide();
-        $(".add_button2").hide();
-        $(".add_button3").hide();
-        $(".add_button4").hide();
-        $(".add_button5").hide();
-        $(".add_button6").hide();
-        $(".add_button7").hide();
-        $(".add_button8").hide();
-        $(".add_button9").hide();
-        
-    });
-    
-});
-</script>
+
 <script>
             $(document).ready(function(){
 		//toggle `popup` / `inline` mode
 		$.fn.editable.defaults.mode = 'popup';     
 		
 		//make username editable
-		
-		
-		
+		$('#bill').editable();
+		$('#user').editable();
+		$('#edit').editable();
                 $('#labours').editable();
                 $('#rate').editable();
 		
