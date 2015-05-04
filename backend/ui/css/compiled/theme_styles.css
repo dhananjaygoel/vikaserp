@@ -1701,7 +1701,15 @@ a.list-group-item.active:focus {
   background-color: #3498db;
   border-color: #3498db;
 }
+.table thead > tr > th > a.asc span:after,
+.dataTable .sorting_desc:after {
+  content: "\f0dd";
+}
 
+.table thead > tr > th > a.desc span:after,
+.dataTable .sorting_asc:after {
+  content: "\f0de";
+}
 /* BADGES */
 .badge.badge-danger {
   background-color: #e74c3c;
@@ -7998,3 +8006,5 @@ h1.printwrapper{margin:20px 0px;color:#000}
 .add1{display:none}
 .add2{display:none}
 .plus2{display: none}
+.dashboardwrapper{min-height:800px!important}
+.serial{margin-left:-8px}

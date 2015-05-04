@@ -312,7 +312,7 @@
                                         <th class="text-center"> Total Quantity</th>
                                         <th class="text-center">Mobile </th>                                                            
                                         <th class="text-center">Delivery Location</th>
-                                        <th class="col-md-2">Edit Price</th>  
+                                         
                                         <th class="text-center">Place Order</th>       
                                         <th class="text-center">Action</th>
                                     </tr>
@@ -327,18 +327,7 @@
                                         <td class="text-center">100</td>                                        
                                         <td class="text-center">9999999999 </td>
                                         <td class="text-center">Pune</td>
-                                        <td> 
-                                             <div class="row product-price">
-                                            <div class="form-group col-md-6">
-                                           <input type="text" class="form-control" id="difference">
-                                               
-                                            </div>
-                                            <div class="form-group col-md-2 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
-                                            </div>
-                                        </td>
+                                       
                                    
                                                <td class="text-center">
                                             <a title="Place Order" href="add_order.html" class="table-link">
@@ -361,10 +350,10 @@
                                                  <a title="Edit" href="edit_enquiry.html" class="table-link">
                                                         <span class="fa-stack">
                                                                 <i class="fa fa-square fa-stack-2x"></i>
-                                                                <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                                                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                         </span>
                                                 </a>
-                                                 <a title="Send SMS" href="#" class="table-link">
+                                                 <a href="#" title="SMS" data-toggle="modal" data-target="#myModal2">
                                                         <span class="fa-stack">
                                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                                 <i class="fa fa-envelope-o fa-stack-1x fa-inverse"></i>
@@ -383,18 +372,7 @@
                                         <td class="text-center">500</td>                                        
                                         <td class="text-center">9999999999 </td>
                                         <td class="text-center">Mumbai</td>
-                                           <td> 
-                                             <div class="row product-price">
-                                            <div class="form-group col-md-6">
-                                           <input type="text" class="form-control" id="difference">
-                                               
-                                            </div>
-                                            <div class="form-group col-md-2 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
-                                            </div>
-                                        </td>
+                                         
                                       
                                               <td class="text-center">
                                             <a title="Place Order" href="add_order.html" class="table-link">
@@ -417,10 +395,10 @@
                                               <a title="Edit" href="edit_enquiry.html" class="table-link">
                                                         <span class="fa-stack">
                                                                 <i class="fa fa-square fa-stack-2x"></i>
-                                                                <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                                                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                         </span>
                                                 </a>  
-                                              <a title="Send SMS" href="#" class="table-link">
+                                             <a href="#" title="SMS" data-toggle="modal" data-target="#myModal2">
                                                         <span class="fa-stack">
                                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                                 <i class="fa fa-envelope-o fa-stack-1x fa-inverse"></i>
@@ -458,7 +436,29 @@
 						
 						</div>
 					</div>
-					
+					   <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                            <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                            <h4 class="modal-title" id="myModalLabel"></h4>
+                                            </div>
+                                    
+                                                
+                                                
+                                     <div class="modal-body">
+                                         <p>Press <b>confirm</b> to send SMS to respective Relationship Manager.</p>
+                                        
+                                         
+                                    </div>           
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Confirm</button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                               
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </div> 
 					<footer id="footer-bar" class="row">
 						<p id="footer-copyright" class="col-xs-12">
 							Powered by <a href="" target="_blank">AGS Technologies</a>.&copy; 2014
