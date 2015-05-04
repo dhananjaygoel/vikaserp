@@ -77,11 +77,7 @@
 								<li><a href="#"><i class="fa fa-power-off"></i>Logout</a></li>
 							</ul>
 						</li>
-						<li class="hidden-xxs">
-							<a class="btn">
-								<i class="fa fa-power-off"></i>
-							</a>
-						</li>
+						
 					</ul>
 				</div>
 				</div>
@@ -127,7 +123,7 @@
                                                                         <li >
 										<a href="enquiry.html">
 											<i class="fa fa-dashboard"></i>
-											<span>Enquiry</span>
+											<span>Inquiry</span>
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
@@ -160,7 +156,7 @@
 											</li>
                                                                                          <li>
 												<a href="delivery_orders_challan_report.html">
-													Sales Day book
+													Sales Daybook
 												</a>
 											</li>
 											<li>
@@ -204,7 +200,7 @@
 											</li>
                                                                                         <li>
 												<a href="purchaseorder_challanreport.html">
-													Purchase Day Book
+													Purchase Daybook
 												</a>
 											</li>
 										</ul>
@@ -278,7 +274,17 @@
 									
 									<div class="clearfix">
 										<h1 class="pull-left">Pending Delivery Order Report</h1>
-										   <div class="form-group pull-right">
+											<div class="pull-right top-page-ui">     
+                                                                                            <div class="col-md-7">
+                                                                                            <div class="form-group ">
+                                                                                        <div class="input-group">
+                                                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                                                    <input type="text" class="form-control" id="datepickerDate">
+                                                                                </div>
+                                                                                            </div> 
+                                                                                            </div>
+                                                                                             <div class="col-md-5">
+                                                                                <div class="form-group  pull-right">
                                                                                         <div class="col-md-12">
                                                                                         <select class="form-control" id="user_filter" name="user_filter">
                                                                                     <option value="" selected="">Status</option>
@@ -289,6 +295,8 @@
                                                                                                                 
                                                                                 </select>
                                                                                         </div>
+                                                                                        </div>
+                                                                                             </div>
                                                                                         </div>
 									</div>
 								</div>
@@ -311,7 +319,8 @@
                                         <th>Status </th>
                                         <th>Order By </th> 
                                         
-                                        <th>Remarks </th> 
+                                        <th class="col-md-2">Remarks </th> 
+                                        <th class="text-center">Action</th>
                                         
                                     </tr>
                                 </thead>
@@ -328,8 +337,32 @@
                                         <td>Pending</td>
                                         <td>Name 1 </td>
                                         
-                                        <td><a href="#" id="remarks" data-type="text" data-pk="1" data-title="remarks" class="editable editable-click">Generated</a></td>
-                                        
+                                        <td><input id="rate" class="form-control" placeholder="Remarks" name="remarks" value="" type="text"></td>
+                                         <td class="text-center">
+                                           <a href="view_pendingdeliveryorder.html" class="table-link" title="view">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                           
+                                            <a href="edit_pendingdeliveryorder.html" class="table-link" title="edit">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                           
+                                           
+                                            
+                                               <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal" title="delete">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                            
+                                        </td>
                                         
                                     </tr>
                                          
@@ -398,11 +431,7 @@
                                         
                                          
                                     </div>           
-                                <!--    <div class="modal-footer">
-                                    
-                                    <button type="button" class="btn btn-primary">No</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
-                                    </div>-->
+                             
                                     </div>
                                     </div>
                                     </div> 
@@ -455,58 +484,23 @@
 	
 	<!-- this page specific scripts -->
 	<script src="js/moment.min.js"></script>
-	<script src="js/daterangepicker.js"></script>
+	
+        <script src="js/bootstrap-datepicker.js"></script>
 	<!-- theme scripts -->
 	<script src="js/scripts.js"></script>
 	<script src="js/pace.min.js"></script>
 	
 	<!-- this page specific inline scripts -->
-	<script type="text/javascript">
-	$(document).ready(function() {
-		$('#reportrange').daterangepicker({
-			startDate: moment().subtract('days', 29),
-			endDate: moment(),
-			minDate: '01/01/2012',
-			maxDate: '12/31/2014',
-			dateLimit: { days: 60 },
-			showDropdowns: true,
-			showWeekNumbers: true,
-			timePicker: false,
-			timePickerIncrement: 1,
-			timePicker12Hour: true,
-			ranges: {
-				'Today': [moment(), moment()],
-				'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
-				'Last 7 Days': [moment().subtract('days', 6), moment()],
-				'Last 30 Days': [moment().subtract('days', 29), moment()],
-				'This Month': [moment().startOf('month'), moment().endOf('month')],
-				'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
-			},
-			opens: 'left',
-			buttonClasses: ['btn btn-default'],
-			applyClass: 'btn-small btn-primary',
-			cancelClass: 'btn-small',
-			format: 'MM/DD/YYYY',
-			separator: ' to ',
-			locale: {
-				applyLabel: 'Submit',
-				fromLabel: 'From',
-				toLabel: 'To',
-				customRangeLabel: 'Custom Range',
-				daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-				monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-				firstDay: 1
-			}
-		 },
-		 function(start, end) {
-		  console.log("Callback has been called!");
-		  $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-		 }
-	  );
-	  //Set the initial state of the picker label
-	  $('#reportrange span').html(moment().subtract('days', 29).format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
-	});
-	</script>
+     <script>
+            $(function($) {
+		$('#datepickerDate').datepicker({
+		  format: 'dd-mm-yyyy'
+		});
+
+		$('#datepickerDateComponent').datepicker();
+                });
+
+        </script>
            <script>
             $(document).ready(function(){
 		//toggle `popup` / `inline` mode

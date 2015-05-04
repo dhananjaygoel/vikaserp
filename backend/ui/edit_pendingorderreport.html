@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>Edit Orders - Vikas Associate Order Automation System</title>
+	<title>Edit Pending Orders - Vikas Associate Order Automation System</title>
 	
 	<!-- bootstrap -->
 	<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css" />
@@ -129,7 +129,7 @@
 										</a>
 										<ul class="submenu">
 											<li>
-												<a href="orders.html" class="active">
+												<a href="orders.html" >
 													Order
 												</a>
 											</li>
@@ -154,7 +154,7 @@
 												</a>
 											</li>
 											<li>
-												<a href="pending_orders.html">
+												<a href="pending_orders.html" class="active">
 													Pending Order Report
 												</a>
 											</li>
@@ -263,7 +263,7 @@
 								<div class="col-lg-12">
 									<ol class="breadcrumb">
 										<li><a href="#">Home</a></li>
-										<li class="active"><span>Edit Order</span></li>
+										<li class="active"><span>Edit Pending Order</span></li>
 									</ol>
 									
 									<div class="clearfix">
@@ -278,59 +278,34 @@
     <div class="col-lg-12">
         <div class="main-box">
             <header class="main-box-header clearfix">
-                <h2><i class="fa fa-dashboard"></i> &nbsp; Edit Order</h2>
+                <h2><i class="fa fa-dashboard"></i> &nbsp; Edit Pending Order </h2>
             </header>            
 
             <div class="main-box-body clearfix">
                 <hr>
                                                 
                 <form method="POST" action="" accept-charset="UTF-8" >
-                    <div class="form-group">
-                    <label>Customer</label>
-                    <div class="radio">
-                        <input checked="" value="new" id="optionsRadios2" name="status" type="radio">
-                        <label for="optionsRadios2">New</label>
-                        <input  value="exist" id="optionsRadios1" name="status" type="radio">
-                        <label for="optionsRadios1">Existing</label>
-                        
-                    </div>
-                    <div class="customer_select" style="display: none">
-                    <div class="form-group ">
-                        <div class="col-md-12">
-                         
-                          
-                           <select class="form-control" id="user_filter" name="user_filter">
-                         <option value="" selected="">Select Customer</option>
-                         <option value="2">Customer 1</option>
-                         <option value="2">Customer 2</option>
-                           <option value="2">Customer 3</option>    
-                         </select>
-                           </div>
-                          </div>
+                   
+                    <div class="pendingorder ">
+                     Order1
                     </div>
                     
-                </div>
-                    <div class="exist_field">
-                    <div class="form-group">
-                    <label for="name">Customer Name</label>
-                    <input id="name" class="form-control" placeholder="Name" name="name" value="" type="text">
-                </div>
-                              <div class="form-group">
-                    <label for="contact_person">Contact person</label>
-                    <input id="contact_person" class="form-control" placeholder="Contact person" name="contact_person" value="" type="text">
-                </div>
-                <div class="form-group">
-                    <label for="mobile_number">Mobile Number </label>
-                    <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" type="text">
-                </div>
-                    
-                    <div class="form-group">
-                    <label for="period">Credit Period</label>
-                    <input id="period" class="form-control" placeholder="Credit Period" name="period" value="" type="text">
-                </div>
-            </div>
-                      
-                     <div class="inquiry_table col-md-12">
+                    <div class="pendingorder">
+                     04 May,2015
+                    </div>
+                                     <div class="row col-md-3">  
+                 <div class="form-group">
+  <label for="party">Party Name:</label>
+  <select class="form-control">
+    <option>Party1</option>
+    <option>Party2</option>
+   <option>Party3</option>
+ <option>Party4</option>
+  </select>
+</div>
+                        </div>
+                    <div class="clearfix"></div>
+                     <div class="pendingreport_table col-md-12">
                           
                                             <div class="table-responsive">
                                             <table id="table-example" class="table table-hover  ">
@@ -385,7 +360,12 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                      <td class="col-md-4">
+                                                     <td class="col-md-2">
+                                                          <div class="form-group">
+                                                          <input id="price" class="form-control" placeholder="Price" name="price" value="" type="text">
+                                                          </div>
+                                                    </td>
+                                                      <td class="col-md-2">
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
                                                           </div>
@@ -440,7 +420,12 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                      <td class="col-md-4">
+                                                     <td class="col-md-2">
+                                                          <div class="form-group">
+                                                          <input id="price" class="form-control" placeholder="Price" name="price" value="" type="text">
+                                                          </div>
+                                                    </td>
+                                                      <td class="col-md-2">
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
                                                           </div>
@@ -495,7 +480,12 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                      <td class="col-md-4">
+                                                     <td class="col-md-2">
+                                                          <div class="form-group">
+                                                          <input id="price" class="form-control" placeholder="Price" name="price" value="" type="text">
+                                                          </div>
+                                                    </td>
+                                                      <td class="col-md-2">
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
                                                           </div>
@@ -550,7 +540,12 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                      <td class="col-md-4">
+                                                     <td class="col-md-2">
+                                                          <div class="form-group">
+                                                          <input id="price" class="form-control" placeholder="Price" name="price" value="" type="text">
+                                                          </div>
+                                                    </td>
+                                                      <td class="col-md-2">
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
                                                           </div>
@@ -605,7 +600,12 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                      <td class="col-md-4">
+                                                      <td class="col-md-2">
+                                                          <div class="form-group">
+                                                          <input id="price" class="form-control" placeholder="Price" name="price" value="" type="text">
+                                                          </div>
+                                                    </td>
+                                                      <td class="col-md-2">
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
                                                           </div>
@@ -682,7 +682,12 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                      <td class="col-md-4">
+                                                      <td class="col-md-2">
+                                                          <div class="form-group">
+                                                          <input id="price" class="form-control" placeholder="Price" name="price" value="" type="text">
+                                                          </div>
+                                                    </td>
+                                                      <td class="col-md-2">
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
                                                           </div>
@@ -759,7 +764,12 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                      <td class="col-md-4">
+                                                     <td class="col-md-2">
+                                                          <div class="form-group">
+                                                          <input id="price" class="form-control" placeholder="Price" name="price" value="" type="text">
+                                                          </div>
+                                                    </td>
+                                                      <td class="col-md-2">
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
                                                           </div>
@@ -836,7 +846,12 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                      <td class="col-md-4">
+                                                      <td class="col-md-2">
+                                                          <div class="form-group">
+                                                          <input id="price" class="form-control" placeholder="Price" name="price" value="" type="text">
+                                                          </div>
+                                                    </td>
+                                                      <td class="col-md-2">
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
                                                           </div>
@@ -913,7 +928,12 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                      <td class="col-md-4">
+                                                      <td class="col-md-2">
+                                                          <div class="form-group">
+                                                          <input id="price" class="form-control" placeholder="Price" name="price" value="" type="text">
+                                                          </div>
+                                                    </td>
+                                                      <td class="col-md-2">
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
                                                           </div>
@@ -955,27 +975,8 @@
                         </div>
                     </div>
                     <div class="clearfix"></div>
-                    <div class="form-group">
-                    
-                    <div class="radio">
-                        <input checked="" value="include_vat" id="optionsRadios3" name="status1" type="radio">
-                        <label for="optionsRadios3">Include Vat</label>
-                        <input value="exclude_vat" id="optionsRadios4" name="status1" type="radio">
-                        <label for="optionsRadios4">Exclude Vat</label>
-                    </div>
-                </div>
-                    <div class="form-group">
-                        
-                    <label for="price">Total Price</label>
-                    <input id="price" class="form-control" placeholder="Total Price" name="price" value="" type="text">
-               
-            </div>
-                    <div class="form-group">
-                        
-                    <label for="time">Estimated Delivery Time</label>
-                    <input id="time" class="form-control" placeholder="Time" name="time" value="" type="text">
-               
-            </div>
+                   
+                
                     
                     <div class="form-group">
 			<label for="inquiry_remark">Remark</label>
@@ -988,7 +989,7 @@
                 <div >
                     <button type="button" class="btn btn-primary form_button_footer" >Submit</button>
                     
-                    <a href="orders.html" class="btn btn-default form_button_footer">Back</a>
+                    <a href="pending_orders.html" class="btn btn-default form_button_footer">Back</a>
                 </div>
                 
                 <div class="clearfix"></div>

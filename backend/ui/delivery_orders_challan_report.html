@@ -77,11 +77,7 @@
 								<li><a href="#"><i class="fa fa-power-off"></i>Logout</a></li>
 							</ul>
 						</li>
-						<li class="hidden-xxs">
-							<a class="btn">
-								<i class="fa fa-power-off"></i>
-							</a>
-						</li>
+						
 					</ul>
 				</div>
 				</div>
@@ -127,7 +123,7 @@
                                                                         <li >
 										<a href="enquiry.html">
 											<i class="fa fa-dashboard"></i>
-											<span>Enquiry</span>
+											<span>Inquiry</span>
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
@@ -160,7 +156,7 @@
 											</li>
                                                                                          <li>
 												<a href="delivery_orders_challan_report.html" class="active">
-													Sales Day book
+													Sales Daybook
 												</a>
 											</li>
 											<li>
@@ -204,7 +200,7 @@
 											</li>
                                                                                         <li>
 												<a href="purchaseorder_challanreport.html">
-													Purchase Day Book
+													Purchase Daybook
 												</a>
 											</li>
 										</ul>
@@ -280,17 +276,10 @@
 										<h1 class="pull-left">Sales Day Book</h1>
 										
 										<div class="pull-right top-page-ui">
-                                                                                                           <div class="form-group col-md-4">
-                                                                                    <select class="form-control" id="user_filter" name="user_filter">
-                                                                                                    <option value="" selected="">Fullfilled</option>
-                                                                                                    <option id="warehouse" value="1">Warehouse</option>
-                                                                                                    <option id="direct" value="2">Supplier</option>
-
-                                                                                                    </select> 
-												</div>
+                                                                       
                                                                                     
                                                                                     
-                                                                                    <div class="col-md-4 ">
+                                                                                    <div class="col-md-6 ">
                                                                                             <div class="form-group">
                                                                                         <div class="input-group">
                                                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -300,8 +289,8 @@
                                                                                         </div>
                                                                                  
                                                                                    
-                                                                                    <div class="pull-right col-md-4 ">
-                                                                                    <button type="button" class="btn btn-primary form_button_footer" >Print</button>
+                                                                                    <div class="pull-right col-md-6">
+                                                                                    <button type="button" class="btn btn-primary form_button_footer" onClick="location.href='print_salesdaybook.html'" >Print</button>
                                                                                     <button type="button" class="btn btn-primary form_button_footer" >Export</button>
                                                                                     </div>
 										</div>
@@ -310,7 +299,7 @@
 								</div>
 							</div>
 							<br/>
-            <div id="table_supplier" class="row">				
+            <div id="table1" class="row">				
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
@@ -324,9 +313,8 @@
                                         <th>Serial</th>
                                         <th>Party</th>
                                         <th>Truck Number</th>
-                                        
+                                        <th>Fullfilled By</th>
                                         <th>Order By </th> 
-                                        
                                         <th>Loaded By </th>
                                         <th>Labors </th>
                                         <th>Actual Quantity</th>
@@ -343,17 +331,25 @@
                                         <td>1</td>
                                         <td>16/04/2015</td>
                                         <td>PO/Apr15/04/01/01</td>
-                                        <td>Party Name 1</td>
+                                        <td>Party1</td>
                                         <td>MH 14 BS 3022</td>                                        
-                                        
-                                        <td>Name 1 </td>
+                                        <td>                                    
+                                        <select class="form-control" id="user_filter" name="user_filter">
+                                           
+                                                        <option id="warehouse" value="1">Warehouse</option>
+                                                        <option id="direct" value="2" >Supplier</option>
+
+                                                        </select> 
+                                        </td>
+											
+                                        <td>Name1 </td>
                                      
-                                        <td><a href="#" id="username" data-type="text" data-pk="1" data-title="loadedby" class="editable editable-click"></a></td>
-                                        <td><a href="#" id="labours" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">50</a></td>
+                                        <td><input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby" value="" type="text"></td>
+                                        <td><input id="labours" class="form-control" placeholder="Labours" name="labours" value="" type="text"></td>
                                         <td>50 </td>
                                         <td>500 </td>
-                                        <td ><a href="#" id="bill" data-type="text" data-pk="1" data-title="bill" class="editable editable-click">500</a></td>
-                                        <td><a href="#" id="remarks" data-type="text" data-pk="1" data-title="remarks" class="editable editable-click">Generated</a></td>
+                                        <td><input id="bill" class="form-control" placeholder="Bill" name="bill" value="" type="text"></td>
+                                        <td><input id="rate" class="form-control" placeholder="Remarks" name="remarks" value="" type="text"></td>
                                         
                                         
                                     </tr>
@@ -448,7 +444,7 @@
                 </div>
             </div>
         </div>
-            <div class="row" id="table_direct">                                            					
+            <div class="row" id="table2">                                            					
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
@@ -463,10 +459,9 @@
                                         <th>Serial</th>
                                         <th>Party</th>
                                         <th>Truck Number</th>
-                                       
-                                        <th>OrderBy</th> 
-                                      
-                                        <th>LoadedBy </th>
+                                        <th>Fullfilled By</th>
+                                        <th>Order By</th>
+                                        <th>Loaded By </th>
                                         <th>Labors</th>
                                         <th>Actual Qty</th>
                                         <th>Amount</th>
@@ -488,17 +483,25 @@
                                         <td>PO/Apr15/04/01/01</td>
                                         <td>Party1</td>
                                         <td>MH 14 BS 3022</td>                                        
-                                        
-                                        <td>Name 1 </td>
+                                        <td>                                    
+                                                    <select class="form-control" id="user_filter1" name="user_filter1">
+                                                               
+                                                                   <option id="direct" value="1" >Supplier</option>
+                                                                    <option id="warehouse" value="2">Warehouse</option>
+                                                                  
+
+                                                                    </select> 
+												
+                                        <td>Name1 </td>
                                        
-                                        <td><a href="#" id="username" data-type="text" data-pk="1" data-title="loadedby" class="editable editable-click"></a></td>
-                                        <td><a href="#" id="labours" data-type="text" data-pk="1" data-title="labours" class="editable editable-click">50</a></td>
+                                        <td><input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby" value="" type="text"></td>
+                                        <td><input id="labours" class="form-control" placeholder="Labours" name="labours" value="" type="text"></td>
                                         <td>50 </td>
                                         <td>500 </td>
-                                        <td ><a href="#" id="bill" data-type="text" data-pk="1" data-title="bill" class="editable editable-click">500</a></td>
+                                        <td><input id="bill" class="form-control" placeholder="Bill" name="bill" value="" type="text"></td>
                                         <td>Supplier1</td>
                                         <td>69</td>
-                                        <td><a href="#" id="remarks" data-type="text" data-pk="1" data-title="remarks" class="editable editable-click">Generated</a></td>
+                                        <td><input id="remarks" class="form-control" placeholder="Remarks" name="remarks" value="" type="text"></td>
                                         
                                         
                                     </tr>
@@ -639,35 +642,27 @@
                 });
 
         </script>
-        <script>
-            $(document).ready(function(){
-		//toggle `popup` / `inline` mode
-		$.fn.editable.defaults.mode = 'popup';     
-		
-		//make username editable
-		$('#username').editable();
-		
-		$('#remarks').editable();
-                $('#labours').editable();
-                $('#bill').editable();
-		
-                });
-              
-        </script> 
+    
         	 <script>
             $(document).ready(function(){     
    $('#user_filter').change(function(){
-         if($('#user_filter').val()=='1'){
-           $('#table_supplier').show();
-           $('#table_direct').hide();           
+         if($('#user_filter').val()=='2'){
+           $('#table2').show();
+           $('#table1').hide(); 
+           $('#user_filter').val('1');
+         
         }
     });
 });
+
+    </script>
+    <script>
           $(document).ready(function(){     
-   $('#user_filter').change(function(){
-         if($('#user_filter').val()=='2'){
-            $('#table_direct').show(); 
-            $('#table_supplier').hide();
+   $('#user_filter1').change(function(){
+         if($('#user_filter1').val()=='2'){
+            $('#table1').show(); 
+            $('#table2').hide();
+            $('#user_filter1').val('1');
                       
         }
     });

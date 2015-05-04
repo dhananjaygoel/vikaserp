@@ -362,7 +362,7 @@ h3 .small {
   border-radius: 3px;
   background-clip: padding-box;
   /* stops bg color from leaking outside the border: */
-  min-width: 223px;
+  min-width: 158px;
 }
 
 .dropdown-menu > li > a {
@@ -7941,8 +7941,9 @@ svg {
 @media (max-width: 1000px)
 {
    .supplier{ width:100%}
+   #header-nav{margin-right:0px!important}
 }
-.button_indexright{margin-left:5px}
+.button_indexright{margin-right:15px}
 .input_price input[type="text"]{width:50%}
 .input_price input[type="checkbox"]{margin-left:5px!important}
 .division{padding:0px 6px;margin:6px 15px }
@@ -7973,3 +7974,27 @@ svg {
 .difference_form{margin-top:2px}
 .difference_form .btn-primary{background-color:#2980b9!important}
 .difference_form .btn{padding:3px 5px!important}
+.pending_location{padding-left:0px!important}
+.customerview_table tr{border-top:1px solid #e7ebee;height:50px;font-size:15px}
+.customerview_table tr td{border:none!important}
+.customerview_table tr td span{font-weight:bold;}
+.indexsearch{margin-right:0px!important}
+.action_index{width:15%}
+.tableview_order{width:22%}
+.underline{text-decoration: underline}
+.headingunderline td span{text-decoration: underline}
+.delivery_product {margin-top:23px}
+.shippingcolumn input[type=text]{width:50%}
+.table_deliverchallan tr td{border:none!important}
+.table_deliverchallan tr td span{font-weight: bold;text-decoration: underline}
+#printwrapper{padding-left:0px;margin-left:0px;}
+h1.printwrapper{margin:20px 0px;color:#000}
+.printstamp{font-weight:bold}
+.leftwrapper{margin-left:0px!important}
+.pendingorder{margin-bottom: 15px!important}
+.pendingreport_table{padding-left: 0px!important;margin-left:-8px}
+.pendingreport_table .form-control{padding-left:2px!important;font-size:0.9em}
+#header-nav{margin-right:41px}
+.add1{display:none}
+.add2{display:none}
+.plus2{display: none}

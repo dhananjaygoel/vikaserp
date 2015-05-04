@@ -77,11 +77,7 @@
 								<li><a href="#"><i class="fa fa-power-off"></i>Logout</a></li>
 							</ul>
 						</li>
-						<li class="hidden-xxs">
-							<a class="btn">
-								<i class="fa fa-power-off"></i>
-							</a>
-						</li>
+						
 					</ul>
 				</div>
 				</div>
@@ -95,13 +91,7 @@
 							
 							<div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">	
 								<ul class="nav nav-pills nav-stacked">
-								<!--	<li class="active">
-										<a href="index.html">
-											<i class="fa fa-dashboard"></i>
-											<span>Dashboard</span>
-											<span class="label label-info label-circle pull-right">28</span>
-										</a>
-									</li>-->
+								
                                                                 <li >
 										<a href="users.html">
 											<i class="fa fa-user"></i>
@@ -116,16 +106,22 @@
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
-                                                                        
+                                                                        <li >
+										<a href="pendingcustomers.html">
+											<i class="fa fa-book"></i>
+											<span>Pending customers</span>
+											<span class="label label-info label-circle pull-right"></span>
+										</a>
+									</li>
                                                                         
                                                                         <li >
 										<a href="enquiry.html">
 											<i class="fa fa-dashboard"></i>
-											<span>Enquiry</span>
+											<span>Inquiry</span>
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
-                                                                              <li class="active" >
+                                                                        <li class="active">
 										<a href="#" class="dropdown-toggle">
 											<i class="fa fa-shopping-cart"></i>
 											<span>Order</span>
@@ -144,27 +140,27 @@
 											</li>
                                                                                         <li>
 												<a href="delivery_orders_challan.html">
-													Delivery Order Challan
+													Delivery Challan
 												</a>
 											</li>
                                                                                         <li>
 												<a href="daily_del_orders.html">
-													Daily Delivery Order
+													Pending Delivery Order Report
 												</a>
 											</li>
                                                                                          <li>
 												<a href="delivery_orders_challan_report.html">
-													Delivery Order Challan Report
+													Sales Daybook
 												</a>
 											</li>
 											<li>
-												<a href="pending_orders.html" >
-													Pending Order
+												<a href="pending_orders.html">
+													Pending Order Report
 												</a>
 											</li>
 										</ul>
 									</li>
-                                                                          <li>
+                                                                        <li>
 										<a href="#" class="dropdown-toggle">
 											<i class="fa fa-shopping-cart"></i>
 											<span>Purchase Order</span>
@@ -178,12 +174,12 @@
 											</li>
 											<li>
 												<a href="purchaseorder_advise.html">
-													Purchase Order Advice
+													Purchase Advice
 												</a>
 											</li>
                                                                                         <li>
 												<a href="purchaseorder_challan.html">
-													Purchase Order Challan
+													Purchase Challan
 												</a>
 											</li>
 											<li>
@@ -193,12 +189,12 @@
 											</li>
                                                                                         <li>
 												<a href="purchaseorder_advisereport.html">
-													Purchase Order Advise Report
+													Pending Purchase Advise Report
 												</a>
 											</li>
                                                                                         <li>
 												<a href="purchaseorder_challanreport.html">
-													Purchase Order Challan Report
+													Purchase Daybook
 												</a>
 											</li>
 										</ul>
@@ -278,7 +274,7 @@
 								</div>
 							</div>
 							
-							<div style="opacity: 1;" class="row">
+							<div class="row">
     <div class="col-lg-12">
         <div class="main-box">
             <header class="main-box-header clearfix">
@@ -290,97 +286,159 @@
                      <div class="inquiry_table col-md-12">
                           
                                             <div class="table-responsive">
-                                            <table id="table-example" class="table table-hover  ">
+                                            <table id="table-example" class="table table-hover customerview_table  ">
                                 
                                         
-                                            <tbody>       
-                                                <tr>
+                                            <tbody>   
+                                                  <tr>
+                                            <td><span>Customer Name:</span> Customer1</td>
+                                            <td><span>Contact Person: </span>Lorem Ipsum</td>
+                                    
+                                        </tr>
+                                         <tr>
+                                        <td><span>Mobile Number: </span>9166778822</td>
+                                      <td><span>Credit Period: </span>Lorem Ipsum</td>
+                                        </tr>
+                                             
+                                        <tr>
+                                            <td><span class="underline">Ordered Product Details </span></td>
+                                 
+                                        </tr>
+                                         <tr class="headingunderline">
                                                     <td>
-                                                   Product Category
+                                                    <span>Category </span>
                                                     </td>
-                                                   <td>
-                                                    Sub Product Category
-                                                    </td>
-                                                    <td>
-                                                    Product Name
-                                                    </td>
-                                                       <td>
-                                                 Quantity
-                                                       </td>
-                                                      <td>
-                                                        Unit
+                                                    <td class="tableview_order">
+                                                    <span> Sub Product Category</span>
                                                     </td>
                                                     <td>
-                                                        Delivery Location
-                                                    </td>
-                                                     <td>
-                                                        VAT
+                                                    <span> Product</span>
                                                     </td>
                                                     <td>
-                                                        Price 
+                                                    <span> Qty</span>
+                                                    </td>
+                                                    <td>
+                                                    <span>Unit</span>
+                                                    </td>
+                                                    <td>
+                                                    <span>Delivery Location</span>
+                                                    </td>
+                                                     
+                                                    <td>
+                                                    <span>Price</span>
                                                     </td>
                                                   
                                                 </tr>
+                                        
                                                 <tr>
                                                     <td>
-                                                   Product Category
-                                                    </td>
-                                                   <td>
-                                                    Sub Product Category
+                                                   Lorem
                                                     </td>
                                                     <td>
-                                                    Product Name
-                                                    </td>
-                                                       <td>
-                                                 Quantity
-                                                       </td>
-                                                      <td>
-                                                        Unit
+                                                      Ipsum
                                                     </td>
                                                     <td>
-                                                        Delivery Location
-                                                    </td>
-                                                     <td>
-                                                        VAT
+                                                    Product1
                                                     </td>
                                                     <td>
-                                                        Price 
+                                                   55
+                                                    </td>
+                                                    <td>
+                                                    350
+                                                    </td>
+                                                    <td>
+                                                    Location1
+                                                    </td>
+                                                     
+                                                    <td>
+                                                    650
                                                     </td>
                                                   
                                                 </tr>
-                                                <tr>
+                                                   <tr>
                                                     <td>
-                                                   Product Category
-                                                    </td>
-                                                   <td>
-                                                    Sub Product Category
+                                                   Lorem
                                                     </td>
                                                     <td>
-                                                    Product Name
-                                                    </td>
-                                                       <td>
-                                                 Quantity
-                                                       </td>
-                                                      <td>
-                                                        Unit
+                                                      Ipsum
                                                     </td>
                                                     <td>
-                                                        Delivery Location
-                                                    </td>
-                                                     <td>
-                                                        VAT
+                                                    Product1
                                                     </td>
                                                     <td>
-                                                        Price 
+                                                   55
+                                                    </td>
+                                                    <td>
+                                                    350
+                                                    </td>
+                                                    <td>
+                                                    Location1
+                                                    </td>
+                                                     
+                                                    <td>
+                                                    650
                                                     </td>
                                                   
                                                 </tr>
+                                                   <tr>
+                                                    <td>
+                                                   Lorem
+                                                    </td>
+                                                    <td>
+                                                      Ipsum
+                                                    </td>
+                                                    <td>
+                                                    Product1
+                                                    </td>
+                                                    <td>
+                                                   55
+                                                    </td>
+                                                    <td>
+                                                    350
+                                                    </td>
+                                                    <td>
+                                                    Location1
+                                                    </td>
+                                                     
+                                                    <td>
+                                                    650
+                                                    </td>
+                                                  
+                                                </tr>
+                                                   <tr>
+                                                    <td>
+                                                   Lorem
+                                                    </td>
+                                                    <td>
+                                                      Ipsum
+                                                    </td>
+                                                    <td>
+                                                    Product1
+                                                    </td>
+                                                    <td>
+                                                   55
+                                                    </td>
+                                                    <td>
+                                                    350
+                                                    </td>
+                                                    <td>
+                                                    Location1
+                                                    </td>
+                                                     
+                                                    <td>
+                                                    650
+                                                    </td>
+                                                  
+                                                </tr>
+                                             
+                                              
                                             
+                                         <tr>
+                                        <td><span>Remark: </span>Lorem Ipsum Dollar</td>
+                                    
+                                        </tr>
                                                 
-                                                 
-                                                
-                                                
-                                                
+                                        
                                                 </tbody>
                                                 </table>
                                                 </div>

@@ -77,7 +77,11 @@
 								<li><a href="#"><i class="fa fa-power-off"></i>Logout</a></li>
 							</ul>
 						</li>
-						
+						<li class="hidden-xxs">
+							<a class="btn">
+								<i class="fa fa-power-off"></i>
+							</a>
+						</li>
 					</ul>
 				</div>
 				</div>
@@ -117,7 +121,7 @@
                                                                         <li >
 										<a href="enquiry.html">
 											<i class="fa fa-dashboard"></i>
-											<span>Inquiry</span>
+											<span>Enquiry</span>
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
@@ -150,7 +154,7 @@
 											</li>
                                                                                          <li>
 												<a href="delivery_orders_challan_report.html">
-													Sales Daybook
+													Sales Day book
 												</a>
 											</li>
 											<li>
@@ -194,7 +198,7 @@
 											</li>
                                                                                         <li>
 												<a href="purchaseorder_challanreport.html">
-													Purchase Daybook
+													Purchase Day Book
 												</a>
 											</li>
 										</ul>
@@ -266,247 +270,148 @@
 										<li class="active"><span>Delivery challan</span></li>
 									</ol>
 									
-									<div class="clearfix">
-										<h1 class="pull-left">Delivery challan</h1>
-										
-										<div class="pull-right top-page-ui">
-											
-										</div>
-									</div>
+									
 								</div>
 							</div>
-							
-							<div class="row">
-            <div class="col-lg-12">
-                <div class="main-box clearfix">
-                    <div class="main-box-body main_contents clearfix">
-                        
-                        <div class="table-responsive">
-                                                        <table id="table-example" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center col-md-1">#</th>
-                                        <th class="text-center col-md-2">Party Name</th>
-                                        <th class="text-center col-md-2">Serial Number</th>
-                                        <th class="text-center col-md-2">Total Quantity</th>
-                                        <th class="text-center  col-md-1">Rate</th> 
-                                     
-                                        <th class="text-center  col-md-3">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>                    
+                                                    					
+							<div  class="row">
+    <div class="col-lg-12">
+        <div class="main-box">
+            <header class="main-box-header clearfix">
+                <h2><i class="fa fa-user"></i> &nbsp; Edit Delivery challan</h2>
+            </header>            
 
-
-                                        <tr>
-                                        <td class="text-center">1</td>
-                                        <td class="text-center">Party1</td>
-                                        <td class="text-center">PO/Apr15/04/01/01</td>                                        
-                                        <td class="text-center">600</td>
-                                      
-                                       <td class="text-center"><input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text"></td>
-                                       			
-                                      
-                                        <td class="text-center">
-                                           <a href="view_deliverychallan.html" class="table-link" title="view">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                           
-                                            <a href="edit_deliverychallan.html" class="table-link" title="edit">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                           
-                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#myModal1">
-                                                <span class="fa-stack">
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-print fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            
-                                               <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal" title="delete">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            
-                                        </td>
-                                        
-                                    </tr>
-                                     <tr>
-                                        <td class="text-center">2</td>
-                                        <td class="text-center">Party2</td>
-                                        <td class="text-center">PO/Apr15/04/01/01</td>                                        
-                                        <td class="text-center">500</td>
-                                      
-                                         <td class="text-center"><input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text"></td>
-                                      
-                                        <td class="text-center">
-                                            <a href="view_deliverychallan.html" class="table-link" title="view">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a> 
-                                            <a href="edit_deliverychallan.html" class="table-link" title="edit">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            
-                                           
-                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#myModal1">
-                                                <span class="fa-stack">
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-print fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                             <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal" title="delete">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                              
-                                            
-                                        </td>
-                                        
-                                    </tr>
-                                          
-                                    
-                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                            <h4 class="modal-title" id="myModalLabel"></h4>
-                                            </div>
-                                    
-                                                
-                                                
-                                     <div class="modal-body">
-                                         <p>Are you sure you want to cancel order</p>
-                                        
-                                         
-                                    </div>           
-                                    <div class="modal-footer">
-                                    
-                                    <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
-                                    </div>
-                                    </div>
-                                    </div>
-                                    </div>    
-                                
-                                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                            <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                            <h4 class="modal-title" id="myModalLabel"></h4>
-                                            </div>
-                                    
-                                                
-                                                
-                                     <div class="modal-body">
-                                         <form method="POST" action="" accept-charset="UTF-8" >
-                
-                    <div class="form-group">
-                    <label for="vehicle_name">Discount</label>
-                    <input id="vehicle_name" class="form-control" placeholder="Discount" name="Discount" value="" type="text">
-                </div>
-                <div class="form-group">
-                    <label for="driver_name">Freight</label>
-                    <input id="driver_name" class="form-control" placeholder="Freight " name="Freight" value="" type="text">
-                </div>
-                    <div class="form-group">
-                    <label for="driver_contact">Loading</label>
-                    <input id="driver_contact" class="form-control" placeholder="loading" name="loading" value="" type="text">
-                </div>
-                  
-                                                                          <div class="form-group">
-                    <label for="loadedby">Loaded By</label>
-                    <input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby" value="" type="text">
-                </div>
-                                                                          <div class="form-group">
-                    <label for="labour">Labour</label>
-                    <input id="labour" class="form-control" placeholder="Labour" name="labour" value="" type="text">
-                </div>
-                                                                          <div class="form-group">
-                    <label for="billno">Bill Number</label>
-                    <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="text">
-                </div>
-                                            
-                 
-                                             <div class="form-group">
-                  
-                    <input id="includevat" type="checkbox" name="Include VAT" value="includevat">Include VAT
-                </div>
-                                             <div id="vatdetails" style="display:none">                     
-                                             <div class="form-group">
-                    <label for="driver_contact">VAT Percentage</label>
-                    <input id="driver_contact" class="form-control" placeholder="VAT Percentage" name="VAT Percentage" value="" type="text">
-                </div>
-                                             <div class="form-group">
-                    <label for="driver_contact">VAT</label>
-                    <input id="driver_contact" class="form-control" placeholder="VAT" name="VAT" value="" type="text">
-                </div>
-                   
-                                             </div>                     
-                     
-                          
-                 <div class="row print_time pull-right"> 
-                     <div class="col-md-12"> Print By <br> 05:00 PM</div> 
-                 </div>
-                                             <div class="clearfix"></div>
+            <div class="main-box-body clearfix">
                 <hr>
-                <div >
-                    <button type="button" class="btn btn-primary form_button_footer" >Generate Challan</button>
-                    <button type="button" class="btn btn-primary form_button_footer" >Send Message</button>
-                    <a href="delivery_orders_challan.html" class="btn btn-default form_button_footer">Cancel</a>
+                                                
+                <form method="POST" action="" accept-charset="UTF-8" >
+               
+                    <div class="form-group">
+                        <label><b>Party Name</b></label>
+                    
+                </div>
+                    <div class="form-group">
+                        <label><b>Serial Number</b></label>
+                    
+                </div>
+                 <div class="table-responsive">
+                                            <table id="table-example" class="table table_deliverchallan">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><span>Quantity</span></td>
+                                                        <td><span>Unit</span></td>
+                                                        <td><span>Rate</span></td>
+                                                        <td><span>Present Shipping</span></td>
+                                                    </tr>
+                                                     <tr>
+                                                         <td>
+                                                              <div class="form-group">
+          
+                    <input id="qty" class="form-control" placeholder="Quantity" name="qty" value="" type="text">
+                </div>
+                                                         </td>
+                                                        <td> <div class="form-group">
+                 
+                    <input id="unit" class="form-control" placeholder="Unit" name="unit" value="" type="text">
+                </div></td>
+                                                        <td>   <div class="form-group">
+                   
+                    <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
+                </div></td>
+                                                        <td>  <div class="form-group">
+                  
+                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
+                </div></td>
+                                                    </tr>
+                                                   <tr>
+                                                         <td>
+                                                              <div class="form-group">
+          
+                    <input id="qty" class="form-control" placeholder="Quantity" name="qty" value="" type="text">
+                </div>
+                                                         </td>
+                                                        <td> <div class="form-group">
+                 
+                    <input id="unit" class="form-control" placeholder="Unit" name="unit" value="" type="text">
+                </div></td>
+                                                        <td>   <div class="form-group">
+                   
+                    <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
+                </div></td>
+                                                        <td>  <div class="form-group">
+                  
+                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
+                </div></td>
+                                                    </tr>
+                                                   
+                                                    <tr>
+                                                         <td>
+                                                              <div class="form-group">
+          
+                    <input id="qty" class="form-control" placeholder="Quantity" name="qty" value="" type="text">
+                </div>
+                                                         </td>
+                                                        <td> <div class="form-group">
+                 
+                    <input id="unit" class="form-control" placeholder="Unit" name="unit" value="" type="text">
+                </div></td>
+                                                        <td>   <div class="form-group">
+                   
+                    <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
+                </div></td>
+                                                        <td>  <div class="form-group">
+                  
+                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
+                </div></td>
+                                                    </tr>
+                                                   
+                                                    <tr>
+                                                         <td>
+                                                              <div class="form-group">
+          
+                    <input id="qty" class="form-control" placeholder="Quantity" name="qty" value="" type="text">
+                </div>
+                                                         </td>
+                                                        <td> <div class="form-group">
+                 
+                    <input id="unit" class="form-control" placeholder="Unit" name="unit" value="" type="text">
+                </div></td>
+                                                        <td>   <div class="form-group">
+                   
+                    <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
+                </div></td>
+                                                        <td>  <div class="form-group">
+                  
+                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
+                </div></td>
+                                                    </tr>
+                                                   
+                                                    
+                                                </tbody>
+                                            </table>
+                 </div>
+                
+                 
+                  
+                                    
+               
+                
+                <hr>
+                 
+                      <div>
+                    <button type="button" class="btn btn-primary" >Submit</button>
+                
                 </div>
                 
                 <div class="clearfix"></div>
                 </form>
-                                        
-                                         
-                                    </div>           
-                                <!--    <div class="modal-footer">
-                                    
-                                    <button type="button" class="btn btn-primary">No</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
-                                    </div>-->
-                                    </div>
-                                    </div>
-                                    </div> 
-                                                                        
-                                                                    </tbody>
-                            </table>
-
-                            <span class="pull-right">
-                                <ul class="pagination pull-right">
-												<li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-												<li><a href="#">1</a></li>
-												<li><a href="#">2</a></li>
-												<li><a href="#">3</a></li>
-												<li><a href="#">4</a></li>
-												<li><a href="#">5</a></li>
-												<li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
-											</ul>
-                  
-                            </span>
-
-                                                    </div>
-                    </div>
-                </div>
+                <div class="clearfix"></div>
             </div>
         </div>
+    </div>
+</div>
+	
+			
 						
 						</div>
 					</div>
