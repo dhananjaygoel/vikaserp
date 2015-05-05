@@ -269,13 +269,13 @@
 								<div class="col-lg-12">
 									<ol class="breadcrumb">
 										<li><a href="#">Home</a></li>
-										<li class="active"><span>Sales Day Book</span></li>
+										<li class="active"><span>Sales Daybook</span></li>
 									</ol>
 									
 									<div class="clearfix">
-										<h1 class="pull-left">Sales Day Book</h1>
+										<h1 class="pull-left col-md-8">Sales Daybook</h1>
 										
-										<div class="pull-right top-page-ui">
+										<div class="pull-right top-page-ui col-md-4">
                                                                        
                                                                                     
                                                                                     
@@ -319,7 +319,7 @@
                                         <th>Labors </th>
                                         <th>Actual Quantity</th>
                                         <th>Amount </th>
-                                        <th>Bill</th> 
+                                        <th>Bill Number</th> 
                                         <th>Remarks </th> 
                                         
                                     </tr>
@@ -329,17 +329,12 @@
 
                                         <tr>
                                         <td>1</td>
-                                        <td>16/04/2015</td>
+                                        <td>16 April,2015</td>
                                         <td>PO/Apr15/04/01/01</td>
                                         <td>Party1</td>
                                         <td>MH 14 BS 3022</td>                                        
                                         <td>                                    
-                                        <select class="form-control" id="user_filter" name="user_filter">
-                                           
-                                                        <option id="warehouse" value="1">Warehouse</option>
-                                                        <option id="direct" value="2" >Supplier</option>
-
-                                                        </select> 
+                                        Warehouse
                                         </td>
 											
                                         <td>Name1 </td>
@@ -348,164 +343,75 @@
                                         <td><input id="labours" class="form-control" placeholder="Labours" name="labours" value="" type="text"></td>
                                         <td>50 </td>
                                         <td>500 </td>
-                                        <td><input id="bill" class="form-control" placeholder="Bill" name="bill" value="" type="text"></td>
+                                        <td></td>
                                         <td><input id="rate" class="form-control" placeholder="Remarks" name="remarks" value="" type="text"></td>
                                         
                                         
                                     </tr>
                                          
-                                    
-                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                            <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                            <h4 class="modal-title" id="myModalLabel"></h4>
-                                            </div>
-                                    
-                                                
-                                                
-                                     <div class="modal-body">
-                                         <p>Are you sure you want to cancel order</p>
-                                        
-                                         
-                                    </div>           
-                                    <div class="modal-footer">
-                                    
-                                    <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
-                                    </div>
-                                    </div>
-                                    </div>
-                                    </div>    
-                                
-                                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                            <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                            <h4 class="modal-title" id="myModalLabel"></h4>
-                                            </div>
-                                    
-                                                
-                                                
-                                     <div class="modal-body">
-                                         <form method="POST" action="" accept-charset="UTF-8" >
-                
-                    <div class="form-group">
-                    <label for="vehicle_name">Vehicle Name</label>
-                    <input id="vehicle_name" class="form-control" placeholder="Vehicle Name" name="vehicle_name" value="" type="text">
-                </div>
-                <div class="form-group">
-                    <label for="driver_name">Driver Name</label>
-                    <input id="driver_name" class="form-control" placeholder="Driver Name " name="driver_name" value="" type="text">
-                </div>
-                    <div class="form-group">
-                    <label for="driver_contact">Driver Contact</label>
-                    <input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="" type="text">
-                </div>
-                
-                
-                <hr>
-                <div >
-                    <button type="button" class="btn btn-primary form_button_footer" >Print</button>
-                    
-                    <a href="orders.html" class="btn btn-default form_button_footer">Cancel</a>
-                </div>
-                
-                <div class="clearfix"></div>
-                </form>
-                                        
-                                         
-                                    </div>           
-                            
-                                    </div>
-                                    </div>
-                                    </div> 
-                                                                        
-                                                                    </tbody>
-                            </table>
-
-                            <span class="pull-right">
-                                <ul class="pagination pull-right">
-												<li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-												<li><a href="#">1</a></li>
-												<li><a href="#">2</a></li>
-												<li><a href="#">3</a></li>
-												<li><a href="#">4</a></li>
-												<li><a href="#">5</a></li>
-												<li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
-											</ul>
-                  
-                            </span>
-
-                                                    </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-            <div class="row" id="table2">                                            					
-            <div class="col-lg-12">
-                <div class="main-box clearfix">
-                    <div class="main-box-body main_contents clearfix">
-                        
-                        <div class="table-responsive">
-                                                        <table id="table-example" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                       
-                                        <th>Date</th>
-                                        <th>Serial</th>
-                                        <th>Party</th>
-                                        <th>Truck Number</th>
-                                        <th>Fullfilled By</th>
-                                        <th>Order By</th>
-                                        <th>Loaded By </th>
-                                        <th>Labors</th>
-                                        <th>Actual Qty</th>
-                                        <th>Amount</th>
-                                        <th>Bill</th>
-                                        <th>Supplier</th>
-                                        <th>Bill Number</th>
-                                        
-                                        <th>Remarks </th> 
-                                        
-                                    </tr>
-                                </thead>
-                                <tbody>                    
-
-
                                         <tr>
-                                        <td>1</td>
-                                        
-                                        <td>16/04/2015</td>
+                                        <td>2</td>
+                                        <td>19 April,2015</td>
                                         <td>PO/Apr15/04/01/01</td>
-                                        <td>Party1</td>
+                                        <td>Party2</td>
                                         <td>MH 14 BS 3022</td>                                        
                                         <td>                                    
-                                                    <select class="form-control" id="user_filter1" name="user_filter1">
-                                                               
-                                                                   <option id="direct" value="1" >Supplier</option>
-                                                                    <option id="warehouse" value="2">Warehouse</option>
-                                                                  
-
-                                                                    </select> 
-												
+                                        Supplier
+                                        </td>
+											
                                         <td>Name1 </td>
-                                       
+                                     
                                         <td><input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby" value="" type="text"></td>
                                         <td><input id="labours" class="form-control" placeholder="Labours" name="labours" value="" type="text"></td>
                                         <td>50 </td>
                                         <td>500 </td>
-                                        <td><input id="bill" class="form-control" placeholder="Bill" name="bill" value="" type="text"></td>
-                                        <td>Supplier1</td>
-                                        <td>69</td>
-                                        <td><input id="remarks" class="form-control" placeholder="Remarks" name="remarks" value="" type="text"></td>
+                                        <td>Pune 01</td>
+                                        <td><input id="rate" class="form-control" placeholder="Remarks" name="remarks" value="" type="text"></td>
                                         
                                         
                                     </tr>
-                                         
+                                      <tr>
+                                        <td>3</td>
+                                        <td>21 April,2015</td>
+                                        <td>PO/Apr15/04/01/01</td>
+                                        <td>Party3</td>
+                                        <td>MH 14 BS 3022</td>                                        
+                                        <td>                                    
+                                        Warehouse
+                                        </td>
+											
+                                        <td>Name1 </td>
+                                     
+                                        <td><input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby" value="" type="text"></td>
+                                        <td><input id="labours" class="form-control" placeholder="Labours" name="labours" value="" type="text"></td>
+                                        <td>50 </td>
+                                        <td>500 </td>
+                                        <td></td>
+                                        <td><input id="rate" class="form-control" placeholder="Remarks" name="remarks" value="" type="text"></td>
+                                        
+                                        
+                                    </tr>
+                                      <tr>
+                                        <td>4</td>
+                                        <td>25 April,2015</td>
+                                        <td>PO/Apr15/04/01/01</td>
+                                        <td>Party4</td>
+                                        <td>MH 14 BS 3022</td>                                        
+                                        <td>                                    
+                                        Supplier
+                                        </td>
+											
+                                        <td>Name1 </td>
+                                     
+                                        <td><input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby" value="" type="text"></td>
+                                        <td><input id="labours" class="form-control" placeholder="Labours" name="labours" value="" type="text"></td>
+                                        <td>50 </td>
+                                        <td>500 </td>
+                                        <td>Mum 01</td>
+                                        <td><input id="rate" class="form-control" placeholder="Remarks" name="remarks" value="" type="text"></td>
+                                        
+                                        
+                                    </tr>
                                     
                                         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -596,6 +502,7 @@
                 </div>
             </div>
         </div>
+       
 						
 						</div>
 					</div>
@@ -643,35 +550,7 @@
 
         </script>
     
-        	 <script>
-            $(document).ready(function(){     
-   $('#user_filter').change(function(){
-         if($('#user_filter').val()=='2'){
-           $('#table2').show();
-           $('#table1').hide(); 
-           $('#user_filter').val('1');
-         
-        }
-    });
-});
-
-    </script>
-    <script>
-          $(document).ready(function(){     
-   $('#user_filter1').change(function(){
-         if($('#user_filter1').val()=='2'){
-            $('#table1').show(); 
-            $('#table2').hide();
-            $('#user_filter1').val('1');
-                      
-        }
-    });
-});
-
-
-
-        </script>
- 
+        	
                 
         </body>
 </html>

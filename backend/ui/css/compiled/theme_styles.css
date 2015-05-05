@@ -1998,10 +1998,10 @@ blockquote.pull-right:before {
   border-top: 1px solid #e7ebee;
   padding: 12px 8px;
 }
-.table tbody > tr > td:first-child {
+/*.table tbody > tr > td:first-child {
   font-size: 1em;
   font-weight: 300;
-}
+}*/
 .table tbody > tr td .call-type {
   display: block;
   font-size: 0.75em;
@@ -8008,3 +8008,5 @@ h1.printwrapper{margin:20px 0px;color:#000}
 .plus2{display: none}
 .dashboardwrapper{min-height:800px!important}
 .serial{margin-left:-8px}
+.table{margin-bottom: 6px!important}
+.widthtable{width:20%}
