@@ -213,11 +213,7 @@
 								<li><a href="#"><i class="fa fa-power-off"></i>Logout</a></li>
 							</ul>
 						</li>
-						<li class="hidden-xxs">
-							<a class="btn">
-								<i class="fa fa-power-off"></i>
-							</a>
-						</li>
+						
 					</ul>
 				</div>
 				</div>
@@ -231,13 +227,7 @@
 							
 							<div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">	
 								<ul class="nav nav-pills nav-stacked">
-								<!--	<li class="active">
-										<a href="index.html">
-											<i class="fa fa-dashboard"></i>
-											<span>Dashboard</span>
-											<span class="label label-info label-circle pull-right">28</span>
-										</a>
-									</li>-->
+								
                                                                 <li >
 										<a href="users.html">
 											<i class="fa fa-user"></i>
@@ -263,7 +253,7 @@
                                                                         <li >
 										<a href="enquiry.html">
 											<i class="fa fa-dashboard"></i>
-											<span>Enquiry</span>
+											<span>Inquiry</span>
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
@@ -296,7 +286,7 @@
 											</li>
                                                                                          <li>
 												<a href="delivery_orders_challan_report.html" class="active">
-													Sales Day book
+													Sales Daybook
 												</a>
 											</li>
 											<li>
@@ -340,7 +330,7 @@
 											</li>
                                                                                         <li>
 												<a href="purchaseorder_challanreport.html">
-													Purchase Day Book
+													Purchase Daybook
 												</a>
 											</li>
 										</ul>
@@ -420,11 +410,11 @@
 								</div>
 							</div>
 							
-							<div style="opacity: 1;" class="row">
+							<div  class="row">
     <div class="col-lg-12">
         <div class="main-box">
             <header class="main-box-header clearfix">
-                <h2><i class="fa fa-dashboard"></i> &nbsp; Place Order Details</h2>
+                <h2><i class="fa fa-dashboard"></i> &nbsp; Place Order </h2>
             </header>            
 
             <div class="main-box-body clearfix">
@@ -475,7 +465,17 @@
                                             <table id="table-example" class="table table-hover  ">
                                 
                                         
-                                            <tbody>       
+                                            <tbody>   
+                                                   <tr class="headingunderline">
+                                                    <td><span>Select Category</span></td>
+                                                     <td><span>Select Sub Category</span></td>
+                                                      <td><span>Select Product</span></td>
+                                                       <td><span>Quantity</span></td>
+                                                        <td><span>Unit</span></td> 
+                                                        <td><span>Price</span></td>
+                                                        <td><span>Remark</span></td>
+                                                        
+                                                </tr>
                                                 <tr>
                                                     <td class="col-md-2">
                                                          <div class="form-group ">
@@ -514,7 +514,7 @@
               
                     </div>
                                                     </td>
-                                                      <td class="col-md-2">
+                                                      <td class="col-md-1">
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
                        <option value="" selected="">Unit</option>
@@ -524,11 +524,24 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                      <td class="col-md-3">
+                                                         <td class="col-md-2">
+                                                          <div class="row">
+                                            <div class="form-group col-md-6">
+                                           <input type="text" class="form-control" value="price" id="price">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-6 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                                    </td>
+                                                      <td class="col-md-2">
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
                                                           </div>
                                                     </td>
+                                                    
                                                     
                                                 </tr>
                                                  <tr>
@@ -569,7 +582,7 @@
               
                     </div>
                                                     </td>
-                                                      <td class="col-md-2">
+                                                      <td class="col-md-1">
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
                        <option value="" selected="">Unit</option>
@@ -579,11 +592,24 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                      <td class="col-md-3">
+                                                         <td class="col-md-2">
+                                                          <div class="row">
+                                            <div class="form-group col-md-6">
+                                           <input type="text" class="form-control" value="price" id="price">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-6 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                                    </td>
+                                                      <td class="col-md-2">
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
                                                           </div>
                                                     </td>
+                                                    
                                                     
                                                 </tr>
                                                  <tr>
@@ -624,7 +650,7 @@
               
                     </div>
                                                     </td>
-                                                      <td class="col-md-2">
+                                                       <td class="col-md-1">
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
                        <option value="" selected="">Unit</option>
@@ -634,11 +660,24 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                      <td class="col-md-3">
+                                                         <td class="col-md-2">
+                                                          <div class="row">
+                                            <div class="form-group col-md-6">
+                                           <input type="text" class="form-control" value="price" id="price">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-6 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                                    </td>
+                                                      <td class="col-md-2">
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
                                                           </div>
                                                     </td>
+                                                    
                                                     
                                                 </tr>
                                                  <tr>
@@ -679,7 +718,7 @@
               
                     </div>
                                                     </td>
-                                                      <td class="col-md-2">
+                                                       <td class="col-md-1">
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
                        <option value="" selected="">Unit</option>
@@ -689,11 +728,24 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                      <td class="col-md-3">
+                                                         <td class="col-md-2">
+                                                          <div class="row">
+                                            <div class="form-group col-md-6">
+                                           <input type="text" class="form-control" value="price" id="price">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-6 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                                    </td>
+                                                      <td class="col-md-2">
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
                                                           </div>
                                                     </td>
+                                                    
                                                     
                                                 </tr>
                                                  <tr>
@@ -734,7 +786,7 @@
               
                     </div>
                                                     </td>
-                                                      <td class="col-md-2">
+                                                       <td class="col-md-1">
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
                        <option value="" selected="">Unit</option>
@@ -744,11 +796,24 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                      <td class="col-md-3">
+                                                         <td class="col-md-2">
+                                                          <div class="row">
+                                            <div class="form-group col-md-6">
+                                           <input type="text" class="form-control" value="price" id="price">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-6 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                                    </td>
+                                                      <td class="col-md-2">
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
                                                           </div>
                                                     </td>
+                                                    
                                                     
                                                 </tr>
                                                     <tr class="row5">
@@ -811,7 +876,7 @@
               
                     </div>
                                                     </td>
-                                                      <td class="col-md-2">
+                                                      <td class="col-md-1">
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
                        <option value="" selected="">Unit</option>
@@ -821,11 +886,24 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                      <td class="col-md-3">
+                                                         <td class="col-md-2">
+                                                          <div class="row">
+                                            <div class="form-group col-md-6">
+                                           <input type="text" class="form-control" value="price" id="price">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-6 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                                    </td>
+                                                      <td class="col-md-2">
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
                                                           </div>
                                                     </td>
+                                                    
                                                     
                                                 </tr>
                                                 <tr class="row7">
@@ -888,7 +966,7 @@
               
                     </div>
                                                     </td>
-                                                      <td class="col-md-2">
+                                                      <td class="col-md-1">
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
                        <option value="" selected="">Unit</option>
@@ -898,11 +976,24 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                      <td class="col-md-3">
+                                                         <td class="col-md-2">
+                                                          <div class="row">
+                                            <div class="form-group col-md-6">
+                                           <input type="text" class="form-control" value="price" id="price">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-6 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                                    </td>
+                                                      <td class="col-md-2">
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
                                                           </div>
                                                     </td>
+                                                    
                                                     
                                                 </tr>
                                                 <tr class="row9">
@@ -965,7 +1056,7 @@
               
                     </div>
                                                     </td>
-                                                      <td class="col-md-2">
+                                                      <td class="col-md-1">
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
                        <option value="" selected="">Unit</option>
@@ -975,7 +1066,19 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                      <td class="col-md-3">
+                                                         <td class="col-md-2">
+                                                          <div class="row">
+                                            <div class="form-group col-md-6">
+                                           <input type="text" class="form-control" value="price" id="price">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-6 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                                    </td>
+                                                      <td class="col-md-2">
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
                                                           </div>
@@ -1042,7 +1145,7 @@
               
                     </div>
                                                     </td>
-                                                      <td class="col-md-2">
+                                                       <td class="col-md-1">
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
                        <option value="" selected="">Unit</option>
@@ -1052,7 +1155,19 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                      <td class="col-md-3">
+                                                         <td class="col-md-2">
+                                                          <div class="row">
+                                            <div class="form-group col-md-6">
+                                           <input type="text" class="form-control" value="price" id="price">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-6 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                                    </td>
+                                                      <td class="col-md-2">
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
                                                           </div>
@@ -1136,7 +1251,7 @@
                  <div >
                     <button type="button" class="btn btn-primary form_button_footer" >SMS</button>
                     
-                    <a href="purchaseadvise_button.html" class="btn btn-primary form_button_footer">Create Purchase Advise</a>
+                   
                 </div>
                                     
               

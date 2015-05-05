@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>Create Purchase Orders - Vikas Associate Order Automation System</title>
+	<title>Purchase Orders - Vikas Associate Order Automation System</title>
 	
 	<!-- bootstrap -->
 	<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css" />
@@ -91,7 +91,7 @@
 							
 							<div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">	
 								<ul class="nav nav-pills nav-stacked">
-								
+							
                                                                 <li >
 										<a href="users.html">
 											<i class="fa fa-user"></i>
@@ -121,7 +121,7 @@
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
-                                                                        <li>
+                                                                        <li >
 										<a href="#" class="dropdown-toggle">
 											<i class="fa fa-shopping-cart"></i>
 											<span>Order</span>
@@ -129,7 +129,7 @@
 										</a>
 										<ul class="submenu">
 											<li>
-												<a href="orders.html" class="active">
+												<a href="orders.html">
 													Order
 												</a>
 											</li>
@@ -139,12 +139,12 @@
 												</a>
 											</li>
                                                                                         <li>
-												<a href="delivery_orders_challan.html">
+												<a href="delivery_orders_challan.html"  >
 													Delivery Challan
 												</a>
 											</li>
                                                                                         <li>
-												<a href="daily_del_orders.html">
+												<a href="daily_del_orders.html" >
 													Pending Delivery Order Report
 												</a>
 											</li>
@@ -154,7 +154,7 @@
 												</a>
 											</li>
 											<li>
-												<a href="pending_orders.html">
+												<a href="pending_orders.html" class="active">
 													Pending Order Report
 												</a>
 											</li>
@@ -168,7 +168,7 @@
 										</a>
 										<ul class="submenu">
 											<li>
-												<a href="purchaseorders.html" class="active">
+												<a href="purchaseorders.html" >
 													Purchase Order
 												</a>
 											</li>
@@ -182,8 +182,8 @@
 													Purchase Challan
 												</a>
 											</li>
-											<li>
-												<a href="purchaseorder_report.html">
+											<li class="active">
+												<a href="purchaseorder_report.html" >
 													Purchase Order Report
 												</a>
 											</li>
@@ -263,168 +263,222 @@
 								<div class="col-lg-12">
 									<ol class="breadcrumb">
 										<li><a href="#">Home</a></li>
-										<li class="active"><span>Create Purchase Advice </span></li>
+										<li class="active"><span>Purchase Order </span></li>
 									</ol>
 									
 									<div class="clearfix">
 										<h1 class="pull-left"></h1>
-										
+										<div class="pull-right top-page-ui">
+											<a href="edit_purchaseorderreport.html" class="btn btn-primary pull-right">
+												Edit Purchase Order
+											</a>
+										</div>
 										
 									</div>
 								</div>
 							</div>
-							
+                                                    <br>
 							<div class="row">
     <div class="col-lg-12">
         <div class="main-box">
             <header class="main-box-header clearfix">
-                <h2><i class="fa fa-dashboard"></i> &nbsp; Create Purchase Advice </h2>
+                <h2><i class="fa fa-dashboard"></i> &nbsp; View Purchase Order </h2>
             </header>            
 
             <div class="main-box-body clearfix">
-                    <form method="POST" action="" accept-charset="UTF-8" >
+                 
                      <div class="inquiry_table col-md-12">
                           
                                             <div class="table-responsive">
-                                            <table id="table-example" class="table table-hover  ">
+                                            <table id="table-example" class="table table-hover customerview_table  ">
                                 
                                         
-                                                <tbody>
-                                                    <tr><td><b>Customer Name:</b> Customer1</td></tr>
-                                                    <tr><td><b>Mobile:</b> 9188556655</td></tr>
-                                                    <tr><td><b>Delivery Location:</b> Location1</td> </tr>
-                                                </tbody>
-                                            </table>
-                                                <table id="table-example" class="table table-hover  ">
-                                
-                                        
-                                            <tbody>       
-                                                <tr>
-                                                    <td class="col-md-2">
-                                                   Product Name
-                                                    </td>
-                                                   <td class="col-md-2">
-                                                    Quantity
-                                                    </td>
-                                                    <td class="col-md-2">
-                                                    Unit
-                                                    </td>
-                                                       <td class="col-md-2">
-                                                 Pending Order
-                                                       </td>
-                                                      <td class="col-md-2">
-                                                        <div class="form-group pshipping">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text">
-                                                        </div>
-                                                    </td>
-                                                     
-                                                    
-                                                </tr>
+                                            <tbody>   
                                              <tr>
-                                                    <td class="col-md-2">
-                                                   Product Name
+                                            <td><span>Order Number:</span> Pune01</td>
+                                           
+                                    
+                                        </tr>
+                                              <tr>   <td><span>Date: </span> 05 May,2015</td></tr>  
+                                      <tr>
+                                            <td><span>Customer Name:</span> Customer1</td>
+                                            
+                                    
+                                        </tr>
+                                        <tr><td><span>Contact Person: </span>Lorem Ipsum</td></tr>
+                                         <tr>
+                                        <td><span>Mobile Number: </span>9166778822</td>
+                                     
+                                        </tr>
+                                        
+                                        <tr>
+                                           
+                                            <td><span>Order By:</span> Lorem Ipsum</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="underline">Ordered Product Details </span></td>
+                                            
+                                        </tr>
+                                            </tbody>
+                                            </table>
+                                                   <table id="table-example" class="table table-hover customerview_table  ">
+                                
+                                        
+                                            <tbody> 
+                                         <tr class="headingunderline">
+                                                    <td>
+                                                    <span>Category </span>
                                                     </td>
-                                                   <td class="col-md-2">
-                                                    Quantity
+                                                    <td class="tableview_order">
+                                                    <span> Sub Product Category</span>
                                                     </td>
-                                                    <td class="col-md-2">
-                                                    Unit
+                                                    <td>
+                                                    <span> Product</span>
                                                     </td>
-                                                       <td class="col-md-2">
-                                                 Pending Order
-                                                       </td>
-                                                        <td class="col-md-2">
-                                                        <div class="form-group pshipping">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
+                                                    <td>
+                                                    <span> Qty</span>
                                                     </td>
+                                                    <td>
+                                                    <span>Unit</span>
+                                                    </td>
+                                                    
                                                      
-                                                    
+                                                    <td>
+                                                    <span>Price</span>
+                                                    </td>
+                                                    <td class="widthtable">
+                                                    <span>Remark</span>
+                                                    </td>
+                                                  
                                                 </tr>
-                                                 <tr>
-                                                    <td class="col-md-2">
-                                                   Product Name
+                                        
+                                                <tr>
+                                                    <td>
+                                                   Lorem
                                                     </td>
-                                                   <td class="col-md-2">
-                                                    Quantity
+                                                    <td>
+                                                      Ipsum
                                                     </td>
-                                                    <td class="col-md-2">
-                                                    Unit
+                                                    <td>
+                                                    Product1
                                                     </td>
-                                                       <td class="col-md-2">
-                                                 Pending Order
-                                                       </td>
-                                                     <td class="col-md-2">
-                                                        <div class="form-group pshipping">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
+                                                    <td>
+                                                   55
                                                     </td>
-                                                    
-                                                </tr>
-                                                 <tr>
-                                                    <td class="col-md-2">
-                                                   Product Name
+                                                    <td>
+                                                    350
                                                     </td>
-                                                   <td class="col-md-2">
-                                                    Quantity
-                                                    </td>
-                                                    <td class="col-md-2">
-                                                    Unit
-                                                    </td>
-                                                       <td class="col-md-2">
-                                                 Pending Order
-                                                       </td>
-                                                      <td class="col-md-2">
-                                                        <div class="form-group pshipping">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
-                                                    </td>
+                                                   
                                                      
-                                                    
+                                                    <td>
+                                                    650
+                                                    </td>
+                                                     <td>
+                                                    Lorem
+                                                    </td>
+                                                  
                                                 </tr>
-                                                 <tr>
-                                                    <td class="col-md-2">
-                                                   Product Name
+                                                   <tr>
+                                                    <td>
+                                                   Lorem
                                                     </td>
-                                                   <td class="col-md-2">
-                                                    Quantity
+                                                    <td>
+                                                      Ipsum
                                                     </td>
-                                                    <td class="col-md-2">
-                                                    Unit
+                                                    <td>
+                                                    Product1
                                                     </td>
-                                                       <td class="col-md-2">
-                                                 Pending Order
-                                                       </td>
-                                                     <td class="col-md-2">
-                                                        <div class="form-group pshipping">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
+                                                    <td>
+                                                   55
                                                     </td>
-                                                    
+                                                    <td>
+                                                    350
+                                                    </td>
+                                                  
+                                                     
+                                                    <td>
+                                                    650
+                                                    </td>
+                                                      <td>
+                                                   Ipsum
+                                                    </td>
+                                                  
                                                 </tr>
-                                                 
+                                                   <tr>
+                                                    <td>
+                                                   Lorem
+                                                    </td>
+                                                    <td>
+                                                      Ipsum
+                                                    </td>
+                                                    <td>
+                                                    Product1
+                                                    </td>
+                                                    <td>
+                                                   55
+                                                    </td>
+                                                    <td>
+                                                    350
+                                                    </td>
+                                                  
+                                                     
+                                                    <td>
+                                                    650
+                                                    </td>
+                                                      <td>
+                                                    Lorem
+                                                    </td>
+                                                  
+                                                </tr>
+                                                   <tr>
+                                                    <td>
+                                                   Lorem
+                                                    </td>
+                                                    <td>
+                                                      Ipsum
+                                                    </td>
+                                                    <td>
+                                                    Product1
+                                                    </td>
+                                                    <td>
+                                                   55
+                                                    </td>
+                                                    <td>
+                                                    350
+                                                    </td>
+                                                   
+                                                     
+                                                    <td>
+                                                    650
+                                                    </td>
+                                                     <td>
+                                                    Ipsum
+                                                    </td>
+                                                  
+                                                </tr>
+                                             
+                                            </tbody>
+                                                   </table>
+                                                   <table id="table-example" class="table table-hover customerview_table  ">
+                                
+                                        
+                                            <tbody> 
+                                         <tr>
+                                        <td><span>Delivery Location: </span>Lorem Ipsum Dollar</td>
+                                    
+                                        </tr>    
+                                         <tr>
+                                        <td><span>Remark: </span>Lorem Ipsum Dollar</td>
+                                    
+                                        </tr>
                                                 
-                                                
+                                        
                                                 </tbody>
                                                 </table>
-                                                  <table id="table-example" class="table table-hover  ">
-                                
-                                        
-                                                <tbody>
-                                                    <tr><td><b>Remark:</b> Lorem Ipsum Dollar</td></tr>
-                                                   
-                                                </tbody>
-                                            </table>
                                                 </div>
 
                                                 </div>
-                        
-                        <hr>
-                        <div>
-                            <button type="button" class="btn btn-primary " >Submit</button>
-                        </div>
-                        
-                    </form>    
+                                                
           
                 <div class="clearfix"></div>
             </div>

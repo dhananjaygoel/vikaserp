@@ -77,11 +77,7 @@
 								<li><a href="#"><i class="fa fa-power-off"></i>Logout</a></li>
 							</ul>
 						</li>
-						<li class="hidden-xxs">
-							<a class="btn">
-								<i class="fa fa-power-off"></i>
-							</a>
-						</li>
+					
 					</ul>
 				</div>
 				</div>
@@ -121,7 +117,7 @@
                                                                         <li >
 										<a href="enquiry.html">
 											<i class="fa fa-dashboard"></i>
-											<span>Enquiry</span>
+											<span>Inquiry</span>
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
@@ -154,7 +150,7 @@
 											</li>
                                                                                          <li>
 												<a href="delivery_orders_challan_report.html" class="active">
-													Sales Day book
+													Sales Daybook
 												</a>
 											</li>
 											<li>
@@ -198,7 +194,7 @@
 											</li>
                                                                                         <li>
 												<a href="purchaseorder_challanreport.html">
-													Purchase Day Book
+													Purchase Daybook
 												</a>
 											</li>
 										</ul>
@@ -273,14 +269,7 @@
 									<div class="clearfix">
 										<h1 class="pull-left">Pending Purchase Advice Report</h1>
 										
-										   <div class="col-md-2 pull-right">
-                                                                                            <div class="form-group">
-                                                                                        <div class="input-group">
-                                                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                                                    <input type="text" class="form-control" id="datepickerDate">
-                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
+										  
                                                                                     <div class="form-group pull-right">
                                                                                         <div class="col-md-12">
                                                                                         <select class="form-control" id="user_filter" name="user_filter">
@@ -308,43 +297,67 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Date</th>
-                                        <th>Serial</th>
-                                        <th>Party</th>
-                                        <th>Truck Number</th>
-                                        <th>Status </th>
-                                        <th>Order By </th> 
-                                       
-                                     
+                                        <th><a href="#" class="desc"><span>Date</span></a></th>
+                                        <th><a href="#" class="asc"><span>Serial</span></a></th>
+                                        <th><a href="#" class="desc"><span>Party</span></a></th>
+                                        <th><a href="#" class="desc"><span>Truck Number</span></a></th>
+                                        <th><a href="#" class="desc"><span>Status</span></a> </th>
+                                        <th><a href="#" class="desc"><span>Order By</span></a> </th> 
                                         
-                                        <th>Remarks </th> 
+                                        <th class="col-md-2">Remarks </th> 
+                                        <th class="text-center">Action</th>
                                         
                                     </tr>
                                 </thead>
                                 <tbody>                    
 
 
+                                    
                                         <tr>
                                         <td>1</td>
-                                        <td>16/04/2015</td>
+                                        <td>30 April 2015</td>
                                         <td>PO/Apr15/04/01</td>
                                         <td>Party Name 1</td>
                                         <td>MH 14 BS 3022</td>                                        
-                                        <td>Pending </td>
+                                        <td>Pending</td>
                                         <td>Name 1 </td>
-                                       
-                                       
-                                        <td><a href="#" id="remarks" data-type="text" data-pk="1" data-title="remarks" class="editable editable-click">Generated</a></td>
                                         
+                                        <td></td>
+                                         <td class="text-center">
+                                           <a href="view_pendingpurchaseadvice.html" class="table-link" title="view">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                           
+                                            <a href="edit_pendingpurchaseadvice.html" class="table-link" title="edit">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                           
+                                           
+                                            
+                                               <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal" title="delete">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                            
+                                        </td>
                                         
                                     </tr>
+                                         
                                          
                                     
                                         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                             <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                             <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                     
@@ -368,7 +381,7 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                             <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                             <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                     
@@ -403,11 +416,7 @@
                                         
                                          
                                     </div>           
-                                <!--    <div class="modal-footer">
-                                    
-                                    <button type="button" class="btn btn-primary">No</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
-                                    </div>-->
+                             
                                     </div>
                                     </div>
                                     </div> 
