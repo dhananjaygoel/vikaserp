@@ -570,9 +570,26 @@
                                         
                                                
 					</div>
+                    <div class="form-group">
+                       <label><b>All Inclusive:</b> Yes</label>
+                </div>
+                    <div class="form-group">
+                       <label><b>VAT Percentage:</b> 5%</label>
+                </div>
+                    <div class="form-group">
+                       <label><b>VAT:</b> Lorem </label>
+                </div><div class="form-group">
+                       <label><b>Grand Total:</b> 5000</label>
+                </div>
+                    <div class="form-group">
+                       <label><b>Estimated Price:</b> Lorem Ipsum</label>
+                </div>
+                    <div class="form-group">
+                       <label><b>Estimated Delivery Date:</b> 10 April,2015</label>
+                </div>
                     
                      <div class="form-group">
-                       <label><b>Vehicle Name:</b> Lorem Ipsum</label>
+                       <label><b>Target Delivery Date:</b> 15 April,2015</label>
                 </div>
                      <div class="form-group">
                        <label><b>Driver Name:</b>  Lorem Ipsum</label>

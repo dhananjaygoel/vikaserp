@@ -178,11 +178,19 @@
                                             <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                     
-                                                
-                                                
-                                     <div class="modal-body">
-                                         <p>Are you sure you want to cancel order</p>
-                                        
+                                      <div class="modal-body">
+                                         <div class="delete">
+                                             <div><b>UserID:</b> 9988776655</div>
+                                             <div class="pwd">
+                                                 <div class="pwdl"><b>Password:</b></div>
+                                                 <div class="pwdr"><input class="form-control" placeholder="" type="text"></div>
+                                             
+                                             </div>
+                                             <div class="clearfix"></div>
+                                             <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
+                                         
+                                           
+                                         </div>
                                          
                                     </div>           
                                     <div class="modal-footer">

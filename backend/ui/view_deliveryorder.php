@@ -175,6 +175,34 @@
                                 
                                         
                                             <tbody>
+                                                 <td><span>All Inclusive: </span>Yes</td>
+                                    
+                                        </tr>
+                                         <tr>
+                                        <td><span>VAT Percentage: </span>5%</td>
+                                    
+                                        </tr>
+                                         <tr>
+                                        <td><span>VAT: </span>Lorem</td>
+                                    
+                                        </tr>
+                                         <tr>
+                                        <td><span>Grand Total: </span> 5000</td>
+                                    
+                                        </tr>
+                                     <tr>
+                                        <td><span>Estimated Price: </span>Lorem</td>
+                                    
+                                        </tr>   
+                                        <tr>
+                                        <td><span>Estimated Delivery Date: </span>20 April,2015</td>
+                                    
+                                        </tr>   
+                                        
+                                     <tr>
+                                        <td><span>Target Delivery Date: </span>25 April,2015</td>
+                                    
+                                        </tr>      
                                                   <tr><td><b>Vehicle Name:</b> Lorem Ipsum </td> </tr>
                                                     <tr><td><b>Driver Name:</b> Lorem Ipsum</td> </tr>
                                                     <tr><td><b>Driver Contact:</b> Lorem Ipsum</td> </tr>

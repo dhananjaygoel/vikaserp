@@ -257,7 +257,20 @@
                                 
                                         
                                                 <tbody>
-                                                          <tr><td><b>Vehicle Name:</b> Lorem Ipsum </td> </tr>
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">Vehicle Name:</td>
+                                                        <td><input id="price" class="form-control" placeholder="Vehicle Name" name="price" value="" type="text"></td>
+                                                    </tr>
+                                                    
+                                                    
+                                                   
+                                                </tbody>
+                                            </table>  
+                                                <table id="table-example" class="table table-hover  ">
+                                
+                                        
+                                                <tbody>
+                                                  
                                                   
                                                     <tr><td><b>Delivery Location:</b> Location1</td> </tr>
                                                     <tr><td><b>Remark:</b> Lorem Ipsum Dollar</td></tr>

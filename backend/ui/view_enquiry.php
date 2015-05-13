@@ -220,9 +220,25 @@
                              <table id="table-example" class="table customerview_table">
                               
                                 <tbody>                    
-                                       
                                      <tr>
-                                        <td><span>Delivery Location: </span>Lorem Ipsum Dollar</td>
+                                        <td><span>All Inclusive: </span>Yes</td>
+                                    
+                                        </tr>
+                                         <tr>
+                                        <td><span>VAT Percentage: </span>5%</td>
+                                    
+                                        </tr>
+                                         <tr>
+                                        <td><span>VAT: </span>Lorem</td>
+                                    
+                                        </tr>
+                                         <tr>
+                                        <td><span>Grand Total: </span> 5000</td>
+                                    
+                                        </tr>
+                                        
+                                     <tr>
+                                        <td><span>Target Delivery Date: </span>25 April,2015</td>
                                     
                                         </tr>
                                          <tr>

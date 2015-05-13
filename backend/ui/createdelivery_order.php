@@ -250,10 +250,58 @@
                                 
                                         
                                                 <tbody>
-                                                     <tr><td><b>Vehicle Name:</b> Lorem Ipsum </td> </tr>
-                                                    <tr><td><b>Driver Name:</b> Lorem Ipsum</td> </tr>
-                                                    <tr><td><b>Driver Contact:</b> Lorem Ipsum</td> </tr>
-                                                    <tr><td><b>Remark:</b> Lorem Ipsum Dollar</td></tr>
+                                                     <td><b>All Inclusive: </b>Yes</td>
+                                    
+                                        </tr>
+                                         <tr>
+                                        <td><b>VAT Percentage: </b>5%</td>
+                                    
+                                        </tr>
+                                         <tr>
+                                        <td><b>VAT: </b>Lorem</td>
+                                    
+                                        </tr>
+                                         <tr>
+                                        <td><b>Grand Total: </b> 5000</td>
+                                    
+                                        </tr>
+                                     <tr>
+                                        <td><b>Estimated Price: </b>Lorem</td>
+                                    
+                                        </tr>   
+                                        <tr>
+                                        <td><b>Estimated Delivery Date: </b>20 April,2015</td>
+                                    
+                                        </tr>   
+                                        
+                                       <tr>
+                                        <td><b>Target Delivery Date: </b>25 April,2015</td>
+                                    
+                                        </tr>      
+                                            
+                                         </tbody>
+                                            </table>
+                                                  <table id="table-example" class="table table-hover  ">
+                                
+                                        
+                                                <tbody>
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">Vehicle Name:</td>
+                                                        <td><input id="price" class="form-control" placeholder="Vehicle Name" name="price" value="" type="text"></td>
+                                                    </tr>
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">Driver Name:</td>
+                                                        <td><input id="price" class="form-control" placeholder="Driver Name" name="price" value="" type="text"></td>
+                                                    </tr>
+                                                   <tr class="cdtable">
+                                                        <td class="cdfirst">Driver Contact:</td>
+                                                        <td><input id="price" class="form-control" placeholder="Driver Contact" name="price" value="" type="text"></td>
+                                                    </tr>
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">Remark:</td>
+                                                        <td><input id="price" class="form-control cdbox" placeholder="Remark" name="price" value="" type="text"></td>
+                                                    </tr>
+                                                    
                                                    
                                                 </tbody>
                                             </table>

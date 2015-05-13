@@ -207,7 +207,11 @@
                                         <td><span>Total Actual Quantity: </span>500</td>
                                     
                                         </tr>
-                                           <tr>
+                                          <tr>
+                                        <td><span>Vehicle Name: </span>Lorem</td>
+                                     
+                                        </tr> 
+                                        <tr>
                                         <td><span>Discount: </span>5%</td>
                                      
                                         </tr>

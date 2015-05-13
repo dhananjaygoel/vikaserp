@@ -54,13 +54,13 @@
 									</ol>
 									
 									<div class="clearfix">
-										<h1 class="pull-left col-md-8">Purchase Daybook</h1>
+										<h1 class="pull-left col-md-7">Purchase Daybook</h1>
 										
-										<div class="pull-right top-page-ui col-md-4">
+										<div class="pull-right top-page-ui col-md-5">
                                                                        
                                                                                     
                                                                                     
-                                                                                    <div class="col-md-6 ">
+                                                                                    <div class="col-md-4 ">
                                                                                             <div class="form-group">
                                                                                         <div class="input-group">
                                                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -68,10 +68,14 @@
                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                 
-                                                                                   
-                                                                                    <div class="pull-right col-md-6">
-                                                                                    <button type="button" class="btn btn-primary form_button_footer" onClick="location.href='print_purchasedaybook.php'" >Print</button>
+                                                                                         <div class="col-md-3">
+                                                                                 <div class="selectall">
+                                                                                     <button type="button" class="btn btn-primary form_button_footer" >Select All</button>
+                                                                                 </div>
+                                                                                         </div>
+                                                                                    <div class="pull-right col-md-5">
+                                                                                      
+                                                                                    <button type="button" class="btn btn-primary form_button_footer" onClick="location.href='print_salesdaybook.php'" >Print</button>
                                                                                     <button type="button" class="btn btn-primary form_button_footer" >Export</button>
                                                                                     </div>
 										</div>
@@ -89,7 +93,7 @@
                                                         <table id="table-example" class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
+                                    <th class="cb">#</th>
                                         <th>Date</th>
                                         <th>Serial Number</th>
                                         <th>Party</th>
@@ -102,14 +106,14 @@
                                         <th>Amount </th>
                                         <th>Bill Number</th> 
                                         <th>Remarks </th> 
-                                        
+                                         <th>Action </th>
                                     </tr>
                                 </thead>
                                 <tbody>                    
 
 
                                         <tr>
-                                        <td>1</td>
+                                        <td><input type="radio" name="radio-1" id="radio-1" /><span class="cbt">1</span></td>
                                         <td>16 April,2015</td>
                                         <td>PO/Apr15/04/01/01</td>
                                         <td>Party1</td>
@@ -126,12 +130,17 @@
                                         <td>500 </td>
                                         <td></td>
                                         <td>Lorem ipsum</td>
-                                        
+                                         <td>  <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal" >
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a></td>
                                         
                                     </tr>
                                          
                                         <tr>
-                                        <td>2</td>
+                                         <td><input type="radio" name="radio-1" id="radio-1" /><span class="cbt">2</span></td>
                                         <td>19 April,2015</td>
                                         <td>PO/Apr15/04/01/01</td>
                                         <td>Party2</td>
@@ -148,11 +157,16 @@
                                         <td>500 </td>
                                         <td>Pune 01</td>
                                         <td>Lorem ipsum</td>
-                                        
+                                         <td>  <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal" >
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a></td>
                                         
                                     </tr>
                                       <tr>
-                                        <td>3</td>
+                                         <td><input type="radio" name="radio-1" id="radio-1" /><span class="cbt">3</span></td>
                                         <td>21 April,2015</td>
                                         <td>PO/Apr15/04/01/01</td>
                                         <td>Party3</td>
@@ -169,11 +183,16 @@
                                         <td>500 </td>
                                         <td></td>
                                           <td>lorem ipsum</td>
-                                        
+                                         <td>  <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal" >
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a></td>
                                         
                                     </tr>
                                       <tr>
-                                        <td>4</td>
+                                        <td><input type="radio" name="radio-1" id="radio-1" /><span class="cbt">4</span></td>
                                         <td>25 April,2015</td>
                                         <td>PO/Apr15/04/01/01</td>
                                         <td>Party4</td>
@@ -190,7 +209,12 @@
                                         <td>500 </td>
                                         <td>Mum 01</td>
                                           <td>lorem ipsum</td>
-                                        
+                                         <td>  <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal" >
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a></td>
                                         
                                     </tr>
                                     
@@ -201,14 +225,21 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                             <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
-                                    
-                                                
-                                                
-                                     <div class="modal-body">
-                                         <p>Are you sure you want to cancel order</p>
-                                        
+                                    <div class="modal-body">
+                                         <div class="delete">
+                                             <div><b>UserID:</b> 9988776655</div>
+                                             <div class="pwd">
+                                                 <div class="pwdl"><b>Password:</b></div>
+                                                 <div class="pwdr"><input class="form-control" placeholder="" type="text"></div>
+                                             
+                                             </div>
+                                             <div class="clearfix"></div>
+                                             <div class="delp">Are you sure you want to <b>delete </b> ?</div>
                                          
-                                    </div>           
+                                           
+                                         </div>
+                                         
+                                    </div>          
                                     <div class="modal-footer">
                                     
                                     <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
@@ -264,7 +295,10 @@
                                                                         
                                                                     </tbody>
                             </table>
-
+                             <div class="pull-right deletebutton">
+                                <button type="button" class="btn btn-primary form_button_footer" >Delete</button>
+                            </div>
+                            <div class="clearfix"></div>
                             <span class="pull-right">
                                 <ul class="pagination pull-right">
 												<li><a href="#"><i class="fa fa-chevron-left"></i></a></li>

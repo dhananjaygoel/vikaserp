@@ -394,7 +394,10 @@
                         <label><b>Total Actual Quantity:</b> 500</label>
                     
                 </div>
-                  
+                    <div class="form-group">
+                        <label for="vehicle_name"><b class="challan">Vehicle Name</b></label>
+                    <input id="vehicle_name" class="form-control" placeholder="Vehicle Name" name="Discount" value="" type="text">
+                </div>
                   <div class="form-group">
                         <label for="vehicle_name"><b class="challan">Discount</b></label>
                     <input id="vehicle_name" class="form-control" placeholder="Discount" name="Discount" value="" type="text">
