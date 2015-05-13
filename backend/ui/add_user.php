@@ -75,7 +75,7 @@
                 <div class="form-group">
                     <label for="role">User Type</label>
                                         <select class="form-control" name="type" id="add_user_type">
-                        <option value="" selected="" disabled="">Select User Type</option>
+                        <option value="" selected="" disabled="">Select User Type*</option>
                                                 
                                                 <option value="">Admin</option>
                                                 <option value="">Delivery Staff</option>
@@ -83,11 +83,11 @@
                                             </select>
                 </div>
                     <div class="form-group">
-                    <label for="first_name">First Name</label>
+                    <label for="first_name">First Name*</label>
                     <input id="first_name" class="form-control" placeholder="First Name" name="first_name" value="" type="text">
                 </div>
                 <div class="form-group">
-                    <label for="last_name">Last Name</label>
+                    <label for="last_name">Last Name*</label>
                     <input id="last_name" class="form-control" placeholder="Last Name" name="last_name" value="" type="text">
                 </div>                                                    
                                      
@@ -98,7 +98,7 @@
                 </div>
                     
                 <div class="form-group">
-                    <label for="mobile_number">Mobile Number</label>
+                    <label for="mobile_number">Mobile Number*</label>
                     <input id="mobile_number" class="form-control" placeholder="Mobile Number" name="mobile_number" value="" type="text">
                 </div>
                  <div class="form-group">
@@ -106,11 +106,11 @@
                     <input id="email" class="form-control" placeholder="Email Id" name="email" value="" type="email">
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password">Password*</label>
                     <input id="password" class="form-control" placeholder="Password" name="password" value="" type="password">
                 </div>
                 <div class="form-group">
-                    <label for="password_confirmation">Confirm Password</label>
+                    <label for="password_confirmation">Confirm Password*</label>
                    
                     <input id="password_confirmation" class="form-control" placeholder="Confirm Password" name="password_confirmation" value="" type="password">
                 </div>    

@@ -17,21 +17,21 @@
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>    
-                                                                <li class="<?php echo ($page_name=='users.php')?'active':'';?>">
+                                                                <li class="<?php echo ($page_name=='users.php') || ($page_name=='add_user.php') || ($page_name=='edit_user.php') ?'active':'';?>">
 										<a href="users.php">
 											<i class="fa fa-user"></i>
 											<span>Users</span>
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
-                                                                        <li class="<?php echo ($page_name=='customers.php')?'active':'';?>">
+                                                                        <li class="<?php echo ($page_name=='customers.php') || ($page_name=='add_customer.php') || ($page_name=='edit_customer.php') || ($page_name=='view_customer.php')?'active':'';?>">
 										<a href="customers.php">
 											<i class="fa fa-male"></i>
 											<span>Customers</span>
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
-                                                                        <li class="<?php echo ($page_name=='pendingcustomers.php') ?'active':'';?>">
+                                                                        <li class="<?php echo ($page_name=='pendingcustomers.php') || ($page_name=='edit_pendingcustomer.php') ?'active':'';?>">
 										<a href="pendingcustomers.php">
 											<i class="fa fa-book"></i>
 											<span>Pending customers</span>
@@ -39,7 +39,7 @@
 										</a>
 									</li>
                                                                         
-                                                                        <li class="<?php echo ($page_name=='enquiry.php')?'active':'';?>">
+                                                                        <li class="<?php echo ($page_name=='enquiry.php') || ($page_name=='add_inquiry.php') || ($page_name=='edit_enquiry.php') || ($page_name=='view_enquiry.php') || ($page_name=='add_order.php') ?'active':'';?>">
 										<a href="enquiry.php">
 											<i class="fa fa-info"></i>
 											<span>Inquiry</span>
@@ -124,7 +124,7 @@
 											</li>
 										</ul>
 									</li>
-                                                                        <li >
+                                                                        <li class="<?php echo ($page_name=='product_category.php') || ($page_name=='product_sub_category.php') || ($page_name=='add_prod_cat.php') || ($page_name=='view_prod_cat.php') || ($page_name=='edit_prod_cat.php') || ($page_name=='add_prod_sub_cat.php') || ($page_name=='edit_prod_sub_cat.php') ?'active':'';?>">
 										<a href="#" class="dropdown-toggle">
                                                                                     <i class="fa fa-codepen"></i>
 											<span>Product</span>
@@ -145,7 +145,7 @@
 										</ul>
 									</li>
                                                                         
-                                                                        <li>
+                                                                        <li class="<?php echo ($page_name=='location.php') || ($page_name=='edit_location.php') || ($page_name=='add_location.php')|| ($page_name=='city.php') || ($page_name=='add_city.php') || ($page_name=='edit_city.php') || ($page_name=='state.php') ||  ($page_name=='add_state.php') || ($page_name=='edit_state.php') || ($page_name=='unit.php') || ($page_name=='add_unit.php') || ($page_name=='edit_unit.php')?'active':'';?>">
 										<a href="#" class="dropdown-toggle">
 											<i class="fa fa-thumb-tack"></i>
 											<span>Masters Module</span>
@@ -153,7 +153,7 @@
 										</a>
 										<ul  class="submenu">
 											<li class="<?php echo ($page_name=='location.php')?'active':'';?>">
-												<a href="location.php" class="active">
+												<a href="location.php" >
 													Delivery Location
 												</a>
 											</li>
@@ -174,7 +174,7 @@
 											</li>
 										</ul>
 									</li>
-                                                                      <li class="<?php echo ($page_name=='security.php')?'active':'';?>">
+                                                                      <li class="<?php echo ($page_name=='security.php') || ($page_name=='add_security.php') || ($page_name=='edit_security.php')?'active':'';?>">
 										<a href="security.php">
 											<i class="fa fa-lock"></i>
 											<span>Security</span>
