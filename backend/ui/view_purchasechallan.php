@@ -207,10 +207,7 @@
                                         <td><span>Total Actual Quantity: </span>500</td>
                                     
                                         </tr>
-                                          <tr>
-                                        <td><span>Vehicle Name: </span>Lorem</td>
-                                     
-                                        </tr> 
+                                        
                                         <tr>
                                         <td><span>Discount: </span>5%</td>
                                      
@@ -243,6 +240,10 @@
                                         <td><span>Grand Total: 6000</span></td>
                                      
                                         </tr>
+                                          <tr>
+                                        <td><span>Vehicle Name: </span>Lorem</td>
+                                     
+                                        </tr> 
                                                 <tr>
                                         <td><span>Delivery Location: </span>Lorem Ipsum Dollar</td>
                                     

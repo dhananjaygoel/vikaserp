@@ -60,7 +60,7 @@
                                                                        
                                                                                     
                                                                                     
-                                                                                    <div class="col-md-4 ">
+                                                                                    <div class="col-md-6 ">
                                                                                             <div class="form-group">
                                                                                         <div class="input-group">
                                                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -68,11 +68,7 @@
                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                         <div class="col-md-3">
-                                                                                 <div class="selectall">
-                                                                                     <button type="button" class="btn btn-primary form_button_footer" >Select All</button>
-                                                                                 </div>
-                                                                                         </div>
+                                                                                        
                                                                                     <div class="pull-right col-md-5">
                                                                                       
                                                                                     <button type="button" class="btn btn-primary form_button_footer" onClick="location.href='print_salesdaybook.php'" >Print</button>
@@ -81,6 +77,11 @@
 										</div>
                                                                                 
 									</div>
+                                                                     <div class="col-md-3">
+                                                                                 <div class="selectall">
+                                                                                     <button type="button" class="btn btn-primary form_button_footer" >Select All</button>
+                                                                                 </div>
+                                                                                         </div>
 								</div>
 							</div>
 							<br/>
@@ -296,7 +297,7 @@
                                                                     </tbody>
                             </table>
                              <div class="pull-right deletebutton">
-                                <button type="button" class="btn btn-primary form_button_footer" >Delete</button>
+                                 <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal" ><button type="button" class="btn btn-primary form_button_footer" >Delete</button></a>
                             </div>
                             <div class="clearfix"></div>
                             <span class="pull-right">
