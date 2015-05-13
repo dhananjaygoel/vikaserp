@@ -72,68 +72,25 @@
                                                 
                 <form method="POST" action="" accept-charset="UTF-8" >
                 <div class="form-group">
-                    <label for="owner_name">Owner Name<span class="mandatory">*</span></label>
-                    <input id="owner_name" class="form-control" placeholder="Owner Name" name="owner_name" value="" type="text">
+                    <label for="customername">Customer Name<span class="mandatory"></span></label>
+                    <input id="customername" class="form-control" placeholder="Customer Name" name="customername" value="" type="text">
                 </div>
-                <div class="form-group">
-                    <label for="company_name">Company  Name</label>
-                    <input id="company_name" class="form-control" placeholder="Company Name" name="company_name" value="" type="text">
-                </div>                                                    
-                <div class="form-group">
-                    <label for="address1">Address 1</label>
-                    <input id="address1" class="form-control" placeholder="Address 1" name="address1" value="" type="text">
-                </div>
-                <div class="form-group">
-                    <label for="address2">Address 2</label>
-                    <input id="address2" class="form-control" placeholder="Address 2" name="address2" value="" type="text">
-                </div>
-                <div class="form-group">
-                    <label for="city">City<span class="mandatory">*</span></label>
-                    <input id="city" class="form-control" placeholder="City" name="city" value="" type="text">
-                </div>
-                    <div class="form-group">
-                    <label for="state">State<span class="mandatory">*</span></label>
-                    <input id="state" class="form-control" placeholder="State" name="state" value="" type="text">
-                </div>
+                                                                  
+              
+                   
                    <div class="form-group">
-                    <label for="state">Zip</label>
-                    <input id="zip" class="form-control" placeholder="Zip" name="zip" value="" type="text">
+                    <label for="cp">Contact Person<span class="mandatory"></span></label>
+                    <input id="cp" class="form-control" placeholder="Contact Person " name="cp" value="" type="text">
                 </div>
-                    <div class="form-group">
-                    <label for="email">Email</label>
-                    <input id="email" class="form-control" placeholder="Email" name="email" value="" type="text">
-                </div>
-                    <div class="form-group">
-                    <label for="tally">Tally Name<span class="mandatory">*</span></label>
-                    <input id="tally" class="form-control" placeholder="Tally Name " name="tally" value="" type="text">
-                </div>                           
-                    <div class="form-group">
-                    <label for="tallycat">Tally Category<span class="mandatory">*</span></label>
-                    <input id="tally" class="form-control" placeholder="Tally Category " name="tallycat" value="" type="text">
-                </div> 
-                      <div class="form-group">
-                    <label for="tallysubcat">Tally Subcategory<span class="mandatory">*</span></label>
-                    <input id="tally" class="form-control" placeholder="Tally Subcategory " name="tallysubcat" value="" type="text">
-                </div> 
+                   
                 <div class="form-group">
-                    <label for="Phone_number">Phone number 1<span class="mandatory">*</span></label>
-                    <input id="Phone_number" class="form-control" placeholder="Phone number " name="telephone_number" value="" type="text">
+                    <label for="Phone_number">Phone<span class="mandatory"></span></label>
+                    <input id="Phone_number" class="form-control" placeholder="Phone " name="telephone_number" value="" type="text">
                 </div>
                     
-                <div class="form-group">
-                    <label for="mobile_number">Phone Number 2</label>
-                    <input id="mobile_number" class="form-control" placeholder="Phone Number 2" name="mobile_number" value="" type="text">
-                </div>
-                <div class="form-group">
-                    <label for="vat_number">VAT-TIN Number</label>
-                    <input id="vat_number" class="form-control" placeholder="VAT-TIN Number" name="vat_number" value="" type="text">
-                </div>
-                <div class="form-group">
-                    <label for="excise_number">Excise Number</label>
-                    <input id="excise_number" class="form-control" placeholder="Excise Number" name="excise_number" value="" type="text">
-                </div>
+               
                     <div class="form-group col-md-4 del_loc ">
-                    <label for="del_loc">Delivery Location:<span class="mandatory">*</span></label>
+                    <label for="del_loc">Delivery Location:<span class="mandatory"></span></label>
                         <select class="form-control" id="del_loc">
                           <option>Ex-warehouse</option>
                           <option>Location2</option>
@@ -142,89 +99,8 @@
                         </select>
                 </div>
                     <div class="clearfix"></div>
-                     <div class="form-group">
-                    <label for="user_name">User Name</label>
-                    <input id="user_name" class="form-control" placeholder="User Name" name="user_name" value="" type="text">
-                </div>
-                    <div class="form-group">
-                    <label for="password">Password</label>
-                   
-                    <input id="password" class="form-control" placeholder=" Password" name="password" value="" type="password">
-                </div> 
-                <div class="form-group">
-                    <label for="password_confirmation">Confirm Password</label>
-                   
-                    <input id="password_confirmation" class="form-control" placeholder="Confirm Password" name="password_confirmation" value="" type="password">
-                </div>
-                     <div class="form-group">
-                    <label for="period">Credit Period</label>
-                    <input id="period" class="form-control" placeholder="Credit Period" name="period" value="" type="text">
-                </div>
-                        <div class="form-group col-md-4 del_loc ">
-                    <label for="manager">Relationship Manager:</label>
-                        <select class="form-control" id="manager">
-                          <option>Super Admin</option>
-                          <option>Admin1</option>
-                          <option>Admin2</option>
-                          <option>Admin3</option>
-                          <option>Admin4</option>
-                          <option>Admin5</option>
-                          <option>Admin6</option>
-                          <option>Admin7</option>
-                        </select>
-                </div>
-                    <div class="clearfix"></div>
-                    <div class="form-group">
-				<label>Set Prices</label>
-				<br>
-					<div class="checkbox-nice">
-                                            <input id="checkbox-inl-1" type="checkbox">
-					<label for="checkbox-inl-1"> </label>
-					  </div>
-                                <br>
-                                            <div class="category_div col-md-12">
-                          
-                                            <div class="table-responsive">
-                                            <table id="table-example" class="table table-hover ">
-                                
-                                            <thead>
-                                                <tr>
-
-                                                    <th>Category</th>
-                                                    <th>Difference</th>
-
-                                                </tr>
-                                            </thead>
-                                            <tbody>       
-                                                <tr>
-                                                    <td>Name1</td>
-                                                    <td><input class="setprice" type="text" value="" ></td>
-                                                </tr>
-                                                  <tr>
-                                                    <td>Name2</td>
-                                                    <td><input class="setprice" type="text" value="" ></td>
-                                                </tr>
-                                                  <tr>
-                                                    <td>Name3</td>
-                                                    <td><input class="setprice" type="text" value="" ></td>
-                                                </tr>
-                                                  <tr>
-                                                    <td>Name4</td>
-                                                    <td><input class="setprice" type="text" value="" ></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                        </div>
+                     
                     
-                                              
-                                        
-                                               
-					</div>
-            
-												
-					</div>
-                    
-
                                     
                
                     <div class="clearfix"></div>
@@ -232,7 +108,7 @@
                 <hr>
                 <div>
                     <button type="button" class="btn btn-primary form_button_footer" >Submit</button>
-                    <a href="customers.php" class="btn btn-default form_button_footer">Back</a>
+                    <a href="pendingcustomers.php" class="btn btn-default form_button_footer">Back</a>
                 </div>
                 
                 <div class="clearfix"></div>

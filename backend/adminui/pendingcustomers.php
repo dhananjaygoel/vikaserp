@@ -90,8 +90,13 @@
                                         <td>123456789 </td>
                                         <td>Pune</td>
                                         <td class="text-center">
-                                            
-                                            <a href="edit_pendingcustomer.php" class="table-link">
+                                            <a href="add_pendingcustomer.php" class="table-link" title="Add to customer">
+                                                <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>    
+                                            <a href="edit_pendingcustomer.php" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
 							<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -114,9 +119,14 @@
                                                                            
                                         <td>123456789 </td>
                                         <td>Noida</td>
-                                        <td class="text-center">
-                                            
-                                            <a href="edit_pendingcustomer.php" class="table-link">
+                                     <td class="text-center">
+                                            <a href="add_pendingcustomer.php" class="table-link" title="Add to customer">
+                                                <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>    
+                                            <a href="edit_pendingcustomer.php" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
 							<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
