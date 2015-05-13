@@ -73,9 +73,9 @@
                                                 
                 <form method="POST" action="" accept-charset="UTF-8" >
                 <div class="form-group">
-                    <label for="role">User Type</label>
+                    <label for="role">User Type*</label>
                                         <select class="form-control" name="type" id="add_user_type">
-                        <option value="" selected="" disabled="">Select User Type*</option>
+                        <option value="" selected="" disabled="">Select User Type</option>
                                                 
                                                 <option value="">Admin</option>
                                                 <option value="">Delivery Staff</option>
