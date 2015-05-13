@@ -7981,7 +7981,7 @@ svg {
 .print_time{font-weight:bold}
 .difference_form{margin-top:2px}
 .difference_form .btn-primary{background-color:#2980b9!important}
-.difference_form .btn{padding:3px 5px!important}
+.difference_form .btn{padding:3px 10px!important}
 .pending_location{padding-left:0px!important}
 .customerview_table tr{border-top:1px solid #e7ebee;height:50px;font-size:15px}
 .customerview_table tr td{border:none!important}
@@ -7992,7 +7992,7 @@ svg {
 .underline{text-decoration: underline}
 .headingunderline td span{text-decoration: underline}
 .delivery_product {margin-top:23px}
-.shippingcolumn input[type=text]{width:50%}
+.shippingcolumn input[type=text]{width:80%}
 .table_deliverchallan tr td{border:none!important}
 .table_deliverchallan tr td span{font-weight: bold;text-decoration: underline}
 #printwrapper{padding-left:0px;margin-left:0px;}
@@ -8011,6 +8011,17 @@ h1.printwrapper{margin:20px 0px;color:#000}
 .table{margin-bottom: 6px!important}
 .widthtable{width:20%}
 #vatdetails{display:none}
-.customer_select{display:none}
+.customer_select{margin-left:-8px}
 .row{opacity:1}
 .setprice{height:31px!important}
+.searchproduct{position: relative;}
+.searchproduct .fa-search{position: absolute;right:6px;top:11px;color:#3498db}
+.targetdate{padding-left:0px;margin-left: 0px}
+.challan{font-size:1.1em}
+.superadmin{margin-bottom: 30px}
+.delivery_productrow1{display: none}
+.delivery_productrow2{display: none}
+.dadd_button1{display:none}
+.tablecompleted{display:none}
+.tablecancel{display:none}
+.indexlink{color:#344644!important}
