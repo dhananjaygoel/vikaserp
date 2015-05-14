@@ -742,7 +742,7 @@
                           <label for="date">Target Delivery Date: </label>
                     <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    <input type="text" name="date" class="form-control" id="datepickerDate">
+                    <input type="text" name="date" class="form-control" id="datepickerDate1">
                     </div>
                         </div>
                        <div class="clearfix"></div>
@@ -836,6 +836,10 @@ $('#datepickerDate').datepicker({
 		  format: 'mm-dd-yyyy'
 		});
  $('#datepickerDateComponent').datepicker();
+ $('#datepickerDate1').datepicker({
+		  format: 'mm-dd-yyyy'
+		});
+ $('#datepickerDate1Component').datepicker();
 </script>
 
 <script>
