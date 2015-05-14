@@ -787,14 +787,7 @@
                         <label for="vatp"><b>Vat percentage:</b> 5%</label>
                     
                 </div>
-                         <div class="form-group">
-                        <label for="vat"><b>Vat:</b> 50</label>
-                    
-                </div>
-                         <div class="form-group">
-                        <label for="total"><b>Grand Total:</b> 650</label>
-                    
-                </div>
+                       
                        
                 
             </div>

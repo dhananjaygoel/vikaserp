@@ -690,12 +690,12 @@
                         <table id="table-example" class="table ">
                                 
                                         
-                                                <tbody>
+                                              <tbody>
                                                     <tr class="cdtable">
-                                                        <td class="cdfirst">Vehicle Name:</td>
-                                                        <td><input id="price" class="form-control" placeholder="Vehicle Name" name="price" value="" type="text"></td>
+                                                        <td class="cdfirst">VAT Percentage:</td>
+                                                        <td><input id="price" class="form-control" placeholder="VAT Percentage" name="price" value="" type="text"></td>
                                                     </tr>
-                                                   <!--tr class="cdtable">
+                                                   <!-- <tr class="cdtable">
                                                         <td class="cdfirst">VAT:</td>
                                                         <td>Lorem</td>
                                                     </tr>

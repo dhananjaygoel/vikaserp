@@ -571,6 +571,9 @@
                                                
 					</div>
                     
+                          <div class="form-group">
+                       <label><b>VAT Percentage:</b> 5%</label>
+                </div>
                      <div class="form-group">
                        <label><b>Vehicle Name:</b> Lorem Ipsum</label>
                 </div>
