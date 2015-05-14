@@ -253,18 +253,8 @@
                                                      <td><b>All Inclusive: </b>Yes</td>
                                     
                                         </tr>
-                                         <tr>
-                                        <td><b>VAT Percentage: </b>5%</td>
-                                    
-                                        </tr>
-                                         <tr>
-                                        <td><b>VAT: </b>Lorem</td>
-                                    
-                                        </tr>
-                                         <tr>
-                                        <td><b>Grand Total: </b> 5000</td>
-                                    
-                                        </tr>
+                                        
+                                         
                                      <tr>
                                         <td><b>Estimated Price: </b>Lorem</td>
                                     
@@ -285,6 +275,10 @@
                                 
                                         
                                                 <tbody>
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">VAT Percentage:</td>
+                                                        <td><input id="price" class="form-control" placeholder="VAT Percentage" name="price" value="" type="text"></td>
+                                                    </tr>
                                                     <tr class="cdtable">
                                                         <td class="cdfirst">Vehicle Name:</td>
                                                         <td><input id="price" class="form-control" placeholder="Vehicle Name" name="price" value="" type="text"></td>
