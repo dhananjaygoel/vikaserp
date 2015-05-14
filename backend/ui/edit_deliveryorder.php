@@ -576,11 +576,11 @@
                     <div class="form-group">
                        <label><b>VAT Percentage:</b> 5%</label>
                 </div>
-                    <div class="form-group">
+                   <!-- <div class="form-group">
                        <label><b>VAT:</b> Lorem </label>
                 </div><div class="form-group">
                        <label><b>Grand Total:</b> 5000</label>
-                </div>
+                </div>-->
                     <div class="form-group">
                        <label><b>Estimated Price:</b> Lorem Ipsum</label>
                 </div>
