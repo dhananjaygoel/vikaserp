@@ -410,6 +410,7 @@
                                                  <label for="driver_contact"><b class="challan">VAT Percentage</b></label>
                     <input id="driver_contact" class="form-control" placeholder="VAT Percentage" name="VAT Percentage" value="" type="text">
                 </div>
+                                                 <!--
                                              <div class="form-group">
                                                  <label for="driver_contact"><b class="challan">VAT</b></label>
                     <input id="driver_contact" class="form-control" placeholder="VAT" name="VAT" value="" type="text">
@@ -418,7 +419,7 @@
                     <label for="grandtotal"><b class="challan">Grand Total</b></label>
                     <input id="grandtotal" class="form-control" placeholder="Grand Total" name="grandtotal" value="" type="text">
                 </div>
-                   
+                   -->
                                              </div>                     
                      
                     

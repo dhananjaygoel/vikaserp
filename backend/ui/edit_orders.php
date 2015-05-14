@@ -695,7 +695,7 @@
                                                         <td class="cdfirst">Vehicle Name:</td>
                                                         <td><input id="price" class="form-control" placeholder="Vehicle Name" name="price" value="" type="text"></td>
                                                     </tr>
-                                                    <tr class="cdtable">
+                                                   <!--tr class="cdtable">
                                                         <td class="cdfirst">VAT:</td>
                                                         <td>Lorem</td>
                                                     </tr>
@@ -703,7 +703,7 @@
                                                     <tr class="cdtable">
                                                         <td class="cdfirst">Grand Total:</td>
                                                         <td>650</td>
-                                                    </tr>
+                                                    </tr>-->
                                                     
                                                    
                                                 </tbody>
