@@ -10,13 +10,7 @@
                                                            $count = count($name_array);
                                                            $page_name = $name_array[$count-1];
                                                        ?>
-                                                                <li class="<?php echo ($page_name=='index.php')?'active':'';?>">
-                                                                    <a href="index.php">
-											<i class="fa fa-dashboard"></i>
-											<span>Dashboard</span>
-											<span class="label label-info label-circle pull-right"></span>
-										</a>
-									</li>    
+                                                                 
                                                                 <li class="<?php echo ($page_name=='users.php') || ($page_name=='add_user.php') || ($page_name=='edit_user.php') ?'active':'';?>">
 										<a href="users.php">
 											<i class="fa fa-user"></i>
@@ -39,14 +33,14 @@
 										</a>
 									</li>
                                                                         
-                                                                        <li class="<?php echo ($page_name=='enquiry.php') || ($page_name=='add_inquiry.php') || ($page_name=='edit_enquiry.php') || ($page_name=='view_enquiry.php') || ($page_name=='add_order.php') ?'active':'';?>">
+                                                                        <li class="<?php echo ($page_name=='enquiry.php') || ($page_name=='add_inquiry.php') || ($page_name=='edit_enquiry.php') || ($page_name=='view_enquiry.php') ?'active':'';?>">
 										<a href="enquiry.php">
 											<i class="fa fa-info"></i>
 											<span>Inquiry</span>
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
-                                                                       <li class="<?php echo ($page_name=='orders.php') || ($page_name=='delivery_orders.php') || ($page_name=='delivery_orders_challan.php') || ($page_name=='daily_del_orders.php') || ($page_name=='delivery_orders_challan_report.php') || ($page_name=='pending_orders.php') || ($page_name=='order_view.php') || ($page_name=='edit_orders.php') || ($page_name=='createdelivery_order.php') || ($page_name=='view_deliveryorder.php') || ($page_name=='edit_deliveryorder.php') || ($page_name=='delivery_orders_challanbutton.php') || ($page_name=='add_delivery_order.php') || ($page_name=='view_deliverychallan.php') || ($page_name=='edit_deliverychallan.php')  ?'active':'';?>">
+                                                                       <li class="<?php echo ($page_name=='orders.php') || ($page_name=='delivery_orders.php') || ($page_name=='delivery_orders_challan.php') || ($page_name=='daily_del_orders.php') || ($page_name=='delivery_orders_challan_report.php') || ($page_name=='pending_orders.php') || ($page_name=='order_view.php') || ($page_name=='edit_orders.php') || ($page_name=='createdelivery_order.php') || ($page_name=='view_deliveryorder.php') || ($page_name=='edit_deliveryorder.php') || ($page_name=='delivery_orders_challanbutton.php') || ($page_name=='add_delivery_order.php') || ($page_name=='view_deliverychallan.php') || ($page_name=='edit_deliverychallan.php') || ($page_name=='add_order.php') ?'active':'';?>">
 										<a href="#" class="dropdown-toggle">
 											<i class="fa fa-shopping-cart"></i>
 											<span>Order</span>
@@ -85,7 +79,7 @@
 											</li>
 										</ul>
 									</li>
-                                                                        <li class=" <?php echo ($page_name=='purchaseorders.php') || ($page_name=='purchaseorder_advise.php') || ($page_name=='purchaseorder_challan.php') || ($page_name=='purchaseorder_report.php') || ($page_name=='purchaseorder_advisereport.php') || ($page_name=='purchaseorder_challanreport.php') || ($page_name=='purchaseorder_view.php') || ($page_name=='edit_purchaseorders.php') || ($page_name=='createpurchase_order.php') || ($page_name=='view_purchaseadvice.php') || ($page_name=='edit_purchaseadvice.php') || ($page_name=='purchaseorder_challanbutton.php') || ($page_name=='view_purchasechallan.php') || ($page_name=='edit_purchasechallan.php') ?'active':'';?>">
+                                                                        <li class=" <?php echo ($page_name=='purchaseorders.php') || ($page_name=='create_purchase_advise.php') || ($page_name=='purchaseorder_advise.php') || ($page_name=='purchaseorder_challan.php') || ($page_name=='purchaseorder_report.php') || ($page_name=='purchaseorder_advisereport.php') || ($page_name=='purchaseorder_challanreport.php') || ($page_name=='add_placeorder.php') || ($page_name=='purchaseorder_view.php') || ($page_name=='edit_purchaseorders.php') || ($page_name=='createpurchase_order.php') || ($page_name=='view_purchaseadvice.php') || ($page_name=='edit_purchaseadvice.php') || ($page_name=='purchaseorder_challanbutton.php') || ($page_name=='view_purchasechallan.php') || ($page_name=='edit_purchasechallan.php') ?'active':'';?>">
 										<a href="#" class="dropdown-toggle">
 											<i class="fa fa-shopping-cart"></i>
 											<span>Purchase Order</span>
@@ -174,13 +168,7 @@
 											</li>
 										</ul>
 									</li>
-                                                                      <li class="<?php echo ($page_name=='security.php') || ($page_name=='add_security.php') || ($page_name=='edit_security.php')?'active':'';?>">
-										<a href="security.php">
-											<i class="fa fa-lock"></i>
-											<span>Security</span>
-											<span class="label label-info label-circle pull-right"></span>
-										</a>
-									</li>    
+                                                                     
                                                                        
 								</ul>
 							</div>

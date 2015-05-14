@@ -226,8 +226,18 @@
                                                 
                                                 
                                      <div class="modal-body">
-                                         <p>Are you sure you want to delete</p>
-                                        
+                                         <div class="delete">
+                                             <div><b>UserID:</b> 9988776655</div>
+                                             <div class="pwd">
+                                                 <div class="pwdl"><b>Password:</b></div>
+                                                 <div class="pwdr"><input class="form-control" placeholder="" type="text"></div>
+                                             
+                                             </div>
+                                             <div class="clearfix"></div>
+                                             <div class="delp">Are you sure you want to <b>delete </b>?</div>
+                                         
+                                           
+                                         </div>
                                          
                                     </div>           
                                     <div class="modal-footer">

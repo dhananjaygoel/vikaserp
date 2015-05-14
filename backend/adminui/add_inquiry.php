@@ -690,22 +690,35 @@
                     </div>
                 </div>
                      
-                    <div class="plusvat " style="display: none">
+                  <div class="plusvat " style="display: none">
                     <div class="form-group">
-                        <label for="vatp"><b>Vat percentage:</b> 5%</label>
+                        <table id="table-example" class="table ">
+                                
+                                        
+                                                <tbody>
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">VAT Percentage:</td>
+                                                        <td><input id="price" class="form-control" placeholder="VAT Percentage" name="price" value="" type="text"></td>
+                                                    </tr>
+                                                   <!-- <tr class="cdtable">
+                                                        <td class="cdfirst">VAT:</td>
+                                                        <td>Lorem</td>
+                                                    </tr>
+                                                  
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">Grand Total:</td>
+                                                        <td>650</td>
+                                                    </tr>-->
+                                                    
+                                                   
+                                                </tbody>
+                                            </table>
                     
                 </div>
-                         <div class="form-group">
-                        <label for="vat"><b>Vat:</b> 50</label>
-                    
-                </div>
-                         <div class="form-group">
-                        <label for="total"><b>Grand Total:</b> 650</label>
-                    
-                </div>
+                         
                        
                 
-            </div>
+            </div> 
                     
                     
                     <div class="form-group col-md-4 targetdate">

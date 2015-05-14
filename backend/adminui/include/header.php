@@ -1,6 +1,6 @@
 	<header class="navbar" id="header-navbar">
 			<div class="container">
-				<a href="index.php" id="logo" class="navbar-brand">
+				<a href="#" id="logo" class="navbar-brand">
                                     
 					<img src="img/logo1.png" alt="" class="normal-logo logo-white"/>
 					<img src="img/logo-black.png" alt="" class="normal-logo logo-black"/>

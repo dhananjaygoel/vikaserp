@@ -228,7 +228,7 @@
                                     
                
                     <div class="clearfix"></div>
-                   
+                    <button type="button" class="btn btn-primary form_button_footer" >Save and Send SMS</button>
                 <hr>
                 <div>
                     <button type="button" class="btn btn-primary form_button_footer" >Submit</button>
@@ -270,6 +270,14 @@
 	<script src="js/pace.min.js"></script>
 	
 	<!-- this page specific inline scripts -->
-	
+	<script>
+$(document).ready(function(){
+    $("#checkbox-inl-1").click(function(){
+       
+        $(".category_div").toggle("slow");
+        
+    });
+});
+</script>	
 </body>
 </html>

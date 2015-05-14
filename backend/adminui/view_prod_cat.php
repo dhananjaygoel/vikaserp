@@ -55,11 +55,7 @@
 									
 									<div class="clearfix">
 										<h1 class="pull-left"> View Product Category</h1>
-										  <div class="pull-right top-page-ui">
-											<a href="edit_prod_cat.php" class="btn btn-primary pull-right">
-												Edit Product Category
-											</a>
-										</div>
+										
 										
 									</div>
 								</div>

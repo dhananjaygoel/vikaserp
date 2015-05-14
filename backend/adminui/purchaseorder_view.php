@@ -216,6 +216,32 @@
                                         
                                             <tbody>   
                                          <tr>
+                                        <td><span>All Inclusive: </span>Yes</td>
+                                    
+                                        </tr>
+                                         <tr>
+                                        <td><span>VAT Percentage: </span>5%</td>
+                                    
+                                        </tr>
+                                         <tr>
+                                        <td><span>VAT: </span>Lorem</td>
+                                    
+                                        </tr>
+                                         <tr>
+                                        <td><span>Grand Total: </span> 5000</td>
+                                    
+                                        </tr>
+                                     <tr>
+                                        <td><span>Total Price: </span>Lorem</td>
+                                    
+                                        </tr>   
+                                         
+                                        
+                                     <tr>
+                                        <td><span>Estimated Delivery Date: </span>25 April,2015</td>
+                                    
+                                        </tr>             
+                                         <tr>
                                         <td><span>Delivery Location: </span>Lorem Ipsum Dollar</td>
                                     
                                         </tr>

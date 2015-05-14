@@ -83,14 +83,13 @@
                                         <td class="col-md-1">1</td>
                                         <td>Maharashtra</td>
                                         <td>Pune</td>
-                                     
+                                       
                                     </tr>
                                                                         <tr>
                                         <td class="col-md-1">2</td>
                                         <td>Bihar</td>
                                         <td>Patna</td>
-                                        
-                                    
+                                   
                                     </tr>
                                     
                                     
@@ -103,12 +102,21 @@
                                             </div>
                                     
                                                 
-                                                
                                      <div class="modal-body">
-                                         <p>Are you sure you want to delete</p>
-                                        
+                                         <div class="delete">
+                                             <div><b>UserID:</b> 9988776655</div>
+                                             <div class="pwd">
+                                                 <div class="pwdl"><b>Password:</b></div>
+                                                 <div class="pwdr"><input class="form-control" placeholder="" type="text"></div>
+                                             
+                                             </div>
+                                             <div class="clearfix"></div>
+                                             <div class="delp">Are you sure you want to <b>delete </b> ?</div>
                                          
-                                    </div>           
+                                           
+                                         </div>
+                                         
+                                    </div>          
                                     <div class="modal-footer">
                                     
                                     <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>

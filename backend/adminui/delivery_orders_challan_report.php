@@ -54,9 +54,9 @@
 									</ol>
 									
 									<div class="clearfix">
-										<h1 class="pull-left col-md-8">Sales Daybook</h1>
+										<h1 class="pull-left col-md-7">Sales Daybook</h1>
 										
-										<div class="pull-right top-page-ui col-md-4">
+										<div class="pull-right top-page-ui col-md-5">
                                                                        
                                                                                     
                                                                                     
@@ -68,15 +68,16 @@
                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                 
-                                                                                   
+                                                                                       
                                                                                     <div class="pull-right col-md-6">
+                                                                                      
                                                                                     <button type="button" class="btn btn-primary form_button_footer" onClick="location.href='print_salesdaybook.php'" >Print</button>
                                                                                     <button type="button" class="btn btn-primary form_button_footer" >Export</button>
                                                                                     </div>
 										</div>
-                                                                                
+                                                                                 
 									</div>
+                                                                   
 								</div>
 							</div>
 							<br/>
@@ -84,12 +85,18 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
-                        
+                      
+                         <div>
+                       
+
+<!-- select all boxes -->
+
+                                             </div>
                         <div class="table-responsive">
                                                         <table id="table-example" class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
+                                        <th class="cb">#</th>
                                         <th>Date</th>
                                         <th>Serial</th>
                                         <th>Party</th>
@@ -102,7 +109,7 @@
                                         <th>Amount </th>
                                         <th>Bill Number</th> 
                                         <th>Remarks </th> 
-                                        
+                                      
                                         
                                     </tr>
                                 </thead>
@@ -111,7 +118,7 @@
 
                                   
                                         <tr>
-                                        <td>1</td>
+                                            <td><span class="cbt">1</span></td>
                                         <td>16 April,2015</td>
                                         <td>PO/Apr15/04/01/01</td>
                                         <td>Party1</td>
@@ -134,7 +141,7 @@
                                          
                                            
                                         <tr>
-                                        <td>2</td>
+                                            <td><span class="cbt">2</span></td>
                                         <td>19 April,2015</td>
                                         <td>PO/Apr15/04/01/01</td>
                                         <td>Party2</td>
@@ -150,11 +157,11 @@
                                         <td>500 </td>
                                         <td>Pune 01</td>
                                        <td>Lorem Ipsum</td>
-                                       
+                                         
                                         
                                     </tr>
                                     <tr>
-                                        <td>3</td>
+                                            <td><span class="cbt">3</span></td>
                                         <td>21 April,2015</td>
                                         <td>PO/Apr15/04/01/01</td>
                                         <td>Party3</td>
@@ -174,7 +181,7 @@
                                         
                                     </tr>
                                         <tr>
-                                        <td>4</td>
+                                            <td><span class="cbt">4</span></td>
                                         <td>25 April,2015</td>
                                         <td>PO/Apr15/04/01/01</td>
                                         <td>Party4</td>
@@ -190,7 +197,7 @@
                                         <td>500 </td>
                                         <td>Mum 01</td>
                                          <td>Lorem ipsum</td>
-                                      
+                                       
                                         
                                     </tr>
                                     
@@ -203,10 +210,19 @@
                                             </div>
                                     
                                                 
-                                                
-                                     <div class="modal-body">
-                                         <p>Are you sure you want to delete?</p>
-                                        
+                                   <div class="modal-body">
+                                         <div class="delete">
+                                             <div><b>UserID:</b> 9988776655</div>
+                                             <div class="pwd">
+                                                 <div class="pwdl"><b>Password:</b></div>
+                                                 <div class="pwdr"><input class="form-control" placeholder="" type="text"></div>
+                                             
+                                             </div>
+                                             <div class="clearfix"></div>
+                                             <div class="delp">Are you sure you want to <b>delete</b>?</div>
+                                         
+                                           
+                                         </div>
                                          
                                     </div>           
                                     <div class="modal-footer">
@@ -243,7 +259,7 @@
                     <label for="driver_contact">Driver Contact</label>
                     <input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="" type="text">
                 </div>
-                
+                                           
                 
                 <hr>
                 <div >
@@ -264,7 +280,8 @@
                                                                         
                                                                     </tbody>
                             </table>
-
+                            
+                            <div class="clearfix"></div>
                             <span class="pull-right">
                                 <ul class="pagination pull-right">
 												<li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
@@ -327,7 +344,16 @@
 
         </script>
     
-        	
+        <script>
+            $('#select-all').click(function(event) {   
+    if(this.checked) {
+        // Iterate each checkbox
+        $(':checkbox').each(function() {
+            this.checked = true;                        
+        });
+    }
+});
+            </script>
                 
         </body>
 </html>

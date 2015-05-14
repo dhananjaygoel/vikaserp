@@ -103,12 +103,8 @@
                                         
                                             <tbody>   
                                          <tr class="headingunderline">
-                                             <td>
-                                                    <span>Category </span>
-                                                    </td>
-                                                    <td class="tableview_order">
-                                                    <span> Sub Product Category</span>
-                                                    </td>
+                                            
+                                                   
                                                     <td>
                                                     <span> Product</span>
                                                     </td>
@@ -129,12 +125,7 @@
                                                 </tr>
                                         
                                                 <tr>
-                                                    <td>
-                                                   Lorem Ipsum
-                                                    </td>
-                                                    <td>
-                                                      Ipsum
-                                                    </td>
+                                                   
                                                     <td>
                                                     Product1
                                                     </td>
@@ -155,12 +146,7 @@
                                                   
                                                 </tr>
                                                    <tr>
-                                                    <td>
-                                                   Lorem Ipsum
-                                                    </td>
-                                                    <td>
-                                                      Ipsum
-                                                    </td>
+                                                  
                                                     <td>
                                                     Product1
                                                     </td>
@@ -181,12 +167,7 @@
                                                   
                                                 </tr>
                                                    <tr>
-                                                    <td>
-                                                   Lorem Ipsum
-                                                    </td>
-                                                    <td>
-                                                      Ipsum
-                                                    </td>
+                                                    
                                                     <td>
                                                     Product1
                                                     </td>
@@ -207,12 +188,7 @@
                                                   
                                                 </tr>
                                                    <tr>
-                                                    <td>
-                                                   Lorem ipsum
-                                                    </td>
-                                                    <td>
-                                                      Ipsum
-                                                    </td>
+                                                
                                                     <td>
                                                     Product1
                                                     </td>
@@ -240,6 +216,35 @@
                                 
                                         
                                             <tbody>   
+                                          <tr>
+                                        <td><span>All Inclusive: </span>Yes</td>
+                                    
+                                        </tr>
+                                         <tr>
+                                        <td><span>VAT Percentage: </span>5%</td>
+                                    
+                                        </tr>
+                                         <tr>
+                                        <td><span>VAT: </span>Lorem</td>
+                                    
+                                        </tr>
+                                         <tr>
+                                        <td><span>Grand Total: </span> 5000</td>
+                                    
+                                        </tr>
+                                     <tr>
+                                        <td><span>Estimated Price: </span>Lorem</td>
+                                    
+                                        </tr>   
+                                        <tr>
+                                        <td><span>Estimated Delivery Date: </span>20 April,2015</td>
+                                    
+                                        </tr>   
+                                        
+                                     <tr>
+                                        <td><span>Target Delivery Date: </span>25 April,2015</td>
+                                    
+                                        </tr>      
                                          <tr>
                                         <td><span>Delivery Location: </span>Lorem Ipsum Dollar</td>
                                     

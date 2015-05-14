@@ -74,7 +74,7 @@
                                                                              
                                         <th>Unit</th>
                                                                                                    
-                                       
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>                    
@@ -86,6 +86,7 @@
                                         <td>Kg</td>
                                         
                                        
+                                       
                                     </tr>
                                                                         <tr>
                                         <td class="col-md-1">2</td>
@@ -93,7 +94,7 @@
                                         <td>mm</td>
                                         
                                        
-                                       
+                                     
                                     </tr>
                                     
                                     
@@ -104,12 +105,19 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                             <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
-                                    
-                                                
-                                                
                                      <div class="modal-body">
-                                         <p>Are you sure you want to delete</p>
-                                        
+                                         <div class="delete">
+                                             <div><b>UserID:</b> 9988776655</div>
+                                             <div class="pwd">
+                                                 <div class="pwdl"><b>Password:</b></div>
+                                                 <div class="pwdr"><input class="form-control" placeholder="" type="text"></div>
+                                             
+                                             </div>
+                                             <div class="clearfix"></div>
+                                             <div class="delp">Are you sure you want to <b>delete </b> ?</div>
+                                         
+                                           
+                                         </div>
                                          
                                     </div>           
                                     <div class="modal-footer">

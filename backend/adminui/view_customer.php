@@ -110,6 +110,14 @@
                                     
                                         </tr>
                                         <tr>
+                                            <td><span>Tally Category:</span> Lorem</td>
+                                    
+                                        </tr>
+                                        <tr>
+                                            <td><span>Tally Subcategory:</span> Ipsum</td>
+                                    
+                                        </tr>
+                                        <tr>
                                             <td><span>Phone Number1:</span> 123456789</td>
                                             
                                             

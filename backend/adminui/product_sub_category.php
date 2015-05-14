@@ -71,7 +71,7 @@
 													<i class="fa fa-search search-icon"></i>
 												</div>	
                                                                                      </div>
-                                                                                      
+                                                                                     
 										</div>
 									</div>
 								</div>
@@ -117,7 +117,7 @@
                                             </div>
                                         </td>                                        
                                         
-                                      
+                                       
                                     </tr>
                                                                         <tr>
                                         <td>2</td>
@@ -137,8 +137,7 @@
                                             </div>
                                             </div>
                                         </td>                  
-                                        
-                                     
+                                   
                                     </tr>
                                     
                                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -149,11 +148,19 @@
                                             <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                     
-                                                
-                                                
-                                     <div class="modal-body">
-                                         <p>Are you sure you want to delete</p>
-                                        
+                                      <div class="modal-body">
+                                         <div class="delete">
+                                             <div><b>UserID:</b> 9988776655</div>
+                                             <div class="pwd">
+                                                 <div class="pwdl"><b>Password:</b></div>
+                                                 <div class="pwdr"><input class="form-control" placeholder="" type="text"></div>
+                                             
+                                             </div>
+                                             <div class="clearfix"></div>
+                                             <div class="delp">Are you sure you want to <b>delete </b> ?</div>
+                                         
+                                           
+                                         </div>
                                          
                                     </div>           
                                     <div class="modal-footer">
@@ -201,7 +208,7 @@
                                         
                                         <th>Weight</th>
                                         <th class="col-md-2">Difference</th>                                                         
-                                        <th >Actions</th>
+                                       
                                     </tr>
                                 </thead>
                                 <tbody>                    
@@ -226,22 +233,7 @@
                                             </div>
                                         </td>                                        
                                         
-                                        <td>
-                                            
-                                            <a href="edit_prod_sub_cat.php" class="table-link">
-                                                <span class="fa-stack">
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            
-                                        </td>
+                                       
                                     </tr>
                                                                         <tr>
                                         <td>2</td>
@@ -262,22 +254,7 @@
                                             </div>
                                         </td>                  
                                         
-                                        <td>
-                                            
-                                            <a href="edit_prod_sub_cat.php" class="table-link">
-                                                <span class="fa-stack">
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            
-                                        </td>
+                                 
                                     </tr>
                                     
                                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

@@ -8025,3 +8025,15 @@ h1.printwrapper{margin:20px 0px;color:#000}
 .tablecompleted{display:none}
 .tablecancel{display:none}
 .indexlink{color:#344644!important}
+.cdfirst{width:13%;font-weight:bold}
+.cdtable input[type="text"]{width:30%}
+.cdbox{width:100%!important}
+.shippingcolumn{width:14%}
+.pwd{width:100%;margin: 10px 0}
+.pwd .pwdl{float:left;display:inline;margin-right:5px;margin-top: 5px}
+.pwd .pwdr{float:left;display:inline;width:30%}
+.delp{margin-top: 10px}
+.cb{width: 5%}
+.cbt{position:relative;top:-1px;left:2px}
+.deletebutton{margin:20px 0}
+

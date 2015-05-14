@@ -307,21 +307,27 @@
                                                    
                                                  
                                                     <td>
-                                                        <div class="form-group ">
-                                                   Product
+                                                        <div class="form-group searchproduct">
+                                                    <input class="form-control" placeholder="Product name " type="text">
+                                                        <i class="fa fa-search search-icon"></i>
                                                         </div>
                                                     </td>
                                                        <td>
                                                         <div class="form-group">
                        
-                                                    Quantity      </div>           
+                                                     <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">    </div>           
                                                     </td>
                                                     <td> 
                                                               <div class="form-group">
                        
-                                                    Pieces                 </div></td>
+                                                       <input id="pieces" class="form-control" placeholder="Pieces" name="pieces" value="" type="text">                </div></td>
                                                       <td >
-                                                          <div class="form-group">   Unit</div>
+                                                          <div class="form-group">         <select class="form-control" name="type" id="add_status_type">
+                                           <option value="" selected=""></option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select></div>
                                                     </td>
                                                     <td class="col-md-2">
                                                           <div class="row">
@@ -371,21 +377,27 @@
                                                    
                                                  
                                                     <td>
-                                                        <div class="form-group ">
-                                                   Product
+                                                        <div class="form-group searchproduct">
+                                                    <input class="form-control" placeholder="Product name " type="text">
+                                                        <i class="fa fa-search search-icon"></i>
                                                         </div>
                                                     </td>
                                                        <td>
                                                         <div class="form-group">
                        
-                                                    Quantity      </div>           
+                                                     <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">    </div>           
                                                     </td>
                                                     <td> 
                                                               <div class="form-group">
                        
-                                                    Pieces                 </div></td>
+                                                       <input id="pieces" class="form-control" placeholder="Pieces" name="pieces" value="" type="text">                </div></td>
                                                       <td >
-                                                          <div class="form-group">   Unit</div>
+                                                          <div class="form-group">         <select class="form-control" name="type" id="add_status_type">
+                                           <option value="" selected=""></option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select></div>
                                                     </td>
                                                     <td class="col-md-2">
                                                           <div class="row">
@@ -431,25 +443,31 @@
                                                         <td></td>
                                                         <td></td>
                                                     </tr>
-                                                    <tr class="row10">
+                                                 <tr class="row10">
                                                    
                                                  
                                                     <td>
-                                                        <div class="form-group ">
-                                                   Product
+                                                        <div class="form-group searchproduct">
+                                                    <input class="form-control" placeholder="Product name " type="text">
+                                                        <i class="fa fa-search search-icon"></i>
                                                         </div>
                                                     </td>
                                                        <td>
                                                         <div class="form-group">
                        
-                                                    Quantity      </div>           
+                                                     <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">    </div>           
                                                     </td>
                                                     <td> 
                                                               <div class="form-group">
                        
-                                                    Pieces                 </div></td>
+                                                       <input id="pieces" class="form-control" placeholder="Pieces" name="pieces" value="" type="text">                </div></td>
                                                       <td >
-                                                          <div class="form-group">   Unit</div>
+                                                          <div class="form-group">         <select class="form-control" name="type" id="add_status_type">
+                                           <option value="" selected=""></option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select></div>
                                                     </td>
                                                     <td class="col-md-2">
                                                           <div class="row">
@@ -495,25 +513,31 @@
                                                         <td></td>
                                                         <td></td>
                                                     </tr>
-                                                    <tr class="row12">
+                                                 <tr class="row12">
                                                    
                                                  
                                                     <td>
-                                                        <div class="form-group ">
-                                                   Product
+                                                        <div class="form-group searchproduct">
+                                                    <input class="form-control" placeholder="Product name " type="text">
+                                                        <i class="fa fa-search search-icon"></i>
                                                         </div>
                                                     </td>
                                                        <td>
                                                         <div class="form-group">
                        
-                                                    Quantity      </div>           
+                                                     <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">    </div>           
                                                     </td>
                                                     <td> 
                                                               <div class="form-group">
                        
-                                                    Pieces                 </div></td>
+                                                       <input id="pieces" class="form-control" placeholder="Pieces" name="pieces" value="" type="text">                </div></td>
                                                       <td >
-                                                          <div class="form-group">   Unit</div>
+                                                          <div class="form-group">         <select class="form-control" name="type" id="add_status_type">
+                                           <option value="" selected=""></option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select></div>
                                                     </td>
                                                     <td class="col-md-2">
                                                           <div class="row">
@@ -547,6 +571,9 @@
                                                
 					</div>
                     
+                          <div class="form-group">
+                       <label><b>VAT Percentage:</b> 5%</label>
+                </div>
                      <div class="form-group">
                        <label><b>Vehicle Name:</b> Lorem Ipsum</label>
                 </div>

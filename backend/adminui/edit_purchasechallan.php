@@ -85,145 +85,112 @@
                     
                 </div>
                <div class="table-responsive">
-                                                  <table id="table-example" class="table table_deliverchallan serial">
+                                                <table id="table-example" class="table table-hover table_deliverchallan serial">
                                                 <tbody>
                                                     <tr>
-                                                        <td><span>Product Name</span></td>
-                                                        <td><span>Actual Quantity</span></td>
+                                                        <td class="col-md-2"><span>Product Name</span></td>
+                                                        <td class="col-md-2"><span>Actual Quantity</span></td>
                                                         
-                                                 
-                                                        <td><span>Unit</span></td>
+                                                     
+                                                        <td class="col-md-1"><span>Unit</span></td>
                                                         <td><span>Rate</span></td>
                                                         <td><span>Amount</span></td>
                                                         <td><span>Present Shipping</span></td>
                                                     </tr>
-                                                     <tr>
-                                                         
-                                                             <td>
-                                                              <div class="form-group">
-          
-                    <input id="pd" class="form-control" placeholder="Product Name" name="pd" value="" type="text">
-                </div>
-                                                         </td>
-                                                         <td>
-                                                              <div class="form-group">
-          
-                    <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">
-                </div>
-                                                         </td>
-                               
-                                               <td> <div class="form-group">
-                 
-                    <input id="unit" class="form-control" placeholder="Unit" name="unit" value="" type="text">
-                </div></td>
-                                                        <td>   <div class="form-group">
-                   
-                    <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
-                </div></td>
-                                              <td>   <div class="form-group">
-                   
-                    <input id="amount" class="form-control" placeholder="Amount" name="Amount" value="" type="text">
-                </div></td>
-                                                        <td>  <div class="form-group">
-                  
-                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
-                </div></td>
-                                                    </tr>
-                                                      <tr>
-                                                          <td>
-                                                              <div class="form-group">
-          
-                    <input id="pd" class="form-control" placeholder="Product Name" name="pd" value="" type="text">
-                </div>
-                                                         </td>
-                                                         <td>
-                                                              <div class="form-group">
-          
-                    <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">
-                </div>
-                                                         </td>
-                             
-                                               <td> <div class="form-group">
-                 
-                    <input id="unit" class="form-control" placeholder="Unit" name="unit" value="" type="text">
-                </div></td>
-                                                        <td>   <div class="form-group">
-                   
-                    <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
-                </div></td>
-                                              <td>   <div class="form-group">
-                   
-                    <input id="amount" class="form-control" placeholder="Amount" name="Amount" value="" type="text">
-                </div></td>
-                                                        <td>  <div class="form-group">
-                  
-                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
-                </div></td>
-                                                    </tr>
+                                                    <tr>
+                                                   <td>
+                                                   Product1
+                                                    </td>
+                                                   <td>
+                                                   Actual Quantity
+                                                    </td>
+                                                  
+                                                     <td>
+                                                    Unit
+                                                    </td>
+                                                    <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Rate" name="rate" value="" type="text">
+                                                    </td>
+                                                     <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Amount" name="rate" value="" type="text">
+                                                    </td>
+                                                    <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
+                                                    </td>
+                                                    
+                                                    
+                                                </tr>
+                                                   <tr>
+                                                     <td>
+                                                   Product2
+                                                    </td>
+                                                   <td>
+                                                   Actual Quantity
+                                                    </td>
+                                                  
+                                                     <td>
+                                                    Unit
+                                                    </td>
+                                                    <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Rate" name="rate" value="" type="text">
+                                                    </td>
+                                                     <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Amount" name="rate" value="" type="text">
+                                                    </td>
+                                                    <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
+                                                    </td>
+                                                    
+                                                    
+                                                </tr>
+                                                   
+                                                 <tr>
+                                                     <td>
+                                                   Product3
+                                                    </td>
+                                                   <td>
+                                                   Actual Quantity
+                                                    </td>
+                                                   
+                                                     <td>
+                                                    Unit
+                                                    </td>
+                                                    <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Rate" name="rate" value="" type="text">
+                                                    </td>
+                                                     <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Amount" name="rate" value="" type="text">
+                                                    </td>
+                                                    <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
+                                                    </td>
+                                                    
+                                                    
+                                                </tr>
                                                    
                                                     <tr>
-                                                        <td>
-                                                              <div class="form-group">
-          
-                    <input id="pd" class="form-control" placeholder="Product Name" name="pd" value="" type="text">
-                </div>
-                                                         </td>
-                                                         <td>
-                                                              <div class="form-group">
-          
-                    <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">
-                </div>
-                                                         </td>
-                               
-                                               <td> <div class="form-group">
-                 
-                    <input id="unit" class="form-control" placeholder="Unit" name="unit" value="" type="text">
-                </div></td>
-                                                        <td>   <div class="form-group">
-                   
-                    <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
-                </div></td>
-                                              <td>   <div class="form-group">
-                   
-                    <input id="amount" class="form-control" placeholder="Amount" name="Amount" value="" type="text">
-                </div></td>
-                                                        <td>  <div class="form-group">
-                  
-                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
-                </div></td>
-                                                    </tr>
+                                                     <td>
+                                                   Product4
+                                                    </td>
+                                                   <td>
+                                                   Actual Quantity
+                                                    </td>
                                                    
-                                                      <tr>
-                                                          <td>
-                                                              <div class="form-group">
-          
-                    <input id="pd" class="form-control" placeholder="Product Name" name="pd" value="" type="text">
-                </div>
-                                                         </td>
-                                                         <td>
-                                                              <div class="form-group">
-          
-                    <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">
-                </div>
-                                                         </td>
-                                  
-                                               <td> <div class="form-group">
-                 
-                    <input id="unit" class="form-control" placeholder="Unit" name="unit" value="" type="text">
-                </div></td>
-                                                        <td>   <div class="form-group">
-                   
-                    <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
-                </div></td>
-                                              <td>   <div class="form-group">
-                   
-                    <input id="amount" class="form-control" placeholder="Amount" name="Amount" value="" type="text">
-                </div></td>
-                                                        <td>  <div class="form-group">
-                  
-                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
-                </div></td>
-                                                    </tr>
+                                                     <td >
+                                                    Unit
+                                                    </td>
+                                                    <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Rate" name="rate" value="" type="text">
+                                                    </td>
+                                                     <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Amount" name="rate" value="" type="text">
+                                                    </td>
+                                                    <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
+                                                    </td>
+                                                    
+                                                    
+                                                </tr>
                                                     <tr class="row5">
                                                         <td>
                                                              <div class="add_button1">
@@ -246,37 +213,39 @@
                                                         <td></td>
                                                         <td></td>
                                                     </tr>
-                                                    <tr class="row6">
-                                                        <td>
-                                                              <div class="form-group">
-          
-                    <input id="pd" class="form-control" placeholder="Product Name" name="pd" value="" type="text">
-                </div>
-                                                         </td>
-                                                         <td>
-                                                              <div class="form-group">
-          
-                    <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">
-                </div>
-                                                         </td>
-                            
-                                               <td> <div class="form-group">
-                 
-                    <input id="unit" class="form-control" placeholder="Unit" name="unit" value="" type="text">
-                </div></td>
-                                                        <td>   <div class="form-group">
-                   
-                    <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
-                </div></td>
-                                              <td>   <div class="form-group">
-                   
-                    <input id="amount" class="form-control" placeholder="Amount" name="Amount" value="" type="text">
-                </div></td>
-                                                        <td>  <div class="form-group">
-                  
-                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
-                </div></td>
-                                                    </tr>
+                                                   <tr class="row6">
+                                                     <td>
+                                                   <div class="searchproduct">
+                                                    <input class="form-control" placeholder="Product name " type="text">
+                                                        <i class="fa fa-search search-icon"></i>
+                                                        </div>
+                                                    </td>
+                                                   <td>
+                                                    <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
+                                                    </td>
+                                                   
+                                                     <td>
+                                                  
+                                                        <select class="form-control" name="type" id="add_status_type">
+                                           <option value="" selected=""></option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select>
+                                                          
+                                                    </td>
+                                                    <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Rate" name="rate" value="" type="text">
+                                                    </td>
+                                                     <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Amount" name="rate" value="" type="text">
+                                                    </td>
+                                                    <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
+                                                    </td>
+                                                    
+                                                    
+                                                </tr>
                                                          <tr class="row7">
                                                         <td>
                                                              <div class="add_button1">
@@ -300,36 +269,38 @@
                                                         <td></td>
                                                     </tr>
                                                      <tr class="row8">
-                                                         <td>
-                                                              <div class="form-group">
-          
-                    <input id="pd" class="form-control" placeholder="Product Name" name="pd" value="" type="text">
-                </div>
-                                                         </td>
-                                                         <td>
-                                                              <div class="form-group">
-          
-                    <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">
-                </div>
-                                                         </td>
-                             
-                                               <td> <div class="form-group">
-                 
-                    <input id="unit" class="form-control" placeholder="Unit" name="unit" value="" type="text">
-                </div></td>
-                                                        <td>   <div class="form-group">
-                   
-                    <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
-                </div></td>
-                                              <td>   <div class="form-group">
-                   
-                    <input id="amount" class="form-control" placeholder="Amount" name="Amount" value="" type="text">
-                </div></td>
-                                                        <td>  <div class="form-group">
-                  
-                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
-                </div></td>
-                                                    </tr>
+                                                     <td>
+                                                   <div class="searchproduct">
+                                                    <input class="form-control" placeholder="Product name " type="text">
+                                                        <i class="fa fa-search search-icon"></i>
+                                                        </div>
+                                                    </td>
+                                                   <td>
+                                                    <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
+                                                    </td>
+                                                    
+                                                     <td>
+                                                  
+                                                        <select class="form-control" name="type" id="add_status_type">
+                                           <option value="" selected=""></option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select>
+                                                          
+                                                    </td>
+                                                    <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Rate" name="rate" value="" type="text">
+                                                    </td>
+                                                     <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Amount" name="rate" value="" type="text">
+                                                    </td>
+                                                    <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
+                                                    </td>
+                                                    
+                                                    
+                                                </tr>
                                                       <tr class="row9">
                                                         <td>
                                                              <div class="add_button1">
@@ -353,36 +324,38 @@
                                                         <td></td>
                                                     </tr>
                                                      <tr class="row10">
-                                                         <td>
-                                                              <div class="form-group">
-          
-                    <input id="pd" class="form-control" placeholder="Product Name" name="pd" value="" type="text">
-                </div>
-                                                         </td>
-                                                         <td>
-                                                              <div class="form-group">
-          
-                    <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">
-                </div>
-                                                         </td>
-                           
-                                               <td> <div class="form-group">
-                 
-                    <input id="unit" class="form-control" placeholder="Unit" name="unit" value="" type="text">
-                </div></td>
-                                                        <td>   <div class="form-group">
-                   
-                    <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
-                </div></td>
-                                              <td>   <div class="form-group">
-                   
-                    <input id="amount" class="form-control" placeholder="Amount" name="Amount" value="" type="text">
-                </div></td>
-                                                        <td>  <div class="form-group">
-                  
-                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
-                </div></td>
-                                                    </tr>
+                                                     <td>
+                                                   <div class="searchproduct">
+                                                    <input class="form-control" placeholder="Product name " type="text">
+                                                        <i class="fa fa-search search-icon"></i>
+                                                        </div>
+                                                    </td>
+                                                   <td>
+                                                    <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
+                                                    </td>
+                                                   
+                                                     <td>
+                                                  
+                                                        <select class="form-control" name="type" id="add_status_type">
+                                           <option value="" selected=""></option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select>
+                                                          
+                                                    </td>
+                                                    <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Rate" name="rate" value="" type="text">
+                                                    </td>
+                                                     <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Amount" name="rate" value="" type="text">
+                                                    </td>
+                                                    <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
+                                                    </td>
+                                                    
+                                                    
+                                                </tr>
                                                 </tbody>
                                             </table>
                  </div>
@@ -391,7 +364,10 @@
                         <label><b>Total Actual Quantity:</b> 500</label>
                     
                 </div>
-                  
+                  <div class="form-group">
+                        <label for="vehicle_name"><b class="challan">Vehicle Name</b></label>
+                    <input id="vehicle_name" class="form-control" placeholder="Vehicle Name" name="Discount" value="" type="text">
+                </div>
                   <div class="form-group">
                         <label for="vehicle_name"><b class="challan">Discount</b></label>
                     <input id="vehicle_name" class="form-control" placeholder="Discount" name="Discount" value="" type="text">
@@ -424,13 +400,14 @@
                  
                                              <div class="form-group">
                   
-                                                 <input id="includevat" type="checkbox" name="Include VAT" value="includevat"><b class="challan">Include VAT</b>
+                                                 <input id="includevat" type="checkbox" name="Include VAT" value="includevat"><b class="challan">All Inclusive</b>
                 </div>
                                              <div id="vatdetails">                     
                                              <div class="form-group">
                                                  <label for="driver_contact"><b class="challan">VAT Percentage</b></label>
                     <input id="driver_contact" class="form-control" placeholder="VAT Percentage" name="VAT Percentage" value="" type="text">
                 </div>
+                                                 <!--
                                              <div class="form-group">
                                                  <label for="driver_contact"><b class="challan">VAT</b></label>
                     <input id="driver_contact" class="form-control" placeholder="VAT" name="VAT" value="" type="text">
@@ -438,7 +415,7 @@
                                                  <div class="form-group">
                     <label for="grandtotal"><b class="challan">Grand Total</b></label>
                     <input id="grandtotal" class="form-control" placeholder="Grand Total" name="grandtotal" value="" type="text">
-                </div>
+                </div>-->
                    
                                              </div>                     
                      

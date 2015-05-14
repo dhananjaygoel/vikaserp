@@ -212,11 +212,19 @@
                                      
                                         </tr>
                                         <tr>
+                                        <td><span>Loaded By: </span>Lorem ipsum</td>
+                                     
+                                        </tr>
+                                        <tr>
+                                        <td><span>Labours: </span>Lorem ipsum</td>
+                                     
+                                        </tr>
+                                        <tr>
                                         <td><span>Total: </span>500</td>
                                      
                                         </tr>
                                         <tr>
-                                        <td><span>Include VAT: </span>Yes</td>
+                                        <td><span>All Inclusive: </span>Yes</td>
                                      
                                         </tr>
                                         <tr>
