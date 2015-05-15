@@ -68,19 +68,13 @@
             </header>            
 
           <div class="main-box-body clearfix">
-                <hr>
+          
                                                 
                 <form method="POST" action="" accept-charset="UTF-8" >
-                     <div class="form-group">
-                        <label for="cn"><b>Serial Number:</b> PO/Apr15/02/02/01</label>
-       
-                </div>
-                     <div class="billdate">
-                    <div class="form-group">
-                        <table id="table-example" class="table ">
+                  
+                   <table id="table-example" class="table ">
                                 
                                                 <tbody>
-                                                    
                                                     <tr class="cdtable">
                                                         <td class="cdfirst">Bill Date:</td>
                                                         <td>
@@ -95,13 +89,13 @@
             </div>
                                                         </td>
                                                     </tr>
+                                                    <tr class="cdtable">
+                                                        <td><b>Serial Number:</b></td>
+                                                        <td>PO/Apr15/02/01/01</td>
+                                                    </tr>
                                        
                                                 </tbody>
                                             </table>
-                   
-                </div>
-        
-            </div> 
                     <!--
                     <div class="form-group">
                         <label for="person"><b>Contact Person:</b> Lorem Ipsum</label>
