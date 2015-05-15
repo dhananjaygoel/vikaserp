@@ -77,7 +77,11 @@
                         <label for="billdate"><b>Bill Date:</b> 25 April,2015</label>
        
                 </div>
-                     <div class="form-group">
+                            <div class="form-group">
+                        <label for="cn"><b>Serial Number:</b> PO/Apr15/02/02/01</label>
+       
+                </div>
+                     <!--<div class="form-group">
                         <label for="cn"><b>Customer name:</b> Lorem Ipsum</label>
        
                 </div>
@@ -93,7 +97,7 @@
                      <div class="form-group">
                         <label for="cp"><b>Credit Period: </b> Lorem </label>
        
-                </div>
+                </div>-->
                 <div class="inquiry_table col-md-12">
                           
                                             <div class="table-responsive">
@@ -570,7 +574,7 @@
                                         
                                                
 					</div>
-                    
+                    <!--
                           <div class="form-group">
                        <label><b>VAT Percentage:</b> 5%</label>
                 </div>
@@ -583,7 +587,35 @@
                   
                     <div class="form-group">
                        <label><b>Remark:</b>  Lorem Ipsum</label>
+                </div>-->
+                      <div class="form-group">
+                       <label><b>Delivery Location:</b>  Lorem Ipsum</label>
                 </div>
+                       <table id="table-example" class="table table-hover  ">
+                                
+                                        
+                                                <tbody>
+                                                   
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">VAT Percentage:</td>
+                                                        <td><input id="price" class="form-control" placeholder="VAT Percentage" name="price" value="" type="text"></td>
+                                                    </tr>
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">Vehicle Name:</td>
+                                                        <td><input id="price" class="form-control" placeholder="Vehicle Name" name="price" value="" type="text"></td>
+                                                    </tr>
+                                                   
+                                                  
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">Remark:</td>
+                                                        <td><input id="price" class="form-control cdbox" placeholder="Remark" name="price" value="" type="text"></td>
+                                                    </tr>
+                                                    
+                                                   
+                                                </tbody>
+                                            </table>
+                    
+                    
                       <button type="button" class="btn btn-primary form_button_footer" >Save and Send SMS</button>
                       <hr>
                       <div>

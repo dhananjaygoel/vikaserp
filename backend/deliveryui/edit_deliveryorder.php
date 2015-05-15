@@ -570,13 +570,13 @@
                                         
                                                
 					</div>
-                    <div class="form-group">
+                    <!--  <div class="form-group">
                        <label><b>All Inclusive:</b> Yes</label>
                 </div>
                     <div class="form-group">
                        <label><b>VAT Percentage:</b> 5%</label>
                 </div>
-                   <!-- <div class="form-group">
+                  <div class="form-group">
                        <label><b>VAT:</b> Lorem </label>
                 </div><div class="form-group">
                        <label><b>Grand Total:</b> 5000</label>
@@ -591,15 +591,36 @@
                      <div class="form-group">
                        <label><b>Target Delivery Date:</b> 15 April,2015</label>
                 </div>
-                     <div class="form-group">
-                       <label><b>Driver Name:</b>  Lorem Ipsum</label>
-                </div>
-                     <div class="form-group">
-                       <label><b>Driver Contact:</b>  Lorem Ipsum</label>
-                </div>
-                    <div class="form-group">
-                       <label><b>Remark:</b>  Lorem Ipsum</label>
-                </div>
+                       <table id="table-example" class="table table-hover  ">
+                                
+                                        
+                                                <tbody>
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">VAT Percentage:</td>
+                                                        <td><input id="price" class="form-control" placeholder="VAT Percentage" name="price" value="" type="text"></td>
+                                                    </tr>
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">Vehicle Name:</td>
+                                                        <td><input id="price" class="form-control" placeholder="Vehicle Name" name="price" value="" type="text"></td>
+                                                    </tr>
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">Driver Name:</td>
+                                                        <td><input id="price" class="form-control" placeholder="Driver Name" name="price" value="" type="text"></td>
+                                                    </tr>
+                                                   <tr class="cdtable">
+                                                        <td class="cdfirst">Driver Contact:</td>
+                                                        <td><input id="price" class="form-control" placeholder="Driver Contact" name="price" value="" type="text"></td>
+                                                    </tr>
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">Remark:</td>
+                                                        <td><input id="price" class="form-control cdbox" placeholder="Remark" name="price" value="" type="text"></td>
+                                                    </tr>
+                                                    
+                                                   
+                                                </tbody>
+                                            </table>
+                    
+                    
                       <button type="button" class="btn btn-primary form_button_footer" >Save and Send SMS</button>
                       <hr>
                       <div>

@@ -70,10 +70,11 @@
 
             <div class="main-box-body clearfix">
                     <form method="POST" action="" accept-charset="UTF-8" >
-                     <div class="inquiry_table col-md-12">
+                     
+                        <div class="inquiry_table col-md-12">
                           
                                             <div class="table-responsive">
-                                            <table id="table-example" class="table table-hover  ">
+                                          <!--  <table id="table-example" class="table table-hover  ">
                                 
                                            <tbody>
                                                     <tr><td><b>Bill Date:</b> 25 April,2015</td></tr>
@@ -86,6 +87,30 @@
                                                    
                                                     
                                                     
+                                                </tbody>
+                                            </table>-->
+                                                   <table id="table-example" class="table ">
+                                
+                                                <tbody>
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">Bill Date:</td>
+                                                        <td>
+                                                             <div class="targetdate">
+                        
+               
+                   <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="text" name="date" class="form-control" id="datepickerDate">
+                    </div>
+               
+            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="cdtable">
+                                                        <td><b>Serial Number:</b></td>
+                                                        <td>PO/Apr15/02/01/01</td>
+                                                    </tr>
+                                       
                                                 </tbody>
                                             </table>
                                                 <table id="table-example" class="table table-hover  ">
@@ -473,7 +498,9 @@
 	<!-- theme scripts -->
 	<script src="js/scripts.js"></script>
 	<script src="js/pace.min.js"></script>
-	
+	<script src="js/bootstrap-datepicker.js"></script>
+       <script src="js/select2.min.js"></script>
+        <script src="js/moment.min.js"></script>
 	<!-- this page specific inline scripts -->
 	<script>
 $(document).ready(function(){
@@ -522,6 +549,10 @@ $(document).ready(function(){
    
 
 });
+$('#datepickerDate').datepicker({
+		  format: 'mm-dd-yyyy'
+		});
+ $('#datepickerDateComponent').datepicker();
 </script>
 <script>
             $(document).ready(function(){

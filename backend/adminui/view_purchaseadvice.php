@@ -200,7 +200,7 @@
                                     
                                         </tr>   
                                         <tr>
-                                        <td><span>Estimated Delivery Time: </span>05:30 PM</td>
+                                        <td><span>Estimated Delivery Date: </span>05:30 PM</td>
                                     
                                         </tr>   
                                         

@@ -71,15 +71,38 @@
                 <hr>
                                                 
                 <form method="POST" action="" accept-charset="UTF-8" >
-                    
-                    <div class="form-group">
-                        <label for="billdate"><b>Bill Date:</b> 25 April,2015</label>
-       
-                </div>
                      <div class="form-group">
-                        <label for="cn"><b>Customer name:</b> Lorem Ipsum</label>
+                        <label for="cn"><b>Serial Number:</b> PO/Apr15/02/02/01</label>
        
                 </div>
+                     <div class="billdate">
+                    <div class="form-group">
+                        <table id="table-example" class="table ">
+                                
+                                                <tbody>
+                                                    
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">Bill Date:</td>
+                                                        <td>
+                                                             <div class="targetdate">
+                        
+               
+                   <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="text" name="date" class="form-control" id="datepickerDate">
+                    </div>
+               
+            </div>
+                                                        </td>
+                                                    </tr>
+                                       
+                                                </tbody>
+                                            </table>
+                   
+                </div>
+        
+            </div> 
+                    <!--
                     <div class="form-group">
                         <label for="person"><b>Contact Person:</b> Lorem Ipsum</label>
        
@@ -93,7 +116,7 @@
                         <label for="cp"><b>Credit Period: </b> Lorem </label>
        
                 </div>
-                    
+                    -->
                     
                     <div class="form-group ">
                             
@@ -822,13 +845,16 @@
                         <input id="cp" class="form-control" placeholder="Vehicle Name" name="cp" value="" type="text">
        
                 </div>
-                    <div class="form-group">
+               <div class="form-group col-md-4 targetdate">
                         
-                    <label for="time">Estimated Delivery Time</label>
-                    <input id="time" class="form-control" placeholder="Time" name="time" value="" type="text">
+                    <label for="date">Estimated Delivery Date</label>
+                   <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="text" name="date" class="form-control" id="datepickerDate1">
+                    </div>
                
             </div>
-                    
+                    <div class="clearfix"></div>
                     <div class="form-group">
 			<label for="inquiry_remark">Remark</label>
                         <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3"></textarea>
@@ -882,7 +908,9 @@
 	<!-- theme scripts -->
 	<script src="js/scripts.js"></script>
 	<script src="js/pace.min.js"></script>
-	
+	<script src="js/bootstrap-datepicker.js"></script>
+       <script src="js/select2.min.js"></script>
+        <script src="js/moment.min.js"></script>
 	<!-- this page specific inline scripts -->
 	<script>
 
@@ -919,6 +947,7 @@ $(document).ready(function(){
 
 
 });
+
 </script>
 <script>
     $("#optionsRadios1").click(function(){
@@ -945,6 +974,18 @@ $(document).ready(function(){
         $(".plusvat").hide();
      
     });
+</script>
+<script>
+
+$('#datepickerDate').datepicker({
+		  format: 'mm-dd-yyyy'
+		});
+ $('#datepickerDateComponent').datepicker();
+ 
+$('#datepickerDate1').datepicker({
+		  format: 'mm-dd-yyyy'
+		});
+ $('#datepickerDate1Component').datepicker();
 </script>
 </body>
 </html>
