@@ -301,7 +301,7 @@
                                                 
                                                     <td><div class="form-group">Pending Order</div></td>
                                                      <td>
-                                                        <div class="form-group ">
+                                                        <div class="form-group pcshipping">
                                                         <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
                                                         </div>
                                                     </td>
@@ -364,7 +364,7 @@
                                                 
                                                     <td><div class="form-group">Pending Order</div></td>
                                                      <td>
-                                                        <div class="form-group ">
+                                                        <div class="form-group pcshipping">
                                                         <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
                                                         </div>
                                                     </td>
