@@ -92,32 +92,32 @@
                                                   <table id="table-example" class="table table_deliverchallan serial">
                                                 <tbody>
                                                     <tr>
-                                                       <td><span>Product Name</span></td>
-                                                        <td><span>Actual Quantity</span></td>
+                                                       <td class="col-md-2"><span>Product Name</span></td>
+                                                        <td class="col-md-2"><span>Actual Quantity</span></td>
                                                         
                                                  
                                                         <td><span>Unit</span></td>
-                                                        <td><span>Rate</span></td>
-                                                        <td><span>Amount</span></td>
-                                                        <td><span>Present Shipping</span></td>
+                                                        <td class="col-md-2"><span>Rate</span></td>
+                                                        <td class="col-md-2"><span>Amount</span></td>
+                                                        <td class="col-md-2"><span>Present Shipping</span></td>
                                                     </tr>
                                                      <tr>
                                                          <td>
                                                               <div class="form-group">
           
-                    <input id="pd" class="form-control" placeholder="Product Name" name="pd" value="" type="text">
+                   Product1
                 </div>
                                                          </td>
                                                          <td>
                                                               <div class="form-group">
           
-                    <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">
+                   Actual Quantity
                 </div>
                                                          </td>
                                
                                                <td> <div class="form-group">
                  
-                    <input id="unit" class="form-control" placeholder="Unit" name="unit" value="" type="text">
+                   Unit
                 </div></td>
                                                         <td>   <div class="form-group">
                    
@@ -132,23 +132,23 @@
                     <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
                 </div></td>
                                                     </tr>
-                                                      <tr>
-                                                          <td>
+                                                       <tr>
+                                                         <td>
                                                               <div class="form-group">
           
-                    <input id="pd" class="form-control" placeholder="Product Name" name="pd" value="" type="text">
+                   Product1
                 </div>
                                                          </td>
                                                          <td>
                                                               <div class="form-group">
           
-                    <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">
+                   Actual Quantity
                 </div>
                                                          </td>
-                             
+                               
                                                <td> <div class="form-group">
                  
-                    <input id="unit" class="form-control" placeholder="Unit" name="unit" value="" type="text">
+                   Unit
                 </div></td>
                                                         <td>   <div class="form-group">
                    
@@ -164,23 +164,23 @@
                 </div></td>
                                                     </tr>
                                                    
-                                                    <tr>
-                                                        <td>
+                                                 <tr>
+                                                         <td>
                                                               <div class="form-group">
           
-                    <input id="pd" class="form-control" placeholder="Product Name" name="pd" value="" type="text">
+                   Product1
                 </div>
                                                          </td>
                                                          <td>
                                                               <div class="form-group">
           
-                    <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">
+                   Actual Quantity
                 </div>
                                                          </td>
                                
                                                <td> <div class="form-group">
                  
-                    <input id="unit" class="form-control" placeholder="Unit" name="unit" value="" type="text">
+                   Unit
                 </div></td>
                                                         <td>   <div class="form-group">
                    
@@ -196,23 +196,23 @@
                 </div></td>
                                                     </tr>
                                                    
-                                                      <tr>
-                                                          <td>
+                                                       <tr>
+                                                         <td>
                                                               <div class="form-group">
           
-                    <input id="pd" class="form-control" placeholder="Product Name" name="pd" value="" type="text">
+                   Product1
                 </div>
                                                          </td>
                                                          <td>
                                                               <div class="form-group">
           
-                    <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">
+                   Actual Quantity
                 </div>
                                                          </td>
-                                  
+                               
                                                <td> <div class="form-group">
                  
-                    <input id="unit" class="form-control" placeholder="Unit" name="unit" value="" type="text">
+                   Unit
                 </div></td>
                                                         <td>   <div class="form-group">
                    
@@ -250,12 +250,12 @@
                                                         <td></td>
                                                     </tr>
                                                     <tr class="row6">
-                                                        <td>
-                                                              <div class="form-group">
-          
-                    <input id="pd" class="form-control" placeholder="Product Name" name="pd" value="" type="text">
-                </div>
-                                                         </td>
+                                                         <td>
+                                                   <div class=" form-group searchproduct">
+                                                    <input class="form-control" placeholder="Product name " type="text">
+                                                        <i class="fa fa-search search-icon"></i>
+                                                        </div>
+                                                    </td>
                                                          <td>
                                                               <div class="form-group">
           
@@ -263,11 +263,16 @@
                 </div>
                                                          </td>
                             
-                                               <td> <div class="form-group">
-                 
-                    <input id="unit" class="form-control" placeholder="Unit" name="unit" value="" type="text">
-                </div></td>
-                                                        <td>   <div class="form-group">
+                                <td>
+                                                          <div class="form-group ">
+                                                        <select class="form-control" name="type" id="add_status_type">
+                       <option value="" selected="">Unit</option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select>
+                                                          </div>
+                                                    </td>                         <td>   <div class="form-group">
                    
                     <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
                 </div></td>
@@ -303,12 +308,12 @@
                                                         <td></td>
                                                     </tr>
                                                      <tr class="row8">
-                                                         <td>
-                                                              <div class="form-group">
-          
-                    <input id="pd" class="form-control" placeholder="Product Name" name="pd" value="" type="text">
-                </div>
-                                                         </td>
+                                                          <td>
+                                                   <div class=" form-group searchproduct">
+                                                    <input class="form-control" placeholder="Product name " type="text">
+                                                        <i class="fa fa-search search-icon"></i>
+                                                        </div>
+                                                    </td>
                                                          <td>
                                                               <div class="form-group">
           
@@ -316,10 +321,16 @@
                 </div>
                                                          </td>
                              
-                                               <td> <div class="form-group">
-                 
-                    <input id="unit" class="form-control" placeholder="Unit" name="unit" value="" type="text">
-                </div></td>
+                              <td class="col-md-2">
+                                                          <div class="form-group ">
+                                                        <select class="form-control" name="type" id="add_status_type">
+                       <option value="" selected="">Unit</option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select>
+                                                          </div>
+                                                    </td>
                                                         <td>   <div class="form-group">
                    
                     <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
@@ -356,12 +367,12 @@
                                                         <td></td>
                                                     </tr>
                                                      <tr class="row10">
-                                                         <td>
-                                                              <div class="form-group">
-          
-                    <input id="pd" class="form-control" placeholder="Product Name" name="pd" value="" type="text">
-                </div>
-                                                         </td>
+                                                          <td>
+                                                   <div class=" form-group searchproduct">
+                                                    <input class="form-control" placeholder="Product name " type="text">
+                                                        <i class="fa fa-search search-icon"></i>
+                                                        </div>
+                                                    </td>
                                                          <td>
                                                               <div class="form-group">
           
@@ -369,10 +380,16 @@
                 </div>
                                                          </td>
                            
-                                               <td> <div class="form-group">
-                 
-                    <input id="unit" class="form-control" placeholder="Unit" name="unit" value="" type="text">
-                </div></td>
+                             <td class="col-md-2">
+                                                          <div class="form-group ">
+                                                        <select class="form-control" name="type" id="add_status_type">
+                       <option value="" selected="">Unit</option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select>
+                                                          </div>
+                                                    </td>
                                                         <td>   <div class="form-group">
                    
                     <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">

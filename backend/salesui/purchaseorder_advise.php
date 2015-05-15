@@ -123,7 +123,7 @@
                                               <a href="purchaseorder_challanbutton.php" class="table-link" title="purchase challan" >
                                                 <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
+							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
                                             <a href="" class="table-link" title="print" data-toggle="modal" data-target="#myModal1">
@@ -161,7 +161,7 @@
                                              <a href="purchaseorder_challanbutton.php" class="table-link" title="purchase challan" >
                                                 <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
+							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
                                               <a href="" class="table-link" title="print" data-toggle="modal" data-target="#myModal1">

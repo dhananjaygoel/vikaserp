@@ -102,7 +102,7 @@
                                 </tbody>
                                                     </table>
                                           
-                                            <table id="table-example" class="table table-hover table_deliverchallan serial">
+                                         <table id="table-example" class="table table-hover table_deliverchallan serial">
                                                 <tbody>
                                                     <tr>
                                                         <td><span>Product Name</span></td>
@@ -115,16 +115,16 @@
                                                         <td><span>Present Shipping</span></td>
                                                     </tr>
                                                     <tr>
-                                                   <td class="col-md-2">
+                                                   <td>
                                                    Product1
                                                     </td>
-                                                   <td class="col-md-2">
+                                                   <td>
                                                    Actual Quantity
                                                     </td>
-                                                    <td class="col-md-2">
+                                                    <td>
                                                    Actual Pieces
                                                     </td>
-                                                     <td class="col-md-1">
+                                                     <td>
                                                     Unit
                                                     </td>
                                                     <td class="shippingcolumn">
@@ -140,16 +140,16 @@
                                                     
                                                 </tr>
                                                    <tr>
-                                                     <td class="col-md-2">
+                                                     <td>
                                                    Product2
                                                     </td>
-                                                   <td class="col-md-2">
+                                                   <td>
                                                    Actual Quantity
                                                     </td>
-                                                    <td class="col-md-2">
+                                                    <td>
                                                    Actual Pieces
                                                     </td>
-                                                     <td class="col-md-1">
+                                                     <td>
                                                     Unit
                                                     </td>
                                                     <td class="shippingcolumn">
@@ -166,16 +166,16 @@
                                                 </tr>
                                                    
                                                  <tr>
-                                                     <td class="col-md-2">
+                                                     <td>
                                                    Product3
                                                     </td>
-                                                   <td class="col-md-2">
+                                                   <td>
                                                    Actual Quantity
                                                     </td>
-                                                    <td class="col-md-2">
+                                                    <td>
                                                    Actual Pieces
                                                     </td>
-                                                     <td class="col-md-1">
+                                                     <td>
                                                     Unit
                                                     </td>
                                                     <td class="shippingcolumn">
@@ -192,16 +192,16 @@
                                                 </tr>
                                                    
                                                     <tr>
-                                                     <td class="col-md-2">
+                                                     <td>
                                                    Product4
                                                     </td>
-                                                   <td class="col-md-2">
+                                                   <td>
                                                    Actual Quantity
                                                     </td>
-                                                    <td class="col-md-2">
+                                                    <td>
                                                    Actual Pieces
                                                     </td>
-                                                     <td class="col-md-1">
+                                                     <td >
                                                     Unit
                                                     </td>
                                                     <td class="shippingcolumn">
@@ -239,17 +239,27 @@
                                                         <td></td>
                                                     </tr>
                                                    <tr class="row6">
-                                                     <td class="col-md-2">
-                                                   Product5
+                                                     <td>
+                                                   <div class="searchproduct">
+                                                    <input class="form-control" placeholder="Product name " type="text">
+                                                        <i class="fa fa-search search-icon"></i>
+                                                        </div>
                                                     </td>
-                                                   <td class="col-md-2">
-                                                   Actual Quantity
+                                                   <td>
+                                                    <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
                                                     </td>
-                                                    <td class="col-md-2">
-                                                   Actual Pieces
+                                                    <td>
+                                                    <input id="piece" class="form-control" placeholder="Pieces" name="piece" value="" type="text">
                                                     </td>
-                                                     <td class="col-md-1">
-                                                    Unit
+                                                     <td>
+                                                  
+                                                        <select class="form-control" name="type" id="add_status_type">
+                                           <option value="" selected=""></option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select>
+                                                          
                                                     </td>
                                                     <td class="shippingcolumn">
                                                    <input id="shipping" class="form-control" placeholder="Rate" name="rate" value="" type="text">
@@ -285,18 +295,28 @@
                                                         <td></td>
                                                         <td></td>
                                                     </tr>
-                                                    <tr class="row8">
-                                                     <td class="col-md-2">
-                                                   Product6
+                                                     <tr class="row8">
+                                                     <td>
+                                                   <div class="searchproduct">
+                                                    <input class="form-control" placeholder="Product name " type="text">
+                                                        <i class="fa fa-search search-icon"></i>
+                                                        </div>
                                                     </td>
-                                                   <td class="col-md-2">
-                                                   Actual Quantity
+                                                   <td>
+                                                    <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
                                                     </td>
-                                                    <td class="col-md-2">
-                                                   Actual Pieces
+                                                    <td>
+                                                    <input id="piece" class="form-control" placeholder="Pieces" name="piece" value="" type="text">
                                                     </td>
-                                                     <td class="col-md-1">
-                                                    Unit
+                                                     <td>
+                                                  
+                                                        <select class="form-control" name="type" id="add_status_type">
+                                           <option value="" selected=""></option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select>
+                                                          
                                                     </td>
                                                     <td class="shippingcolumn">
                                                    <input id="shipping" class="form-control" placeholder="Rate" name="rate" value="" type="text">
@@ -332,18 +352,28 @@
                                                         <td></td>
                                                         <td></td>
                                                     </tr>
-                                                    <tr class="row10">
-                                                     <td class="col-md-2">
-                                                   Product7
+                                                     <tr class="row10">
+                                                     <td>
+                                                   <div class="searchproduct">
+                                                    <input class="form-control" placeholder="Product name " type="text">
+                                                        <i class="fa fa-search search-icon"></i>
+                                                        </div>
                                                     </td>
-                                                   <td class="col-md-2">
-                                                   Actual Quantity
+                                                   <td>
+                                                    <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
                                                     </td>
-                                                    <td class="col-md-2">
-                                                   Actual Pieces
+                                                    <td>
+                                                    <input id="piece" class="form-control" placeholder="Pieces" name="piece" value="" type="text">
                                                     </td>
-                                                     <td class="col-md-1">
-                                                    Unit
+                                                     <td>
+                                                  
+                                                        <select class="form-control" name="type" id="add_status_type">
+                                           <option value="" selected=""></option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select>
+                                                          
                                                     </td>
                                                     <td class="shippingcolumn">
                                                    <input id="shipping" class="form-control" placeholder="Rate" name="rate" value="" type="text">

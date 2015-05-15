@@ -109,7 +109,7 @@
 												12526
 											</span>
 										</span>
-									</div></a>
+                                    					</div></a>
 								</div>
                                                             	<div class="col-lg-3 col-sm-6 col-xs-12">
 									<a class="indexlink" href="delivery_orders.php"><div class="main-box infographic-box">

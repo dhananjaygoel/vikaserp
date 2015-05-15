@@ -125,7 +125,7 @@
                                               <a href="delivery_orders_challanbutton.php" class="table-link" title="Delivery challan">
                                                 <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
+							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
                                               <a href="" class="table-link" title="print" data-toggle="modal" data-target="#myModal1">
@@ -160,10 +160,10 @@
 							<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                               <a href="" class="table-link" title="Delivery challan">
+                                               <a href="delivery_orders_challanbutton.php" class="table-link" title="Delivery challan">
                                                 <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
+							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
                                              <a href="" class="table-link" title="print" data-toggle="modal" data-target="#myModal1">

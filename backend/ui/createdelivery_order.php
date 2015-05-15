@@ -106,7 +106,7 @@
                                                     <span><b>Unit</b></span>
                                                     </td>
                                                    
-                                                    <td>
+                                                    <td class="col-md-1">
                                                     <span><b>Price</b></span>
                                                     </td>
                                                     <td>
@@ -121,127 +121,350 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="col-md-2">
+                                                    <td>
                                                    Product Name
                                                     </td>
-                                                   <td class="col-md-2">
+                                                   <td >
                                                     Quantity
                                                     </td>
-                                                    <td class="col-md-2">
+                                                    <td>
                                                     Unit
                                                     </td>
-                                                     <td class="col-md-2">
+                                                     <td>
                                                     Price
                                                     </td>
-                                                       <td class="col-md-2">
+                                                       <td>
                                                  Pending Order
                                                        </td>
-                                                      <td class="col-md-2">
+                                                      <td>
                                                         <div class="form-group pshipping">
                                                         <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
                                                         </div>
                                                     </td>
-                                                      <td class="col-md-2">
-                                                      Remark
-                                                       </td>
-                                                    
-                                                </tr>
-                                             <tr>
-                                                    <td class="col-md-2">
-                                                   Product Name
-                                                    </td>
-                                                   <td class="col-md-2">
-                                                    Quantity
-                                                    </td>
-                                                    <td class="col-md-2">
-                                                    Unit
-                                                    </td>
-                                                    <td>Price</td>
-                                                       <td class="col-md-2">
-                                                 Pending Order
-                                                       </td>
-                                                        <td class="col-md-2">
-                                                        <div class="form-group pshipping">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
-                                                    </td>
-                                                      <td class="col-md-2">
+                                                      <td>
                                                       Remark
                                                        </td>
                                                     
                                                 </tr>
                                                  <tr>
-                                                    <td class="col-md-2">
+                                                    <td>
                                                    Product Name
                                                     </td>
-                                                   <td class="col-md-2">
+                                                   <td >
                                                     Quantity
                                                     </td>
-                                                    <td class="col-md-2">
+                                                    <td>
                                                     Unit
-                                                    </td> 
-                                                    <td>Price</td>
-                                                    
-                                                       <td class="col-md-2">
+                                                    </td>
+                                                     <td>
+                                                    Price
+                                                    </td>
+                                                       <td>
                                                  Pending Order
                                                        </td>
-                                                     <td class="col-md-2">
+                                                      <td>
                                                         <div class="form-group pshipping">
                                                         <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
                                                         </div>
                                                     </td>
-                                                     <td class="col-md-2">
-                                                      Remark
-                                                       </td>
-                                                </tr>
-                                                 <tr>
-                                                    <td class="col-md-2">
-                                                   Product Name
-                                                    </td>
-                                                   <td class="col-md-2">
-                                                    Quantity
-                                                    </td>
-                                                    <td class="col-md-2">
-                                                    Unit
-                                                    </td>
-                                                     <td>Price</td>
-                                                       <td class="col-md-2">
-                                                 Pending Order
-                                                       </td>
-                                                      <td class="col-md-2">
-                                                        <div class="form-group pshipping">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
-                                                    </td>
-                                                      <td class="col-md-2">
+                                                      <td>
                                                       Remark
                                                        </td>
                                                     
                                                 </tr>
                                                  <tr>
-                                                    <td class="col-md-2">
+                                                    <td>
                                                    Product Name
                                                     </td>
-                                                   <td class="col-md-2">
+                                                   <td >
                                                     Quantity
                                                     </td>
-                                                    <td class="col-md-2">
+                                                    <td>
                                                     Unit
                                                     </td>
-                                                     <td>Price</td>
-                                                       <td class="col-md-2">
+                                                     <td>
+                                                    Price
+                                                    </td>
+                                                       <td>
                                                  Pending Order
                                                        </td>
-                                                     <td class="col-md-2">
+                                                      <td>
                                                         <div class="form-group pshipping">
                                                         <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
                                                         </div>
                                                     </td>
-                                                     <td class="col-md-2">
+                                                      <td>
                                                       Remark
                                                        </td>
+                                                    
                                                 </tr>
+                                                 <tr>
+                                                    <td>
+                                                   Product Name
+                                                    </td>
+                                                   <td >
+                                                    Quantity
+                                                    </td>
+                                                    <td>
+                                                    Unit
+                                                    </td>
+                                                     <td>
+                                                    Price
+                                                    </td>
+                                                       <td>
+                                                 Pending Order
+                                                       </td>
+                                                      <td>
+                                                        <div class="form-group pshipping">
+                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
+                                                        </div>
+                                                    </td>
+                                                      <td>
+                                                      Remark
+                                                       </td>
+                                                    
+                                                </tr>
+                                           
+                                            
+                                              
+                                             
+                                                    <tr class="row5">
+                                                        <td>
+                                                             <div class="add_button1">
+                                                    <div class="form-group pull-left">
+
+                                                    <label for="addmore"></label>
+                                                    <a href="#" class="table-link" title="add more" id="addmore1">
+                                                    <span class="fa-stack more_button" >
+                                                            <i class="fa fa-square fa-stack-2x"></i>
+                                                            <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                                                    </span>
+                                                    </a>
+
+                                                    </div>
+                                                    </div>
+                                                        </td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr class="row6">
+                                                   
                                                  
+                                                    <td>
+                                                        <div class="form-group searchproduct">
+                                                    <input class="form-control" placeholder="Enter Product name " type="text">
+                                                        <i class="fa fa-search search-icon"></i>
+                                                        </div>
+                                                    </td>
+                                                       <td>
+                                                        <div class="form-group">
+                       
+                    <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
+              
+                    </div>
+                                                    </td>
+                                                      <td>
+                                                          <div class="form-group ">
+                                                        <select class="form-control" name="type" id="add_status_type">
+                       <option value="" selected="">Unit</option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select>
+                                                          </div>
+                                                    </td>
+                                                    <td>
+                                                   
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" value="price" id="price">
+                                               
+                                            </div>
+                                            
+                                           
+                                                    </td>
+                                                    <td class="text-center"><div class="form-group">Pending Order</div></td>
+                                                        <td>
+                                                        <div class="form-group pcshipping">
+                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
+                                                        </div>
+                                                    </td>
+                                                      <td>
+                                                          <div class="form-group">
+                                                          <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
+                                                          </div>
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr class="row7">
+                                                        <td>
+                                                             <div class="add_button1">
+                                                    <div class="form-group pull-left">
+
+                                                    <label for="addmore"></label>
+                                                    <a href="#" class="table-link" title="add more" id="addmore2">
+                                                    <span class="fa-stack more_button" >
+                                                            <i class="fa fa-square fa-stack-2x"></i>
+                                                            <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                                                    </span>
+                                                    </a>
+
+                                                    </div>
+                                                    </div>
+                                                        </td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                      <tr class="row8">
+                                                   
+                                                 
+                                                    <td>
+                                                        <div class="form-group searchproduct">
+                                                    <input class="form-control" placeholder="Enter Product name " type="text">
+                                                        <i class="fa fa-search search-icon"></i>
+                                                        </div>
+                                                    </td>
+                                                       <td>
+                                                        <div class="form-group">
+                       
+                    <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
+              
+                    </div>
+                                                    </td>
+                                                      <td>
+                                                          <div class="form-group ">
+                                                        <select class="form-control" name="type" id="add_status_type">
+                       <option value="" selected="">Unit</option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select>
+                                                          </div>
+                                                    </td>
+                                                    <td>
+                                                   
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" value="price" id="price">
+                                               
+                                            </div>
+                                            
+                                           
+                                                    </td>
+                                                    <td class="text-center"><div class="form-group">Pending Order</div></td>
+                                                        <td>
+                                                        <div class="form-group pcshipping">
+                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
+                                                        </div>
+                                                    </td>
+                                                      <td>
+                                                          <div class="form-group">
+                                                          <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
+                                                          </div>
+                                                    </td>
+                                                    
+                                                </tr>
+                                                   <tr class="row9">
+                                                        <td>
+                                                             <div class="add_button1">
+                                                    <div class="form-group pull-left">
+
+                                                    <label for="addmore"></label>
+                                                    <a href="#" class="table-link" title="add more" id="addmore3">
+                                                    <span class="fa-stack more_button" >
+                                                            <i class="fa fa-square fa-stack-2x"></i>
+                                                            <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                                                    </span>
+                                                    </a>
+
+                                                    </div>
+                                                    </div>
+                                                        </td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                       <tr class="row10">
+                                                   
+                                                 
+                                                    <td>
+                                                        <div class="form-group searchproduct">
+                                                    <input class="form-control" placeholder="Enter Product name " type="text">
+                                                        <i class="fa fa-search search-icon"></i>
+                                                        </div>
+                                                    </td>
+                                                       <td>
+                                                        <div class="form-group">
+                       
+                    <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
+              
+                    </div>
+                                                    </td>
+                                                      <td>
+                                                          <div class="form-group ">
+                                                        <select class="form-control" name="type" id="add_status_type">
+                       <option value="" selected="">Unit</option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select>
+                                                          </div>
+                                                    </td>
+                                                    <td>
+                                                   
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" value="price" id="price">
+                                               
+                                            </div>
+                                            
+                                           
+                                                    </td>
+                                                    <td class="text-center"><div class="form-group">Pending Order</div></td>
+                                                        <td>
+                                                        <div class="form-group pcshipping">
+                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
+                                                        </div>
+                                                    </td>
+                                                      <td>
+                                                          <div class="form-group">
+                                                          <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
+                                                          </div>
+                                                    </td>
+                                                    
+                                                </tr>
+                                                 <tr class="row11">
+                                                        <td>
+                                                             <div class="add_button1">
+                                                    <div class="form-group pull-left">
+
+                                                    <label for="addmore"></label>
+                                                    <a href="#" class="table-link" title="add more" id="addmore4">
+                                                    <span class="fa-stack more_button" >
+                                                            <i class="fa fa-square fa-stack-2x"></i>
+                                                            <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                                                    </span>
+                                                    </a>
+
+                                                    </div>
+                                                    </div>
+                                                        </td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                
                                                 
                                                 
                                                 </tbody>
