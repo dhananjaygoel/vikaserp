@@ -400,7 +400,7 @@
                  
                                              <div class="form-group">
                   
-                                                 <input id="includevat" type="checkbox" name="Include VAT" value="includevat"><b class="challan">All Inclusive</b>
+                                                 <input id="includevat" type="checkbox" name="Include VAT" value="includevat"><b class="challan">Plus VAT</b>
                 </div>
                                              <div id="vatdetails">                     
                                              <div class="form-group">

@@ -225,7 +225,7 @@
                                      
                                         </tr>
                                         <tr>
-                                        <td><span>Include VAT: </span>Yes</td>
+                                        <td><span>Plus VAT: </span>Yes</td>
                                      
                                         </tr>
                                         <tr>
