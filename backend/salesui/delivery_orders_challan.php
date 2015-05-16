@@ -90,7 +90,7 @@
                                         <tr>
                                         <td class="text-center">1</td>
                                         <td class="text-center">Party1</td>
-                                        <td class="text-center">PO/Apr15/04/01/01</td>                                        
+                                        <td class="text-center">Apr15/04/01/01</td>                                        
                                         <td class="text-center">600</td>
                                          <td class="text-center"><input id="amount" class="form-control" placeholder="Amount" name="amount" value="" type="text"></td>
                                        			
@@ -124,7 +124,7 @@
                                                         <tr>
                                         <td class="text-center">2</td>
                                         <td class="text-center">Party2</td>
-                                        <td class="text-center">PO/Apr15/04/01/01</td>                                        
+                                        <td class="text-center">Apr15/04/01/01</td>                                        
                                         <td class="text-center">600</td>
                                       
                                         <td class="text-center"><input id="amount" class="form-control" placeholder="Amount" name="amount" value="" type="text"></td>

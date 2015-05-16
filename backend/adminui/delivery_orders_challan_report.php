@@ -120,7 +120,7 @@
                                         <tr>
                                             <td><span class="cbt">1</span></td>
                                         <td>16 April,2015</td>
-                                        <td>PO/Apr15/04/01/01</td>
+                                        <td>Apr15/04/01/01</td>
                                         <td>Party1</td>
                                         <td>MH 14 BS 3022</td>                                        
                                         <td>                                    
@@ -143,7 +143,7 @@
                                         <tr>
                                             <td><span class="cbt">2</span></td>
                                         <td>19 April,2015</td>
-                                        <td>PO/Apr15/04/01/01</td>
+                                        <td>Apr15/04/01/01</td>
                                         <td>Party2</td>
                                         <td>MH 14 BS 3022</td>                                        
                                         <td>                                    
@@ -163,7 +163,7 @@
                                     <tr>
                                             <td><span class="cbt">3</span></td>
                                         <td>21 April,2015</td>
-                                        <td>PO/Apr15/04/01/01</td>
+                                        <td>Apr15/04/01/01</td>
                                         <td>Party3</td>
                                         <td>MH 14 BS 3022</td>                                        
                                         <td>                                    
@@ -183,7 +183,7 @@
                                         <tr>
                                             <td><span class="cbt">4</span></td>
                                         <td>25 April,2015</td>
-                                        <td>PO/Apr15/04/01/01</td>
+                                        <td>Apr15/04/01/01</td>
                                         <td>Party4</td>
                                         <td>MH 14 BS 3022</td>                                        
                                         <td>                                    

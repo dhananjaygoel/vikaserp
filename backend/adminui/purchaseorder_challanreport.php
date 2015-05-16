@@ -71,7 +71,7 @@
                                                                                         
                                                                                     <div class="pull-right col-md-5">
                                                                                       
-                                                                                    <button type="button" class="btn btn-primary form_button_footer" onClick="location.href='print_salesdaybook.php'" >Print</button>
+                                                                                    <button type="button" class="btn btn-primary form_button_footer" onClick="location.href='print_purchasedaybook.php'" >Print</button>
                                                                                     <button type="button" class="btn btn-primary form_button_footer" >Export</button>
                                                                                     </div>
 										</div>

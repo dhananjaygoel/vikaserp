@@ -473,7 +473,7 @@
                                 
                                         
                                                 <tbody>
-                                                     <td><b>All Inclusive: </b>Yes</td>
+                                                     <td><b>Plus VAT: </b>Yes</td>
                                     
                                         </tr>
                                         

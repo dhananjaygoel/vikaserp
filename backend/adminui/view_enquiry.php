@@ -104,12 +104,8 @@
                               
                                 <tbody>                    
                                          <tr class="headingunderline">
-                                                    <td>
-                                                    <span>Category </span>
-                                                    </td>
-                                                    <td class="tableview_order">
-                                                    <span> Sub Product Category</span>
-                                                    </td>
+                                                 
+                                                    
                                                     <td>
                                                     <span> Product</span>
                                                     </td>
@@ -131,8 +127,7 @@
                                                   
                                                 </tr>
                                         <tr>
-                                            <td> Pipe</td>
-                                            <td>Lorem </td>
+                                            
                                             <td>Product1</td>
                                             <td>55</td>
                                             <td>6</td>
@@ -152,8 +147,7 @@
                                             <td>Lorem </td>
                                         </tr>
                                          <tr>
-                                            <td> Pipe</td>
-                                            <td>Lorem </td>
+                                          
                                             <td>Product2</td>
                                             <td>55</td>
                                             <td>6</td>
@@ -173,8 +167,7 @@
                                             <td>Lorem </td>
                                         </tr>
                                          <tr>
-                                            <td> Pipe</td>
-                                            <td>Lorem </td>
+                                            
                                             <td>Product3</td>
                                             <td>55</td>
                                             <td>6</td>
@@ -194,8 +187,7 @@
                                             <td>Lorem </td>
                                         </tr>
                                          <tr>
-                                            <td> Pipe</td>
-                                            <td>Lorem </td>
+                                            
                                             <td>Product4</td>
                                             <td>55</td>
                                             <td>6</td>
@@ -221,7 +213,7 @@
                               
                                 <tbody>                    
                                      <tr>
-                                        <td><span>All Inclusive: </span>Yes</td>
+                                        <td><span>Plus VAT: </span>Yes</td>
                                     
                                         </tr>
                                          <tr>

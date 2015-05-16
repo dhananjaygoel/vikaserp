@@ -447,7 +447,7 @@
                  
                                              <div class="form-group">
                   
-                                                 <input id="includevat" type="checkbox" name="Include VAT" value="includevat"><b class="challan">Include VAT</b>
+                                                 <input id="includevat" type="checkbox" name="Include VAT" value="includevat"><b class="challan">Plus VAT</b>
                 </div>
                                              <div id="vatdetails">                     
                                              <div class="form-group">
