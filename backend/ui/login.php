@@ -77,26 +77,10 @@
 										</div>
 										<div class="row">
 											<div class="col-xs-12">
-												<button type="submit" class="btn btn-success col-xs-12">Login</button>
+												<button type="submit" class="btn btn-success col-xs-12" onClick="location.href='index.html'">Login</button>
 											</div>
 										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<p class="social-text">Or login with</p>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-12 col-sm-6">
-												<button type="submit" class="btn btn-primary col-xs-12 btn-facebook">
-													<i class="fa fa-facebook"></i> facebook
-												</button>
-											</div>
-											<div class="col-xs-12 col-sm-6">
-												<button type="submit" class="btn btn-primary col-xs-12 btn-twitter">
-													<i class="fa fa-twitter"></i> Twitter
-												</button>
-											</div>
-										</div>
+										
 									</form>
 								</div>
 							</div>

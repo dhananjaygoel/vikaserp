@@ -87,6 +87,10 @@
                                     
                                         </tr>
                                         <tr>
+                                            <td><span>Contact Person:</span> Lorem ipsum</td>
+                                    
+                                        </tr>
+                                        <tr>
                                         <td><span>Address1: </span>Lorem Ipsum Dollar</td>
                                     
                                         </tr>

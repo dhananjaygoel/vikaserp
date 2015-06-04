@@ -92,7 +92,18 @@
                                         <td class="text-center">Party1</td>
                                         <td class="text-center">Apr15/04/01/01</td>                                        
                                         <td class="text-center">600</td>
-                                         <td class="text-center"><input id="amount" class="form-control" placeholder="Amount" name="amount" value="" type="text"></td>
+                                          <td>
+                                            <div class="row product-price">
+                                            <div class="form-group col-md-6">
+                                                <input type="text" class="form-control" id="Amount" placeholder="Amount">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-2 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                        </td>
                                        			
                                       
                                         <td class="text-center">
@@ -133,7 +144,18 @@
                                         <td class="text-center">Apr15/04/01/01</td>                                        
                                         <td class="text-center">600</td>
                                       
-                                        <td class="text-center"><input id="amount" class="form-control" placeholder="Amount" name="amount" value="" type="text"></td>
+                                         <td>
+                                            <div class="row product-price">
+                                            <div class="form-group col-md-6">
+                                                <input type="text" class="form-control" id="Amount" placeholder="Amount">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-2 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                        </td>
                                        			
                                       
                                         <td class="text-center">

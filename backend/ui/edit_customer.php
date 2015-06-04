@@ -79,7 +79,11 @@
                 <div class="form-group">
                     <label for="company_name">Company  Name</label>
                     <input id="company_name" class="form-control" placeholder="Company Name" name="company_name" value="" type="text">
-                </div>                                                    
+                </div>   
+                <div class="form-group">
+                    <label for="contactp">Contact Person</label>
+                    <input id="contactp" class="form-control" placeholder="Contact Person" name="contactp" value="" type="text">
+                </div>  
                 <div class="form-group">
                     <label for="address1">Address 1</label>
                     <input id="address1" class="form-control" placeholder="Address 1" name="address1" value="" type="text">

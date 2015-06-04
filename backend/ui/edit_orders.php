@@ -73,6 +73,21 @@
                                                 
                 <form method="POST" action="" accept-charset="UTF-8" >
                     <div class="form-group">
+                         <div class="radio">
+                        <input checked="" value="new" id="optionsRadios5" name="status" type="radio">
+                        <label for="optionsRadios5">Warehouse</label>
+                        <input  value="exist" id="optionsRadios6" name="status" type="radio">
+                        <label for="optionsRadios6">Supplier</label>
+                        
+                    </div>
+                          <div class="supplier" style="display:none">
+                        <select class="form-control" name="type" id="add_status_type">
+                         <option value="" selected="">Select supplier</option>
+                         <option value="2">Supplier1</option>
+                         <option value="2">Supplier2</option>
+                              
+                         </select>
+                 </div>
                     <label>Customer</label>
                     <div class="radio">
                         <input checked="" value="exist" id="optionsRadios1" name="status" type="radio">
@@ -807,6 +822,14 @@ $(document).ready(function(){
       $("#optionsRadios3").click(function(){
         $(".plusvat").hide();
      
+    });
+     $("#optionsRadios6").click(function(){
+        $(".supplier").show();
+       
+    });
+      $("#optionsRadios5").click(function(){
+        $(".supplier").hide();
+       
     });
 });
 $('#datepickerDate').datepicker({
