@@ -69,7 +69,12 @@
 
               <div class="main-box-body clearfix">
                 <hr>
-                                                
+                <div class="form-group">
+                    Date: 29 April, 2015
+                </div>   
+                <div class="form-group">
+                    Serial Number: Apr15/04/01/01
+                </div>   
                 <form method="POST" action="" accept-charset="UTF-8" >
                     <div class="form-group">
                 

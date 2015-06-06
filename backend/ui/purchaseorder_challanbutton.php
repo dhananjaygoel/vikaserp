@@ -95,11 +95,11 @@
                                                        <td class="col-md-2"><span>Product Name</span></td>
                                                         <td class="col-md-2"><span>Actual Quantity</span></td>
                                                         
-                                                 
-                                                        <td><span>Unit</span></td>
+                                                        <td class="col-md-2 text-center"><span>Present Shipping</span></td>
+                                                        <td class="col-md-1"><span>Unit</span></td>
                                                         <td class="col-md-2"><span>Rate</span></td>
                                                         <td class="col-md-2"><span>Amount</span></td>
-                                                        <td class="col-md-2"><span>Present Shipping</span></td>
+                                                      
                                                     </tr>
                                                      <tr>
                                                          <td>
@@ -111,26 +111,34 @@
                                                          <td>
                                                               <div class="form-group">
           
-                   Actual Quantity
+                   <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">
                 </div>
                                                          </td>
-                               
+                                                                 <td>  <div class="form-group text-center">
+                  
+                    Shipping1
+                </div></td>
                                                <td> <div class="form-group">
                  
                    Unit
                 </div></td>
-                                                        <td>   <div class="form-group">
-                   
-                    <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
-                </div></td>
+                           <td class="shippingcolumn">
+                                                            <div class="row ">
+                                            <div class="form-group col-md-6">
+                                           <input type="text" class="form-control" id="difference" value="Rate">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-2 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                                    </td>
                                               <td>   <div class="form-group">
                    
-                    <input id="amount" class="form-control" placeholder="Amount" name="Amount" value="" type="text">
+                    Amount1
                 </div></td>
-                                                        <td>  <div class="form-group">
-                  
-                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
-                </div></td>
+                      
                                                     </tr>
                                                        <tr>
                                                          <td>
@@ -142,26 +150,34 @@
                                                          <td>
                                                               <div class="form-group">
           
-                   Actual Quantity
+                  <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">
                 </div>
                                                          </td>
-                               
+                                                               <td>  <div class="form-group text-center">
+                  
+                   Shipping2
+                </div></td>
                                                <td> <div class="form-group">
                  
                    Unit
                 </div></td>
-                                                        <td>   <div class="form-group">
-                   
-                    <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
-                </div></td>
+                            <td class="shippingcolumn">
+                                                            <div class="row ">
+                                            <div class="form-group col-md-6">
+                                           <input type="text" class="form-control" id="difference" value="Rate">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-2 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                                    </td>
                                               <td>   <div class="form-group">
                    
-                    <input id="amount" class="form-control" placeholder="Amount" name="Amount" value="" type="text">
+                   Amount2
                 </div></td>
-                                                        <td>  <div class="form-group">
-                  
-                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
-                </div></td>
+                        
                                                     </tr>
                                                    
                                                  <tr>
@@ -174,26 +190,34 @@
                                                          <td>
                                                               <div class="form-group">
           
-                   Actual Quantity
+                  <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">
                 </div>
                                                          </td>
-                               
+                                                                  <td>  <div class="form-group text-center">
+                  
+                   Shipping3
+                </div></td>
                                                <td> <div class="form-group">
                  
                    Unit
                 </div></td>
-                                                        <td>   <div class="form-group">
-                   
-                    <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
-                </div></td>
+                             <td class="shippingcolumn">
+                                                            <div class="row ">
+                                            <div class="form-group col-md-6">
+                                           <input type="text" class="form-control" id="difference" value="Rate">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-2 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                                    </td>
                                               <td>   <div class="form-group">
                    
-                    <input id="amount" class="form-control" placeholder="Amount" name="Amount" value="" type="text">
+                   Amount3
                 </div></td>
-                                                        <td>  <div class="form-group">
-                  
-                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
-                </div></td>
+                     
                                                     </tr>
                                                    
                                                        <tr>
@@ -206,26 +230,34 @@
                                                          <td>
                                                               <div class="form-group">
           
-                   Actual Quantity
+                  <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">
                 </div>
                                                          </td>
-                               
+                                                                <td>  <div class="form-group text-center">
+                  
+                    Shipping4
+                </div></td>
                                                <td> <div class="form-group">
                  
                    Unit
                 </div></td>
-                                                        <td>   <div class="form-group">
-                   
-                    <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
-                </div></td>
+                              <td class="shippingcolumn">
+                                                            <div class="row ">
+                                            <div class="form-group col-md-6">
+                                           <input type="text" class="form-control" id="difference" value="Rate">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-2 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                                    </td>
                                               <td>   <div class="form-group">
                    
-                    <input id="amount" class="form-control" placeholder="Amount" name="Amount" value="" type="text">
+                    Amount4
                 </div></td>
-                                                        <td>  <div class="form-group">
-                  
-                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
-                </div></td>
+                       
                                                     </tr>
                                                     <tr class="row5">
                                                         <td>
@@ -262,6 +294,10 @@
                     <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">
                 </div>
                                                          </td>
+                                                                                         <td>  <div class="form-group">
+                  
+                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
+                </div></td>
                             
                                 <td>
                                                           <div class="form-group ">
@@ -272,18 +308,23 @@
                                                 <option value="3">cm</option>
                                             </select>
                                                           </div>
-                                                    </td>                         <td>   <div class="form-group">
-                   
-                    <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
-                </div></td>
+                                                    </td>                         <td class="shippingcolumn">
+                                                            <div class="row ">
+                                            <div class="form-group col-md-6">
+                                           <input type="text" class="form-control" id="difference" value="Rate">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-2 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                                    </td>
                                               <td>   <div class="form-group">
                    
                     <input id="amount" class="form-control" placeholder="Amount" name="Amount" value="" type="text">
                 </div></td>
-                                                        <td>  <div class="form-group">
-                  
-                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
-                </div></td>
+                        
                                                     </tr>
                                                          <tr class="row7">
                                                         <td>
@@ -320,6 +361,10 @@
                     <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">
                 </div>
                                                          </td>
+                                                                                     <td>  <div class="form-group">
+                  
+                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
+                </div></td>
                              
                               <td class="col-md-2">
                                                           <div class="form-group ">
@@ -331,18 +376,23 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                        <td>   <div class="form-group">
-                   
-                    <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
-                </div></td>
+                             <td class="shippingcolumn">
+                                                            <div class="row ">
+                                            <div class="form-group col-md-6">
+                                           <input type="text" class="form-control" id="difference" value="Rate">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-2 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                                    </td>
                                               <td>   <div class="form-group">
                    
                     <input id="amount" class="form-control" placeholder="Amount" name="Amount" value="" type="text">
                 </div></td>
-                                                        <td>  <div class="form-group">
-                  
-                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
-                </div></td>
+                            
                                                     </tr>
                                                       <tr class="row9">
                                                         <td>
@@ -379,6 +429,10 @@
                     <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">
                 </div>
                                                          </td>
+                                                                                      <td>  <div class="form-group">
+                  
+                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
+                </div></td>
                            
                              <td class="col-md-2">
                                                           <div class="form-group ">
@@ -390,18 +444,23 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                        <td>   <div class="form-group">
-                   
-                    <input id="rate" class="form-control" placeholder="Rate" name="rate" value="" type="text">
-                </div></td>
+                               <td class="shippingcolumn">
+                                                            <div class="row">
+                                            <div class="form-group col-md-6">
+                                           <input type="text" class="form-control" id="difference" value="Rate">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-2 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                                    </td>
                                               <td>   <div class="form-group">
                    
                     <input id="amount" class="form-control" placeholder="Amount" name="Amount" value="" type="text">
                 </div></td>
-                                                        <td>  <div class="form-group">
-                  
-                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
-                </div></td>
+                           
                                                     </tr>
                                                 </tbody>
                                             </table>
