@@ -1,9 +1,10 @@
 <header class="navbar" id="header-navbar">
     <div class="container">
-        <a href="{{URL::to('bookings')}}" id="logo" class="navbar-brand">
-            {!! HTML::image('/resources/assets/frontend/img/logo1.png' , 'Logo', array('class' => 'normal-logo logo-white')) !!}
-            {!! HTML::image('/resources/assets/frontend/img/logo-black.png' , 'Logo', array('class' => 'normal-logo logo-black')) !!}
-            {!! HTML::image('/resources/assets/frontend/img/logo-small.png' , 'Logo', array('class' => 'small-logo hidden-xs hidden-sm hidden')) !!}
+        <a href="index.php" id="logo" class="navbar-brand">
+
+            <img src="img/logo1.png" alt="" class="normal-logo logo-white"/>
+            <img src="img/logo-black.png" alt="" class="normal-logo logo-black"/>
+            <img src="img/logo-small.png" alt="" class="small-logo hidden-xs hidden-sm hidden"/>
         </a>
 
         <div class="clearfix">
@@ -21,7 +22,7 @@
                     </li>
                 </ul>
             </div>
-            @if(Auth::check())
+
             <div class="nav-no-collapse pull-right" id="header-nav">
                 <ul class="nav navbar-nav pull-right">
 
@@ -39,8 +40,6 @@
 
                 </ul>
             </div>
-
-            @endif
         </div>
     </div>
 </header>
