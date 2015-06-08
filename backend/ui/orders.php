@@ -66,7 +66,7 @@
                                                                                     <option value="" selected="">Status</option>
                                                                                     <option value="1">Pending</option>
                                                                                     <option value="2">Completed</option>
-                                                                                    <option value="3">Cancelled</option>
+                                                                                    <option value="3">Canceled</option>
                                                                                     
                                                                                      
                                                                                     

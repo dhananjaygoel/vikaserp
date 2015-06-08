@@ -64,12 +64,10 @@
 							<div class="row">
     <div class="col-lg-12">
         <div class="main-box">
-            <header class="main-box-header clearfix">
-                <h2><i class="fa fa-dashboard"></i> &nbsp; Place Order</h2>
-            </header>            
+                    
 
             <div class="main-box-body clearfix">
-                <hr>
+          
                                                 
                 <form method="POST" action="" accept-charset="UTF-8" >
                     <div class="form-group">
@@ -722,12 +720,7 @@
                        
                 
             </div> 
-                       <div class="form-group ">
-                        
-                    <label for="price">Estimated Price:</label>
-                    <input id="price" class="form-control" placeholder="Estimated Price" name="price" value="" type="text">
-               
-            </div>
+                  
                     <div class="form-group col-md-4 targetdate">
                         
                     <label for="time">Estimated Delivery Date:</label>
@@ -739,7 +732,7 @@
             </div>
                     <div class="clearfix"></div>
                      <div class="form-group col-md-4 targetdate">
-                          <label for="date">Target Delivery Date: </label>
+                          <label for="date">Expected Delivery Date: </label>
                     <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     <input type="text" name="date" class="form-control" id="datepickerDate1">

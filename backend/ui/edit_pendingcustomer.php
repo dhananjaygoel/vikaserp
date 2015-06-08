@@ -50,25 +50,19 @@
 								<div class="col-lg-12">
 									<ol class="breadcrumb">
 										<li><a href="#">Home</a></li>
-										<li class="active"><span>Customers</span></li>
+										<li class="active"><span> Edit Pending Customer</span></li>
 									</ol>
 									
-									<div class="clearfix">
-										<h1 class="pull-left">Pending Customers</h1>
-										
-										
-									</div>
+									
 								</div>
 							</div>
 							<div class="row">
     <div class="col-lg-12">
         <div class="main-box">
-            <header class="main-box-header clearfix">
-                <h2><i class="fa fa-user"></i> &nbsp; Add Pending Customer </h2>
-            </header>            
+                     
 
               <div class="main-box-body clearfix">
-                <hr>
+       
                                                 
                 <form method="POST" action="" accept-charset="UTF-8" >
                 <div class="form-group">

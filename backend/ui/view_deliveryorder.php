@@ -122,20 +122,17 @@
                                                     <td>
                                                     <span>Pending Order</span>
                                                     </td>
-                                                    <td class="tableview_order">
-                                                    <span>Present Shipping</span>
-                                                    </td>
+                                                    
                                                     <td><span>Remark</span></td>
                                                 </tr>
-                                      
-                                           <tr>
+                                      <tr>
                                             <td> Product1</td>
-                                            <td>15</td>
-                                             <td>25</td>
+                                              <td>25</td>
                                             <td>Unit</td>
-                                             <td>150</td>
-                                            <td>35</td>
-                                            <td>Lorem</td>
+                                             <td>100</td>
+                                            <td>15</td>
+                                            
+                                            <td>Ipsum</td>
                                             
                                         </tr>
                                           <tr>
@@ -144,7 +141,7 @@
                                             <td>Unit</td>
                                              <td>150</td>
                                             <td>15</td>
-                                            <td>45</td>
+                                            
                                             <td>Ipsum</td>
                                             
                                         </tr>
@@ -154,7 +151,7 @@
                                             <td>Unit</td>
                                              <td>150</td>
                                             <td>25</td>
-                                            <td>55</td>
+                                           
                                             <td>Lorem</td>
                                             
                                         </tr>
@@ -165,7 +162,7 @@
                                             <td>Unit</td>
                                              <td>150</td>
                                             <td>15</td>
-                                            <td>65</td>
+                                            
                                             <td>Ipsum</td>
                                             
                                         </tr>
@@ -187,22 +184,12 @@
                                     
                                         </tr>
                                          <tr>
-                                        <td><span>Grand Total: </span> 5000</td>
+                                        <td><span>Grand Total: </span> $25000</td>
                                     
                                         </tr>
-                                     <tr>
-                                        <td><span>Estimated Price: </span>Lorem</td>
-                                    
-                                        </tr>   
-                                        <tr>
-                                        <td><span>Estimated Delivery Date: </span>20 April,2015</td>
-                                    
-                                        </tr>   
+                                      
                                         
-                                     <tr>
-                                        <td><span>Target Delivery Date: </span>25 April,2015</td>
-                                    
-                                        </tr>      
+                                           
                                                   <tr><td><b>Vehicle Name:</b> Lorem Ipsum </td> </tr>
                                                     <tr><td><b>Driver Name:</b> Lorem Ipsum</td> </tr>
                                                     <tr><td><b>Driver Contact:</b> Lorem Ipsum</td> </tr>

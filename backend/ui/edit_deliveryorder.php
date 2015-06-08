@@ -50,7 +50,7 @@
 								<div class="col-lg-12">
 									<ol class="breadcrumb">
 										<li><a href="#">Home</a></li>
-										<li class="active"><span>Edit Order</span></li>
+										<li class="active"><span>Edit Delivery Order</span></li>
 									</ol>
 									
 									<div class="clearfix">
@@ -60,12 +60,10 @@
 									</div>
 								</div>
 							</div>
-											<div  class="row">
+			<div  class="row">
     <div class="col-lg-12">
         <div class="main-box">
-            <header class="main-box-header clearfix">
-                <h2><i class="fa fa-user"></i> &nbsp; Edit Delivery Order</h2>
-            </header>            
+                    
             <form method="POST" action="" accept-charset="UTF-8" >
                 <div class="main-box-body clearfix"> 
                      <div class="form-group">
@@ -92,8 +90,8 @@
                                                        <td><span>Quantity</span></td>
                                                        <td><span>Unit</span></td>
                                                        <td><span>Price</span></td>
-                                                       <td><span>Pending Order</span></td>
-                                                       <td><span>Present Shipping</span></td>
+                                                       <td class="text-center"><span>Pending Order</span></td>
+                                                    
                                                        <td><span>Remark</span></td>
                                                         
                                                 </tr>
@@ -115,22 +113,15 @@
                                                     </td>
                                                     <td class="col-md-2">
                                                           <div class="row">
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group ">
                                                 <input type="text" class="form-control" value="price" id="price">
                                                
                                             </div>
-                                            <div class="form-group col-md-6 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            
                                             </div>
                                                     </td>
                                                     <td class="text-center"><div class="form-group">15</div></td>
-                                                     <td>
-                                                          <div class="form-group">
-                                                          <input id="shipping" class="form-control" placeholder="Present shipping" name="shipping" value="" type="text">
-                                                          </div>
-                                                    </td>
+                                                    
                                                       <td>
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
@@ -154,24 +145,17 @@
                                                       <td >
                                                           <div class="form-group">   Unit</div>
                                                     </td>
-                                                    <td class="col-md-2">
+                                                <td class="col-md-2">
                                                           <div class="row">
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group ">
                                                 <input type="text" class="form-control" value="price" id="price">
                                                
                                             </div>
-                                            <div class="form-group col-md-6 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            
                                             </div>
                                                     </td>
                                                     <td class="text-center"><div class="form-group">15</div></td>
-                                                     <td>
-                                                          <div class="form-group">
-                                                          <input id="shipping" class="form-control" placeholder="Present shipping" name="shipping" value="" type="text">
-                                                          </div>
-                                                    </td>
+                                                    
                                                       <td>
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
@@ -195,24 +179,17 @@
                                                       <td >
                                                           <div class="form-group">   Unit</div>
                                                     </td>
-                                                    <td class="col-md-2">
+                                                <td class="col-md-2">
                                                           <div class="row">
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group ">
                                                 <input type="text" class="form-control" value="price" id="price">
                                                
                                             </div>
-                                            <div class="form-group col-md-6 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            
                                             </div>
                                                     </td>
                                                     <td class="text-center"><div class="form-group">15</div></td>
-                                                     <td>
-                                                          <div class="form-group">
-                                                          <input id="shipping" class="form-control" placeholder="Present shipping" name="shipping" value="" type="text">
-                                                          </div>
-                                                    </td>
+                                                   
                                                       <td>
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
@@ -236,24 +213,17 @@
                                                       <td >
                                                           <div class="form-group">   Unit</div>
                                                     </td>
-                                                    <td class="col-md-2">
+                                                   <td class="col-md-2">
                                                           <div class="row">
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group ">
                                                 <input type="text" class="form-control" value="price" id="price">
                                                
                                             </div>
-                                            <div class="form-group col-md-6 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            
                                             </div>
                                                     </td>
                                                     <td class="text-center"><div class="form-group">15</div></td>
-                                                     <td>
-                                                          <div class="form-group">
-                                                          <input id="shipping" class="form-control" placeholder="Present shipping" name="shipping" value="" type="text">
-                                                          </div>
-                                                    </td>
+                                                   
                                                       <td>
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
@@ -313,24 +283,17 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                    <td class="col-md-2">
+                                                 <td class="col-md-2">
                                                           <div class="row">
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group ">
                                                 <input type="text" class="form-control" value="price" id="price">
                                                
                                             </div>
-                                            <div class="form-group col-md-6 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            
                                             </div>
                                                     </td>
                                                     <td class="text-center"><div class="form-group">64</div></td>
-                                                      <td>
-                                                          <div class="form-group">
-                                                          <input id="shipping" class="form-control" placeholder="Present shipping" name="shipping" value="" type="text">
-                                                          </div>
-                                                    </td>
+                                                    
                                                       <td>
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
@@ -387,24 +350,17 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                    <td class="col-md-2">
+                                                 <td class="col-md-2">
                                                           <div class="row">
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group ">
                                                 <input type="text" class="form-control" value="price" id="price">
                                                
                                             </div>
-                                            <div class="form-group col-md-6 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            
                                             </div>
                                                     </td>
                                                     <td class="text-center"><div class="form-group">64</div></td>
-                                                      <td>
-                                                          <div class="form-group">
-                                                          <input id="shipping" class="form-control" placeholder="Present shipping" name="shipping" value="" type="text">
-                                                          </div>
-                                                    </td>
+                                                      
                                                       <td>
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
@@ -461,24 +417,17 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                    <td class="col-md-2">
+                                                   <td class="col-md-2">
                                                           <div class="row">
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group ">
                                                 <input type="text" class="form-control" value="price" id="price">
                                                
                                             </div>
-                                            <div class="form-group col-md-6 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            
                                             </div>
                                                     </td>
                                                     <td class="text-center"><div class="form-group">64</div></td>
-                                                      <td>
-                                                          <div class="form-group">
-                                                          <input id="shipping" class="form-control" placeholder="Present shipping" name="shipping" value="" type="text">
-                                                          </div>
-                                                    </td>
+                                                 
                                                       <td>
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
@@ -581,23 +530,20 @@
                 </div><div class="form-group">
                        <label><b>Grand Total:</b> 5000</label>
                 </div>-->
-                    <div class="form-group">
-                       <label><b>Estimated Price:</b> Lorem Ipsum</label>
-                </div>
-                    <div class="form-group">
-                       <label><b>Estimated Delivery Date:</b> 10 April,2015</label>
-                </div>
+                   
                     
-                     <div class="form-group">
-                       <label><b>Target Delivery Date:</b> 15 April,2015</label>
-                </div>
+                    
                        <table id="table-example" class="table table-hover  ">
                                 
                                         
                                                 <tbody>
                                                     <tr class="cdtable">
                                                         <td class="cdfirst">VAT Percentage:</td>
-                                                        <td><input id="price" class="form-control" placeholder="VAT Percentage" name="price" value="" type="text"></td>
+                                                        <td>5%</td>
+                                                    </tr>
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">Grand Total:</td>
+                                                        <td>$25000</td>
                                                     </tr>
                                                     <tr class="cdtable">
                                                         <td class="cdfirst">Vehicle Name:</td>

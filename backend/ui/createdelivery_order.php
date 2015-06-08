@@ -64,9 +64,7 @@
 							<div class="row">
     <div class="col-lg-12">
         <div class="main-box">
-            <header class="main-box-header clearfix">
-                <h2><i class="fa fa-dashboard"></i> &nbsp; Create Delivery Order </h2>
-            </header>            
+               
 
             <div class="main-box-body clearfix">
                     <form method="POST" action="" accept-charset="UTF-8" >
@@ -113,9 +111,7 @@
                                                     <span><b>Pending Order</b></span>
                                                     </td>
                                                     
-                                                   <td>
-                                                    <span><b>Present Shipping</b></span>
-                                                    </td>
+                                                   
                                                      <td>
                                                     <span><b>Remark</b></span>
                                                     </td>
@@ -136,11 +132,7 @@
                                                        <td>
                                                  Pending Order
                                                        </td>
-                                                      <td>
-                                                        <div class="form-group pshipping">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
-                                                    </td>
+                                                      
                                                       <td>
                                                       Remark
                                                        </td>
@@ -162,11 +154,11 @@
                                                        <td>
                                                  Pending Order
                                                        </td>
-                                                      <td>
+                                                     <!-- <td>
                                                         <div class="form-group pshipping">
                                                         <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
                                                         </div>
-                                                    </td>
+                                                    </td>-->
                                                       <td>
                                                       Remark
                                                        </td>
@@ -188,11 +180,7 @@
                                                        <td>
                                                  Pending Order
                                                        </td>
-                                                      <td>
-                                                        <div class="form-group pshipping">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
-                                                    </td>
+                                                   
                                                       <td>
                                                       Remark
                                                        </td>
@@ -214,11 +202,7 @@
                                                        <td>
                                                  Pending Order
                                                        </td>
-                                                      <td>
-                                                        <div class="form-group pshipping">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
-                                                    </td>
+                                                     
                                                       <td>
                                                       Remark
                                                        </td>
@@ -286,12 +270,8 @@
                                             
                                            
                                                     </td>
-                                                    <td class="text-center"><div class="form-group">Pending Order</div></td>
-                                                        <td>
-                                                        <div class="form-group pcshipping">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
-                                                    </td>
+                                                    <td><div class="form-group">Pending Order</div></td>
+                                                      
                                                       <td>
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
@@ -357,12 +337,8 @@
                                             
                                            
                                                     </td>
-                                                    <td class="text-center"><div class="form-group">Pending Order</div></td>
-                                                        <td>
-                                                        <div class="form-group pcshipping">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
-                                                    </td>
+                                                    <td><div class="form-group">Pending Order</div></td>
+                                                       
                                                       <td>
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
@@ -428,12 +404,8 @@
                                             
                                            
                                                     </td>
-                                                    <td class="text-center"><div class="form-group">Pending Order</div></td>
-                                                        <td>
-                                                        <div class="form-group pcshipping">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
-                                                    </td>
+                                                    <td><div class="form-group">Pending Order</div></td>
+                                                      
                                                       <td>
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
@@ -477,20 +449,9 @@
                                     
                                         </tr>
                                         
-                                         
-                                     <tr>
-                                        <td><b>Estimated Price: </b>Lorem</td>
-                                    
-                                        </tr>   
-                                        <tr>
-                                        <td><b>Estimated Delivery Date: </b>20 April,2015</td>
-                                    
-                                        </tr>   
-                                        
-                                       <tr>
-                                        <td><b>Target Delivery Date: </b>25 April,2015</td>
-                                    
-                                        </tr>      
+                                      
+                                      
+                                      
                                             
                                          </tbody>
                                             </table>
@@ -500,7 +461,11 @@
                                                 <tbody>
                                                     <tr class="cdtable">
                                                         <td class="cdfirst">VAT Percentage:</td>
-                                                        <td><input id="price" class="form-control" placeholder="VAT Percentage" name="price" value="" type="text"></td>
+                                                        <td>5%</td>
+                                                    </tr>
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">Grand Total:</td>
+                                                        <td>$25000</td>
                                                     </tr>
                                                     <tr class="cdtable">
                                                         <td class="cdfirst">Vehicle Name:</td>
@@ -527,7 +492,7 @@
 
                                                 </div>
                      
-                             <button type="button" class="btn btn-primary form_button_footer" >Save and Send SMS</button>
+                         <button type="button" class="btn btn-primary form_button_footer" >Save and Send SMS</button> 
                         
                         <hr>
                         <div>

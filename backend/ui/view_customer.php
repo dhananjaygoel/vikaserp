@@ -50,11 +50,11 @@
 								<div class="col-lg-12">
 									<ol class="breadcrumb">
 										<li><a href="#">Home</a></li>
-										<li class="active"><span>Customers</span></li>
+										<li class="active"><span>View Customer</span></li>
 									</ol>
 									
 										<div class="filter-block">
-                                                                                    <h1 class="pull-left">View Customers</h1>                                 
+                                                                                    <h1 class="pull-left">View Customer</h1>                                 
                                                                                   <div class="pull-right top-page-ui">
 											<a href="edit_customer.php" class="btn btn-primary pull-right">
 												Edit Customer

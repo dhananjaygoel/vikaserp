@@ -64,9 +64,7 @@
 							<div class="row">
     <div class="col-lg-12">
         <div class="main-box">
-            <header class="main-box-header clearfix">
-                <h2><i class="fa fa-dashboard"></i> &nbsp; Create Purchase Advice </h2>
-            </header>            
+                     
 
             <div class="main-box-body clearfix">
                     <form method="POST" action="" accept-charset="UTF-8" >

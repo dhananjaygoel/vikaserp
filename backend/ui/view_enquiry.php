@@ -71,7 +71,7 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
-                        
+                        <form>
                         <div class="table-responsive">
                             <table id="table-example" class="table customerview_table">
                               
@@ -230,7 +230,7 @@
                                         </tr>
                                         
                                      <tr>
-                                        <td><span>Target Delivery Date: </span>25 April,2015</td>
+                                        <td><span>Expected Delivery Date: </span>25 April,2015</td>
                                     
                                         </tr>
                                          <tr>
@@ -244,6 +244,13 @@
 
 
                           </div>
+                            <button type="button" class="btn btn-primary " >Save</button>
+                            <hr>
+                            <div>
+                                <button type="button" class="btn btn-primary " >Send SMS</button><span class="badge enquirybadge">5</span>
+                                 
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

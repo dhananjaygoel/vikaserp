@@ -64,12 +64,10 @@
 							<div class="row">
     <div class="col-lg-12">
         <div class="main-box">
-            <header class="main-box-header clearfix">
-                <h2><i class="fa fa-dashboard"></i> &nbsp; Edit Purchase Order </h2>
-            </header>            
+                   
 
             <div class="main-box-body clearfix">
-                <hr>
+            
                                                 
                 <form method="POST" action="" accept-charset="UTF-8" >
                     <div class="form-group ">

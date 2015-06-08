@@ -50,26 +50,19 @@
 								<div class="col-lg-12">
 									<ol class="breadcrumb">
 										<li><a href="#">Home</a></li>
-										<li class="active"><span>Unit</span></li>
+										<li class="active"><span>Add Unit</span></li>
 									</ol>
 									
-									<div class="clearfix">
-										<h1 class="pull-left">Unit</h1>
-										
-										
-									</div>
 								</div>
 							</div>
 							
 							<div class="row">
     <div class="col-lg-12">
         <div class="main-box">
-            <header class="main-box-header clearfix">
-                <h2><i class="fa fa-user"></i> &nbsp; Add Unit </h2>
-            </header>            
+                     
 
             <div class="main-box-body clearfix">
-                <hr>
+                
                                                 
                 <form method="POST" action="" accept-charset="UTF-8" >
                 

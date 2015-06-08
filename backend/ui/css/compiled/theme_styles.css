@@ -318,7 +318,7 @@ a:hover, a:focus {
   border-bottom: 1px solid #ecf0f1;
 }
 .main-box .main-box-body {
-  padding: 0 20px 20px 20px;
+  padding: 20px 20px 20px 20px;
 }
 
 h1 small,
@@ -2002,6 +2002,7 @@ blockquote.pull-right:before {
   font-size: 1em;
   font-weight: 300;
 }*/
+.table tbody > tr:first-child > td{border-top:none}
 .table tbody > tr td .call-type {
   display: block;
   font-size: 0.75em;
@@ -7984,6 +7985,7 @@ svg {
 .difference_form .btn{padding:3px 10px!important}
 .pending_location{padding-left:0px!important}
 .customerview_table tr{border-top:1px solid #e7ebee;height:50px;font-size:15px}
+.customerview_table tr:first-child{border-top:none}
 .customerview_table tr td{border:none!important}
 .customerview_table tr td span{font-weight:bold;}
 .indexsearch{margin-right:0px!important}
@@ -8038,3 +8040,5 @@ h1.printwrapper{margin:20px 0px;color:#000}
 .deletebutton{margin:20px 0}
 .pcshipping{margin-bottom: 20px!important;width:71%!important}
 .billdate .cdfirst{width:8%;padding-left: 0px!important}
+.enquirybadge{margin-left: 10px;font-size: 14px;background-color:#216897;}
+.gtotal{margin-left: 10px}

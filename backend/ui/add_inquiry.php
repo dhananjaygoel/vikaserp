@@ -64,13 +64,9 @@
 							<div class="row">
     <div class="col-lg-12">
         <div class="main-box">
-            <header class="main-box-header clearfix">
-                <h2><i class="fa fa-dashboard"></i> &nbsp; Add Inquiry</h2>
-            </header>            
-
+           
             <div class="main-box-body clearfix">
-                <hr>
-                                                
+                                      
                 <form method="POST" action="" accept-charset="UTF-8" >
                     <div class="form-group">
                     <label>Customer</label>
@@ -722,7 +718,7 @@
                     
                     
                     <div class="form-group col-md-4 targetdate">
-                          <label for="date">Target Delivery Date: </label>
+                          <label for="date">Expected Delivery Date: </label>
                     <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     <input type="text" name="date" class="form-control" id="datepickerDate">
@@ -738,7 +734,7 @@
               
                 
                 <hr>
-                <div >
+                <div>
                     <button type="button" class="btn btn-primary form_button_footer" >Submit</button>
                     
                     <a href="enquiry.php" class="btn btn-default form_button_footer">Back</a>

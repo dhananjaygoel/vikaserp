@@ -53,23 +53,17 @@
 										<li class="active"><span>Edit Customer</span></li>
 									</ol>
 									
-									<div class="clearfix">
-										<h1 class="pull-left">Customers</h1>
-										
-										
-									</div>
+									
 								</div>
 							</div>
 							
 							<div class="row">
     <div class="col-lg-12">
         <div class="main-box">
-            <header class="main-box-header clearfix">
-                <h2><i class="fa fa-user"></i> &nbsp; Edit Customer </h2>
-            </header>            
+                   
 
             <div class="main-box-body clearfix">
-                <hr>
+          
                                                 
                 <form method="POST" action="" accept-charset="UTF-8" >
                 <div class="form-group">
