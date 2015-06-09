@@ -169,7 +169,7 @@
                                                       <td class="col-md-2">
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Unit</option>
+                      
                                                 <option value="2">Kg</option>
                                                 <option value="3">mm</option>
                                                 <option value="3">cm</option>
@@ -179,7 +179,7 @@
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                                <input type="text" class="form-control" value="" id="price" placeholder="price">
                                                
                                             </div>
                                             <div class="form-group col-md-6 difference_form">
@@ -214,7 +214,7 @@
                                                       <td class="col-md-2">
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Unit</option>
+                      
                                                 <option value="2">Kg</option>
                                                 <option value="3">mm</option>
                                                 <option value="3">cm</option>
@@ -224,7 +224,7 @@
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                               <input type="text" class="form-control" value="" id="price" placeholder="price">
                                                
                                             </div>
                                             <div class="form-group col-md-6 difference_form">
@@ -259,7 +259,7 @@
                                                       <td class="col-md-2">
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Unit</option>
+                      
                                                 <option value="2">Kg</option>
                                                 <option value="3">mm</option>
                                                 <option value="3">cm</option>
@@ -269,7 +269,7 @@
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                              <input type="text" class="form-control" value="" id="price" placeholder="price">
                                                
                                             </div>
                                             <div class="form-group col-md-6 difference_form">
@@ -304,7 +304,7 @@
                                                       <td class="col-md-2">
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Unit</option>
+                      
                                                 <option value="2">Kg</option>
                                                 <option value="3">mm</option>
                                                 <option value="3">cm</option>
@@ -314,7 +314,7 @@
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                                <input type="text" class="form-control" value="" id="price" placeholder="price">
                                                
                                             </div>
                                             <div class="form-group col-md-6 difference_form">
@@ -349,7 +349,7 @@
                                                       <td class="col-md-2">
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Unit</option>
+                      
                                                 <option value="2">Kg</option>
                                                 <option value="3">mm</option>
                                                 <option value="3">cm</option>
@@ -359,7 +359,7 @@
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                                <input type="text" class="form-control" value="" id="price" placeholder="price">
                                                
                                             </div>
                                             <div class="form-group col-md-6 difference_form">
@@ -416,7 +416,7 @@
                                                       <td class="col-md-2">
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Unit</option>
+                      
                                                 <option value="2">Kg</option>
                                                 <option value="3">mm</option>
                                                 <option value="3">cm</option>
@@ -426,7 +426,7 @@
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                               <input type="text" class="form-control" value="" id="price" placeholder="price">
                                                
                                             </div>
                                             <div class="form-group col-md-6 difference_form">
@@ -483,7 +483,7 @@
                                                       <td class="col-md-2">
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Unit</option>
+                      
                                                 <option value="2">Kg</option>
                                                 <option value="3">mm</option>
                                                 <option value="3">cm</option>
@@ -493,7 +493,7 @@
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                             <input type="text" class="form-control" value="" id="price" placeholder="price">
                                                
                                             </div>
                                             <div class="form-group col-md-6 difference_form">
@@ -550,7 +550,7 @@
                                                       <td class="col-md-2">
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Unit</option>
+                      
                                                 <option value="2">Kg</option>
                                                 <option value="3">mm</option>
                                                 <option value="3">cm</option>
@@ -560,7 +560,7 @@
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                               <input type="text" class="form-control" value="" id="price" placeholder="price">
                                                
                                             </div>
                                             <div class="form-group col-md-6 difference_form">
@@ -617,7 +617,7 @@
                                                       <td class="col-md-2">
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Unit</option>
+                      
                                                 <option value="2">Kg</option>
                                                 <option value="3">mm</option>
                                                 <option value="3">cm</option>
@@ -627,7 +627,7 @@
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                               <input type="text" class="form-control" value="" id="price" placeholder="price">
                                                
                                             </div>
                                             <div class="form-group col-md-6 difference_form">
@@ -747,7 +747,7 @@
                     </div>
 
              
-                   <button type="button" class="btn btn-primary form_button_footer" >Save and Send SMS</button>
+                    <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
                 <hr>
                 <div >
                     <button type="button" class="btn btn-primary form_button_footer" >Submit</button>
@@ -861,6 +861,12 @@ $(document).ready(function(){
 
 });
 
+});
+</script>
+<script>
+
+$(function() {
+    $('.smstooltip').tooltip();
 });
 </script>
 </body>

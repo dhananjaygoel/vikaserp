@@ -241,11 +241,14 @@
                  <div class="row print_time"> 
                      <div class="col-md-12"> Print By <br> 05:00 PM</div> 
                  </div>
+           <div class="checkbox">
+                <label><input type="checkbox" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
+           </div>
                                              <div class="clearfix"></div>
                 <hr>
                 <div >
                     <button type="button" class="btn btn-primary form_button_footer" >Generate Challan</button>
-                    <button type="button" class="btn btn-primary form_button_footer" >Send Message</button>
+                    <!--<button type="button" class="btn btn-primary form_button_footer" >Send Message</button>-->
                     <a href="delivery_orders_challan.php" class="btn btn-default form_button_footer">Cancel</a>
                 </div>
                 
@@ -450,6 +453,10 @@
     });
 });
         </script>
-       
+   <script>
+$(function() {
+    $('.smstooltip').tooltip();
+});
+</script>    
 </body>
 </html>

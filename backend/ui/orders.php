@@ -232,7 +232,7 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                             <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                             <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                     
@@ -240,9 +240,8 @@
                                                 
                                      <div class="modal-body">
                                          <p>
-                                             
-                          
-                                          Are you sure to complete the Order?
+                                       
+                                             Are you sure to complete the Order?</p>
                                          <div class="radio">
                                                <input  value="" id="overprice" name="overprice" type="radio">
                                                <label for="overprice">Over Pricing</label>
@@ -262,7 +261,10 @@
                                               <label for="reason"><b>Reason</b></label>
                                               <textarea class="form-control" id="inquiry_remark" name="reason"  rows="2" placeholder="Reason"></textarea>
                                         </div>
-                                         </p>
+                                          <div class="checkbox">
+                                         <label class="marginsms"><input type="checkbox" value=""><span class="checksms">Email</span></label>
+                                         <label><input type="checkbox" value=""><span class="checksms">SMS</span></label>
+                                         </div>
                                         
                                          
                                     </div>           
@@ -475,6 +477,7 @@
                                         <th>Delivery Location</th>                                                            
                                         <th>Order By</th>
                                         <th>Cancel By</th>
+                                        <th>Reason</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -490,6 +493,7 @@
                                         <td>Pune</td>
                                         <td>Lorem </td>
                                         <td>Admin </td>
+                                        <td>Lorem ipsum dollar </td>
                                         <td class="text-center">
                                            
                                             <a href="order_view.php" class="table-link" title="view">
@@ -518,7 +522,8 @@
                                         <td>9999999999 </td>
                                         <td>Mumbai</td>
                                         <td>Ipsum </td>
-                                         <td>Admin </td>
+                                        <td>Admin </td>
+                                        <td>Lorem ipsum dollar </td>
                                         <td class="text-center">
                                               <a href="order_view.php" class="table-link" title="view">
                                                 <span class="fa-stack">

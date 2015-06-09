@@ -79,7 +79,7 @@
                                         <th class="text-center">Bill date</th>
                                        
                                       
-                                        <th class="text-center col-md-2">Amount</th> 
+                                        <th class="text-center col-md-2">Total Quantity</th> 
                                      
                                         <th class="text-center ">Actions</th>
                                     </tr>
@@ -94,17 +94,8 @@
                                          <td class="text-center">Pune01</td>
                                          <td class="text-center">05 April,2015</td>
                                       
-                                       <td>
-                                            <div class="row product-price">
-                                            <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" id="Amount" placeholder="Amount">
-                                               
-                                            </div>
-                                            <div class="form-group col-md-2 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
-                                            </div>
+                                        <td class="text-center">
+                                         250
                                         </td>
                                        			
                                       
@@ -147,17 +138,8 @@
                                          <td class="text-center">Pune01</td>
                                          <td class="text-center">05 April,2015</td>
                                      
-                                        <td>
-                                            <div class="row product-price">
-                                            <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" id="Amount" placeholder="Amount">
-                                               
-                                            </div>
-                                            <div class="form-group col-md-2 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
-                                            </div>
+                                         <td class="text-center">
+                                            200
                                         </td>
                                        			
                                       
@@ -250,7 +232,7 @@
                 <hr>
                 <div >
                     <button type="button" class="btn btn-primary form_button_footer" >Generate Challan</button>
-                    <button type="button" class="btn btn-primary form_button_footer" >Send Message</button>
+                   <button title="SMS would be sent to Relationship Manager" type="button" class="btn btn-primary smstooltip" > Send SMS</button> 
                     <a href="purchaseorder_challan.php" class="btn btn-default form_button_footer">Cancel</a>
                 </div>
                 
@@ -450,6 +432,10 @@
     });
 });
         </script>
-       
+  <script>
+$(function() {
+    $('.smstooltip').tooltip();
+});
+</script>     
 </body>
 </html>

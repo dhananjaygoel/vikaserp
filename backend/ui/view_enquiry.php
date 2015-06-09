@@ -135,7 +135,7 @@
                                             <td>   
                                                 <div class="row product-price">
                                             <div class="form-group col-md-6">
-                                           <input type="text" class="form-control" id="difference" value="price">
+                                                <input type="text" class="form-control" id="difference" value="" placeholder="Price">
                                                
                                             </div>
                                             <div class="form-group col-md-2 difference_form">
@@ -155,7 +155,7 @@
                                                <td>   
                                                 <div class="row product-price">
                                             <div class="form-group col-md-6">
-                                           <input type="text" class="form-control" id="difference" value="price">
+                                              <input type="text" class="form-control" id="difference" value="" placeholder="Price">
                                                
                                             </div>
                                             <div class="form-group col-md-2 difference_form">
@@ -175,7 +175,7 @@
                                                <td>   
                                                 <div class="row product-price">
                                             <div class="form-group col-md-6">
-                                           <input type="text" class="form-control" id="difference" value="price">
+                                            <input type="text" class="form-control" id="difference" value="" placeholder="Price">
                                                
                                             </div>
                                             <div class="form-group col-md-2 difference_form">
@@ -195,7 +195,7 @@
                                                <td>   
                                                 <div class="row product-price">
                                             <div class="form-group col-md-6">
-                                           <input type="text" class="form-control" id="difference" value="price">
+                                             <input type="text" class="form-control" id="difference" value="" placeholder="Price">
                                                
                                             </div>
                                             <div class="form-group col-md-2 difference_form">
@@ -247,7 +247,7 @@
                             <button type="button" class="btn btn-primary " >Save</button>
                             <hr>
                             <div>
-                                <button type="button" class="btn btn-primary " >Send SMS</button><span class="badge enquirybadge">5</span>
+                                <button title="SMS would be sent to Party and Relationship Manager" type="button" class="btn btn-primary smstooltip" >Send SMS</button><span title="SMS has been sent 5 times" class="badge enquirybadge smstooltip">5</span>
                                  
                             </div>
                         </form>
@@ -283,6 +283,11 @@
 	<script src="js/pace.min.js"></script>
 	
 	<!-- this page specific inline scripts -->
-	
+<script>
+
+$(function() {
+    $('.smstooltip').tooltip();
+});
+</script>
 </body>
 </html>

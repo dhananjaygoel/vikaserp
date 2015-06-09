@@ -83,7 +83,7 @@
                                     
                                         </tr>
                                        <tr>
-                                            <td><span>Customer Name:</span> Customer1</td>
+                                            <td><span>Supplier Name:</span> Supplier1</td>
                                             
                                     
                                         </tr>
@@ -114,12 +114,7 @@
                                                     <td>
                                                     <span>Product</span>
                                                     </td>
-                                                    <td>
-                                                    <span>Actual Quantity</span>
-                                                    </td>
-                                                    <td>
-                                                        <span>Actual Pieces </span>
-                                                    </td>
+                                                   
                                                     <td>
                                                     <span>Unit</span>
                                                     </td>
@@ -127,7 +122,7 @@
                                                     <span>Price</span>
                                                     </td>
                                                     
-                                                    <td >
+                                                    <td class="col-md-2" >
                                                     <span>Present Shipping</span>
                                                     </td>
                                                     <td><span>Remark</span></td>
@@ -135,8 +130,7 @@
                                       
                                            <tr>
                                             <td> Product1</td>
-                                            <td>69</td>
-                                            <td>48</td>
+                                            
                                             <td>lorem</td>
                                             <td>315</td>
                                             <td>35</td>
@@ -145,8 +139,7 @@
                                         </tr>
                                           <tr>
                                             <td> Product2</td>
-                                            <td>69</td>
-                                            <td>48</td>
+                                           
                                             <td>lorem</td>
                                             <td>315</td>
                                             <td>35</td>
@@ -155,8 +148,7 @@
                                         </tr>
                                           <tr>
                                             <td> Product3</td>
-                                            <td>69</td>
-                                            <td>48</td>
+                                           
                                             <td>lorem</td>
                                             <td>315</td>
                                             <td>35</td>
@@ -165,8 +157,7 @@
                                         </tr>
                                         <tr>
                                             <td> Product4</td>
-                                            <td>69</td>
-                                            <td>48</td>
+                                            
                                             <td>lorem</td>
                                             <td>315</td>
                                             <td>35</td>
@@ -208,7 +199,7 @@
                                          
                                                 
                                                 <tr>
-                                        <td><span>Vehicle Name: </span>Lorem Ipsum</td>
+                                        <td><span>Vehicle Number: </span>Lorem Ipsum</td>
                                     
                                         </tr>
                                                 <tr>

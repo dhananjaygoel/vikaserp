@@ -108,6 +108,10 @@
                                                         <td><b>Serial Number:</b></td>
                                                         <td>PO/Apr15/02/01/01</td>
                                                     </tr>
+                                                     <tr class="cdtable">
+                                                        <td><b>Supplier Name:</b></td>
+                                                        <td>Lorem Ipsum</td>
+                                                    </tr>
                                        
                                                 </tbody>
                                             </table>
@@ -118,28 +122,23 @@
                                                  <tr class="headingunderline">
                                             
                                                   
-                                                    <td>
+                                                     <td class="col-md-2">
                                                     <span> Product Name</span>
                                                     </td>
-                                                    <td>
-                                                    <span> Quantity</span>
-                                                    </td>
-                                                    <td>
-                                                    <span> Actual Pieces</span>
-                                                    </td>
-                                                    <td>
+                                                   
+                                                    <td class="col-md-1">
                                                     <span>Unit</span>
                                                     </td>
                                                    
                                                    
-                                                    <td>
+                                                    <td class="col-md-2">
                                                     <span>Pending Order</span>
                                                     </td>
                                                     
-                                                   <td>
+                                                    <td class="col-md-2">
                                                     <span>Present Shipping</span>
                                                     </td>
-                                                      <td>
+                                                    <td class="col-md-5">
                                                     <span>Remark</span>
                                                     </td>
                                                 </tr>
@@ -147,12 +146,7 @@
                                                     <td>
                                                    Product Name
                                                     </td>
-                                                   <td>
-                                                    Quantity
-                                                    </td>
-                                                    <td>
-                                                  Actual Pieces
-                                                    </td>
+                                                   
                                                     <td class="col-md-1">
                                                     Unit
                                                     </td>
@@ -173,12 +167,7 @@
                                                     <td>
                                                    Product Name
                                                     </td>
-                                                   <td>
-                                                    Quantity
-                                                    </td>
-                                                    <td>
-                                                  Actual Pieces
-                                                    </td>
+                                                  
                                                     <td class="col-md-1">
                                                     Unit
                                                     </td>
@@ -199,12 +188,7 @@
                                                     <td>
                                                    Product Name
                                                     </td>
-                                                   <td>
-                                                    Quantity
-                                                    </td>
-                                                    <td>
-                                                  Actual Pieces
-                                                    </td>
+                                                  
                                                     <td class="col-md-1">
                                                     Unit
                                                     </td>
@@ -224,12 +208,7 @@
                                                     <td>
                                                    Product Name
                                                     </td>
-                                                   <td>
-                                                    Quantity
-                                                    </td>
-                                                    <td>
-                                                  Actual Pieces
-                                                    </td>
+                                                  
                                                     <td class="col-md-1">
                                                     Unit
                                                     </td>
@@ -250,12 +229,7 @@
                                                     <td>
                                                    Product Name
                                                     </td>
-                                                   <td >
-                                                    Quantity
-                                                    </td>
-                                                    <td>
-                                                  Actual Pieces
-                                                    </td>
+                                                   
                                                     <td class="col-md-1">
                                                     Unit
                                                     </td>
@@ -304,15 +278,7 @@
                                                         <i class="fa fa-search search-icon"></i>
                                                         </div>
                                                     </td>
-                                                       <td>
-                                                        <div class="form-group">
-                       
-                                                     <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">    </div>           
-                                                    </td>
-                                                    <td> 
-                                                              <div class="form-group">
-                       
-                                                       <input id="pieces" class="form-control" placeholder="Pieces" name="pieces" value="" type="text">                </div></td>
+                                                      
                                                        <td class="col-md-1">
                                                           <div class="form-group">         <select class="form-control" name="type" id="add_status_type">
                                            <option value="" selected=""></option>
@@ -367,15 +333,7 @@
                                                         <i class="fa fa-search search-icon"></i>
                                                         </div>
                                                     </td>
-                                                       <td>
-                                                        <div class="form-group">
-                       
-                                                     <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">    </div>           
-                                                    </td>
-                                                    <td> 
-                                                              <div class="form-group">
-                       
-                                                       <input id="pieces" class="form-control" placeholder="Pieces" name="pieces" value="" type="text">                </div></td>
+                                                       
                                                        <td class="col-md-1">
                                                           <div class="form-group">         <select class="form-control" name="type" id="add_status_type">
                                            <option value="" selected=""></option>
@@ -428,12 +386,16 @@
                                         
                                                 <tbody>
                                                     <tr class="cdtable">
-                                                        <td class="cdfirst">VAT Percentage:</td>
-                                                        <td><input id="price" class="form-control" placeholder="VAT Percentage" name="price" value="" type="text"></td>
+                                                        <td class="cdfirst">VAT:</td>
+                                                        <td></td>
                                                     </tr>
                                                     <tr class="cdtable">
-                                                        <td class="cdfirst">Vehicle Name:</td>
-                                                        <td><input id="price" class="form-control" placeholder="Vehicle Name" name="price" value="" type="text"></td>
+                                                        <td class="cdfirst">VAT Percentage:</td>
+                                                        <td>5%</td>
+                                                    </tr>
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">Vehicle Number:</td>
+                                                        <td><input id="price" class="form-control" placeholder="Vehicle Number" name="price" value="" type="text"></td>
                                                     </tr>
                                                     
                                                     
@@ -456,7 +418,7 @@
 
                                                 </div>
                    
-                              <button type="button" class="btn btn-primary form_button_footer" >Save and Send SMS</button>
+                             <button title="SMS would be sent to Relationship Manager" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
 
                         <hr>
                         <div>
@@ -567,6 +529,11 @@ $('#datepickerDate').datepicker({
                 });
               
         </script> 
-        <script src="js/bootstrap-editable.min.js"></script>
+<script>
+$(function() {
+    $('.smstooltip').tooltip();
+});
+</script>
+<script src="js/bootstrap-editable.min.js"></script>
 </body>
 </html>

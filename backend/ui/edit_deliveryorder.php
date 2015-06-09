@@ -73,7 +73,15 @@
                      <div class="form-group">
                        <label><b>Serial Number:</b> Apr30/02/02/01</label>
                 </div>
-                    <div class="form-group">
+                 <div class="form-group">
+                         <label><b>Warehouse:</b> Lorem Ipsum</label>
+                   
+                </div>
+                     <div class="form-group">
+                         <label><b>Supplier Name:</b> Supplier1</label>
+                   
+                </div>
+                <div class="form-group">
                          <label><b>Customer Name:</b> lorem Ipsum</label>
                    
                 </div>
@@ -114,7 +122,7 @@
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group ">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                                <input type="text" class="form-control" value="" id="price" placeholder="price">
                                                
                                             </div>
                                             
@@ -148,7 +156,7 @@
                                                 <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group ">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                               <input type="text" class="form-control" value="" id="price" placeholder="price">
                                                
                                             </div>
                                             
@@ -182,7 +190,7 @@
                                                 <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group ">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                                 <input type="text" class="form-control" value="" id="price" placeholder="price">
                                                
                                             </div>
                                             
@@ -216,7 +224,7 @@
                                                    <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group ">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                               <input type="text" class="form-control" value="" id="price" placeholder="price">
                                                
                                             </div>
                                             
@@ -276,7 +284,7 @@
                                                       <td>
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Unit</option>
+                      
                                                 <option value="2">Kg</option>
                                                 <option value="3">mm</option>
                                                 <option value="3">cm</option>
@@ -286,7 +294,7 @@
                                                  <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group ">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                              <input type="text" class="form-control" value="" id="price" placeholder="price">
                                                
                                             </div>
                                             
@@ -343,7 +351,7 @@
                                                       <td>
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Unit</option>
+                      
                                                 <option value="2">Kg</option>
                                                 <option value="3">mm</option>
                                                 <option value="3">cm</option>
@@ -353,7 +361,7 @@
                                                  <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group ">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                              <input type="text" class="form-control" value="" id="price" placeholder="price">
                                                
                                             </div>
                                             
@@ -410,7 +418,7 @@
                                                       <td>
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Unit</option>
+                      
                                                 <option value="2">Kg</option>
                                                 <option value="3">mm</option>
                                                 <option value="3">cm</option>
@@ -420,7 +428,7 @@
                                                    <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group ">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                              <input type="text" class="form-control" value="" id="price" placeholder="price">
                                                
                                             </div>
                                             
@@ -477,7 +485,7 @@
                                                       <td>
                                                           <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Unit</option>
+                      
                                                 <option value="2">Kg</option>
                                                 <option value="3">mm</option>
                                                 <option value="3">cm</option>
@@ -487,7 +495,7 @@
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                             <input type="text" class="form-control" value="" id="price" placeholder="price">
                                                
                                             </div>
                                             <div class="form-group col-md-6 difference_form">
@@ -567,7 +575,7 @@
                                             </table>
                     
                     
-                      <button type="button" class="btn btn-primary form_button_footer" >Save and Send SMS</button>
+                       <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
                       <hr>
                       <div>
                   <button type="button" class="btn btn-primary form_button_footer" >Submit</button>
@@ -640,5 +648,10 @@ $('#datepickerDate').datepicker({
 		});
  $('#datepickerDateComponent').datepicker();
 </script>	
+<script>
+$(function() {
+    $('.smstooltip').tooltip();
+});
+</script>
 </body>
 </html>
