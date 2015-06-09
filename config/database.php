@@ -55,9 +55,9 @@ return [
 		'mysql' => [
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'steel-trading-automation',
-			'username'  => 'root',
-			'password'  => 'root123',
+			'database'  => 'agstechn_vaoas',
+			'username'  => 'agstechn_vauser',
+			'password'  => 'vikasuser23210',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
