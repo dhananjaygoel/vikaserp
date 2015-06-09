@@ -508,13 +508,13 @@
                  
                                              <div class="form-group">
                   
-                                                 <input id="includevat" type="checkbox" name="Include VAT" value="includevat"><b class="challan"> Plus VAT</b>
+                                             <label for="Plusvat"><b class="challan">Plus VAT</b> Yes/No</label>
                 </div>
-                                             <div id="vatdetails">                     
+                                                          
                                              <div class="form-group">
-                                                 <label for="driver_contact"><b class="challan">VAT Percentage</b> 5%</label>
+                                                 <label for="vatp"><b class="challan">VAT Percentage</b> 5%</label>
                    
-                </div>
+         
                                                  <!--
                                              <div class="form-group">
                                                  <label for="driver_contact"><b class="challan">VAT</b></label>

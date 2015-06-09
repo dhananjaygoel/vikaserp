@@ -484,13 +484,13 @@
                  
                                              <div class="form-group">
                   
-                                                 <input id="includevat" type="checkbox" name="Include VAT" value="includevat"><b class="challan"> Plus VAT</b>
+                                             <label for="Plusvat"><b class="challan">Plus VAT</b> Yes/No</label>
                 </div>
-                                             <div id="vatdetails">                     
+                                                            
                                              <div class="form-group">
                                                  <label for="driver_contact"><b class="challan">VAT Percentage</b> 5%</label>
                    
-                </div>
+            
                                                  <!--
                                              <div class="form-group">
                                                  <label for="driver_contact"><b class="challan">VAT</b></label>
@@ -507,7 +507,7 @@
                    
                 </div>
                      <div class="form-group">
-                     <label for="inquiry_remark"><span class="checksms">Remark</span></label>
+                     <label for="inquiry_remark"><b class="challan">Remark</b></label>
                         <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3"></textarea>
                     </div>
                                       

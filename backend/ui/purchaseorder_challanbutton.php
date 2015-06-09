@@ -503,19 +503,16 @@
                     <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="text">
 </div>
                    
-                 
-                                             <div class="form-group">
+                                        <div class="form-group">
                   
-                                                 <input id="includevat" type="checkbox" name="Include VAT" value="includevat"><b class="challan"> Plus VAT</b>
+                                             <label for="Plusvat"><b class="challan">Plus VAT</b> Yes/No</label>
                 </div>
-                                             <div id="vatdetails">                     
+                 
                                              <div class="form-group">
                                                  <label for="driver_contact"><b class="challan">VAT Percentage</b> 5%</label>
                     
                 </div>
-                           
-                   
-                                             </div>                     
+                               
                <div class="form-group">
                         <label for="total"><b class="challan">Grand Total</b> $25000</label>
                    

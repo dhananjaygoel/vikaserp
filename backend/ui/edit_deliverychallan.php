@@ -482,11 +482,11 @@
                 </div>
               
                  
-                                             <div class="form-group">
+                                                <div class="form-group">
                   
-                                                 <input id="includevat" type="checkbox" name="Include VAT" value="includevat"><b class="challan"> Plus VAT</b>
+                                             <label for="Plusvat"><b class="challan">Plus VAT</b> Yes/No</label>
                 </div>
-                                             <div id="vatdetails">                     
+                                                            
                                              <div class="form-group">
                                                  <label for="driver_contact"><b class="challan">VAT Percentage</b> 5%</label>
 
@@ -501,7 +501,7 @@
                     <input id="grandtotal" class="form-control" placeholder="Grand Total" name="grandtotal" value="" type="text">
                 </div>
                    -->
-                </div>                     
+                           
                 <div class="form-group">
                         <label for="total"><b class="challan">Grand Total</b><span class="gtotal">$250000</span></label>
                    
