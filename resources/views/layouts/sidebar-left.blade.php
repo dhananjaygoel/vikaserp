@@ -2,7 +2,7 @@
     <section id="col-left" class="col-left-nano">
         <div id="col-left-inner" class="col-left-nano-content">
 
-            <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">	
+            <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
                 <ul class="nav nav-pills nav-stacked">
                     <?php
                     $full_name = $_SERVER['PHP_SELF'];
@@ -16,7 +16,7 @@
                             <span>Dashboard</span>
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
-                    </li>    
+                    </li>
                     <li class="<?php echo ($page_name == 'users.php') || ($page_name == 'add_user.php') || ($page_name == 'edit_user.php') ? 'active' : ''; ?>">
                         <a href="users.php">
                             <i class="fa fa-user"></i>
@@ -152,23 +152,23 @@
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
                         <ul  class="submenu">
-                            <li class="<?php echo ($page_name == 'location.php') ? 'active' : ''; ?>">
-                                <a href="location.php" >
+                            <li class="{{ (Request::is('*location*') ? 'active' : '') }}">
+                                <a href="{{url("location")}}">
                                     Delivery Location
                                 </a>
                             </li>
-                            <li class="<?php echo ($page_name == 'city.php') ? 'active' : ''; ?>">
-                                <a href="city.php">
+                            <li class="{{ (Request::is('*city*') ? 'active' : '') }}">
+                                <a href="{{url("city")}}">
                                     City
                                 </a>
                             </li>
-                            <li class="<?php echo ($page_name == 'state.php') ? 'active' : ''; ?>">
-                                <a href="state.php">
+                            <li class="{{ (Request::is('*states*') ? 'active' : '') }}">
+                                <a href="{{url("states")}}">
                                     State
                                 </a>
                             </li>
-                            <li class="<?php echo ($page_name == 'unit.php') ? 'active' : ''; ?>">
-                                <a href="unit.php">
+                            <li class="{{ (Request::is('*unit*') ? 'active' : '') }}">
+                                <a href="{{url("unit")}}">
                                     Unit
                                 </a>
                             </li>
@@ -180,7 +180,7 @@
                             <span>Security</span>
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
-                    </li>    
+                    </li>
 
                 </ul>
             </div>

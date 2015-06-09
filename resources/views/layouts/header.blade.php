@@ -2,9 +2,10 @@
     <div class="container">
         <a href="index.php" id="logo" class="navbar-brand">
 
-            <img src="img/logo1.png" alt="" class="normal-logo logo-white"/>
-            <img src="img/logo-black.png" alt="" class="normal-logo logo-black"/>
+            {!! HTML::image('/resources/assets/backend/img/logo1.png' , 'Logo', array('class' => 'normal-logo logo-white')) !!}
+            {!! HTML::image('/resources/assets/backend/img/logo-black.png' , 'Logo', array('class' => 'normal-logo logo-black')) !!}
             <img src="img/logo-small.png" alt="" class="small-logo hidden-xs hidden-sm hidden"/>
+            {!! HTML::image('/resources/assets/backend/img/logo-small.png' , 'Logo', array('class' => 'small-logo hidden-xs hidden-sm hidden')) !!}
         </a>
 
         <div class="clearfix">
