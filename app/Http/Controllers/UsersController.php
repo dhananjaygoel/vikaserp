@@ -116,11 +116,6 @@ class UsersController extends Controller {
                 $user_data['mobile_number'] = Input::get('mobile_number');
             }
 
-
-
-
-
-
             User::where('id', $id)
                     ->update($user_data);
 

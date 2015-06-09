@@ -36,7 +36,7 @@
                     </div>
                     @endif
                     <div class="main-box-body main_contents clearfix">
-
+                        @if(sizeof($users_data) != 0)                        
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
                                 <thead>
@@ -134,6 +134,11 @@
                                 </ul>
                             </span>
                         </div>
+                        @else
+                        <div class="alert alert-info no_data_msg_container">
+                            Currently no user available.
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>

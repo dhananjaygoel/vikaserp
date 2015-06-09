@@ -32,9 +32,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('city', 'CityController');
     Route::resource('location', 'DeliveryLocationController');
     Route::resource('customers', 'CustomerController');
+
+    Route::resource('users', 'UsersController');
+    Route::resource('product_category', 'ProductController');
 });
 
-Route::resource('users', 'UsersController');
+
 
 
 
