@@ -732,12 +732,12 @@
                                     
              
            <div class="checkbox">
-                <label><input type="checkbox" value=""><span class="checksms">Email</span></label>
+                <label><input type="checkbox" value=""><span class="checksms">Send Email to Party</span></label>
            </div>
 
                 <hr>
                 <div >
-                    <button type="button" class="btn btn-primary form_button_footer" >Submit</button>
+                         <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
                     
                     <a href="purchaseorders.php" class="btn btn-default form_button_footer">Back</a>
                 </div>
@@ -846,7 +846,12 @@ $(document).ready(function(){
 
 });
 </script>
+<script>
 
+$(function() {
+    $('.smstooltip').tooltip();
+});
+</script>
 
 </body>
 </html>
