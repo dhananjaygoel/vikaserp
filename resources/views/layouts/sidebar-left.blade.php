@@ -10,21 +10,21 @@
                     $count = count($name_array);
                     $page_name = $name_array[$count - 1];
                     ?>
-                    <li class="<?php echo ($page_name == 'index.php') ? 'active' : ''; ?>">
+                    <li class="<?php echo ($page_name == '') ? 'active' : ''; ?>">
                         <a href="{{url()}}">
                             <i class="fa fa-dashboard"></i>
                             <span>Dashboard</span>
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
-                    <li class="<?php echo ($page_name == 'users') || ($page_name == 'add_user') || ($page_name == 'edit_user') ? 'active' : ''; ?>">
+                    <li class="{{ (Request::is('*users*') ? 'active' : '') }}">
                         <a href="{{url()}}/users">
                             <i class="fa fa-user"></i>
                             <span>Users</span>
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
-                    <li class="<?php echo ($page_name == 'customers') ? 'active' : ''; ?>">
+                    <li class="{{ (Request::is('*customers*') ? 'active' : '') }}">
                         <a href="{{url('customers')}}">
                             <i class="fa fa-male"></i>
                             <span>Customers</span>

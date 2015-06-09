@@ -5,3 +5,7 @@ $(document).ready(function(){
         
     });
 });
+
+$('.deleteCustomer').click(function (){
+    $(this).parents('.modal').find('form').submit();
+});

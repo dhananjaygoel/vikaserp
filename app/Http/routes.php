@@ -11,6 +11,29 @@
   |
  */
 
+
+
+
+Route::get('doMigrate', function () {
+    define('STDIN', fopen("php://stdin", "r"));
+    Artisan::call('migrate', ['--quiet' => true, '--force' => true]);
+});
+Route::get('dataSeeding', function () {
+    define('STDIN', fopen("php://stdin", "r"));
+    Artisan::call('db:seed', array('--force' => true));
+});
+
+Route::get('rollback', function() {
+    define('STDIN', fopen("php://stdin", "r"));
+    Artisan::call('migrate:refresh', ['--quiet' => true, '--force' => true]);
+});
+
+
+
+
+
+
+
 Route::get('/', 'WelcomeController@index');
 
 Route::get('home', 'HomeController@index');
@@ -35,34 +58,34 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::resource('users', 'UsersController');
     Route::resource('product_category', 'ProductController');
-    
-    
-    
-    Route::get('orders',function(){
+
+
+
+    Route::get('orders', function() {
         return 'Order';
     });
-    Route::get('pending_orders',function(){
+    Route::get('pending_orders', function() {
         return 'Pending Orders';
     });
-    Route::get('order',function(){
+    Route::get('order', function() {
         return 'Order ';
     });
-    Route::get('pending_inquiry',function(){
+    Route::get('pending_inquiry', function() {
         return 'Pending Inquiry ';
     });
-    Route::get('inquiry',function(){
+    Route::get('inquiry', function() {
         return 'Inquiry';
     });
-    Route::get('delivery_orders',function(){
+    Route::get('delivery_orders', function() {
         return 'Delivery Orders';
     });
-    Route::get('pending_delivery_orders',function(){
+    Route::get('pending_delivery_orders', function() {
         return 'Pending Delivery Orders';
     });
-    Route::get('delivery_order_challan',function(){
+    Route::get('delivery_order_challan', function() {
         return 'Delivery Order Challan';
     });
-    Route::get('purchase_orders',function(){
+    Route::get('purchase_orders', function() {
         return 'Purchase Orders';
     });
 });
