@@ -24,7 +24,7 @@
                         <div class="col-lg-12">
                             <div class="main-box">
                                 <header class="main-box-header clearfix">
-                                    <h2><i class="fa fa-user"></i> &nbsp; Add IP Address </h2>
+                                    <h2><i class="fa fa-user"></i> &nbsp; Edit IP Address </h2>
                                 </header>            
 
                                 <div class="main-box-body clearfix">
@@ -35,15 +35,16 @@
                                         </ul>
                                     </div>
                                     @endif
-
                                     <hr>
-
-                                    <form method="POST" action="{{url('security')}}" accept-charset="UTF-8" >
+                                    
+                                    <form method="POST" action="{{url('security/'.$security->id)}}" accept-charset="UTF-8" >
+                                        <input name="_method" type="hidden" value="PUT">
                                         <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                        
 
                                         <div class="form-group">
                                             <label for="ip">IP Address</label>
-                                            <input id="ip_address" class="form-control" placeholder="IP Address" name="ip_address" value="" type="text">
+                                            <input id="ip_address" class="form-control" placeholder="IP Address" name="ip_address" value="{{$security->ip_address}}" type="text">
                                         </div>                                                    
 
 
@@ -65,7 +66,7 @@
 
                 </div>
             </div>
-       
+        
 @endsection
 
 

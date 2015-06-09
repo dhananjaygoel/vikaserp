@@ -9,6 +9,7 @@ use Validator;
 use Illuminate\Support\Facades\Input;
 use Auth;
 use App\User;
+use Illuminate\Support\Facades\Redirect;
 class SecurityController extends Controller {
 
 	/**
@@ -18,16 +19,10 @@ class SecurityController extends Controller {
 	 */
 	public function index()
 	{
-//                echo 'comes here';
-//                exit;
-                $sec = Security::all();
-//                
-//                echo count($security);
-//                echo '<pre>';
-//                print_r($security->toArray());
-//                echo '</pre>';
-//                exit;
-		return view('security',  compact('sec'));//, compact($security))->with('msg','One record is added');
+
+                $sec = Security::paginate(10);
+                $sec->setPath('security');
+		return view('security',  compact('sec'));
 	}
         
         //Show security add form
@@ -54,14 +49,20 @@ class SecurityController extends Controller {
 	{   
 		$security = new Security;
                 $ipaddress= $request->input('ip_address');
+                $data = array(
+                    'ip_address' => $ipaddress
+                );
                 
-//                $validator = Validator::make($ipaddress,'required');
-//                if ($validator->fails()) {
-//                    return view('security')->withError('Please enter Security IP Address');
-//                }
+                $validator = Validator::make($data, ['ip_address' => 'required|unique:security|ip']);
+                if ($validator->fails()) {
+                    return Redirect::back()->with('error','Please enter valid IP Address');
+                }
                 $security->ip_address = $ipaddress;
                 $security->save();
-                return view('security')->with('message','One record added to Security.');
+                $sec = Security::paginate(10);
+                $sec->setPath('security');
+
+		return view('security',  compact('sec'))->with('message','One record added to Security.');
 	}
 
 	/**
@@ -84,8 +85,7 @@ class SecurityController extends Controller {
 	 */
 	public function edit($id)
 	{
-//            echo 'comes here'.$id;
-//            exit;
+
 		$security = Security::find($id);
 //                $ipaddress= Input::input('ip_address');
                 return view('edit-security',compact('security'));
@@ -93,18 +93,29 @@ class SecurityController extends Controller {
 	}
 
 	/**
-	 * Update the specified resource in storage.
+	 * Update the specified ronsubmit="validation('password_{{$security->id}}')"esource in storage.
 	 *
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update(Request $request,$id)
 	{
-//            echo 'comes here';
-            
-		Security::where('id','=',$id)->update('ip_address','=',$ipaddress); 
+                $ipaddress = $request->input('ip_address');
+                //parameter for validation
+                $data = array(
+                    'ip_address' => $ipaddress
+                );
+                //Validation rules for ip address
+                $validator = Validator::make($data, ['ip_address' => 'required|unique:security|ip']);
+                if ($validator->fails()) {
+                    return Redirect::back()->with('error','Please enter valid IP Address');
+                }
+		Security::where('id','=',$id)->update(array('ip_address'=>$ipaddress));   
                 
-                return view('security');
+                $sec = Security::paginate(10);
+                $sec->setPath('security');
+
+		return view('security',  compact('sec'));
 	}
 
 	/**
@@ -115,38 +126,21 @@ class SecurityController extends Controller {
 	 */
 	public function destroy($id)
 	{
-//                echo 'id '.$id." pass ";
-//		$security = Security::where('id',$id);
-//                $security->delete();
-            
                 $mobile_number= Input::get('mobile_number');
                 $pass = Input::get('password');
-//                echo $mobile_number.' '.$pass;
-//                exit;
-//                    $user = Auth::user();
-//                    echo '<pre>';
-//                    print_r($user);
-//                    echo '</pre>';
-//                    exit
-                    $password = bcrypt($pass);
-                    $users = User::where('mobile_number',$mobile_number)->where('password',$password);
-                    foreach($users as $user)
-                    {
-                        echo 'found';
-                    }
-//                    if($password == $user['password']){
-//                        echo 'same password';
-//                        exit
-//                    }exit{
-//                        echo 'wrong password';
-//                        exit
-//                    }
-                    
-//                    echo $pass;
-//                    exit;
-//                $user->password = bcrypt($data['password']);
-//                Security::destroy($id);
-//                return redirect('security')->with('message','One record deleted.');
+                if (Auth::attempt(['mobile_number' => $mobile_number, 'password' => $pass]))
+                {
+                    $security = Security::where('id',$id);
+                    $security->delete();
+                    $sec = Security::paginate(10);
+                    $sec->setPath('security');
+                    return redirect('security')->with('message','One record is deleted.');
+                }else{
+                    $sec = Security::paginate(10);
+                $sec->setPath('security');
+                    return view('security',  compact('sec'))->with('error','Password entered is not valid.');
+                }
+            
 	}
 
 }

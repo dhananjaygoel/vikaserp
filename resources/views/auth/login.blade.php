@@ -55,7 +55,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <button type="submit" class="btn btn-success col-xs-12" onClick="location.href = 'index.html'">Login</button>
+                                                <button type="submit" class="btn btn-success col-xs-12" >Login</button>
                                             </div>
                                         </div>
 

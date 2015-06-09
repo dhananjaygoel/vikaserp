@@ -20,7 +20,7 @@ class Registrar implements RegistrarContract {
                         'phone_number' => 'required|numeric',
                         'mobile_number' => 'required|numeric|unique:users',
                         'role_id' => 'required|numeric',
-			'email' => 'required|email|max:255',
+			'email' => 'required|email|max:255|unique:users',
 			'password' => 'required|confirmed|min:6',
 		]);
 	}
@@ -33,10 +33,7 @@ class Registrar implements RegistrarContract {
 	 */
 	public function create(array $data)
 	{
-    //                echo '<pre>';
-    //                print_r($data);
-    //                echo '</pre>';
-    //                exit;
+
                 $user = new User;
                 $user->first_name = $data['first_name'];
                 $user->last_name = $data['first_name'];

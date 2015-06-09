@@ -24,12 +24,6 @@
 
         <?php
         $user = Auth::user();
-//                                                                    echo '<pre>';
-//                                                                    print_r($user);
-//                                                                    echo '</pre>';
-//                                                                    exit
-//                        echo $user['mobile_number'];
-//                        exit;
         ?>
 
         <div class="row">
@@ -38,6 +32,22 @@
                     <div class="main-box-body main_contents clearfix">
 
                         <div class="table-responsive">
+                            @if(Session::has('error'))
+                            <div class="alert alert-danger">                                        
+                                <ul>                         
+                                    <li> {{Session::get('error')}}</li>
+                                </ul>
+                            </div>
+                            @endif
+                            
+                            @if(Session::has('message'))
+                            <div class="alert alert-success">                                        
+                                <ul>                         
+                                    <li> {{Session::get('message')}}</li>
+                                </ul>
+                            </div>
+                            @endif
+
                             <table id="table-example" class="table table-hover">
                                 <thead>
                                     <tr>
@@ -96,7 +106,7 @@
                                                         <div><b>UserID:</b> <input type='text' name="mobile_number" value="{{$user['mobile_number']}}"></div>
                                                         <div class="pwd">
                                                             <div class="pwdl"><b>Password:</b></div>
-                                                            <div class="pwdr"><input class="form-control" placeholder="" name='password' type="password"></div>
+                                                            <div class="pwdr"><input class="form-control" placeholder="" id='password_{{$security->id}}' name='password' type="password" required="required"></div>
 
 
                                                         </div>
@@ -110,7 +120,7 @@
                                             <div class="modal-footer">
 
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-default" >Yes</button>
+                                                <button type="submit"  class="btn btn-default" >Yes</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -118,28 +128,12 @@
                                 </div>  
                                 @endforeach
                                 @endif
-
-
-
-
-
-
                                 </tbody>
                             </table>
 
-<!--                                            <span class="pull-right">
-                                                <ul class="pagination pull-right">
-                                                    <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-                                                    <li><a href="#">1</a></li>
-                                                    <li><a href="#">2</a></li>
-                                                    <li><a href="#">3</a></li>
-                                                    <li><a href="#">4</a></li>
-                                                    <li><a href="#">5</a></li>
-                                                    <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
-                                                </ul>
-
-                                            </span>-->
-
+                            <span class="pull-right">
+                                <?php //echo $sec->render(); ?>
+                            </span>
                         </div>
                     </div>
                 </div>

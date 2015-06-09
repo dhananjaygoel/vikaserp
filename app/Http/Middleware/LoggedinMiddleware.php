@@ -27,7 +27,7 @@ class LoggedinMiddleware {
             }            
         } else {
 
-            return view('auth.login');
+            return redirect('auth.login');
         }
 
 //        return $next($request);
