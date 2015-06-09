@@ -174,8 +174,8 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="<?php echo ($page_name == 'security.php') || ($page_name == 'add_security.php') || ($page_name == 'edit_security.php') ? 'active' : ''; ?>">
-                        <a href="security.php">
+                    <li class="{{ (Request::is('*security*') ? 'active' : '') }}">
+                        <a href="{{url("security")}}">
                             <i class="fa fa-lock"></i>
                             <span>Security</span>
                             <span class="label label-info label-circle pull-right"></span>

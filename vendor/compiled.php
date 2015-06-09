@@ -1968,11 +1968,46 @@ trait AuthenticatesAndRegistersUsers
     public function postRegister(Request $request)
     {
         $validator = $this->registrar->validator($request->all());
-        if ($validator->fails()) {
-            $this->throwValidationException($request, $validator);
-        }
-        $this->auth->login($this->registrar->create($request->all()));
-        return redirect($this->redirectPath());
+//        
+//        if ($validator->fails()) {
+//            $this->throwValidationException($request, $validator);
+//        }
+//        $this->auth->login($this->registrar->create($request->all()));
+//        return redirect($this->redirectPath());
+//    }
+     
+                
+                $first_name = $request->input('first_name');
+               
+                $last_name = $request->input('last_name');       
+                 
+                $phone_number = $request->input('phone_number');
+                
+                $mobile_number = $request->input('mobile_number');
+                
+                $role_id = $request->input('role_id');
+                
+                $email= $request->input('email');
+                
+                $password = $request->input('password');
+
+                $confirm_password = $request->input('confirm_password');
+                $data  =  array(
+                    'first_name'        => $first_name,
+                    'last_name'         => $last_name,
+                    'email'             => $email,
+                    'phone_number'      => $phone_number,
+                    'mobile_number'     => $mobile_number,
+                    'role_id'           => $role_id,
+                    'password'          => $password
+                ) ;
+
+                if ($validator->fails()) {
+                    $this->throwValidationException($request, $validator);
+                }
+                $this->auth->login($this->registrar->create($data));
+                return redirect($this->redirectPath());
+                
     }
     public function getLogin()
     {
@@ -1980,8 +2015,6 @@ trait AuthenticatesAndRegistersUsers
     }
     public function postLogin(Request $request)
     {
-        echo 'comes here';
-        exit;
         $this->validate($request, array('mobile_number' => 'required', 'password' => 'required'));
         $credentials = $request->only('mobile_number', 'password');
         if ($this->auth->attempt($credentials, $request->has('remember'))) {
