@@ -44,5 +44,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'mobile_number' => 'integer|digits_between:10,15|required|unique:users',
         'type' => 'required'
     );
+    
+    public static $updateuser_rules = array(
+        'first_name' => 'required|min:2|max:100',
+        'last_name' => 'required|min:2|max:100',
+        'telephone_number' => 'integer|digits_between:8,15',
+        'type' => 'required'
+    );
+    
+      public static $update_password = array(
+        'password' => 'required|min:8|max:20|confirmed ',
+        'password_confirmation' => 'required'
+    );
 
 }

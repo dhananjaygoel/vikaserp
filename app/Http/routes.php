@@ -33,6 +33,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('location', 'DeliveryLocationController');
 });
 
+Route::resource('users', 'UsersController');
+
 
 
 

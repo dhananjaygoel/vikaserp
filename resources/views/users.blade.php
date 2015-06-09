@@ -30,6 +30,11 @@
                         <strong>Well done!</strong> User details successfully added.
                     </div> <br/>
                     @endif
+                    @if (Session::has('success'))
+                    <div class="alert alert-success alert-success1">
+                        {{Session::get('success')}}                            
+                    </div>
+                    @endif
                     <div class="main-box-body main_contents clearfix">
 
                         <div class="table-responsive">
@@ -68,7 +73,7 @@
                                             @endif
                                         </td>
                                         <td class="text-center">
-                                            <a href="edit_user.php" class="table-link">
+                                            <a href="{{URL::action('UsersController@edit',['id'=> $user->id])}}" class="table-link">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -90,7 +95,7 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             {!! Form::open(array('route' => array('users.destroy', $user->id), 'method' => 'delete')) !!}
-                                          <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                            <input type="hidden" name="_token" value="{{csrf_token()}}">
                                             <div class="modal-body">
                                                 <div class="delete">
                                                     <?php
@@ -114,7 +119,7 @@
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default">Yes</button>
                                             </div>
-                                             {!! Form::close() !!}
+                                            {!! Form::close() !!}
                                         </div>
                                     </div>
                                 </div>

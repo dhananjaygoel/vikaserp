@@ -11,14 +11,14 @@
                     $page_name = $name_array[$count - 1];
                     ?>
                     <li class="<?php echo ($page_name == 'index.php') ? 'active' : ''; ?>">
-                        <a href="index.php">
+                        <a href="{{url()}}">
                             <i class="fa fa-dashboard"></i>
                             <span>Dashboard</span>
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
-                    <li class="<?php echo ($page_name == 'users.php') || ($page_name == 'add_user.php') || ($page_name == 'edit_user.php') ? 'active' : ''; ?>">
-                        <a href="users.php">
+                    <li class="<?php echo ($page_name == 'users') || ($page_name == 'add_user') || ($page_name == 'edit_user') ? 'active' : ''; ?>">
+                        <a href="{{url()}}/users">
                             <i class="fa fa-user"></i>
                             <span>Users</span>
                             <span class="label label-info label-circle pull-right"></span>
