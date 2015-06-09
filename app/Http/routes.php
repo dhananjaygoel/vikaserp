@@ -19,6 +19,13 @@ Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
-Route::get('login',function(){
-    return view('auth.login');
+//Route::get('login',function(){
+//    return 'auth.login';
+//});
+Route::group(['middleware'=>['auth']],function(){
+    Route::resource('security','SecurityController');
+    Route::get('dashboard',function(){
+        return view('home');
+    });
+    
 });

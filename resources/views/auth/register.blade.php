@@ -40,9 +40,15 @@
 							</div>
 						</div>
                                                 <div class="form-group">
-							<label class="col-md-4 control-label">mobile_number</label>
+							<label class="col-md-4 control-label">Mobile Number</label>
 							<div class="col-md-6">
 								<input type="text" class="form-control" name="mobile_number" value="{{ old('mobile_number') }}">
+							</div>
+						</div>
+                                                <div class="form-group">
+							<label class="col-md-4 control-label">Phone Number</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="phone_number" value="{{ old('phone_number') }}">
 							</div>
 						</div>
                                                 <div class="form-group">

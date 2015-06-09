@@ -1,9 +1,9 @@
 @extends('app')
 
+@include('layouts.includes')
 
-@section('content')
 <!-- Favicon -->
-<link href="{{ asset('/resources/assets/backend/img/favicon.png') }}" rel="shortcut icon" type="image/x-icon">
+
 <body id="login-page">
     <div class="container">
         <div class="row">
@@ -14,7 +14,7 @@
                             <div class="col-xs-12">
                                 <header id="login-header">
                                     <div id="login-logo">
-                                        <img src="img/logo.png" alt=""/>
+                                        <img src="{{ asset('assets/backend/img/logo.png')}}" alt=""/>
                                     </div>
                                 </header>
                                 @if (count($errors) > 0)
@@ -69,7 +69,7 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 Do not have an account? 
-                                <a href="registration.php">
+                                <a href="{{ url('/auth/register') }}">
                                     Register now
                                 </a>
                             </div>
@@ -82,22 +82,6 @@
 
 
 
-    <!-- global scripts -->
-    <script src="js/demo-skin-changer.js"></script> <!-- only for demo -->
-
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/jquery.nanoscroller.min.js"></script>
-
-    <script src="js/demo.js"></script> <!-- only for demo -->
-
-    <!-- this page specific scripts -->
-
-
-    <!-- theme scripts -->
-    <script src="js/scripts.js"></script>
-
-    <!-- this page specific inline scripts -->
 
 </body>
-@endsection
+</html>
