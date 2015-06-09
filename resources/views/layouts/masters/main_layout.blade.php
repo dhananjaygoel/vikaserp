@@ -85,5 +85,6 @@
         {!! HTML::script('/resources/assets/js/custom_js/custom_script.js') !!}
         {!! HTML::script('/resources/assets/custom_js/sortable.js') !!}
         {!! HTML::script('/resources/assets/custom_js/aman.js') !!}
+        {!! HTML::script('/resources/assets/custom_js/custom.js') !!}
     </body>
 </html>

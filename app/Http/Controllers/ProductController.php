@@ -20,8 +20,8 @@ use DB;
 class ProductController extends Controller {
 
     public function index() {
-        $product_cat = ProductCategory::all();
-
+        $product_cat = ProductCategory::Paginate(5);
+        $product_cat->setPath('product_category');
         return view('product_category', compact('product_cat'));
     }
 
@@ -35,12 +35,20 @@ class ProductController extends Controller {
         $product_category = new ProductCategory();
         $product_category->product_type_id = $request->input('product_type');
         $product_category->product_category_name = $request->input('product_category_name');
-        $product_category->price = $request->input('product_category_name');
+        $product_category->price = $request->input('price');
         $product_category->save();
 
         return redirect('product_category')->with('success', 'Product category successfully added.');
     }
+    
+    
 
+    public function show($id) {
+        $product_cat = ProductCategory::where('id',$id)->get();
+        
+        return view('view_product_category', compact('product_cat'));
+    }
+    
     public function destroy($id) {
         
     }

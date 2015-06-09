@@ -131,8 +131,8 @@
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
                         <ul  class="submenu">
-                            <li class="<?php echo ($page_name == 'product_category.php') ? 'active' : ''; ?>">
-                                <a href="product_category.php" >
+                            <li class="<?php echo ($page_name == 'product_category') ? 'active' : ''; ?>">
+                                <a href="{{url()}}/product_category" >
                                     Product Category
                                 </a>
                             </li>

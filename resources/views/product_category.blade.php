@@ -38,93 +38,55 @@
                                         <th class="col-md-3">Name</th>
                                         <th class="col-md-2">Type</th>
                                         <th class="col-md-3">Price</th>
-
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>                    
-
-
+                                    <?php $i = ($product_cat->currentPage() - 1 ) * $product_cat->perPage() + 1; ?>
+                                    @foreach($product_cat as $product)
                                     <tr>
-                                        <td>1</td>
-                                        <td>Category Name 1</td>
-                                        <td>Pipe</td>
+                                        <td>{{ $i }}</td>
+                                        <td>{{ $product->product_category_name }}</td>
+                                        <td>                                        
+                                            @if($product->product_type_id == 1)
+                                            {{'Pipe'}}
+                                            @else
+                                            {{'structure'}}
+                                            @endif
+                                        </td>
                                         <td>
                                             <div class="row product-price">
                                                 <div class="form-group col-md-4">
-                                                    <input type="text" class="form-control" id="difference">
-
+                                                    <input type="text" class="form-control" id="difference" value="{{ $product->price }}">
                                                 </div>
                                                 <div class="form-group col-md-2 difference_form">
-
                                                     <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
                                                 </div>
                                             </div>
-                                        </td>                                        
-
+                                        </td>                                    
                                         <td>
-                                            <a href="view_prod_cat.php" class="table-link" title="view">
+                                            <a href="{{URL::action('ProductController@show',['id'=> $product->id])}}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="edit_prod_cat.php" class="table-link" title="edit">
+                                            <a href="{{URL::action('ProductController@edit',['id'=> $product->id])}}" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal" title="delete">
+                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal{{$product->id}}" title="delete">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a>
-
+                                            </a>                                        
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Category Name 2</td>
-                                        <td>Structure</td>
-                                        <td>
-                                            <div class="row product-price">
-                                                <div class="form-group col-md-4">
-                                                    <input type="text" class="form-control" id="difference">
-
-                                                </div>
-                                                <div class="form-group col-md-2 difference_form">
-
-                                                    <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                                </div>
-                                            </div>
-                                        </td>                                        
-
-                                        <td>
-                                            <a href="view_prod_cat.php" class="table-link" title="view">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="edit_prod_cat.php" class="table-link" title="edit">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal" title="delete">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-
-                                        </td>
-                                    </tr>
-
-                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <?php $i++; ?>
+                                <div class="modal fade" id="myModal{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -155,18 +117,12 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                @endforeach
                                 </tbody>
                             </table>
                             <span class="pull-right">
                                 <ul class="pagination pull-right">
-                                    <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-                                    <li><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
-                                    <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
+                                    <?php echo $product_cat->render(); ?>
                                 </ul>
                             </span>
                         </div>

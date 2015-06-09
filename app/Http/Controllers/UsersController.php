@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use Auth;
 use App\UserRoles;
 use App\Http\Requests\UserValidation;
 use Input;
@@ -19,7 +20,7 @@ class UsersController extends Controller {
 
     public function index() {
         $users_data = User::where('role_id', '!=', 0)->Paginate(5);
-        $users_data->setPath('users_data');
+        $users_data->setPath('users');
         return view('users', compact('users_data'));
     }
 
@@ -52,15 +53,12 @@ class UsersController extends Controller {
 
     public function destroy($id) {
 
-        $count = User::where('mobile_number', Input::get('mobile'))
-                        ->Where('password', Hash::make(Input::get('model_pass')))->get();
-
-        echo '<pre>';
-        print_r($count);
-        echo '</pre>';
-        exit;
-
-        //User::destroy($id);
+        if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
+            User::destroy($id);
+            return redirect('users')->with('flash_message', 'User details successfully deleted.');
+        }else{
+            return redirect('users')->with('wrong', 'You have entered wrong credentials');
+        }
     }
 
     public function edit($id) {

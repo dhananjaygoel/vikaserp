@@ -35,6 +35,13 @@
                         {{Session::get('success')}}                            
                     </div>
                     @endif
+                    
+                    @if (Session::has('wrong'))
+                    <div class="alert alert-danger alert-success1">
+                        {{Session::get('wrong')}}                            
+                    </div>
+                    @endif
+                    
                     <div class="main-box-body main_contents clearfix">
                         @if(sizeof($users_data) != 0)                        
                         <div class="table-responsive">
@@ -99,17 +106,17 @@
                                             <div class="modal-body">
                                                 <div class="delete">
                                                     <?php
-//                                                    $us = Auth::user();
-//                                                   $us['mobile_number']
+                                                    $us = Auth::user();
+                                                   $us['mobile_number']
                                                     ?>
                                                     <div><b>Mobile:</b>
-                                                        9898989890
-                                                        <input type="hidden" name="mobile" value="9898989890"/>
+                                                        {{$us['mobile_number']}}
+                                                        <input type="hidden" name="mobile" value="{{$us['mobile_number']}}"/>
                                                         <input type="hidden" name="user_id" value="<?php echo $user->id; ?>"/>
                                                     </div>
                                                     <div class="pwd">
                                                         <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" name="model_pass" placeholder="" type="text"></div>
+                                                        <div class="pwdr"><input class="form-control" id="model_pass<?php echo $user->id; ?>" name="model_pass" placeholder="" type="password"></div>
                                                     </div>
                                                     <div class="clearfix"></div>
                                                     <div class="delp">Are you sure you want to <b>delete </b>?</div>
@@ -117,7 +124,7 @@
                                             </div>           
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-default">Yes</button>
+                                                <button type="submit" class="btn btn-default" onsubmit="return validation('model_pass<?php echo $user->id; ?>')">Yes</button>
                                             </div>
                                             {!! Form::close() !!}
                                         </div>
