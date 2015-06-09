@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'CreateCityTable' => $baseDir . '/database/migrations/2015_06_04_073640_create_city_table.php',
+    'CreateCustomerProductDifferenceTable' => $baseDir . '/database/migrations/2015_06_09_095225_create_customer_product_difference_table.php',
     'CreateCustomersTable' => $baseDir . '/database/migrations/2015_06_04_073926_create_customers_table.php',
     'CreateDeliveryChallanTable' => $baseDir . '/database/migrations/2015_06_05_130908_create_delivery_challan_table.php',
     'CreateDeliveryLocationsTable' => $baseDir . '/database/migrations/2015_06_04_073713_create_delivery_locations_table.php',
@@ -411,7 +412,7 @@ return array(
     'PHP_Token_WHITESPACE' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
     'PHP_Token_XOR_EQUAL' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
     'PHP_Token_YIELD' => $vendorDir . '/phpunit/php-token-stream/src/Token.php',
-    'ProductTypeSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
+    'ProductTypeSeeder' => $baseDir . '/database/seeds/ProductTypeSeeder.php',
     'SebastianBergmann\\Comparator\\ArrayComparator' => $vendorDir . '/sebastian/comparator/src/ArrayComparator.php',
     'SebastianBergmann\\Comparator\\Comparator' => $vendorDir . '/sebastian/comparator/src/Comparator.php',
     'SebastianBergmann\\Comparator\\ComparisonFailure' => $vendorDir . '/sebastian/comparator/src/ComparisonFailure.php',
@@ -450,6 +451,6 @@ return array(
     'SessionHandlerInterface' => $vendorDir . '/symfony/http-foundation/Symfony/Component/HttpFoundation/Resources/stubs/SessionHandlerInterface.php',
     'TestCase' => $baseDir . '/tests/TestCase.php',
     'Text_Template' => $vendorDir . '/phpunit/php-text-template/Text/Template.php',
-    'UserRolesSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
-    'UserSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
+    'UserRolesSeeder' => $baseDir . '/database/seeds/UserRolesSeeder.php',
+    'UserSeeder' => $baseDir . '/database/seeds/UserSeeder.php',
 );

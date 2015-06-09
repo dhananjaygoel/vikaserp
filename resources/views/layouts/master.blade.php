@@ -128,7 +128,7 @@
         {!! HTML::script('/resources/assets/js/demo-rtl.js') !!}
 
         <!-- Sortable Script Support -->
-        {!! HTML::script('/resources/assets/custom_js/sortable.js') !!}
+        {!! HTML::script('/resources/assets/custom_js/my_script.js') !!}
         <!-- Custom Script Support -->
 
 

@@ -3,10 +3,10 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class UserSeeder extends Seeder {
+class UserRolesSeeder extends Seeder {
 
     public function run() {
-//        DB::table('user_roles')->truncate();
+        DB::table('user_roles')->truncate();
         DB::table('user_roles')->insert(
                 array(
                     array('id' => '1','role_id' => '0','name' =>'Super Admin'),

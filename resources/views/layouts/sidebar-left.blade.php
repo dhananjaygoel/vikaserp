@@ -24,8 +24,8 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
-                    <li class="<?php echo ($page_name == 'customers.php') || ($page_name == 'add_customer.php') || ($page_name == 'edit_customer.php') || ($page_name == 'view_customer.php') ? 'active' : ''; ?>">
-                        <a href="customers.php">
+                    <li class="<?php echo ($page_name == 'customers') ? 'active' : ''; ?>">
+                        <a href="{{url('customers')}}">
                             <i class="fa fa-male"></i>
                             <span>Customers</span>
                             <span class="label label-info label-circle pull-right"></span>
