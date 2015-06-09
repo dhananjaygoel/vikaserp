@@ -39,7 +39,7 @@
                         <input type="hidden" name="id" value="{{$unit->id}}">
                         <div class="form-group">
                             <label for="unit_name">Unit</label>
-                            <input id="unit_name" class="form-control" placeholder="Unit" name="edit_unit_name" value="{{$unit->unit_name}}" type="text">
+                            <input id="unit_name" class="form-control" placeholder="Unit" name="unit_name" value="{{$unit->unit_name}}" type="text">
                         </div>
                         <hr>
                         <div>

@@ -23,7 +23,7 @@
                     <div class="main-box-body clearfix">
                         <hr>
                         <form method="POST" action="{{URL::action('UnitController@store')}}">
-                            <input type="hidden" name="_token" value="{{csrf_token()}}">
+
                             @if (count($errors) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <ul>
@@ -33,9 +33,10 @@
                                 </ul>
                             </div>
                             @endif
+                            <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <div class="form-group">
                                 <label for="unit_name">Unit</label>
-                                <input id="unit_name" class="form-control" placeholder="Unit" name="unit_name" value="" type="text">
+                                <input id="unit_name" class="form-control" placeholder="Unit" name="unit_name" value="{{Input::old('unit_name')}}" type="text">
                             </div>
                             <hr>
                             <div >

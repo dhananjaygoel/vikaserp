@@ -53,9 +53,9 @@
                                     @foreach($delivery_location as $location_data)
                                     <tr>
                                         <td class="col-md-1">{{$i++}}</td>
-                                        <td>{{$location_data['states']->state_name}}</td>
-                                        <td>{{$location_data['states']['city']->city_name}}</td>
-                                        <td>{{$location_data->location_name}}</td>
+                                        <td>{{$location_data['city']['states']->state_name}}</td>
+                                        <td>{{$location_data['city']->city_name}}</td>
+                                        <td>{{$location_data->area_name}}</td>
                                         <td class="text-center">
                                             <a href="{{ Url::action('DeliveryLocationController@edit', ['id' => $location_data->id]) }}" class="table-link">
                                                 <span class="fa-stack">
@@ -63,7 +63,7 @@
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_city_modal_{{$location_data->id}}">
+                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_location_modal_{{$location_data->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -81,11 +81,12 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
+                                                {!! Form::open(array('method'=>'DELETE','url'=>url('location',$location_data->id), 'id'=>'delete_location_form'))!!}
                                                 <div class="delete">
-                                                    <div><b>UserID:</b> 123123131</div>
+                                                    <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                     <div class="pwd">
                                                         <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" placeholder="" type="text" name="password"></div>
+                                                        <div class="pwdr"><input class="form-control" placeholder="" type="password" name="password" required=""></div>
 
                                                     </div>
                                                     <div class="clearfix"></div>
@@ -96,7 +97,7 @@
 
                                             </div>
                                             <div class="modal-footer">
-                                                {!! Form::open(array('method'=>'DELETE','url'=>url('delivery-location',$location_data->id), 'id'=>'delete_location_form'))!!}
+
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
                                                 {!! Form::close() !!}
@@ -111,7 +112,7 @@
                             </table>
 
                             <span class="pull-right">
-                                <?php echo $cities->render(); ?>
+                                <?php echo $delivery_location->render(); ?>
                             </span>
 
                         </div>

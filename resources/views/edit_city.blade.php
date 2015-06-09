@@ -47,7 +47,7 @@
                         </div>
                         <div class="form-group">
                             <label for="city_name">City</label>
-                            <input id="city_name" class="form-control" placeholder="City" name="edit_city_name" value="{{$city->city_name}}" type="text">
+                            <input id="city_name" class="form-control" placeholder="City" name="city_name" value="{{$city->city_name}}" type="text">
                         </div>
                         <hr>
                         <div>

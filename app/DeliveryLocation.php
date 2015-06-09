@@ -20,4 +20,8 @@ class DeliveryLocation extends Model {
      */
     protected $fillable = ['state_id', 'city_id', 'area_name'];
 
+    public function city() {
+        return $this->hasOne('App\City', 'id', 'city_id');
+    }
+
 }

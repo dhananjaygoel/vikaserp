@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-//use App\Http\Requests\Request;
+//use Illuminate\Http\Request;
+use App\Http\Requests\Request;
 use App\Http\Requests\StatesRequest;
+use App\Http\Requests\EditStatesRequest;
 use App\States;
+use App\City;
+use App\DeliveryLocation;
 use Input;
 use Illuminate\Support\Facades\DB;
+use Hash;
+use Illuminate\Support\Facades\Auth;
 
 class StatesController extends Controller {
 
@@ -40,7 +45,7 @@ class StatesController extends Controller {
      */
     public function store(StatesRequest $staterequest) {
         $add_states = States::create([
-                    'state_name' => Input::get('state_name')
+                    'state_name' => $staterequest->input('state_name')
         ]);
         $id = DB::getPdo()->lastInsertId();
         return redirect('states/' . $id . '/edit')->with('flash_message', 'State details successfully added.');
@@ -73,9 +78,13 @@ class StatesController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function update($id) {
-        $affectedRows = States::where('id', '=', $id)->update(['state_name' => Input::get('edit_state_name')]);
-        return redirect('states/' . $id . '/edit')->with('flash_message', 'State details successfully modified.');
+    public function update($id, EditStatesRequest $request) {
+        $check_state_exists = States::where('state_name', '=', $request->input('state_name'))->where('id', '!=', $id)->count();
+        if ($check_state_exists == 0) {
+            $affectedRows = States::where('id', '=', $id)->update(['state_name' => Input::get('state_name')]);
+            return redirect('states/' . $id . '/edit')->with('flash_message', 'State details successfully modified.');
+        }
+        return redirect('states/' . $id . '/edit')->with('flash_message', 'State name already exists.');
     }
 
     /**
@@ -85,10 +94,16 @@ class StatesController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        //        if(Auth::user()->password == Hash::make(Input::get('password'))){
-        $delete_state = States::find($id)->delete();
-        return redirect('states')->with('flash_message', 'State details successfully deleted.');
-        //        }
+        $state_association = City::where('state_id', '=', $id)->count();
+        $location_association = DeliveryLocation::where('state_id', '=', $id)->count();
+        if (($state_association == 0) && ($location_association == 0)) {
+            if (Hash::check(Input::get('password'), Auth::user()->password)) {
+                $delete_state = States::find($id)->delete();
+                return redirect('states')->with('flash_message', 'State details successfully deleted.');
+            } else
+                return redirect('states')->with('flash_message', 'Please enter a correct password');
+        } else
+            return redirect('states')->with('flash_message', 'State details cannot be deleted as it is associated with a city or a location.');
     }
 
 }

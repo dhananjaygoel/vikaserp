@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class UnitsRequest extends Request {
+class CityRequest extends Request {
 
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,8 @@ class UnitsRequest extends Request {
      */
     public function rules() {
         return [
-            'unit_name' => 'required|unique:units'
+            'city_name' => 'required|unique:city',
+            'state' => 'required'
         ];
     }
 

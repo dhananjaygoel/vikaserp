@@ -7,8 +7,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\City;
 use App\States;
+use App\DeliveryLocation;
+use App\Http\Requests\CityRequest;
+use App\Http\Requests\EditCityRequest;
 use Input;
 use Illuminate\Support\Facades\DB;
+use Hash;
+use Auth;
 
 class CityController extends Controller {
 
@@ -19,7 +24,7 @@ class CityController extends Controller {
      */
     public function index() {
         $cities = City::with('states')->Paginate(2);
-        $cities->setPath('cities');
+        $cities->setPath('city');
         return view('cities', compact('cities'));
     }
 
@@ -38,10 +43,10 @@ class CityController extends Controller {
      *
      * @return Response
      */
-    public function store() {
+    public function store(CityRequest $request) {
         $add_city = City::create([
-                    'city_name' => Input::get('city_name'),
-                    'state_id' => Input::get('state')
+                    'city_name' => $request->input('city_name'),
+                    'state_id' => $request->input('state')
         ]);
         $id = DB::getPdo()->lastInsertId();
         return redirect('city/' . $id . '/edit')->with('flash_message', 'City details successfully added.');
@@ -75,12 +80,16 @@ class CityController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function update($id) {
-        $affectedRows = City::where('id', '=', $id)->update([
-            'state_id' => Input::get('state'),
-            'city_name' => Input::get('edit_city_name'),
-        ]);
-        return redirect('city/' . $id . '/edit')->with('flash_message', 'City details successfully modified.');
+    public function update($id, EditCityRequest $request) {
+        $check_city_exists = City::where('city_name', '=', $request->input('city_name'))->where('id', '!=', $id)->count();
+        if ($check_city_exists == 0) {
+            $affectedRows = City::where('id', '=', $id)->update([
+                'state_id' => $request->input('state'),
+                'city_name' => $request->input('city_name'),
+            ]);
+            return redirect('city/' . $id . '/edit')->with('flash_message', 'City details successfully modified.');
+        } else
+            return redirect('city/' . $id . '/edit')->with('flash_message', 'City name already exists.');
     }
 
     /**
@@ -90,10 +99,15 @@ class CityController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        //        if(Auth::user()->password == Hash::make(Input::get('password'))){
-        $delete_city = City::find($id)->delete();
-        return redirect('city')->with('flash_message', 'City details successfully deleted.');
-        //        }
+        $location_association = DeliveryLocation::where('city_id', '=', $id)->count();
+        if ($location_association == 0) {
+            if (Hash::check(Input::get('password'), Auth::user()->password)) {
+                $delete_city = City::find($id)->delete();
+                return redirect('city')->with('flash_message', 'City details successfully deleted.');
+            } else
+                return redirect('city')->with('flash_message', 'Please enter a correct password');
+        } else
+            return redirect('city')->with('flash_message', 'City details cannot be deleted as it is associated with a location.');
     }
 
 }

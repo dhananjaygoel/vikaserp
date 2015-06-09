@@ -48,12 +48,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
-//                                    echo '<pre>';
-//                                    print_r($units->toArray());
-//                                    echo '</pre>';
-//                                    exit;
-                                    ?>
                                     <?php $i = ($units->currentPage() - 1) * $units->perPage() + 1; ?>
                                     @foreach($units as $units_data)
                                     <tr>
@@ -84,11 +78,13 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
+                                                {!! Form::open(array('method'=>'DELETE','url'=>url('unit',$units_data->id), 'id'=>'delete_units_form'))!!}
+                                                <input type="hidden" name="_token" value="{{csrf_token()}}">
                                                 <div class="delete">
-                                                    <div><b>UserID:</b> 123123131</div>
+                                                    <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                     <div class="pwd">
                                                         <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" placeholder="" type="text" name="password"></div>
+                                                        <div class="pwdr"><input class="form-control" placeholder="" type="password" name="password" required=""></div>
 
                                                     </div>
                                                     <div class="clearfix"></div>
@@ -99,7 +95,7 @@
 
                                             </div>
                                             <div class="modal-footer">
-                                                {!! Form::open(array('method'=>'DELETE','url'=>url('unit',$units_data->id), 'id'=>'delete_units_form'))!!}
+
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
                                                 {!! Form::close() !!}
