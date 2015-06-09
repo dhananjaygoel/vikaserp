@@ -80,12 +80,10 @@
                                             <table id="table-example" class="table table-hover customerview_table  ">
                                 
                                         
-                                            <tbody>   
-                                                  <tr>
-                                            <td><span>Customer Name:</span> Customer1</td>
-                                            
-                                    
-                                        </tr>
+                                            <tbody> 
+                                        <tr><td><span>Warehouse: </span>Lorem Ipsum</td></tr>
+                                        <tr><td><span>Supplier Name:</span> Supplier1</td></tr>
+                                        <tr><td><span>Customer Name:</span> Customer1</td></tr>
                                         <tr><td><span>Contact Person: </span>Lorem Ipsum</td></tr>
                                          <tr>
                                         <td><span>Mobile Number: </span>9166778822</td>

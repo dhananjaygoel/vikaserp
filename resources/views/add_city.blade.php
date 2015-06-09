@@ -36,6 +36,7 @@
                             <div class="form-group">
                                 <label for="state_name">State Name</label>
                                 <select name="state" class="form-control">
+                                    <option value="" selected="">Select State</option>
                                     @foreach($states as $state)
                                     <option value="{{$state->id}}">{{$state->state_name}}</option>
                                     @endforeach
@@ -44,7 +45,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="city_name">City Name</label>
-                                <input id="city_name" class="form-control" placeholder="City" name="city_name" value="" type="text">
+                                <input id="city_name" class="form-control" placeholder="City" name="city_name" value="{{Input::old('city_name')}}" type="text">
                             </div>
                             <hr>
                             <div >

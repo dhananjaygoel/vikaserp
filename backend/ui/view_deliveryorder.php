@@ -77,7 +77,16 @@
                               
                                 <tbody>                    
 
-
+                                      <tr>
+                                            <td><span>Warehouse :</span> Lorem Ipsum</td>
+                                            
+                                    
+                                        </tr>
+                                          <tr>
+                                            <td><span>Supplier Name:</span> Supplier1</td>
+                                            
+                                    
+                                        </tr>
                                        <tr>
                                             <td><span>Customer Name:</span> Customer1</td>
                                             

@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UnitsRequest;
+use App\Http\Requests\EditUnitRequest;
 use App\Units;
 use Input;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Auth;
 
 class UnitController extends Controller {
 
@@ -36,9 +39,9 @@ class UnitController extends Controller {
      *
      * @return Response
      */
-    public function store() {
+    public function store(UnitsRequest $request) {
         $add_units = Units::create([
-                    'unit_name' => Input::get('unit_name')
+                    'unit_name' => $request->input('unit_name')
         ]);
         $id = DB::getPdo()->lastInsertId();
         return redirect('unit/' . $id . '/edit')->with('flash_message', 'Unit details successfully added.');
@@ -71,8 +74,11 @@ class UnitController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function update($id) {
-        $affectedRows = Units::where('id', '=', $id)->update(['unit_name' => Input::get('edit_unit_name')]);
+    public function update($id, EditUnitRequest $request) {
+        $check_unit_exists = Units::where('unit_name', '=', $request->input('unit_name'))->where('id', '!=', $id)->count();
+        if ($check_unit_exists != 0)
+            return redirect('unit/' . $id . '/edit')->with('flash_message', 'Unit name already exists');
+        $affectedRows = Units::where('id', '=', $id)->update(['unit_name' => $request->input('unit_name')]);
         return redirect('unit/' . $id . '/edit')->with('flash_message', 'Unit details successfully modified.');
     }
 
@@ -83,10 +89,11 @@ class UnitController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-//        if(Auth::user()->password == Hash::make(Input::get('password'))){
-        $delete_unit = Units::find($id)->delete();
-        return redirect('unit')->with('flash_message', 'Unit details successfully deleted.');
-        //        }
+        if (Hash::check(Input::get('password'), Auth::user()->password)) {
+            $delete_unit = Units::find($id)->delete();
+            return redirect('unit')->with('flash_message', 'Unit details successfully deleted.');
+        }
+        return redirect('unit')->with('flash_message', 'Please enter a correct password');
     }
 
 }

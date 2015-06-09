@@ -37,6 +37,7 @@
                             <div class="form-group">
                                 <label for="state_name">State Name</label>
                                 <select name="state" class="form-control">
+                                    <option value="" selected="">Select State</option>
                                     @foreach($states as $state)
                                     <option value="{{$state->id}}">{{$state->state_name}}</option>
                                     @endforeach
@@ -45,17 +46,18 @@
                             <div class="form-group">
                                 <label for="city_name">City Name</label>
                                 <select name="city" class="form-control">
+                                    <option value="" selected="">Select City</option>
                                     @foreach($cities as $city)
                                     <option value="{{$city->id}}">{{$city->city_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="location_name">Area Name</label>
-                                <input id="location_name" class="form-control" placeholder="Area Name" name="location_name" value="" type="text">
+                                <label for="area_name">Area Name</label>
+                                <input id="area_name" class="form-control" placeholder="Area Name" name="area_name" value="{{Input::old('area_name')}}" type="text">
                             </div>
                             <hr>
-                            <div >
+                            <div>
                                 <!--<button type="submit" class="btn btn-primary form_button_footer" >Submit</button>-->
                                 <input type="submit" class="btn btn-primary form_button_footer" value="Submit">
                                 <a href="{{URL::to('location')}}" class="btn btn-default form_button_footer">Back</a>

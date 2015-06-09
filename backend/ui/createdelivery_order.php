@@ -77,6 +77,8 @@
                                                 <tbody>
                                                     <tr><td><b>Date:</b> 25 April,2015</td></tr>
                                                     <tr><td><b>Serial Number:</b> Apr15/02/02/01</td></tr>
+                                                    <tr><td><b>Warehouse: </b>Lorem Ipsum</td></tr>
+                                                    <tr><td><b>Supplier Name:</b> Supplier1</td></tr>
                                                     <tr><td><b>Customer Name:</b> Customer1</td></tr>
                                                     <tr><td><b>Contact person:</b> lorem Ipsum</td> </tr>
                                                     <tr><td><b>Mobile:</b> 9188556655</td></tr>
@@ -492,7 +494,7 @@
 
                                                 </div>
                      
-                         <button type="button" class="btn btn-primary form_button_footer" >Save and Send SMS</button> 
+                                  <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
                         
                         <hr>
                         <div>
@@ -598,5 +600,11 @@ $(document).ready(function(){
               
         </script> 
         <script src="js/bootstrap-editable.min.js"></script>
+        <script>
+
+$(function() {
+    $('.smstooltip').tooltip();
+});
+</script>
 </body>
 </html>

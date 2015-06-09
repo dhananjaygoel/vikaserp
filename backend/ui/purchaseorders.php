@@ -92,7 +92,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Customer Name</th>
+                                        <th>Supplier Name</th>
                                          <th>Mobile </th> 
                                          <th>Delivery Location</th> 
                                            <th>Order By</th>
@@ -371,6 +371,7 @@
                                         <th>Delivery Location</th>                                                            
                                         <th>Order By</th>
                                         <th>Cancel By</th>
+                                        <th>Reason</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -386,6 +387,7 @@
                                         <td>Pune</td>
                                         <td>Lorem</td>
                                         <td>Admin</td>
+                                        <td>Lorem ipsum  </td>
                                         <td class="text-center">
                                               <a href="purchaseorder_view.php" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -413,6 +415,7 @@
                                         <td>Mumbai</td>
                                         <td>Ipsum</td>
                                         <td>Admin</td>
+                                        <td>Lorem ipsum  </td>
                                         <td class="text-center">
                                              <a href="purchaseorder_view.php" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -490,12 +493,15 @@
                                                 
                                                 
                                        <div class="modal-body">
-                                         <p>Are you sure to complete the Order?
+                                         <p>Are you sure to complete the Order? </p>
                                           <div class="form-group">
                                               <label for="reason"><b>Reason</b></label>
                                               <textarea class="form-control" id="inquiry_remark" name="reason"  rows="2" placeholder="Reason"></textarea>
                                         </div>
-                                         </p>
+                                         <div class="checkbox">
+                                         <label class="marginsms"><input type="checkbox" value=""><span class="checksms">Email</span></label>
+                                        <label><input type="checkbox" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
+                                         </div>
                                         
                                          
                                     </div>           
@@ -562,7 +568,11 @@
 });
 
         </script>
-	
+	<script>
+$(function() {
+    $('.smstooltip').tooltip();
+});
+</script>
 	<!-- this page specific inline scripts -->
 	
 </body>

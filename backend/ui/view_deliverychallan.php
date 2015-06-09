@@ -207,6 +207,10 @@
                                         <td><span>Freight: </span>Lorem ipsum</td>
                                      
                                         </tr>
+                                         <tr>
+                                        <td><span>Total: </span>$15000</td>
+                                     
+                                        </tr>
                                         <tr>
                                         <td><span>Loading: </span>Lorem ipsum</td>
                                      
@@ -219,10 +223,7 @@
                                         <td><span>Labours: </span>Lorem ipsum</td>
                                      
                                         </tr>
-                                        <tr>
-                                        <td><span>Total: </span>500</td>
-                                     
-                                        </tr>
+                                        
                                         <tr>
                                         <td><span>Plus VAT: </span>Yes</td>
                                      
@@ -236,11 +237,15 @@
                                      
                                         </tr>
                                         <tr>
-                                        <td><span>Grand Total: 6000</span></td>
+                                        <td><span>Grand Total: </span>$25000</td>
                                      
                                         </tr>
                                          <tr>
                                         <td><span>Delivery Location: </span>Lorem Ipsum Dollar</td>
+                                    
+                                        </tr>
+                                         <tr>
+                                        <td><span>Remark: </span>Lorem Ipsum Dollar</td>
                                     
                                         </tr>
                                             

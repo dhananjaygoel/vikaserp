@@ -23,6 +23,8 @@
                     <div class="main-box-body clearfix">
                         <hr>
                         {!! Form::open(array('method'=>'PUT','url'=>url('location',$delivery_location->id), 'id'=>'edit_location_form'))!!}
+
+                        <input type="hidden" name="id" value="{{$delivery_location->id}}">
                         @if (count($errors) > 0)
                         <div role="alert" class="alert alert-warning">
                             <ul>
@@ -35,27 +37,36 @@
                         @if (Session::has('flash_message'))
                         <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
                         @endif
-                        <input type="hidden" name="_token" value="{{csrf_token()}}">
-                        <input type="hidden" name="id" value="{{$delivery_location->id}}">
+
                         <div class="form-group">
                             <label for="state">State Name</label>
                             <select name="state" class="form-control">
+                                <option value="">Select State</option>
                                 @foreach($states as $state)
+                                @if($state->id == $delivery_location->state_id)
+                                <option value="{{$state->id}}" selected="selected">{{$state->state_name}}</option>
+                                @else
                                 <option value="{{$state->id}}">{{$state->state_name}}</option>
+                                @endif
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="city">City Name</label>
                             <select name="city" class="form-control">
+                                <option value="">Select City</option>
                                 @foreach($cities as $city)
+                                @if($city->id == $delivery_location->city_id)
+                                <option value="{{$city->id}}" selected="selected">{{$city->city_name}}</option>
+                                @else
                                 <option value="{{$city->id}}">{{$city->city_name}}</option>
+                                @endif
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="area_name">Area Name</label>
-                            <input id="city_name" class="form-control" placeholder="City" name="edit_location_name" value="{{$delivery_location->area_name}}" type="text">
+                            <input id="location_name" class="form-control" placeholder="Area Name" name="area_name" value="{{$delivery_location->area_name}}" type="text">
                         </div>
                         <hr>
                         <div>

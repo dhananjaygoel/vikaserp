@@ -6,6 +6,10 @@ use Illuminate\Foundation\Http\FormRequest;
 
 abstract class UserRequest extends FormRequest {
 
+    public function authorize() {
+        return true;
+    }
+
     public function rules() {
         return [
             'first_name' => 'required|min:2|max:100',

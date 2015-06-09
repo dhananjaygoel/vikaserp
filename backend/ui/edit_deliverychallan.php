@@ -110,7 +110,7 @@
                                                     <td class="shippingcolumn">
                                                             <div class="row product-price">
                                             <div class="form-group col-md-6">
-                                           <input type="text" class="form-control" id="difference" value="Rate">
+                                          <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
                                                
                                             </div>
                                             <div class="form-group col-md-2 difference_form">
@@ -148,7 +148,7 @@
                                                        <td class="shippingcolumn">
                                                             <div class="row product-price">
                                             <div class="form-group col-md-6">
-                                           <input type="text" class="form-control" id="difference" value="Rate">
+                                            <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
                                                
                                             </div>
                                             <div class="form-group col-md-2 difference_form">
@@ -187,7 +187,7 @@
                                                        <td class="shippingcolumn">
                                                             <div class="row product-price">
                                             <div class="form-group col-md-6">
-                                           <input type="text" class="form-control" id="difference" value="Rate">
+                                           <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
                                                
                                             </div>
                                             <div class="form-group col-md-2 difference_form">
@@ -226,7 +226,7 @@
                                                        <td class="shippingcolumn">
                                                             <div class="row product-price">
                                             <div class="form-group col-md-6">
-                                           <input type="text" class="form-control" id="difference" value="Rate">
+                                           <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
                                                
                                             </div>
                                             <div class="form-group col-md-2 difference_form">
@@ -283,7 +283,7 @@
                                                      <td>
                                                   
                                                         <select class="form-control" name="type" id="add_status_type">
-                                           <option value="" selected=""></option>
+                                           
                                                 <option value="2">Kg</option>
                                                 <option value="3">mm</option>
                                                 <option value="3">cm</option>
@@ -293,7 +293,7 @@
                                                       <td class="shippingcolumn">
                                                             <div class="row product-price">
                                             <div class="form-group col-md-6">
-                                           <input type="text" class="form-control" id="difference" value="Rate">
+                                           <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
                                                
                                             </div>
                                             <div class="form-group col-md-2 difference_form">
@@ -350,7 +350,7 @@
                                                      <td>
                                                   
                                                         <select class="form-control" name="type" id="add_status_type">
-                                           <option value="" selected=""></option>
+                                           
                                                 <option value="2">Kg</option>
                                                 <option value="3">mm</option>
                                                 <option value="3">cm</option>
@@ -360,7 +360,7 @@
                                                       <td class="shippingcolumn">
                                                             <div class="row product-price">
                                             <div class="form-group col-md-6">
-                                           <input type="text" class="form-control" id="difference" value="Rate">
+                                         <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
                                                
                                             </div>
                                             <div class="form-group col-md-2 difference_form">
@@ -427,7 +427,7 @@
                                                       <td class="shippingcolumn">
                                                             <div class="row product-price">
                                             <div class="form-group col-md-6">
-                                           <input type="text" class="form-control" id="difference" value="Rate">
+                                           <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
                                                
                                             </div>
                                             <div class="form-group col-md-2 difference_form">
@@ -459,6 +459,10 @@
                     <label for="driver_name"><b class="challan">Freight</b></label>
                     <input id="driver_name" class="form-control" placeholder="Freight " name="Freight" value="" type="text">
                 </div>
+                <div class="form-group">
+                    <label for="total"><b class="challan">Total</b><span class="gtotal">$150000</span></label>
+                    
+                </div>
                     <div class="form-group">
                         <label for="driver_contact"><b class="challan">Loading</b></label>
                     <input id="driver_contact" class="form-control" placeholder="loading" name="loading" value="" type="text">
@@ -468,22 +472,19 @@
                         <label for="loadedby"><b class="challan">Loaded By</b></label>
                     <input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby" value="" type="text">
                 </div>
-                        <div class="form-group">
+                <div class="form-group">
                             <label for="labour"><b class="challan">Labour </b></label>
                     <input id="labour" class="form-control" placeholder="Labour" name="labour" value="" type="text">
                 </div>
                 <div class="form-group">
                     <label for="billno"><b class="challan">Bill Number</b></label>
                     <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="text">
-</div>
-                    <div class="form-group">
-                        <label for="total"><b class="challan">Total</b></label>
-                    <input id="total" class="form-control" placeholder="Total" name="total" value="" type="text">
                 </div>
+              
                  
                                              <div class="form-group">
                   
-                                                 <input id="includevat" type="checkbox" name="Include VAT" value="includevat"><b class="challan">Plus VAT</b>
+                                                 <input id="includevat" type="checkbox" name="Include VAT" value="includevat"><b class="challan"> Plus VAT</b>
                 </div>
                                              <div id="vatdetails">                     
                                              <div class="form-group">
@@ -500,10 +501,17 @@
                     <input id="grandtotal" class="form-control" placeholder="Grand Total" name="grandtotal" value="" type="text">
                 </div>
                    -->
-                                             </div>                     
-                     
+                </div>                     
+                <div class="form-group">
+                        <label for="total"><b class="challan">Grand Total</b><span class="gtotal">$250000</span></label>
+                   
+                </div>
+                <div class="form-group">
+                    <label for="inquiry_remark"><b class="challan">Remark</b></label>
+                    <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3"></textarea>
+                </div>
                     
-        <button type="button" class="btn btn-primary form_button_footer" >Save and Send SMS</button>
+          <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
 
                 <hr>                  
                  
@@ -708,6 +716,11 @@ $(document).ready(function(){
    
   
 
+});
+</script>
+<script>
+$(function() {
+    $('.smstooltip').tooltip();
 });
 </script>
 </body>

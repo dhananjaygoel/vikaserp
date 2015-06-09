@@ -48,12 +48,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
-//                                    echo '<pre>';
-//                                    print_r($units->toArray());
-//                                    echo '</pre>';
-//                                    exit;
-                                    ?>
                                     <?php $i = ($states->currentPage() - 1) * $states->perPage() + 1; ?>
                                     @foreach($states as $states_data)
                                     <tr>
@@ -66,7 +60,7 @@
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_unit_modal_{{$states_data->id}}">
+                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_states_modal_{{$states_data->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -76,7 +70,7 @@
                                         </td>
                                     </tr>
 
-                                <div class="modal fade" id="delete_unit_modal_{{$states_data->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="delete_states_modal_{{$states_data->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -84,12 +78,12 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
+                                                {!! Form::open(array('method'=>'DELETE','url'=>url('states',$states_data->id), 'id'=>'delete_states_form'))!!}
                                                 <div class="delete">
-                                                    <div><b>UserID:</b> 123123131</div>
+                                                    <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                     <div class="pwd">
                                                         <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" placeholder="" type="text" name="password"></div>
-
+                                                        <div class="pwdr"><input class="form-control" placeholder="" type="password" name="password" required=""></div>
                                                     </div>
                                                     <div class="clearfix"></div>
                                                     <div class="delp">Are you sure you want to <b>delete </b> ?</div>
@@ -99,7 +93,7 @@
 
                                             </div>
                                             <div class="modal-footer">
-                                                {!! Form::open(array('method'=>'DELETE','url'=>url('states',$states_data->id), 'id'=>'delete_states_form'))!!}
+
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
                                                 {!! Form::close() !!}

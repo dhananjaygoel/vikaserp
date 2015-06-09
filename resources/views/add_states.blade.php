@@ -34,8 +34,8 @@
                             </div>
                             @endif
                             <div class="form-group">
-                                <label for="state_name">State</label>
-                                <input id="state_name" class="form-control" placeholder="State" name="state_name" value="" type="text">
+                                <label for="state_name">State Name</label>
+                                <input id="state_name" class="form-control" placeholder="State" name="state_name" value="{{Input::old('state_name')}}" type="text">
                             </div>
                             <hr>
                             <div >

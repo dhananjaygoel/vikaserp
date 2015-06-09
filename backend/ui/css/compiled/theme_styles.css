@@ -8040,5 +8040,7 @@ h1.printwrapper{margin:20px 0px;color:#000}
 .deletebutton{margin:20px 0}
 .pcshipping{margin-bottom: 20px!important;width:71%!important}
 .billdate .cdfirst{width:8%;padding-left: 0px!important}
-.enquirybadge{margin-left: 10px;font-size: 14px;background-color:#216897;}
+.enquirybadge{margin-left: 10px;font-size: 14px;background-color:#216897;cursor:pointer}
 .gtotal{margin-left: 10px}
+.checksms{font-weight: bold!important;position: relative;top:2px}
+.marginsms{margin-right: 15px}

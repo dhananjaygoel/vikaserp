@@ -12,7 +12,7 @@ class StatesRequest extends Request {
      * @return bool
      */
     public function authorize() {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,7 @@ class StatesRequest extends Request {
      */
     public function rules() {
         return [
-            'state_name' => 'required'
+            'state_name' => 'required|unique:states'
         ];
     }
 

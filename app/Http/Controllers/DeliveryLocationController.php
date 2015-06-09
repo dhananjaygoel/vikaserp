@@ -10,6 +10,10 @@ use App\States;
 use App\DeliveryLocation;
 use Input;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\LocationRequest;
+use App\Http\Requests\EditLocationRequest;
+use Hash;
+use Illuminate\Support\Facades\Auth;
 
 class DeliveryLocationController extends Controller {
 
@@ -19,7 +23,7 @@ class DeliveryLocationController extends Controller {
      * @return Response
      */
     public function index() {
-        $delivery_location = DeliveryLocation::with('states.city')->Paginate(2);
+        $delivery_location = DeliveryLocation::with('city.states')->Paginate(2);
         $delivery_location->setPath('delivery_location');
         return view('delivery_location', compact('delivery_location'));
     }
@@ -40,18 +44,14 @@ class DeliveryLocationController extends Controller {
      *
      * @return Response
      */
-    public function store() {
-//        echo '<pre>';
-//        print_r(Input::get('location_name'));
-//        echo '</pre>';
-//        exit;
+    public function store(LocationRequest $request) {
         $add_delivery_location = DeliveryLocation::create([
-                    'area_name' => Input::get('location_name'),
-                    'state_id' => Input::get('state'),
-                    'city_id' => Input::get('city')
+                    'area_name' => $request->input('area_name'),
+                    'state_id' => $request->input('state'),
+                    'city_id' => $request->input('city')
         ]);
         $id = DB::getPdo()->lastInsertId();
-        return redirect('location/' . $id . '/edit')->with('flash_message', 'Delivery_location details successfully added.');
+        return redirect('location/' . $id . '/edit')->with('flash_message', 'Location details successfully added.');
     }
 
     /**
@@ -83,13 +83,17 @@ class DeliveryLocationController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function update($id) {
-        $affectedRows = DeliveryLocation::where('id', '=', $id)->update([
-            'state_id' => Input::get('state'),
-            'city_id' => Input::get('city'),
-            'area_name' => Input::get('edit_location_name'),
-        ]);
-        return redirect('location/' . $id . '/edit')->with('flash_message', 'Delivery location details successfully modified.');
+    public function update($id, EditLocationRequest $request) {
+        $check_location_exists = DeliveryLocation::where('area_name', '=', $request->input('area_name'))->where('id', '!=', $id)->count();
+        if ($check_location_exists == 0) {
+            $affectedRows = DeliveryLocation::where('id', '=', $id)->update([
+                'state_id' => $request->input('state'),
+                'city_id' => $request->input('city'),
+                'area_name' => $request->input('area_name'),
+            ]);
+            return redirect('location/' . $id . '/edit')->with('flash_message', 'Location details successfully modified.');
+        } else
+            return redirect('location/' . $id . '/edit')->with('flash_message', 'Location name already exists.');
     }
 
     /**
@@ -99,10 +103,11 @@ class DeliveryLocationController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        //        if(Auth::user()->password == Hash::make(Input::get('password'))){
-        $delete_location = DeliveryLocation::find($id)->delete();
-        return redirect('location')->with('flash_message', 'Delivery_location details successfully deleted.');
-        //        }
+        if (Hash::check(Input::get('password'), Auth::user()->password)) {
+            $delete_location = DeliveryLocation::find($id)->delete();
+            return redirect('location')->with('flash_message', 'Location details successfully deleted.');
+        } else
+            return redirect('location')->with('flash_message', 'Please enter a correct password');
     }
 
 }

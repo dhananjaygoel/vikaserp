@@ -75,6 +75,10 @@
                         <label for="cn"><b>Serial Number:</b> PO/Apr15/02/02/01</label>
        
                 </div>
+                <div class="form-group">
+                <label for="cn"><b>Supplier Name:</b> Lorem Ipsum</label>
+       
+                </div>
                      <!--<div class="form-group">
                         <label for="cn"><b>Customer name:</b> Lorem Ipsum</label>
        
@@ -102,13 +106,12 @@
                                                   <tr class="headingunderline">
                                                    
                                                        <td><span>Product</span></td>
-                                                       <td><span>Quantity</span></td>
-                                                       <td><span>Actual Pieces</span></td>
+                                                      
                                                        <td><span>Unit</span></td>
                                                        <td><span>Price</span></td>
-                                                       <td><span>Pending Order</span></td>
+                                                       <td class="col-md-2 text-center"><span>Pending Order</span></td>
                                                      
-                                                       <td><span>Remark</span></td>
+                                                       <td class="col-md-4"><span>Remark</span></td>
                                                         
                                                 </tr>
                                                 <tr>
@@ -119,22 +122,14 @@
                                                    Product
                                                         </div>
                                                     </td>
-                                                       <td>
-                                                        <div class="form-group">
-                       
-                                                    Quantity      </div>           
-                                                    </td>
-                                                    <td> 
-                                                              <div class="form-group">
-                       
-                                                    Pieces                 </div></td>
+                                                     
                                                       <td >
                                                           <div class="form-group">   Unit</div>
                                                     </td>
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                                 <input type="text" class="form-control" value="" id="price" placeholder="Price">
                                                
                                             </div>
                                             <div class="form-group col-md-6 difference_form">
@@ -143,7 +138,7 @@
                                             </div>
                                             </div>
                                                     </td>
-                                                    <td ><div class="form-group">15</div></td>
+                                                    <td class="text-center"><div class="form-group">15</div></td>
                                                      
                                                       <td>
                                                           <div class="form-group">
@@ -160,22 +155,14 @@
                                                    Product
                                                         </div>
                                                     </td>
-                                                       <td>
-                                                        <div class="form-group">
-                       
-                                                    Quantity      </div>           
-                                                    </td>
-                                                    <td> 
-                                                              <div class="form-group">
-                       
-                                                    Pieces                 </div></td>
+                                                   
                                                       <td >
                                                           <div class="form-group">   Unit</div>
                                                     </td>
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                               <input type="text" class="form-control" value="" id="price" placeholder="Price">
                                                
                                             </div>
                                             <div class="form-group col-md-6 difference_form">
@@ -184,7 +171,7 @@
                                             </div>
                                             </div>
                                                     </td>
-                                                    <td ><div class="form-group">15</div></td>
+                                                    <td class="text-center"><div class="form-group">15</div></td>
                                                      
                                                       <td>
                                                           <div class="form-group">
@@ -201,22 +188,14 @@
                                                    Product
                                                         </div>
                                                     </td>
-                                                       <td>
-                                                        <div class="form-group">
-                       
-                                                    Quantity      </div>           
-                                                    </td>
-                                                    <td> 
-                                                              <div class="form-group">
-                       
-                                                    Pieces                 </div></td>
+                                                     
                                                       <td >
                                                           <div class="form-group">   Unit</div>
                                                     </td>
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                                 <input type="text" class="form-control" value="" id="price" placeholder="Price">
                                                
                                             </div>
                                             <div class="form-group col-md-6 difference_form">
@@ -225,7 +204,7 @@
                                             </div>
                                             </div>
                                                     </td>
-                                                    <td ><div class="form-group">15</div></td>
+                                                    <td class="text-center"><div class="form-group">15</div></td>
                                                      
                                                       <td>
                                                           <div class="form-group">
@@ -242,22 +221,14 @@
                                                    Product
                                                         </div>
                                                     </td>
-                                                       <td>
-                                                        <div class="form-group">
-                       
-                                                    Quantity      </div>           
-                                                    </td>
-                                                    <td> 
-                                                              <div class="form-group">
-                       
-                                                    Pieces                 </div></td>
+                                                     
                                                       <td >
                                                           <div class="form-group">   Unit</div>
                                                     </td>
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                                 <input type="text" class="form-control" value="" id="price" placeholder="Price">
                                                
                                             </div>
                                             <div class="form-group col-md-6 difference_form">
@@ -266,7 +237,7 @@
                                             </div>
                                             </div>
                                                     </td>
-                                                    <td ><div class="form-group">15</div></td>
+                                                    <td class="text-center"><div class="form-group">15</div></td>
                                                      
                                                       <td>
                                                           <div class="form-group">
@@ -310,18 +281,10 @@
                                                         <i class="fa fa-search search-icon"></i>
                                                         </div>
                                                     </td>
-                                                       <td>
-                                                        <div class="form-group">
-                       
-                                                     <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">    </div>           
-                                                    </td>
-                                                    <td> 
-                                                              <div class="form-group">
-                       
-                                                       <input id="pieces" class="form-control" placeholder="Pieces" name="pieces" value="" type="text">                </div></td>
+                                                    
                                                       <td >
                                                           <div class="form-group">         <select class="form-control" name="type" id="add_status_type">
-                                           <option value="" selected=""></option>
+                       
                                                 <option value="2">Kg</option>
                                                 <option value="3">mm</option>
                                                 <option value="3">cm</option>
@@ -330,7 +293,7 @@
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                                <input type="text" class="form-control" value="" id="price" placeholder="Price">
                                                
                                             </div>
                                             <div class="form-group col-md-6 difference_form">
@@ -339,7 +302,7 @@
                                             </div>
                                             </div>
                                                     </td>
-                                                    <td ><div class="form-group">15</div></td>
+                                                    <td class="text-center"><div class="form-group">15</div></td>
                                                      
                                                       <td>
                                                           <div class="form-group">
@@ -380,18 +343,10 @@
                                                         <i class="fa fa-search search-icon"></i>
                                                         </div>
                                                     </td>
-                                                       <td>
-                                                        <div class="form-group">
-                       
-                                                     <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">    </div>           
-                                                    </td>
-                                                    <td> 
-                                                              <div class="form-group">
-                       
-                                                       <input id="pieces" class="form-control" placeholder="Pieces" name="pieces" value="" type="text">                </div></td>
+                                                     
                                                       <td >
                                                           <div class="form-group">         <select class="form-control" name="type" id="add_status_type">
-                                           <option value="" selected=""></option>
+                                      
                                                 <option value="2">Kg</option>
                                                 <option value="3">mm</option>
                                                 <option value="3">cm</option>
@@ -400,7 +355,7 @@
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                                <input type="text" class="form-control" value="" id="price" placeholder="Price">
                                                
                                             </div>
                                             <div class="form-group col-md-6 difference_form">
@@ -409,7 +364,7 @@
                                             </div>
                                             </div>
                                                     </td>
-                                                    <td ><div class="form-group">15</div></td>
+                                                    <td class="text-center"><div class="form-group">15</div></td>
                                                      
                                                       <td>
                                                           <div class="form-group">
@@ -450,18 +405,10 @@
                                                         <i class="fa fa-search search-icon"></i>
                                                         </div>
                                                     </td>
-                                                       <td>
-                                                        <div class="form-group">
-                       
-                                                     <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">    </div>           
-                                                    </td>
-                                                    <td> 
-                                                              <div class="form-group">
-                       
-                                                       <input id="pieces" class="form-control" placeholder="Pieces" name="pieces" value="" type="text">                </div></td>
+                                                    
                                                       <td >
                                                           <div class="form-group">         <select class="form-control" name="type" id="add_status_type">
-                                           <option value="" selected=""></option>
+                                  
                                                 <option value="2">Kg</option>
                                                 <option value="3">mm</option>
                                                 <option value="3">cm</option>
@@ -470,7 +417,7 @@
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                               <input type="text" class="form-control" value="" id="price" placeholder="Price">
                                                
                                             </div>
                                             <div class="form-group col-md-6 difference_form">
@@ -479,7 +426,7 @@
                                             </div>
                                             </div>
                                                     </td>
-                                                    <td ><div class="form-group">15</div></td>
+                                                    <td class="text-center"><div class="form-group">15</div></td>
                                                      
                                                       <td>
                                                           <div class="form-group">
@@ -520,15 +467,7 @@
                                                         <i class="fa fa-search search-icon"></i>
                                                         </div>
                                                     </td>
-                                                       <td>
-                                                        <div class="form-group">
-                       
-                                                     <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">    </div>           
-                                                    </td>
-                                                    <td> 
-                                                              <div class="form-group">
-                       
-                                                       <input id="pieces" class="form-control" placeholder="Pieces" name="pieces" value="" type="text">                </div></td>
+                                                      
                                                       <td >
                                                           <div class="form-group">         <select class="form-control" name="type" id="add_status_type">
                                            <option value="" selected=""></option>
@@ -540,7 +479,7 @@
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="price" id="price">
+                                                 <input type="text" class="form-control" value="" id="price" placeholder="Price">
                                                
                                             </div>
                                             <div class="form-group col-md-6 difference_form">
@@ -549,7 +488,7 @@
                                             </div>
                                             </div>
                                                     </td>
-                                                    <td ><div class="form-group">15</div></td>
+                                                    <td class="text-center"><div class="form-group">15</div></td>
                                                      
                                                       <td>
                                                           <div class="form-group">
@@ -582,21 +521,26 @@
                     <div class="form-group">
                        <label><b>Remark:</b>  Lorem Ipsum</label>
                 </div>-->
-                      <div class="form-group">
-                       <label><b>Delivery Location:</b>  Lorem Ipsum</label>
-                </div>
+                     
                        <table id="table-example" class="table table-hover  ">
                                 
                                         
                                                 <tbody>
-                                                   
-                                                    <tr class="cdtable">
-                                                        <td class="cdfirst">VAT Percentage:</td>
-                                                        <td><input id="price" class="form-control" placeholder="VAT Percentage" name="price" value="" type="text"></td>
+                                                   <tr class="cdtable">
+                                                        <td class="cdfirst">Delivery Location:</td>
+                                                        <td>Lorem Ipsum</td>
                                                     </tr>
                                                     <tr class="cdtable">
-                                                        <td class="cdfirst">Vehicle Name:</td>
-                                                        <td><input id="price" class="form-control" placeholder="Vehicle Name" name="price" value="" type="text"></td>
+                                                        <td class="cdfirst">VAT:</td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">VAT Percentage:</td>
+                                                        <td>5%</td>
+                                                    </tr>
+                                                    <tr class="cdtable">
+                                                        <td class="cdfirst">Vehicle Number:</td>
+                                                        <td><input id="price" class="form-control" placeholder="Vehicle Number" name="price" value="" type="text"></td>
                                                     </tr>
                                                    
                                                   
@@ -610,7 +554,7 @@
                                             </table>
                     
                     
-                      <button type="button" class="btn btn-primary form_button_footer" >Save and Send SMS</button>
+                      <button title="SMS would be sent to Relationship Manager" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
                       <hr>
                       <div>
                   <button type="button" class="btn btn-primary form_button_footer" >Submit</button>
@@ -678,6 +622,11 @@
     });
    
 
+});
+</script>
+<script>
+$(function() {
+    $('.smstooltip').tooltip();
 });
 </script>
 </body>

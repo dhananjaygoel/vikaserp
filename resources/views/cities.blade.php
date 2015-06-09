@@ -73,6 +73,7 @@
 
                                 <div class="modal fade" id="delete_city_modal_{{$cities_data->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
+                                        {!! Form::open(array('method'=>'DELETE','url'=>url('city',$cities_data->id), 'id'=>'delete_city_form'))!!}
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
@@ -80,10 +81,10 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="delete">
-                                                    <div><b>UserID:</b> 123123131</div>
+                                                    <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                     <div class="pwd">
                                                         <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" placeholder="" type="text" name="password"></div>
+                                                        <div class="pwdr"><input class="form-control" placeholder="" type="password" name="password" required="true"></div>
 
                                                     </div>
                                                     <div class="clearfix"></div>
@@ -94,7 +95,7 @@
 
                                             </div>
                                             <div class="modal-footer">
-                                                {!! Form::open(array('method'=>'DELETE','url'=>url('city',$cities_data->id), 'id'=>'delete_city_form'))!!}
+
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
                                                 {!! Form::close() !!}

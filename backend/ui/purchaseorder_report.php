@@ -69,6 +69,17 @@
                                                                                 </select>
                                                                                         </div>
                                                                                         </div>
+                                                                                     <div class="form-group pull-left">
+                                                                                        <div class="col-md-12">
+                                                                                        <select class="form-control" id="user_filter4" name="user_filter">
+                                                                                    <option value="" selected="">Select size</option>
+                                                                                    <option value="2">20 kg</option>
+                                                                                     <option value="2">30 kg</option>
+                                                                                    
+                                                                                                                
+                                                                                </select>
+                                                                                        </div>
+                                                                                        </div>
                                                                                     <div class="form-group pull-left">
                                                                                         <div class="col-md-12">
                                                                                         <select class="form-control" id="user_filter1" name="user_filter">

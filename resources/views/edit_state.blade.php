@@ -23,6 +23,7 @@
                     <div class="main-box-body clearfix">
                         <hr>
                         {!! Form::open(array('method'=>'PUT','url'=>url('states',$state->id), 'id'=>'edit_state_form'))!!}
+                        <input type="hidden" name="_token" value="{{csrf_token()}}">
                         @if (count($errors) > 0)
                         <div role="alert" class="alert alert-warning">
                             <ul>
@@ -35,11 +36,11 @@
                         @if (Session::has('flash_message'))
                         <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
                         @endif
-                        <input type="hidden" name="_token" value="{{csrf_token()}}">
+
                         <input type="hidden" name="id" value="{{$state->id}}">
                         <div class="form-group">
-                            <label for="state_name">Unit</label>
-                            <input id="state_name" class="form-control" placeholder="Unit" name="edit_state_name" value="{{$state->state_name}}" type="text">
+                            <label for="state_name">State</label>
+                            <input id="state_name" class="form-control" placeholder="Unit" name="state_name" value="{{$state->state_name}}" type="text">
                         </div>
                         <hr>
                         <div>
