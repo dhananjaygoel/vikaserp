@@ -9,11 +9,11 @@
         @yield('meta')
 
         <!-- bootstrap -->
-        {!! HTML::style('/resources/assets/backend/css/bootstrap/bootstrap.min.css') !!}
+        {!! HTML::style('/resources/assets/css/bootstrap/bootstrap.min.css') !!}
 
 
         <!-- RTL support - for demo only -->
-        {!! HTML::style('/resources/assets/backend/css/bootstrap/bootstrap.min.css') !!}
+        {!! HTML::style('/resources/assets/css/bootstrap/bootstrap.min.css') !!}
         <script src="js/demo-rtl.js"></script>
         <!--
         If you need RTL support just include here RTL CSS file <link rel="stylesheet" type="text/css" href="css/libs/bootstrap-rtl.min.css" />
@@ -21,20 +21,20 @@
         -->
 
         <!-- libraries -->
-        {!! HTML::style('/resources/assets/backend/css/libs/font-awesome.css') !!}
-        {!! HTML::style('/resources/assets/backend/css/libs/nanoscroller.css') !!}
+        {!! HTML::style('/resources/assets/css/libs/font-awesome.css') !!}
+        {!! HTML::style('/resources/assets/css/libs/nanoscroller.css') !!}
 
 
         <!-- global styles -->
-        {!! HTML::style('/resources/assets/backend/css/compiled/theme_styles.css') !!}
+        {!! HTML::style('/resources/assets/css/compiled/theme_styles.css') !!}
 
         <!-- this page specific styles -->
-        {!! HTML::style('/resources/assets/backend/css/libs/fullcalendar.css') !!}
-        {!! HTML::style('/resources/assets/backend/css/libs/fullcalendar.print.css') !!}
-        {!! HTML::style('/resources/assets/backend/css/compiled/calendar.css') !!}
-        {!! HTML::style('/resources/assets/backend/css/libs/morris.css') !!}
-        {!! HTML::style('/resources/assets/backend/css/libs/daterangepicker.css') !!}
-        {!! HTML::style('/resources/assets/backend/css/libs/jquery-jvectormap-1.2.2.css') !!}
+        {!! HTML::style('/resources/assets/css/libs/fullcalendar.css') !!}
+        {!! HTML::style('/resources/assets/css/libs/fullcalendar.print.css') !!}
+        {!! HTML::style('/resources/assets/css/compiled/calendar.css') !!}
+        {!! HTML::style('/resources/assets/css/libs/morris.css') !!}
+        {!! HTML::style('/resources/assets/css/libs/daterangepicker.css') !!}
+        {!! HTML::style('/resources/assets/css/libs/jquery-jvectormap-1.2.2.css') !!}
 
 
 
@@ -45,7 +45,7 @@
 
 
         <!-- Favicon -->
-        <link href="{{ asset('/resources/assets/backend/img/favicon.png') }}" rel="shortcut icon" type="image/x-icon">
+        <link href="{{ asset('/resources/assets/img/favicon.png') }}" rel="shortcut icon" type="image/x-icon">
 
         <!--[if lt IE 9]>
                 <script src="js/html5shiv.js"></script>
@@ -77,58 +77,58 @@
 <script src="js/scripts.js"></script>
 <script src="js/pace.min.js"></script>-->
         <!-- global scripts -->
-        {!! HTML::script('/resources/assets/backend/js/demo-skin-changer.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/jquery.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/bootstrap.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/jquery.nanoscroller.min.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/demo.js') !!}
+        {!! HTML::script('/resources/assets/js/demo-skin-changer.js') !!}
+        {!! HTML::script('/resources/assets/js/jquery.js') !!}
+        {!! HTML::script('/resources/assets/js/bootstrap.js') !!}
+        {!! HTML::script('/resources/assets/js/jquery.nanoscroller.min.js') !!}
+        {!! HTML::script('/resources/assets/js/demo.js') !!}
         <!-- this page specific scripts -->
 
         <!-- Bootbox Js -->
-        {!! HTML::script('/resources/assets/backend/js/bootbox.min.js') !!}
+        {!! HTML::script('/resources/assets/js/bootbox.min.js') !!}
 
         <!-- Bootstrap spinner Js -->
-        {!! HTML::script('/resources/assets/backend/js/bootstrap-datepicker.js') !!}
+        {!! HTML::script('/resources/assets/js/bootstrap-datepicker.js') !!}
 
-        {!! HTML::script('/resources/assets/backend/js/jquery-ui.custom.min.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/fullcalendar.min.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/jquery.slimscroll.min.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/raphael-min.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/morris.min.js') !!}
+        {!! HTML::script('/resources/assets/js/jquery-ui.custom.min.js') !!}
+        {!! HTML::script('/resources/assets/js/fullcalendar.min.js') !!}
+        {!! HTML::script('/resources/assets/js/jquery.slimscroll.min.js') !!}
+        {!! HTML::script('/resources/assets/js/raphael-min.js') !!}
+        {!! HTML::script('/resources/assets/js/morris.min.js') !!}
 
-        {!! HTML::script('/resources/assets/backend/js/jquery-jvectormap-1.2.2.min.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/jquery-jvectormap-world-merc-en.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/gdp-data.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/flot/jquery.flot.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/flot/jquery.flot.min.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/flot/jquery.flot.pie.min.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/flot/jquery.flot.stack.min.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/flot/jquery.flot.resize.min.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/flot/jquery.flot.time.min.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/flot/jquery.flot.threshold.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/jquery.countTo.js') !!}
-
-
+        {!! HTML::script('/resources/assets/js/jquery-jvectormap-1.2.2.min.js') !!}
+        {!! HTML::script('/resources/assets/js/jquery-jvectormap-world-merc-en.js') !!}
+        {!! HTML::script('/resources/assets/js/gdp-data.js') !!}
+        {!! HTML::script('/resources/assets/js/flot/jquery.flot.js') !!}
+        {!! HTML::script('/resources/assets/js/flot/jquery.flot.min.js') !!}
+        {!! HTML::script('/resources/assets/js/flot/jquery.flot.pie.min.js') !!}
+        {!! HTML::script('/resources/assets/js/flot/jquery.flot.stack.min.js') !!}
+        {!! HTML::script('/resources/assets/js/flot/jquery.flot.resize.min.js') !!}
+        {!! HTML::script('/resources/assets/js/flot/jquery.flot.time.min.js') !!}
+        {!! HTML::script('/resources/assets/js/flot/jquery.flot.threshold.js') !!}
+        {!! HTML::script('/resources/assets/js/jquery.countTo.js') !!}
 
 
 
-        {!! HTML::script('/resources/assets/backend/js/jquery.spinner.min.js') !!}
+
+
+        {!! HTML::script('/resources/assets/js/jquery.spinner.min.js') !!}
 
 
 
-        {!! HTML::script('/resources/assets/backend/js/moment.min.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/daterangepicker.js') !!}
+        {!! HTML::script('/resources/assets/js/moment.min.js') !!}
+        {!! HTML::script('/resources/assets/js/daterangepicker.js') !!}
 
         <!-- theme scripts -->
-        {!! HTML::script('/resources/assets/backend/js/scripts.js') !!}
-        {!! HTML::script('/resources/assets/backend/js/pace.min.js') !!}
+        {!! HTML::script('/resources/assets/js/scripts.js') !!}
+        {!! HTML::script('/resources/assets/js/pace.min.js') !!}
         <!-- this page specific inline scripts -->
 
         <!-- RTL support - for demo only -->
-        {!! HTML::script('/resources/assets/backend/js/demo-rtl.js') !!}
+        {!! HTML::script('/resources/assets/js/demo-rtl.js') !!}
 
         <!-- Sortable Script Support -->
-        {!! HTML::script('/resources/assets/backend/custom_js/sortable.js') !!}
+        {!! HTML::script('/resources/assets/custom_js/sortable.js') !!}
         <!-- Custom Script Support -->
 
 

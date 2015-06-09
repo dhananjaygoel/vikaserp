@@ -66,7 +66,6 @@ a {
 a:hover, a:focus {
   color: #3498db;
 }
-
 .container {
   padding-left: 8px;
   padding-right: 8px;
@@ -289,6 +288,7 @@ a:hover, a:focus {
   /* overflow: hidden; */
   border-radius: 3px;
   background-clip: padding-box;
+  min-height:111px
   /* stops bg color from leaking outside the border: */
 }
 @media (max-width: 767px) {
@@ -318,7 +318,7 @@ a:hover, a:focus {
   border-bottom: 1px solid #ecf0f1;
 }
 .main-box .main-box-body {
-  padding: 0 20px 20px 20px;
+  padding: 20px 20px 20px 20px;
 }
 
 h1 small,
@@ -362,7 +362,7 @@ h3 .small {
   border-radius: 3px;
   background-clip: padding-box;
   /* stops bg color from leaking outside the border: */
-  min-width: 223px;
+  min-width: 158px;
 }
 
 .dropdown-menu > li > a {
@@ -979,9 +979,9 @@ h3 .small {
 }
 #sidebar-nav .nav li .submenu > li > a {
   display: block;
-  font-size: 0.875em;
+  font-size: 0.775em;
   line-height: 38px;
-  padding-left: 66px;
+  padding-left: 56px;
   color: #fff;
   outline: none;
   text-decoration: none;
@@ -1701,7 +1701,15 @@ a.list-group-item.active:focus {
   background-color: #3498db;
   border-color: #3498db;
 }
+.table thead > tr > th > a.asc span:after,
+.dataTable .sorting_desc:after {
+  content: "\f0dd";
+}
 
+.table thead > tr > th > a.desc span:after,
+.dataTable .sorting_asc:after {
+  content: "\f0de";
+}
 /* BADGES */
 .badge.badge-danger {
   background-color: #e74c3c;
@@ -1990,10 +1998,11 @@ blockquote.pull-right:before {
   border-top: 1px solid #e7ebee;
   padding: 12px 8px;
 }
-.table tbody > tr > td:first-child {
-  font-size: 1.125em;
+/*.table tbody > tr > td:first-child {
+  font-size: 1em;
   font-weight: 300;
-}
+}*/
+.table tbody > tr:first-child > td{border-top:none}
 .table tbody > tr td .call-type {
   display: block;
   font-size: 0.75em;
@@ -3985,7 +3994,7 @@ input[type="radio"] {
   background: #f5f5f5;
   font-size: 0.875em;
   width: auto;
-  margin-left: 0px;
+  margin-left: 60px;
   padding: 8px 10px;
   position: relative;
   border-radius: 3px;
@@ -4093,12 +4102,12 @@ input[type="radio"] {
 }
 .infographic-box .headline {
   display: block;
-  font-size: 1.2em;
+  font-size: 1em;
   font-weight: 300;
   text-align: right;
 }
 .infographic-box .value {
-  font-size: 2.1em;
+  font-size: 1.8em;
   font-weight: 600;
   margin-top: -5px;
   display: block;
@@ -5020,11 +5029,11 @@ input[type="radio"] {
   background: none repeat scroll 0 0 #FFFFFF;
   border: 1px solid #CCCCCC;
   cursor: pointer;
-  padding: 5px 10px;
+  padding: 7px 10px;
 }
 
 .main-box-header .daterange-filter {
-  margin-top: 7px;
+  margin-top: 0px;
   margin-bottom: 7px;
 }
 
@@ -5053,7 +5062,7 @@ input[type="radio"] {
 .filter-block .form-group .search-icon {
   position: absolute;
   color: #707070;
-  right: 8px;
+  right: 14px;
   top: 11px;
 }
 .filter-block .btn {
@@ -7894,3 +7903,142 @@ svg {
     background-color: #1abc9c;
   }
 }
+.more_button
+{
+    margin-top: 0px;
+}
+.form_width
+{
+    width: 10%;
+}
+.mandatory
+{
+    color:red;
+}
+.customer_select
+{
+    padding-bottom: 15px !important;
+}
+.category_div
+{
+  
+   display: none;
+}
+.row1
+{
+    border-bottom: 1px solid #CBCFD2;
+}
+.row2
+{
+    border-bottom: 1px solid #CBCFD2;
+}
+.row3
+{
+    border-bottom: 1px solid #CBCFD2;
+}
+.row4
+{
+    border-bottom: 1px solid #CBCFD2;
+}
+
+.product_details
+{
+   padding-top: 20px;
+}
+
+.supplier{width:30%}
+@media (max-width: 1000px)
+{
+   .supplier{ width:100%}
+   #header-nav{margin-right:0px!important}
+}
+.button_indexright{margin-right:15px}
+.input_price input[type="text"]{width:50%}
+.input_price input[type="checkbox"]{margin-left:5px!important}
+.division{padding:0px 6px;margin:6px 15px }
+.del_loc{padding-left:0px!important}
+.inquiry_table{padding-left:0px!important}
+.inquiry_table .form-control{padding-left:2px!important;font-size:0.9em}
+.row6{display:none}
+.row7{display:none}
+.row8{display:none}
+.row9{display:none}
+.row10{display:none}
+.row11{display:none}
+.row12{display:none}
+.addlocation{position:relative;top:24px}
+.locationtext{display:none}
+.editprice{margin-bottom: 0px;}
+.pshipping{width:70%;margin-bottom: 0px}
+.dropdown-menu{cursor:pointer}
+#table_direct{display:none}
+#table2{display:none}
+.productcategory{padding-left: 0px}
+.purchase_product{padding-left: 0px}
+.product-price .form-group{margin-bottom: 0px!important}
+.productsub_filter{margin-top: 0px}
+.purchaseorder_table .form-group{margin-bottom:0px!important}
+.purchaseorder_table .form-group input[type=text]{width:80%}
+.print_time{font-weight:bold}
+.difference_form{margin-top:2px}
+.difference_form .btn-primary{background-color:#2980b9!important}
+.difference_form .btn{padding:3px 10px!important}
+.pending_location{padding-left:0px!important}
+.customerview_table tr{border-top:1px solid #e7ebee;height:50px;font-size:15px}
+.customerview_table tr:first-child{border-top:none}
+.customerview_table tr td{border:none!important}
+.customerview_table tr td span{font-weight:bold;}
+.indexsearch{margin-right:0px!important}
+.action_index{width:15%}
+.tableview_order{width:22%}
+.underline{text-decoration: underline}
+.headingunderline td span{text-decoration: underline}
+.delivery_product {margin-top:23px}
+.shippingcolumn input[type=text]{width:80%}
+.table_deliverchallan tr td{border:none!important}
+.table_deliverchallan tr td span{font-weight: bold;text-decoration: underline}
+#printwrapper{padding-left:0px;margin-left:0px;}
+h1.printwrapper{margin:20px 0px;color:#000}
+.printstamp{font-weight:bold}
+.leftwrapper{margin-left:0px!important}
+.pendingorder{margin-bottom: 15px!important}
+.pendingreport_table{padding-left: 0px!important;margin-left:-8px}
+.pendingreport_table .form-control{padding-left:2px!important;font-size:0.9em}
+#header-nav{margin-right:41px}
+.add1{display:none}
+.add2{display:none}
+.plus2{display: none}
+.dashboardwrapper{min-height:800px!important}
+.serial{margin-left:-8px}
+.table{margin-bottom: 6px!important}
+.widthtable{width:20%}
+#vatdetails{display:none}
+.customer_select{margin-left:-8px}
+.row{opacity:1}
+.setprice{height:31px!important}
+.searchproduct{position: relative;}
+.searchproduct .fa-search{position: absolute;right:6px;top:11px;color:#3498db}
+.targetdate{padding-left:0px;margin-left: 0px}
+.challan{font-size:1.1em}
+.superadmin{margin-bottom: 30px}
+.delivery_productrow1{display: none}
+.delivery_productrow2{display: none}
+.dadd_button1{display:none}
+.tablecompleted{display:none}
+.tablecancel{display:none}
+.indexlink{color:#344644!important}
+.cdfirst{width:13%;font-weight:bold}
+.cdtable input[type="text"]{width:30%}
+.cdbox{width:100%!important}
+.shippingcolumn{width:14%}
+.pwd{width:100%;margin: 10px 0}
+.pwd .pwdl{float:left;display:inline;margin-right:5px;margin-top: 5px}
+.pwd .pwdr{float:left;display:inline;width:30%}
+.delp{margin-top: 10px}
+.cb{width: 5%}
+.cbt{position:relative;top:-1px;left:2px}
+.deletebutton{margin:20px 0}
+.pcshipping{margin-bottom: 20px!important;width:71%!important}
+.billdate .cdfirst{width:8%;padding-left: 0px!important}
+.enquirybadge{margin-left: 10px;font-size: 14px;background-color:#216897;}
+.gtotal{margin-left: 10px}
