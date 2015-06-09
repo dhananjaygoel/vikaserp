@@ -488,8 +488,8 @@
                 </div>
                                              <div id="vatdetails">                     
                                              <div class="form-group">
-                                                 <label for="driver_contact"><b class="challan">VAT Percentage</b></label>
-                    <input id="driver_contact" class="form-control" placeholder="VAT Percentage" name="VAT Percentage" value="" type="text">
+                                                 <label for="driver_contact"><b class="challan">VAT Percentage</b> 5%</label>
+                   
                 </div>
                                                  <!--
                                              <div class="form-group">
