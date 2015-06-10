@@ -116,7 +116,7 @@
                                                     </div>
                                                     <div class="pwd">
                                                         <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" id="model_pass<?php echo $user->id; ?>" name="model_pass" placeholder="" type="password"></div>
+                                                        <div class="pwdr"><input class="form-control" id="model_pass<?php echo $user->id; ?>" name="model_pass" placeholder="" required="required" type="password"></div>
                                                     </div>
                                                     <div class="clearfix"></div>
                                                     <div class="delp">Are you sure you want to <b>delete </b>?</div>
@@ -124,7 +124,7 @@
                                             </div>           
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-default" onsubmit="return validation('model_pass<?php echo $user->id; ?>')">Yes</button>
+                                                <button type="submit" class="btn btn-default">Yes</button>
                                             </div>
                                             {!! Form::close() !!}
                                         </div>

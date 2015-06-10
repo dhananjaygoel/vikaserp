@@ -23,11 +23,28 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
+                    
                     @if (Session::has('success'))
                     <div class="alert alert-success alert-success1">
                         {{Session::get('success')}}                            
                     </div>
                     @endif
+                    
+                    @if (Session::has('flash_message'))
+                    <div class="alert alert-success alert-success1">
+                        <i class="fa fa-check-circle fa-fw fa-lg"></i>
+                        <strong>Well done!</strong> User details successfully added.
+                    </div> <br/>
+                    @endif
+                                       
+                    @if (Session::has('wrong'))
+                    <div class="alert alert-danger alert-success1">
+                        {{Session::get('wrong')}}                            
+                    </div>
+                    @endif
+                    
+                    
+                    
                     <div class="main-box-body main_contents clearfix">   
                         @if(sizeof($product_cat) != 0)
                         <div class="table-responsive">
@@ -93,27 +110,32 @@
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
-
+                                            {!! Form::open(array('route' => array('product_category.destroy', $product->id), 'method' => 'delete')) !!}
+                                            <input type="hidden" name="_token" value="{{csrf_token()}}">
                                             <div class="modal-body">
                                                 <div class="delete">
-                                                    <div><b>UserID:</b> 9988776655</div>
+                                                    <?php
+                                                    $us = Auth::user();
+                                                   $us['mobile_number']
+                                                    ?>
+                                                    <div><b>Mobile:</b>
+                                                        {{$us['mobile_number']}}
+                                                        <input type="hidden" name="mobile" value="{{$us['mobile_number']}}"/>
+                                                        <input type="hidden" name="user_id" value="<?php echo $product->id; ?>"/>
+                                                    </div>
                                                     <div class="pwd">
                                                         <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" placeholder="" type="text"></div>
-
+                                                        <div class="pwdr"><input class="form-control" id="model_pass<?php echo $product->id; ?>" name="model_pass" placeholder="" required="required" type="password"></div>
                                                     </div>
                                                     <div class="clearfix"></div>
-                                                    <div class="delp">Are you sure you want to <b>delete </b> ?</div>
-
-
+                                                    <div class="delp">Are you sure you want to <b>delete </b>?</div>
                                                 </div>
-
-                                            </div>          
+                                            </div>           
                                             <div class="modal-footer">
-
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
+                                                <button type="submit" class="btn btn-default">Yes</button>
                                             </div>
+                                            {!! Form::close() !!}
                                         </div>
                                     </div>
                                 </div>

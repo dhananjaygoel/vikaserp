@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use Auth;
 use App\ProductCategory;
 use App\ProductType;
 use App\Http\Requests\ProductCategoryRequest;
@@ -40,25 +41,41 @@ class ProductController extends Controller {
 
         return redirect('product_category')->with('success', 'Product category successfully added.');
     }
-    
-    
 
     public function show($id) {
-        $product_cat = ProductCategory::where('id',$id)->get();
-        
+        $product_cat = ProductCategory::where('id', $id)->get();
+
         return view('view_product_category', compact('product_cat'));
     }
-    
+
     public function destroy($id) {
-        
+
+        if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
+            ProductCategory::destroy($id);
+            return redirect('product_category')->with('success', 'Product details successfully deleted.');
+        } else {
+            return redirect('product_category')->with('wrong', 'You have entered wrong credentials');
+        }
     }
 
     public function edit($id) {
-        
+        $product_type = ProductType::all();
+        $product_cat = ProductCategory::where('id', $id)->get();
+        return view('edit_product_category', compact('product_cat', 'product_type'));
     }
 
-    public function update($id) {
+    public function update($id, ProductCategoryRequest $request) {
+
+        $product_data = array(
+            'product_type_id' => $request->input('product_type'),
+            'product_category_name' => $request->input('product_category_name'),
+            'price' => $request->input('price'),
+        );
+
+        ProductCategory::where('id', $id)
+                ->update($product_data);
         
+        return redirect('product_category')->with('success', 'Product category successfully updated.');
     }
 
 }
