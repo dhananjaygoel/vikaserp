@@ -124,20 +124,20 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="<?php echo ($page_name == 'product_category.php') || ($page_name == 'product_sub_category.php') || ($page_name == 'add_prod_cat.php') || ($page_name == 'view_prod_cat.php') || ($page_name == 'edit_prod_cat.php') || ($page_name == 'add_prod_sub_cat.php') || ($page_name == 'edit_prod_sub_cat.php') ? 'active' : ''; ?>">
+                    <li class="{{ (Request::is('*product_category*' || '*product_sub_category*') ? 'active' : '') }}">
                         <a href="#" class="dropdown-toggle">
                             <i class="fa fa-codepen"></i>
                             <span>Product</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
                         <ul  class="submenu">
-                            <li class="<?php echo ($page_name == 'product_category') ? 'active' : ''; ?>">
+                            <li class="{{ (Request::is('*product_category*') ? 'active' : '') }}">
                                 <a href="{{url()}}/product_category" >
                                     Product Category
                                 </a>
                             </li>
-                            <li class="<?php echo ($page_name == 'product_sub_category.php') ? 'active' : ''; ?>">
-                                <a href="product_sub_category.php">
+                            <li class="{{ (Request::is('*product_sub_category*') ? 'active' : '') }}">
+                                <a href="{{url()}}/product_sub_category">
                                     Product Sub Category
                                 </a>
                             </li>
