@@ -14,7 +14,7 @@
                             <div class="col-xs-12">
                                 <header id="login-header">
                                     <div id="login-logo">
-                                        <img src="{{ asset('assets/backend/img/logo.png')}}" alt=""/>
+                                        {!! HTML::image('/resources/assets/img/logo.png' , 'Logo') !!}
                                     </div>
                                 </header>
                                 @if (count($errors) > 0)

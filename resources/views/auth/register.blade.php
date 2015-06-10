@@ -1,23 +1,42 @@
 @extends('app')
 
-@section('content')
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Register</div>
-                <div class="panel-body">
-                    @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
+@include('layouts.includes')
 
+<!-- Favicon -->
+
+<body id="login-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="login-box">
+                    <div id="login-box-holder">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <header id="login-header">
+                                    <div id="login-logo">
+                                        {!! HTML::image('/resources/assets/img/logo.png' , 'Logo') !!}
+                                        
+                                    </div>
+                                </header>
+
+
+                                @if (session('status'))
+                                <div class="alert alert-success">
+                                    {{ session('status') }}
+                                </div>
+                                @endif
+
+                                @if (count($errors) > 0)
+                                <div class="alert alert-danger">
+                                    <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                @endif
+                                <div id="login-box-inner" class="with-heading">
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/auth/register') }}">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="input-group">
@@ -73,8 +92,17 @@
                         </div>
                     </form>
                 </div>
+              
+                            </div>
+                        </div>
+                    </div>    
+                </div>
             </div>
         </div>
     </div>
-</div>
-@endsection
+
+
+
+
+</body>
+</html>
