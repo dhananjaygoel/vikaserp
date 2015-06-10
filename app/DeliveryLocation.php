@@ -23,5 +23,8 @@ class DeliveryLocation extends Model {
     public function city() {
         return $this->hasOne('App\City', 'id', 'city_id');
     }
+    public function state() {
+        return $this->hasOne('App\States', 'id', 'state_id');
+    }
 
 }

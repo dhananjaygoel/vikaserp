@@ -14,11 +14,12 @@
                     <a href="{{url('customers/create')}}" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Add Customer
                     </a>
-
-                    <div class="form-group pull-right col-md-3">
-                        <input class="form-control" placeholder="Enter Customer,Comapny Name " type="text">
-                        <i class="fa fa-search search-icon"></i>
-                    </div>
+                    <form method="GET" id="searchCustomerForm">
+                        <div class="form-group pull-right col-md-3">
+                            <input class="form-control" name="search" id="search" placeholder="Enter Customer,Comapny Name " value="{{Request::get('search')}}" type="text">
+                            <i class="fa fa-search search-icon"></i>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -55,9 +56,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($customers as $c)
+                                    <?php
+                                    $i = ($customers->currentPage() - 1) * $customers->perPage() + 1;
+                                    ?>
+                                    @foreach($customers as $key=>$c)
                                     <tr>
-                                        <td class="col-md-1">1</td>
+                                        <td class="col-md-1">{{$i}}</td>
                                         <td>{{$c->owner_name}}</td>
                                         <td>{{$c->company_name}}</td>
                                         <td>{{$c->email}}</td>                                        
@@ -115,19 +119,18 @@
                                         </div>
                                     </div>
                                 </div>
+                                <?php $i++; ?>
                                 @endforeach
                                 </tbody>
                             </table>
                             <span class="pull-right">
-                                <ul class="pagination pull-right">
-                                    <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-                                    <li><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
-                                    <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
-                                </ul>
+                                <?php
+                                if (isset($_GET['search']) && Request::get('search') != '') {
+                                    echo $customers->appends(array('search' => Request::get('search')))->render();
+                                } else {
+                                    echo $customers->render();
+                                }
+                                ?>
                             </span>
                         </div>
                         @else

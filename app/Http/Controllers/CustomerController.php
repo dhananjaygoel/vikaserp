@@ -23,7 +23,16 @@ class CustomerController extends Controller {
      * @return Response
      */
     public function index() {
-        $customers = Customer::all();
+
+        $q = Customer::query();
+        $q->where('customer_status', '=', 'permanent');
+        if (Input::get('search') != '') {
+            $q->where('owner_name', 'like', '%' . Input::get('search') . '%')
+                    ->orWhere('company_name', 'like', '%' . Input::get('search') . '%');
+        }
+
+        $customers = $q->paginate(10);
+        $customers->setPath('customers');
         return View::make('customers', array('customers' => $customers));
     }
 
@@ -99,6 +108,8 @@ class CustomerController extends Controller {
             $customer->password = Hash::make(Input::get('relationship_manager'));
         }
 
+        $customer->customer_status = 'permanent';
+
         if ($customer->save()) {
             return redirect('customers/' . $customer->id . '/edit')->with('success', 'Customer Succesfully added');
         } else {
@@ -113,7 +124,10 @@ class CustomerController extends Controller {
      * @return Response
      */
     public function show($id) {
-        return View::make('customer_details');
+
+        $customer = Customer::with('deliverylocation', 'manager')->find($id);
+
+        return View::make('customer_details', array('customer' => $customer));
     }
 
     /**
@@ -213,7 +227,7 @@ class CustomerController extends Controller {
     public function destroy($id) {
         $password = Input::get('password');
         if ($password == '') {
-            return Redirect::to('customers')->with('error', 'Invalid password');
+            return Redirect::to('customers')->with('error', 'Please enter your password');
         }
 
         $current_user = User::find(Auth::id());
@@ -223,7 +237,7 @@ class CustomerController extends Controller {
             $customer->delete();
             return Redirect::to('customers')->with('success', 'Customer Successfully deleted');
         } else {
-            return Redirect::to('customers')->with('error', 'Invalid password1');
+            return Redirect::to('customers')->with('error', 'Invalid password');
         }
     }
 
