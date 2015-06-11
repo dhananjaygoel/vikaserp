@@ -28,5 +28,9 @@ class Customer extends Model {
     public function manager() {
         return $this->hasOne('App\User', 'id', 'relationship_manager');
     }
+    
+    public function customerproduct() {
+        return $this->hasMany('App\CustomerProductDifference', 'customer_id', 'id');
+    }
 
 }

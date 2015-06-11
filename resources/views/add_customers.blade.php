@@ -149,6 +149,7 @@
                                     <label for="checkbox-inl-1"> </label>
                                 </div>
                                 <br>
+                                @if(count($product_category) > 0)
                                 <div class="category_div col-md-12">
                                     <div class="table-responsive">
                                         <table id="table-example" class="table table-hover  ">
@@ -159,27 +160,21 @@
 
                                                 </tr>
                                             </thead>
-                                            <tbody>       
+                                            <tbody>     
+                                                @foreach($product_category as $pc)
                                                 <tr>
-                                                    <td>Name1</td>
-                                                    <td><input class="setprice" type="text" value="" ></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Name2</td>
-                                                    <td><input class="setprice" type="text" value="" ></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Name3</td>
-                                                    <td><input class="setprice" type="text" value="" ></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Name4</td>
-                                                    <td><input class="setprice" type="text" value="" ></td>
-                                                </tr>
+                                                    <td>{{$pc->product_category_name}}</td>
+                                                    <td><input class="setprice" type="text" name="product_differrence[]"></td>
+                                            <input type="hidden" name="product_category_id[]" value="{{$pc->id}}">
+                                            </tr>
+                                            @endforeach
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
+                                @else
+                                <p class="text-info">No product category found</p>
+                                @endif
                             </div>
                             <div class="clearfix"></div>
                             <hr>

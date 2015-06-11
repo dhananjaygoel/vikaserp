@@ -12,6 +12,8 @@ use Auth;
 use Redirect;
 use App\User;
 use App\DeliveryLocation;
+use App\ProductCategory;
+use App\CustomerProductDifference;
 use App\Customer;
 use Input;
 
@@ -47,7 +49,9 @@ class CustomerController extends Controller {
 
         $locations = DeliveryLocation::all();
 
-        return View::make('add_customers', array('managers' => $managers, 'locations' => $locations));
+        $product_category = ProductCategory::all();
+
+        return View::make('add_customers', array('managers' => $managers, 'locations' => $locations, 'product_category' => $product_category));
     }
 
     /**
@@ -111,6 +115,20 @@ class CustomerController extends Controller {
         $customer->customer_status = 'permanent';
 
         if ($customer->save()) {
+
+            $product_category_id = Input::get('product_category_id');
+            if (isset($product_category_id)) {
+                foreach ($product_category_id as $key => $value) {
+                    if (Input::get('product_differrence')[$key] != '') {
+                        $product_difference = new CustomerProductDifference();
+                        $product_difference->product_category_id = $value;
+                        $product_difference->customer_id = $customer->id;
+                        $product_difference->difference_amount = Input::get('product_differrence')[$key];
+                        $product_difference->save();
+                    }
+                }
+            }
+
             return redirect('customers/' . $customer->id . '/edit')->with('success', 'Customer Succesfully added');
         } else {
             return Redirect::back()->with('error', 'Some error occoured while saving customer');
@@ -137,7 +155,7 @@ class CustomerController extends Controller {
      * @return Response
      */
     public function edit($id) {
-        $customer = Customer::where('id', '=', $id)->first();
+        $customer = Customer::where('id', '=', $id)->with('customerproduct')->first();
         if (count($customer) < 1) {
             return redirect('customers/')->with('error', 'Trying to access an invalid customer');
         }
@@ -146,7 +164,9 @@ class CustomerController extends Controller {
 
         $locations = DeliveryLocation::all();
 
-        return View::make('edit_customers', array('customer' => $customer, 'managers' => $managers, 'locations' => $locations));
+        $product_category = ProductCategory::all();
+
+        return View::make('edit_customers', array('customer' => $customer, 'managers' => $managers, 'locations' => $locations, 'product_category' => $product_category));
     }
 
     /**
@@ -212,6 +232,29 @@ class CustomerController extends Controller {
 
 
         if ($customer->save()) {
+            $product_category_id = Input::get('product_category_id');
+            if (isset($product_category_id)) {
+                foreach ($product_category_id as $key => $value) {
+                    if (Input::get('product_differrence')[$key] != '') {
+                        $product_difference = CustomerProductDifference::where('product_category_id', '=', $value)->first();
+                        if (count($product_difference) > 0) {
+                            $product_difference = $product_difference;
+                        } else {
+                            $product_difference = new CustomerProductDifference();
+                        }
+                        $product_difference->product_category_id = $value;
+                        $product_difference->customer_id = $customer->id;
+                        $product_difference->difference_amount = Input::get('product_differrence')[$key];
+                        $product_difference->save();
+                    } else {
+                        $product_difference1 = CustomerProductDifference::where('product_category_id', '=', $value)->first();
+                        if (count($product_difference1) > 0) {
+                            $product_difference1->delete();
+                        }
+                    }
+                }
+            }
+            
             return redirect('customers/' . $customer->id . '/edit')->with('success', 'Customer details updated successfully');
         } else {
             return Redirect::back()->with('error', 'Some error occoured while saving customer');

@@ -149,7 +149,11 @@
                         </ul>
                     </li>
 
-                    <li class="<?php echo ($page_name == 'location.php') || ($page_name == 'edit_location.php') || ($page_name == 'add_location.php') || ($page_name == 'city.php') || ($page_name == 'add_city.php') || ($page_name == 'edit_city.php') || ($page_name == 'state.php') || ($page_name == 'add_state.php') || ($page_name == 'edit_state.php') || ($page_name == 'unit.php') || ($page_name == 'add_unit.php') || ($page_name == 'edit_unit.php') ? 'active' : ''; ?>">
+                    <li class="<?php
+                    if (Request::is('*states*') || Request::is('*city*') || Request::is('*unit*') || Request::is('*location*')) {
+                        echo 'active';
+                    }
+                    ?>">
                         <a href="#" class="dropdown-toggle">
                             <i class="fa fa-thumb-tack"></i>
                             <span>Masters Module</span>
