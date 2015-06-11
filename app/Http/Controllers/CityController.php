@@ -23,7 +23,7 @@ class CityController extends Controller {
      * @return Response
      */
     public function index() {
-        $cities = City::with('states')->Paginate(2);
+        $cities = City::with('states')->Paginate(10);
         $cities->setPath('city');
         return view('cities', compact('cities'));
     }

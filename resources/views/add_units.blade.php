@@ -6,8 +6,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
-                    <li class="active"><span>Unit</span></li>
+                    <li><a href="{{url('units')}}">Unit</a></li>
+                    <li class="active"><span>Add Unit</span></li>
                 </ol>
                 <div class="clearfix">
                     <h1 class="pull-left">Unit</h1>

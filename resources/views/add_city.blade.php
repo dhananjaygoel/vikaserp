@@ -6,8 +6,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
-                    <li class="active"><span>Cities</span></li>
+                    <li><a href="{{url('city')}}">City</a></li>
+                    <li class="active"><span>Add City</span></li>
                 </ol>
                 <div class="clearfix">
                     <h1 class="pull-left">Cities</h1>
@@ -51,7 +51,7 @@
                             <div >
                                 <!--<button type="submit" class="btn btn-primary form_button_footer" >Submit</button>-->
                                 <input type="submit" class="btn btn-primary form_button_footer" value="Submit">
-                                <a href="{{URL::to('states')}}" class="btn btn-default form_button_footer">Back</a>
+                                <a href="{{URL::to('city')}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>
                         </form>

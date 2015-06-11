@@ -24,7 +24,7 @@ class StatesController extends Controller {
      * @return Response
      */
     public function index() {
-        $states = States::Paginate(2);
+        $states = States::Paginate(10);
         $states->setPath('states');
         return view('states', compact('states'));
     }

@@ -6,8 +6,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
-                    <li class="active"><span>Location</span></li>
+                    <li><a href="{{url('location')}}">Location</a></li>
+                    <li class="active"><span>Edit Location</span></li>
                 </ol>
                 <div class="clearfix">
                     <h1 class="pull-left">Location</h1>

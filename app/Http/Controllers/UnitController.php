@@ -20,7 +20,7 @@ class UnitController extends Controller {
      * @return Response
      */
     public function index() {
-        $units = Units::Paginate(2);
+        $units = Units::Paginate(10);
         $units->setPath('unit');
         return view('units', compact('units'));
     }

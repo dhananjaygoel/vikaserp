@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
+                    <li><a href="{{url('inquiry')}}">Inquiry</a></li>
                     <li class="active"><span>Edit Inquiry</span></li>
                 </ol>
                 <div class="clearfix">
