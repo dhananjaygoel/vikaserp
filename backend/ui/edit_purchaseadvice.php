@@ -542,8 +542,11 @@
                                                         <td class="cdfirst">Vehicle Number:</td>
                                                         <td><input id="price" class="form-control" placeholder="Vehicle Number" name="price" value="" type="text"></td>
                                                     </tr>
-                                                   
-                                                  
+                                                   <tr class="">
+                                                        <td class="cdfirst1">Expected Delivery Date:</td>
+                                                        <td>25 May,2015</td>
+                                                    </tr>
+                                                    
                                                     <tr class="cdtable">
                                                         <td class="cdfirst">Remark:</td>
                                                         <td><input id="price" class="form-control cdbox" placeholder="Remark" name="price" value="" type="text"></td>

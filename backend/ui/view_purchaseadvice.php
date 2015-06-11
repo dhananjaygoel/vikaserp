@@ -191,7 +191,7 @@
                                     
                                         </tr>   
                                         <tr>
-                                        <td><span>Estimated Delivery Date: </span>05:30 PM</td>
+                                        <td><span>Expected Delivery Date: </span>05:30 PM</td>
                                     
                                         </tr>   
                                         
@@ -199,7 +199,7 @@
                                          
                                                 
                                                 <tr>
-                                        <td><span>Vehicle Number: </span>Lorem Ipsum</td>
+                                        <td><span>Vehicle Name: </span>Lorem Ipsum</td>
                                     
                                         </tr>
                                                 <tr>

@@ -104,10 +104,7 @@
             </div>
                                                         </td>
                                                     </tr>
-                                                    <tr class="cdtable">
-                                                        <td><b>Serial Number:</b></td>
-                                                        <td>PO/Apr15/02/01/01</td>
-                                                    </tr>
+                                                   
                                                      <tr class="cdtable">
                                                         <td><b>Supplier Name:</b></td>
                                                         <td>Lorem Ipsum</td>
@@ -409,6 +406,7 @@
                                                   
                                                   
                                                     <tr><td><b>Delivery Location:</b> Location1</td> </tr>
+                                                    <tr><td><b>Expected Delivery Date:</b> 25 May,2015</td></tr>
                                                     <tr><td><b>Remark:</b> Lorem Ipsum Dollar</td></tr>
                                                    
                                                 </tbody>

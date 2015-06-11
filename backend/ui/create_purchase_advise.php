@@ -87,10 +87,7 @@
             </div>
                                                         </td>
                                                     </tr>
-                                                    <tr class="cdtable">
-                                                        <td><b>Serial Number:</b></td>
-                                                        <td>PO/Apr15/02/01/01</td>
-                                                    </tr>
+                                                  
                                        
                                                 </tbody>
                                             </table>
@@ -735,7 +732,7 @@
                 </div>
                <div class="form-group col-md-4 targetdate">
                         
-                    <label for="date">Estimated Delivery Date</label>
+                    <label for="date">Expected Delivery Date</label>
                    <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     <input type="text" name="date" class="form-control" id="datepickerDate1">
