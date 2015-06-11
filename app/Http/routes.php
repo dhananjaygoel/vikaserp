@@ -34,17 +34,13 @@ Route::get('rollback', function() {
 
 
 
-Route::get('/', 'WelcomeController@index');
-
-Route::get('home', 'HomeController@index');
 
 Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
 ]);
-Route::get('/', function() {
-    return view('auth.login');
-});
+
+Route::get('/', 'Auth\AuthController@getLogin');
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('security', 'SecurityController');
     Route::get('dashboard', 'DashboardController@index');
