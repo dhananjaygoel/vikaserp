@@ -16,9 +16,9 @@ class CreateProductSubCategoryTable extends Migration {
 		{
                         $table->increments('id');
 			$table->integer('product_category_id');
-                        $table->string('size',100);
-                        $table->string('weight',100);
-                        $table->string('thickness',100);                        
+                        $table->integer('size');
+                        $table->integer('weight');
+                        $table->integer('thickness');                        
 			$table->string('difference',100);
 			$table->timestamps();
 			
