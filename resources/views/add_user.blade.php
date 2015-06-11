@@ -1,13 +1,13 @@
 @extends('layouts.master')
-@section('title','Users')
+@section('title','Add Users')
 @section('content')
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url()}}/users">Users</a></li>
-                    <li class="active"><span>Add Users</span></li>
+                    <li><a href="{{url()}}/users">User</a></li>
+                    <li class="active"><span>Add User</span></li>
                 </ol>
                 <div class="clearfix">
                     <h1 class="pull-left">Users</h1>
