@@ -31,11 +31,11 @@
                                     <form action="{{ url('/auth/login') }}" method="POST">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                            <span class="input-group-addon"><span class="fa fa-user"></span></span>
                                             <input class="form-control" id="mobile_number" name="mobile_number" type="text" placeholder="Mobile Number">
                                         </div>
                                         <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                            <span class="input-group-addon"><span class="fa fa-key"></span></span>
                                             <input type="password" id="password" name="password" class="form-control" placeholder="Password">
                                         </div>
                                         <div id="remember-me-wrapper">
@@ -65,16 +65,7 @@
                         </div>
                     </div>
 
-                    <div id="login-box-footer">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                Do not have an account? 
-                                <a href="{{ url('/auth/register') }}">
-                                    Register now
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
