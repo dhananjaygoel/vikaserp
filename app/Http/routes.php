@@ -53,6 +53,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('city', 'CityController');
     Route::resource('location', 'DeliveryLocationController');
     Route::resource('customers', 'CustomerController');
+    Route::resource('pending_customers', 'PendingCustomerController');
+    Route::post('add_pending_customers/{id}', 'PendingCustomerController@add_pending_customers');
 
     Route::resource('users', 'UsersController');
     Route::resource('product_category', 'ProductController');

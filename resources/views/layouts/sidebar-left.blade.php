@@ -24,15 +24,15 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
-                    <li class="{{ (Request::is('*customers*') ? 'active' : '') }}">
+                    <li class="{{ (Request::is('customers*') ? 'active' : '') }}">
                         <a href="{{url('customers')}}">
                             <i class="fa fa-male"></i>
                             <span>Customers</span>
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
-                    <li class="<?php echo ($page_name == 'pendingcustomers.php') || ($page_name == 'edit_pendingcustomer.php') ? 'active' : ''; ?>">
-                        <a href="pendingcustomers.php">
+                    <li class="{{ (Request::is('pending_customers*') ? 'active' : '') }}">
+                        <a href="{{url('pending_customers')}}">
                             <i class="fa fa-book"></i>
                             <span>Pending customers</span>
                             <span class="label label-info label-circle pull-right"></span>
@@ -124,7 +124,11 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="{{ (Request::is('*product_category*' || '*product_sub_category*') ? 'active' : '') }}">
+                    <li class="<?php
+                    if (Request::is('*product_category*') || Request::is('*product_sub_category*')) {
+                        echo 'active';
+                    }
+                    ?>">
                         <a href="#" class="dropdown-toggle">
                             <i class="fa fa-codepen"></i>
                             <span>Product</span>
