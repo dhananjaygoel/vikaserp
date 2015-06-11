@@ -6,8 +6,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
-                    <li class="active"><span>Users</span></li>
+                    <li><a href="{{url()}}/users">Users</a></li>
+                    <li class="active"><span>Add Users</span></li>
                 </ol>
                 <div class="clearfix">
                     <h1 class="pull-left">Users</h1>
@@ -26,12 +26,9 @@
 
                             @if (count($errors) > 0)
                             <div class="alert alert-warning">
-                                <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
+                                @foreach ($errors->all() as $error)
+                                {{ $error }}
+                                @endforeach
                             </div>
                             @endif                            
                             <input type="hidden" name="_token" value="{{csrf_token()}}">

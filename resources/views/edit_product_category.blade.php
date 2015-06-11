@@ -2,19 +2,33 @@
 @section('title','Edit Product Category')
 @section('content')
 <div class="row">
-    <div class="col-lg-12">
-        <div class="main-box">
-            @if (count($errors) > 0)
-            <div class="alert alert-warning">
-                <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li><a href="{{url()}}/product_category">Product Category</a></li>
+                <li class="active"><span>Edit Product Category</span></li>
+            </ol>
+            <div class="clearfix">
+                <h1 class="pull-left"> Edit Product Category</h1>
+                <div class="pull-right top-page-ui">
+                    <a href="{{ URL::action('ProductController@edit',['id'=>$product_cat[0]['id']]) }}" class="btn btn-primary pull-right">
+                        Edit Product Category
+                    </a>
+                </div>
             </div>
-            @endif  
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="main-box">           
             <div class="main-box-body clearfix">
+                @if (count($errors) > 0)
+                <div class="alert alert-warning">
+                    @foreach ($errors->all() as $error)
+                    {{ $error }}
+                    @endforeach                    
+                </div>
+                @endif  
+
                 {!!Form::open(array('method'=>'PUT','url'=>url('product_category/'.$product_cat[0]['id']),'id'=>'updateUserForm'))!!}
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <div class="form-group">

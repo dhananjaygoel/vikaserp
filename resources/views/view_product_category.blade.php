@@ -3,18 +3,17 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">
-
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
-                    <li class="active"><span>Product Category</span></li>
+                    <li><a href="{{url()}}/product_category">Product Category</a></li>
+                    <li class="active"><span>View Product Category</span></li>
                 </ol>
 
                 <div class="clearfix">
                     <h1 class="pull-left"> View Product Category</h1>
                     <div class="pull-right top-page-ui">
-                        <a href="edit_prod_cat.php" class="btn btn-primary pull-right">
+                        <a href="{{ URL::action('ProductController@edit',['id'=>$product_cat[0]['id']]) }}" class="btn btn-primary pull-right">
                             Edit Product Category
                         </a>
                     </div>

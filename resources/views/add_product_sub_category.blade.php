@@ -6,10 +6,11 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
+                    <li><a href="{{url()}}/product_sub_category">Home</a></li>
                     <li class="active"><span>Add Product Sub Category</span></li>
                 </ol>
                 <div class="clearfix">
+                    <h1 class="pull-left"> Add Product Sub Category</h1>                    
                 </div>
             </div>
         </div>
@@ -19,19 +20,16 @@
                     <div class="main-box-body clearfix">
 
                         @if (count($errors) > 0)
-                        <div class="alert alert-warning">
-                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
+                        <div class="alert alert-warning">                           
+                            @foreach ($errors->all() as $error)
+                            {{ $error }}
+                            @endforeach                        
                         </div>
                         @endif  
 
                         <form method="POST" action="{{URL::action('ProductsubController@store')}}" accept-charset="UTF-8" >
                             <div class="form-group productcategory col-md-3">
-                                <input type="hidden" name="baseurl" id="baseurl" value="{{url()}}" />
+                                <input type="hidden" name="baseurl" id="baseurl2" value="{{url()}}" />
                                 <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                                 <label for="status">Select Product Category</label>
                                 <select class="form-control" name="product_type" id="product_type_select">

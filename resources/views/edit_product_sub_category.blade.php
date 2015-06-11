@@ -9,7 +9,9 @@
                     <li><a href="#">Home</a></li>
                     <li class="active"><span>Edit Product Sub Category</span></li>
                 </ol>
+                <div class="clearfix"></div>
                 <div class="clearfix">
+                    <h1 class="pull-left"> Edit Product Sub Category</h1>                   
                 </div>
             </div>
         </div>
@@ -17,25 +19,18 @@
             <div class="col-lg-12">
                 <div class="main-box">                     
                     <div class="main-box-body clearfix">
-
                         @if (count($errors) > 0)
-                        <div class="alert alert-warning">
-                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
+                        <div class="alert alert-warning">                            
+                            @foreach ($errors->all() as $error)
+                            {{ $error }}
+                            @endforeach
                         </div>
                         @endif 
 
-                        <?php
-                        //echo $prod_sub_cat[0]['product_category']->product_type_id;
-                        ?>
                         {!!Form::open(array('method'=>'PUT','url'=>url('product_sub_category/'.$prod_sub_cat[0]->id),'id'=>'updateUserForm'))!!}
 
                         <div class="form-group productcategory col-md-3">
-                            <input type="hidden" name="baseurl" id="baseurl" value="{{url()}}" />
+                            <input type="hidden" name="baseurl" id="baseurl2" value="{{url()}}" />
                             <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                             <label for="status">Select Product Category</label>
                             <select class="form-control" name="product_type" id="product_type_select">

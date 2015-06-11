@@ -56,6 +56,7 @@
     </head>
     <body>
         <div id="theme-wrapper">
+            <span id="baseurl" style="display: none;">{{url()}}</span>
             @include('layouts.header')
             <div id="page-wrapper" class="container">
 

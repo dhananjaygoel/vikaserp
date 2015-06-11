@@ -3,11 +3,10 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">
-
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
+                    <li><a href="{{url()}}/users">Users</a></li>
                     <li class="active"><span>Edit User</span></li>
                 </ol>
             </div>
@@ -20,15 +19,11 @@
                         {!!Form::open(array('method'=>'PUT','url'=>url('users/'.$user_data[0]['id']),'id'=>'updateUserForm'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
 
-
                         @if (count($errors) > 0)
-                        <div class="alert alert-warning">
-                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
+                        <div class="alert alert-warning">                          
+                            @foreach ($errors->all() as $error)
+                            {{ $error }}
+                            @endforeach                        
                         </div>
                         @endif  
 
@@ -37,7 +32,6 @@
                             {{Session::get('email')}}                            
                         </div>
                         @endif
-
 
                         <div class="form-group">
                             <label for="role">User Type*</label>

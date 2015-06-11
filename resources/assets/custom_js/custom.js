@@ -10,7 +10,7 @@ $(document).ready(function () {
 
     $('#product_type_select').change(function () {
         var product_type_id = $("#product_type_select").val();
-        var url = $('#baseurl').val();
+        var url = $('#baseurl2').val();
         var token = $('#_token').val();
 
         $.ajax({

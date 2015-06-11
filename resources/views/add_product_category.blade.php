@@ -6,33 +6,31 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url()}}">Home</a></li>
+                    <li><a href="{{url()}}/product_category">Product Category</a></li>
                     <li class="active"><span>Add Product Category</span></li>
                 </ol>
                 <div class="clearfix">
+                    <h1 class="pull-left"> Add Product Category</h1>                   
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <div class="main-box">
-                    @if (count($errors) > 0)
-                    <div class="alert alert-warning">
-                        <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif   
+                <div class="main-box">                     
                     <div class="main-box-body clearfix">
+                        @if (count($errors) > 0)
+                        <div class="alert alert-warning">                        
+                            @foreach ($errors->all() as $error)
+                            {{ $error }}
+                            @endforeach                       
+                        </div>
+                        @endif 
                         <form method="POST" action="{{URL::action('ProductController@store')}}"accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <div class="form-group">
                                 <label>Product Category Type</label>                                
                                 <div class="radio">
-                                    
+
                                     @foreach($product_type as $prod_type)
                                     <input value="{{$prod_type->id}}" id="optionsRadios{{$prod_type->id}}" name="product_type" type="radio">
                                     <label for="optionsRadios{{$prod_type->id}}">{{$prod_type->name}}</label>

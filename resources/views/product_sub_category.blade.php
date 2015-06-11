@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
+                    <li><a href="{{url()}}/dashboard">Home</a></li>
                     <li class="active"><span>Product Sub Category</span></li>
                 </ol>
                 <div class="clearfix">
@@ -46,7 +46,6 @@
         <div class="row" id="table1">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
-
                     <div class="main-box-body main_contents clearfix">
 
                         @if (Session::has('success'))
@@ -59,7 +58,7 @@
                             {{Session::get('wrong')}}                            
                         </div>
                         @endif
-
+                        
                         @if(sizeof($product_sub_cat) != 0)
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
@@ -75,7 +74,6 @@
                                     </tr>
                                 </thead>
                                 <tbody> 
-
                                     <?php $i = ($product_sub_cat->currentPage() - 1 ) * $product_sub_cat->perPage() + 1; ?>
 
                                     @foreach($product_sub_cat as $produ_sub) 
@@ -164,14 +162,14 @@
                         </div>
                         @else
                         <div class="alert alert-info no_data_msg_container">
-                            Currently product sub category available.
+                            Currently no product sub category available.
                         </div>
                         @endif
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row" id="table2">
+<!--        <div class="row" id="table2">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
@@ -282,7 +280,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
 </div>
 @endsection

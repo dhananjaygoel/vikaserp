@@ -6,12 +6,11 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
+                    <li><a href="{{url()}}/dashboard">Home</a></li>
                     <li class="active"><span>Users</span></li>
                 </ol>
                 <div class="clearfix">
                     <h1 class="pull-left">Users</h1>
-
                     <div class="pull-right top-page-ui">
                         <a href="{{URL::action('UsersController@create')}}" class="btn btn-primary pull-right">
                             <i class="fa fa-plus-circle fa-lg"></i> Add user
@@ -22,27 +21,27 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <div class="main-box clearfix">
-
-                    @if (Session::has('flash_message'))
-                    <div class="alert alert-success alert-success1">
-                        <i class="fa fa-check-circle fa-fw fa-lg"></i>
-                        <strong>Well done!</strong> User details successfully added.
-                    </div> <br/>
-                    @endif
-                    @if (Session::has('success'))
-                    <div class="alert alert-success alert-success1">
-                        {{Session::get('success')}}                            
-                    </div>
-                    @endif
-                    
-                    @if (Session::has('wrong'))
-                    <div class="alert alert-danger alert-success1">
-                        {{Session::get('wrong')}}                            
-                    </div>
-                    @endif
-                    
+                <div class="main-box clearfix">            
                     <div class="main-box-body main_contents clearfix">
+
+                        @if (Session::has('flash_message'))
+                        <div class="alert alert-success alert-success1">
+                            <i class="fa fa-check-circle fa-fw fa-lg"></i>
+                            <strong>Well done!</strong> User details successfully added.
+                        </div> <br/>
+                        @endif
+                        @if (Session::has('success'))
+                        <div class="alert alert-success alert-success1">
+                            {{Session::get('success')}}                            
+                        </div>
+                        @endif
+
+                        @if (Session::has('wrong'))
+                        <div class="alert alert-danger alert-success1">
+                            {{Session::get('wrong')}}                            
+                        </div>
+                        @endif
+
                         @if(sizeof($users_data) != 0)                        
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
@@ -67,7 +66,7 @@
                                         <td class="col-md-1">{{ $i }}</td>
                                         <td>{{$user->first_name}}</td>
                                         <td>{{$user->last_name}}</td>
-                                        <td><a href="mailto:">{{$user->email}}</a></td>                                        
+                                        <td>{{$user->email}}</td>                                        
                                         <td>{{$user->phone_number}}</td>
                                         <td>{{$user->mobile_number}} </td>
                                         <td>
@@ -107,7 +106,7 @@
                                                 <div class="delete">
                                                     <?php
                                                     $us = Auth::user();
-                                                   $us['mobile_number']
+                                                    $us['mobile_number']
                                                     ?>
                                                     <div><b>Mobile:</b>
                                                         {{$us['mobile_number']}}

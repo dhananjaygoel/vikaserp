@@ -42,7 +42,7 @@ class ProductsubController extends Controller {
                     ->Paginate(10);
         } else {
 
-            $product_sub_cat = ProductSubCategory::with('product_category')->Paginate(10);
+            $product_sub_cat = ProductSubCategory::with('product_category')->Paginate(4);
         }
 
         $product_sub_cat->setPath('product_sub_category');
