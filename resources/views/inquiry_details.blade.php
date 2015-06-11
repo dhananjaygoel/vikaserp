@@ -29,6 +29,12 @@
                             <div class="table-responsive">
                                 <table id="table-example" class="table customerview_table">
                                     <tbody>
+                                        <?php
+//                                        echo '<pre>';
+//                                        print_r($inquiry['inquiry_products']->toArray());
+//                                        echo '</pre>';
+//                                        exit;
+                                        ?>
                                         <tr>
                                             <td><span>Customer Name:</span> {{$inquiry['customer']->owner_name}}</td>
                                         </tr>
@@ -58,14 +64,14 @@
                                         </tr>
                                         @foreach($inquiry['inquiry_products'] as $product_data)
                                         <tr>
-                                            <td>Product1</td>
+                                            <td>{{$product_data['product_category']->product_category_name}}</td>
                                             <td>{{$product_data->quantity}}</td>
                                             <td>{{$product_data['unit']->unit_name}}</td>
                                             <td>{{$product_data->price}}</td>
                                             <td>
                                                 <div class="row product-price">
                                                     <div class="form-group col-md-6">
-                                                        <input type="text" class="form-control" id="difference" value="" placeholder="Price">
+                                                        <input type="text" class="form-control" id="difference" placeholder="Price" value='{{$product_data->price}}'>
 
                                                     </div>
                                                     <div class="form-group col-md-2 difference_form">
@@ -74,85 +80,20 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>{{$product_data->remark}}</td>
+                                            <td>{{$product_data->remarks}}</td>
                                         </tr>
                                         @endforeach
-                                        <tr>
-
-                                            <td>Product2</td>
-                                            <td>55</td>
-                                            <td>6</td>
-                                            <td>69</td>
-                                            <td>
-                                                <div class="row product-price">
-                                                    <div class="form-group col-md-6">
-                                                        <input type="text" class="form-control" id="difference" value="" placeholder="Price">
-
-                                                    </div>
-                                                    <div class="form-group col-md-2 difference_form">
-
-                                                        <input class="btn btn-primary" type="submit" class="form-control" value="save" >
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>Lorem </td>
-                                        </tr>
-                                        <tr>
-
-                                            <td>Product3</td>
-                                            <td>55</td>
-                                            <td>6</td>
-                                            <td>69</td>
-                                            <td>
-                                                <div class="row product-price">
-                                                    <div class="form-group col-md-6">
-                                                        <input type="text" class="form-control" id="difference" value="" placeholder="Price">
-
-                                                    </div>
-                                                    <div class="form-group col-md-2 difference_form">
-
-                                                        <input class="btn btn-primary" type="submit" class="form-control" value="save" >
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>Lorem </td>
-                                        </tr>
-                                        <tr>
-
-                                            <td>Product4</td>
-                                            <td>55</td>
-                                            <td>6</td>
-                                            <td>55</td>
-                                            <td>
-                                                <div class="row product-price">
-                                                    <div class="form-group col-md-6">
-                                                        <input type="text" class="form-control" id="difference" value="" placeholder="Price">
-
-                                                    </div>
-                                                    <div class="form-group col-md-2 difference_form">
-
-                                                        <input class="btn btn-primary" type="submit" class="form-control" value="save" >
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>Lorem </td>
-                                        </tr>
-
                                     </tbody>
                                 </table>
                                 <table id="table-example" class="table customerview_table">
-
                                     <tbody>
-                                        <tr>
-                                            <td><span>Plus VAT: </span>Yes</td>
-
-                                        </tr>
-                                        <tr>
-                                            <td><span>VAT Percentage: </span>5%</td>
-
-                                        </tr>
-                                        <tr>
-                                            <td><span>VAT: </span>Lorem</td>
+                                        @if($inquiry->vat_percentage == "")
+                                        <tr><td><span>Plus VAT: </span>No</td></tr>
+                                        @elseif($inquiry->vat_percentage != "")
+                                        <tr><td><span>Plus VAT: </span>Yes</td></tr>
+                                        <tr><td><span>VAT Percentage: </span>{{$inquiry->vat_percentage."%"}}</td></tr>
+                                        @endif
+                                        <tr><td><span>VAT: </span>Lorem</td>
 
                                         </tr>
                                         <tr>
@@ -161,11 +102,11 @@
                                         </tr>
 
                                         <tr>
-                                            <td><span>Expected Delivery Date: </span>25 April,2015</td>
+                                            <td><span>Expected Delivery Date: </span>{{$inquiry->estimated_delivery_date}}</td>
 
                                         </tr>
                                         <tr>
-                                            <td><span>Remark: </span>Lorem Ipsum Dollar</td>
+                                            <td><span>Remark: </span>{{$inquiry->remarks}}</td>
 
                                         </tr>
 

@@ -17,32 +17,22 @@ $(document).ready(function() {
 
     });
     $("#existing_customer_name").autocomplete({
-        source: baseurl + '/fetch_existing_customer',
-        minLength: 2,
+        minLength: 1,
         dataType: 'json',
         type: 'GET',
-//        _renderItem: function(ul, data_array) {
-//            return $("<li>")
-//                    .attr("data-value", data_array.value)
-//                    .append(data_array.label)
-//                    .appendTo(ul);
-//        },
         source: function(request, response) {
             $.ajax({
                 url: baseurl + '/fetch_existing_customer',
                 data: {"term": request.term},
                 success: function(data) {
-                    response(data.split(" "));
-                }
-//                success: function(data) {
-//                    response($.map(data, function(item) {
-//                        return {
-//                            label: item.label,
-//                            val: item.value
-//                        }
-//                    }))
-//                },
+                    var main_array = JSON.parse(data);
+                    var arr1 = main_array['data_array'];
+                    response(arr1);
+                },
             });
+        },
+        select: function(event, ui) {
+            $("#existing_customer_id").val(ui.item.id);
         }
     });
 
@@ -53,10 +43,23 @@ $(document).ready(function() {
 
     $("#add_product_row").on("click", function() {
         var current_row_count = $(".add_product_row").length + 1;
+        $.ajax({
+            type: "GET",
+            url: baseurl + '/get_units'
+        }).done(function(data) {
+            var main_array = JSON.parse(data);
+            var arr1 = main_array['units'];
+            var html = '<option value="" selected="">Unit</option>';
+            for (var key in arr1) {
+                html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
+            }
+            $("#units_" + current_row_count).html(html);
+        });
         var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row">' +
                 '<td class="col-md-3">' +
                 '<div class="form-group searchproduct">' +
                 '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '">' +
+                '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
                 '<i class="fa fa-search search-icon"></i>' +
                 '</div>' +
                 '</td>' +
@@ -77,7 +80,7 @@ $(document).ready(function() {
                 '</td>' +
                 '<td class="col-md-2">' +
                 '<div class="form-group">' +
-                '<input type="text" class="form-control" value="price" id="price" name="product[' + current_row_count + '][price]">' +
+                '<input type="text" class="form-control" placeholder="price" id="price" name="product[' + current_row_count + '][price]">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-4">' +
@@ -96,10 +99,47 @@ $(document).ready(function() {
             $("#other_location_input_wrapper").hide();
     });
 
-
-
-
-
-
-
 });
+
+/**
+ * Comment
+ */
+function show_hide_customer(status) {
+    if (status == "Pending") {
+        $(".exist_field").show();
+        $(".customer_select").hide();
+    }
+    else {
+        if (status == 'Permanent') {
+            $(".exist_field").hide();
+            $(".customer_select").show();
+        }
+    }
+}
+
+/**
+ * product_autocomplete
+ */
+function product_autocomplete(id) {
+    $("#add_product_name_" + id).autocomplete({
+        minLength: 1,
+        dataType: 'json',
+        type: 'GET',
+        source: function(request, response) {
+            $.ajax({
+                url: baseurl + '/fetch_products',
+                data: {"term": request.term},
+                success: function(data) {
+                    var main_array = JSON.parse(data);
+                    var arr1 = main_array['data_array'];
+                    response(arr1);
+                },
+            });
+        },
+        select: function(event, ui) {
+            $("#product_price_" + id).val(ui.item.product_price);
+            $("#add_product_id_" + id).val(ui.item.id);
+        }
+    });
+
+}

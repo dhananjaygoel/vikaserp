@@ -54,7 +54,7 @@
                                         <td class="text-center">{{$inquiry['customer']->owner_name}}</td>
                                         <td class="text-center">100</td>
                                         <td class="text-center">{{$inquiry['customer']->phone_number}} </td>
-                                        <td class="text-center">{{$inquiry['delivery_location']->area_name}}</td>
+                                        <td class="text-center">{{$inquiry['delivery_location']['area_name']}}</td>
                                         <td class="text-center">
                                             <a title="Place Order" href="add_order.php" class="table-link">
                                                 <span class="fa-stack">
@@ -84,66 +84,65 @@
                                             </a>
                                         </td>
                                     </tr>
+
+
+
+                                <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                                <h4 class="modal-title" id="myModalLabel"></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Press <b>confirm</b> to send SMS to Customer.</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Confirm</button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="delete_inquiry_{{$inquiry->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                                <h4 class="modal-title" id="myModalLabel"></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="delete">
+                                                    <div><b>UserID:</b> 9988776655</div>
+                                                    <div class="pwd">
+                                                        <div class="pwdl"><b>Password:</b></div>
+                                                        <div class="pwdr"><input class="form-control" placeholder="" type="text"></div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="delp">Are you sure you want to <b>delete </b>?</div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Confirm</button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php $i++; ?>
+                                @endforeach
                                 </tbody>
                             </table>
+
+                            <span class="pull-right">
+                                <?php echo $inquiries->render(); ?>
+                            </span>
+
                         </div>
                     </div>
-
-                    <span class="pull-right">
-                        <?php echo $inquiries->render(); ?>
-                    </span>
-
-
-
                 </div>
             </div>
         </div>
-
-        <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                        <h4 class="modal-title" id="myModalLabel"></h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>Press <b>confirm</b> to send SMS to Customer.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Confirm</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="delete_inquiry_{{$inquiry->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                        <h4 class="modal-title" id="myModalLabel"></h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="delete">
-                            <div><b>UserID:</b> 9988776655</div>
-                            <div class="pwd">
-                                <div class="pwdl"><b>Password:</b></div>
-                                <div class="pwdr"><input class="form-control" placeholder="" type="text"></div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div class="delp">Are you sure you want to <b>delete </b>?</div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Confirm</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endforeach
-
-
     </div>
 </div>
 @stop

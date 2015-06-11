@@ -24,4 +24,8 @@ class InquiryProducts extends Model {
         return $this->hasOne('App\Units', 'id', 'unit_id');
     }
 
+    public function product_category() {
+        return $this->hasOne('App\ProductCategory', 'id', 'product_category_id');
+    }
+
 }

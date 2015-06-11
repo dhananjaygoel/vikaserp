@@ -96,4 +96,9 @@ class UnitController extends Controller {
         return redirect('unit')->with('flash_message', 'Please enter a correct password');
     }
 
+    public function get_units() {
+        $units = Units::all();
+        echo json_encode(array('units' => $units));
+    }
+
 }

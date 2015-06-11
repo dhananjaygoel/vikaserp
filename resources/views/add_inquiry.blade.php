@@ -37,6 +37,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
                                             <input class="form-control" placeholder="Enter Customer Name " type="text" id="existing_customer_name" autocomplete="off">
+                                            <input type="hidden" id="existing_customer_id">
                                             <i class="fa fa-search search-icon"></i>
                                         </div>
                                     </div>
@@ -78,7 +79,8 @@
                                                 <tr id="add_row_{{$i}}" class="add_product_row">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
-                                                            <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}">
+                                                            <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});">
+                                                            <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
                                                             <i class="fa fa-search search-icon"></i>
                                                         </div>
                                                     </td>
@@ -99,7 +101,7 @@
                                                     </td>
                                                     <td class="col-md-2">
                                                         <div class="form-group">
-                                                            <input type="text" class="form-control" value="price" id="price" name="product[{{$i}}][price]">
+                                                            <input type="text" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-4">

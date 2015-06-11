@@ -64,6 +64,8 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::resource('inquiry', 'InquiryController');
     Route::get('fetch_existing_customer', 'InquiryController@fetch_existing_customer');
+    Route::get('fetch_products', 'InquiryController@fetch_products');
+    Route::get('get_units', 'UnitController@get_units');
 
 
 

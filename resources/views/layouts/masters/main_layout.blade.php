@@ -8,6 +8,7 @@
         <title>@yield('title')</title>
         @yield('meta')
         <!-- bootstrap -->
+
         {!! HTML::style('/resources/assets/css/bootstrap/bootstrap.min.css') !!}
 
         <!-- libraries -->
@@ -27,7 +28,7 @@
 
         <!--Custom styles-->
         {!! HTML::style('/resources/assets/css/custom_style/style.css') !!}
-
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <!-- google font libraries -->
         <link href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700,300|Titillium+Web:200,300,400' rel='stylesheet' type='text/css'>
 
@@ -54,6 +55,7 @@
             </div>
         </div>
         <!-- global scripts -->
+
         {!! HTML::script('/resources/assets/js/demo-skin-changer.js') !!}
         {!! HTML::script('/resources/assets/js/jquery.js') !!}
         {!! HTML::script('/resources/assets/js/bootstrap.js') !!}
@@ -72,19 +74,14 @@
         {!! HTML::script('/resources/assets/js/typeahead.min.js') !!}
         {!! HTML::script('/resources/assets/js/jquery.pwstrength.js') !!}
 
-        <!-- Bootbox Js -->
-        {!! HTML::script('/resources/assets/js/bootbox.min.js') !!}
 
         <!-- theme scripts -->
         {!! HTML::script('/resources/assets/js/scripts.js') !!}
         {!! HTML::script('/resources/assets/js/pace.min.js') !!}
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <!-- this page specific inline scripts -->
 
         <!-- RTL support - for demo only -->
-        {!! HTML::script('/resources/assets/js/demo-rtl.js') !!}
-        {!! HTML::script('/resources/assets/js/custom_js/custom_script.js') !!}
-        {!! HTML::script('/resources/assets/custom_js/sortable.js') !!}
-        {!! HTML::script('/resources/assets/custom_js/aman.js') !!}
-        {!! HTML::script('/resources/assets/custom_js/custom.js') !!}
+
     </body>
 </html>

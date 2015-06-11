@@ -11,7 +11,7 @@
 
         <!-- bootstrap -->
         {!! HTML::style('/resources/assets/css/bootstrap/bootstrap.min.css') !!}
-
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
         <!-- RTL support - for demo only -->
         {!! HTML::style('/resources/assets/css/bootstrap/bootstrap.min.css') !!}
@@ -93,6 +93,7 @@
         {!! HTML::script('/resources/assets/js/bootstrap-datepicker.js') !!}
 
         {!! HTML::script('/resources/assets/js/jquery-ui.custom.min.js') !!}
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         {!! HTML::script('/resources/assets/js/fullcalendar.min.js') !!}
         {!! HTML::script('/resources/assets/js/jquery.slimscroll.min.js') !!}
         {!! HTML::script('/resources/assets/js/raphael-min.js') !!}
