@@ -1,7 +1,5 @@
 <?php
-
 namespace App;
-
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -22,7 +20,8 @@ class ProductSubCategory extends Model implements AuthenticatableContract, CanRe
     
     public function product_category() {
         return $this->hasone('App\ProductCategory', 'id', 'product_category_id');
-    }
+    }  
+   
 
 
 }

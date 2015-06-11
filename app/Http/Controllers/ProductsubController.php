@@ -22,9 +22,31 @@ use DB;
 class ProductsubController extends Controller {
 
     public function index() {
-        $product_sub_cat = ProductSubCategory::with('product_category')->Paginate(10);
+
+        $product_type = ProductType::all();
+        $product_sub_cat = "";
+
+        if (Input::get('product_filter') != "") {
+
+            $product_sub_cat = ProductSubCategory::with(['product_category' =>
+                        function($query) {
+                            $query->where('product_type_id', Input::get('product_filter'));
+                        }])
+                    ->Paginate(10);
+        } elseif (Input::get('search_text') != "") {
+
+            $product_sub_cat = ProductSubCategory::with(['product_category' =>
+                        function($query) {
+                            $query->where('product_category_name', 'like', '%'.Input::get('search_text').'%');
+                        }])
+                    ->Paginate(10);
+        } else {
+
+            $product_sub_cat = ProductSubCategory::with('product_category')->Paginate(10);
+        }
+
         $product_sub_cat->setPath('product_sub_category');
-        return view('product_sub_category', compact('product_sub_cat'));
+        return view('product_sub_category', compact('product_sub_cat', 'product_type'));
     }
 
     public function create() {
@@ -99,7 +121,7 @@ class ProductsubController extends Controller {
     }
 
     public function update_difference() {
-//        echo Input::get('id'); echo Input::get('difference'); exit;
+
         ProductSubCategory::where('id', Input::get('id'))
                 ->update(array('difference' => Input::get('difference')));
         return redirect('product_sub_category')->with('success', 'Product sub category difference successfully updated.');

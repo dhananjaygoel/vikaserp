@@ -23,29 +23,27 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
-                    
-                    @if (Session::has('success'))
-                    <div class="alert alert-success alert-success1">
-                        {{Session::get('success')}}                            
-                    </div>
-                    @endif
-                    
-                    @if (Session::has('flash_message'))
-                    <div class="alert alert-success alert-success1">
-                        <i class="fa fa-check-circle fa-fw fa-lg"></i>
-                        <strong>Well done!</strong> User details successfully added.
-                    </div> <br/>
-                    @endif
-                                       
-                    @if (Session::has('wrong'))
-                    <div class="alert alert-danger alert-success1">
-                        {{Session::get('wrong')}}                            
-                    </div>
-                    @endif
-                    
-                    
-                    
-                    <div class="main-box-body main_contents clearfix">   
+                    <div class="main-box-body main_contents clearfix">  
+
+                        @if (Session::has('success'))
+                        <div class="alert alert-success alert-success1">
+                            {{Session::get('success')}}                            
+                        </div>
+                        @endif
+
+                        @if (Session::has('flash_message'))
+                        <div class="alert alert-success alert-success1">
+                            <i class="fa fa-check-circle fa-fw fa-lg"></i>
+                            <strong>Well done!</strong> User details successfully added.
+                        </div> <br/>
+                        @endif
+
+                        @if (Session::has('wrong'))
+                        <div class="alert alert-danger alert-success1">
+                            {{Session::get('wrong')}}                            
+                        </div>
+                        @endif
+
                         @if(sizeof($product_cat) != 0)
                         <div class="table-responsive">
                             <table id="table-example" class=" table table-hover">
@@ -72,14 +70,18 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <div class="row product-price">
-                                                <div class="form-group col-md-4">
-                                                    <input type="text" class="form-control" id="difference" value="{{ $product->price }}">
+                                            <form method="post" action="{{URL::action('ProductController@update_price')}}">
+                                                <div class="row product-price">
+                                                    <div class="form-group col-md-6">
+                                                        <input type="text" class="form-control" required="" name="price" value="{{ $product->price }}">
+                                                        <input type="hidden" class="form-control" name="id" value="{{ $product->id}}">
+                                                        <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                                    </div>
+                                                    <div class="form-group col-md-2 difference_form">
+                                                        <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                                    </div>
                                                 </div>
-                                                <div class="form-group col-md-2 difference_form">
-                                                    <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                                </div>
-                                            </div>
+                                            </form>
                                         </td>                                    
                                         <td>
                                             <a href="{{URL::action('ProductController@show',['id'=> $product->id])}}" class="table-link" title="view">
@@ -116,7 +118,7 @@
                                                 <div class="delete">
                                                     <?php
                                                     $us = Auth::user();
-                                                   $us['mobile_number']
+                                                    $us['mobile_number']
                                                     ?>
                                                     <div><b>Mobile:</b>
                                                         {{$us['mobile_number']}}

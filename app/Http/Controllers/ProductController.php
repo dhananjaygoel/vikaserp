@@ -77,5 +77,13 @@ class ProductController extends Controller {
         
         return redirect('product_category')->with('success', 'Product category successfully updated.');
     }
+    
+      public function update_price() {
+
+          ProductCategory::where('id', Input::get('id'))
+                ->update(array('price' => Input::get('price')));
+        return redirect('product_category')->with('success', 'Product category price successfully updated.');
+    }
+
 
 }

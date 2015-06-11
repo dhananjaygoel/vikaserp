@@ -29,7 +29,8 @@ $(document).ready(function () {
                 $('#select_product_categroy').html(str);
             }
         });
-    });
+    });  
+    
 });
 
 

@@ -58,6 +58,7 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::resource('users', 'UsersController');
     Route::resource('product_category', 'ProductController');
+    Route::post('update_price', 'ProductController@update_price');
     Route::resource('product_sub_category', 'ProductsubController');
     Route::get('get_product_category', 'ProductsubController@get_product_category');
     Route::post('update_difference', 'ProductsubController@update_difference');

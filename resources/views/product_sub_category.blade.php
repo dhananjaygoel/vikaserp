@@ -14,20 +14,29 @@
                     <div class=" row col-md-8 pull-right top-page-ui">
                         <div class="filter-block col-md-8 productsub_filter">       
                             <div class="form-group  col-md-5">
-                                <select class="form-control" id="user_filter1" name="user_filter">
-                                    <option value="" selected="">Product category</option>
-                                    <option value="1">Pipe</option>
-                                    <option value="2">Structure</option>
-                                </select> 
+                                <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_form">
+                                    <select class="form-control" name="product_filter" onchange="this.form.submit()">
+                                        <option value="" selected="">--Product category--</option>
+                                        @foreach($product_type as $prod_type)
+                                        <option <?php if (Input::get('product_filter') == $prod_type->id) echo 'selected="selected"'; ?> value="{{$prod_type->id}}"> {{$prod_type->name}}</option>
+                                        @endforeach
+                                    </select> 
+                                    <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                                </form>
                             </div> 
                             <div class="form-group  col-md-6">
-                                <input class="form-control" placeholder="Enter Product Name " type="text">
-                                <i class="fa fa-search search-icon"></i>
+                                <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search">
+                                    <input class="form-control" placeholder="Enter Product Name" name="search_text" type="text">
+                                    <a  onclick="this.form.submit()">
+                                        <i class="fa fa-search search-icon" id="search_icon"></i>
+                                    </a>
+                                    <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                                </form>
                             </div>	
                         </div>
                         <div class="col-md-4">
                             <a href="{{URL::action('ProductsubController@create')}}" class="btn btn-primary pull-right">
-                                <i class="fa fa-plus-circle fa-lg"></i> Add Product Category
+                                <i class="fa fa-plus-circle fa-lg" style="cursor: pointer;"></i> Add Product Category
                             </a>
                         </div>
                     </div>
@@ -51,7 +60,6 @@
                         </div>
                         @endif
 
-
                         @if(sizeof($product_sub_cat) != 0)
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
@@ -70,7 +78,8 @@
 
                                     <?php $i = ($product_sub_cat->currentPage() - 1 ) * $product_sub_cat->perPage() + 1; ?>
 
-                                    @foreach($product_sub_cat as $produ_sub)                                    
+                                    @foreach($product_sub_cat as $produ_sub) 
+                                    @if(sizeof($produ_sub['product_category']) != 0)
                                     <tr>
                                         <td>{{ $i }}</td>
                                         <td>{{ $produ_sub['product_category']->product_category_name }} </td>
@@ -81,7 +90,7 @@
                                             <form method="post" action="{{URL::action('ProductsubController@update_difference')}}">
                                                 <div class="row product-price">
                                                     <div class="form-group col-md-6">
-                                                        <input type="text" class="form-control" name="difference" value="{{ $produ_sub->difference}}">
+                                                        <input type="text" class="form-control" required="" name="difference" value="{{ $produ_sub->difference}}">
                                                         <input type="hidden" class="form-control" name="id" value="{{ $produ_sub->id}}">
                                                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                                                     </div>
@@ -106,7 +115,8 @@
                                             </a>
                                         </td>
                                     </tr>                           
-
+                                    <?php $i++; ?>
+                                    @endif
                                 <div class="modal fade" id="myModal{{$produ_sub->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
