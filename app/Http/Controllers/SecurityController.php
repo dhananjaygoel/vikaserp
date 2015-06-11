@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Input;
 use Auth;
 use App\User;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\EditSecurityRequest;
 class SecurityController extends Controller {
 
 	/**
@@ -59,10 +61,7 @@ class SecurityController extends Controller {
                 }
                 $security->ip_address = $ipaddress;
                 $security->save();
-                $sec = Security::paginate(10);
-                $sec->setPath('security');
-
-		return view('security',  compact('sec'))->with('message','One record added to Security.');
+                return redirect('security')->with('message','One record added to security');
 	}
 
 	/**
@@ -85,9 +84,8 @@ class SecurityController extends Controller {
 	 */
 	public function edit($id)
 	{
-
 		$security = Security::find($id);
-//                $ipaddress= Input::input('ip_address');
+
                 return view('edit-security',compact('security'));
                 
 	}
@@ -98,7 +96,7 @@ class SecurityController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update(Request $request,$id)
+	public function update(EditSecurityRequest $request,$id)
 	{
                 $ipaddress = $request->input('ip_address');
                 //parameter for validation
@@ -106,16 +104,19 @@ class SecurityController extends Controller {
                     'ip_address' => $ipaddress
                 );
                 //Validation rules for ip address
-                $validator = Validator::make($data, ['ip_address' => 'required|unique:security|ip']);
-                if ($validator->fails()) {
-                    return Redirect::back()->with('error','Please enter valid IP Address');
-                }
-		Security::where('id','=',$id)->update(array('ip_address'=>$ipaddress));   
                 
-                $sec = Security::paginate(10);
-                $sec->setPath('security');
-
-		return view('security',  compact('sec'));
+                
+                $security = Security::where('id','!=',$id)->where('ip_address',$ipaddress)->count();
+                
+                if($security > 0){
+                    return Redirect::back()->with('error','Please enter another IP Address, current IP Address is present.');
+                }else{
+                    Security::where('id','=',$id)->update(array('ip_address'=>$ipaddress));  
+                    return redirect('security')->with('message','One record updated to security');
+                }
+                
+                
+		
 	}
 
 	/**
@@ -126,19 +127,19 @@ class SecurityController extends Controller {
 	 */
 	public function destroy($id)
 	{
-                $mobile_number= Input::get('mobile_number');
-                $pass = Input::get('password');
-                if (Auth::attempt(['mobile_number' => $mobile_number, 'password' => $pass]))
-                {
-                    $security = Security::where('id',$id);
-                    $security->delete();
-                    $sec = Security::paginate(10);
-                    $sec->setPath('security');
+                $password = Input::get('password');
+                if ($password == '') {
+                    return Redirect::to('security')->with('error', 'Please enter your password');
+                }
+                
+                $current_user = User::find(Auth::id());
+
+                if (Hash::check($password, $current_user->password)) {                                    
+                    $security = Security::find($id);
+                    $security->delete();                    
                     return redirect('security')->with('message','One record is deleted.');
-                }else{
-                    $sec = Security::paginate(10);
-                $sec->setPath('security');
-                    return view('security',  compact('sec'))->with('error','Password entered is not valid.');
+                }else{                    
+                    return Redirect::back()->with('error','Password entered is not valid.');
                 }
             
 	}

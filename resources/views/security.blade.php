@@ -1,4 +1,5 @@
 @extends('layouts.master')
+@section('title','Security')
 @section('content')
 <div class="row">
     <div class="col-lg-12">
@@ -6,7 +7,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
+                    <li><a href="{{url('security')}}">Home</a></li>
                     <li class="active"><span>Security</span></li>
                 </ol>
 
@@ -34,20 +35,17 @@
                         <div class="table-responsive">
                             @if(Session::has('error'))
                             <div class="alert alert-danger">                                        
-                                <ul>                         
-                                    <li> {{Session::get('error')}}</li>
-                                </ul>
+                                                      
+                                    {{Session::get('error')}}
                             </div>
                             @endif
                             
                             @if(Session::has('message'))
                             <div class="alert alert-success">                                        
-                                <ul>                         
-                                    <li> {{Session::get('message')}}</li>
-                                </ul>
+                                {{Session::get('message')}}
                             </div>
                             @endif
-
+                            @if(count($sec)>0)
                             <table id="table-example" class="table table-hover">
                                 <thead>
                                     <tr>
@@ -61,7 +59,7 @@
                                 <tbody>                    
 
 
-                                    @if(count($sec)>0)
+                                    
                                     <?php $k = 1; ?>
                                     @foreach($sec as $security)
                                     <tr>
@@ -103,7 +101,7 @@
                                                         <input type="hidden" name="_token" value="{{csrf_token()}}">
 
                                                         <input type="hidden" name="id" value="{{$security->id}}">
-                                                        <div><b>UserID:</b> <input type='text' name="mobile_number" value="{{$user['mobile_number']}}"></div>
+                                                        <div><b>UserID:</b> {{$user['mobile_number']}}</div>
                                                         <div class="pwd">
                                                             <div class="pwdl"><b>Password:</b></div>
                                                             <div class="pwdr"><input class="form-control" placeholder="" id='password_{{$security->id}}' name='password' type="password" required="required"></div>
@@ -127,12 +125,16 @@
                                     </div>
                                 </div>  
                                 @endforeach
-                                @endif
+                                
                                 </tbody>
                             </table>
-
+                            @else
+                                <div class="alert alert-info no_data_msg_container">
+                                    Currently no security IP Address available.
+                                </div>
+                            @endif
                             <span class="pull-right">
-                                <?php //echo $sec->render(); ?>
+                                <?php echo $sec->render(); ?>
                             </span>
                         </div>
                     </div>

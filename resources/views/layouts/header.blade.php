@@ -27,7 +27,7 @@
                             <span class="hidden-xs"> Admin</span> <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#"><i class="fa fa-envelope-o"></i>Change Password</a></li>
+                            <li><a href="{{ url('change_password') }}"><i class="fa fa-envelope-o"></i>Change Password</a></li>
                             <li><a href="{{ url('/auth/logout') }}"><i class="fa fa-power-off"></i>Logout</a></li>
                         </ul>
                     </li>

@@ -17,18 +17,19 @@
                                         {!! HTML::image('/resources/assets/img/logo.png' , 'Logo') !!}
                                     </div>
                                 </header>
-                                @if (count($errors) > 0)
-                                    <div class="alert alert-danger">
-                                        <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                    @endif
+
                                 <div id="login-box-inner">
                                     <form action="{{ url('/auth/login') }}" method="POST">
+                                        @if (count($errors) > 0)
+                                        <div class="alert alert-danger">
+                                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                        @endif
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <div class="input-group">
                                             <span class="input-group-addon"><span class="fa fa-user"></span></span>
@@ -65,7 +66,7 @@
                         </div>
                     </div>
 
-                    
+
                 </div>
             </div>
         </div>

@@ -15,36 +15,38 @@
                                 <header id="login-header">
                                     <div id="login-logo">
                                         {!! HTML::image('/resources/assets/img/logo.png' , 'Logo') !!}
-                                        
+
                                     </div>
                                 </header>
 
 
-                                @if (session('status'))
-                                <div class="alert alert-success">
-                                    {{ session('status') }}
-                                </div>
-                                @endif
 
-                                @if (count($errors) > 0)
-                                <div class="alert alert-danger">
-                                    <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                                @endif
                                 <div id="login-box-inner" class="with-heading">
+
                                     <h4>Forgot your password?</h4>
                                     <p>
                                         Enter your email address to recover your password.
                                     </p>
                                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/email') }}">
+                                        @if (session('status'))
+                                        <div class="alert alert-success">
+                                            {{ session('status') }}
+                                        </div>
+                                        @endif
+
+                                        @if (count($errors) > 0)
+                                        <div class="alert alert-danger">
+                                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                        @endif
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <div class="input-group reset-pass-input">
-                                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                            <span class="input-group-addon"><span class="fa fa-user"></span></span>
                                             <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Email address">
                                         </div>
                                         <div class="row">
@@ -58,7 +60,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>    
