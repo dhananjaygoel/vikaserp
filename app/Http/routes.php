@@ -42,12 +42,12 @@ Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
 ]);
-Route::get('/',function(){
+Route::get('/', function() {
     return view('auth.login');
 });
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('security', 'SecurityController');
-    Route::get('dashboard','DashboardController@index');
+    Route::get('dashboard', 'DashboardController@index');
     Route::resource('unit', 'UnitController');
     Route::resource('states', 'StatesController');
     Route::resource('city', 'CityController');
@@ -60,8 +60,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('get_product_category', 'ProductsubController@get_product_category');
     Route::post('update_difference', 'ProductsubController@update_difference');
 
-    Route::get('change_password','PasswordController@getPassword');
-    Route::post('change_password','PasswordController@postPassword');
+    Route::get('change_password', 'PasswordController@getPassword');
+    Route::post('change_password', 'PasswordController@postPassword');
+
+    Route::resource('inquiry', 'InquiryController');
+    Route::get('fetch_existing_customer', 'InquiryController@fetch_existing_customer');
+
+
+
 
 
     Route::get('orders', function() {

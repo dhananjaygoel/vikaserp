@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta name="_token" content="<?php echo csrf_token(); ?>" id="csrf_token" />
+        <base id="baseurl" name="{{url()}}">
         <title>@yield('title')</title>
         @yield('meta')
 
@@ -128,10 +129,10 @@
         {!! HTML::script('/resources/assets/js/demo-rtl.js') !!}
 
         <!-- Sortable Script Support -->
-        {!! HTML::script('/resources/assets/custom_js/my_script.js') !!}        
+        {!! HTML::script('/resources/assets/custom_js/my_script.js') !!}
         <!-- Custom Script Support -->
         {!! HTML::script('/resources/assets/custom_js/custom.js') !!}
-
+        {!! HTML::script('/resources/assets/custom_js/custom_script.js') !!}
 
 
 

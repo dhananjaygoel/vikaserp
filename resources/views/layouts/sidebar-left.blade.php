@@ -39,8 +39,8 @@
                         </a>
                     </li>
 
-                    <li class="<?php echo ($page_name == 'enquiry.php') || ($page_name == 'add_inquiry.php') || ($page_name == 'edit_enquiry.php') || ($page_name == 'view_enquiry.php') ? 'active' : ''; ?>">
-                        <a href="enquiry.php">
+                    <li class="{{ (Request::is('*inquiry*') ? 'active' : '') }}">
+                        <a href="{{url("inquiry")}}">
                             <i class="fa fa-info"></i>
                             <span>Inquiry</span>
                             <span class="label label-info label-circle pull-right"></span>
