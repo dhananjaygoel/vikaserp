@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url('units')}}">Units</a></li>
+                    <li><a href="{{url('unit')}}">Units</a></li>
                     <li class="active"><span>Edit Unit</span></li>
                 </ol>
                 <div class="clearfix">
