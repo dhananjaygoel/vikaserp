@@ -1,5 +1,5 @@
 @extends('app')
-
+@section('title','Forgot Password')
 @include('layouts.includes')
 
 <!-- Favicon -->

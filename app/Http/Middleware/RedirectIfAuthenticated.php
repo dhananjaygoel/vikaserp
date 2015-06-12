@@ -35,21 +35,21 @@ class RedirectIfAuthenticated {
 	{
 		if ($this->auth->check())
 		{
-			//return new RedirectResponse(url('/home'));
-                    if(Auth::user()->role_id == 0){
-                        return redirect('dashboard');
-                    }
-                    if(Auth::user()->role_id == 1){
-                        return redirect('admin');
-                    }
-                    if(Auth::user()->role_id == 2){
-                        return redirect('sales_staff');
-                    }
-                    if(Auth::user()->role_id == 3){
-                        return redirect('delivery_staff');
-                    }
+			
+//                    if(Auth::user()->role_id == 0){
+//                        return new RedirectResponse(url('/dashboard'));    
+//                    }
+//                    if(Auth::user()->role_id == 1){
+//                        return new RedirectResponse(url('/dashboard'));    
+//                    }
+//                    if(Auth::user()->role_id == 2){
+//                        return new RedirectResponse(url('/dashboard'));    
+//                    }
+//                    if(Auth::user()->role_id == 3){
+//                        return new RedirectResponse(url('/dashboard'));    
+//                    }
+                        return new RedirectResponse(url('/dashboard'));                    
 		}
-
 		return $next($request);
 	}
 

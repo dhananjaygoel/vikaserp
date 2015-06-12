@@ -1,5 +1,10 @@
+<?php echo
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header('Content-Type: text/html');?>
 @extends('app')
-
+@section('title','Sign In')
 @include('layouts.includes')
 
 <!-- Favicon -->
@@ -77,3 +82,6 @@
 
 </body>
 </html>
+<script language="javascript" >
+history.go(1); /* Tested for IE Back Button) */
+</script>

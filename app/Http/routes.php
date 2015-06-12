@@ -40,6 +40,8 @@ Route::controllers([
     'password' => 'Auth\PasswordController',
 ]);
 
+Route::get('logout','DashboardController@logout');
+
 Route::get('/', 'Auth\AuthController@getLogin');
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('security', 'SecurityController');
@@ -66,12 +68,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('fetch_existing_customer', 'InquiryController@fetch_existing_customer');
     Route::get('fetch_products', 'InquiryController@fetch_products');
     Route::get('get_units', 'UnitController@get_units');
+    
+    
 
 
 
-
-
-    Route::get('orders', function() {
+        Route::get('orders', function() {
         return 'Order';
     });
     Route::get('pending_orders', function() {

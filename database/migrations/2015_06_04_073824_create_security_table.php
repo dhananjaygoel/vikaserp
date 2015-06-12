@@ -14,8 +14,8 @@ class CreateSecurityTable extends Migration {
 	{
 		Schema::create('security', function(Blueprint $table)
 		{
-			$table->increments('id');
-			$table->string('ip_address',20)->uneque();
+			$table->increments('id')->comment('Primary key of the table');
+			$table->string('ip_address',20)->uneque()->comment('Unique IP address for security');
                         $table->timestamps();
 		});
 	}

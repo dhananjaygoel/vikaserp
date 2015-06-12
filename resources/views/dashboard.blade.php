@@ -1,11 +1,12 @@
 @extends('layouts.master')
+@section('title','Dashboard')
 @section('content')
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
+                    <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Dashboard</span></li>
                 </ol>
                 <div class="clearfix">
@@ -109,6 +110,23 @@
                     </div></a>
             </div>
         </div>
+        <br/>
+        <div class="row text-center ">
+            <div class="col-md-12">
+
+                <a href="#" class="btn btn-primary btn-lg text-center button_indexright">
+                    <i class="fa fa-plus-circle fa-lg"></i> Place Order
+                </a>
+
+
+                <a href="#" class="btn btn-primary btn-lg text-center ">
+                    <i class="fa fa-plus-circle fa-lg"></i> Add Inquiry
+                </a>
+
+            </div>
+        </div>
+        <br/>
+        <br/>
 
     </div>
 </div>
