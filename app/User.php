@@ -42,14 +42,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'password_confirmation' => 'required|min:6|max:100|same:password',
         'telephone_number' => 'integer|digits_between:8,15',
         'mobile_number' => 'integer|digits_between:10,15|required|unique:users',
-        'type' => 'required'
+        'user_type' => 'required'
     );
     
     public static $updateuser_rules = array(
         'first_name' => 'required|min:2|max:100',
         'last_name' => 'required|min:2|max:100',
         'telephone_number' => 'integer|digits_between:8,15',
-        'type' => 'required'
+        'user_type' => 'required'
     );
     
       public static $update_password = array(

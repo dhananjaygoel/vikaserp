@@ -36,7 +36,7 @@ class UsersController extends Controller {
 
         if ($validator->passes()) {
             $Users_data = new User();
-            $Users_data->role_id = Input::get('type');
+            $Users_data->role_id = Input::get('user_type');
             $Users_data->first_name = Input::get('first_name');
             $Users_data->last_name = Input::get('last_name');
             $Users_data->phone_number = Input::get('telephone_number');
@@ -74,7 +74,7 @@ class UsersController extends Controller {
         if ($validator->passes()) {
 
             $user_data = array(
-                'role_id' => Input::get('type'),
+                'role_id' => Input::get('user_type'),
                 'first_name' => Input::get('first_name'),
                 'last_name' => Input::get('last_name'),
                 'phone_number' => Input::get('telephone_number')

@@ -23,7 +23,6 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">            
                     <div class="main-box-body main_contents clearfix">
-
                         @if (Session::has('flash_message'))
                         <div class="alert alert-success alert-success1">
                             <i class="fa fa-check-circle fa-fw fa-lg"></i>

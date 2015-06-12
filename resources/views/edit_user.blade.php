@@ -22,7 +22,7 @@
                         @if (count($errors) > 0)
                         <div class="alert alert-warning">                          
                             @foreach ($errors->all() as $error)
-                            {{ $error }}
+                            <p>{{ $error }}</p>
                             @endforeach                        
                         </div>
                         @endif  
@@ -35,7 +35,7 @@
 
                         <div class="form-group">
                             <label for="role">User Type*</label>
-                            <select class="form-control" name="type" id="add_user_type">
+                            <select class="form-control" name="user_type" id="add_user_type">
                                 <option value="" selected="" disabled="">Select User Type</option>
                                 @foreach($roles as $role_data)
                                 <option <?php if ($role_data->role_id == $user_data[0]['role_id']) echo 'selected="selected"'; ?> value="{{$role_data->role_id}}">{{$role_data->name}}</option>
