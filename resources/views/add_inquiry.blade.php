@@ -1,11 +1,6 @@
 @extends('layouts.master')
 @section('title','Inquiry')
 @section('content')
-<style>
-    .ui-autocomplete {
-        z-index: 999;
-    }
-</style>
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
@@ -25,6 +20,18 @@
                     <div class="main-box-body clearfix">
                         <form method="POST" action="{{URL::action('InquiryController@store')}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
+                            @if (count($errors) > 0)
+                            <div role="alert" class="alert alert-warning">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
+                            @if (Session::has('flash_message'))
+                            <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('flash_message') }}</div>
+                            @endif
                             <div class="form-group">
                                 <label>Customer</label>
                                 <div class="radio">
@@ -36,8 +43,8 @@
                                 <div class="customer_select" >
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
-                                            <input class="form-control" placeholder="Enter Customer Name " type="text" id="existing_customer_name" autocomplete="off">
-                                            <input type="hidden" id="existing_customer_id">
+                                            <input class="form-control" placeholder="Enter Customer Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
+                                            <input type="hidden" id="existing_customer_id" name="autocomplete_customer_id">
                                             <i class="fa fa-search search-icon"></i>
                                         </div>
                                     </div>
@@ -48,7 +55,7 @@
                                 <div class="form-group">
                                     <label for="name">Customer Name</label>
                                     <input id="customer_name" class="form-control" placeholder="Name" name="customer_name" value="" type="text">
-                                    <input id="customer_id" class="form-control" name="customer_id" value="1" type="hidden">
+                                    <input id="customer_id" class="form-control" name="existing_customer_id" value="" type="hidden">
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Contact Person</label>
@@ -160,10 +167,6 @@
                                     <div class="form-group col-md-4">
                                         <label for="location">Location </label>
                                         <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="" type="text">
-                                    </div>
-                                    <div class="col-md-8 addlocation">
-
-                                        <button class="btn btn-primary btn-xs">ADD</button>
                                     </div>
                                 </div>
                             </div>

@@ -36,6 +36,7 @@
         {!! HTML::style('/resources/assets/css/libs/morris.css') !!}
         {!! HTML::style('/resources/assets/css/libs/daterangepicker.css') !!}
         {!! HTML::style('/resources/assets/css/libs/jquery-jvectormap-1.2.2.css') !!}
+        {!! HTML::style('/resources/assets/css/custom_style/custom_style.css') !!}
 
 
 
@@ -93,7 +94,7 @@
         {!! HTML::script('/resources/assets/js/bootstrap-datepicker.js') !!}
 
         {!! HTML::script('/resources/assets/js/jquery-ui.custom.min.js') !!}
-        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <!--<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
         {!! HTML::script('/resources/assets/js/fullcalendar.min.js') !!}
         {!! HTML::script('/resources/assets/js/jquery.slimscroll.min.js') !!}
         {!! HTML::script('/resources/assets/js/raphael-min.js') !!}

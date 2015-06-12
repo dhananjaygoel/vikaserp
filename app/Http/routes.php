@@ -83,9 +83,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('pending_inquiry', function() {
         return 'Pending Inquiry ';
     });
-    Route::get('inquiry', function() {
-        return 'Inquiry';
-    });
     Route::get('delivery_orders', function() {
         return 'Delivery Orders';
     });

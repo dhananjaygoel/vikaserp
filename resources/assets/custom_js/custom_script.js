@@ -58,7 +58,7 @@ $(document).ready(function() {
         var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row">' +
                 '<td class="col-md-3">' +
                 '<div class="form-group searchproduct">' +
-                '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '">' +
+                '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +
                 '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
                 '<i class="fa fa-search search-icon"></i>' +
                 '</div>' +
@@ -72,15 +72,12 @@ $(document).ready(function() {
                 '<div class="form-group ">' +
                 '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
                 '<option value="" selected="">Unit</option>' +
-                '<option value="1">Kg</option>' +
-                '<option value="2">cm</option>' +
-                '<option value="3">metre</option>' +
                 '</select>' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
                 '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="price" id="price" name="product[' + current_row_count + '][price]">' +
+                '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-4">' +
@@ -139,6 +136,10 @@ function product_autocomplete(id) {
         select: function(event, ui) {
             $("#product_price_" + id).val(ui.item.product_price);
             $("#add_product_id_" + id).val(ui.item.id);
+//            var next_row = $("#product_price_" + id).parent().parent().parent().next().attr("id");
+//            $("#" + next_row).children().each(function() {
+//                alert($(this).attr("class"));
+//            });
         }
     });
 

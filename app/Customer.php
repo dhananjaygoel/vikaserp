@@ -20,17 +20,27 @@ class Customer extends Model {
      * @var array
      */
 //    protected $fillable = ['state_id', 'city_id', 'area_name'];
-    
+
     public function deliverylocation() {
         return $this->hasOne('App\DeliveryLocation', 'id', 'delivery_location_id')->with('city', 'state');
     }
-    
+
     public function manager() {
         return $this->hasOne('App\User', 'id', 'relationship_manager');
     }
-    
+
     public function customerproduct() {
         return $this->hasMany('App\CustomerProductDifference', 'customer_id', 'id');
     }
+
+    public static $new_customer_inquiry_rules = array(
+        'customer_name' => 'required|min:2|max:100',
+        'contact_person' => 'required|min:2|max:100',
+        'mobile_number' => 'integer|digits_between:10,15|required',
+        'credit_period' => 'integer|required',
+    );
+    public static $existing_customer_inquiry_rules = array(
+        'autocomplete_customer_id' => 'required',
+    );
 
 }

@@ -33,7 +33,7 @@
                         @endif
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="inquiry_id" value="{{$inquiry->id}}">
-                        <input type="hidden" name="customer_id" value="{{$inquiry['customer_id']->id}}" id="hidden_cutomer_id">
+                        <input type="hidden" name="customer_id" value="{{$inquiry['customer']->id}}" id="hidden_cutomer_id">
                         @if($inquiry['customer']->customer_status =="pending")
                         <div class="form-group">
                             <label>Customer</label>
@@ -46,7 +46,8 @@
                             <div class="customer_select" style="display: none">
                                 <div class="col-md-4">
                                     <div class="form-group searchproduct">
-                                        <input class="form-control" placeholder="Enter Customer Name " type="text" name="existing_customer_name">
+                                        <input class="form-control" placeholder="Enter Customer Name " type="text" name="existing_customer_name" id="existing_customer_name">
+                                        <input id="existing_customer_id" class="form-control" name="existing_customer_id" value="" type="hidden">
                                         <i class="fa fa-search search-icon"></i>
                                     </div>
                                 </div>
@@ -76,15 +77,16 @@
                         <div class="form-group">
                             <label>Customer</label>
                             <div class="radio">
-                                <input checked="" value="existing_customer" id="optionsRadios1" name="status" type="radio" onchange="show_hide_customer('Permanent');">
+                                <input checked="" value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
                                 <label for="optionsRadios1">Existing</label>
-                                <input  value="new_customer" id="optionsRadios2" name="status" type="radio" onchange="show_hide_customer('Pending');">
+                                <input  value="new_customer" id="optionsRadios2" name="customer_status" type="radio" onchange="show_hide_customer('Pending');">
                                 <label for="optionsRadios2">New</label>
                             </div>
                             <div class="customer_select" >
                                 <div class="col-md-4">
                                     <div class="form-group searchproduct">
-                                        <input class="form-control" placeholder="Enter Customer Name " type="text" value="{{$inquiry['customer']->owner_name}}">
+                                        <input class="form-control" placeholder="Enter Customer Name " type="text" value="{{$inquiry['customer']->owner_name}}" id="existing_customer_name">
+                                        <input id="existing_customer_id" class="form-control" name="existing_customer_id" value="{{$inquiry['customer']->id}}" type="hidden">
                                         <i class="fa fa-search search-icon"></i>
                                     </div>
                                 </div>
@@ -95,7 +97,7 @@
                         <div class="exist_field " style="display: none">
                             <div class="form-group">
                                 <label for="name">Customer Name</label>
-                                <input id="name" class="form-control" placeholder="Name" name="name" value="" type="text">
+                                <input id="name" class="form-control" placeholder="Name" name="customer_name" value="" type="text">
                             </div>
                             <div class="form-group">
                                 <label for="name">Contact Person</label>
@@ -108,7 +110,7 @@
 
                             <div class="form-group">
                                 <label for="period">Credit Period</label>
-                                <input id="period" class="form-control" placeholder="Credit Period" name="period" value="" type="text">
+                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="text">
                             </div>
                         </div>
                         @endif
@@ -128,6 +130,7 @@
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
                                                     <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['product_category']->product_category_name}}">
+                                                    <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}">
                                                     <i class="fa fa-search search-icon"></i>
                                                 </div>
                                             </td>
@@ -152,7 +155,7 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" value="{{$product->price}}" id="price" name="product[{{$key}}][price]">
+                                                    <input type="text" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
                                                 </div>
                                             </td>
                                             <td class="col-md-4">
@@ -205,25 +208,30 @@
                                     <option value="{{$location->id}}">{{$location->area_name}}</option>
                                     @endif
                                     @endforeach
+                                    @if($inquiry->delivery_location_id == 0)
+                                    <option id="other_location" value="other" selected="">Other</option>
+                                    @else
                                     <option id="other_location" value="other">Other</option>
+                                    @endif
                                 </select>
                             </div>
                         </div>
                         <div class="clearfix"></div>
-                        <div class="locationtext" id="other_location_input_wrapper">
+                        @if($inquiry->delivery_location_id == 0)
+                        <div class="locationtext" id="other_location_input_wrapper" style="display: block;">
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <label for="location">Location </label>
-                                    <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="" type="text">
+                                    <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="{{$inquiry->other_location}}" type="text">
                                 </div>
-                                <div class="col-md-8 addlocation">
-
-                                    <button class="btn btn-primary btn-xs">ADD</button>
-                                </div>
+                                <!--                                <div class="col-md-8 addlocation">
+                                                                    <button class="btn btn-primary btn-xs">ADD</button>
+                                                                </div>-->
                             </div>
                         </div>
+                        @endif
                         <div class="clearfix"></div>
-                        @if($inquiry->vat_percentage == "")
+                        @if($inquiry->vat_percentage == 0)
                         <div class="form-group">
                             <div class="radio">
                                 <input checked="" value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
@@ -245,7 +253,7 @@
                                 </table>
                             </div>
                         </div>
-                        @elseif($inquiry->vat_percentage != "")
+                        @elseif($inquiry->vat_percentage != 0)
                         <div class="form-group">
                             <div class="radio">
                                 <input value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
@@ -272,7 +280,7 @@
                             <label for="date">Expected Delivery Date: </label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                <input type="text" name="date" class="form-control" id="expected_delivery_date" value="{{$inquiry->estimated_delivery_date}}">
+                                <input type="text" name="date" class="form-control" id="expected_delivery_date" >
                             </div>
                         </div>
                         <div class="clearfix"></div>
