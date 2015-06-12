@@ -26,7 +26,7 @@
                             </div> 
                             <div class="form-group  col-md-6">
                                 <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search">
-                                    <input class="form-control" placeholder="Enter Product Name" name="search_text" type="text">
+                                    <input class="form-control" placeholder="Enter Product Name" value="{{Input::get('search_text')}}" name="search_text" type="text">
                                     <a  onclick="this.form.submit()">
                                         <i class="fa fa-search search-icon" id="search_icon"></i>
                                     </a>
