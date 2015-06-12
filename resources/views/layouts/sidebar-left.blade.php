@@ -46,15 +46,15 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
-                    <li class="<?php echo ($page_name == 'orders.php') || ($page_name == 'delivery_orders.php') || ($page_name == 'delivery_orders_challan.php') || ($page_name == 'daily_del_orders.php') || ($page_name == 'delivery_orders_challan_report.php') || ($page_name == 'pending_orders.php') || ($page_name == 'order_view.php') || ($page_name == 'edit_orders.php') || ($page_name == 'createdelivery_order.php') || ($page_name == 'view_deliveryorder.php') || ($page_name == 'edit_deliveryorder.php') || ($page_name == 'delivery_orders_challanbutton.php') || ($page_name == 'add_delivery_order.php') || ($page_name == 'view_deliverychallan.php') || ($page_name == 'edit_deliverychallan.php') || ($page_name == 'add_order.php') ? 'active' : ''; ?>">
+                    <li class="{{ (Request::is('*orders*') ? 'active' : '') }}">
                         <a href="#" class="dropdown-toggle">
                             <i class="fa fa-shopping-cart"></i>
                             <span>Order</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
                         <ul class="submenu">
-                            <li class="<?php echo ($page_name == 'orders.php') ? 'active' : ''; ?>">
-                                <a href="orders.php" >
+                            <li class="{{ (Request::is('*orders*') ? 'active' : '') }}">
+                                <a href="{{url('orders')}}" >
                                     Order
                                 </a>
                             </li>
