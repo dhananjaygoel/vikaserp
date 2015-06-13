@@ -85,6 +85,7 @@
                             </li>
                         </ul>
                     </li>
+
                     <li class=" <?php echo ($page_name == 'purchaseorders.php') || ($page_name == 'create_purchase_advise.php') || ($page_name == 'purchaseorder_advise.php') || ($page_name == 'purchaseorder_challan.php') || ($page_name == 'purchaseorder_report.php') || ($page_name == 'purchaseorder_advisereport.php') || ($page_name == 'purchaseorder_challanreport.php') || ($page_name == 'add_placeorder.php') || ($page_name == 'purchaseorder_view.php') || ($page_name == 'edit_purchaseorders.php') || ($page_name == 'createpurchase_order.php') || ($page_name == 'view_purchaseadvice.php') || ($page_name == 'edit_purchaseadvice.php') || ($page_name == 'purchaseorder_challanbutton.php') || ($page_name == 'view_purchasechallan.php') || ($page_name == 'edit_purchasechallan.php') ? 'active' : ''; ?>">
                         <a href="#" class="dropdown-toggle">
                             <i class="fa fa-shopping-cart"></i>
@@ -92,8 +93,8 @@
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
                         <ul class="submenu">
-                            <li class="<?php echo ($page_name == 'purchaseorders.php') ? 'active' : ''; ?>">
-                                <a href="purchaseorders.php" >
+                            <li class="{{ (Request::is('*purchase_orders*') ? 'active' : '') }}">
+                                <a href="{{url("purchase_orders")}}">
                                     Purchase Order
                                 </a>
                             </li>

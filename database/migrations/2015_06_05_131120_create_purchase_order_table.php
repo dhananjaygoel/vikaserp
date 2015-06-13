@@ -5,39 +5,36 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreatePurchaseOrderTable extends Migration {
 
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		Schema::create('purchase_order', function(Blueprint $table)
-		{
-			$table->increments('id');
-                        $table->integer('supplier_id');
-			$table->integer('created_by');
-                        $table->integer('is_view_all');
-                        $table->integer('delivery_location_id');
-                        $table->string('order_for');
-                        $table->integer('is_vat');
-                        $table->float('vat_percentage');
-                        $table->integer('total_price');
-                        $table->string('estimate_delivery_date');
-                        $table->string('remarks'); 
-                        $table->integer('order_status');                        
-                        $table->timestamps();
-		});
-	}
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up() {
+        Schema::create('purchase_order', function(Blueprint $table) {
+            $table->increments('id');
+            $table->integer('supplier_id');
+            $table->integer('created_by');
+            $table->integer('is_view_all');
+            $table->integer('delivery_location_id');
+            $table->integer('order_for');
+            $table->string('vat_percentage');
+            $table->integer('total_price');
+            $table->date('expected_delivery_date');
+            $table->text('remarks');
+            $table->enum('order_status', array('pending', 'completed', 'canceled'));
+            $table->timestamps();
+            $table->softDeletes();
+        });
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		Schema::drop('purchase_order');
-	}
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down() {
+        Schema::drop('purchase_order');
+    }
 
 }

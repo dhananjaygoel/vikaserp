@@ -66,9 +66,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('inquiry', 'InquiryController');
     Route::get('fetch_existing_customer', 'InquiryController@fetch_existing_customer');
     Route::get('fetch_products', 'InquiryController@fetch_products');
-    Route::get('get_units', 'UnitController@get_units');
     Route::post('store_price', 'InquiryController@store_price');
-
+    Route::get('get_units', 'UnitController@get_units');
+    Route::resource('purchase_orders', 'PurchaseOrderController');
 //    Route::resource('orders', 'OrderController');
 
 
@@ -91,9 +91,6 @@ Route::group(['middleware' => ['auth']], function() {
     });
     Route::get('delivery_order_challan', function() {
         return 'Delivery Order Challan';
-    });
-    Route::get('purchase_orders', function() {
-        return 'Purchase Orders';
     });
 });
 

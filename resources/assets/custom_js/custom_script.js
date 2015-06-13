@@ -11,11 +11,17 @@ $(document).ready(function() {
     });
     $("#optionsRadios4").click(function() {
         $(".plusvat").show();
-
     });
     $("#optionsRadios3").click(function() {
         $(".plusvat").hide();
-
+    });
+    $("#existing_supplier").click(function() {
+        $(".exist_field").hide();
+        $(".customer_select").show();
+    });
+    $("#new_supplier").click(function() {
+        $(".exist_field").show();
+        $(".customer_select").hide();
     });
     $("#existing_customer_name").autocomplete({
         minLength: 1,
@@ -36,12 +42,29 @@ $(document).ready(function() {
             $("#existing_customer_id").val(ui.item.id);
         }
     });
-
+    $("#existing_supplier_name").autocomplete({
+        minLength: 1,
+        dataType: 'json',
+        type: 'GET',
+        source: function(request, response) {
+            $.ajax({
+                url: baseurl + '/fetch_existing_customer',
+                data: {"term": request.term},
+                success: function(data) {
+                    var main_array = JSON.parse(data);
+                    var arr1 = main_array['data_array'];
+                    response(arr1);
+                },
+            });
+        },
+        select: function(event, ui) {
+            $("#existing_supplier_id").val(ui.item.id);
+        }
+    });
     $('#expected_delivery_date').datepicker({
         format: 'mm-dd-yyyy'
     });
     $('#datepickerDateComponent').datepicker();
-
     $("#add_product_row").on("click", function() {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
@@ -89,7 +112,6 @@ $(document).ready(function() {
                 '</tr>';
         $("#add_product_table").children("tbody").append(html);
     });
-
     $("#add_inquiry_location").on("change", function() {
         if ($("#add_inquiry_location").val() == "other")
             $("#other_location_input_wrapper").show();
@@ -112,10 +134,13 @@ $(document).ready(function() {
             });
         }
     });
-
-
+//    $('#loc1').change(function() {
+//        if ($('#loc1').val() == '3') {
+//            $('.locationtext').toggle();
+//        }
+//
+//    });
 });
-
 /**
  * Comment
  */
@@ -160,6 +185,5 @@ function product_autocomplete(id) {
 //            });
         }
     });
-
 }
 
