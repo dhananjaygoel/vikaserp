@@ -476,10 +476,7 @@
                             <label for="labour"><b class="challan">Labour </b></label>
                     <input id="labour" class="form-control" placeholder="Labour" name="labour" value="" type="text">
                 </div>
-                <div class="form-group">
-                    <label for="billno"><b class="challan">Bill Number</b></label>
-                    <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="text">
-                </div>
+                
               
                  
                                                 <div class="form-group">
@@ -505,6 +502,10 @@
                 <div class="form-group">
                         <label for="total"><b class="challan">Grand Total</b><span class="gtotal">$250000</span></label>
                    
+                </div>
+                   <div class="form-group">
+                    <label for="billno"><b class="challan">Bill Number</b></label>
+                    <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="text">
                 </div>
                 <div class="form-group">
                     <label for="inquiry_remark"><b class="challan">Remark</b></label>

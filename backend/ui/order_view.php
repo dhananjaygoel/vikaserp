@@ -230,11 +230,7 @@
                                         <td><span>Grand Total: </span> 5000</td>
                                     
                                         </tr>
-                                     
-                                        <tr>
-                                        <td><span>Estimated Delivery Date: </span>20 April,2015</td>
-                                    
-                                        </tr>   
+                                       
                                         
                                      <tr>
                                         <td><span>Expected Delivery Date: </span>25 April,2015</td>

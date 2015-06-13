@@ -131,7 +131,7 @@
                                                     <td>
                                                     <span>Pending Order</span>
                                                     </td>
-                                                    
+                                                     <td><span>Present Shipping</span></td>
                                                     <td><span>Remark</span></td>
                                                 </tr>
                                       <tr>
@@ -140,7 +140,7 @@
                                             <td>Unit</td>
                                              <td>100</td>
                                             <td>15</td>
-                                            
+                                            <td>15</td>
                                             <td>Ipsum</td>
                                             
                                         </tr>
@@ -150,7 +150,7 @@
                                             <td>Unit</td>
                                              <td>150</td>
                                             <td>15</td>
-                                            
+                                            <td>15</td>
                                             <td>Ipsum</td>
                                             
                                         </tr>
@@ -160,7 +160,7 @@
                                             <td>Unit</td>
                                              <td>150</td>
                                             <td>25</td>
-                                           
+                                           <td>15</td>
                                             <td>Lorem</td>
                                             
                                         </tr>
@@ -171,7 +171,7 @@
                                             <td>Unit</td>
                                              <td>150</td>
                                             <td>15</td>
-                                            
+                                            <td>15</td>
                                             <td>Ipsum</td>
                                             
                                         </tr>

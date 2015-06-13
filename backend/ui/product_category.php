@@ -91,14 +91,11 @@
                                         <td>Pipe</td>
                                         <td>
                                             <div class="row product-price">
-                                            <div class="form-group col-md-4">
+                                            <div class="form-group col-md-6">
                                            <input type="text" class="form-control" id="difference">
                                                
                                             </div>
-                                            <div class="form-group col-md-2 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            
                                             </div>
                                         </td>                                        
                                         
@@ -130,14 +127,11 @@
                                         <td>Structure</td>
                                          <td>
                                              <div class="row product-price">
-                                            <div class="form-group col-md-4">
+                                            <div class="form-group col-md-6">
                                            <input type="text" class="form-control" id="difference">
                                                
                                             </div>
-                                            <div class="form-group col-md-2 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            
                                             </div>
                                          </td>                                        
                                         

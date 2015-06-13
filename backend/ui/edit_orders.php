@@ -178,14 +178,11 @@
                                                     </td>
                                                     <td class="col-md-2">
                                                           <div class="row">
-                                            <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="" id="price" placeholder="price">
+                                            <div class="form-group col-md-12">
+                                            <input type="text" class="form-control" value="" id="price" placeholder="Price">
                                                
                                             </div>
-                                            <div class="form-group col-md-6 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            
                                             </div>
                                                     </td>
                                                       <td class="col-md-4">
@@ -223,14 +220,11 @@
                                                     </td>
                                                     <td class="col-md-2">
                                                           <div class="row">
-                                            <div class="form-group col-md-6">
-                                               <input type="text" class="form-control" value="" id="price" placeholder="price">
+                                            <div class="form-group col-md-12">
+                                            <input type="text" class="form-control" value="" id="price" placeholder="Price">
                                                
                                             </div>
-                                            <div class="form-group col-md-6 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            
                                             </div>
                                                     </td>
                                                       <td class="col-md-4">
@@ -268,14 +262,11 @@
                                                     </td>
                                                     <td class="col-md-2">
                                                           <div class="row">
-                                            <div class="form-group col-md-6">
-                                              <input type="text" class="form-control" value="" id="price" placeholder="price">
+                                            <div class="form-group col-md-12">
+                                            <input type="text" class="form-control" value="" id="price" placeholder="Price">
                                                
                                             </div>
-                                            <div class="form-group col-md-6 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            
                                             </div>
                                                     </td>
                                                       <td class="col-md-4">
@@ -313,14 +304,11 @@
                                                     </td>
                                                     <td class="col-md-2">
                                                           <div class="row">
-                                            <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="" id="price" placeholder="price">
+                                            <div class="form-group col-md-12">
+                                            <input type="text" class="form-control" value="" id="price" placeholder="Price">
                                                
                                             </div>
-                                            <div class="form-group col-md-6 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            
                                             </div>
                                                     </td>
                                                       <td class="col-md-4">
@@ -356,16 +344,13 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                    <td class="col-md-2">
+                                                     <td class="col-md-2">
                                                           <div class="row">
-                                            <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" value="" id="price" placeholder="price">
+                                            <div class="form-group col-md-12">
+                                            <input type="text" class="form-control" value="" id="price" placeholder="Price">
                                                
                                             </div>
-                                            <div class="form-group col-md-6 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            
                                             </div>
                                                     </td>
                                                       <td class="col-md-4">
@@ -423,16 +408,13 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                    <td class="col-md-2">
+                                                   <td class="col-md-2">
                                                           <div class="row">
-                                            <div class="form-group col-md-6">
-                                               <input type="text" class="form-control" value="" id="price" placeholder="price">
+                                            <div class="form-group col-md-12">
+                                            <input type="text" class="form-control" value="" id="price" placeholder="Price">
                                                
                                             </div>
-                                            <div class="form-group col-md-6 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            
                                             </div>
                                                     </td>
                                                       <td class="col-md-4">
@@ -490,16 +472,13 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                    <td class="col-md-2">
+                                                     <td class="col-md-2">
                                                           <div class="row">
-                                            <div class="form-group col-md-6">
-                                             <input type="text" class="form-control" value="" id="price" placeholder="price">
+                                            <div class="form-group col-md-12">
+                                            <input type="text" class="form-control" value="" id="price" placeholder="Price">
                                                
                                             </div>
-                                            <div class="form-group col-md-6 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            
                                             </div>
                                                     </td>
                                                       <td class="col-md-4">
@@ -557,16 +536,13 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                    <td class="col-md-2">
+                                                  <td class="col-md-2">
                                                           <div class="row">
-                                            <div class="form-group col-md-6">
-                                               <input type="text" class="form-control" value="" id="price" placeholder="price">
+                                            <div class="form-group col-md-12">
+                                            <input type="text" class="form-control" value="" id="price" placeholder="Price">
                                                
                                             </div>
-                                            <div class="form-group col-md-6 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            
                                             </div>
                                                     </td>
                                                       <td class="col-md-4">
@@ -624,16 +600,13 @@
                                             </select>
                                                           </div>
                                                     </td>
-                                                    <td class="col-md-2">
+                                                     <td class="col-md-2">
                                                           <div class="row">
-                                            <div class="form-group col-md-6">
-                                               <input type="text" class="form-control" value="" id="price" placeholder="price">
+                                            <div class="form-group col-md-12">
+                                            <input type="text" class="form-control" value="" id="price" placeholder="Price">
                                                
                                             </div>
-                                            <div class="form-group col-md-6 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            
                                             </div>
                                                     </td>
                                                       <td class="col-md-4">
@@ -723,15 +696,7 @@
                 
             </div> 
                   
-                    <div class="form-group col-md-4 targetdate">
-                        
-                    <label for="time">Estimated Delivery Date:</label>
-                     <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    <input type="text" name="date" class="form-control" id="datepickerDate">
-                    </div>
-               
-            </div>
+                 
                     <div class="clearfix"></div>
                        <div class="form-group col-md-4 targetdate">
                           <label for="date">Expected Delivery Date: </label>

@@ -43,8 +43,7 @@
 		<div id="page-wrapper" class="container">
 			<div class="row">
 				<?php include("include/sidebarleft.php"); ?>
-				<div id="content-wrapper">
-                                    <div class="row">
+				<div id="content-wrapper"><div class="row">
 						<div class="col-lg-12">
 							
 							<div class="row">
