@@ -39,13 +39,12 @@ Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
 ]);
-
 Route::get('logout','DashboardController@logout');
-
 Route::get('/', 'Auth\AuthController@getLogin');
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('security', 'SecurityController');
     Route::get('dashboard', 'DashboardController@index');
+    Route::get('home', 'DashboardController@homeredirect');    
     Route::resource('unit', 'UnitController');
     Route::resource('states', 'StatesController');
     Route::resource('city', 'CityController');
@@ -69,19 +68,17 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('fetch_products', 'InquiryController@fetch_products');
     Route::get('get_units', 'UnitController@get_units');
     
-    
+//    Route::resource('orders', 'OrderController');
 
 
-
-        Route::get('orders', function() {
-        return 'Order';
-    });
     Route::get('pending_orders', function() {
         return 'Pending Orders';
     });
-    Route::get('order', function() {
-        return 'Order ';
+
+    Route::get('orders', function() {
+        return 'Orders';
     });
+    
     Route::get('pending_inquiry', function() {
         return 'Pending Inquiry ';
     });

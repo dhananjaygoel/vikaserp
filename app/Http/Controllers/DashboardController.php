@@ -27,5 +27,8 @@ class DashboardController extends Controller {
         Auth::logout(); // logout user
         return redirect(\URL::previous());
     }
+    public function homeredirect(){
+        return redirect('dashboard');
+    }
 
 }
