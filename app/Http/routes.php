@@ -69,16 +69,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('store_price', 'InquiryController@store_price');
     Route::get('get_units', 'UnitController@get_units');
     Route::resource('purchase_orders', 'PurchaseOrderController');
-//    Route::resource('orders', 'OrderController');
+    Route::resource('orders', 'OrderController');
 
 
     Route::get('pending_orders', function() {
         return 'Pending Orders';
     });
 
-    Route::get('orders', function() {
-        return 'Orders';
-    });
+    
 
     Route::get('pending_inquiry', function() {
         return 'Pending Inquiry ';

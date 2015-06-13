@@ -1,3 +1,9 @@
+<?php
+//echo'<pre>';
+//print_r($allorders->toArray());
+//echo '</pre>';
+//exit;
+?>
 @extends('layouts.master')
 @section('title','Orders')
 @section('content')
@@ -32,6 +38,14 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
+                    @if(sizeof($allorders)==0)
+                    <div class="alert alert-info no_data_msg_container">
+                        Currently no orders have been added.
+                    </div>
+                    @else
+                    @if (Session::has('flash_message'))
+                    <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
+                    @endif
                     <div class="main-box-body main_contents clearfix">
                         <div class="table-responsive tablepending">
                             <table id="table-example" class="table table-hover">
@@ -48,22 +62,28 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php $k =0;?>
+                                    @foreach($allorders as $order)
                                     <tr>
-                                        <td>1</td>
-                                        <td>Name 1</td>
-                                        <td>9999999999 </td>
-                                        <td>Pune</td>
+                                        <td>{{$k++}}</td>
+                                        <td>{{$order['customer']->owner_name}}</td>
+                                        <td>{{$order['customer']['phone_number1']}}</td>
+                                        @if($order['delivery_location']['area_name'] !="")
+                                        <td class="text-center">{{$order['delivery_location']['area_name']}}</td>
+                                        @elseif($order['delivery_location']['area_name'] =="")
+                                        <td class="text-center">{{$order['other_location']}}</td>
+                                        @endif
                                         <td>Lorem Ipsum</td>
                                         <td>100</td>
                                         <td>50</td>
                                         <td class="text-center">
-                                            <a href="{{url('orders/1')}}" class="table-link" title="view">
+                                            <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="{{url('orders/1/edit')}}" class="table-link" title="Edit">
+                                            <a href="{{url('orders/'.$order->id.'/edit')}}" class="table-link" title="Edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -75,7 +95,7 @@
                                                     <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="{{url('create_delivery_order/1')}}" class="table-link" title="Create Delivery order">
+                                            <a href="{{url('create_delivery_order/'.$order->id)}}" class="table-link" title="Create Delivery order">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-book fa-stack-1x fa-inverse"></i>
@@ -155,20 +175,14 @@
                                         </div>
                                     </div>
                                 </div> 
+                                @endforeach
                                 </tbody>
                             </table>
                             <span class="pull-right">
-                                <ul class="pagination pull-right">
-                                    <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-                                    <li><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
-                                    <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
-                                </ul>
+                                <?php echo $allorders->render();?>
                             </span>
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>
