@@ -17,6 +17,7 @@ use Auth;
 use App\Http\Requests\InquiryRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
+use Hash;
 
 class InquiryController extends Controller {
 
@@ -26,21 +27,14 @@ class InquiryController extends Controller {
      * @return Response
      */
     public function index() {
-        $inquiry = Inquiry::with('customer', 'delivery_location', 'inquiry_products')->orderBy('created_at', 'desc')->Paginate(1);
-        $inquiries = $this->get_quantity($inquiry);
+        if ((isset($_GET['inquiry_filter'])) && $_GET['inquiry_filter'] != '') {
+            $inquiries = Inquiry::where('inquiry_status', '=', $_GET['inquiry_filter'])
+                            ->with('customer', 'delivery_location', 'inquiry_products')->orderBy('created_at', 'desc')->Paginate(1);
+        } else {
+            $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products')->orderBy('created_at', 'desc')->Paginate(1);
+        }
         $inquiries->setPath('inquiry');
         return view('inquiry', compact('inquiries'));
-    }
-
-    public function get_quantity($inquiries) {
-        $total_quantity = 0;
-        foreach ($inquiries as $inquiry) {
-            foreach ($inquiry['inquiry_products'] as $product) {
-                $total_quantity = $total_quantity + $product->quantity;
-            }
-            $inquiries['total_quantity'] = $total_quantity;
-        }
-        return $inquiries;
     }
 
     /**
@@ -95,15 +89,29 @@ class InquiryController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
-        $add_inquiry = Inquiry::create([
-                    'customer_id' => $customer_id,
-                    'created_by' => Auth::id(),
-                    'delivery_location_id' => $input_data['add_inquiry_location'],
-                    'vat_percentage' => $input_data['vat_percentage'],
-                    'expected_delivery_date' => date_format(date_create($input_data['date']), 'Y-m-d'),
-                    'remarks' => $input_data['inquiry_remark'],
-                    'inquiry_status' => "Pending"
-        ]);
+        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
+            $add_inquiry_array = [
+                'customer_id' => $customer_id,
+                'created_by' => Auth::id(),
+                'delivery_location_id' => $input_data['add_inquiry_location'],
+                'vat_percentage' => $input_data['vat_percentage'],
+                'expected_delivery_date' => date_format(date_create($input_data['date']), 'Y-m-d'),
+                'remarks' => $input_data['inquiry_remark'],
+                'inquiry_status' => "Pending",
+                'other_location' => $input_data['other_location_name']
+            ];
+        } else {
+            $add_inquiry_array = [
+                'customer_id' => $customer_id,
+                'created_by' => Auth::id(),
+                'delivery_location_id' => $input_data['add_inquiry_location'],
+                'vat_percentage' => $input_data['vat_percentage'],
+                'expected_delivery_date' => date_format(date_create($input_data['date']), 'Y-m-d'),
+                'remarks' => $input_data['inquiry_remark'],
+                'inquiry_status' => "Pending"
+            ];
+        }
+        $add_inquiry = Inquiry::create($add_inquiry_array);
         $inquiry_id = DB::getPdo()->lastInsertId();
         $inquiry_products = array();
         foreach ($input_data['product'] as $product_data) {
@@ -152,19 +160,41 @@ class InquiryController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function update($id) {
+    public function update($id, InquiryRequest $request) {
         $input_data = Input::all();
+        $i = 0;
+        $j = count($input_data['product']);
+        foreach ($input_data['product'] as $product_data) {
+            if ($product_data['name'] == "") {
+                $i++;
+            }
+        }
+        if ($i == $j) {
+            return Redirect::back()->with('flash_message', 'Please insert product details');
+        }
         $customers = Customer::find($input_data['customer_id']);
         if ($input_data['customer_status'] == "new_customer") {
-            $customers->owner_name = $input_data['customer_name'];
-            $customers->contact_person = $input_data['contact_person'];
-            $customers->phone_number1 = $input_data['mobile_number'];
-            $customers->credit_period = $input_data['credit_period'];
-            $customers->customer_status = 'pending';
-            $customers->save();
-            $customer_id = $customers->id;
+            $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
+            if ($validator->passes()) {
+                $customers->owner_name = $input_data['customer_name'];
+                $customers->contact_person = $input_data['contact_person'];
+                $customers->phone_number1 = $input_data['mobile_number'];
+                $customers->credit_period = $input_data['credit_period'];
+                $customers->customer_status = 'pending';
+                $customers->save();
+                $customer_id = $customers->id;
+            } else {
+                $error_msg = $validator->messages();
+                return Redirect::back()->withInput()->withErrors($validator);
+            }
         } elseif ($input_data['customer_status'] == "existing_customer") {
-            $customer_id = $input_data['existing_customer_id'];
+            $validator = Validator::make($input_data, Customer::$existing_customer_inquiry_rules);
+            if ($validator->passes()) {
+                $customer_id = $input_data['existing_customer_id'];
+            } else {
+                $error_msg = $validator->messages();
+                return Redirect::back()->withInput()->withErrors($validator);
+            }
         }
         $inquiry = Inquiry::find($id);
         $update_inquiry = $inquiry->update([
@@ -201,9 +231,14 @@ class InquiryController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id
-    ) {
-//
+    public function destroy($id) {
+        if (Hash::check(Input::get('password'), Auth::user()->password)) {
+            $delete_inquiry = Inquiry::find($id)->delete();
+            $delete_inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->delete();
+            return redirect('inquiry')->with('flash_message', 'Inquiry details successfully deleted.');
+        } else {
+            return redirect('inquiry')->with('flash_message', 'Please enter a correct password.');
+        }
     }
 
     public function fetch_existing_customer() {
@@ -243,6 +278,11 @@ class InquiryController extends Controller {
             ];
         }
         echo json_encode(array('data_array' => $data_array));
+    }
+
+    public function store_price() {
+        $input_data = Input::all();
+        $update_price = InquiryProducts::where('id', '=', $input_data['id'])->update(['price' => $input_data['updated_price']]);
     }
 
 }

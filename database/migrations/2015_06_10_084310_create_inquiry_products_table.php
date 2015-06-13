@@ -20,6 +20,7 @@ class CreateInquiryProductsTable extends Migration {
             $table->integer('price')->comment('Product price');
             $table->text('remarks')->comment('Contains remark for the product');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

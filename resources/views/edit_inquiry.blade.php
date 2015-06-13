@@ -224,9 +224,6 @@
                                     <label for="location">Location </label>
                                     <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="{{$inquiry->other_location}}" type="text">
                                 </div>
-                                <!--                                <div class="col-md-8 addlocation">
-                                                                    <button class="btn btn-primary btn-xs">ADD</button>
-                                                                </div>-->
                             </div>
                         </div>
                         @endif
@@ -280,7 +277,7 @@
                             <label for="date">Expected Delivery Date: </label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                <input type="text" name="date" class="form-control" id="expected_delivery_date" >
+                                <input type="text" name="date" class="form-control" id="expected_delivery_date" value="{{date('Y-m-d', strtotime($inquiry->expected_delivery_date))}}" >
                             </div>
                         </div>
                         <div class="clearfix"></div>

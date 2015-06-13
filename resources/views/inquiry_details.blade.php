@@ -14,7 +14,7 @@
                 <div class="filter-block">
                     <h1 class="pull-left">View Inquiry</h1>
                     <div class="pull-right top-page-ui">
-                        <a href="edit_enquiry.php" class="btn btn-primary pull-right">
+                        <a href="{{ url('inquiry/'.$inquiry->id.'/edit') }}" class="btn btn-primary pull-right">
                             Edit Inquiry
                         </a>
                     </div>
@@ -31,7 +31,7 @@
                                     <tbody>
                                         <?php
 //                                        echo '<pre>';
-//                                        print_r($inquiry['inquiry_products']->toArray());
+//                                        print_r($inquiry->toArray());
 //                                        echo '</pre>';
 //                                        exit;
                                         ?>
@@ -71,12 +71,11 @@
                                             <td>
                                                 <div class="row product-price">
                                                     <div class="form-group col-md-6">
-                                                        <input type="text" class="form-control" id="difference" placeholder="Price" value='{{$product_data->price}}'>
-
+                                                        <input type="text" class="form-control" id="difference" placeholder="Price" value='{{$product_data->price}}' required="">
+                                                        <input type="hidden"name="product_id" value='{{$product_data->id}}' id='hidden_inquiry_product_id'>
                                                     </div>
                                                     <div class="form-group col-md-2 difference_form">
-
-                                                        <input class="btn btn-primary" type="submit" class="form-control" value="save" >
+                                                        <input type="button" name="save_price" value="Save" class="btn btn-primary" id="save_price_inquiry_view" onclick="save_price_inquiry_view('{{$product_data->id}}','{{$product_data->price}}');">
                                                     </div>
                                                 </div>
                                             </td>
@@ -87,22 +86,20 @@
                                 </table>
                                 <table id="table-example" class="table customerview_table">
                                     <tbody>
-                                        @if($inquiry->vat_percentage == "")
+                                        @if($inquiry->vat_percentage == 0)
                                         <tr><td><span>Plus VAT: </span>No</td></tr>
-                                        @elseif($inquiry->vat_percentage != "")
+                                        @elseif($inquiry->vat_percentage != 0)
                                         <tr><td><span>Plus VAT: </span>Yes</td></tr>
                                         <tr><td><span>VAT Percentage: </span>{{$inquiry->vat_percentage."%"}}</td></tr>
                                         @endif
-                                        <tr><td><span>VAT: </span>Lorem</td>
 
-                                        </tr>
                                         <tr>
-                                            <td><span>Grand Total: </span> 5000</td>
+                                            <td><span>Grand Total: </span> {{$inquiry['inquiry_products']->sum('price')}}</td>
 
                                         </tr>
 
                                         <tr>
-                                            <td><span>Expected Delivery Date: </span>{{$inquiry->estimated_delivery_date}}</td>
+                                            <td><span>Expected Delivery Date: </span>{{$inquiry->expected_delivery_date}}</td>
 
                                         </tr>
                                         <tr>

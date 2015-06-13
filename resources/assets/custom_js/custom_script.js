@@ -1,4 +1,5 @@
 var baseurl = $('#baseurl').attr('name');
+var _token = $('#csrf_token').attr('content');
 $(document).ready(function() {
     $("#existing_customer").click(function() {
         $(".exist_field").hide();
@@ -95,6 +96,23 @@ $(document).ready(function() {
         else
             $("#other_location_input_wrapper").hide();
     });
+//
+    $("#save_price_inquiry_view").on("click", function(event) {
+        var id = $("#hidden_inquiry_product_id").val();
+        var updated_price = $("#difference").val();
+        if (updated_price == "") {
+            event.preventDefault();
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: baseurl + '/store_price',
+                data: {id: id, _token: _token, updated_price: updated_price}
+            }).done(function() {
+                location.reload();
+            });
+        }
+    });
+
 
 });
 
@@ -144,3 +162,4 @@ function product_autocomplete(id) {
     });
 
 }
+

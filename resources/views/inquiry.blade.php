@@ -17,12 +17,14 @@
                         </a>
                         <div class="form-group pull-right">
                             <div class="col-md-12">
-                                <select class="form-control" id="user_filter" name="user_filter">
-                                    <option value="" selected="">Status</option>
-                                    <option value="2">Pending</option>
-                                    <option value="2">Completed</option>
-                                    <option value="2">Canceled</option>
-                                </select>
+                                <form method="GET" action="{{url('inquiry')}}">
+                                    <select class="form-control" id="inquiry_filter" name="inquiry_filter" onchange="this.form.submit();">
+                                        <option value="" selected="">Status</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="completed">Completed</option>
+                                        <!--<option value="Canceled">Canceled</option>-->
+                                    </select>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -55,24 +57,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
-//                                    foreach ($inquiries as $inquiry) {
-//                                        echo '<pre>';
-//                                        print_r($inquiry['total_quantity']);
-//                                        echo '</pre>';
-//                                    }
-//                                    exit;
-                                    ?>
                                     <?php $i = ($inquiries->currentPage() - 1) * $inquiries->perPage() + 1; ?>
                                     @foreach($inquiries as $inquiry)
                                     <tr>
-                                        <td class="text-center">{{$i}}</td>
+                                        <td class="text-center">{{$i++}}</td>
                                         <td class="text-center">{{$inquiry['customer']['owner_name']}}</td>
-                                        <td class="text-center">{{$inquiry['total_quantity']}}</td>
-                                        <td class="text-center">{{$inquiry['customer']['phone_number']}} </td>
+                                        <td class="text-center">{{$inquiry['inquiry_products']->sum('quantity')}}</td>
+                                        <td class="text-center">{{$inquiry['customer']['phone_number1']}} </td>
+                                        @if($inquiry['delivery_location']['area_name'] !="")
                                         <td class="text-center">{{$inquiry['delivery_location']['area_name']}}</td>
+                                        @elseif($inquiry['delivery_location']['area_name'] =="")
+                                        <td class="text-center">{{$inquiry['other_location']}}</td>
+                                        @endif
                                         <td class="text-center">
-                                            <a title="Place Order" href="add_order.php" class="table-link">
+                                            <a title="Place Order" href="{{ Url::action('InquiryController@create') }}" class="table-link">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-book fa-stack-1x fa-inverse"></i>
@@ -100,9 +98,6 @@
                                             </a>
                                         </td>
                                     </tr>
-
-
-
                                 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -128,24 +123,26 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
+                                                {!! Form::open(array('method'=>'DELETE','url'=>url('inquiry',$inquiry['id']), 'id'=>'delete_inquiry_form'))!!}
                                                 <div class="delete">
                                                     <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                     <div class="pwd">
                                                         <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" placeholder="" type="text"></div>
+                                                        <div class="pwdr"><input class="form-control" placeholder="" type="password" name="password" required=""></div>
                                                     </div>
                                                     <div class="clearfix"></div>
                                                     <div class="delp">Are you sure you want to <b>delete </b>?</div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Confirm</button>
+                                                <button type="submit" class="btn btn-default" id="yes">Confirm</button>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                             </div>
+                                            {!! Form::close() !!}
                                         </div>
                                     </div>
                                 </div>
-                                <?php $i++; ?>
+                                <?php // $i++; ?>
                                 @endforeach
                                 </tbody>
                             </table>

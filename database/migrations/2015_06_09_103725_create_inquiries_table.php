@@ -22,6 +22,7 @@ class CreateInquiriesTable extends Migration {
             $table->text('remarks')->comment('Contains remark for the inquiry');
             $table->enum('inquiry_status', array('pending', 'completed', 'canceled'))->comment('Contains inquiry status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
