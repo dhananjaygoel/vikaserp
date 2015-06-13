@@ -10,7 +10,12 @@ use App\Units;
 use App\Customer;
 use App\Http\Requests\PurchaseOrderRequest;
 use Input;
-use Redirect;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
+use App\PurchaseOrder;
+use App\PurchaseProducts;
+use Auth;
+use DB;
 
 class PurchaseOrderController extends Controller {
 
@@ -75,6 +80,47 @@ class PurchaseOrderController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
+        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
+            $add_purchase_order_array = [
+                'supplier_id' => $customer_id,
+                'created_by' => Auth::id(),
+                'delivery_location_id' => $input_data['purchase_order_location'],
+                'order_for' => $input_data['order_for'],
+                'vat_percentage' => $input_data['vat_percentage'],
+                'expected_delivery_date' => date_format(date_create($input_data['expected_delivery_date']), 'Y-m-d'),
+                'remarks' => $input_data['purchase_order_remark'],
+                'inquiry_status' => "Pending",
+                'other_location' => $input_data['other_location_name']
+            ];
+        } else {
+            $add_purchase_order_array = [
+                'is_view_all' => $input_data['viewable_by'],
+                'supplier_id' => $customer_id,
+                'created_by' => Auth::id(),
+                'delivery_location_id' => $input_data['purchase_order_location'],
+                'vat_percentage' => $input_data['vat_percentage'],
+                'expected_delivery_date' => date_format(date_create($input_data['expected_delivery_date']), 'Y-m-d'),
+                'remarks' => $input_data['purchase_order_remark'],
+                'inquiry_status' => "Pending"
+            ];
+        }
+        $add_purchase_order = PurchaseOrder::create($add_purchase_order_array);
+        $purchase_order_id = DB::getPdo()->lastInsertId();
+        $purchase_order_products = array();
+        foreach ($input_data['product'] as $product_data) {
+            if ($product_data['name'] != "") {
+                $purchase_order_products = [
+                    'inquiry_id' => $purchase_order_id,
+                    'product_category_id' => $product_data['id'],
+                    'unit_id' => $product_data['units'],
+                    'quantity' => $product_data['quantity'],
+                    'price' => $product_data['price'],
+                    'remarks' => $product_data['remark'],
+                ];
+                $add_purchase_order_products = PurchaseProducts::create($purchase_order_products);
+            }
+        }
+        return redirect('purchase_orders/' . $purchase_order_id . '/edit')->with('flash_message', 'Purchase order details successfully added.');
     }
 
     /**
@@ -94,7 +140,11 @@ class PurchaseOrderController extends Controller {
      * @return Response
      */
     public function edit($id) {
-        //
+        $purchase_order = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'purchase_products.product_category', 'customer')->first();
+        $units = Units::all();
+        $delivery_locations = DeliveryLocation::all();
+        $customers = Customer::where('customer_status', '=', 'permanent')->get();
+        return view('edit_purchase_order', compact('purchase_order', 'delivery_locations', 'units', 'customers'));
     }
 
     /**
@@ -104,7 +154,83 @@ class PurchaseOrderController extends Controller {
      * @return Response
      */
     public function update($id) {
-        //
+        $input_data = Input::all();
+        $i = 0;
+        $j = count($input_data['product']);
+        foreach ($input_data['product'] as $product_data) {
+            if ($product_data['name'] == "") {
+                $i++;
+            }
+        }
+        if ($i == $j) {
+            return Redirect::back()->with('flash_message', 'Please insert product details');
+        }
+        $customers = Customer::find($input_data['supplier_id']);
+        if ($input_data['supplier_status'] == "new_supplier") {
+            $validator = Validator::make($input_data, Customer::$new_supplier_inquiry_rules);
+            if ($validator->passes()) {
+                $customers = new Customer();
+                $customers->owner_name = $input_data['supplier_name'];
+                $customers->phone_number1 = $input_data['mobile_number'];
+                $customers->credit_period = $input_data['credit_period'];
+                $customers->customer_status = 'pending';
+                $customers->save();
+                $customer_id = $customers->id;
+            } else {
+                $error_msg = $validator->messages();
+                return Redirect::back()->withInput()->withErrors($validator);
+            }
+        } elseif ($input_data['supplier_status'] == "existing_supplier") {
+            $validator = Validator::make($input_data, Customer::$existing_supplier_inquiry_rules);
+            if ($validator->passes()) {
+                $customer_id = $input_data['autocomplete_supplier_id'];
+            } else {
+                $error_msg = $validator->messages();
+                return Redirect::back()->withInput()->withErrors($validator);
+            }
+        }
+        $purchase_order = PurchaseOrder::find($id);
+        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
+            $add_purchase_order_array = [
+                'supplier_id' => $customer_id,
+                'created_by' => Auth::id(),
+                'delivery_location_id' => $input_data['purchase_order_location'],
+                'order_for' => $input_data['order_for'],
+                'vat_percentage' => $input_data['vat_percentage'],
+                'expected_delivery_date' => date_format(date_create($input_data['expected_delivery_date']), 'Y-m-d'),
+                'remarks' => $input_data['purchase_order_remark'],
+                'inquiry_status' => "Pending",
+                'other_location' => $input_data['other_location_name']
+            ];
+        } else {
+            $add_purchase_order_array = [
+                'is_view_all' => $input_data['viewable_by'],
+                'supplier_id' => $customer_id,
+                'created_by' => Auth::id(),
+                'delivery_location_id' => $input_data['purchase_order_location'],
+                'vat_percentage' => $input_data['vat_percentage'],
+                'expected_delivery_date' => date_format(date_create($input_data['expected_delivery_date']), 'Y-m-d'),
+                'remarks' => $input_data['purchase_order_remark'],
+                'inquiry_status' => "Pending"
+            ];
+        }
+        $update_purchase_order = $purchase_order->update($add_purchase_order_array);
+        $purchase_order_products = array();
+        $delete_old_purchase_products = PurchaseProducts::where('purchase_order_id', '=', $id)->delete();
+        foreach ($input_data['product'] as $product_data) {
+            if ($product_data['name'] != "") {
+                $purchase_order_products = [
+                    'inquiry_id' => $purchase_order_id,
+                    'product_category_id' => $product_data['id'],
+                    'unit_id' => $product_data['units'],
+                    'quantity' => $product_data['quantity'],
+                    'price' => $product_data['price'],
+                    'remarks' => $product_data['remark'],
+                ];
+                $add_purchase_order_products = PurchaseProducts::create($purchase_order_products);
+            }
+        }
+        return redirect('purchase_orders/' . $purchase_order_id . '/edit')->with('flash_message', 'Purchase order details successfully added.');
     }
 
     /**

@@ -23,6 +23,17 @@ $(document).ready(function() {
         $(".exist_field").show();
         $(".customer_select").hide();
     });
+    $("#exclusive_of_vat").click(function() {
+        $(".plusvat").show();
+
+    });
+    $("#inclusive_of_vat").click(function() {
+        $(".plusvat").hide();
+
+    });
+
+
+
     $("#existing_customer_name").autocomplete({
         minLength: 1,
         dataType: 'json',

@@ -42,5 +42,13 @@ class Customer extends Model {
     public static $existing_customer_inquiry_rules = array(
         'autocomplete_customer_id' => 'required',
     );
+    public static $new_supplier_inquiry_rules = array(
+        'supplier_name' => 'required|min:2|max:100',
+        'mobile_number' => 'integer|digits_between:10,15|required',
+        'credit_period' => 'integer|required',
+    );
+    public static $existing_supplier_inquiry_rules = array(
+        'autocomplete_supplier_id' => 'required',
+    );
 
 }
