@@ -58,8 +58,8 @@
                                     Order
                                 </a>
                             </li>
-                            <li class="<?php echo ($page_name == 'delivery_orders.php') ? 'active' : ''; ?>">
-                                <a href="delivery_orders.php">
+                            <li class="{{ (Request::is('*delivery_order*') ? 'active' : '') }}">
+                                <a href="{{url('delivery_order')}}">
                                     Delivery Order
                                 </a>
                             </li>
