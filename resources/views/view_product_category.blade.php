@@ -41,6 +41,9 @@
                                         <td><span>Sub Product Category Name:</span> {{ $product_cat[0]['product_category_name'] }}</td>
                                     </tr>
                                     <tr>
+                                        <td><span>Sub Product Category Alias Name:</span> {{ $product_cat[0]['alias_name'] }}</td>
+                                    </tr>
+                                    <tr>
                                         <td>
                                             <span>Price: </span>{{ $product_cat[0]['price'] }}
                                         </td>

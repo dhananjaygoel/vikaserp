@@ -25,10 +25,12 @@
                             <div class="form-group">
                                 <label>Customer</label>
                                 <div class="radio">
-                                    <input  value="exist" id="optionsRadios1" name="status" type="radio">
+                                    <input  value="exist" id="exist" name="status" type="radio">
                                     <label for="optionsRadios1">Existing</label>
-                                    <input  value="new" id="optionsRadios2" name="status" type="radio">
+                                    <!--<label for="optionsRadios1">Existing</label>-->
+                                    <input  value="new" id="new" name="status" type="radio">
                                     <label for="optionsRadios2">New</label>
+                                    <!--<label for="optionsRadios2">New</label>-->
                                 </div>
                                 <div class="customer_select" >
                                     <div class="col-md-4">

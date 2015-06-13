@@ -43,6 +43,10 @@
                                 <input id="cat_name" class="form-control" placeholder="Sub Product Category Name" name="product_category_name" value="{{ old('product_category_name') }}" type="text">
                             </div>
                             <div class="form-group">
+                                <label for="alias_name">Sub Product Category Alias Name</label>
+                                <input id="alias_name" class="form-control" placeholder="Sub Product Category Alias Name" name="alias_name" value="{{ old('alias_name') }}" type="text">
+                            </div>
+                            <div class="form-group">
                                 <label for="price">Price</label>
                                 <input id="price" class="form-control" placeholder="Price" name="price" value="{{ old('price') }}" type="text">
                             </div>

@@ -17,6 +17,7 @@ class CreateProductCategoryTable extends Migration {
 			$table->increments('id');
 			$table->integer('product_type_id');
                         $table->string('product_category_name');
+                        $table->string('alias_name');
                         $table->integer('price'); 
                         $table->timestamps();
 			

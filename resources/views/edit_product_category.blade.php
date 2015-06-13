@@ -45,6 +45,10 @@
                     <input id="cat_name" class="form-control" placeholder="Product Category Name" name="product_category_name" value="{{ $product_cat[0]['product_category_name'] }}" type="text">
                 </div>
                 <div class="form-group">
+                    <label for="alias_name">Product Alias Name</label>
+                    <input id="alias_name" class="form-control" placeholder="Product Alias Name" name="alias_name" value="{{ $product_cat[0]['alias_name'] }}" type="text">
+                </div>
+                <div class="form-group">
                     <label for="price">Price</label>
                     <input id="price" class="form-control" placeholder="Price" name="price" value="{{ $product_cat[0]['price'] }}" type="text">
                 </div>

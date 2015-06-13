@@ -24,6 +24,7 @@ class ProductCategoryRequest extends Request {
         return [
             'product_type' => 'required',
             'product_category_name' => 'required|min:2|max:100',
+            'alias_name' => 'required|min:2|max:100',
             'price' => 'required|numeric'
         ];
     }

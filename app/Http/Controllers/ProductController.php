@@ -36,6 +36,7 @@ class ProductController extends Controller {
         $product_category = new ProductCategory();
         $product_category->product_type_id = $request->input('product_type');
         $product_category->product_category_name = $request->input('product_category_name');
+        $product_category->alias_name = $request->input('alias_name');
         $product_category->price = $request->input('price');
         $product_category->save();
 
@@ -69,21 +70,21 @@ class ProductController extends Controller {
         $product_data = array(
             'product_type_id' => $request->input('product_type'),
             'product_category_name' => $request->input('product_category_name'),
+            'alias_name' => $request->input('alias_name'),
             'price' => $request->input('price'),
         );
 
         ProductCategory::where('id', $id)
                 ->update($product_data);
-        
+
         return redirect('product_category')->with('success', 'Product category successfully updated.');
     }
-    
-      public function update_price() {
 
-          ProductCategory::where('id', Input::get('id'))
+    public function update_price() {
+
+        ProductCategory::where('id', Input::get('id'))
                 ->update(array('price' => Input::get('price')));
         return redirect('product_category')->with('success', 'Product category price successfully updated.');
     }
-
 
 }
