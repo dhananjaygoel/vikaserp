@@ -25,12 +25,10 @@
                             <div class="form-group">
                                 <label>Customer</label>
                                 <div class="radio">
-                                    <input  value="exist" id="exist" name="status" type="radio">
-                                    <label for="optionsRadios1">Existing</label>
-                                    <!--<label for="optionsRadios1">Existing</label>-->
-                                    <input  value="new" id="new" name="status" type="radio">
-                                    <label for="optionsRadios2">New</label>
-                                    <!--<label for="optionsRadios2">New</label>-->
+                                    <input  value="exist_customer" id="exist_customer" name="status" checked="" type="radio">
+                                    <label for="exist_customer">Existing</label>
+                                    <input  value="new_customer" id="new_customer" name="status" type="radio">
+                                    <label for="new_customer">New</label>
                                 </div>
                                 <div class="customer_select" >
                                     <div class="col-md-4">

@@ -36,13 +36,12 @@ $(document).ready(function () {
 
 
 $(document).ready(function(){    
-    $("#exist").click(function(){
-        alert('hi');
+    $("#exist_customer").click(function(){
         $(".exist_field").hide();
         $(".customer_select").show();
     });
     
-    $("#new").click(function(){
+    $("#new_customer").click(function(){
         $(".exist_field").show();
         $(".customer_select").hide();
     });
