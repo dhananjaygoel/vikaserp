@@ -31,9 +31,9 @@
                             @endif
                             <div class="form-group ">
                                 <div class="radio superadmin">
-                                    <input checked="" value="admin_and_superadmin" id="admin_and_superadmin" name="viewable_by" type="radio">
+                                    <input checked="" value="0" id="admin_and_superadmin" name="viewable_by" type="radio">
                                     <label for="admin_and_superadmin">Viewable to Admin and Superadmin</label>
-                                    <input  value="all" id="viewable_by_all" name="viewable_by" type="radio">
+                                    <input  value="1" id="viewable_by_all" name="viewable_by" type="radio">
                                     <label for="viewable_by_all">Viewable by all</label>
                                 </div>
                                 <div class="radio">
@@ -158,7 +158,7 @@
                                 <div class="row">
                                     <div class="form-group col-md-4">
                                         <label for="location">Location </label>
-                                        <input id="location" class="form-control" placeholder="Location " name="location" value="" type="text">
+                                        <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="" type="text">
                                     </div>
                                 </div>
                             </div>
@@ -166,7 +166,7 @@
                             <div class="row col-md-4">
                                 <div class="form-group">
                                     <label for="orderfor">Order For:</label>
-                                    <select class="form-control" id="orderfor">
+                                    <select class="form-control" id="orderfor" name="order_for">
                                         <option value="0">Warehouse</option>
                                         @foreach($customers as $supplier)
                                         <option value="{{$supplier->id}}">{{$supplier->owner_name}}</option>
@@ -177,10 +177,10 @@
                             <div class="clearfix"></div>
                             <div class="form-group">
                                 <div class="radio">
-                                    <input checked="" value="include_vat" id="optionsRadios5" name="status1" type="radio">
-                                    <label for="optionsRadios5">All Inclusive</label>
-                                    <input value="exclude_vat" id="optionsRadios6" name="status1" type="radio">
-                                    <label for="optionsRadios6">Plus VAT</label>
+                                    <input checked="" value="include_vat" id="inclusive_of_vat" name="vat_status" type="radio">
+                                    <label for="inclusive_of_vat">All Inclusive</label>
+                                    <input value="exclude_vat" id="exclusive_of_vat" name="vat_status" type="radio">
+                                    <label for="exclusive_of_vat">Plus VAT</label>
                                 </div>
                             </div>
                             <div class="plusvat " style="display: none">
@@ -189,7 +189,7 @@
                                         <tbody>
                                             <tr class="cdtable">
                                                 <td class="cdfirst">VAT Percentage:</td>
-                                                <td><input id="price" class="form-control" placeholder="VAT Percentage" name="price" value="" type="text"></td>
+                                                <td><input id="price" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="" type="text"></td>
                                             </tr>
                                         </tbody>
                                     </table>
