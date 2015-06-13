@@ -1,3 +1,9 @@
+<?php
+//echo'<pre>';
+//print_r($order->toArray());
+//echo '</pre>';
+//exit;
+?>
 @extends('layouts.master')
 @section('title','Order Details')
 @section('content')
@@ -12,7 +18,7 @@
                 <div class="clearfix">
                     <h1 class="pull-left"></h1>
                     <div class="pull-right top-page-ui">
-                        <a href="{{url('orders/1/edit')}}" class="btn btn-primary pull-right">
+                        <a href="{{url('orders/'.$order->id.'/edit')}}" class="btn btn-primary pull-right">
                             Edit Order
                         </a>
                     </div>
@@ -35,15 +41,28 @@
 
 
                                     <tbody> 
-                                        <tr><td><span>Warehouse: </span>Lorem Ipsum</td></tr>
-                                        <tr><td><span>Supplier Name:</span> Supplier1</td></tr>
-                                        <tr><td><span>Customer Name:</span> Customer1</td></tr>
-                                        <tr><td><span>Contact Person: </span>Lorem Ipsum</td></tr>
-                                        <tr>
-                                            <td><span>Mobile Number: </span>9166778822</td>
+                                        @if($order->order_source == 'warehouse')
+                                        <tr><td><span>Warehouse: </span> yes</td></tr>
+                                        <tr><td><span>Supplier Name:</span> Warehouse</td></tr>
+                                        @elseif($order->order_source == 'supplier')
+                                        @foreach($customers as $customer)
+                                        @if($customer->id == $order->supplier_id)
+                                        <tr><td><span>Supplier Name:</span>  {{$customer->owner_name}} </td></tr>
+                                        @endif
+                                        @endforeach
+                                        @endif
+                                        @foreach($customers as $customer)
+                                        @if($customer->id == $order->customer_id)
+                                        <tr><td><span>Customer Name:</span> {{$customer->owner_name}} </td></tr>
+                                        <tr><td><span>Contact Person: </span> {{$customer->contact_person}}</td></tr>
+                                        <tr><td><span>Contact Person: </span> {{$customer->contact_person}}</td></tr>
+                                        <tr><td><span>Mobile Number: </span>{{$customer->phone_number1}}</td></tr>
+                                        <tr> <td><span>Credit Period: </span>$customer->credit_period}}</td></tr>   
+                                        @endif
+                                        @endforeach                                        
 
-                                        </tr>
-                                        <tr> <td><span>Credit Period: </span>Lorem Ipsum</td></tr>   
+
+
                                         <tr>
                                             <td><span class="underline">Ordered Product Details </span></td>
 
@@ -75,91 +94,44 @@
                                             </td>
 
                                         </tr>
+                                        <?php $total=0;?>
+                                        @foreach($order['all_order_products'] as $key=>$product)
+                                        <tr id="add_row_{{$key}}" class="add_product_row">
 
-                                        <tr>
+                                            <td class="col-md-3">
+                                                <div class="form-group searchproduct">
+                                                    {{$product['product_category']->product_category_name}}"
 
-                                            <td>
-                                                Product1
+                                                </div>
                                             </td>
-                                            <td>
-                                                55
+                                            <td class="col-md-1">
+                                                <div class="form-group">
+                                                    {{$product->quantity}}
+                                                </div>
                                             </td>
-                                            <td>
-                                                350
-                                            </td>
+                                            <td class="col-md-2">
+                                                <div class="form-group ">                                                        
+                                                    @foreach($units as $unit)
+                                                    @if($product->unit_id == $unit->id)
+                                                    {{$unit->unit_name}}                                                            
+                                                    @endif
+                                                    @endforeach
 
-
-                                            <td>
-                                                650
+                                                </div>
                                             </td>
-                                            <td>
-                                                Lorem
+                                            <td class="col-md-2">
+                                                <div class="form-group">
+                                                    {{$product->price}}
+                                                    <?php $total= $total+$product->price;?>
+                                                </div>
                                             </td>
-
+                                            <td class="col-md-4">
+                                                <div class="form-group">
+                                                    {{$product->remarks}}
+                                                </div>
+                                            </td>
                                         </tr>
-                                        <tr>
-
-                                            <td>
-                                                Product1
-                                            </td>
-                                            <td>
-                                                55
-                                            </td>
-                                            <td>
-                                                350
-                                            </td>
-
-
-                                            <td>
-                                                650
-                                            </td>
-                                            <td>
-                                                Lorem
-                                            </td>
-
-                                        </tr>
-                                        <tr>
-
-                                            <td>
-                                                Product1
-                                            </td>
-                                            <td>
-                                                55
-                                            </td>
-                                            <td>
-                                                350
-                                            </td>
-
-
-                                            <td>
-                                                650
-                                            </td>
-                                            <td>
-                                                Lorem
-                                            </td>
-
-                                        </tr>
-                                        <tr>
-
-                                            <td>
-                                                Product1
-                                            </td>
-                                            <td>
-                                                55
-                                            </td>
-                                            <td>
-                                                350
-                                            </td>
-
-
-                                            <td>
-                                                650
-                                            </td>
-                                            <td>
-                                                Lorem
-                                            </td>
-
-                                        </tr>
+                                        @endforeach
 
 
                                     </tbody>
@@ -167,39 +139,56 @@
                                 <table id="table-example" class="table table-hover customerview_table  ">
 
 
-                                    <tbody>   
+                                    <tbody> 
+                                        @if($order->vat_percentage !=0)
                                         <tr>
+
                                             <td><span>Plus VAT: </span>Yes</td>
 
                                         </tr>
                                         <tr>
-                                            <td><span>VAT Percentage: </span>5%</td>
+                                            
+                                            <td><span>VAT Percentage: </span>{{$order->vat_percentage}}</td>
+
+                                        </tr>
+                                        @elseif($order->vat_percentage ==0)
+                                        <tr>
+
+                                            <td><span>Plus VAT: </span>NO</td>
 
                                         </tr>
                                         <tr>
-                                            <td><span>VAT: </span>Lorem</td>
+                                          
+                                            <td><span>VAT: </span>0</td>
 
                                         </tr>
+                                        @endif
                                         <tr>
-                                            <td><span>Grand Total: </span> 5000</td>
+                                            
+                                            <td><span>Grand Total: </span>{{$total}} </td>
 
                                         </tr>
 
                                         <tr>
-                                            <td><span>Estimated Delivery Date: </span>20 April,2015</td>
+                                            <td><span>Estimated Delivery Date: </span>{{$order->estimated_date}}</td>
 
                                         </tr>   
 
                                         <tr>
-                                            <td><span>Expected Delivery Date: </span>25 April,2015</td>
+                                            <td><span>Expected Delivery Date: </span>{{$order->expected_date}}</td>
 
                                         </tr>      
                                         <tr>
-                                            <td><span>Delivery Location: </span>Lorem Ipsum Dollar</td>
+                                            @foreach($delivery_location as $location)
+                                            @if($order->delivery_location_id == $location->id)
+                                            <td><span>Delivery Location: </span>{{$location->area_name}}</td>
+
+                                            @endif
+                                            @endforeach                                          
 
                                         </tr>
                                         <tr>
-                                            <td><span>Remark: </span>Lorem Ipsum Dollar</td>
+                                            <td><span>Remark: </span>{{$order->remarks}}</td>
 
                                         </tr>
 

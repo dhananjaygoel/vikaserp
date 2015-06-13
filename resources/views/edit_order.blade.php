@@ -32,7 +32,7 @@
 //                                print_r($order->toArray());
 //                                echo '</pre>';exit;
                         ?>
-                        <form method="POST" action="" accept-charset="UTF-8" >
+                        {!! Form::open(array('method'=>'PUT','url'=>url('orders',$order->id), 'id'=>'edit_order_form'))!!}
 
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="order_id" value="{{$order->id}}">
@@ -54,9 +54,9 @@
                             <div class="form-group">
                                 @if($order->order_source == 'warehouse')
                                 <div class="radio">
-                                    <input checked="" value="new" id="optionsRadios5" name="status" type="radio" onchange="show_hide_supplier($order - > order_source)">
+                                    <input checked="" value="warehouse" id="optionsRadios5" name="status" type="radio" onchange="show_hide_supplier($order - > order_source)">
                                     <label for="optionsRadios5">Warehouse</label>
-                                    <input  value="exist" id="optionsRadios6" name="status" type="radio">
+                                    <input  value="supplier" id="optionsRadios6" name="status" type="radio">
                                     <label for="optionsRadios6">Supplier</label>
                                 </div>
                                 <div class="supplier" style="display:none">
@@ -71,9 +71,9 @@
                                 </div>
                                 @elseif($order->order_source == 'supplier')
                                 <div class="radio">
-                                    <input value="new" id="optionsRadios5" name="status" type="radio">
+                                    <input value="warehouse" id="optionsRadios5" name="status" type="radio">
                                     <label for="optionsRadios5">Warehouse</label>
-                                    <input  checked="" value="exist" id="optionsRadios6" name="status" type="radio" onchange="show_hide_supplier($order - > order_source)">
+                                    <input  checked="" value="supplier" id="optionsRadios6" name="status" type="radio" onchange="show_hide_supplier($order - > order_source)">
                                     <label for="optionsRadios6">Supplier</label>
                                 </div>
                                 <div class="supplier">
@@ -95,7 +95,7 @@
                                 <div class="clearfix"></div>
 
                             </div>
-                            @if($order['customer']->order_status =="pending")
+                            @if($order['customer']->customer_status =="pending")
                             <div class="form-group">
                                 <label>Customer</label>
                                 <div class="radio">
@@ -266,76 +266,90 @@
 
 
 
-                            <div class="row col-md-4">  
-                                <div class="form-group">
-                                    <label for="location">Delivery Location:</label>
-                                    <select class="form-control" id="loc1">
-                                        <option>Location1</option>
-                                        <option>Location2</option>
-                                        <option id="other" value="3">Other</option>
-
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div class="locationtext">
-                                <div class="row">
-                                    <div class="form-group col-md-4">
-                                        <label for="location">Location </label>
-                                        <input id="location" class="form-control" placeholder="Location " name="location" value="" type="text">
-                                    </div>
-                                    <div class="col-md-8 addlocation">
-
-                                        <button class="btn btn-primary btn-xs">ADD</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
+                            <div class="row col-md-4">
                             <div class="form-group">
-
-                                <div class="radio">
-                                    <input checked="" value="include_vat" id="optionsRadios3" name="status1" type="radio">
-                                    <label for="optionsRadios3">All Inclusive</label>
-                                    <input value="exclude_vat" id="optionsRadios4" name="status1" type="radio">
-                                    <label for="optionsRadios4">Plus VAT</label>
+                                <label for="location">Delivery Location:</label>
+                                <select class="form-control" name="add_inquiry_location" id="add_inquiry_location">
+                                    <option value="">Delivery Location</option>
+                                    @foreach($delivery_location as $location)
+                                    @if($order->delivery_location_id == $location->id)
+                                    <option value="{{$location->id}}" selected="">{{$location->area_name}}</option>
+                                    @else
+                                    <option value="{{$location->id}}">{{$location->area_name}}</option>
+                                    @endif
+                                    @endforeach
+                                    @if($order->delivery_location_id == 0)
+                                    <option id="other_location" value="other" selected="">Other</option>
+                                    @else
+                                    <option id="other_location" value="other">Other</option>
+                                    @endif
+                                </select>
+                            </div>
+                        </div>
+                            <div class="clearfix"></div>
+                            @if($order->delivery_location_id == 0)
+                        <div class="locationtext" id="other_location_input_wrapper" style="display: block;">
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label for="location">Location </label>
+                                    <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="" type="text">
                                 </div>
                             </div>
-                            <div class="plusvat " style="display: none">
-                                <div class="form-group">
-                                    <table id="table-example" class="table ">
+                        </div>
+                        @endif
+                        <div class="clearfix"></div>
+                        @if($order->vat_percentage == 0)
+                        <div class="form-group">
+                            <div class="radio">
+                                <input checked="" value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
+                                <label for="optionsRadios3">All Inclusive</label>
+                                <input value="exclude_vat" id="optionsRadios4" name="vat_status" type="radio">
+                                <label for="optionsRadios4">Plus VAT</label>
+                            </div>
+                        </div>
 
+                        <div class="plusvat " style="display: none">
+                            <div class="form-group">
+                                <table id="table-example" class="table ">
+                                    <tbody>
+                                        <tr class="cdtable">
+                                            <td class="cdfirst">VAT Percentage:</td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="" type="text"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        @elseif($order->vat_percentage != 0)
+                        <div class="form-group">
+                            <div class="radio">
+                                <input value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
+                                <label for="optionsRadios3">All Inclusive</label>
+                                <input checked="" value="exclude_vat" id="optionsRadios4" name="vat_status" type="radio">
+                                <label for="optionsRadios4">Plus VAT</label>
+                            </div>
+                        </div>
 
-                                        <tbody>
-                                            <tr class="cdtable">
-                                                <td class="cdfirst">VAT Percentage:</td>
-                                                <td><input id="price" class="form-control" placeholder="VAT Percentage" name="price" value="" type="text"></td>
-                                            </tr>
-                                           <!-- <tr class="cdtable">
-                                                <td class="cdfirst">VAT:</td>
-                                                <td>Lorem</td>
-                                            </tr>
-                                          
-                                            <tr class="cdtable">
-                                                <td class="cdfirst">Grand Total:</td>
-                                                <td>650</td>
-                                            </tr>-->
-
-
-                                        </tbody>
-                                    </table>
-
-                                </div>
-
-
-
-                            </div> 
+                        <div class="plusvat">
+                            <div class="form-group">
+                                <table id="table-example" class="table ">
+                                    <tbody>
+                                        <tr class="cdtable">
+                                            <td class="cdfirst">VAT Percentage:</td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->vat_percentage}}" type="text"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        @endif 
 
                             <div class="form-group col-md-4 targetdate">
 
                                 <label for="time">Estimated Delivery Date:</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input type="text" name="date" class="form-control" id="datepickerDate">
+                                    <input type="text" name="estimated_date" class="form-control" id="datepickerDate" value="{{date('Y-m-d', strtotime($order->estimated_delivery_date))}}">
                                 </div>
 
                             </div>
@@ -344,20 +358,20 @@
                                 <label for="date">Expected Delivery Date: </label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input type="text" name="date" class="form-control" id="datepickerDate1">
+                                    <input type="text" name="expected_date" class="form-control" id="datepickerDate1"value="{{date('Y-m-d', strtotime($order->expected_delivery_date))}}">
                                 </div>
                             </div>
                             <div class="clearfix"></div>
                             <div class="form-group">
-                                <label for="inquiry_remark">Remark:</label>
-                                <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3"></textarea>
+                                <label for="order_remark">Remark:</label>
+                                <textarea class="form-control" id="order_remark" name="order_remark"  rows="3">{{$order->remarks}}</textarea>
                             </div>
 
 
                             <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
                             <hr>
                             <div >
-                                <button type="button" class="btn btn-primary form_button_footer" >Submit</button>
+                                <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
 
                                 <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>
                             </div>

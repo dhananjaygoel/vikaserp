@@ -62,7 +62,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $k =0;?>
+                                    <?php $k =1;?>
                                     @foreach($allorders as $order)
                                     <tr>
                                         <td>{{$k++}}</td>
@@ -118,7 +118,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="delete">
-                                                    <div><b>UserID:</b> 9988776655</div>
+                                                    <div><b>UserID:</b> </div>
                                                     <div class="pwd">
                                                         <div class="pwdl"><b>Password:</b></div>
                                                         <div class="pwdr"><input class="form-control" placeholder="" type="text"></div>

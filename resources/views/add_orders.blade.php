@@ -102,8 +102,8 @@
                                                 <td><span>Price</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
-                                            <tr>
-                                                <?php for ($i = 1; $i <= 3; $i++) { ?>
+                                            
+                                                <?php for ($i = 1; $i <= 6; $i++) { ?>
                                                 <tr id="add_row_{{$i}}" class="add_product_row">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
@@ -158,7 +158,7 @@
                                                         <div class="form-group pull-left">
 
                                                             <label for="addmore"></label>
-                                                            <a class="table-link" title="add more" id="add_product_row">
+                                                            <a class="table-link" title="add more" id="add_product_row_order">
                                                                 <span class="fa-stack more_button" >
                                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                                     <i class="fa fa-plus fa-stack-1x fa-inverse"></i>

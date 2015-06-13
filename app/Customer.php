@@ -50,5 +50,8 @@ class Customer extends Model {
     public static $existing_supplier_inquiry_rules = array(
         'autocomplete_supplier_id' => 'required',
     );
+    public static $existing_customer_order_rules = array(
+        'existing_customer_id' => 'required',
+    );
 
 }
