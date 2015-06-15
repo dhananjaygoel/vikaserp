@@ -11,7 +11,7 @@ class CreateOrderTable extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('order', function(Blueprint $table) {
+        Schema::create('orders', function(Blueprint $table) {
             $table->increments('id')->comment('primary key')->unsigned();
             $table->enum('order_source', array('warehouse', 'supplier'))->comment('order fulfilled through');
             $table->integer('supplier_id')->unsigned();
@@ -35,9 +35,7 @@ class CreateOrderTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::table('order', function(Blueprint $table) {
-            Schema::drop('order');
-        });
+            Schema::drop('orders');
     }
 
 }
