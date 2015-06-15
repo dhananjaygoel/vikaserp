@@ -1,19 +1,7 @@
 <?php
 //echo'<pre>';
-//print_r($allorders->toArray());
+//print_r($allorders[0]['order_cancelled']['cancelled_by']);
 //echo '</pre>';
-
-
-//
-//$total_quantity = 0;
-//foreach ($allorders as $order) {
-////    echo 'order '.$order->id. " ";
-//
-//    foreach ($order['all_order_products'] as $key => $product) {
-//        $total_quantity = $total_quantity + $product['quantity'];
-//    }
-////    echo $total_quantity.'<br>';
-//}
 //exit;
 ?>
 @extends('layouts.master')
@@ -83,23 +71,37 @@
 
 
                                     <tr>
-                                        <?php
-//                                        $total_quantity = 0;
-//                                        foreach ($order['all_order_products'] as $key => $product) {
-//                                            $total_quantity = $total_quantity + $product['quantity'];
-//                                        }
-                                        ?>
+                                        
                                         <td>{{$k++}}</td>
                                         <td>{{$order['customer']->owner_name}}</td>
                                         <td>{{$order['customer']['phone_number1']}}</td>
                                         @if($order['delivery_location']['area_name'] !="")
-                                        <td class="text-center">{{$order['delivery_location']['area_name']}}</td>
+                                        <td class="text">{{$order['delivery_location']['area_name']}}</td>
                                         @elseif($order['delivery_location']['area_name'] =="")
-                                        <td class="text-center">{{$order['other_location']}}</td>
+                                        <td class="text">{{$order['other_location']}}</td>
                                         @endif
-                                        <td>Lorem Ipsum</td>
-                                        <td>100</td>
-                                        <td>50</td>
+                                        <td class="text"><?php 
+                                            foreach($users as $u)
+                                            {
+                                                if($u['id'] == $order['created_by']){
+                                                    echo $u['first_name'];
+                                                }
+                                            }
+                                        ?></td>
+                                        <td><?php
+                                        $total_quantity = 0;
+                                        foreach ($order['all_order_products'] as $key => $product) {
+                                            $total_quantity = $total_quantity + $product['quantity'];
+                                        }
+                                        echo $total_quantity;
+                                        ?></td>
+                                        <td><?php
+                                        $total_quantity = 0;
+                                        foreach ($order['all_order_products'] as $key => $product) {
+                                            $total_quantity = $total_quantity + $product['quantity'];
+                                        }
+                                        echo $total_quantity;
+                                        ?></td>
                                         <td class="text-center">
                                             <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -113,7 +115,7 @@
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="#" class="table-link" title="manual complete" data-toggle="modal" data-target="#myModal1">
+                                            <a href="#" class="table-link" title="manual complete" data-toggle="modal" data-target="#cancel_order_modal_{{$order->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
@@ -163,7 +165,7 @@
                                         </div>
                                     </div>
                                 </div>     
-                                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="cancel_order_modal_{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -217,30 +219,44 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Customer Name</th>
+                                        <th>Total Quantity</th>
                                         <th>Mobile </th>
                                         <th>Delivery Location</th>
-                                        <th>Order By</th>
-                                        <th>Total Quantity</th>
-                                        <th>Pending Quantity</th>
+                                        <th>Order By</th>                                  
+                                        
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                
                                     @endif
-
-
+                                    
                                     <tr>
+                                        
                                         <td>{{$k++}}</td>
                                         <td>{{$order['customer']->owner_name}}</td>
+                                        <td><?php
+                                        $total_quantity = 0;
+                                        foreach ($order['all_order_products'] as $key => $product) {
+                                            $total_quantity = $total_quantity + $product['quantity'];
+                                        }
+                                        echo $total_quantity;
+                                        ?></td>
                                         <td>{{$order['customer']['phone_number1']}}</td>
                                         @if($order['delivery_location']['area_name'] !="")
-                                        <td class="text-center">{{$order['delivery_location']['area_name']}}</td>
+                                        <td class="text">{{$order['delivery_location']['area_name']}}</td>
                                         @elseif($order['delivery_location']['area_name'] =="")
-                                        <td class="text-center">{{$order['other_location']}}</td>
+                                        <td class="text">{{$order['other_location']}}</td>
                                         @endif
-                                        <td>Lorem Ipsum</td>
-                                        <td>100</td>
-                                        <td>50</td>
+                                        <td class="text"><?php 
+                                            foreach($users as $u)
+                                            {
+                                                if($u['id'] == $order['created_by']){
+                                                    echo $u['first_name'];
+                                                }
+                                            }
+                                        ?></td>
+                                        
+                                        
                                         <td class="text-center">
                                             <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -248,24 +264,7 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="{{url('orders/'.$order->id.'/edit')}}" class="table-link" title="Edit">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="#" class="table-link" title="manual complete" data-toggle="modal" data-target="#myModal1">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="{{url('create_delivery_order/'.$order->id)}}" class="table-link" title="Create Delivery order">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-book fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
+                                            
                                             <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal_{{$order->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -304,51 +303,9 @@
                                         </div>
                                     </div>
                                 </div>     
-                                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                                <h4 class="modal-title" id="myModalLabel"></h4>
-                                            </div>
-                                            {!! Form::open(array('method'=>'POST','url'=>url('order_cancelled'), 'id'=>'cancel_order_form'))!!}
+                                
 
-                                            <input type="hidden" name="order_id" value="{{$order->id}}">
-                                            <div class="modal-body">
-                                                <p> Are you sure to complete the Order?</p>
-                                                <div class="radio">
-                                                    <input  id="overprice" value="overprice" name="reason_type" type="radio">
-                                                    <label for="overprice">Over Pricing</label>
-                                                </div>
-                                                <div class="radio">
-                                                    <input  id="delivery" value="delivery" name="reason_type" type="radio">
-                                                    <label for="delivery">Late Delivery</label>
-
-                                                </div>
-                                                <div class="radio">
-                                                    <input  id="quality" value="quality" name="reason_type" type="radio">
-                                                    <label for="quality">Undesired Quality</label>
-
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="reason"><b>Reason</b></label>
-                                                    <textarea class="form-control" id="inquiry_remark" name="reason"  rows="2" placeholder="Reason"></textarea>
-                                                </div>
-                                                <div class="checkbox">
-                                                    <label class="marginsms"><input type="checkbox" value=""><span class="checksms">Send Email to Party</span></label>
-                                                    <label><input type="checkbox" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">SMS</span></label>
-                                                </div>
-                                            </div>           
-                                            <div class="modal-footer">
-
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-default" >Yes</button>
-                                            </div>
-                                            {!! Form::close() !!}    
-                                        </div>
-                                    </div>
-                                </div> 
-
+                                    
 
                                 @endif
                                 @if($order->order_status == 'cancelled')
@@ -357,30 +314,54 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Customer Name</th>
+                                        <th>Total Quantity</th>
                                         <th>Mobile </th>
                                         <th>Delivery Location</th>
                                         <th>Order By</th>
-                                        <th>Total Quantity</th>
-                                        <th>Pending Quantity</th>
+                                        <th>Cancel By</th>
+                                        <th>Reason</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @endif
-
-
+                                    
+                                    
                                     <tr>
+                                        
                                         <td>{{$k++}}</td>
                                         <td>{{$order['customer']->owner_name}}</td>
+                                        <td><?php
+                                        $total_quantity = 0;
+                                        foreach ($order['all_order_products'] as $key => $product) {
+                                            $total_quantity = $total_quantity + $product['quantity'];
+                                        }
+                                        echo $total_quantity;
+                                        ?></td>
                                         <td>{{$order['customer']['phone_number1']}}</td>
                                         @if($order['delivery_location']['area_name'] !="")
                                         <td class="text-center">{{$order['delivery_location']['area_name']}}</td>
                                         @elseif($order['delivery_location']['area_name'] =="")
                                         <td class="text-center">{{$order['other_location']}}</td>
                                         @endif
-                                        <td>Lorem Ipsum</td>
-                                        <td>100</td>
-                                        <td>50</td>
+                                        <td><?php 
+                                            foreach($users as $u)
+                                            {
+                                                if($u['id'] == $order['created_by']){
+                                                    echo $u['first_name'];
+                                                }
+                                            }
+                                        ?></td>
+                                        <td><?php 
+                                            foreach($users as $canceluser)
+                                            {
+                                                if($canceluser['id'] == $order['order_cancelled']['cancelled_by']){
+                                                    echo $canceluser['first_name'];
+                                                }
+                                            }
+                                        ?></td>
+                                        
+                                        <td>{{$order['order_cancelled']['reason']}}</td>
                                         <td class="text-center">
                                             <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -388,24 +369,7 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="{{url('orders/'.$order->id.'/edit')}}" class="table-link" title="Edit">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="#" class="table-link" title="manual complete" data-toggle="modal" data-target="#myModal1">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="{{url('create_delivery_order/'.$order->id)}}" class="table-link" title="Create Delivery order">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-book fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
+                                            
                                             <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal_{{$order->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -444,51 +408,7 @@
                                         </div>
                                     </div>
                                 </div>     
-                                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                                <h4 class="modal-title" id="myModalLabel"></h4>
-                                            </div>
-                                            {!! Form::open(array('method'=>'POST','url'=>url('order_cancelled'), 'id'=>'cancel_order_form'))!!}
-
-                                            <input type="hidden" name="order_id" value="{{$order->id}}">
-                                            <div class="modal-body">
-                                                <p> Are you sure to complete the Order?</p>
-                                                <div class="radio">
-                                                    <input  id="overprice" value="overprice" name="reason_type" type="radio">
-                                                    <label for="overprice">Over Pricing</label>
-                                                </div>
-                                                <div class="radio">
-                                                    <input  id="delivery" value="delivery" name="reason_type" type="radio">
-                                                    <label for="delivery">Late Delivery</label>
-
-                                                </div>
-                                                <div class="radio">
-                                                    <input  id="quality" value="quality" name="reason_type" type="radio">
-                                                    <label for="quality">Undesired Quality</label>
-
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="reason"><b>Reason</b></label>
-                                                    <textarea class="form-control" id="inquiry_remark" name="reason"  rows="2" placeholder="Reason"></textarea>
-                                                </div>
-                                                <div class="checkbox">
-                                                    <label class="marginsms"><input type="checkbox" value=""><span class="checksms">Send Email to Party</span></label>
-                                                    <label><input type="checkbox" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">SMS</span></label>
-                                                </div>
-                                            </div>           
-                                            <div class="modal-footer">
-
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-default" >Yes</button>
-                                            </div>
-                                            {!! Form::close() !!}    
-                                        </div>
-                                    </div>
-                                </div> 
-
+                                
 
                                 @endif
                                 @endforeach

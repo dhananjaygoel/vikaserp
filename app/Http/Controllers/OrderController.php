@@ -32,18 +32,27 @@ class OrderController extends Controller {
      */
     public function index() {
         if ((isset($_GET['order_filter'])) && $_GET['order_filter'] != '') {
-            $allorders = Order::where('order_status', '=', $_GET['order_filter'])
+            if($_GET['order_filter'] == 'cancelled'){
+                $allorders = Order::where('order_status', '=', $_GET['order_filter'])
+                            ->with('customer', 'delivery_location', 'all_order_products','order_cancelled')->orderBy('created_at', 'desc')->Paginate(2);
+            }
+            else{
+                $allorders = Order::where('order_status', '=', $_GET['order_filter'])
                             ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(2);
+            
+            }
         } else {
-            $allorders = Order::with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(2);
+            $allorders = Order::where('order_status', '=', 'pending')->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(2);
         }
 //        $allorders = Order::with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(2);
 //        echo'<pre>';
 //        print_r($allorders->toArray());
 //        echo '</pre>';
 //        exit;
+        $users = User::all();
+        
         $allorders->setPath('orders');
-        return View::make('orders', compact('allorders'));
+        return View::make('orders', compact('allorders','users','cancelledorders'));
     }
 
     /**
@@ -339,5 +348,17 @@ class OrderController extends Controller {
         ]);
         return redirect('orders')->with('flash_message', 'One order is cancelled.');
          
+    }
+    
+    
+    
+    
+    public function create_delivery_order($id){
+//        echo 'test';exit;
+        $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.product_category', 'customer')->first();
+        $units = Units::all();
+        $delivery_location = DeliveryLocation::all();
+        $customers = Customer::all();
+        return View::make('create_delivery_order', compact('order', 'delivery_location', 'units', 'customers'));
     }
 }

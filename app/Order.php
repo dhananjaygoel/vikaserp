@@ -11,7 +11,7 @@ class Order extends Model {
      *
      * @var string
      */
-    protected $table = 'order';
+    protected $table = 'orders';
 
     /**
      * The attributes that are mass assignable.
@@ -31,5 +31,8 @@ class Order extends Model {
     public function delivery_location() {
         return $this->hasOne('App\DeliveryLocation', 'id', 'delivery_location_id');
     }
-
+    public function order_cancelled(){
+        return $this->hasOne('App\OrderCancelled', 'order_id', 'id');
+    }
+    
 }
