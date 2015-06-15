@@ -19,8 +19,15 @@ $length = count($tables);
 
 for ($i = 0; $i < $length; $i++) {
 //    $res = "DELETE FROM $tables[$i]";
-    $res = "DROP TABLE IF EXISTS ".$tables[$i];
-    mysql_query($res);
-    echo $res;
+    $res = "DROP TABLE IF EXISTS " . mysql_real_escape_string($tables[$i]);
+    $retval = mysql_query($res);
+
+
+    if (!$retval) {
+        die('Could not delete table: ' . mysql_error());
+    }
+    echo '<pre>';
+    print_r('Table deleted successfully');
+    echo '</pre>';
 }
 ?>
