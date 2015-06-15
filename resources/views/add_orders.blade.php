@@ -93,7 +93,7 @@
                             <div class="order_table col-md-12">
 
                                 <div class="table-responsive">
-                                    <table id="table-example" class="table table-hover  ">
+                                    <table id="add_product_table" class="table table-hover  ">
                                         <tbody> 
                                             <tr class="headingunderline">
                                                 <td><span>Select Product</span></td>
@@ -103,7 +103,7 @@
                                                 <td><span>Remark</span></td>
                                             </tr>
                                             
-                                                <?php for ($i = 1; $i <= 6; $i++) { ?>
+                                                <?php for ($i = 1; $i <= 10; $i++) { ?>
                                                 <tr id="add_row_{{$i}}" class="add_product_row">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
