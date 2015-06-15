@@ -247,7 +247,7 @@
                            <!-- <button type="button" class="btn btn-primary " >Save</button>-->
                             <hr>
                             <div>
-                                <button title="SMS would be sent to Party and Relationship Manager" type="button" class="btn btn-primary smstooltip" >Send SMS</button><span title="SMS has been sent 5 times" class="badge enquirybadge smstooltip">5</span>
+                                <button title="SMS would be sent to Party and Relationship Manager" type="button" class="btn btn-primary smstooltip" >Send SMS</button><span class="badge enquirybadge">5</span> times SMS has been sent.
                                  
                             </div>
                         </form>

@@ -91,7 +91,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Product Name</th>
+                                        <th>Product Name (Alias Name)</th>
                                         <th>Size</th>
                                         <th >Thickness</th>
                                         <th>Weight</th>
@@ -238,7 +238,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Product Name</th>
+                                        <th>Product Name (Alias Name)</th>
                                         <th>Size</th>
                                         
                                         <th>Weight</th>

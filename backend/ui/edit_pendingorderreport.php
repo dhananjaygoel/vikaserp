@@ -315,7 +315,7 @@
                                                  <tr class="headingunderline">
                                                     <td><span>Select Category</span></td>
                                                      <td><span>Select Sub Category</span></td>
-                                                      <td><span>Select Product</span></td>
+                                                      <td><span>Select Product(Alias)</span></td>
                                                        <td><span>Quantity</span></td>
                                                         <td><span>Unit</span></td> 
                                                         <td><span>Price</span></td> 
@@ -346,7 +346,7 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group">
                                                           <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Select Product</option>
+                       <option value="" selected="">Select Product(Alias)</option>
                                                  <option value="1">Other</option>
                                                 <option value="2">CRP Pipe 3.0</option>
                                                 <option value="3">CRP Structure 3.0</option>
@@ -406,7 +406,7 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group">
                                                           <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Select Product</option>
+                       <option value="" selected="">Select Product(Alias)</option>
                                                  <option value="1">Other</option>
                                                 <option value="2">CRP Pipe 3.0</option>
                                                 <option value="3">CRP Structure 3.0</option>
@@ -466,7 +466,7 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group">
                                                           <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Select Product</option>
+                       <option value="" selected="">Select Product(Alias)</option>
                                                  <option value="1">Other</option>
                                                 <option value="2">CRP Pipe 3.0</option>
                                                 <option value="3">CRP Structure 3.0</option>
@@ -526,7 +526,7 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group">
                                                           <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Select Product</option>
+                       <option value="" selected="">Select Product(Alias)</option>
                                                  <option value="1">Other</option>
                                                 <option value="2">CRP Pipe 3.0</option>
                                                 <option value="3">CRP Structure 3.0</option>
@@ -586,7 +586,7 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group">
                                                           <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Select Product</option>
+                       <option value="" selected="">Select Product(Alias)</option>
                                                  <option value="1">Other</option>
                                                 <option value="2">CRP Pipe 3.0</option>
                                                 <option value="3">CRP Structure 3.0</option>
@@ -668,7 +668,7 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group">
                                                           <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Select Product</option>
+                       <option value="" selected="">Select Product(Alias)</option>
                                                  <option value="1">Other</option>
                                                 <option value="2">CRP Pipe 3.0</option>
                                                 <option value="3">CRP Structure 3.0</option>
@@ -750,7 +750,7 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group">
                                                           <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Select Product</option>
+                       <option value="" selected="">Select Product(Alias)</option>
                                                  <option value="1">Other</option>
                                                 <option value="2">CRP Pipe 3.0</option>
                                                 <option value="3">CRP Structure 3.0</option>
@@ -832,7 +832,7 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group">
                                                           <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Select Product</option>
+                       <option value="" selected="">Select Product(Alias)</option>
                                                  <option value="1">Other</option>
                                                 <option value="2">CRP Pipe 3.0</option>
                                                 <option value="3">CRP Structure 3.0</option>
@@ -914,7 +914,7 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group">
                                                           <select class="form-control" name="type" id="add_status_type">
-                       <option value="" selected="">Select Product</option>
+                       <option value="" selected="">Select Product(Alias)</option>
                                                  <option value="1">Other</option>
                                                 <option value="2">CRP Pipe 3.0</option>
                                                 <option value="3">CRP Structure 3.0</option>

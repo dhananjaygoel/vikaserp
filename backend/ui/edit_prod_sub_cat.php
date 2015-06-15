@@ -66,7 +66,7 @@
                                                 
                 <form method="POST" action="" accept-charset="UTF-8" >
                 <div class="form-group col-md-4 pending_location">
-                    <label for="status">Select Product Category</label>
+                    <label for="status">Select Product(Alias) Category</label>
                     
                     <select class="form-control" name="type" id="add_status_type">
                        

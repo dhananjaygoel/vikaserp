@@ -70,7 +70,7 @@
                                      
                 <form method="POST" action="" accept-charset="UTF-8" >
                 <div class="form-group productcategory col-md-3">
-                    <label for="status">Select Product Category</label>
+                    <label for="status">Select Product(Alias) Category</label>
                     
                     <select class="form-control" name="type" id="add_status_type">
                        
