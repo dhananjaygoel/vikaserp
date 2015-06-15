@@ -154,15 +154,28 @@
 	<script src="js/pace.min.js"></script>
 	
 	<!-- this page specific inline scripts -->
-	<script>
-$(document).ready(function(){
-    $("#struct").click(function(){
-        $(".thick").hide();
-    });
-    $("#pip").click(function(){
-        $(".thick").show();
+	
+    	 <script>
+            $(document).ready(function(){     
+   $('#add_status_type').change(function(){
+         if($('#add_status_type').val()=='2'){
+           $(".thick").show();
+                     
+        }
     });
 });
-</script>
+          $(document).ready(function(){     
+   $('#add_status_type').change(function(){
+         if($('#add_status_type').val()=='3'){
+       
+            $('.thick').hide();
+                      
+        }
+    });
+});
+
+
+
+        </script>
 </body>
 </html>
