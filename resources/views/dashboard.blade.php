@@ -114,12 +114,12 @@
         <div class="row text-center ">
             <div class="col-md-12">
 
-                <a href="#" class="btn btn-primary btn-lg text-center button_indexright">
+                <a href="{{url('orders/create')}}" class="btn btn-primary btn-lg text-center button_indexright">
                     <i class="fa fa-plus-circle fa-lg"></i> Place Order
                 </a>
 
 
-                <a href="#" class="btn btn-primary btn-lg text-center ">
+                <a href="{{url('inquiry/create')}}" class="btn btn-primary btn-lg text-center ">
                     <i class="fa fa-plus-circle fa-lg"></i> Add Inquiry
                 </a>
 

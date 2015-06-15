@@ -10,8 +10,8 @@
                     $count = count($name_array);
                     $page_name = $name_array[$count - 1];
                     ?>
-                    <li class="<?php echo ($page_name == '') ? 'active' : ''; ?>">
-                        <a href="{{url()}}">
+                    <li class="{{ (Request::is('*dashboard*') ? 'active' : '') }}">
+                        <a href="{{url('dashboard')}}">
                             <i class="fa fa-dashboard"></i>
                             <span>Dashboard</span>
                             <span class="label label-info label-circle pull-right"></span>
