@@ -24,7 +24,7 @@
                     <li class="dropdown profile-dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="{{asset('/resources/assets/img/samples/scarlet-159.png')}}" alt=""/>
-                            <span class="hidden-xs"> Admin</span> <b class="caret"></b>
+                            <span class="hidden-xs"> {{Auth::user()->first_name}}&nbsp;{{Auth::user()->last_name}}</span> <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ url('change_password') }}"><i class="fa fa-envelope-o"></i>Change Password</a></li>
