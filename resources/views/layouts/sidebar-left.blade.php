@@ -99,7 +99,7 @@
                                 </a>
                             </li>
                             <li class="<?php echo ($page_name == 'purchaseorder_advise.php') ? 'active' : ''; ?>">
-                                <a href="purchaseorder_advise.php">
+                                <a href="{{url('purchaseorder_advise')}}">
                                     Purchase Advice
                                 </a>
                             </li>
