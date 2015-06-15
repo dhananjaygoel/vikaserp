@@ -51,7 +51,6 @@
                                     <tr>
                                         <th class="col-md-1">#</th>
                                         <th class="col-md-2">Name</th>
-                                        <th class="col-md-2">Alias Name</th>
                                         <th class="col-md-2">Type</th>
                                         <th class="col-md-3">Price</th>
                                         <th>Actions</th>
@@ -62,8 +61,7 @@
                                     @foreach($product_cat as $product)
                                     <tr>
                                         <td>{{ $i }}</td>
-                                        <td>{{ $product->product_category_name }}</td>
-                                        <td>{{ $product->alias_name }}</td>
+                                        <td>{{ $product->product_category_name }}</td>                                        
                                         <td>                                        
                                             @if($product->product_type_id == 1)
                                             {{'Pipe'}}

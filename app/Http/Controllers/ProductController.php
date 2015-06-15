@@ -35,8 +35,7 @@ class ProductController extends Controller {
 
         $product_category = new ProductCategory();
         $product_category->product_type_id = $request->input('product_type');
-        $product_category->product_category_name = $request->input('product_category_name');
-        $product_category->alias_name = $request->input('alias_name');
+        $product_category->product_category_name = $request->input('product_category_name');        
         $product_category->price = $request->input('price');
         $product_category->save();
 
@@ -70,7 +69,6 @@ class ProductController extends Controller {
         $product_data = array(
             'product_type_id' => $request->input('product_type'),
             'product_category_name' => $request->input('product_category_name'),
-            'alias_name' => $request->input('alias_name'),
             'price' => $request->input('price'),
         );
 

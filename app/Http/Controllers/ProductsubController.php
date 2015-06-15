@@ -73,6 +73,7 @@ class ProductsubController extends Controller {
 
         $ProductSubCategory = new ProductSubCategory();
         $ProductSubCategory->product_category_id = $request->input('select_product_categroy');
+        $ProductSubCategory->alias_name = $request->input('alias_name');
         $ProductSubCategory->size = $request->input('size');
         $ProductSubCategory->weight = $request->input('weight');
         $ProductSubCategory->thickness = $request->input('thickness');
@@ -108,6 +109,7 @@ class ProductsubController extends Controller {
 
         $pro_sub_cat = array(
             'product_category_id' => $request->input('select_product_categroy'),
+            'alias_name'=> $request->input('alias_name'),
             'size' => $request->input('size'),
             'weight' => $request->input('weight'),
             'thickness' => $request->input('thickness'),

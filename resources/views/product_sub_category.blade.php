@@ -66,6 +66,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Product Name</th>
+                                        <th>Alias Name</th>
                                         <th>Size</th>
                                         <th >Thickness</th>
                                         <th>Weight</th>
@@ -81,6 +82,7 @@
                                     <tr>
                                         <td>{{ $i }}</td>
                                         <td>{{ $produ_sub['product_category']->product_category_name }} </td>
+                                        <td>{{ $produ_sub->alias_name }}</td>
                                         <td>{{ $produ_sub->size }}</td>
                                         <td>{{ $produ_sub->thickness}}</td>
                                         <td>{{ $produ_sub->weight}}</td>

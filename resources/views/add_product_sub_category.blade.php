@@ -46,6 +46,10 @@
                                     <option disabled="" selected="" value="">--Sub Product Name--</option>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="alias_name">Alias Name</label>
+                                <input id="alias_name" class="form-control" placeholder="Sub Product Category Alias Name" name="alias_name" value="{{ old('alias_name') }}" type="text">
+                            </div>
                             <div class="clearfix"></div>
                             <div class="form-group">
                                 <label for="size">Product Size</label>
