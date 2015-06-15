@@ -29,12 +29,6 @@
                             <div class="table-responsive">
                                 <table id="table-example" class="table customerview_table">
                                     <tbody>
-                                        <?php
-//                                        echo '<pre>';
-//                                        print_r($inquiry->toArray());
-//                                        echo '</pre>';
-//                                        exit;
-                                        ?>
                                         <tr>
                                             <td><span>Customer Name:</span> {{$inquiry['customer']->owner_name}}</td>
                                         </tr>

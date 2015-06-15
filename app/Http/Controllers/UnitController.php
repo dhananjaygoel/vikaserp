@@ -20,7 +20,7 @@ class UnitController extends Controller {
      * @return Response
      */
     public function index() {
-        $units = Units::Paginate(10);
+        $units = Units::orderBy('created_at', 'desc')->Paginate(10);
         $units->setPath('unit');
         return view('units', compact('units'));
     }
@@ -44,7 +44,7 @@ class UnitController extends Controller {
                     'unit_name' => $request->input('unit_name')
         ]);
         $id = DB::getPdo()->lastInsertId();
-        return redirect('unit/' . $id . '/edit')->with('flash_message', 'Unit details successfully added.');
+        return redirect('unit')->with('flash_success_message', 'Unit details successfully added.');
     }
 
     /**
@@ -79,7 +79,7 @@ class UnitController extends Controller {
         if ($check_unit_exists != 0)
             return redirect('unit/' . $id . '/edit')->with('flash_message', 'Unit name already exists');
         $affectedRows = Units::where('id', '=', $id)->update(['unit_name' => $request->input('unit_name')]);
-        return redirect('unit/' . $id . '/edit')->with('flash_message', 'Unit details successfully modified.');
+        return redirect('unit')->with('flash_success_message', 'Unit details successfully modified.');
     }
 
     /**
@@ -91,7 +91,7 @@ class UnitController extends Controller {
     public function destroy($id) {
         if (Hash::check(Input::get('password'), Auth::user()->password)) {
             $delete_unit = Units::find($id)->delete();
-            return redirect('unit')->with('flash_message', 'Unit details successfully deleted.');
+            return redirect('unit')->with('flash_success_message', 'Unit details successfully deleted.');
         }
         return redirect('unit')->with('flash_message', 'Please enter a correct password');
     }

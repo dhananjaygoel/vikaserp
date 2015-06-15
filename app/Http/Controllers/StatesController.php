@@ -24,7 +24,7 @@ class StatesController extends Controller {
      * @return Response
      */
     public function index() {
-        $states = States::Paginate(10);
+        $states = States::orderBy('created_at', 'desc')->Paginate(10);
         $states->setPath('states');
         return view('states', compact('states'));
     }
@@ -48,7 +48,7 @@ class StatesController extends Controller {
                     'state_name' => $staterequest->input('state_name')
         ]);
         $id = DB::getPdo()->lastInsertId();
-        return redirect('states/' . $id . '/edit')->with('flash_message', 'State details successfully added.');
+        return redirect('states')->with('flash_success_message', 'State details successfully added.');
     }
 
     /**
@@ -84,7 +84,7 @@ class StatesController extends Controller {
             $affectedRows = States::where('id', '=', $id)->update(['state_name' => Input::get('state_name')]);
             return redirect('states/' . $id . '/edit')->with('flash_message', 'State details successfully modified.');
         }
-        return redirect('states/' . $id . '/edit')->with('flash_message', 'State name already exists.');
+        return redirect('states')->with('flash_success_message', 'State name already exists.');
     }
 
     /**
@@ -99,7 +99,7 @@ class StatesController extends Controller {
         if (($state_association == 0) && ($location_association == 0)) {
             if (Hash::check(Input::get('password'), Auth::user()->password)) {
                 $delete_state = States::find($id)->delete();
-                return redirect('states')->with('flash_message', 'State details successfully deleted.');
+                return redirect('states')->with('flash_success_message', 'State details successfully deleted.');
             } else
                 return redirect('states')->with('flash_message', 'Please enter a correct password');
         } else

@@ -23,7 +23,7 @@ class DeliveryLocationController extends Controller {
      * @return Response
      */
     public function index() {
-        $delivery_location = DeliveryLocation::with('city.states')->Paginate(10);
+        $delivery_location = DeliveryLocation::with('city.states')->orderBy('created_at', 'desc')->Paginate(10);
         $delivery_location->setPath('location');
         return view('delivery_location', compact('delivery_location'));
     }
@@ -51,7 +51,7 @@ class DeliveryLocationController extends Controller {
                     'city_id' => $request->input('city')
         ]);
         $id = DB::getPdo()->lastInsertId();
-        return redirect('location/' . $id . '/edit')->with('flash_message', 'Location details successfully added.');
+        return redirect('location')->with('flash_success_message', 'Location details successfully added.');
     }
 
     /**
@@ -91,7 +91,7 @@ class DeliveryLocationController extends Controller {
                 'city_id' => $request->input('city'),
                 'area_name' => $request->input('area_name'),
             ]);
-            return redirect('location/' . $id . '/edit')->with('flash_message', 'Location details successfully modified.');
+            return redirect('location')->with('flash_success_message', 'Location details successfully modified.');
         } else
             return redirect('location/' . $id . '/edit')->with('flash_message', 'Location name already exists.');
     }
@@ -105,7 +105,7 @@ class DeliveryLocationController extends Controller {
     public function destroy($id) {
         if (Hash::check(Input::get('password'), Auth::user()->password)) {
             $delete_location = DeliveryLocation::find($id)->delete();
-            return redirect('location')->with('flash_message', 'Location details successfully deleted.');
+            return redirect('location')->with('flash_success_message', 'Location details successfully deleted.');
         } else
             return redirect('location')->with('flash_message', 'Please enter a correct password');
     }

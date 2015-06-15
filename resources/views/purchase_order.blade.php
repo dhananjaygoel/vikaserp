@@ -33,6 +33,14 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
+                        @if(sizeof($purchase_orders) ==0)
+                        <div class="alert alert-info no_data_msg_container">
+                            Currently no purchase orders have been added.
+                        </div>
+                        @else
+                        @if (Session::has('flash_message'))
+                        <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
+                        @endif
                         <div class="table-responsive tablepending">
                             <table id="table-example" class="table table-hover">
                                 <thead>
@@ -48,84 +56,42 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php $i = ($purchase_orders->currentPage() - 1) * $purchase_orders->perPage() + 1; ?>
+                                    @foreach($purchase_orders as $purchase_order)
                                     <tr>
-                                        <td>1</td>
-                                        <td>Name 1</td>
-                                        <td>9999999999 </td>
-                                        <td>Pune</td>
-                                        <td>Lorem</td>
-                                        <td>100</td>
+                                        <td>{{$i++}}</td>
+                                        <td>{{$purchase_order['customer']->owner_name}}</td>
+                                        <td>{{$purchase_order['customer']->phone_number1}}</td>
+                                        <td>{{$purchase_order['delivery_location']->area_name}}</td>
+                                        <td>{{$purchase_order['user']->first_name}}</td>
+                                        <td>{{$purchase_order['purchase_products']->sum('quantity')}}</td>
                                         <td>35</td>
                                         <td class="text-center">
-                                            <a href="purchaseorder_view.php" class="table-link" title="view">
+                                            <a href="{{ Url::action('PurchaseOrderController@show', ['id' => $purchase_order->id]) }}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="edit_purchaseorders.php" class="table-link" title="edit">
+                                            <a href="{{ Url::action('PurchaseOrderController@edit', ['id' => $purchase_order->id]) }}" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-
-                                            <a href="#" class="table-link" title="manually complete" data-toggle="modal" data-target="#myModal1">
+                                            <a class="table-link" title="manually complete" data-toggle="modal" data-target="#myModal1">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="createpurchase_order.php" class="table-link" title="Create Purchase Advice">
+                                            <a href="{{ url('create_purchase_advice'.'/'.$purchase_order->id)}}" class="table-link" title="Create Purchase Advice">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-book fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                        </td>
-
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Name 2</td>
-                                        <td>9988776655 </td>
-                                        <td>Pune</td>
-                                        <td>Lorem</td>
-                                        <td>500</td>
-                                        <td>15</td>
-                                        <td class="text-center">
-                                            <a href="purchaseorder_view.php" class="table-link" title="view">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="edit_purchaseorders.php" class="table-link">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-
-                                            <a href="#" class="table-link" title="manually complete" data-toggle="modal" data-target="#myModal1">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="createpurchase_order.php" class="table-link" title="Create Purchase Advice">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-book fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal">
+                                            <a class="table-link danger" data-toggle="modal" data-target="#delete_purchase_order_{{$purchase_order->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -133,7 +99,7 @@
                                             </a>
                                         </td>
                                     </tr>
-                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="delete_purchase_order_{{$purchase_order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -141,14 +107,41 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
+                                                {!! Form::open(array('method'=>'DELETE','url'=>url('purchase_orders',$purchase_order->id), 'id'=>'delete_purchase_order_form'))!!}
                                                 <div class="delete">
-                                                    <div><b>UserID:</b> 9988776655</div>
+                                                    <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                     <div class="pwd">
                                                         <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" placeholder="" type="text"></div>
+                                                        <div class="pwdr"><input class="form-control" placeholder="" type="password" name="password" required=""></div>
                                                     </div>
                                                     <div class="clearfix"></div>
                                                     <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                                <button type="submit" class="btn btn-default" id="yes">Yes</button>
+                                                {!! Form::close() !!}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                <h4 class="modal-title" id="myModalLabel"></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Are you sure to complete the Order? </p>
+                                                <div class="form-group">
+                                                    <label for="reason"><b>Reason</b></label>
+                                                    <textarea class="form-control" id="inquiry_remark" name="reason"  rows="2" placeholder="Reason"></textarea>
+                                                </div>
+                                                <div class="checkbox">
+                                                    <label class="marginsms"><input type="checkbox" value=""><span class="checksms">Email</span></label>
+                                                    <label><input type="checkbox" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -158,210 +151,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                @endforeach
                                 </tbody>
                             </table>
                             <span class="pull-right">
-                                <ul class="pagination pull-right">
-                                    <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-                                    <li><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
-                                    <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
-                                </ul>
+                                <?php echo $purchase_orders->render(); ?>
                             </span>
                         </div>
-                        <div class="table-responsive tablecompleted">
-                            <table id="table-example" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Customer Name</th>
-                                        <th>Pending Quantity</th>
-                                        <th>Total Quantity</th>
-                                        <th>Mobile </th>
-                                        <th>Delivery Location</th>
-                                        <th>Order By</th>
-                                        <th class="text-center">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Name 1</td>
-                                        <td>35</td>
-                                        <td>100</td>
-                                        <td>9999999999 </td>
-                                        <td>Pune</td>
-                                        <td>Lorem</td>
-                                        <td class="text-center">
-                                            <a href="purchaseorder_view.php" class="table-link" title="view">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Name 2</td>
-                                        <td>45</td>
-                                        <td>500</td>
-                                        <td>9999999999 </td>
-                                        <td>Mumbai</td>
-                                        <td>Ipsum</td>
-                                        <td class="text-center">
-                                            <a href="purchaseorder_view.php" class="table-link" title="view">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                <h4 class="modal-title" id="myModalLabel"></h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Are you sure you want to cancel order</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                </tbody>
-                            </table>
-                            <span class="pull-right">
-                                <ul class="pagination pull-right">
-                                    <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-                                    <li><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
-                                    <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
-                                </ul>
-                            </span>
-                        </div>
-                        <div class="table-responsive tablecancel">
-                            <table id="table-example" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Customer Name</th>
-                                        <th>Pending Quantity</th>
-                                        <th>Total Quantity</th>
-                                        <th>Mobile </th>
-                                        <th>Delivery Location</th>
-                                        <th>Order By</th>
-                                        <th>Cancel By</th>
-                                        <th>Reason</th>
-                                        <th class="text-center">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Name 1</td>
-                                        <td>35</td>
-                                        <td>100</td>
-                                        <td>9999999999 </td>
-                                        <td>Pune</td>
-                                        <td>Lorem</td>
-                                        <td>Admin</td>
-                                        <td>Lorem ipsum  </td>
-                                        <td class="text-center">
-                                            <a href="purchaseorder_view.php" class="table-link" title="view">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Name 2</td>
-                                        <td>45</td>
-                                        <td>500</td>
-                                        <td>9999999999 </td>
-                                        <td>Mumbai</td>
-                                        <td>Ipsum</td>
-                                        <td>Admin</td>
-                                        <td>Lorem ipsum  </td>
-                                        <td class="text-center">
-                                            <a href="purchaseorder_view.php" class="table-link" title="view">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                <h4 class="modal-title" id="myModalLabel"></h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Are you sure you want to cancel order</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                </tbody>
-                            </table>
-                            <span class="pull-right">
-                                <ul class="pagination pull-right">
-                                    <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-                                    <li><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
-                                    <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
-                                </ul>
-                            </span>
-                        </div>
+                        @endif
                     </div>
                 </div>
             </div>

@@ -23,7 +23,7 @@ class CityController extends Controller {
      * @return Response
      */
     public function index() {
-        $cities = City::with('states')->Paginate(10);
+        $cities = City::with('states')->orderBy('created_at', 'desc')->Paginate(10);
         $cities->setPath('city');
         return view('cities', compact('cities'));
     }
@@ -49,7 +49,7 @@ class CityController extends Controller {
                     'state_id' => $request->input('state')
         ]);
         $id = DB::getPdo()->lastInsertId();
-        return redirect('city/' . $id . '/edit')->with('flash_message', 'City details successfully added.');
+        return redirect('city')->with('flash_success_message', 'City details successfully added.');
     }
 
     /**
@@ -87,7 +87,7 @@ class CityController extends Controller {
                 'state_id' => $request->input('state'),
                 'city_name' => $request->input('city_name'),
             ]);
-            return redirect('city/' . $id . '/edit')->with('flash_message', 'City details successfully modified.');
+            return redirect('city')->with('flash_success_message', 'City details successfully modified.');
         } else
             return redirect('city/' . $id . '/edit')->with('flash_message', 'City name already exists.');
     }
@@ -103,7 +103,7 @@ class CityController extends Controller {
         if ($location_association == 0) {
             if (Hash::check(Input::get('password'), Auth::user()->password)) {
                 $delete_city = City::find($id)->delete();
-                return redirect('city')->with('flash_message', 'City details successfully deleted.');
+                return redirect('city')->with('flash_success_message', 'City details successfully deleted.');
             } else
                 return redirect('city')->with('flash_message', 'Please enter a correct password');
         } else

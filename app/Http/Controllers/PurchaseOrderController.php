@@ -16,6 +16,7 @@ use App\PurchaseOrder;
 use App\PurchaseProducts;
 use Auth;
 use DB;
+use Hash;
 
 class PurchaseOrderController extends Controller {
 
@@ -25,7 +26,9 @@ class PurchaseOrderController extends Controller {
      * @return Response
      */
     public function index() {
-        return view('purchase_order');
+        $purchase_orders = PurchaseOrder::with('customer', 'delivery_location', 'user', 'purchase_products')->Paginate(1);
+        $purchase_orders->setPath('purchase_orders');
+        return view('purchase_order', compact('purchase_orders'));
     }
 
     /**
@@ -87,7 +90,8 @@ class PurchaseOrderController extends Controller {
                 'delivery_location_id' => $input_data['purchase_order_location'],
                 'order_for' => $input_data['order_for'],
                 'vat_percentage' => $input_data['vat_percentage'],
-                'expected_delivery_date' => date_format(date_create($input_data['expected_delivery_date']), 'Y-m-d'),
+//                'expected_delivery_date' => date_format(date_create($input_data['expected_delivery_date']), 'Y-m-d'),
+//                'expected_delivery_date' => date('Y-m-d', strtotime($input_data['expected_delivery_date'])),
                 'remarks' => $input_data['purchase_order_remark'],
                 'inquiry_status' => "Pending",
                 'other_location' => $input_data['other_location_name']
@@ -99,7 +103,8 @@ class PurchaseOrderController extends Controller {
                 'created_by' => Auth::id(),
                 'delivery_location_id' => $input_data['purchase_order_location'],
                 'vat_percentage' => $input_data['vat_percentage'],
-                'expected_delivery_date' => date_format(date_create($input_data['expected_delivery_date']), 'Y-m-d'),
+//                'expected_delivery_date' => date_format(date_create($input_data['expected_delivery_date']), 'Y-m-d'),
+                'expected_delivery_date' => date('Y-m-d', strtotime($input_data['expected_delivery_date'])),
                 'remarks' => $input_data['purchase_order_remark'],
                 'inquiry_status' => "Pending"
             ];
@@ -130,7 +135,8 @@ class PurchaseOrderController extends Controller {
      * @return Response
      */
     public function show($id) {
-        //
+        $purchase_orders = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'purchase_products.product_category', 'customer')->first();
+        return view('purchase_order_details', compact('purchase_orders'));
     }
 
     /**
@@ -240,7 +246,18 @@ class PurchaseOrderController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        //
+        if (Hash::check(Input::get('password'), Auth::user()->password)) {
+            $delete_purchase_order = PurchaseOrder::find($id)->delete();
+            $delete_purchase_products = PurchaseProducts::where('purchase_order_id', '=', $id)->delete();
+            return redirect('purchase_orders')->with('flash_message', 'Purchase order details successfully deleted.');
+        } else {
+            return redirect('purchase_orders')->with('flash_message', 'Please enter a correct password.');
+        }
+    }
+
+    public function create_purchase_advice($order_id) {
+        $purchase_orders = PurchaseOrder::where('id', '=', $order_id)->with('purchase_products.unit', 'purchase_products.product_category', 'customer')->first();
+        return view('create_purchase_advice', compact('purchase_orders'));
     }
 
 }

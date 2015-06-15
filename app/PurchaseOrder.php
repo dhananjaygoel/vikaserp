@@ -28,4 +28,12 @@ class PurchaseOrder extends Model {
         return $this->hasOne('App\Customer', 'id', 'supplier_id');
     }
 
+    public function delivery_location() {
+        return $this->hasOne('App\DeliveryLocation', 'id', 'delivery_location_id');
+    }
+
+    public function user() {
+        return $this->hasOne('App\User', 'id', 'created_by');
+    }
+
 }
