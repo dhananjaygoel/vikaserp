@@ -83,7 +83,7 @@ class CustomerManagerController extends Controller {
         $customer_manager->name = Input::get('manager_name');
         $customer_manager->phone_number = Input::get('phone_number');
         if ($customer_manager->save()) {
-            return redirect('customer_manager/' . $customer_manager->id . '/edit')->with('success', 'Manager details succesfully updated');
+            return redirect('customer_manager')->with('success', 'Manager details succesfully updated');
         } else {
             return Redirect::back()->with('error', 'Some error occoured while saving customer');
         }
