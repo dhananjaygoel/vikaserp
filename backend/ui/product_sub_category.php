@@ -91,7 +91,8 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Product Name (Alias Name)</th>
+                                        <th>Product Name</th>
+                                         <th>Alias Name</th>
                                         <th>Size</th>
                                         <th >Thickness</th>
                                         <th>Weight</th>
@@ -105,6 +106,7 @@
                                         <tr>
                                         <td >1</td>
                                         <td>CRP Pipe </td>
+                                        <td>Lorem </td>
                                         <td>60 mm</td>
                                         <td>30 mm</td>
                                         <td>10 kg</td>
@@ -141,6 +143,7 @@
                                                                         <tr>
                                         <td>2</td>
                                         <td>CRP Structure </td>
+                                        <td>Ipsum</td>
                                         <td>20 mm</td>
                                         <td>10 mm</td>
                                         <td>5 kg</td>
@@ -238,7 +241,8 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Product Name (Alias Name)</th>
+                                        <th>Product Name</th>
+                                         <th>Alias Name</th>
                                         <th>Size</th>
                                         
                                         <th>Weight</th>
@@ -252,6 +256,7 @@
                                         <tr>
                                         <td >1</td>
                                         <td>CRP Pipe </td>
+                                        <td>Lorem</td>
                                         <td>60 mm</td>
                                         
                                         <td>10 kg</td>
@@ -288,6 +293,7 @@
                                                                         <tr>
                                         <td>2</td>
                                         <td>CRP Structure </td>
+                                        <td>Ipsum</td>
                                         <td>20 mm</td>
                                         
                                         <td>5 kg</td>
