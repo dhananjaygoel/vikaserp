@@ -227,7 +227,7 @@
                                 <label for="time">Estimated Delivery Date:</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input type="text" name="estimated_date" class="form-control" id="datepickerDate">
+                                    <input type="text" name="estimated_date" class="form-control" id="estimated_delivery_date">
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -235,7 +235,7 @@
                                 <label for="date">Expected Delivery Date: </label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input type="text" name="expected_date" class="form-control" id="datepickerDate1">
+                                    <input type="text" name="expected_date" class="form-control" id="expected_delivery_date">
                                 </div>
                             </div>
                             <div class="clearfix"></div>

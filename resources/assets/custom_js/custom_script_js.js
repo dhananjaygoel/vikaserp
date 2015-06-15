@@ -96,5 +96,11 @@ function show_hide_supplier(status) {
         }
     }
 }
+$('#expected_delivery_date').datepicker({
+        format: 'dd-mm-yyyy'
+    });
+    $('#estimated_delivery_date').datepicker({
+        format: 'dd-mm-yyyy'
+    });
 });
 
