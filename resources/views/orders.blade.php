@@ -4,17 +4,17 @@
 //echo '</pre>';
 
 
-
-$total_quantity = 0;
-foreach ($allorders as $order) {
-//    echo 'order '.$order->id. " ";
-
-    foreach ($order['all_order_products'] as $key => $product) {
-        $total_quantity = $total_quantity + $product['quantity'];
-    }
-//    echo $total_quantity.'<br>';
-}
-exit;
+//
+//$total_quantity = 0;
+//foreach ($allorders as $order) {
+////    echo 'order '.$order->id. " ";
+//
+//    foreach ($order['all_order_products'] as $key => $product) {
+//        $total_quantity = $total_quantity + $product['quantity'];
+//    }
+////    echo $total_quantity.'<br>';
+//}
+//exit;
 ?>
 @extends('layouts.master')
 @section('title','Orders')
@@ -84,10 +84,10 @@ exit;
 
                                     <tr>
                                         <?php
-                                        $total_quantity = 0;
-                                        foreach ($order['all_order_products'] as $key => $product) {
-                                            $total_quantity = $total_quantity + $product['quantity'];
-                                        }
+//                                        $total_quantity = 0;
+//                                        foreach ($order['all_order_products'] as $key => $product) {
+//                                            $total_quantity = $total_quantity + $product['quantity'];
+//                                        }
                                         ?>
                                         <td>{{$k++}}</td>
                                         <td>{{$order['customer']->owner_name}}</td>
