@@ -11,6 +11,7 @@ use Input;
 use Auth;
 use App\PurchaseAdvise;
 use App\PurchaseProducts;
+use App\DeliveryLocation;
 use DB;
 
 class PurchaseAdviseController extends Controller {
@@ -31,8 +32,10 @@ class PurchaseAdviseController extends Controller {
      */
     public function create() {
         $customers = Customer::where('customer_status', '=', 'permanent')->get();
-
-        return View::make('add_purchase_advise');
+        
+        $locations = DeliveryLocation::all();
+        
+        return View::make('add_purchase_advise', array('customers' => $customers, 'locations' => $locations));
     }
 
     /**

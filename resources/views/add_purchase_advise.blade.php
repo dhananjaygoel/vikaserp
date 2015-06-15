@@ -28,7 +28,7 @@
                                             <div class="targetdate">
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                    <input type="text" name="date" class="form-control" id="datepickerDate">
+                                                    <input type="text" name="bill_date" class="form-control" id="datepickerDate" value="{{Input::old('bill_date')}}">
                                                 </div>
 
                                             </div>
@@ -38,32 +38,35 @@
                             </table>
                             <div class="form-group ">
                                 <div class="radio">
-                                    <input checked="" value="exist" id="optionsRadios1" name="status" type="radio">
+                                    <input checked="" value="existing" id="optionsRadios1" name="supplier_status" type="radio">
                                     <label for="optionsRadios1">Existing Supplier</label>
-                                    <input  value="exist" id="optionsRadios3" name="status" type="radio">
+                                    <input  value="new" id="optionsRadios3" name="supplier_status" type="radio">
                                     <label for="optionsRadios3">New Supplier</label>
 
                                 </div>
                                 <div class="supplier">
-                                    <select class="form-control" name="type" id="add_status_type">
+                                    <select class="form-control" name="supplier_id" id="add_status_type">
                                         <option value="" selected="">Select supplier</option>
-                                        @if(count($customer))
-
+                                        @if(count($customers))
+                                        @foreach($customers as $c)
+                                        <option value="{{$c->id}}">{{$c->owner_name}}</option>
+                                        @endforeach
+                                        @endif
                                     </select>
                                 </div>
                             </div>
                             <div class="exist_field"  style="display:none">
                                 <div class="form-group">
-                                    <label for="name"> Supplier Name</label>
+                                    <label for="supplier_name"> Supplier Name</label>
                                     <input id="name" class="form-control" placeholder="Supplier Name" name="name" value="" type="text">
                                 </div>
                                 <div class="form-group">
-                                    <label for="mobile_number">Mobile Number </label>
+                                    <label for="supplier_mobile_number">Mobile Number </label>
                                     <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" type="text">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="period">Credit Period</label>
+                                    <label for="supplier_credit_period">Credit Period</label>
                                     <input id="period" class="form-control" placeholder="Credit Period" name="period" value="" type="text">
                                 </div>
                             </div>
@@ -85,21 +88,6 @@
                                                         <i class="fa fa-search search-icon"></i>
                                                     </div>
                                                 </td>
-                                                <!--
-                                                   <td class="col-md-1">
-                                                    <div class="form-group">
-                   
-                <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
-          
-                </div>
-                                                </td>
-                                                 <td class="col-md-2">
-                                                    <div class="form-group">
-                   
-                <input id="pieces" class="form-control" placeholder="Pieces" name="pieces" value="" type="text">
-          
-                </div>
-                                                </td>-->
                                                 <td class="col-md-1">
                                                     <div class="form-group ">
                                                         <select class="form-control" name="type" id="add_status_type">
@@ -114,11 +102,6 @@
                                                         <div class="form-group col-md-12">
                                                             <input type="text" class="form-control" value="" id="price" placeholder="Price">
                                                         </div>
-                                                        <!--                  
-                                                        <div class="form-group col-md-6 difference_form">
-                                                       
-                                                       <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                                        </div> -->
                                                     </div>
                                                 </td>
                                                 <td class="col-md-6">
@@ -151,11 +134,6 @@
                                                             <input type="text" class="form-control" value="" id="price" placeholder="Price">
 
                                                         </div>
-                                                        <!--                  
-                                                        <div class="form-group col-md-6 difference_form">
-                                                       
-                                                       <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                                        </div> -->
                                                     </div>
                                                 </td>
                                                 <td class="col-md-4">
@@ -513,12 +491,15 @@
 
                             <div class="row col-md-4">  
                                 <div class="form-group">
-                                    <label for="location">Delivery Location:</label>
-                                    <select class="form-control" id="loc1">
-                                        <option>Location1</option>
-                                        <option>Location2</option>
-                                        <option id="other" value="3">Other</option>
-
+                                    <label for="loc1">Delivery Location:</label>
+                                    <select class="form-control" name="delivery_location_id" id="loc1">
+                                        <option>Select delivery location</option>
+                                        @if(count($locations))
+                                        @foreach($locations as $l)
+                                        <option value="{{$l->id}}">{{$l->area_name}}</option>
+                                        @endforeach
+                                        @endif
+                                        <option id="other" value="other">Other</option>
                                     </select>
                                 </div>
                             </div>
@@ -527,11 +508,7 @@
                                 <div class="row">
                                     <div class="form-group col-md-4">
                                         <label for="location">Location </label>
-                                        <input id="location" class="form-control" placeholder="Location " name="location" value="" type="text">
-                                    </div>
-                                    <div class="col-md-8 addlocation">
-
-                                        <button class="btn btn-primary btn-xs">ADD</button>
+                                        <input id="location" class="form-control" placeholder="Location " name="new_location" value="" type="text">
                                     </div>
                                 </div>
                             </div>
