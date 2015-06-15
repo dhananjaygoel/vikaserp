@@ -42,22 +42,21 @@
 
                                     <tbody> 
                                         @if($order->order_source == 'warehouse')
-                                        <tr><td><span>Warehouse: </span> yes</td></tr>
-                                        <tr><td><span>Supplier Name:</span> Warehouse</td></tr>
+                                        <tr><td><span><b>Warehouse: </b></span> yes</td></tr>
+                                        <tr><td><span><b>Supplier Name:</b></span> Warehouse</td></tr>
                                         @elseif($order->order_source == 'supplier')
                                         @foreach($customers as $customer)
                                         @if($customer->id == $order->supplier_id)
-                                        <tr><td><span>Supplier Name:</span>  {{$customer->owner_name}} </td></tr>
+                                        <tr><td><span><b>Supplier Name:</b></span>  {{$customer->owner_name}} </td></tr>
                                         @endif
                                         @endforeach
                                         @endif
                                         @foreach($customers as $customer)
                                         @if($customer->id == $order->customer_id)
-                                        <tr><td><span>Customer Name:</span> {{$customer->owner_name}} </td></tr>
-                                        <tr><td><span>Contact Person: </span> {{$customer->contact_person}}</td></tr>
-                                        <tr><td><span>Contact Person: </span> {{$customer->contact_person}}</td></tr>
-                                        <tr><td><span>Mobile Number: </span>{{$customer->phone_number1}}</td></tr>
-                                        <tr> <td><span>Credit Period: </span>$customer->credit_period}}</td></tr>   
+                                        <tr><td><span><b>Customer Name:</b></span> {{$customer->owner_name}} </td></tr>
+                                        <tr><td><span><b>Contact Person: </b></span> {{$customer->contact_person}}</td></tr>
+                                        <tr><td><span><b>Mobile Number: </b></span>{{$customer->phone_number1}}</td></tr>
+                                        <tr> <td><span><b>Credit Period: </b></span>{{$customer->credit_period}}</td></tr>   
                                         @endif
                                         @endforeach                                        
 
