@@ -183,6 +183,13 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="{{ (Request::is('*customer_manager*') ? 'active' : '') }}">
+                        <a href="{{url("customer_manager")}}">
+                            <i class="fa fa-asterisk"></i>
+                            <span>Customer Manager</span>
+                            <span class="label label-info label-circle pull-right"></span>
+                        </a>
+                    </li>
                     <li class="{{ (Request::is('*security*') ? 'active' : '') }}">
                         <a href="{{url("security")}}">
                             <i class="fa fa-lock"></i>
