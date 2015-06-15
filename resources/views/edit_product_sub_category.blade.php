@@ -53,6 +53,11 @@
                             </select>
                         </div>
                         <div class="clearfix"></div>
+                            <div class="form-group">
+                                <label for="alias_name">Alias Name</label>
+                                <input id="alias_name" class="form-control" placeholder="Alias Name" name="alias_name" value="{{ $prod_sub_cat[0]->alias_name }}" type="text">
+                            </div>
+                        <div class="clearfix"></div>
                         <div class="form-group">
                             <label for="size">Product Size</label>
                             <input id="size" class="form-control" placeholder="Product Size" name="size" value="{{$prod_sub_cat[0]->size}}" type="text">
