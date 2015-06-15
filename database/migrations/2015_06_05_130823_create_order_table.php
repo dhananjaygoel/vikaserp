@@ -18,7 +18,7 @@ class CreateOrderTable extends Migration {
             $table->integer('customer_id')->comment('Customer associated with the order');
             $table->integer('created_by')->comment('Who created this order');
             $table->integer('delivery_location_id')->comment('Order delivery location');
-            $table->string('vat_percentage',100)->comment('Vat percent id applied');            
+            $table->string('vat_percentage', 100)->comment('Vat percent id applied');
             $table->date('estimated_delivery_date')->comment('Estimated delivery date');
             $table->date('expected_delivery_date')->comment('Expected delivery date');
             $table->string('remarks')->comment('Creator comment on the order');
@@ -34,7 +34,9 @@ class CreateOrderTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('order');
+        Schema::table('order', function(Blueprint $table) {
+            Schema::drop('order');
+        });
     }
 
 }
