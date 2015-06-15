@@ -121,11 +121,12 @@
                                                     <span>Unit</span>
                                                     </td>
                                                     <td class="widthtable">
-                                                    <span>Rate</span>
-                                                    </td>
-                                                    <td class="widthtable">
                                                     <span>Present Shipping</span>
                                                     </td>
+                                                    <td class="widthtable">
+                                                    <span>Rate</span>
+                                                    </td>
+                                                    
                                                      <td  class="widthtable">
                                                     <span>Amount</span>
                                                     </td>

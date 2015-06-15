@@ -82,8 +82,9 @@
                                                         <td class="col-md-2"><span>Actual Quantity</span></td>
                                                         
                                                         <td class="col-md-2"><span>Actual Pieces</span></td>
-                                                        <td class="col-md-1"><span>Present Shipping</span></td>
+                                                        
                                                         <td class="col-md-1"><span>Unit</span></td>
+                                                        <td class="col-md-1"><span>Present Shipping</span></td>
                                                         <td class="col-md-2"><span>Rate</span></td>
                                                         <td class="col-md-2"><span>Amount</span></td>
                                                        
@@ -101,11 +102,12 @@
                                                     <td>
                                                     <input id="piece" class="form-control" placeholder="Pieces" name="piece" value="" type="text">
                                                     </td>
-                                                     <td class="shippingcolumn text-center">
-                                                  Shipping1
-                                                    </td>
+                                                    
                                                      <td>
                                                     Unit
+                                                    </td>
+                                                     <td class="shippingcolumn text-center">
+                                                  Shipping1
                                                     </td>
                                                      <td class="shippingcolumn">
                                                             <div class="row product-price">
@@ -139,11 +141,12 @@
                                                     <td>
                                                     <input id="piece" class="form-control" placeholder="Pieces" name="piece" value="" type="text">
                                                     </td>
-                                                     <td class="shippingcolumn text-center">
-                                                  Shipping2
-                                                    </td>
+                                                    
                                                      <td>
                                                     Unit
+                                                    </td>
+                                                     <td class="shippingcolumn text-center">
+                                                  Shipping2
                                                     </td>
                                                         <td class="shippingcolumn">
                                                             <div class="row product-price">
@@ -178,11 +181,12 @@
                                                     <td>
                                                     <input id="piece" class="form-control" placeholder="Pieces" name="piece" value="" type="text">
                                                     </td>
-                                                     <td class="shippingcolumn text-center">
-                                                  Shipping3
-                                                    </td>
+                                                    
                                                      <td>
                                                     Unit
+                                                    </td>
+                                                     <td class="shippingcolumn text-center">
+                                                  Shipping3
                                                     </td>
                                                         <td class="shippingcolumn">
                                                             <div class="row product-price">
@@ -217,11 +221,12 @@
                                                     <td>
                                                     <input id="piece" class="form-control" placeholder="Pieces" name="piece" value="" type="text">
                                                     </td>
-                                                     <td class="shippingcolumn text-center">
-                                                  Shipping4
-                                                    </td>
+                                                    
                                                      <td>
                                                     Unit
+                                                    </td>
+                                                     <td class="shippingcolumn text-center">
+                                                  Shipping4
                                                     </td>
                                                          <td class="shippingcolumn">
                                                             <div class="row product-price">
@@ -277,9 +282,7 @@
                                                     <td>
                                                     <input id="piece" class="form-control" placeholder="Pieces" name="piece" value="" type="text">
                                                     </td>
-                                                    <td class="shippingcolumn">
-                                                   <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
-                                                    </td>
+                                                   
                                                      <td>
                                                   
                                                         <select class="form-control" name="type" id="add_status_type">
@@ -289,6 +292,9 @@
                                                 <option value="3">cm</option>
                                             </select>
                                                           
+                                                    </td>
+                                                     <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
                                                     </td>
                                                      <td class="shippingcolumn">
                                                             <div class="row product-price">
@@ -344,9 +350,7 @@
                                                     <td>
                                                     <input id="piece" class="form-control" placeholder="Pieces" name="piece" value="" type="text">
                                                     </td>
-                                                    <td class="shippingcolumn">
-                                                   <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
-                                                    </td>
+                                                   
                                                      <td>
                                                   
                                                         <select class="form-control" name="type" id="add_status_type">
@@ -356,6 +360,9 @@
                                                 <option value="3">cm</option>
                                             </select>
                                                           
+                                                    </td>
+                                                     <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
                                                     </td>
                                                       <td class="shippingcolumn">
                                                             <div class="row product-price">
@@ -411,9 +418,7 @@
                                                     <td>
                                                     <input id="piece" class="form-control" placeholder="Pieces" name="piece" value="" type="text">
                                                     </td>
-                                                     <td class="shippingcolumn">
-                                                   <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
-                                                    </td>
+                                                     
                                                      <td>
                                                   
                                                         <select class="form-control" name="type" id="add_status_type">
@@ -423,6 +428,9 @@
                                                 <option value="3">cm</option>
                                             </select>
                                                           
+                                                    </td>
+                                                    <td class="shippingcolumn">
+                                                   <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
                                                     </td>
                                                          <td class="shippingcolumn">
                                                             <div class="row product-price">

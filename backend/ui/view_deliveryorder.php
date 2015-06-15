@@ -125,21 +125,23 @@
                                                       <td>
                                                     <span>Unit</span>
                                                     </td>
+                                                    <td class="text-center"><span>Present Shipping</span></td>
                                                       <td>
                                                     <span>Price</span>
                                                     </td>
                                                     <td>
                                                     <span>Pending Order</span>
                                                     </td>
-                                                     <td><span>Present Shipping</span></td>
-                                                    <td><span>Remark</span></td>
+                                                     
+                                                    <td class="col-md-3"><span>Remark</span></td>
                                                 </tr>
                                       <tr>
                                             <td> Product1</td>
                                               <td>25</td>
                                             <td>Unit</td>
+                                            <td class="text-center">15</td>
                                              <td>100</td>
-                                            <td>15</td>
+                                            
                                             <td>15</td>
                                             <td>Ipsum</td>
                                             
@@ -148,8 +150,9 @@
                                             <td> Product2</td>
                                               <td>25</td>
                                             <td>Unit</td>
+                                             <td class="text-center">15</td>
                                              <td>150</td>
-                                            <td>15</td>
+                                           
                                             <td>15</td>
                                             <td>Ipsum</td>
                                             
@@ -158,8 +161,9 @@
                                             <td> Product3</td>
                                               <td>25</td>
                                             <td>Unit</td>
-                                             <td>150</td>
-                                            <td>25</td>
+                                             <td class="text-center">25</td> 
+                                            <td>150</td>
+                                          
                                            <td>15</td>
                                             <td>Lorem</td>
                                             
@@ -169,8 +173,9 @@
                                             <td> Product4</td>
                                               <td>25</td>
                                             <td>Unit</td>
-                                             <td>150</td>
-                                            <td>15</td>
+                                            <td class="text-center">15</td>
+                                            <td>150</td>
+                                            
                                             <td>15</td>
                                             <td>Ipsum</td>
                                             
