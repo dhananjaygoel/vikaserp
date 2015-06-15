@@ -105,7 +105,7 @@
                                             <tbody> 
                                                   <tr class="headingunderline">
                                                    
-                                                       <td><span>Product</span></td>
+                                                       <td><span>Product(Alias)</span></td>
                                                       
                                                        <td><span>Unit</span></td>
                                                        <td><span>Price</span></td>

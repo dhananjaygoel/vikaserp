@@ -78,7 +78,7 @@
                                              <table id="table-example" class="table table-hover table_deliverchallan serial">
                                                 <tbody>
                                                     <tr>
-                                                        <td class="col-md-2"><span>Product Name</span></td>
+                                                        <td class="col-md-2"><span>Product Name(Alias)</span></td>
                                                         <td class="col-md-2"><span>Actual Quantity</span></td>
                                                         
                                                         <td class="col-md-2"><span>Actual Pieces</span></td>

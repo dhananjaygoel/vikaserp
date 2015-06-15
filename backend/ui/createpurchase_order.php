@@ -120,7 +120,7 @@
                                             
                                                   
                                                      <td class="col-md-2">
-                                                    <span> Product Name</span>
+                                                    <span> Product Name(Alias)</span>
                                                     </td>
                                                    
                                                     <td class="col-md-1">

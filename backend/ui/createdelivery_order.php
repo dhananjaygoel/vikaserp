@@ -97,7 +97,7 @@
                                             
                                                   
                                                     <td>
-                                                        <span><b> Product Name</b></span>
+                                                        <span><b> Product Name (Alias)</b></span>
                                                     </td>
                                                     <td>
                                                     <span><b> Quantity</b></span>
