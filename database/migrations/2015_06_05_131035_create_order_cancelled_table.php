@@ -17,10 +17,12 @@ class CreateOrderCancelledTable extends Migration {
 			
 			$table->increments('id');
                         $table->integer('order_id');
-			$table->integer('order_type');
-                        $table->string('reason_complete');
-                        $table->string('reason_cancel');
+			$table->enum('order_type', array('order', 'delivery_order', 'delivery_challan'))->comment('order type');			
+                        $table->string('reason_type');
+                        $table->text('reason');
+                        $table->integer('cancelled_by')->comment('order cancelled by which user');
                         $table->timestamps();
+                        $table->softDeletes();
 		});
 	}
 

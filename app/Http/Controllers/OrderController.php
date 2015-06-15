@@ -16,8 +16,12 @@ use App\ProductCategory;
 use Input;
 use DB;
 use Auth;
+use App\User;
+use Hash;
+use App\OrderCancelled;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\ManualCompleteOrderRequest;
 
 class OrderController extends Controller {
 
@@ -27,7 +31,13 @@ class OrderController extends Controller {
      * @return Response
      */
     public function index() {
-        $allorders = Order::with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(2);
+        if ((isset($_GET['order_filter'])) && $_GET['order_filter'] != '') {
+            $allorders = Order::where('order_status', '=', $_GET['order_filter'])
+                            ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(2);
+        } else {
+            $allorders = Order::with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(2);
+        }
+//        $allorders = Order::with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(2);
 //        echo'<pre>';
 //        print_r($allorders->toArray());
 //        echo '</pre>';
@@ -58,7 +68,7 @@ class OrderController extends Controller {
         $input_data = Input::all();
         $i = 0;
         $j = count($input_data['product']);
-//        echo 'test'.$j;exit;
+//        echo $input_data['estimated_date'];exit;
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] == "") {
                 $i++;
@@ -122,7 +132,7 @@ class OrderController extends Controller {
         $order->order_status = "Pending";
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
             $order->other_location = $input_data['other_location_name'];
-        }        
+        }
         $order->save();
 
         $order_id = DB::getPdo()->lastInsertId();
@@ -178,8 +188,8 @@ class OrderController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function update($id,PlaceOrderRequest $request) {
-        
+    public function update($id, PlaceOrderRequest $request) {
+
         $input_data = Input::all();
         $i = 0;
         $j = count($input_data['product']);
@@ -191,7 +201,7 @@ class OrderController extends Controller {
         if ($i == $j) {
             return Redirect::back()->with('flash_message', 'Please insert product details');
         }
-        
+
         if (isset($input_data['customer_status']) && $input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
@@ -207,10 +217,7 @@ class OrderController extends Controller {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
             }
-        } 
-        
-        
-        elseif (isset($input_data['customer_status']) && $input_data['customer_status'] == "existing_customer") {
+        } elseif (isset($input_data['customer_status']) && $input_data['customer_status'] == "existing_customer") {
             $validator = Validator::make($input_data, Customer::$existing_customer_order_rules);
             if ($validator->passes()) {
                 $customer_id = $input_data['existing_customer_id'];
@@ -225,29 +232,29 @@ class OrderController extends Controller {
             $order_status = 'warehouse';
             $supplier_id = 0;
         }
-        
+
         if ($input_data['status'] == 'supplier') {
             $order_status = 'supplier';
             $supplier_id = $input_data['supplier_id'];
         }
-        
+
         if ($input_data['vat_status'] == 'include_vat') {
             $vat_price = '';
         }
-        
+
         if ($input_data['vat_status'] == 'exclude_vat') {
             $vat_price = $input_data['vat_percentage'];
         }
-        
+
 //        
         $order = Order::find($id);
-        
-        
+
+
 //        echo '<pre>';
 //        print_r($input_data);
 //        echo '</pre>';
 //        exit;
-        
+
         $update_order = $order->update([
             'order_source' => $order_status,
             'supplier_id' => $supplier_id,
@@ -260,13 +267,13 @@ class OrderController extends Controller {
             'remarks' => $input_data['order_remark'],
             'order_status' => "Pending"
         ]);
-        
+
         $order_products = array();
 
         $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)->delete();
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
-              $order_products = [
+                $order_products = [
                     'order_id' => $id,
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
@@ -277,9 +284,8 @@ class OrderController extends Controller {
                 $add_order_products = AllOrderProducts::create($order_products);
             }
         }
- 
+
         return redirect('orders/' . $id . '/edit')->with('flash_message', 'Order details successfully modified.');
-    
     }
 
     /**
@@ -289,7 +295,49 @@ class OrderController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        //
-    }
 
+        $password = Input::get('password');
+
+        if ($password == '') {
+            return Redirect::to('orders')->with('error', 'Please enter your password');
+        }
+
+        $current_user = User::find(Auth::id());
+
+        if (Hash::check($password, $current_user->password)) {
+
+            $order = Order::find($id);
+            $order->delete();
+            return redirect('orders')->with('flash_message', 'One record is deleted.');
+        } else {
+            return Redirect::back()->with('flash_message', 'Password entered is not valid.');
+        }
+    }
+    
+    
+    /*
+     * Manual Complete order
+     */
+    public function manual_complete_order(ManualCompleteOrderRequest $request){
+//        echo 'test';exit;
+        $input_data = Input::all();
+        $order_id = $input_data['order_id'];
+        $reason_type = $input_data['reason_type'];
+        $reason = $input_data['reason'];
+        
+//        echo 'id'.;exit;
+        $cancel_order = OrderCancelled::create([
+            'order_id' => $order_id,
+            'order_type'=>'Order',
+            'reason_type'=>$reason_type,
+            'reason'=>$reason,
+            'cancelled_by'=>Auth::id()
+        ]);
+        $order = Order::find($order_id);
+        $update_order = $order->update([
+            'order_status' => "Cancelled"
+        ]);
+        return redirect('orders')->with('flash_message', 'One order is cancelled.');
+         
+    }
 }

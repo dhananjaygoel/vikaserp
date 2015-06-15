@@ -36,7 +36,7 @@ $(document).ready(function () {
 
     $("#add_product_row_order").on("click", function() {
         var current_row_count = $(".add_product_row").length +1;
-        alert('rows '+current_row_count);
+//        alert('rows '+current_row_count);
         $.ajax({
             type: "GET",
             url: baseurl + '/get_units'
