@@ -60,7 +60,7 @@ class PendingCustomerController extends Controller {
             return redirect('pending_customers/')->with('error', 'Trying to access an invalid customer');
         }
 
-        $managers = User::all();
+        $managers = User::where('role_id', '=', 1)->get();
 
         $locations = DeliveryLocation::all();
 
@@ -108,7 +108,7 @@ class PendingCustomerController extends Controller {
         $customer->customer_status = 'pending';
 
         if ($customer->save()) {
-            return redirect('pending_customers/' . $customer->id . '/edit')->with('success', 'Customer details updated successfully');
+            return redirect('pending_customers')->with('success', 'Customer details updated successfully');
         } else {
             return Redirect::back()->with('error', 'Some error occoured while saving customer');
         }
@@ -197,7 +197,7 @@ class PendingCustomerController extends Controller {
 
 
         if ($customer->save()) {
-            return redirect('customers/' . $customer->id . '/edit')->with('success', 'Customer successfully upgraded as permanent customer');
+            return redirect('customers')->with('success', 'Customer successfully upgraded as permanent customer');
         } else {
             return Redirect::back()->with('error', 'Some error occoured while saving customer');
         }

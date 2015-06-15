@@ -10,7 +10,7 @@ class ProductTypeSeeder extends Seeder {
         DB::table('product_type')->insert(
                 array(
                     array('id' => '1','name' =>'Pipe' ),
-                    array('id' => '2','name' =>'structure')                    
+                    array('id' => '2','name' =>'Structure')                    
                 ));
     }
 }
