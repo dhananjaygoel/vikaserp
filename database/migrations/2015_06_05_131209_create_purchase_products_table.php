@@ -21,8 +21,8 @@ class CreatePurchaseProductsTable extends Migration {
             $table->integer('price');
             $table->integer('present_shipping');
             $table->text('remarks');
-            $table->timestamps();
             $table->softDeletes();
+            $table->timestamps();
         });
     }
 

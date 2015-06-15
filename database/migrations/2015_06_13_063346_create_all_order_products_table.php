@@ -24,8 +24,8 @@ class CreateAllOrderProductsTable extends Migration {
                         $table->integer('price')->comment('Price for product');
                         $table->integer('present_shipping')->comment('Present shipping');
                         $table->text('remarks')->comment('Individual Remarks for product');
-                        $table->timestamps();
                         $table->softDeletes();
+                        $table->timestamps();                        
 		});
 	}
 

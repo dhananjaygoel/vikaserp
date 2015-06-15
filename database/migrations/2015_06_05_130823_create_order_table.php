@@ -12,18 +12,19 @@ class CreateOrderTable extends Migration {
      */
     public function up() {
         Schema::create('order', function(Blueprint $table) {
-            $table->increments('id')->comment('primary key');
+            $table->increments('id')->comment('primary key')->unsigned();
             $table->enum('order_source', array('warehouse', 'supplier'))->comment('order fulfilled through');
-            $table->integer('supplier_id')->comment('Supplier associated with the order');
-            $table->integer('customer_id')->comment('Customer associated with the order');
-            $table->integer('created_by')->comment('Who created this order');
-            $table->integer('delivery_location_id')->comment('Order delivery location');
-            $table->string('vat_percentage',100)->comment('Vat percent id applied');            
+            $table->integer('supplier_id')->unsigned();
+            $table->integer('customer_id')->unsigned();
+            $table->integer('created_by')->unsigned();
+            $table->integer('delivery_location_id')->unsigned();
+            $table->string('vat_percentage', 100)->comment('Vat percent id applied');
             $table->date('estimated_delivery_date')->comment('Estimated delivery date');
             $table->date('expected_delivery_date')->comment('Expected delivery date');
             $table->string('remarks')->comment('Creator comment on the order');
             $table->enum('order_status', array('pending', 'completed', 'cancelled'))->comment('order status');
             $table->string('other_location')->comment('Contains other delivery location');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -34,7 +35,9 @@ class CreateOrderTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('order');
+        Schema::table('order', function(Blueprint $table) {
+            Schema::drop('order');
+        });
     }
 
 }
