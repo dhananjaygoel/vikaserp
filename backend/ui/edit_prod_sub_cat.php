@@ -85,6 +85,10 @@
                                             </select>
                 </div>
                     <div class="clearfix"></div>
+                        <div class="form-group">
+                    <label for="size">Alias Name</label>
+                    <input id="alias_name" class="form-control" placeholder="Alias Name" name="name" value="" type="text">
+                </div>
                     <div class="form-group">
                     <label for="size">Product Size</label>
                     <input id="size" class="form-control" placeholder="Product Size" name="size" value="" type="text">

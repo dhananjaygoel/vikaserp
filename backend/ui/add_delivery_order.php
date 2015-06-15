@@ -622,8 +622,8 @@
              
         
                 <div class="form-group">
-                    <label for="vehicle_name">Vehicle Name</label>
-                    <input id="vehicle_name" class="form-control" placeholder="Vehicle Name" name="vehicle_name" value="" type="text">
+                    <label for="vehicle_name">Vehicle Number</label>
+                    <input id="vehicle_name" class="form-control" placeholder="Vehicle Number" name="vehicle_name" value="" type="text">
                 </div>
                 <div class="form-group">
                     <label for="driver_name">Driver Name</label>
@@ -721,7 +721,7 @@
                     </div>
                     
                      <div >
-                     <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
+                   <!--  <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>--> 
                     
 
                     </div>

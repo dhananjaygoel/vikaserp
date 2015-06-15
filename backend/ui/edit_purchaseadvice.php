@@ -565,7 +565,7 @@
                                             </table>
                     
                     
-                      <button title="SMS would be sent to Relationship Manager" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
+                      
                       <hr>
                       <div>
                   <button type="button" class="btn btn-primary form_button_footer" >Submit</button>

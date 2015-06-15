@@ -705,12 +705,12 @@
                                     
              
            <div class="checkbox">
-                <label><input type="checkbox" value=""><span class="checksms">Send Email to Party</span></label>
+                <label><input type="checkbox" value=""><span class="checksms">Send Email to Supplier</span></label>
            </div>
 
                 <hr>
                 <div >
-                         <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
+                         <button title="SMS would be sent to Supplier" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
                     
                     <a href="purchaseorders.php" class="btn btn-default form_button_footer">Back</a>
                 </div>

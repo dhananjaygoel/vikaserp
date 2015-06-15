@@ -31,6 +31,7 @@
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
+                                                                         
                                                                         <li class="<?php echo ($page_name=='pendingcustomers.php') || ($page_name=='edit_pendingcustomer.php') ?'active':'';?>">
 										<a href="pendingcustomers.php">
 											<i class="fa fa-book"></i>
@@ -173,6 +174,13 @@
 												</a>
 											</li>
 										</ul>
+									</li>
+                                                                        <li class="<?php echo ($page_name=='customermanager.php') || ($page_name=='edit_customermanager.php') ?'active':'';?>">
+										<a href="customermanager.php">
+											<i class="fa fa-asterisk"></i>
+											<span>Customer Manager</span>
+											<span class="label label-info label-circle pull-right"></span>
+										</a>
 									</li>
                                                                       <li class="<?php echo ($page_name=='security.php') || ($page_name=='add_security.php') || ($page_name=='edit_security.php')?'active':'';?>">
 										<a href="security.php">

@@ -231,9 +231,12 @@
                                          <form method="POST" action="" accept-charset="UTF-8" >
                 
                    
-                      <div class="row print_time "> 
+                        <div class="row print_time"> 
                      <div class="col-md-12"> Print By <br> 05:00 PM</div> 
                  </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" value="" ><span title="SMS would be sent to Relationship Manager" class="checksms smstooltip">Send SMS</span></label>
+                </div>
             
              
                  <div class="clearfix"></div>
@@ -433,6 +436,10 @@
 		});
 	});
 	</script>
-     
+       <script>
+$(function() {
+    $('.smstooltip').tooltip();
+});
+</script>  
 </body>
 </html>

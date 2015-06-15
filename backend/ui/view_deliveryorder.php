@@ -199,7 +199,7 @@
                                       
                                         
                                            
-                                                  <tr><td><b>Vehicle Name:</b> Lorem Ipsum </td> </tr>
+                                                  <tr><td><b>Vehicle Number:</b> Lorem Ipsum </td> </tr>
                                                     <tr><td><b>Driver Name:</b> Lorem Ipsum</td> </tr>
                                                     <tr><td><b>Driver Contact:</b> Lorem Ipsum</td> </tr>
                                          <tr>

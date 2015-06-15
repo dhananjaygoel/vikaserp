@@ -522,13 +522,10 @@
                                                     </td>
                                                     <td class="col-md-2">
                                                           <div class="row">
-                                            <div class="form-group col-md-6">
-                                             <input type="text" class="form-control" value="" id="price" placeholder="price">
+                                            
+                                                <div class="form-group ">
+                                              <input type="text" class="form-control" value="" id="price" placeholder="price">
                                                
-                                            </div>
-                                            <div class="form-group col-md-6 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
                                             </div>
                                             </div>
                                                     </td>
@@ -582,16 +579,16 @@
                                                         <td>$25000</td>
                                                     </tr>
                                                     <tr class="cdtable">
-                                                        <td class="cdfirst">Vehicle Name:</td>
-                                                        <td><input id="price" class="form-control" placeholder="Vehicle Name" name="price" value="" type="text"></td>
+                                                        <td class="cdfirst">Vehicle Number:</td>
+                                                        <td><input id="vehicle_num" class="form-control" placeholder="Vehicle Number" name="vehicle_num" value="" type="text"></td>
                                                     </tr>
                                                     <tr class="cdtable">
                                                         <td class="cdfirst">Driver Name:</td>
-                                                        <td><input id="price" class="form-control" placeholder="Driver Name" name="price" value="" type="text"></td>
+                                                        <td><input id="driver_name" class="form-control" placeholder="Driver Name" name="driver_name" value="" type="text"></td>
                                                     </tr>
                                                    <tr class="cdtable">
                                                         <td class="cdfirst">Driver Contact:</td>
-                                                        <td><input id="price" class="form-control" placeholder="Driver Contact" name="price" value="" type="text"></td>
+                                                        <td><input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="" type="text"></td>
                                                     </tr>
                                                     <tr class="cdtable">
                                                         <td class="cdfirst">Remark:</td>
@@ -603,7 +600,7 @@
                                             </table>
                     
                     
-                       <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
+
                       <hr>
                       <div>
                   <button type="button" class="btn btn-primary form_button_footer" >Submit</button>

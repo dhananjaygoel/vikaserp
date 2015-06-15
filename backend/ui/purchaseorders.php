@@ -486,7 +486,7 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                             <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                             <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                     
@@ -500,7 +500,7 @@
                                         </div>
                                          <div class="checkbox">
                                          <label class="marginsms"><input type="checkbox" value=""><span class="checksms">Email</span></label>
-                                        <label><input type="checkbox" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
+                                        <label><input type="checkbox" value=""><span title="SMS would be sent to supplier" class="checksms smstooltip">Send SMS</span></label>
                                          </div>
                                         
                                          

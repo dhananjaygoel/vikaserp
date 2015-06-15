@@ -134,14 +134,14 @@
                                                     </td>
                                                     <td class="shippingcolumn">
                                                             <div class="row product-price">
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group col-md-12">
                                                 <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
                                                
                                             </div>
-                                            <div class="form-group col-md-2 difference_form">
+                                        <!--    <div class="form-group col-md-2 difference_form">
                                            
                                            <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            </div>-->
                                             </div>
                                                     </td>
                                                      <td class="shippingcolumn">
@@ -170,16 +170,16 @@
                                                      <td>
                                                     Unit
                                                     </td>
-                                                       <td class="shippingcolumn">
+                                                      <td class="shippingcolumn">
                                                             <div class="row product-price">
-                                            <div class="form-group col-md-6">
-                                            <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
+                                            <div class="form-group col-md-12">
+                                                <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
                                                
                                             </div>
-                                            <div class="form-group col-md-2 difference_form">
+                                        <!--    <div class="form-group col-md-2 difference_form">
                                            
                                            <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            </div>-->
                                             </div>
                                                     </td>
                                                      <td class="shippingcolumn">
@@ -209,16 +209,16 @@
                                                      <td>
                                                     Unit
                                                     </td>
-                                                       <td class="shippingcolumn">
+                                                        <td class="shippingcolumn">
                                                             <div class="row product-price">
-                                            <div class="form-group col-md-6">
-                                         <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
+                                            <div class="form-group col-md-12">
+                                                <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
                                                
                                             </div>
-                                            <div class="form-group col-md-2 difference_form">
+                                        <!--    <div class="form-group col-md-2 difference_form">
                                            
                                            <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            </div>-->
                                             </div>
                                                     </td>
                                                      <td class="shippingcolumn">
@@ -248,16 +248,16 @@
                                                      <td>
                                                     Unit
                                                     </td>
-                                                       <td class="shippingcolumn">
+                                                      <td class="shippingcolumn">
                                                             <div class="row product-price">
-                                            <div class="form-group col-md-6">
-                                            <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
+                                            <div class="form-group col-md-12">
+                                                <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
                                                
                                             </div>
-                                            <div class="form-group col-md-2 difference_form">
+                                        <!--    <div class="form-group col-md-2 difference_form">
                                            
                                            <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            </div>-->
                                             </div>
                                                     </td>
                                                      <td class="shippingcolumn">
@@ -317,14 +317,14 @@
                                                     </td>
                                                       <td class="shippingcolumn">
                                                             <div class="row product-price">
-                                            <div class="form-group col-md-6">
-                                         <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
+                                            <div class="form-group col-md-12">
+                                                <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
                                                
                                             </div>
-                                            <div class="form-group col-md-2 difference_form">
+                                        <!--    <div class="form-group col-md-2 difference_form">
                                            
                                            <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            </div>-->
                                             </div>
                                                     </td>
                                                      <td class="shippingcolumn">
@@ -382,16 +382,16 @@
                                             </select>
                                                           
                                                     </td>
-                                                      <td class="shippingcolumn">
+                                                     <td class="shippingcolumn">
                                                             <div class="row product-price">
-                                            <div class="form-group col-md-6">
-                                         <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
+                                            <div class="form-group col-md-12">
+                                                <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
                                                
                                             </div>
-                                            <div class="form-group col-md-2 difference_form">
+                                        <!--    <div class="form-group col-md-2 difference_form">
                                            
                                            <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            </div>-->
                                             </div>
                                                     </td>
                                                      <td class="shippingcolumn">
@@ -449,16 +449,16 @@
                                             </select>
                                                           
                                                     </td>
-                                                      <td class="shippingcolumn">
+                                                     <td class="shippingcolumn">
                                                             <div class="row product-price">
-                                            <div class="form-group col-md-6">
-                                            <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
+                                            <div class="form-group col-md-12">
+                                                <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
                                                
                                             </div>
-                                            <div class="form-group col-md-2 difference_form">
+                                        <!--    <div class="form-group col-md-2 difference_form">
                                            
                                            <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
+                                            </div>-->
                                             </div>
                                                     </td>
                                                      <td class="shippingcolumn">
@@ -500,10 +500,7 @@
                             <label for="labour"><b class="challan">Labour </b></label>
                     <input id="labour" class="form-control" placeholder="Labour" name="labour" value="" type="text">
                 </div>
-                <div class="form-group">
-                    <label for="billno"><b class="challan">Bill Number</b></label>
-                    <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="text">
-</div>
+    
                  
                  
                                              <div class="form-group">
@@ -530,6 +527,10 @@
                         <label for="total"><b class="challan">Grand Total</b><span class="gtotal">$250000</span></label>
                    
                 </div>
+                                <div class="form-group">
+                    <label for="billno"><b class="challan">Bill Number</b></label>
+                    <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="text">
+</div>
                       <div class="form-group">
                           <label for="inquiry_remark"><b class="challan">Remark</b></label>
                         <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3"></textarea>
