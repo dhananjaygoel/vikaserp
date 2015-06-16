@@ -52,9 +52,8 @@
                                             <div class="targetdate">
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                    <input type="text" name="bill_date" class="form-control" id="datepickerDate" value="{{Input::old('bill_date')}}">
+                                                    <input type="text" name="bill_date" class="form-control" id="bill_date" value="{{Input::old('bill_date')}}">
                                                 </div>
-
                                             </div>
                                         </td>
                                     </tr>

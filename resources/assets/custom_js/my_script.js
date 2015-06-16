@@ -10,6 +10,10 @@ $('.deleteCustomer').click(function () {
     $(this).parents('.modal').find('form').submit();
 });
 
+$('#bill_date').datepicker({
+    format: 'dd-mm-yyyy'
+});
+
 $('#search').keypress(function (e) {
     if (e.keyCode == 13)
     {
@@ -70,7 +74,7 @@ $(document).ready(function () {
 
         }
     });
-    
+
     $('#loc1').change(function () {
         if ($('#loc1').val() == 'other') {
             $('.locationtext').toggle();
@@ -83,6 +87,6 @@ $(document).ready(function () {
 
 });
 
-$('#purchaseaAdviseFilter').on('change', function(){
-   $('#purchaseaAdviseFilterForm').submit();
+$('#purchaseaAdviseFilter').on('change', function () {
+    $('#purchaseaAdviseFilterForm').submit();
 });

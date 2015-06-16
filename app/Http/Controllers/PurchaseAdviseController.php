@@ -96,7 +96,7 @@ class PurchaseAdviseController extends Controller {
         }
 
         $purchase_advise_array = array();
-        $purchase_advise_array['purchase_advice_date'] = $input_data['bill_date'];
+        $purchase_advise_array['purchase_advice_date'] = date('Y-m-d', strtotime($input_data['bill_date']));
         $purchase_advise_array['supplier_id'] = $customer_id;
         $purchase_advise_array['created_by'] = Auth::id();
         $purchase_advise_array['expected_delivery_date'] = $input_data['expected_delivery_date'];
