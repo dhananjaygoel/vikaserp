@@ -99,7 +99,7 @@
 
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
-                                                    {{$product['product_category']->product_category_name}}"
+                                                    {{$product['product_category']->product_category_name}}
 
                                                 </div>
                                             </td>
@@ -109,13 +109,8 @@
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
-                                                <div class="form-group ">                                                        
-                                                    @foreach($units as $unit)
-                                                    @if($product->unit_id == $unit->id)
-                                                    {{$unit->unit_name}}                                                            
-                                                    @endif
-                                                    @endforeach
-
+                                                <div class="form-group ">
+                                                    {{$product['unit']->unit_name}} 
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -169,12 +164,12 @@
                                         </tr>
 
                                         <tr>
-                                            <td><span>Estimated Delivery Date: </span>{{$order->estimated_date}}</td>
+                                            <td><span>Estimated Delivery Date: </span>{{$order->estimated_delivery_date}}</td>
 
                                         </tr>   
 
                                         <tr>
-                                            <td><span>Expected Delivery Date: </span>{{$order->expected_date}}</td>
+                                            <td><span>Expected Delivery Date: </span>{{$order->expected_delivery_date}}</td>
 
                                         </tr>      
                                         <tr>

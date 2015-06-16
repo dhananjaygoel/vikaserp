@@ -292,7 +292,7 @@
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <label for="location">Location </label>
-                                    <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="" type="text">
+                                    <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="{{$order->other_location}}" type="text">
                                 </div>
                             </div>
                         </div>
@@ -314,7 +314,7 @@
                                     <tbody>
                                         <tr class="cdtable">
                                             <td class="cdfirst">VAT Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="" type="text"></td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->other_location}}" type="text"></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -349,7 +349,7 @@
                                 <label for="time">Estimated Delivery Date:</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input type="text" name="estimated_date" class="form-control" id="datepickerDate" value="{{date('Y-m-d', strtotime($order->estimated_delivery_date))}}">
+                                    <input type="text" name="estimated_date" class="form-control" id="estimated_delivery_date" value="{{date('Y-m-d', strtotime($order->estimated_delivery_date))}}">
                                 </div>
 
                             </div>
@@ -358,7 +358,7 @@
                                 <label for="date">Expected Delivery Date: </label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input type="text" name="expected_date" class="form-control" id="datepickerDate1"value="{{date('Y-m-d', strtotime($order->expected_delivery_date))}}">
+                                    <input type="text" name="expected_date" class="form-control" id="expected_delivery_date_order" value="{{date('Y-m-d', strtotime($order->expected_delivery_date))}}">
                                 </div>
                             </div>
                             <div class="clearfix"></div>

@@ -63,11 +63,12 @@
                                     Delivery Order
                                 </a>
                             </li>
-                            <li class="<?php echo ($page_name == 'delivery_orders_challan.php') ? 'active' : ''; ?>">
-                                <a href="delivery_orders_challan.php">
+                            <li class="{{ (Request::is('*delivery_challan*') ? 'active' : '') }}">
+                                <a href="{{url('delivery_challan')}}">
                                     Delivery Challan
                                 </a>
                             </li>
+                            
                             <li class="<?php echo ($page_name == 'daily_del_orders.php') ? 'active' : ''; ?>">
                                 <a href="daily_del_orders.php">
                                     Pending Delivery Order Report
@@ -78,8 +79,8 @@
                                     Sales Daybook
                                 </a>
                             </li>
-                            <li class="<?php echo ($page_name == 'pending_orders.php') ? 'active' : ''; ?>">
-                                <a href="pending_orders.php">
+                            <li class="{{ (Request::is('*pending_order_report*') ? 'active' : '') }}">
+                                <a href="{{url('pending_order_report')}}">
                                     Pending Order Report
                                 </a>
                             </li>

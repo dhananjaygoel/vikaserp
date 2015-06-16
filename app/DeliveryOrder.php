@@ -30,5 +30,10 @@ class DeliveryOrder extends Model implements AuthenticatableContract, CanResetPa
 //        'mobile_number' => 'integer|digits_between:10,15|required|unique:users',
 //        'user_type' => 'required'
 //    );
+    public static $order_to_delivery_order_rules = array(
+        'vehicle_number' => 'required',
+        'driver_name' => 'required',
+        'driver_contact' => 'required|min:10|max:20'
+    );
 
 }

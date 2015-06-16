@@ -47,7 +47,8 @@ function show_hide_supplier(status) {
         }
     }
 }
-$('#expected_delivery_date').datepicker({
+
+$('#expected_delivery_date_order').datepicker({
         format: 'dd-mm-yyyy'
     });
     $('#estimated_delivery_date').datepicker({

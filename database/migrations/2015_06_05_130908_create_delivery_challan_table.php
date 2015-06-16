@@ -15,28 +15,20 @@ class CreateDeliveryChallanTable extends Migration {
 		Schema::create('delivery_challan', function(Blueprint $table)
 		{
                         $table->increments('id');
+                        $table->integer('order_id');
+                        $table->integer('delivery_order_id');
                         $table->integer('customer_id');
-			$table->integer('created_by');
-                        $table->string('serial_number');
+			$table->integer('created_by');                        
                         $table->string('bill_number');
-                        $table->integer('delivery_location_id');
-                        $table->integer('is_vat');
-                        $table->float('vat_percentage');
-                        $table->integer('estimate_price');
-                        $table->string('estimate_delivery_date');
-                        $table->string('target_delivery_date');
-                        $table->string('remarks'); 
-                        $table->string('vehicle_number');
                         $table->string('loaded_by');
                         $table->integer('labours');
-                        $table->float('discount');
+                        $table->string('discount',20);
                         $table->integer('freight');
                         $table->integer('loading_charge');
-                        $table->float('amount');
-                        $table->float('grand_total');
-                        $table->string('driver_name')   ;
-                        $table->string('driver_contact_number',20);
-                        $table->integer('order_status');
+                        $table->string('vat_percentage',20);
+                        $table->string('total_price',20);
+                        $table->enum('challan_status',array('pending','completed'));
+                        $table->softDeletes();
                         $table->timestamps();
 		});
 	}

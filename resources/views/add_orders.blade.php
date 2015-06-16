@@ -74,7 +74,7 @@
                             <div class="exist_field" style="display: none">
                                 <div class="form-group">
                                     <label for="name">Customer Name</label>
-                                    <input id="name" class="form-control" placeholder="Name" name="name" value="" type="text">
+                                    <input id="name" class="form-control" placeholder="Name" name="customer_name" value="" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Contact Person</label>
@@ -87,7 +87,7 @@
 
                                 <div class="form-group">
                                     <label for="period">Credit Period</label>
-                                    <input id="period" class="form-control" placeholder="Credit Period" name="period" value="" type="text">
+                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="text">
                                 </div>
                             </div>
                             <div class="order_table col-md-12">
@@ -197,9 +197,9 @@
                                         <label for="location">Location </label>
                                         <input id="location" class="form-control" placeholder="Location " name="location" value="" type="text">
                                     </div>
-                                    <div class="col-md-8 addlocation">
+<!--                                    <div class="col-md-8 addlocation">
                                         <button class="btn btn-primary btn-xs">ADD</button>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -232,10 +232,10 @@
                             </div>
                             <div class="clearfix"></div>
                             <div class="form-group col-md-4 targetdate">
-                                <label for="date">Expected Delivery Date: </label>
+                                <label for="time">Expected Delivery Date: </label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input type="text" name="expected_date" class="form-control" id="expected_delivery_date">
+                                    <input type="text" name="expected_date" class="form-control" id="expected_delivery_date_order">
                                 </div>
                             </div>
                             <div class="clearfix"></div>

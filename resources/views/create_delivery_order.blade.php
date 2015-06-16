@@ -32,7 +32,7 @@
 //                                print_r($order->toArray());
 //                                echo '</pre>';exit;
                         ?>
-                        {!! Form::open(array('method'=>'PUT','url'=>url('create_delivery_order',$order->id), 'id'=>'create_delivery_order_form'))!!}
+                        {!! Form::open(array('method'=>'post','url'=>url('create_delivery_order',$order->id), 'id'=>'create_delivery_order_form'))!!}
 
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="order_id" value="{{$order->id}}">
@@ -185,52 +185,7 @@
 
                         <div class="clearfix"></div>
 
-                        <div class="clearfix"></div>
-                        @if($order->vat_percentage == 0)
-                        <div class="form-group">
-                            <div class="radio">
-                                <span><b>Plus VAT </b> : No</span>
-
-                            </div>
-                        </div>
-
-
-                        <div class="form-group">
-                            <div class="radio">
-                                <span><b>Plus VAT </b> : Yes</span>
-
-                            </div>
-                        </div>
-
-                        <div class="plusvat">
-                            <div class="form-group">
-                                <table id="table-example" class="table ">
-                                    <tbody>
-                                        <tr class="cdtable">
-                                            <td class="cdfirst">VAT Percentage:</td>
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        @endif
-
-
-
-                        <div class="plusvat">
-                            <div class="form-group">
-                                <table id="table-example" class="table ">
-                                    <tbody>
-                                        <tr class="cdtable">
-                                            <td class="cdfirst">Grand Total :</td>
-
-                                        </tr>
-                                    </tbody>
-                                </table> 
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
+                        
 
 
 
@@ -262,19 +217,19 @@
                                 </tr>
                                 <tr class="cdtable">
                                     <td class="cdfirst">Vehicle Number:</td>
-                                    <td><input id="price" class="form-control" placeholder="Vehicle Number" name="Number" value="" type="text"></td>
+                                    <td><input  class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{old('vehicle_number')}}" type="text"></td>
                                 </tr>
                                 <tr class="cdtable">
                                     <td class="cdfirst">Driver Name:</td>
-                                    <td><input id="price" class="form-control" placeholder="Driver Name" name="name" value="" type="text"></td>
+                                    <td><input  class="form-control" placeholder="Driver Name" name="driver_name" value="{{old('driver_name')}}" type="text"></td>
                                 </tr>
                                 <tr class="cdtable">
                                     <td class="cdfirst">Driver Contact:</td>
-                                    <td><input id="price" class="form-control" placeholder="Driver Contact" name="price" value="" type="text"></td>
+                                    <td><input  class="form-control" placeholder="Driver Contact" name="driver_contact" value="{{old('driver_contact')}}" type="text"></td>
                                 </tr>
                                 <tr class="cdtable">
                                     <td class="cdfirst">Remark:</td>
-                                    <td><input id="price" class="form-control cdbox" placeholder="Remark" name="price" value="" type="text"></td>
+                                    <td><input class="form-control cdbox" placeholder="Remark" name="remarks" value="{{$order->remarks}}" type="text"></td>
                                 </tr>
 
 
@@ -283,7 +238,7 @@
 
                         <div class="clearfix"></div>
 
-                        <div class="form-group col-md-4 targetdate">
+                        <div class="form-group col-md-4 " style="display: none">
 
                             <label for="time">Estimated Delivery Date:</label>
                             <div class="input-group">
@@ -293,18 +248,14 @@
 
                         </div>
                         <div class="clearfix"></div>
-                        <div class="form-group col-md-4 targetdate">
+                        <div class="form-group col-md-4 targetdate" style="display: none">
                             <label for="date">Expected Delivery Date: </label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                 <input type="text" name="expected_date" class="form-control" value="{{date('Y-m-d', strtotime($order->expected_delivery_date))}}" readonly="readonly">
                             </div>
                         </div>
-                        <div class="clearfix"></div>
-                        <div class="form-group">
-                            <label for="order_remark">Remark:</label>
-                            <textarea class="form-control" id="order_remark" name="order_remark"  rows="3">{{$order->remarks}}</textarea>
-                        </div>
+                        
 
 
                         <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
