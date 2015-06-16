@@ -135,7 +135,10 @@
                                                     <td class="col-md-2">
                                                     <span>Present Shipping</span>
                                                     </td>
-                                                    <td class="col-md-5">
+                                                    <td class="col-md-2">
+                                                    <span>Price</span>
+                                                    </td>
+                                                    <td class="col-md-3">
                                                     <span>Remark</span>
                                                     </td>
                                                 </tr>
@@ -153,6 +156,11 @@
                                                       <td>
                                                         <div class="form-group pshipping">
                                                         <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text">
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group pshipping">
+                                                        <input id="" class="form-control" placeholder="Price" name="" value="" type="text">
                                                         </div>
                                                     </td>
                                                       <td>
@@ -176,6 +184,11 @@
                                                         <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
                                                         </div>
                                                     </td>
+                                                    <td>
+                                                        <div class="form-group pshipping">
+                                                        <input id="" class="form-control" placeholder="Price" name="" value="" type="text">
+                                                        </div>
+                                                    </td>
                                                      <td>
                                                  Remark
                                                        </td>
@@ -195,6 +208,11 @@
                                                      <td>
                                                         <div class="form-group pshipping">
                                                         <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group pshipping">
+                                                        <input id="" class="form-control" placeholder="Price" name="" value="" type="text">
                                                         </div>
                                                     </td>
                                                     <td>
@@ -218,6 +236,11 @@
                                                         </div>
                                                     </td>
                                                     <td>
+                                                        <div class="form-group pshipping">
+                                                        <input id="" class="form-control" placeholder="Price" name="" value="" type="text">
+                                                        </div>
+                                                    </td>
+                                                    <td>
                                                  Remark
                                                        </td> 
                                                     
@@ -236,6 +259,11 @@
                                                      <td>
                                                         <div class="form-group pshipping">
                                                         <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group pshipping">
+                                                        <input id="" class="form-control" placeholder="Price" name="" value="" type="text">
                                                         </div>
                                                     </td>
                                                     <td>
@@ -291,6 +319,11 @@
                                                         <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
                                                         </div>
                                                     </td>
+                                                    <td>
+                                                        <div class="form-group pshipping">
+                                                        <input id="" class="form-control" placeholder="Price" name="" value="" type="text">
+                                                        </div>
+                                                    </td>
                                                       <td>
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
@@ -344,6 +377,11 @@
                                                      <td>
                                                         <div class="form-group pcshipping">
                                                         <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group pshipping">
+                                                        <input id="" class="form-control" placeholder="Price" name="" value="" type="text">
                                                         </div>
                                                     </td>
                                                       <td>
