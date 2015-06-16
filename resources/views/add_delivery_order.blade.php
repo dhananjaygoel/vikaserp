@@ -128,357 +128,357 @@
                                                 </tr>
                                             <?php } ?>
 <!--                                            <tr>
-                <td class="col-md-3">
-                    <div class="form-group searchproduct">
-                        <input class="form-control" placeholder="Enter Product name " type="text">
-                        <i class="fa fa-search search-icon"></i>
-                    </div>
-                </td>
-                <td class="col-md-1">
-                    <div class="form-group">
-                        <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
-                    </div>
-                </td>
-                <td class="col-md-2">
+            <td class="col-md-3">
+                <div class="form-group searchproduct">
+                    <input class="form-control" placeholder="Enter Product name " type="text">
+                    <i class="fa fa-search search-icon"></i>
+                </div>
+            </td>
+            <td class="col-md-1">
+                <div class="form-group">
+                    <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
+                </div>
+            </td>
+            <td class="col-md-2">
+                <div class="form-group ">
+                    <select class="form-control" name="type" id="add_status_type">
+                        @foreach($units as $unit)
+                        <option value="{{$unit->id}}"> {{$unit->unit_name}} </option>
+                        @endforeach
+                    </select>
+                </div>
+            </td>
+            <td class="col-md-2">
+                <div class="row">
                     <div class="form-group ">
-                        <select class="form-control" name="type" id="add_status_type">
-                            @foreach($units as $unit)
-                            <option value="{{$unit->id}}"> {{$unit->unit_name}} </option>
-                            @endforeach
-                        </select>
+                        <input type="text" class="form-control" value="" id="price" placeholder="price">
                     </div>
-                </td>
-                <td class="col-md-2">
-                    <div class="row">
-                        <div class="form-group ">
-                            <input type="text" class="form-control" value="" id="price" placeholder="price">
-                        </div>
-                    </div>
-                </td>
-                <td class="col-md-2">
-                    <div class="form-group">
-                        <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-3">
-                    <div class="form-group searchproduct">
-                        <input class="form-control" placeholder="Enter Product name " type="text">
-                        <i class="fa fa-search search-icon"></i>
-                    </div>
-                </td>
-                <td class="col-md-1">
-                    <div class="form-group">
-                        <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
-                    </div>
-                </td>
-                <td class="col-md-2">
+                </div>
+            </td>
+            <td class="col-md-2">
+                <div class="form-group">
+                    <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-3">
+                <div class="form-group searchproduct">
+                    <input class="form-control" placeholder="Enter Product name " type="text">
+                    <i class="fa fa-search search-icon"></i>
+                </div>
+            </td>
+            <td class="col-md-1">
+                <div class="form-group">
+                    <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
+                </div>
+            </td>
+            <td class="col-md-2">
+                <div class="form-group ">
+                    <select class="form-control" name="type" id="add_status_type">
+                        <option value="2">Kg</option>
+                        <option value="3">mm</option>
+                        <option value="3">cm</option>
+                    </select>
+                </div>
+            </td>
+            <td class="col-md-2">
+                <div class="row">
                     <div class="form-group ">
-                        <select class="form-control" name="type" id="add_status_type">
-                            <option value="2">Kg</option>
-                            <option value="3">mm</option>
-                            <option value="3">cm</option>
-                        </select>
+                        <input type="text" class="form-control" value="" id="price" placeholder="price">
                     </div>
-                </td>
-                <td class="col-md-2">
-                    <div class="row">
-                        <div class="form-group ">
-                            <input type="text" class="form-control" value="" id="price" placeholder="price">
-                        </div>
-                    </div>
-                </td>
-                <td class="col-md-2">
-                    <div class="form-group">
-                        <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-3">
-                    <div class="form-group searchproduct">
-                        <input class="form-control" placeholder="Enter Product name " type="text">
-                        <i class="fa fa-search search-icon"></i>
-                    </div>
-                </td>
-                <td class="col-md-1">
-                    <div class="form-group">
-                        <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
-                    </div>
-                </td>
-                <td class="col-md-2">
+                </div>
+            </td>
+            <td class="col-md-2">
+                <div class="form-group">
+                    <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-3">
+                <div class="form-group searchproduct">
+                    <input class="form-control" placeholder="Enter Product name " type="text">
+                    <i class="fa fa-search search-icon"></i>
+                </div>
+            </td>
+            <td class="col-md-1">
+                <div class="form-group">
+                    <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
+                </div>
+            </td>
+            <td class="col-md-2">
+                <div class="form-group ">
+                    <select class="form-control" name="type" id="add_status_type">
+                        <option value="2">Kg</option>
+                        <option value="3">mm</option>
+                        <option value="3">cm</option>
+                    </select>
+                </div>
+            </td>
+            <td class="col-md-2">
+                <div class="row">
                     <div class="form-group ">
-                        <select class="form-control" name="type" id="add_status_type">
-                            <option value="2">Kg</option>
-                            <option value="3">mm</option>
-                            <option value="3">cm</option>
-                        </select>
+                        <input type="text" class="form-control" value="" id="price" placeholder="price">
                     </div>
-                </td>
-                <td class="col-md-2">
-                    <div class="row">
-                        <div class="form-group ">
-                            <input type="text" class="form-control" value="" id="price" placeholder="price">
-                        </div>
-                    </div>
-                </td>
-                <td class="col-md-2">
-                    <div class="form-group">
-                        <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-3">
-                    <div class="form-group searchproduct">
-                        <input class="form-control" placeholder="Enter Product name " type="text">
-                        <i class="fa fa-search search-icon"></i>
-                    </div>
-                </td>
-                <td class="col-md-1">
-                    <div class="form-group">
-                        <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
-                    </div>
-                </td>
-                <td class="col-md-2">
+                </div>
+            </td>
+            <td class="col-md-2">
+                <div class="form-group">
+                    <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-3">
+                <div class="form-group searchproduct">
+                    <input class="form-control" placeholder="Enter Product name " type="text">
+                    <i class="fa fa-search search-icon"></i>
+                </div>
+            </td>
+            <td class="col-md-1">
+                <div class="form-group">
+                    <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
+                </div>
+            </td>
+            <td class="col-md-2">
+                <div class="form-group ">
+                    <select class="form-control" name="type" id="add_status_type">
+                        <option value="2">Kg</option>
+                        <option value="3">mm</option>
+                        <option value="3">cm</option>
+                    </select>
+                </div>
+            </td>
+            <td class="col-md-2">
+                <div class="row">
                     <div class="form-group ">
-                        <select class="form-control" name="type" id="add_status_type">
-                            <option value="2">Kg</option>
-                            <option value="3">mm</option>
-                            <option value="3">cm</option>
-                        </select>
+                        <input type="text" class="form-control" value="" id="price" placeholder="price">
                     </div>
-                </td>
-                <td class="col-md-2">
-                    <div class="row">
-                        <div class="form-group ">
-                            <input type="text" class="form-control" value="" id="price" placeholder="price">
-                        </div>
-                    </div>
-                </td>
-                <td class="col-md-2">
-                    <div class="form-group">
-                        <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
-                    </div>
-                </td>
-            </tr>-->
+                </div>
+            </td>
+            <td class="col-md-2">
+                <div class="form-group">
+                    <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
+                </div>
+            </td>
+        </tr>-->
 <!--                                            <tr class="row5">
-                                    <td>
-                                        <div class="add_button1">
-                                            <div class="form-group pull-left">
-                                                <label for="addmore"></label>
-                                                <a href="#" class="table-link" title="add more" id="addmore1">
-                                                    <span class="fa-stack more_button" >
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-                                                        <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
-                                                    </span>
-                                                </a>
-                                            </div>
+                                <td>
+                                    <div class="add_button1">
+                                        <div class="form-group pull-left">
+                                            <label for="addmore"></label>
+                                            <a href="#" class="table-link" title="add more" id="addmore1">
+                                                <span class="fa-stack more_button" >
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
                                         </div>
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr class="row6">
-                                    <td class="col-md-3">
-                                        <div class="form-group searchproduct">
-                                            <input class="form-control" placeholder="Enter Product name " type="text">
-                                            <i class="fa fa-search search-icon"></i>
-                                        </div>
-                                    </td>
-                                    <td class="col-md-1">
-                                        <div class="form-group">
-                                            <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
-                                        </div>
-                                    </td>
-                                    <td class="col-md-2">
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr class="row6">
+                                <td class="col-md-3">
+                                    <div class="form-group searchproduct">
+                                        <input class="form-control" placeholder="Enter Product name " type="text">
+                                        <i class="fa fa-search search-icon"></i>
+                                    </div>
+                                </td>
+                                <td class="col-md-1">
+                                    <div class="form-group">
+                                        <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
+                                    </div>
+                                </td>
+                                <td class="col-md-2">
+                                    <div class="form-group ">
+                                        <select class="form-control" name="type" id="add_status_type">
+                                            <option value="2">Kg</option>
+                                            <option value="3">mm</option>
+                                            <option value="3">cm</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="col-md-2">
+                                    <div class="row">
                                         <div class="form-group ">
-                                            <select class="form-control" name="type" id="add_status_type">
-                                                <option value="2">Kg</option>
-                                                <option value="3">mm</option>
-                                                <option value="3">cm</option>
-                                            </select>
+                                            <input type="text" class="form-control" value="" id="price" placeholder="price">
                                         </div>
-                                    </td>
-                                    <td class="col-md-2">
-                                        <div class="row">
-                                            <div class="form-group ">
-                                                <input type="text" class="form-control" value="" id="price" placeholder="price">
-                                            </div>
+                                    </div>
+                                </td>
+                                <td class="col-md-2">
+                                    <div class="form-group">
+                                        <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="row7">
+                                <td>
+                                    <div class="add_button1">
+                                        <div class="form-group pull-left">
+                                            <label for="addmore"></label>
+                                            <a href="#" class="table-link" title="add more" id="addmore2">
+                                                <span class="fa-stack more_button" >
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
                                         </div>
-                                    </td>
-                                    <td class="col-md-2">
-                                        <div class="form-group">
-                                            <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="row7">
-                                    <td>
-                                        <div class="add_button1">
-                                            <div class="form-group pull-left">
-                                                <label for="addmore"></label>
-                                                <a href="#" class="table-link" title="add more" id="addmore2">
-                                                    <span class="fa-stack more_button" >
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-                                                        <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
-                                                    </span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr class="row8">
-                                    <td class="col-md-3">
-                                        <div class="form-group searchproduct">
-                                            <input class="form-control" placeholder="Enter Product name " type="text">
-                                            <i class="fa fa-search search-icon"></i>
-                                        </div>
-                                    </td>
-                                    <td class="col-md-1">
-                                        <div class="form-group">
-                                            <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
-                                        </div>
-                                    </td>
-                                    <td class="col-md-2">
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr class="row8">
+                                <td class="col-md-3">
+                                    <div class="form-group searchproduct">
+                                        <input class="form-control" placeholder="Enter Product name " type="text">
+                                        <i class="fa fa-search search-icon"></i>
+                                    </div>
+                                </td>
+                                <td class="col-md-1">
+                                    <div class="form-group">
+                                        <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
+                                    </div>
+                                </td>
+                                <td class="col-md-2">
+                                    <div class="form-group ">
+                                        <select class="form-control" name="type" id="add_status_type">
+                                            <option value="2">Kg</option>
+                                            <option value="3">mm</option>
+                                            <option value="3">cm</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="col-md-2">
+                                    <div class="row">
                                         <div class="form-group ">
-                                            <select class="form-control" name="type" id="add_status_type">
-                                                <option value="2">Kg</option>
-                                                <option value="3">mm</option>
-                                                <option value="3">cm</option>
-                                            </select>
+                                            <input type="text" class="form-control" value="" id="price" placeholder="price">
                                         </div>
-                                    </td>
-                                    <td class="col-md-2">
-                                        <div class="row">
-                                            <div class="form-group ">
-                                                <input type="text" class="form-control" value="" id="price" placeholder="price">
-                                            </div>
+                                    </div>
+                                </td>
+                                <td class="col-md-2">
+                                    <div class="form-group">
+                                        <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="row9">
+                                <td>
+                                    <div class="add_button1">
+                                        <div class="form-group pull-left">
+                                            <label for="addmore"></label>
+                                            <a href="#" class="table-link" title="add more" id="addmore3">
+                                                <span class="fa-stack more_button" >
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
                                         </div>
-                                    </td>
-                                    <td class="col-md-2">
-                                        <div class="form-group">
-                                            <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="row9">
-                                    <td>
-                                        <div class="add_button1">
-                                            <div class="form-group pull-left">
-                                                <label for="addmore"></label>
-                                                <a href="#" class="table-link" title="add more" id="addmore3">
-                                                    <span class="fa-stack more_button" >
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-                                                        <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
-                                                    </span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr class="row10">
-                                    <td class="col-md-3">
-                                        <div class="form-group searchproduct">
-                                            <input class="form-control" placeholder="Enter Product name " type="text">
-                                            <i class="fa fa-search search-icon"></i>
-                                        </div>
-                                    </td>
-                                    <td class="col-md-1">
-                                        <div class="form-group">
-                                            <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
-                                        </div>
-                                    </td>
-                                    <td class="col-md-2">
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr class="row10">
+                                <td class="col-md-3">
+                                    <div class="form-group searchproduct">
+                                        <input class="form-control" placeholder="Enter Product name " type="text">
+                                        <i class="fa fa-search search-icon"></i>
+                                    </div>
+                                </td>
+                                <td class="col-md-1">
+                                    <div class="form-group">
+                                        <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
+                                    </div>
+                                </td>
+                                <td class="col-md-2">
+                                    <div class="form-group ">
+                                        <select class="form-control" name="type" id="add_status_type">
+                                            <option value="2">Kg</option>
+                                            <option value="3">mm</option>
+                                            <option value="3">cm</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="col-md-2">
+                                    <div class="row">
                                         <div class="form-group ">
-                                            <select class="form-control" name="type" id="add_status_type">
-                                                <option value="2">Kg</option>
-                                                <option value="3">mm</option>
-                                                <option value="3">cm</option>
-                                            </select>
+                                            <input type="text" class="form-control" value="" id="price" placeholder="price">
                                         </div>
-                                    </td>
-                                    <td class="col-md-2">
-                                        <div class="row">
-                                            <div class="form-group ">
-                                                <input type="text" class="form-control" value="" id="price" placeholder="price">
-                                            </div>
+                                    </div>
+                                </td>
+                                <td class="col-md-2">
+                                    <div class="form-group">
+                                        <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="row11">
+                                <td>
+                                    <div class="add_button1">
+                                        <div class="form-group pull-left">
+                                            <label for="addmore"></label>
+                                            <a href="#" class="table-link" title="add more" id="addmore4">
+                                                <span class="fa-stack more_button" >
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
                                         </div>
-                                    </td>
-                                    <td class="col-md-2">
-                                        <div class="form-group">
-                                            <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="row11">
-                                    <td>
-                                        <div class="add_button1">
-                                            <div class="form-group pull-left">
-                                                <label for="addmore"></label>
-                                                <a href="#" class="table-link" title="add more" id="addmore4">
-                                                    <span class="fa-stack more_button" >
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-                                                        <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
-                                                    </span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr class="row12">
-                                    <td class="col-md-3">
-                                        <div class="form-group searchproduct">
-                                            <input class="form-control" placeholder="Enter Product name " type="text">
-                                            <i class="fa fa-search search-icon"></i>
-                                        </div>
-                                    </td>
-                                    <td class="col-md-1">
-                                        <div class="form-group">
-                                            <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
-                                        </div>
-                                    </td>
-                                    <td class="col-md-2">
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr class="row12">
+                                <td class="col-md-3">
+                                    <div class="form-group searchproduct">
+                                        <input class="form-control" placeholder="Enter Product name " type="text">
+                                        <i class="fa fa-search search-icon"></i>
+                                    </div>
+                                </td>
+                                <td class="col-md-1">
+                                    <div class="form-group">
+                                        <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
+                                    </div>
+                                </td>
+                                <td class="col-md-2">
+                                    <div class="form-group ">
+                                        <select class="form-control" name="type" id="add_status_type">
+                                            <option value="2">Kg</option>
+                                            <option value="3">mm</option>
+                                            <option value="3">cm</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="col-md-2">
+                                    <div class="row">
                                         <div class="form-group ">
-                                            <select class="form-control" name="type" id="add_status_type">
-                                                <option value="2">Kg</option>
-                                                <option value="3">mm</option>
-                                                <option value="3">cm</option>
-                                            </select>
+                                            <input type="text" class="form-control" value="" id="price" placeholder="price">
                                         </div>
-                                    </td>
-                                    <td class="col-md-2">
-                                        <div class="row">
-                                            <div class="form-group ">
-                                                <input type="text" class="form-control" value="" id="price" placeholder="price">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="col-md-2">
-                                        <div class="form-group">
-                                            <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
-                                        </div>
-                                    </td>
-                                </tr>-->
+                                    </div>
+                                </td>
+                                <td class="col-md-2">
+                                    <div class="form-group">
+                                        <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
+                                    </div>
+                                </td>
+                            </tr>-->
                                         </tbody>
                                     </table>
                                     <table>
@@ -489,7 +489,7 @@
                                                         <div class="form-group pull-left">
 
                                                             <label for="addmore"></label>
-                                                            <a class="table-link" title="add more" id="add_product_row_order">
+                                                            <a class="table-link" title="add more" id="add_product_row">
                                                                 <span class="fa-stack more_button" >
                                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                                     <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
@@ -540,9 +540,9 @@
                                         <label for="location">Location </label>
                                         <input id="location" class="form-control" placeholder="Location " name="location" value="" type="text">
                                     </div>
-                                    <div class="col-md-8 addlocation">
-                                        <button class="btn btn-primary btn-xs">ADD</button>
-                                    </div>
+                                    <!--                                    <div class="col-md-8 addlocation">
+                                                                            <button class="btn btn-primary btn-xs">ADD</button>
+                                                                        </div>-->
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -562,27 +562,10 @@
                                                 <td class="cdfirst">VAT Percentage:</td>
                                                 <td><input id="price" class="form-control" placeholder="VAT Percentage" name="price" value="" type="text"></td>
                                             </tr>
-                                           <!-- <tr class="cdtable">
-                                                <td class="cdfirst">VAT:</td>
-                                                <td>Lorem</td>
-                                            </tr>
-                                          
-                                            <tr class="cdtable">
-                                                <td class="cdfirst">Grand Total:</td>
-                                                <td>650</td>
-                                            </tr>-->
                                         </tbody>
                                     </table>
                                 </div>
                             </div> 
-                            <!--
-                                  <div class="form-group col-md-4 targetdate">
-                                       <label for="date">Expected Delivery Date </label>
-                                 <div class="input-group">
-                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                 <input type="text" name="date" class="form-control" id="datepickerDate1">
-                                 </div>
-                                     </div>-->
                             <div class="clearfix"></div>
                             <div class="form-group">
                                 <label for="grandtotal">Grand Total:<span class="gtotal"> $25000</span></label>

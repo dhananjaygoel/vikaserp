@@ -28,8 +28,8 @@ class DeliveryOrderController extends Controller {
      * @return Response
      */
     public function index() {
-        $dellivery_data = DeliveryOrder::paginate(10);
-        return view('delivery_order', compact('dellivery_data'));
+        $delivery_data = DeliveryOrder::paginate(10);
+        return view('delivery_order', compact('delivery_data'));
     }
 
     /**
@@ -65,7 +65,7 @@ class DeliveryOrderController extends Controller {
         if ($i == $j) {
             return Redirect::back()->with('validation_message', 'Please enter at least one product details');
         }
-        
+
         if ($input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
@@ -84,7 +84,7 @@ class DeliveryOrderController extends Controller {
         } elseif ($input_data['customer_status'] == "exist_customer") {
             $validator = Validator::make($input_data, array('autocomplete_customer_id' => 'required'));
             if ($validator->passes()) {
-                $customer_id = $input_data['customer_name'];
+                $customer_id = $input_data['autocomplete_customer_id'];
             } else {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
@@ -100,6 +100,7 @@ class DeliveryOrderController extends Controller {
 //            $supplier_id = $input_data['supplier_id'];
 //        }
 
+        $vat_price = 0;
         if ($input_data['status1'] == 'include_vat') {
             $vat_price = '';
         }
@@ -126,7 +127,7 @@ class DeliveryOrderController extends Controller {
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
             $delivery_order->other_location = $input_data['other_location_name'];
         }
-        
+
         $delivery_order->save();
 
         $delivery_order_id = DB::getPdo()->lastInsertId();
@@ -136,31 +137,18 @@ class DeliveryOrderController extends Controller {
             if ($product_data['name'] != "") {
                 $order_products = [
                     'order_id' => $delivery_order_id,
+                    'order_type' => 'delivery_order',
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
                     'remarks' => $product_data['remark'],
                 ];
-                
+
                 $add_order_products = AllOrderProducts::create($order_products);
             }
         }
 
-//        $delivery_order = new DeliveryOrder();
-//        $delivery_order->customer_id = $customer_id;
-//        $delivery_order->created_by = Auth::id();
-//        $delivery_order->serial_number = '123456789';
-//
-//        $delivery_order->delivery_location_id = $input_data['add_order_location'];
-//        $delivery_order->vat_percentage = $vat_price;
-//        $delivery_order->delivery_date = date_format(date_create(date("Y-m-d")), 'Y-m-d');
-//        $delivery_order->estimate_delivery_date = date_format(date_create(date("Y-m-d")), 'Y-m-d');
-//        $delivery_order->target_delivery_date = date_format(date_create(date("Y-m-d")), 'Y-m-d');
-//
-//        $delivery_order->order_status = "Pending";
-//        $delivery_order->save();
-        
         return redirect('delivery_order')->with('validation_message', 'Delivery order details successfully added.');
     }
 
@@ -171,7 +159,16 @@ class DeliveryOrderController extends Controller {
      * @return Response
      */
     public function show($id) {
-        //
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.product_category')->where('id', $id)->get();
+        $units = Units::all();
+        $delivery_locations = DeliveryLocation::all();
+        $customers = Customer::all();
+
+//        echo '<pre>';
+//        print_r($delivery_data->toArray());
+//        echo '</pre>';
+//        exit;
+        return view('view_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
     }
 
     /**
@@ -181,7 +178,17 @@ class DeliveryOrderController extends Controller {
      * @return Response
      */
     public function edit($id) {
-        
+        $units = Units::all();
+        $delivery_locations = DeliveryLocation::all();
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.product_category')->where('id', $id)->get();
+        $customers = Customer::all();
+
+//        echo '<pre>';
+//        print_r($delivery_data->toArray());
+//        echo '</pre>';
+//        exit;
+
+        return view('edit_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
     }
 
     /**
@@ -191,7 +198,99 @@ class DeliveryOrderController extends Controller {
      * @return Response
      */
     public function update($id) {
+
+        $input_data = Input::all();
+        $i = 0;
+        $j = count($input_data['product']);
+        foreach ($input_data['product'] as $product_data) {
+            if ($product_data['name'] == "") {
+                $i++;
+            }
+        }
+        if ($i == $j) {
+            return Redirect::back()->with('validation_message', 'Please enter at least one product details');
+        }
+
+        $customer_id = 0;
+        if (isset($input_data['customer_status']) && $input_data['customer_status'] == "new_customer") {
+
+            $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
+            if ($validator->passes()) {
+                $customers = new Customer();
+                $customers->owner_name = $input_data['customer_name'];
+                $customers->contact_person = $input_data['contact_person'];
+                $customers->phone_number1 = $input_data['mobile_number'];
+                $customers->credit_period = $input_data['credit_period'];
+                $customers->customer_status = 'pending';
+                $customers->save();
+                $customer_id = $customers->id;
+            } else {
+                $error_msg = $validator->messages();
+                return Redirect::back()->withInput()->withErrors($validator);
+            }
+        } elseif (isset($input_data['customer_status']) && $input_data['customer_status'] == "existing_customer") {
+
+
+            $validator = Validator::make($input_data, array('autocomplete_customer_id' => 'required'));
+            if ($validator->passes()) {
+                $customer_id = $input_data['autocomplete_customer_id'];
+            } else {
+                $error_msg = $validator->messages();
+                return Redirect::back()->withInput()->withErrors($validator);
+            }
+        }
+
+        $vat_price = 0;
+        if ($input_data['status1'] == 'include_vat') {
+            $vat_price = '';
+        }
+        if ($input_data['status1'] == 'exclude_vat') {
+            $vat_price = $input_data['vat_price'];
+        }
+
+        DeliveryOrder::where('id', $id)->update(array(
+            'order_id' => 0,
+            'order_source' => 'warehouse',
+            'customer_id' => $customer_id,
+            'created_by' => Auth::id(),
+            'delivery_location_id' => $input_data['add_order_location'],
+            'vat_percentage' => $vat_price,
+            'estimate_price' => 0,
+            'estimated_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
+            'expected_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
+            'remarks' => $input_data['order_remark'],
+            'vehicle_number' => $input_data['vehicle_number'],
+            'driver_name' => $input_data['driver_name'],
+            'driver_contact_no' => $input_data['driver_contact'],
+            'order_status' => "Pending"
+        ));
+
+
+        if ($j != 0) { //if (product list is not empty) 
         
+            $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)
+                    ->where('order_type', '=', 'delivery_order')
+                    ->delete();
+
+            $order_products = array();
+            foreach ($input_data['product'] as $product_data) {
+                if ($product_data['name'] != "") {
+                    $order_products = [
+                        'order_id' => $id,
+                        'order_type' => 'delivery_order',
+                        'product_category_id' => $product_data['id'],
+                        'unit_id' => $product_data['units'],
+                        'quantity' => $product_data['quantity'],
+                        'price' => $product_data['price'],
+                        'remarks' => $product_data['remark'],
+                    ];
+
+                    $add_order_products = AllOrderProducts::create($order_products);
+                }
+            }
+        }
+
+        return redirect('delivery_order')->with('validation_message', 'Delivery order details successfully updated.');
     }
 
     /**
