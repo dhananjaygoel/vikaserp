@@ -32,7 +32,7 @@
                                 <input type="hidden" name="baseurl" id="baseurl2" value="{{url()}}" />
                                 <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                                 <label for="status">Select Product Category</label>
-                                <select class="form-control" name="product_type" id="product_type_select">
+                                <select class="form-control" name="product_type" id="product_sub_category_select">
                                     <option disabled="" selected="" value="">--Select Product Category--</option>
                                     @foreach($product_type as $prod_type)
                                     <option value="{{$prod_type->id}}" id="product_type{{$prod_type->id}}"> {{$prod_type->name}}</option>
@@ -56,7 +56,7 @@
                                 <label for="size">Product Size</label>
                                 <input id="size" class="form-control" placeholder="Product Size" name="size" value="{{ old('size') }}" type="text">
                             </div>
-                            <div class="thick">   
+                            <div class="thick12" style="display: none;">   
                                 <div class="form-group ">
                                     <label for="thickness">Product Thickness</label>
                                     <input id="thickness" class="form-control" placeholder="Product Thickness" name="thickness" value="{{ old('thickness') }}" type="text">

@@ -28,7 +28,22 @@ class DeliveryOrderController extends Controller {
      * @return Response
      */
     public function index() {
-        $delivery_data = DeliveryOrder::paginate(10);
+        $delivery_data = 0;
+        if(Input::get('order_status')){
+            
+            if(Input::get('order_status') == 'Inprocess'){
+                $delivery_data = DeliveryOrder::where('order_status','pending')->paginate(10);
+            }elseif(Input::get('order_status') == 'Delivered') {                
+                $delivery_data = DeliveryOrder::where('order_status','completed')->paginate(10);
+            }
+            
+        }else{
+             $delivery_data = DeliveryOrder::paginate(10);
+        }
+        
+        
+       
+        $delivery_data->setPath('delivery_order');
         return view('delivery_order', compact('delivery_data'));
     }
 

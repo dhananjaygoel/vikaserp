@@ -8,6 +8,20 @@ $(document).ready(function () {
 
     });
 
+    $('#product_sub_category_select').change(function () {
+        
+        var prod = $('#product_sub_category_select').val();
+//        alert(prod);
+        if(prod == 1){
+           $('.thick12').css('display','block');
+        }
+        
+        if(prod == 2){
+            $('.thick12').css('display','none');
+        }
+        
+    });
+    
     $('#product_type_select').change(function () {
         var product_type_id = $("#product_type_select").val();
         var url = $('#baseurl2').val();

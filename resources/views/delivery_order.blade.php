@@ -16,11 +16,14 @@
                     </a>
                     <div class="form-group pull-right">
                         <div class="col-md-12">
-                            <select class="form-control" id="user_filter" name="user_filter">
-                                <option value="" selected="">Status</option>
-                                <option value="2">Delivered</option>
-                                <option value="2">Inprocess</option>
-                            </select>
+                            <form method="GET" action="{{URL::action('DeliveryOrderController@index')}}" id="filter_form">
+                                <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                                <select class="form-control" id="order_status" name="order_status" onchange="this.form.submit()">
+                                    <option value="" selected="" disabled="">--Status--</option>
+                                    <option <?php if(Input::get('order_status') == 'Delivered') echo 'selected=""'; ?> value="Delivered">Delivered</option>
+                                    <option <?php if(Input::get('order_status') == 'Inprocess') echo 'selected=""'; ?> value="Inprocess">Inprocess</option>
+                                </select>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -43,7 +46,7 @@
                                 </thead>
                                 <tbody>  
                                     <?php $i = ($delivery_data->currentPage() - 1 ) * $delivery_data->perPage() + 1; ?>
-                                     @foreach($delivery_data as $delivery)
+                                    @foreach($delivery_data as $delivery)
                                     <tr>
                                         <td>{{ $i }}</td>
                                         <td>{{ $delivery->estimated_delivery_date }}</td>
@@ -145,13 +148,7 @@
                             </table>
                             <span class="pull-right">
                                 <ul class="pagination pull-right">
-                                    <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-                                    <li><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
-                                    <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
+                                    <?php echo $delivery_data->render(); ?>
                                 </ul>
                             </span>
                         </div>
