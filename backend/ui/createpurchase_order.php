@@ -416,7 +416,7 @@
 
                                                 </div>
                    
-                             <button title="SMS would be sent to Relationship Manager" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
+                         <!--    <button title="SMS would be sent to Relationship Manager" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> -->
 
                         <hr>
                         <div>

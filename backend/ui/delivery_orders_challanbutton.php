@@ -544,7 +544,7 @@
                         <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3"></textarea>
                     </div>
                      
-                 <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
+                <!-- <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> -->
                       
                 <hr>                  
                 <div>
