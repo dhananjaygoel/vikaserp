@@ -30,7 +30,7 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
-                        @if(sizeof($dellivery_data) != 0)
+                        @if(sizeof($delivery_data) != 0)
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
                                 <thead>
@@ -41,62 +41,33 @@
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>                    
+                                <tbody>  
+                                    <?php $i = ($delivery_data->currentPage() - 1 ) * $delivery_data->perPage() + 1; ?>
+                                     @foreach($delivery_data as $delivery)
                                     <tr>
-                                        <td>1</td>
-                                        <td>09 Apr 2015</td>
-                                        <td>Apr16/04/01</td>                                    
+                                        <td>{{ $i }}</td>
+                                        <td>{{ $delivery->estimated_delivery_date }}</td>
+                                        <td>
+                                            @if($delivery->serial_no != "")
+                                            {{ $delivery->serial_no }}
+                                            @else
+                                            {{ '--' }}
+                                            @endif
+                                        </td>                                    
                                         <td class="text-center">
-                                            <a href="view_deliveryorder.php" class="table-link" title="view">
+                                            <a href="{{URL::action('DeliveryOrderController@show',['id'=> $delivery->id])}}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="edit_deliveryorder.php" class="table-link" title="edit">
+                                            <a href="{{URL::action('DeliveryOrderController@edit', ['id'=> $delivery->id])}}" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
                                             <a href="delivery_orders_challanbutton.php" class="table-link" title="Delivery challan">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-book fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#myModal1">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-print fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal" title="delete">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>08 Apr 2015</td>
-                                        <td>Apr16/04/01</td>                                  
-                                        <td class="text-center">
-                                            <a href="view_deliveryorder.php" class="table-link" title="view">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="edit_deliveryorder.php" class="table-link" title="edit">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="" class="table-link" title="Delivery challan">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-book fa-stack-1x fa-inverse"></i>
@@ -140,7 +111,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>    
+                                </div> 
+                                @endforeach
                                 <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">

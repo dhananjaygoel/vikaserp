@@ -19,7 +19,6 @@ class DeliveryOrder extends Model implements AuthenticatableContract, CanResetPa
      * @var string
      */
     protected $table = 'delivery_order';
-
 //    public static $newuser_rules = array(
 //        'first_name' => 'required|min:2|max:100',
 //        'last_name' => 'required|min:2|max:100',
@@ -35,5 +34,13 @@ class DeliveryOrder extends Model implements AuthenticatableContract, CanResetPa
         'driver_name' => 'required',
         'driver_contact' => 'required|min:10|max:20'
     );
+
+    public function delivery_product() {
+        return $this->hasMany('App\AllOrderProducts', 'order_id', 'id');
+    }
+
+    public function customer() {
+        return $this->hasOne('App\Customer', 'id', 'customer_id');
+    }
 
 }
