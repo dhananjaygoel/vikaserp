@@ -21,7 +21,7 @@ class DeliveryLocation extends Model {
      *
      * @var array
      */
-    protected $fillable = ['state_id', 'city_id', 'area_name'];
+    protected $fillable = ['state_id', 'city_id', 'area_name', 'status'];
     protected $dates = ['deleted_at'];
 
     public function city() {

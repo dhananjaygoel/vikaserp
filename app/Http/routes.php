@@ -76,6 +76,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('order_cancelled', 'OrderController@manual_complete_order');
     Route::resource('create_purchase_advice', 'PurchaseOrderController@create_purchase_advice');
     Route::post('store_advise', 'PurchaseAdviseController@store_advise');
+    Route::get('get_cities', 'CityController@get_cities');
+
+
+
 
     Route::get('pending_orders', function() {
         return 'Pending Orders';

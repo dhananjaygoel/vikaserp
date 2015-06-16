@@ -110,4 +110,10 @@ class CityController extends Controller {
             return redirect('city')->with('flash_message', 'City details cannot be deleted as it is associated with a location.');
     }
 
+    public function get_cities() {
+        $state_id = Input::get('state_id');
+        $cities = City::where('state_id', '=', $state_id)->get();
+        echo json_encode(array('cities' => $cities));
+    }
+
 }

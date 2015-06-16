@@ -36,7 +36,7 @@
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <div class="form-group">
                                 <label for="state_name">State Name</label>
-                                <select name="state" class="form-control">
+                                <select name="state" class="form-control" onchange="fetch_city();" id="select_state">
                                     <option value="" selected="">Select State</option>
                                     @foreach($states as $state)
                                     <option value="{{$state->id}}">{{$state->state_name}}</option>
@@ -45,7 +45,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="city_name">City Name</label>
-                                <select name="city" class="form-control">
+                                <select name="city" class="form-control" id="select_city">
                                     <option value="" selected="">Select City</option>
                                     @foreach($cities as $city)
                                     <option value="{{$city->id}}">{{$city->city_name}}</option>

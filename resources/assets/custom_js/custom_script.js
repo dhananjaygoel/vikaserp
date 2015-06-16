@@ -246,3 +246,22 @@ function product_autocomplete(id) {
     });
 }
 
+/**
+ * Comment
+ */
+function fetch_city() {
+    var state_id = $("#select_state").val();
+    $.ajax({
+        type: 'GET',
+        url: baseurl + '/get_cities',
+        data: {state_id: state_id}
+    }).done(function(data) {
+        var main_array = JSON.parse(data);
+        var arr1 = main_array['cities'];
+        var html = '';
+        for (var key in arr1) {
+            html += '<option value="' + arr1[key].id + '">' + arr1[key].city_name + '</option>';
+        }
+        $("#select_city").html(html);
+    });
+}

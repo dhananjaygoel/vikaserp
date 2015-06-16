@@ -17,12 +17,14 @@
                         </a>
                         <div class="form-group pull-right">
                             <div class="col-md-12">
-                                <select class="form-control" id="user_filter3" name="purchase_order_filter">
-                                    <option value="" selected="">Status</option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Completed">Completed</option>
-                                    <option value="Canceled">Canceled</option>
-                                </select>
+                                <form method="GET" action="{{url('purchase_orders')}}">
+                                    <select class="form-control" id="purchase_order_filter" name="purchase_order_filter" onchange="this.form.submit();">
+                                        <option value="">Status</option>
+                                        <option value="pending" <?php if ($_GET['purchase_order_filter'] == "pending") echo "selected=''"; ?>>Pending</option>
+                                        <option value="completed" <?php if ($_GET['purchase_order_filter'] == "completed") echo "selected=''"; ?>>Completed</option>
+                                        <!--<option value="Canceled">Canceled</option>-->
+                                    </select>
+                                </form>
                             </div>
                         </div>
                     </div>

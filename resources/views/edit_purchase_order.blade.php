@@ -113,9 +113,9 @@
                         </div>
                     </div>
                     @endif
-                    <div class="inquiry_table col-md-12">
+                    <div class="inquiry_table col-md-12" >
                         <div class="table-responsive">
-                            <table id="table-example" class="table table-hover  ">
+                            <table id="add_product_table" class="table table-hover">
                                 <tbody>
                                     <tr class="headingunderline">
                                         <td><span>Select Product</span></td>

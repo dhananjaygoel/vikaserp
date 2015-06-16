@@ -23,7 +23,7 @@ class DeliveryLocationController extends Controller {
      * @return Response
      */
     public function index() {
-        $delivery_location = DeliveryLocation::with('city.states')->orderBy('created_at', 'desc')->Paginate(10);
+        $delivery_location = DeliveryLocation::where('status', '=', 'permanent')->with('city.states')->orderBy('created_at', 'desc')->Paginate(10);
         $delivery_location->setPath('location');
         return view('delivery_location', compact('delivery_location'));
     }
@@ -48,7 +48,8 @@ class DeliveryLocationController extends Controller {
         $add_delivery_location = DeliveryLocation::create([
                     'area_name' => $request->input('area_name'),
                     'state_id' => $request->input('state'),
-                    'city_id' => $request->input('city')
+                    'city_id' => $request->input('city'),
+                    'status' => 'permanent'
         ]);
         $id = DB::getPdo()->lastInsertId();
         return redirect('location')->with('flash_success_message', 'Location details successfully added.');
@@ -90,6 +91,7 @@ class DeliveryLocationController extends Controller {
                 'state_id' => $request->input('state'),
                 'city_id' => $request->input('city'),
                 'area_name' => $request->input('area_name'),
+                'status' => 'permanent'
             ]);
             return redirect('location')->with('flash_success_message', 'Location details successfully modified.');
         } else
