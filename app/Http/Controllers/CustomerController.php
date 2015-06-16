@@ -45,7 +45,7 @@ class CustomerController extends Controller {
      */
     public function create() {
 
-        $managers = User::all();
+        $managers = User::where('role_id', '=', 1)->get();
 
         $locations = DeliveryLocation::all();
 
@@ -129,7 +129,7 @@ class CustomerController extends Controller {
                 }
             }
 
-            return redirect('customers/' . $customer->id . '/edit')->with('success', 'Customer Succesfully added');
+            return redirect('customers')->with('success', 'Customer Succesfully added');
         } else {
             return Redirect::back()->with('error', 'Some error occoured while saving customer');
         }
@@ -160,7 +160,7 @@ class CustomerController extends Controller {
             return redirect('customers/')->with('error', 'Trying to access an invalid customer');
         }
 
-        $managers = User::all();
+        $managers = User::where('role_id', '=', 1)->get();
 
         $locations = DeliveryLocation::all();
 
@@ -255,7 +255,7 @@ class CustomerController extends Controller {
                 }
             }
             
-            return redirect('customers/' . $customer->id . '/edit')->with('success', 'Customer details updated successfully');
+            return redirect('customers')->with('success', 'Customer details updated successfully');
         } else {
             return Redirect::back()->with('error', 'Some error occoured while saving customer');
         }

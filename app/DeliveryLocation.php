@@ -3,8 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DeliveryLocation extends Model {
+
+    use SoftDeletes;
 
     /**
      * The database table used by the model.
@@ -19,10 +22,12 @@ class DeliveryLocation extends Model {
      * @var array
      */
     protected $fillable = ['state_id', 'city_id', 'area_name'];
+    protected $dates = ['deleted_at'];
 
     public function city() {
         return $this->hasOne('App\City', 'id', 'city_id');
     }
+
     public function state() {
         return $this->hasOne('App\States', 'id', 'state_id');
     }

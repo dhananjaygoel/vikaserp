@@ -618,50 +618,7 @@
                                         
                                                
 					</div>
-                    
-             
         
-                <div class="form-group">
-                    <label for="vehicle_name">Vehicle Number</label>
-                    <input id="vehicle_name" class="form-control" placeholder="Vehicle Number" name="vehicle_name" value="" type="text">
-                </div>
-                <div class="form-group">
-                    <label for="driver_name">Driver Name</label>
-                    <input id="driver_name" class="form-control" placeholder="Driver Name " name="driver_name" value="" type="text">
-                </div>
-                    <div class="form-group">
-                    <label for="driver_contact">Driver Contact</label>
-                    <input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="" type="text">
-                </div>
-                  
-                 
-                              
-                    <div class="row col-md-4">  
-                 <div class="form-group">
-  <label for="location">Delivery Location:</label>
-  <select class="form-control" id="loc1">
-    <option>Location1</option>
-    <option>Location2</option>
-    <option id="other" value="3">Other</option>
-
-  </select>
-</div>
-                        </div>
-                      <div class="clearfix"></div>
-                    <div class="locationtext">
-                        <div class="row">
-                    <div class="form-group col-md-4">
-                    <label for="location">Location </label>
-                    <input id="location" class="form-control" placeholder="Location " name="location" value="" type="text">
-                </div>
-                        <div class="col-md-8 addlocation">
-                           
-                            <button class="btn btn-primary btn-xs">ADD</button>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    
                     <div class="form-group">
                     
                     <div class="radio">
@@ -715,6 +672,50 @@
                         <label for="grandtotal">Grand Total:<span class="gtotal"> $25000</span></label>
                         
                     </div>
+                                   
+             
+        
+                <div class="form-group">
+                    <label for="vehicle_name">Vehicle Number</label>
+                    <input id="vehicle_name" class="form-control" placeholder="Vehicle Number" name="vehicle_name" value="" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="driver_name">Driver Name</label>
+                    <input id="driver_name" class="form-control" placeholder="Driver Name " name="driver_name" value="" type="text">
+                </div>
+                    <div class="form-group">
+                    <label for="driver_contact">Driver Contact</label>
+                    <input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="" type="text">
+                </div>
+                  
+                 
+                              
+                    <div class="row col-md-4">  
+                 <div class="form-group">
+  <label for="location">Delivery Location:</label>
+  <select class="form-control" id="loc1">
+    <option>Location1</option>
+    <option>Location2</option>
+    <option id="other" value="3">Other</option>
+
+  </select>
+</div>
+                        </div>
+                      <div class="clearfix"></div>
+                    <div class="locationtext">
+                        <div class="row">
+                    <div class="form-group col-md-4">
+                    <label for="location">Location </label>
+                    <input id="location" class="form-control" placeholder="Location " name="location" value="" type="text">
+                </div>
+                        <div class="col-md-8 addlocation">
+                           
+                            <button class="btn btn-primary btn-xs">ADD</button>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    
                     <div class="form-group">
 			<label for="inquiry_remark">Remark</label>
                         <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3"></textarea>

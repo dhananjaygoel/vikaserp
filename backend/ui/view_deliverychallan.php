@@ -117,12 +117,13 @@
                                                     <td>
                                                     <span>Unit</span>
                                                     </td>
+                                                     <td>
+                                                    <span>Present Shipping</span>
+                                                    </td>
                                                     <td>
                                                     <span>Rate</span>
                                                     </td>
-                                                    <td>
-                                                    <span>Present Shipping</span>
-                                                    </td>
+                                                   
                                                      <td>
                                                     <span>Amount</span>
                                                     </td>

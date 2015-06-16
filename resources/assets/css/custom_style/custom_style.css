@@ -6,3 +6,6 @@
     .alert-warning ul li{
         list-style: none !important;
     }
+    .units_dropdown{
+        width: 90% !important;
+    }

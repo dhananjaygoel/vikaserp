@@ -61,7 +61,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('get_product_category', 'ProductsubController@get_product_category');
     Route::post('update_difference', 'ProductsubController@update_difference');
     Route::resource('delivery_order', 'DeliveryOrderController');
-    
+
     Route::get('change_password', 'PasswordController@getPassword');
     Route::post('change_password', 'PasswordController@postPassword');
 
@@ -73,13 +73,15 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('purchase_orders', 'PurchaseOrderController');
     Route::resource('purchaseorder_advise', 'PurchaseAdviseController');
     Route::resource('orders', 'OrderController');
-    Route::post('order_cancelled','OrderController@manual_complete_order');
+    Route::post('order_cancelled', 'OrderController@manual_complete_order');
+    Route::resource('create_purchase_advice', 'PurchaseOrderController@create_purchase_advice');
+    Route::post('store_advise', 'PurchaseAdviseController@store_advise');
 
     Route::get('pending_orders', function() {
         return 'Pending Orders';
     });
 
-    
+
 
     Route::get('pending_inquiry', function() {
         return 'Pending Inquiry ';

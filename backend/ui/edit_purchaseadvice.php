@@ -108,9 +108,10 @@
                                                        <td><span>Product(Alias)</span></td>
                                                       
                                                        <td><span>Unit</span></td>
+                                                       <td class="col-md-2 text-center"><span>Present Shipping</span></td>
                                                        <td><span>Price</span></td>
                                                        <td class="col-md-2 text-center"><span>Pending Order</span></td>
-                                                      <td class="col-md-2 text-center"><span>Present Shipping</span></td>
+                                                     
                                                        <td class="col-md-3"><span>Remark</span></td>
                                                         
                                                 </tr>
@@ -123,8 +124,13 @@
                                                         </div>
                                                     </td>
                                                      
-                                                      <td >
+                                                      <td>
                                                           <div class="form-group">   Unit</div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group ">
+                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
+                                                        </div>
                                                     </td>
                                                      <td class="col-md-2">
                                                           <div class="row">
@@ -136,11 +142,7 @@
                                             </div>
                                                     </td>
                                                     <td class="text-center"><div class="form-group">15</div></td>
-                                                     <td>
-                                                        <div class="form-group ">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
-                                                    </td>
+                                                     
                                                       <td>
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
@@ -160,6 +162,11 @@
                                                       <td >
                                                           <div class="form-group">   Unit</div>
                                                     </td>
+                                                      <td>
+                                                        <div class="form-group ">
+                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
+                                                        </div>
+                                                    </td>
                                                    <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-12">
@@ -170,11 +177,7 @@
                                             </div>
                                                     </td>
                                                     <td class="text-center"><div class="form-group">15</div></td>
-                                                     <td>
-                                                        <div class="form-group ">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
-                                                    </td>
+                                                   
                                                       <td>
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
@@ -194,6 +197,11 @@
                                                       <td >
                                                           <div class="form-group">   Unit</div>
                                                     </td>
+                                                    <td>
+                                                        <div class="form-group ">
+                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
+                                                        </div>
+                                                    </td> 
                                                      <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-12">
@@ -204,11 +212,7 @@
                                             </div>
                                                     </td>
                                                     <td class="text-center"><div class="form-group">15</div></td>
-                                                  <td>
-                                                        <div class="form-group ">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
-                                                    </td>   
+                                                    
                                                       <td>
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
@@ -225,8 +229,13 @@
                                                         </div>
                                                     </td>
                                                      
-                                                      <td >
+                                                      <td>
                                                           <div class="form-group">   Unit</div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group ">
+                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
+                                                        </div>
                                                     </td>
                                                   <td class="col-md-2">
                                                           <div class="row">
@@ -238,11 +247,7 @@
                                             </div>
                                                     </td>
                                                     <td class="text-center"><div class="form-group">15</div></td>
-                                                     <td>
-                                                        <div class="form-group ">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
-                                                    </td>
+                                                     
                                                       <td>
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
@@ -294,6 +299,11 @@
                                                 <option value="3">cm</option>
                                             </select></div>
                                                     </td>
+                                                    <td>
+                                                        <div class="form-group ">
+                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
+                                                        </div>
+                                                    </td> 
                                                  <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-12">
@@ -304,11 +314,7 @@
                                             </div>
                                                     </td>
                                                     <td class="text-center"><div class="form-group">15</div></td>
-                                                    <td>
-                                                        <div class="form-group ">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
-                                                    </td> 
+                                                    
                                                       <td>
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
@@ -349,7 +355,7 @@
                                                         </div>
                                                     </td>
                                                      
-                                                      <td >
+                                                      <td>
                                                           <div class="form-group">         <select class="form-control" name="type" id="add_status_type">
                                       
                                                 <option value="2">Kg</option>
@@ -357,6 +363,11 @@
                                                 <option value="3">cm</option>
                                             </select></div>
                                                     </td>
+                                                    <td>
+                                                        <div class="form-group ">
+                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
+                                                        </div>
+                                                    </td> 
                                                     <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-12">
@@ -367,11 +378,7 @@
                                             </div>
                                                     </td>
                                                     <td class="text-center"><div class="form-group">15</div></td>
-                                                  <td>
-                                                        <div class="form-group ">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
-                                                    </td>   
+                                                    
                                                       <td>
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
@@ -420,6 +427,11 @@
                                                 <option value="3">cm</option>
                                             </select></div>
                                                     </td>
+                                                      <td>
+                                                        <div class="form-group ">
+                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
+                                                        </div>
+                                                    </td>
                                                    <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-12">
@@ -430,11 +442,7 @@
                                             </div>
                                                     </td>
                                                     <td class="text-center"><div class="form-group">15</div></td>
-                                                     <td>
-                                                        <div class="form-group ">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
-                                                    </td>
+                                                   
                                                       <td>
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">
@@ -475,7 +483,7 @@
                                                         </div>
                                                     </td>
                                                       
-                                                      <td >
+                                                      <td>
                                                           <div class="form-group">         <select class="form-control" name="type" id="add_status_type">
                                            <option value="" selected=""></option>
                                                 <option value="2">Kg</option>
@@ -483,6 +491,11 @@
                                                 <option value="3">cm</option>
                                             </select></div>
                                                     </td>
+                                                     <td>
+                                                        <div class="form-group ">
+                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
+                                                        </div>
+                                                    </td> 
                                                      <td class="col-md-2">
                                                           <div class="row">
                                             <div class="form-group col-md-12">
@@ -493,11 +506,7 @@
                                             </div>
                                                     </td>
                                                     <td class="text-center"><div class="form-group">15</div></td>
-                                                     <td>
-                                                        <div class="form-group ">
-                                                        <input id="" class="form-control" placeholder="Present Shipping" name="" value="" type="text" >
-                                                        </div>
-                                                    </td> 
+                                                    
                                                       <td>
                                                           <div class="form-group">
                                                           <input id="remark" class="form-control" placeholder="Remark" name="remark" value="" type="text">

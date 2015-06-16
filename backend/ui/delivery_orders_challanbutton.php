@@ -108,8 +108,9 @@
                                                         
                                                         <td class="col-md-2"><span>Actual Pieces</span></td>
                                                         <td class="col-md-1"><span>Present Shipping</span></td>
-                                                        <td class="col-md-1"><span>Unit</span></td>
+                                                        
                                                         <td class="col-md-2"><span>Rate</span></td>
+                                                        <td class="col-md-1"><span>Unit</span></td>
                                                         <td class="col-md-2"><span>Amount</span></td>
                                                        
                                                     </tr>
@@ -129,9 +130,7 @@
                                                      <td class="shippingcolumn text-center">
                                                   Shipping1
                                                     </td>
-                                                     <td>
-                                                    Unit
-                                                    </td>
+                                                    
                                                     <td class="shippingcolumn">
                                                             <div class="row product-price">
                                             <div class="form-group col-md-12">
@@ -143,6 +142,9 @@
                                            <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
                                             </div>-->
                                             </div>
+                                                    </td>
+                                                     <td>
+                                                    Unit
                                                     </td>
                                                      <td class="shippingcolumn">
                                                         Amount1
@@ -167,9 +169,7 @@
                                                      <td class="shippingcolumn text-center">
                                                   Shipping2
                                                     </td>
-                                                     <td>
-                                                    Unit
-                                                    </td>
+                                                    
                                                       <td class="shippingcolumn">
                                                             <div class="row product-price">
                                             <div class="form-group col-md-12">
@@ -181,6 +181,9 @@
                                            <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
                                             </div>-->
                                             </div>
+                                                    </td>
+                                                     <td>
+                                                    Unit
                                                     </td>
                                                      <td class="shippingcolumn">
                                                    Amount2
@@ -206,9 +209,7 @@
                                                      <td class="shippingcolumn text-center">
                                                   Shipping3
                                                     </td>
-                                                     <td>
-                                                    Unit
-                                                    </td>
+                                                    
                                                         <td class="shippingcolumn">
                                                             <div class="row product-price">
                                             <div class="form-group col-md-12">
@@ -220,6 +221,9 @@
                                            <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
                                             </div>-->
                                             </div>
+                                                    </td>
+                                                     <td>
+                                                    Unit
                                                     </td>
                                                      <td class="shippingcolumn">
                                                   Amount3
@@ -245,9 +249,7 @@
                                                      <td class="shippingcolumn text-center">
                                                   Shipping4
                                                     </td>
-                                                     <td>
-                                                    Unit
-                                                    </td>
+                                                    
                                                       <td class="shippingcolumn">
                                                             <div class="row product-price">
                                             <div class="form-group col-md-12">
@@ -259,6 +261,9 @@
                                            <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
                                             </div>-->
                                             </div>
+                                                    </td>
+                                                     <td>
+                                                    Unit
                                                     </td>
                                                      <td class="shippingcolumn">
                                                   Amount4
@@ -305,16 +310,7 @@
                                                     <td class="shippingcolumn">
                                                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
                                                     </td>
-                                                     <td>
-                                                  
-                                                        <select class="form-control" name="type" id="add_status_type">
-                                           <option value="" selected=""></option>
-                                                <option value="2">Kg</option>
-                                                <option value="3">mm</option>
-                                                <option value="3">cm</option>
-                                            </select>
-                                                          
-                                                    </td>
+                                                    
                                                       <td class="shippingcolumn">
                                                             <div class="row product-price">
                                             <div class="form-group col-md-12">
@@ -326,6 +322,16 @@
                                            <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
                                             </div>-->
                                             </div>
+                                                    </td>
+                                                     <td>
+                                                  
+                                                        <select class="form-control" name="type" id="add_status_type">
+                                           <option value="" selected=""></option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select>
+                                                          
                                                     </td>
                                                      <td class="shippingcolumn">
                                                    <input id="shipping" class="form-control" placeholder="Amount" name="rate" value="" type="text">
@@ -372,16 +378,7 @@
                                                     <td class="shippingcolumn">
                                                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
                                                     </td>
-                                                     <td>
-                                                  
-                                                        <select class="form-control" name="type" id="add_status_type">
-                                           <option value="" selected=""></option>
-                                                <option value="2">Kg</option>
-                                                <option value="3">mm</option>
-                                                <option value="3">cm</option>
-                                            </select>
-                                                          
-                                                    </td>
+                                                
                                                      <td class="shippingcolumn">
                                                             <div class="row product-price">
                                             <div class="form-group col-md-12">
@@ -393,6 +390,16 @@
                                            <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
                                             </div>-->
                                             </div>
+                                                    </td>
+                                                         <td>
+                                                  
+                                                        <select class="form-control" name="type" id="add_status_type">
+                                           <option value="" selected=""></option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select>
+                                                          
                                                     </td>
                                                      <td class="shippingcolumn">
                                                    <input id="shipping" class="form-control" placeholder="Amount" name="rate" value="" type="text">
@@ -439,16 +446,7 @@
                                                      <td class="shippingcolumn">
                                                    <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">
                                                     </td>
-                                                     <td>
-                                                  
-                                                        <select class="form-control" name="type" id="add_status_type">
-                                           <option value="" selected=""></option>
-                                                <option value="2">Kg</option>
-                                                <option value="3">mm</option>
-                                                <option value="3">cm</option>
-                                            </select>
-                                                          
-                                                    </td>
+                                                   
                                                      <td class="shippingcolumn">
                                                             <div class="row product-price">
                                             <div class="form-group col-md-12">
@@ -460,6 +458,16 @@
                                            <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
                                             </div>-->
                                             </div>
+                                                    </td>
+                                                      <td>
+                                                  
+                                                        <select class="form-control" name="type" id="add_status_type">
+                                           <option value="" selected=""></option>
+                                                <option value="2">Kg</option>
+                                                <option value="3">mm</option>
+                                                <option value="3">cm</option>
+                                            </select>
+                                                          
                                                     </td>
                                                      <td class="shippingcolumn">
                                                    <input id="shipping" class="form-control" placeholder="Amount" name="rate" value="" type="text">

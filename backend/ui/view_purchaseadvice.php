@@ -118,13 +118,14 @@
                                                     <td>
                                                     <span>Unit</span>
                                                     </td>
-                                                    <td>
-                                                    <span>Price</span>
-                                                    </td>
-                                                    
+                                                     
                                                     <td class="col-md-2" >
                                                     <span>Present Shipping</span>
                                                     </td>
+                                                    <td>
+                                                    <span>Price</span>
+                                                    </td>
+                                                   
                                                     <td><span>Remark</span></td>
                                                 </tr>
                                       
@@ -132,8 +133,8 @@
                                             <td> Product1</td>
                                             
                                             <td>lorem</td>
-                                            <td>315</td>
                                             <td>35</td>
+                                            <td>315</td>
                                             <td>Lorem</td>
                                             
                                         </tr>
@@ -141,8 +142,8 @@
                                             <td> Product2</td>
                                            
                                             <td>lorem</td>
+                                           <td>35</td>
                                             <td>315</td>
-                                            <td>35</td>
                                             <td>Lorem</td>
                                             
                                         </tr>
@@ -150,8 +151,8 @@
                                             <td> Product3</td>
                                            
                                             <td>lorem</td>
+                                          <td>35</td>
                                             <td>315</td>
-                                            <td>35</td>
                                             <td>Lorem</td>
                                             
                                         </tr>
@@ -159,8 +160,8 @@
                                             <td> Product4</td>
                                             
                                             <td>lorem</td>
+                                           <td>35</td>
                                             <td>315</td>
-                                            <td>35</td>
                                             <td>Lorem</td>
                                             
                                         </tr>

@@ -22,7 +22,7 @@ class UnitsRequest extends Request {
      */
     public function rules() {
         return [
-            'unit_name' => 'required|unique:units'
+            'unit_name' => 'required|unique:unit'
         ];
     }
 

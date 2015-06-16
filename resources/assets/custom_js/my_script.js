@@ -69,6 +69,13 @@ $(document).ready(function () {
             $('.locationtext').toggle();
 
         }
+    });
+    
+    $('#loc1').change(function () {
+        if ($('#loc1').val() == 'other') {
+            $('.locationtext').toggle();
+
+        }
 
 
     });
