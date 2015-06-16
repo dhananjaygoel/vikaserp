@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DeliveryOrder extends Model implements AuthenticatableContract, CanResetPasswordContract {
 
@@ -19,6 +20,12 @@ class DeliveryOrder extends Model implements AuthenticatableContract, CanResetPa
      * @var string
      */
     protected $table = 'delivery_order';
+    
+     use SoftDeletes;
+     
+      protected $dates = ['deleted_at'];
+    
+    
 //    public static $newuser_rules = array(
 //        'first_name' => 'required|min:2|max:100',
 //        'last_name' => 'required|min:2|max:100',
@@ -29,6 +36,9 @@ class DeliveryOrder extends Model implements AuthenticatableContract, CanResetPa
 //        'mobile_number' => 'integer|digits_between:10,15|required|unique:users',
 //        'user_type' => 'required'
 //    );
+    
+    
+    
     public static $order_to_delivery_order_rules = array(
         'vehicle_number' => 'required',
         'driver_name' => 'required',
