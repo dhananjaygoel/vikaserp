@@ -116,7 +116,7 @@
                                 </a>
                             </li>
                             <li class="<?php echo ($page_name == 'purchaseorder_advisereport.php') ? 'active' : ''; ?>">
-                                <a href="purchaseorder_advisereport.php">
+                                <a href="{{url('pending_purchase_advice')}}">
                                     Pending Purchase Advise Report
                                 </a>
                             </li>

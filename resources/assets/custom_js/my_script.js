@@ -82,3 +82,7 @@ $(document).ready(function () {
 
 
 });
+
+$('#purchaseaAdviseFilter').on('change', function(){
+   $('#purchaseaAdviseFilterForm').submit();
+});

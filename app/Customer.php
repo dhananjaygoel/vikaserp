@@ -53,5 +53,15 @@ class Customer extends Model {
     public static $existing_customer_order_rules = array(
         'existing_customer_id' => 'required',
     );
+    
+    
+    public static $new_supplier_rules = array(
+        'supplier_name' => 'required|min:2|max:100',
+        'mobile_number' => 'integer|digits_between:10,15|required',
+        'credit_period' => 'integer|required',
+    );
+    public static $existing_supplier_rules = array(
+        'supplier_id' => 'required',
+    );
 
 }

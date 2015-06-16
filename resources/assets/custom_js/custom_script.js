@@ -171,6 +171,55 @@ $(document).ready(function() {
                 '</tr>';
         $("#add_product_table").children("tbody").append(html);
     });
+    
+    $("#add_editadvice_product_row").on("click", function() {
+        var current_row_count = $(".add_product_row").length + 1;
+        $.ajax({
+            type: "GET",
+            url: baseurl + '/get_units'
+        }).done(function(data) {
+            var main_array = JSON.parse(data);
+            var arr1 = main_array['units'];
+            var html = '<option value="" selected="">Unit</option>';
+            for (var key in arr1) {
+                html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
+            }
+            $("#units_" + current_row_count).html(html);
+        });
+        var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row">' +
+                '<td class="col-md-3">' +
+                '<div class="form-group searchproduct">' +
+                '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +
+                '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
+                '<i class="fa fa-search search-icon"></i>' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-2">' +
+                '<div class="form-group ">' +
+                '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
+                '<option value="" selected="">Unit</option>' +
+                '</select>' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-1">' +
+                '<div class="form-group">' +
+                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="Present shipping" name="product[' + current_row_count + '][present_shipping]" value="" type="text">' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-2">' +
+                '<div class="form-group">' +
+                '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+                '</div>' +
+                '</td><td></td>' +
+                '<td class="col-md-4">' +
+                '<div class="form-group">' +
+                '<input id="remark" class="form-control" placeholder="Remark" name="product[' + current_row_count + '][remark]" value="" type="text">' +
+                '</div>' +
+                '</td>' +
+                '</tr>';
+        $("#add_product_table").children("tbody").append(html);
+    });
+    
     $("#add_inquiry_location").on("change", function() {
         if ($("#add_inquiry_location").val() == "other")
             $("#other_location_input_wrapper").show();

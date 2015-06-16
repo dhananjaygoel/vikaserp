@@ -13,6 +13,12 @@ use App\PurchaseAdvise;
 use App\PurchaseProducts;
 use App\DeliveryLocation;
 use DB;
+use App\User;
+use Hash;
+use App\Units;
+use App\Http\Requests\StorePurchaseAdvise;
+use Redirect;
+use Validator;
 
 class PurchaseAdviseController extends Controller {
 
@@ -22,7 +28,15 @@ class PurchaseAdviseController extends Controller {
      * @return Response
      */
     public function index() {
-        return View::make('purchase_advise');
+
+        $q = PurchaseAdvise::query();
+        if (Input::has('purchaseaAdviseFilter') && Input::get('purchaseaAdviseFilter') != '') {
+            $q->where('advice_status', '=', Input::get('purchaseaAdviseFilter'));
+        }
+        $purchase_advise = $q->paginate(2);
+        $purchase_advise->setPath('purchaseorder_advise');
+
+        return View::make('purchase_advise', array('purchase_advise' => $purchase_advise));
     }
 
     /**
@@ -32,10 +46,12 @@ class PurchaseAdviseController extends Controller {
      */
     public function create() {
         $customers = Customer::where('customer_status', '=', 'permanent')->get();
-        
+
         $locations = DeliveryLocation::all();
-        
-        return View::make('add_purchase_advise', array('customers' => $customers, 'locations' => $locations));
+
+        $units = Units::all();
+
+        return View::make('add_purchase_advise', array('customers' => $customers, 'locations' => $locations, 'units' => $units));
     }
 
     /**
@@ -43,8 +59,85 @@ class PurchaseAdviseController extends Controller {
      *
      * @return Response
      */
-    public function store() {
-        //
+    public function store(StorePurchaseAdvise $request) {
+        $input_data = Input::all();
+        $i = 0;
+        $j = count($input_data['product']);
+        foreach ($input_data['product'] as $product_data) {
+            if ($product_data['name'] == "") {
+                $i++;
+            }
+        }
+        if ($i == $j) {
+            return Redirect::back()->with('error', 'Please insert product details');
+        }
+        if ($input_data['supplier_status'] == "new") {
+            $validator = Validator::make($input_data, Customer::$new_supplier_rules);
+            if ($validator->passes()) {
+                $customers = new Customer();
+                $customers->owner_name = $input_data['supplier_name'];
+                $customers->phone_number1 = $input_data['mobile_number'];
+                $customers->credit_period = $input_data['credit_period'];
+                $customers->customer_status = 'pending';
+                $customers->save();
+                $customer_id = $customers->id;
+            } else {
+                $error_msg = $validator->messages();
+                return Redirect::back()->withInput()->withErrors($validator);
+            }
+        } elseif ($input_data['supplier_status'] == "existing") {
+            $validator = Validator::make($input_data, Customer::$existing_supplier_rules);
+            if ($validator->passes()) {
+                $customer_id = $input_data['supplier_id'];
+            } else {
+                $error_msg = $validator->messages();
+                return Redirect::back()->withInput()->withErrors($validator);
+            }
+        }
+
+        $purchase_advise_array = array();
+        $purchase_advise_array['purchase_advice_date'] = $input_data['bill_date'];
+        $purchase_advise_array['supplier_id'] = $customer_id;
+        $purchase_advise_array['created_by'] = Auth::id();
+        $purchase_advise_array['expected_delivery_date'] = $input_data['expected_delivery_date'];
+        $purchase_advise_array['total_price'] = $input_data['total_price'];
+        $purchase_advise_array['remarks'] = $input_data['remarks'];
+        $purchase_advise_array['vehicle_number'] = $input_data['vehicle_number'];
+        $purchase_advise_array['order_for'] = $input_data['order_for'];
+
+
+        if (isset($input_data['is_vat']) && $input_data['is_vat'] == "exclude_vat") {
+            $purchase_advise_array['vat_percentage'] = $input_data['vat_percentage'];
+        }
+        if (isset($input_data['delivery_location_id']) && $input_data['delivery_location_id'] == "other") {
+            $delivery_location = DeliveryLocation::create(array('area_name' => $input_data['new_location'], 'status' => 'pending'));
+            $purchase_advise_array['delivery_location_id'] = $delivery_location->id;
+        } else {
+            $purchase_advise_array['delivery_location_id'] = $input_data['delivery_location_id'];
+        }
+
+
+
+        $purchase_advise = PurchaseAdvise::create($purchase_advise_array);
+
+        $purchase_advise_id = $purchase_advise->id;
+
+        foreach ($input_data['product'] as $product_data) {
+            if ($product_data['name'] != "") {
+                $purchase_advise_products = [
+                    'purchase_order_id' => $purchase_advise_id,
+                    'order_type' => 'purchase_advice',
+                    'product_category_id' => $product_data['id'],
+                    'unit_id' => $product_data['units'],
+                    'quantity' => $product_data['quantity'],
+                    'price' => $product_data['price'],
+                    'remarks' => $product_data['remark'],
+                    'present_shipping' => $product_data['quantity']
+                ];
+                $add_purchase_advise_products = PurchaseProducts::create($purchase_advise_products);
+            }
+        }
+        return redirect('purchaseorder_advise')->with('success', 'Purchase advise added successfully');
     }
 
     /**
@@ -54,7 +147,9 @@ class PurchaseAdviseController extends Controller {
      * @return Response
      */
     public function show($id) {
-        //
+        $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.product_category')->find($id);
+
+        return View::make('view_purchase_advice', array('purchase_advise' => $purchase_advise));
     }
 
     /**
@@ -64,7 +159,12 @@ class PurchaseAdviseController extends Controller {
      * @return Response
      */
     public function edit($id) {
-        //
+        $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.product_category')->find($id);
+
+        $locations = DeliveryLocation::all();
+        $units = Units::all();
+
+        return View::make('edit_purchase_advise', array('locations' => $locations, 'units' => $units, 'purchase_advise' => $purchase_advise));
     }
 
     /**
@@ -74,7 +174,41 @@ class PurchaseAdviseController extends Controller {
      * @return Response
      */
     public function update($id) {
-        //
+        $input_data = Input::all();
+        $purchase_advise = PurchaseAdvise::find($id);
+        $purchase_advise->update(
+                array(
+                    'remarks' => $input_data['remarks'],
+                    'vehicle_number' => $input_data['vehicle_number']
+        ));
+
+        foreach ($input_data['product'] as $product_data) {
+            if ($product_data['name'] != "") {
+
+                if (isset($product_data['purchase_product_id']) && $product_data['purchase_product_id'] != '') {
+                    $purchase_product = PurchaseProducts::where('id', '=', $product_data['purchase_product_id'])->first();
+                    $purchase_product->update(
+                            [
+                                'present_shipping' => $product_data['present_shipping'],
+                                'price' => $product_data['price'],
+                                'remarks' => $product_data['remark'],
+                            ]
+                    );
+                } else {
+                    $purchase_advise_products = [
+                        'purchase_order_id' => $id,
+                        'order_type' => 'purchase_advice',
+                        'product_category_id' => $product_data['id'],
+                        'unit_id' => $product_data['units'],
+                        'quantity' => $product_data['present_shipping'],
+                        'price' => $product_data['price'],
+                        'remarks' => $product_data['remark'],
+                        'present_shipping' => $product_data['present_shipping']
+                    ];
+                    $add_purchase_advise_products = PurchaseProducts::create($purchase_advise_products);
+                }
+            }
+        }
     }
 
     /**
@@ -84,7 +218,20 @@ class PurchaseAdviseController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        //
+        $password = Input::get('password');
+        if ($password == '') {
+            return Redirect::to('purchaseorder_advise')->with('error', 'Please enter your password');
+        }
+
+        $current_user = User::find(Auth::id());
+
+        if (Hash::check($password, $current_user->password)) {
+            $purchase_advise = PurchaseAdvise::find($id);
+            $purchase_advise->delete();
+            return Redirect::to('purchaseorder_advise')->with('success', 'Purchase advise Successfully deleted');
+        } else {
+            return Redirect::to('purchaseorder_advise')->with('error', 'Invalid password');
+        }
     }
 
     public function store_advise() {
@@ -134,6 +281,14 @@ class PurchaseAdviseController extends Controller {
                 $add_purchase_advice_products = PurchaseProducts::create($purchase_advice_products);
             }
         }
+    }
+
+    public function pending_purchase_advice() {
+
+        $pending_advise = PurchaseAdvise::where('advice_status', '=', 'in_process')->with('purchase_products', 'supplier', 'party')->paginate(1);
+        $pending_advise->setPath('pending_purchase_advice');
+
+        return View::make('pending_purchase_advice', array('pending_advise' => $pending_advise));
     }
 
 }

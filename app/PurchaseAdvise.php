@@ -20,4 +20,22 @@ class PurchaseAdvise extends Model {
      */
     protected $fillable = ['supplier_id', 'created_by', 'purchase_advice_date', 'serial_number', 'delivery_location_id', 'order_by', 'vat_percentage', 'expected_delivery_date', 'total_price', 'remarks', 'advice_status', 'vehicle_number'];
 
+    public function supplier() {
+        return $this->hasOne('App\Customer', 'id', 'supplier_id');
+    }
+
+    public function party() {
+        return $this->hasOne('App\Customer', 'id', 'order_for');
+    }
+    
+    public function location() {
+        return $this->hasOne('App\DeliveryLocation', 'id', 'delivery_location_id');
+    }
+    
+    public function purchase_products() {
+        return $this->hasMany('App\PurchaseProducts', 'purchase_order_id', 'id')->where('order_type', '=', 'purchase_advice');
+    }
+    
+    
+    
 }
