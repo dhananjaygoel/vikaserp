@@ -18,6 +18,7 @@ use App\Http\Requests\InquiryRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use Hash;
+use App\ProductSubCategory;
 
 class InquiryController extends Controller {
 
@@ -29,9 +30,9 @@ class InquiryController extends Controller {
     public function index() {
         if ((isset($_GET['inquiry_filter'])) && $_GET['inquiry_filter'] != '') {
             $inquiries = Inquiry::where('inquiry_status', '=', $_GET['inquiry_filter'])
-                            ->with('customer', 'delivery_location', 'inquiry_products')->orderBy('created_at', 'desc')->Paginate(1);
+                            ->with('customer', 'delivery_location', 'inquiry_products')->orderBy('created_at', 'desc')->Paginate(5);
         } else {
-            $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products')->orderBy('created_at', 'desc')->Paginate(1);
+            $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products')->orderBy('created_at', 'desc')->Paginate(5);
         }
         $inquiries->setPath('inquiry');
         return view('inquiry', compact('inquiries'));
@@ -90,12 +91,19 @@ class InquiryController extends Controller {
             }
         }
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
+            $add_delivery_location = DeliveryLocation::create([
+                        'area_name' => $input_data['other_location_name'],
+                        'status' => 'pending'
+            ]);
+            $location_id = DB::getPdo()->lastInsertId();
             $add_inquiry_array = [
                 'customer_id' => $customer_id,
                 'created_by' => Auth::id(),
-                'delivery_location_id' => $input_data['add_inquiry_location'],
+                'delivery_location_id' => $location_id,
                 'vat_percentage' => $input_data['vat_percentage'],
-                'expected_delivery_date' => date_format(date_create($input_data['date']), 'Y-m-d'),
+//                'expected_delivery_date' => date_format(date_create($input_data['date']), 'Y-m-d'),
+//                'expected_delivery_date' => date('Y-m-d', strtotime($input_data['date'])),
+                'expected_delivery_date' => date('Y-m-d', strtotime($input_data['date'])),
                 'remarks' => $input_data['inquiry_remark'],
                 'inquiry_status' => "Pending",
                 'other_location' => $input_data['other_location_name']
@@ -106,7 +114,7 @@ class InquiryController extends Controller {
                 'created_by' => Auth::id(),
                 'delivery_location_id' => $input_data['add_inquiry_location'],
                 'vat_percentage' => $input_data['vat_percentage'],
-                'expected_delivery_date' => date_format(date_create($input_data['date']), 'Y-m-d'),
+                'expected_delivery_date' => date('Y-m-d', strtotime($input_data['date'])),
                 'remarks' => $input_data['inquiry_remark'],
                 'inquiry_status' => "Pending"
             ];
@@ -243,8 +251,7 @@ class InquiryController extends Controller {
 
     public function fetch_existing_customer() {
         $term = '%' . Input::get('term') . '%';
-//        $customers = Customer::where('owner_name', 'like', $term)->where('customer_status', '=', 'permanent')->get();
-        $customers = Customer:: where('owner_name', 'like', $term)->get();
+        $customers = Customer::where('owner_name', 'like', $term)->where('customer_status', '=', 'permanent')->get();
         if (count($customers) > 0) {
             foreach ($customers as $customer) {
                 $data_array[] = [
@@ -257,13 +264,21 @@ class InquiryController extends Controller {
                 'value' => 'No Customers',
             ];
         }
-        echo json_encode(array('data_array' =>
-            $data_array));
+        echo json_encode(array('data_array' => $data_array));
     }
 
     public function fetch_products() {
         $term = '%' . Input::get('term') . '%';
         $products = ProductCategory::where('product_category_name', 'like', $term)->get();
+//        $products = ProductCategory::where('product_category_name', 'like', $term)
+//                        ->orWhere(function() use($term) {
+//                            ProductSubCategory::where('alias_name', 'like', $term);
+//                        })->get();
+//        echo '<pre>';
+//        print_r($products->toArray());
+//        echo '</pre>';
+//        exit;
+
         if (count($products) > 0) {
             foreach ($products as $product) {
                 $data_array[] = [

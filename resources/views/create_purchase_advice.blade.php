@@ -81,7 +81,11 @@
                                                 <td>Pending Order</td>
                                                 <td>
                                                     <div class="form-group pshipping">
+                                                        @if(isset($product_data['present_shipping']))
+                                                        <input id="{{"present_shipping_".$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$product_data['present_shipping']}}" type="text">
+                                                        @else
                                                         <input id="{{"present_shipping_".$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="" type="text">
+                                                        @endif
                                                     </div>
                                                 </td>
                                                 <td class="col-md-1"></td>

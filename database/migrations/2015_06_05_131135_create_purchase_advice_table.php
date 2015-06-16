@@ -13,6 +13,7 @@ class CreatePurchaseAdviceTable extends Migration {
     public function up() {
         Schema::create('purchase_advice', function(Blueprint $table) {
             $table->increments('id');
+            $table->integer('purchase_order_id');
             $table->integer('supplier_id');
             $table->integer('created_by');
             $table->date('purchase_advice_date');
@@ -23,7 +24,7 @@ class CreatePurchaseAdviceTable extends Migration {
             $table->string('expected_delivery_date');
             $table->integer('total_price');
             $table->text('remarks');
-            $table->integer('advice_status');
+            $table->enum('advice_status', array('delivered', 'in_process'));
             $table->string('vehicle_number');
             $table->timestamps();
         });

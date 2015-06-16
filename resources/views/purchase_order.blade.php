@@ -20,9 +20,9 @@
                                 <form method="GET" action="{{url('purchase_orders')}}">
                                     <select class="form-control" id="purchase_order_filter" name="purchase_order_filter" onchange="this.form.submit();">
                                         <option value="">Status</option>
-                                        <option value="pending" <?php if ($_GET['purchase_order_filter'] == "pending") echo "selected=''"; ?>>Pending</option>
-                                        <option value="completed" <?php if ($_GET['purchase_order_filter'] == "completed") echo "selected=''"; ?>>Completed</option>
-                                        <!--<option value="Canceled">Canceled</option>-->
+                                        <option value="pending" <?php if (isset($_GET['purchase_order_filter']) && ($_GET['purchase_order_filter'] == "pending")) echo "selected=''"; ?>>Pending</option>
+                                        <option value="completed" <?php if (isset($_GET['purchase_order_filter']) && ($_GET['purchase_order_filter'] == "completed")) echo "selected=''"; ?>>Completed</option>
+                                        <option value="canceled" <?php if (isset($_GET['purchase_order_filter']) && ($_GET['purchase_order_filter'] == "canceled")) echo "selected=''"; ?>>Canceled</option>
                                     </select>
                                 </form>
                             </div>
@@ -81,7 +81,7 @@
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a class="table-link" title="manually complete" data-toggle="modal" data-target="#myModal1">
+                                            <a class="table-link" title="manually complete" data-toggle="modal" data-target="#manual_complete_{{$purchase_order->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
@@ -128,7 +128,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="manual_complete_{{$purchase_order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -136,20 +136,25 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
-                                                <p>Are you sure to complete the Order? </p>
-                                                <div class="form-group">
-                                                    <label for="reason"><b>Reason</b></label>
-                                                    <textarea class="form-control" id="inquiry_remark" name="reason"  rows="2" placeholder="Reason"></textarea>
-                                                </div>
-                                                <div class="checkbox">
-                                                    <label class="marginsms"><input type="checkbox" value=""><span class="checksms">Email</span></label>
-                                                    <label><input type="checkbox" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
-                                                </div>
+                                                <form action="{{url('manual_complete')}}" method="POST">
+                                                    <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                                    <input type="hidden" name="module_name" value="purchase_order">
+                                                    <input type="hidden" name="purchase_order_id" value="{{$purchase_order->id}}">
+                                                    <p>Are you sure to complete the Order? </p>
+                                                    <div class="form-group">
+                                                        <label for="reason"><b>Reason</b></label>
+                                                        <textarea class="form-control" id="inquiry_remark" name="reason"  rows="2" placeholder="Reason" required=""></textarea>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label class="marginsms"><input type="checkbox" value=""><span class="checksms">Email</span></label>
+                                                        <label><input type="checkbox" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
+                                                    </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
+                                                <button type="submit" class="btn btn-default" id="yes">Yes</button>
                                             </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

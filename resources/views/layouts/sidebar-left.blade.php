@@ -68,7 +68,7 @@
                                     Delivery Challan
                                 </a>
                             </li>
-                            
+
                             <li class="<?php echo ($page_name == 'daily_del_orders.php') ? 'active' : ''; ?>">
                                 <a href="daily_del_orders.php">
                                     Pending Delivery Order Report
@@ -104,13 +104,14 @@
                                     Purchase Advice
                                 </a>
                             </li>
-                            <li class="<?php echo ($page_name == 'purchaseorder_challan.php') ? 'active' : ''; ?>">
-                                <a href="purchaseorder_challan.php">
+                            <li class="{{ (Request::is('*purchase_challan*') ? 'active' : '') }}">
+                                <a href="{{url("purchase_challan")}}">
                                     Purchase Challan
                                 </a>
                             </li>
-                            <li class="<?php echo ($page_name == 'purchaseorder_report.php') ? 'active' : ''; ?>" >
-                                <a href="purchaseorder_report.php">
+
+                            <li class="{{ (Request::is('*purchase_order_report*') ? 'active' : '') }}">
+                                <a href="{{url('purchase_order_report')}}" >
                                     Purchase Order Report
                                 </a>
                             </li>

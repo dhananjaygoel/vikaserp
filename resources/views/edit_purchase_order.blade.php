@@ -57,7 +57,7 @@
                                 <input  checked="" value="new_supplier" id="new_supplier" name="supplier_status" type="radio">
                                 <label for="new_supplier">New Supplier</label>
                             </div>
-                            <div class="supplier customer_select">
+                            <div class="supplier customer_select" style="display:none">
                                 <div class="col-md-12">
                                     <div class="form-group searchproduct">
                                         <input class="form-control" placeholder="Enter Supplier Name " type="text" name="existing_supplier_name" id="existing_supplier_name">
@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="exist_field"  style="display:none">
+                        <div class="exist_field">
                             <div class="form-group">
                                 <label for="name"> Supplier Name</label>
                                 <input id="name" class="form-control" placeholder="Supplier Name" name="supplier_name" value="{{$purchase_order['customer']->owner_name}}" type="text">
@@ -289,7 +289,7 @@
                         <label for="date">Expected Delivery Date: </label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                            <input type="text" name="date" class="form-control" id="expected_delivery_date" value="{{date('Y-m-d', strtotime($purchase_order->expected_delivery_date))}}" >
+                            <input type="text" name="expected_delivery_date" class="form-control" id="expected_delivery_date" value="{{date('m-d-Y', strtotime($purchase_order->expected_delivery_date))}}" >
                         </div>
                     </div>
                     <div class="clearfix"></div>

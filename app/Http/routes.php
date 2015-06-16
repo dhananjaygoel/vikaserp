@@ -77,11 +77,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('create_purchase_advice', 'PurchaseOrderController@create_purchase_advice');
     Route::post('store_advise', 'PurchaseAdviseController@store_advise');
     Route::get('get_cities', 'CityController@get_cities');
-    Route::get('create_delivery_order/{id}','OrderController@create_delivery_order');
-    Route::post('create_delivery_order/{id}','OrderController@store_delivery_order');
+    Route::get('create_delivery_order/{id}', 'OrderController@create_delivery_order');
+    Route::post('create_delivery_order/{id}', 'OrderController@store_delivery_order');
     Route::get('pending_order_report', 'PendingOrderReportController@index');
-    Route::resource('delivery_challan','DeliveryChallanController');
-    
+    Route::resource('delivery_challan', 'DeliveryChallanController');
+    Route::post('manual_complete', 'PurchaseOrderController@manual_complete');
+    Route::get('purchase_order_report', 'PurchaseOrderController@purchase_order_report');
+    Route::resource('purchase_challan', 'PurchaseChallanController');
 
     Route::get('pending_inquiry', function() {
         return 'Pending Inquiry ';

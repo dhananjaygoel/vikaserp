@@ -277,7 +277,7 @@
                             <label for="date">Expected Delivery Date: </label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                <input type="text" name="date" class="form-control" id="expected_delivery_date" value="{{date('Y-m-d', strtotime($inquiry->expected_delivery_date))}}" >
+                                <input type="text" name="date" class="form-control" id="expected_delivery_date" value="{{date('m-d-Y', strtotime($inquiry->expected_delivery_date))}}" >
                             </div>
                         </div>
                         <div class="clearfix"></div>

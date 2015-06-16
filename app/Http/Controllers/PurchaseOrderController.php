@@ -17,6 +17,9 @@ use App\PurchaseProducts;
 use Auth;
 use DB;
 use Hash;
+use Mail;
+use App\PurchaseOrderCanceled;
+use App\PurchaseAdvise;
 
 class PurchaseOrderController extends Controller {
 
@@ -26,7 +29,23 @@ class PurchaseOrderController extends Controller {
      * @return Response
      */
     public function index() {
-        $purchase_orders = PurchaseOrder::with('customer', 'delivery_location', 'user', 'purchase_products')->Paginate(1);
+        $q = PurchaseOrder::query();
+        if (Auth::user()->role_id > 1) {
+            if ((isset($_GET['purchase_order_filter'])) && $_GET['purchase_order_filter'] != '') {
+                $q = $q->where('order_status', '=', $_GET['purchase_order_filter'])
+                        ->where('is_view_all', '=', 0);
+            } else {
+                $q = $q->where('is_view_all', '=', 0);
+            }
+        }
+        if (Auth::user()->role_id < 1) {
+            if ((isset($_GET['purchase_order_filter'])) && $_GET['purchase_order_filter'] != '') {
+                $q = $q->where('order_status', '=', $_GET['purchase_order_filter']);
+            }
+        }
+        $purchase_orders = $q->orderBy('created_at', 'desc')
+                ->with('customer', 'delivery_location', 'user', 'purchase_products')
+                ->Paginate(4);
         $purchase_orders->setPath('purchase_orders');
         return view('purchase_order', compact('purchase_orders'));
     }
@@ -84,38 +103,32 @@ class PurchaseOrderController extends Controller {
             }
         }
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
-            $add_purchase_order_array = [
-                'supplier_id' => $customer_id,
-                'created_by' => Auth::id(),
-                'delivery_location_id' => $input_data['purchase_order_location'],
-                'order_for' => $input_data['order_for'],
-                'vat_percentage' => $input_data['vat_percentage'],
-//                'expected_delivery_date' => date_format(date_create($input_data['expected_delivery_date']), 'Y-m-d'),
-//                'expected_delivery_date' => date('Y-m-d', strtotime($input_data['expected_delivery_date'])),
-                'remarks' => $input_data['purchase_order_remark'],
-                'inquiry_status' => "Pending",
-                'other_location' => $input_data['other_location_name']
-            ];
+            $add_delivery_location = DeliveryLocation::create([
+                        'area_name' => $input_data['other_location_name'],
+                        'status' => 'pending'
+            ]);
+            $location_id = DB::getPdo()->lastInsertId();
         } else {
-            $add_purchase_order_array = [
-                'is_view_all' => $input_data['viewable_by'],
-                'supplier_id' => $customer_id,
-                'created_by' => Auth::id(),
-                'delivery_location_id' => $input_data['purchase_order_location'],
-                'vat_percentage' => $input_data['vat_percentage'],
-//                'expected_delivery_date' => date_format(date_create($input_data['expected_delivery_date']), 'Y-m-d'),
-                'expected_delivery_date' => date('Y-m-d', strtotime($input_data['expected_delivery_date'])),
-                'remarks' => $input_data['purchase_order_remark'],
-                'inquiry_status' => "Pending"
-            ];
+            $location_id = $input_data['purchase_order_location'];
         }
+        $add_purchase_order_array = [
+            'supplier_id' => $customer_id,
+            'created_by' => Auth::id(),
+            'delivery_location_id' => $location_id,
+            'order_for' => $input_data['order_for'],
+            'vat_percentage' => $input_data['vat_percentage'],
+//            'expected_delivery_date' => date_format(date_create($input_data['expected_delivery_date']), 'Y-m-d'),
+//                'expected_delivery_date' => date('Y-m-d', strtotime($input_data['expected_delivery_date'])),
+            'remarks' => $input_data['purchase_order_remark'],
+            'inquiry_status' => "Pending",
+        ];
         $add_purchase_order = PurchaseOrder::create($add_purchase_order_array);
         $purchase_order_id = DB::getPdo()->lastInsertId();
         $purchase_order_products = array();
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
                 $purchase_order_products = [
-                    'inquiry_id' => $purchase_order_id,
+                    'purchase_order_id' => $purchase_order_id,
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
@@ -125,6 +138,12 @@ class PurchaseOrderController extends Controller {
                 $add_purchase_order_products = PurchaseProducts::create($purchase_order_products);
             }
         }
+//        if (isset($input_data['send_email'])) {
+//            $customer = Customer::findOrFail($customer_id);
+//            Mail::send('emails.purchase_order', ['customer' => $customer], function ($m) use ($customer) {
+//                $m->to($customer->email, $customer->first_name)->subject('Purchase order generated');
+//            });
+//        }
         return redirect('purchase_orders/' . $purchase_order_id . '/edit')->with('flash_message', 'Purchase order details successfully added.');
     }
 
@@ -203,7 +222,8 @@ class PurchaseOrderController extends Controller {
                 'delivery_location_id' => $input_data['purchase_order_location'],
                 'order_for' => $input_data['order_for'],
                 'vat_percentage' => $input_data['vat_percentage'],
-                'expected_delivery_date' => date_format(date_create($input_data['expected_delivery_date']), 'Y-m-d'),
+//                'expected_delivery_date' => date_format(date_create($input_data['expected_delivery_date']), 'Y-m-d'),
+                'expected_delivery_date' => date('Y-m-d', strtotime($input_data['expected_delivery_date'])),
                 'remarks' => $input_data['purchase_order_remark'],
                 'inquiry_status' => "Pending",
                 'other_location' => $input_data['other_location_name']
@@ -226,7 +246,7 @@ class PurchaseOrderController extends Controller {
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
                 $purchase_order_products = [
-                    'inquiry_id' => $purchase_order_id,
+                    'purchase_order_id' => $purchase_order_id,
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
@@ -256,8 +276,52 @@ class PurchaseOrderController extends Controller {
     }
 
     public function create_purchase_advice($order_id) {
-        $purchase_orders = PurchaseOrder::where('id', '=', $order_id)->with('purchase_products.unit', 'purchase_products.product_category', 'customer')->first();
+        $purchase_orders = PurchaseOrder::where('id', '=', $order_id)->with('purchase_products.unit', 'purchase_products.product_category', 'customer', 'purchase_advice.purchase_products')->first();
+
+        foreach ($purchase_orders as $orders) {
+            $check_if_advice_exists = PurchaseAdvise::where('purchase_order_id', '=', $order_id)->with('purchase_products')->get();
+            foreach ($check_if_advice_exists as $a) {
+                $orders['pending'] = $a->quantity - $a->present_shipping;
+            }
+        }
+//        echo '<pre>';
+//        print_r($purchase_orders);
+//        echo '</pre>';
+//        exit;
         return view('create_purchase_advice', compact('purchase_orders'));
+    }
+
+    public function manual_complete() {
+        $input_data = Input::all();
+        $purchase_order_canceled = PurchaseOrderCanceled::create([
+                    'purchase_order_id' => $input_data['purchase_order_id'],
+                    'purchase_type' => $input_data['module_name'],
+                    'reason' => $input_data['reason']
+        ]);
+        $change_status = PurchaseOrder::where('id', '=', $input_data['purchase_order_id'])->update(array('order_status' => 'canceled'));
+        return redirect('purchase_orders')->with('flash_message', 'Successfully completed purchase order');
+    }
+
+    public function purchase_order_report() {
+        $q = PurchaseOrder::query();
+        $q->where('order_status', '=', 'pending')
+                ->orderBy('created_at', 'desc')
+                ->with('customer', 'delivery_location', 'user', 'purchase_products');
+        if ((isset($_GET['pending_purchase_order'])) && $_GET['pending_purchase_order'] != '') {
+            $q->where('supplier_id', '=', $_GET['pending_purchase_order'])->get();
+        }
+        if ((isset($_GET['order_for_filter'])) && $_GET['order_for_filter'] == 'warehouse') {
+            $q->where('order_for', '=', 0)->get();
+        } elseif ((isset($_GET['order_for_filter'])) && $_GET['order_for_filter'] == 'direct') {
+            $q->where('order_for', '!=', 0)->get();
+        }
+        if (Auth::user()->role_id > 1) {
+            $q->where('is_view_all', '=', 0);
+        }
+        $purchase_orders = $q->Paginate(5);
+        $purchase_orders->setPath('purchase_order_report');
+        $all_customers = Customer::all();
+        return view('purchase_order_report', compact('purchase_orders', 'all_customers'));
     }
 
 }

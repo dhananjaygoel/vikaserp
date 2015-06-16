@@ -36,4 +36,8 @@ class PurchaseOrder extends Model {
         return $this->hasOne('App\User', 'id', 'created_by');
     }
 
+    public function purchase_advice() {
+        return $this->hasOne('App\PurchaseAdvise', 'purchase_order_id', 'id');
+    }
+
 }
