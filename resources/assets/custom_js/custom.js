@@ -94,9 +94,12 @@ $(document).ready(function(){
         
     });
    
-      $('#loc1').change(function(){
-         if($('#loc1').val()=='3'){
-           $('.locationtext').toggle();          
+      $('#order_location').change(function(){
+
+         if($('#order_location').val() =='-2'){
+                $('.locationtext').show();    
+        }else{
+            $('.locationtext').hide(); 
         }     
 });
 
