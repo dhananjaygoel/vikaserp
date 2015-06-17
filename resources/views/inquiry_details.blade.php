@@ -65,11 +65,11 @@
                                             <td>
                                                 <div class="row product-price">
                                                     <div class="form-group col-md-6">
-                                                        <input type="text" class="form-control" id="difference" placeholder="Price" value='{{$product_data->price}}' required="">
-                                                        <input type="hidden"name="product_id" value='{{$product_data->id}}' id='hidden_inquiry_product_id'>
+                                                        <input type="text" class="form-control" id="difference_{{$product_data->id}}" placeholder="Price" value='{{$product_data->price}}' required="">
+                                                        <input type="hidden"name="product_id" value='{{$product_data->id}}' id='hidden_inquiry_product_id_{{$product_data->id}}'>
                                                     </div>
                                                     <div class="form-group col-md-2 difference_form">
-                                                        <input type="button" name="save_price" value="Save" class="btn btn-primary" id="save_price_inquiry_view" onclick="save_price_inquiry_view('{{$product_data->id}}','{{$product_data->price}}');">
+                                                        <input type="button" name="save_price" value="Save" class="btn btn-primary" id="save_price_inquiry_view_{{$product_data->id}}" onclick="save_price_inquiry_view({{$product_data->id}});">
                                                     </div>
                                                 </div>
                                             </td>

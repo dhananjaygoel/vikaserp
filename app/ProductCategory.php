@@ -20,7 +20,12 @@ class ProductCategory extends Model implements AuthenticatableContract, CanReset
      */
     protected $table = 'product_category';
 
-     public function product_sub_category() {
+    public function product_sub_category() {
         return $this->hasone('App\ProductSubCategory', 'product_category_id', 'id');
     }
+
+    public function product_sub_categories() {
+        return $this->hasMany('App\ProductSubCategory', 'product_category_id', 'id');
+    }
+
 }

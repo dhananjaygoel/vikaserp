@@ -1,5 +1,7 @@
 var baseurl = $('#baseurl').attr('name');
 var _token = $('#csrf_token').attr('content');
+
+
 $(document).ready(function() {
     $("#existing_customer").click(function() {
         $(".exist_field").hide();
@@ -171,7 +173,7 @@ $(document).ready(function() {
                 '</tr>';
         $("#add_product_table").children("tbody").append(html);
     });
-    
+
     $("#add_editadvice_product_row").on("click", function() {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
@@ -219,7 +221,7 @@ $(document).ready(function() {
                 '</tr>';
         $("#add_product_table").children("tbody").append(html);
     });
-    
+
     $("#add_inquiry_location").on("change", function() {
         if ($("#add_inquiry_location").val() == "other")
             $("#other_location_input_wrapper").show();
@@ -227,21 +229,6 @@ $(document).ready(function() {
             $("#other_location_input_wrapper").hide();
     });
 //
-    $("#save_price_inquiry_view").on("click", function(event) {
-        var id = $("#hidden_inquiry_product_id").val();
-        var updated_price = $("#difference").val();
-        if (updated_price == "") {
-            event.preventDefault();
-        } else {
-            $.ajax({
-                type: 'POST',
-                url: baseurl + '/store_price',
-                data: {id: id, _token: _token, updated_price: updated_price}
-            }).done(function() {
-                location.reload();
-            });
-        }
-    });
 //    $('#loc1').change(function() {
 //        if ($('#loc1').val() == '3') {
 //            $('.locationtext').toggle();
@@ -249,9 +236,23 @@ $(document).ready(function() {
 //
 //    });
 });
-/**
- * Comment
- */
+
+function save_price_inquiry_view(id) {
+    var id = $("#hidden_inquiry_product_id_" + id).val();
+    var updated_price = $("#difference_" + id).val();
+    if (updated_price == "") {
+        event.preventDefault();
+    } else {
+        $.ajax({
+            type: 'POST',
+            url: baseurl + '/store_price',
+            data: {id: id, _token: _token, updated_price: updated_price}
+        }).done(function() {
+            location.reload();
+        });
+    }
+}
+
 function show_hide_customer(status) {
     if (status == "Pending") {
         $(".exist_field").show();
@@ -285,6 +286,8 @@ function product_autocomplete(id) {
             });
         },
         select: function(event, ui) {
+            alert(ui.item.id);
+            alert(ui.item.product_price);
             $("#product_price_" + id).val(ui.item.product_price);
             $("#add_product_id_" + id).val(ui.item.id);
 //            var next_row = $("#product_price_" + id).parent().parent().parent().next().attr("id");

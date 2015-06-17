@@ -135,7 +135,7 @@ class InquiryController extends Controller {
                 $add_inquiry_products = InquiryProducts::create($inquiry_products);
             }
         }
-        return redirect('inquiry/' . $inquiry_id . '/edit')->with('flash_message', 'Inquiry details successfully added.');
+        return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully added.');
     }
 
     /**
@@ -198,7 +198,7 @@ class InquiryController extends Controller {
         } elseif ($input_data['customer_status'] == "existing_customer") {
             $validator = Validator::make($input_data, Customer::$existing_customer_inquiry_rules);
             if ($validator->passes()) {
-                $customer_id = $input_data['existing_customer_id'];
+                $customer_id = $input_data['autocomplete_customer_id'];
             } else {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
@@ -230,7 +230,7 @@ class InquiryController extends Controller {
                 $add_inquiry_products = InquiryProducts::create($inquiry_products);
             }
         }
-        return redirect('inquiry/' . $id . '/edit')->with('flash_message', 'Inquiry details successfully modified.');
+        return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully modified.');
     }
 
     /**
@@ -269,23 +269,22 @@ class InquiryController extends Controller {
 
     public function fetch_products() {
         $term = '%' . Input::get('term') . '%';
-        $products = ProductCategory::where('product_category_name', 'like', $term)->get();
-//        $products = ProductCategory::where('product_category_name', 'like', $term)
-//                        ->orWhere(function() use($term) {
-//                            ProductSubCategory::where('alias_name', 'like', $term);
-//                        })->get();
-//        echo '<pre>';
-//        print_r($products->toArray());
-//        echo '</pre>';
-//        exit;
+        $products = ProductCategory::with(array('product_sub_categories' => function($query) use ($term) {
+                $query->where('alias_name', 'like', $term)->get();
+            })
+                )->get();
 
         if (count($products) > 0) {
             foreach ($products as $product) {
-                $data_array[] = [
-                    'value' => $product->product_category_name,
-                    'id' => $product->id,
-                    'product_price' => $product->price
-                ];
+                if (!empty($product['product_sub_categories'])) {
+                    foreach ($product['product_sub_categories'] as $product_sub_cat) {
+                        $data_array[] = [
+                            'value' => $product_sub_cat->alias_name,
+                            'id' => $product->id,
+                            'product_price' => $product->price
+                        ];
+                    }
+                }
             }
         } else {
             $data_array[] = [
