@@ -324,7 +324,24 @@ class DeliveryOrderController extends Controller {
     }
 
     public function pending_delivery_order() {
-        return view('pending_delivery_order');
+        
+        $delivery_data = 0;
+        if (Input::get('order_status')) {
+
+            if (Input::get('order_status') == 'Inprocess') {
+                $delivery_data = DeliveryOrder::with('user')->where('order_status', 'pending')->paginate(10);
+            } elseif (Input::get('order_status') == 'Delivered') {
+                $delivery_data = DeliveryOrder::with('user')->where('order_status', 'completed')->paginate(10);
+            }
+        } else {
+            $delivery_data = DeliveryOrder::with('user')->where('order_status', 'pending')->paginate(10);
+        }
+
+
+
+        $delivery_data->setPath('pending_delivery_order');
+        
+        return view('pending_delivery_order', compact('delivery_data'));
     }
     
     public function create_delivery_challan($id) {
