@@ -155,6 +155,7 @@ class DeliveryOrderController extends Controller {
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
+                    'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price'],
                     'remarks' => $product_data['remark'],
                 ];
@@ -294,6 +295,7 @@ class DeliveryOrderController extends Controller {
                         'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
                         'quantity' => $product_data['quantity'],
+                        'present_shipping' => $product_data['quantity'],
                         'price' => $product_data['price'],
                         'remarks' => $product_data['remark'],
                     ];
@@ -319,6 +321,10 @@ class DeliveryOrderController extends Controller {
         } else {
             return redirect('delivery_order')->with('wrong', 'You have entered wrong credentials');
         }
+    }
+
+    public function pending_delivery_order() {
+        return view('pending_delivery_order');
     }
 
 }
