@@ -61,6 +61,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('get_product_category', 'ProductsubController@get_product_category');
     Route::post('update_difference', 'ProductsubController@update_difference');
     Route::resource('delivery_order', 'DeliveryOrderController');
+    Route::resource('pending_delivery_order', 'DeliveryOrderController@pending_delivery_order');
 
     Route::get('change_password', 'PasswordController@getPassword');
     Route::post('change_password', 'PasswordController@postPassword');

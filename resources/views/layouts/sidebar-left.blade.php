@@ -46,7 +46,11 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
-                    <li class="{{ (Request::is('*orders*') ? 'active' : '') }}">
+                    <li class="<?php
+                    if (Request::is('*orders*') || Request::is('*delivery_order*') || Request::is('*delivery_challan*') || Request::is('*pending_delivery_order*') || Request::is('*pending_order_report*')) {
+                        echo 'active';
+                    }
+                    ?>">
                         <a href="#" class="dropdown-toggle">
                             <i class="fa fa-shopping-cart"></i>
                             <span>Order</span>
@@ -69,8 +73,8 @@
                                 </a>
                             </li>
 
-                            <li class="<?php echo ($page_name == 'daily_del_orders.php') ? 'active' : ''; ?>">
-                                <a href="daily_del_orders.php">
+                            <li class="{{ (Request::is('*pending_delivery_order*') ? 'active' : '') }}">
+                                <a href="{{'pending_delivery_order'}}">
                                     Pending Delivery Order Report
                                 </a>
                             </li>
