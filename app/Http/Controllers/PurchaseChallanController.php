@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\PurchaseChallan;
 
 class PurchaseChallanController extends Controller {
 
@@ -14,8 +15,9 @@ class PurchaseChallanController extends Controller {
      * @return Response
      */
     public function index() {
-        $purchase_challan = PurchaseChallan::all();
-        return view('purchase_challan');
+        $purchase_challan = PurchaseChallan::with('supplier', 'purchase_advice')->Paginate(2);
+        $purchase_challan->setPath('purchase_challan');
+        return view('purchase_challan', compact('purchase_challan'));
     }
 
     /**
@@ -73,7 +75,11 @@ class PurchaseChallanController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        //
+        if (Hash::check(Input::get('password'), Auth::user()->password)) {
+            $delete_purchase_challan = PurchaseChallan::find($id)->delete();
+            return redirect('purchase_challan')->with('flash_success_message', 'Purchase challan details successfully deleted.');
+        } else
+            return redirect('purchase_challan')->with('flash_message', 'Please enter a correct password');
     }
 
 }
