@@ -58,7 +58,7 @@
                             {{Session::get('wrong')}}                            
                         </div>
                         @endif
-                        
+
                         @if(sizeof($product_sub_cat) != 0)
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
@@ -75,7 +75,15 @@
                                     </tr>
                                 </thead>
                                 <tbody> 
-                                    <?php $i = ($product_sub_cat->currentPage() - 1 ) * $product_sub_cat->perPage() + 1; ?>
+                                    <?php
+                                    $i = ($product_sub_cat->currentPage() - 1 ) * $product_sub_cat->perPage() + 1;
+
+
+                                    //echo '<pre>';
+                                    //print_r($product_sub_cat->toarray());
+                                    //echo '</pre>';
+                                    //exit;
+                                    ?>
 
                                     @foreach($product_sub_cat as $produ_sub) 
                                     @if(sizeof($produ_sub['product_category']) != 0)
@@ -84,7 +92,13 @@
                                         <td>{{ $produ_sub['product_category']->product_category_name }} </td>
                                         <td>{{ $produ_sub->alias_name }}</td>
                                         <td>{{ $produ_sub->size }}</td>
-                                        <td>{{ $produ_sub->thickness}}</td>
+                                        <td>
+                                            @if($produ_sub['product_category']->product_type_id == 1)
+                                            {{ $produ_sub->thickness}}
+                                            @else
+                                            {{'--'}}
+                                            @endif
+                                        </td>
                                         <td>{{ $produ_sub->weight}}</td>
                                         <td>
                                             <form method="post" action="{{URL::action('ProductsubController@update_difference')}}">
@@ -171,118 +185,118 @@
                 </div>
             </div>
         </div>
-<!--        <div class="row" id="table2">
-            <div class="col-lg-12">
-                <div class="main-box clearfix">
-                    <div class="main-box-body main_contents clearfix">
-                        <div class="table-responsive">
-                            <table id="table-example" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Product Name</th>
-                                        <th>Size</th>
-                                        <th>Weight</th>
-                                        <th class="col-md-2">Difference</th>                                                         
-                                        <th >Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>                    
-                                    <tr>
-                                        <td >1</td>
-                                        <td>CRP Pipe </td>
-                                        <td>60 mm</td>
-                                        <td>10 kg</td>
-                                        <td>
-                                            <div class="row product-price">
-                                                <div class="form-group col-md-6">
-                                                    <input type="text" class="form-control" id="difference">
+        <!--        <div class="row" id="table2">
+                    <div class="col-lg-12">
+                        <div class="main-box clearfix">
+                            <div class="main-box-body main_contents clearfix">
+                                <div class="table-responsive">
+                                    <table id="table-example" class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Product Name</th>
+                                                <th>Size</th>
+                                                <th>Weight</th>
+                                                <th class="col-md-2">Difference</th>                                                         
+                                                <th >Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>                    
+                                            <tr>
+                                                <td >1</td>
+                                                <td>CRP Pipe </td>
+                                                <td>60 mm</td>
+                                                <td>10 kg</td>
+                                                <td>
+                                                    <div class="row product-price">
+                                                        <div class="form-group col-md-6">
+                                                            <input type="text" class="form-control" id="difference">
+                                                        </div>
+                                                        <div class="form-group col-md-2 difference_form">
+                                                            <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                                        </div>
+                                                    </div>
+                                                </td>                                        
+                                                <td>
+                                                    <a href="edit_prod_sub_cat.php" class="table-link">
+                                                        <span class="fa-stack">
+                                                            <i class="fa fa-square fa-stack-2x"></i>
+                                                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                        </span>
+                                                    </a>
+                                                    <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal">
+                                                        <span class="fa-stack">
+                                                            <i class="fa fa-square fa-stack-2x"></i>
+                                                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                        </span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>CRP Structure </td>
+                                                <td>20 mm</td>
+                                                <td>5 kg</td>
+                                                <td>
+                                                    <div class="row product-price">
+                                                        <div class="form-group col-md-6">
+                                                            <input type="text" class="form-control" id="difference">
+                                                        </div>
+                                                        <div class="form-group col-md-2 difference_form">
+                                                            <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                                        </div>
+                                                    </div>
+                                                </td>                  
+                                                <td>
+                                                    <a href="edit_prod_sub_cat.php" class="table-link">
+                                                        <span class="fa-stack">
+                                                            <i class="fa fa-square fa-stack-2x"></i>
+                                                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                        </span>
+                                                    </a>
+                                                    <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal">
+                                                        <span class="fa-stack">
+                                                            <i class="fa fa-square fa-stack-2x"></i>
+                                                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                        </span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                        <h4 class="modal-title" id="myModalLabel"></h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Are you sure you want to delete</p>
+                                                    </div>           
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
+                                                    </div>
                                                 </div>
-                                                <div class="form-group col-md-2 difference_form">
-                                                    <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                                </div>
-                                            </div>
-                                        </td>                                        
-                                        <td>
-                                            <a href="edit_prod_sub_cat.php" class="table-link">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>CRP Structure </td>
-                                        <td>20 mm</td>
-                                        <td>5 kg</td>
-                                        <td>
-                                            <div class="row product-price">
-                                                <div class="form-group col-md-6">
-                                                    <input type="text" class="form-control" id="difference">
-                                                </div>
-                                                <div class="form-group col-md-2 difference_form">
-                                                    <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                                </div>
-                                            </div>
-                                        </td>                  
-                                        <td>
-                                            <a href="edit_prod_sub_cat.php" class="table-link">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                <h4 class="modal-title" id="myModalLabel"></h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Are you sure you want to delete</p>
-                                            </div>           
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
                                             </div>
                                         </div>
-                                    </div>
+                                        </tbody>
+                                    </table>
+                                    <span class="pull-right">
+                                        <ul class="pagination pull-right">
+                                            <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
+                                            <li><a href="#">1</a></li>
+                                            <li><a href="#">2</a></li>
+                                            <li><a href="#">3</a></li>
+                                            <li><a href="#">4</a></li>
+                                            <li><a href="#">5</a></li>
+                                            <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
+                                        </ul>
+                                    </span>
                                 </div>
-                                </tbody>
-                            </table>
-                            <span class="pull-right">
-                                <ul class="pagination pull-right">
-                                    <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-                                    <li><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
-                                    <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
-                                </ul>
-                            </span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>-->
+                </div>-->
     </div>
 </div>
 @endsection

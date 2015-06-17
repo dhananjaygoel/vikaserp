@@ -25,7 +25,7 @@
                             <p>{{ $error }}</p>
                             @endforeach                        
                         </div>
-                        @endif  
+                        @endif 
 
                         <form method="POST" action="{{URL::action('ProductsubController@store')}}" accept-charset="UTF-8" >
                             <div class="form-group productcategory col-md-3">
