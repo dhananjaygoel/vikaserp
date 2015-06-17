@@ -289,4 +289,14 @@ class PurchaseAdviseController extends Controller {
         return View::make('pending_purchase_advice', array('pending_advise' => $pending_advise));
     }
 
+    public function purchaseorder_advise_challan($id) {
+
+        $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.product_category.product_sub_category')->find($id);
+
+        $locations = DeliveryLocation::all();
+        $units = Units::all();
+
+        return view('purchaseorder_advise_challan', compact('purchase_advise', 'locations', 'units'));
+    }
+
 }

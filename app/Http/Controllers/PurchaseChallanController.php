@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\PurchaseChallan;
+use App\PurchaseProducts;
+use App\Http\Requests\PurchaseChallanRequest;
+use Input;
+use Closure;
+use Illuminate\Database\Eloquent\Model;
+use DB;
+use App\Quotation;
 
 class PurchaseChallanController extends Controller {
 
@@ -21,7 +29,7 @@ class PurchaseChallanController extends Controller {
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resource.use Closure;
      *
      * @return Response
      */
@@ -34,8 +42,52 @@ class PurchaseChallanController extends Controller {
      *
      * @return Response
      */
-    public function store() {
-        //
+    public function store(PurchaseChallanRequest $request) {
+
+//        echo '<pre>';
+//        print_r(Input::all());
+//        echo '</pre>';
+//        exit;
+
+        $add_challan = PurchaseChallan::create([
+                    'expected_delivery_date' => $request->input('bill_date'),
+                    'purchase_advice_id' => $request->input('purchase_advice_id'),
+                    'serial_number' => $request->input('serial_no'),
+                    'created_by' => $request->input('created_by'),
+                    'vehicle_number' => $request->input('vehicle_number'),
+                    'freight' => $request->input('Freight'),
+                    'unloaded_by' => $request->input('unloading'),
+                    'unloading' => $request->input('loadedby'),
+                    'labours' => $request->input('labour'),
+                    'bill_number' => $request->input('billno'),
+                    'remarks' => $request->input('remark'),
+                    'order_status' => 'pending',
+                    'vat_percentage' => $request->input('vat_percentage')
+        ]);
+
+
+
+        $challan_id = DB::getPdo()->lastInsertId();
+        $input_data = Input::all();
+        $order_products = array();
+        foreach ($input_data['product'] as $product_data) {
+//            if ($product_data['name'] != "") {
+            $order_products = [
+                'purchase_order_id' => $challan_id,
+                'order_type' => 'purchase_advice',
+                'product_category_id' => $product_data['product_category_id'],
+                'unit_id' => $product_data['unit_id'],
+                'quantity' => $product_data['quantity'],
+                'present_shipping' => $product_data['present_shipping'],
+                'price' => $product_data['price'],
+            ];
+
+            $add_order_products = PurchaseProducts::create($order_products);
+//            }
+        }
+
+
+        return redirect('purchaseorder_advise')->with('flash_success_message', 'Challan details successfully added.');
     }
 
     /**

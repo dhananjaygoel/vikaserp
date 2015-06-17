@@ -21,7 +21,7 @@ class CreatePurchaseChallanTable extends Migration {
             $table->integer('created_by');
             $table->integer('delivery_location_id');
             $table->integer('order_for');
-            $table->string('expected_delivery_date');
+            $table->date('expected_delivery_date');
             $table->string('vat_percentage');
             $table->string('vehicle_number');
             $table->float('amount');
