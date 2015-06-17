@@ -155,7 +155,7 @@ class DeliveryOrderController extends Controller {
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
-                    'present_shipping' => $product_data['present_shipping'],
+                    'present_shipping' => $product_data['quantity'],
                     'price' => $product_data['price'],
                     'remarks' => $product_data['remark'],
                 ];
@@ -326,5 +326,31 @@ class DeliveryOrderController extends Controller {
     public function pending_delivery_order() {
         return view('pending_delivery_order');
     }
+    
+    public function create_delivery_challan($id) {
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.product_category')->where('id', $id)->get();
+        $units = Units::all();
+        $delivery_locations = DeliveryLocation::all();
+        $customers = Customer::all();
 
+        echo '<pre>';
+        print_r($delivery_data->toArray());
+        echo '</pre>';
+        exit;
+        return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
+        
+//        $order = DeliveryOrder::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.product_category', 'customer')->first();
+//        $units = Units::all();
+//        $delivery_location = DeliveryLocation::all();
+//        $customers = Customer::all();
+//        return view('create_delivery_challan', compact('order', 'delivery_location', 'units', 'customers'));
+    }
+    public function store_delivery_challan($id){
+        $order = DeliveryOrder::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.product_category', 'customer')->first();
+        $units = Units::all();
+        $delivery_location = DeliveryLocation::all();
+        $customers = Customer::all();
+        return view('create_delivery_challan', compact('order', 'delivery_location', 'units', 'customers'));
+    }
+    
 }

@@ -101,6 +101,7 @@
                                             <td><span>Select Product</span></td>
                                             <td><span>Quantity</span></td>
                                             <td><span>Unit</span></td>
+                                            <td><span>Present Shipping</span></td>
                                             <td><span>Price</span></td>
                                             <td><span>Remark</span></td>
                                         </tr>
@@ -130,6 +131,11 @@
                                                         @endif
                                                         @endforeach
                                                     </select>
+                                                </div>
+                                            </td>
+                                            <td class="col-md-1">
+                                                <div class="form-group">
+                                                    <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="" type="text">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -213,11 +219,11 @@
 
                                 <tr class="cdtable">
                                     <td class="cdfirst">Grand Total:</td>
-                                    <td><input type="text" name="grand_total" class="form-control" value="{{$total}}" readonly="readonly"></td>
+                                    <td><input type="text" name="grand_total" id ="grand_total" class="form-control" value="{{$total}}" readonly="readonly"></td>
                                 </tr>
                                 <tr class="cdtable">
                                     <td class="cdfirst">Vehicle Number:</td>
-                                    <td><input  class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{old('vehicle_number')}}" type="text"></td>
+                                    <td><input  class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{old('vehicle_number')}}" type="text" ></td>
                                 </tr>
                                 <tr class="cdtable">
                                     <td class="cdfirst">Driver Name:</td>

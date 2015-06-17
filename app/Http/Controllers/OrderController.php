@@ -313,6 +313,12 @@ class OrderController extends Controller {
         if (Hash::check($password, $current_user->password)) {
 
             $order = Order::find($id);
+            
+            $all_order_products = AllOrderProducts::where('order_id','=',$id)->where('order_type','=','order');
+
+            foreach($all_order_products as $products){
+                $products->delete();
+            }
             $order->delete();
             return redirect('orders')->with('flash_message', 'One record is deleted.');
         } else {
@@ -387,6 +393,7 @@ class OrderController extends Controller {
                         'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
                         'quantity' => $product_data['quantity'],
+                        'present_shipping' => $product_data['present_shipping'],
                         'price' => $product_data['price'],
                         'remarks' => $product_data['remark']
                     ];

@@ -35,7 +35,10 @@
                                     <select class="form-control" id="user_filter3" name="fulfilled_filter" onchange="this.form.submit();">
                                         <option value="" selected="">Fulfilled</option>
                                         <option value="0" >Warehouse</option>
-                                        <option value="1" >Direct</option>
+                                        <option value="all" >Direct</option>
+                                        @foreach($customers as $customer)
+                                            <option value="{{$customer->id}}">{{$customer->owner_name}}</option>
+                                        @endforeach
                                     </select>                                    
                                 </form>
                             </div>
