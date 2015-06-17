@@ -236,10 +236,6 @@ class PurchaseAdviseController extends Controller {
 
     public function store_advise() {
         $input_data = Input::all();
-//        echo '<pre>';
-//        print_r($input_data);
-//        echo '</pre>';
-//        exit;
         $add_purchase_advice_array = [
             'supplier_id' => $input_data['supplier_id'],
             'created_by' => Auth::id(),
@@ -248,8 +244,9 @@ class PurchaseAdviseController extends Controller {
             'vat_percentage' => $input_data['vat_percentage'],
             'expected_delivery_date' => $input_data['expected_delivery_date'],
             'remarks' => $input_data['grand_remark'],
-            'advice_status' => 'Pending',
-            'vehicle_number' => $input_data['vehicle_number']
+            'advice_status' => 'in_process',
+            'vehicle_number' => $input_data['vehicle_number'],
+            'purchase_order_id' => $input_data['id']
         ];
         $add_purchase_advice = PurchaseAdvise::create($add_purchase_advice_array);
         $purchase_advice_id = DB::getPdo()->lastInsertId();
@@ -258,7 +255,7 @@ class PurchaseAdviseController extends Controller {
             if (isset($product_data['name']) || ($product_data['id'] != "")) {
                 if ($product_data['present_shipping'] != "") {
                     $purchase_advice_products = [
-                        'purchase_order_id_id' => $purchase_advice_id,
+                        'purchase_order_id' => $purchase_advice_id,
                         'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
                         'quantity' => $product_data['quantity'],
@@ -269,7 +266,7 @@ class PurchaseAdviseController extends Controller {
                     ];
                 } elseif ($product_data['present_shipping'] == "") {
                     $purchase_advice_products = [
-                        'purchase_order_id_id' => $purchase_advice_id,
+                        'purchase_order_id' => $purchase_advice_id,
                         'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
                         'quantity' => $product_data['quantity'],
@@ -281,6 +278,7 @@ class PurchaseAdviseController extends Controller {
                 $add_purchase_advice_products = PurchaseProducts::create($purchase_advice_products);
             }
         }
+        return redirect('create_purchase_advice/' . $input_data['id'])->with('flash_message', 'Purchase advice details successfully added.');
     }
 
     public function pending_purchase_advice() {
