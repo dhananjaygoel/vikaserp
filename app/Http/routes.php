@@ -79,7 +79,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('create_purchase_advice', 'PurchaseOrderController@create_purchase_advice');
     Route::post('store_advise', 'PurchaseAdviseController@store_advise');
     Route::resource('purchaseorder_advise_challan', 'PurchaseAdviseController@purchaseorder_advise_challan');
-    
+
     Route::get('get_cities', 'CityController@get_cities');
     Route::get('create_delivery_order/{id}', 'OrderController@create_delivery_order');
     Route::post('create_delivery_order/{id}', 'OrderController@store_delivery_order');
@@ -88,6 +88,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('manual_complete', 'PurchaseOrderController@manual_complete');
     Route::get('purchase_order_report', 'PurchaseOrderController@purchase_order_report');
     Route::resource('purchase_challan', 'PurchaseChallanController');
+    Route::get('create_delivery_challan/{id}', 'DeliveryOrderController@create_delivery_challan');
+    Route::post('create_delivery_challan/{id}', 'DeliveryOrderController@store_delivery_challan');
 
     Route::get('pending_inquiry', function() {
         return 'Pending Inquiry ';
