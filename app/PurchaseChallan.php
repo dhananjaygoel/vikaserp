@@ -20,4 +20,12 @@ class PurchaseChallan extends Model {
      */
     protected $fillable = ['purchase_order_id', 'purchase_advice_id', 'bill_number', 'serial_number', 'supplier_id', 'created_by', 'delivery_location_id', 'order_for', 'expected_delivery_date', 'vat_percentage', 'vehicle_number', 'amount', 'unloaded_by', 'labours', 'discount', 'frieght', 'loading_charge', 'grand_total', 'remarks', 'order_status', 'unloading'];
 
+    public function supplier() {
+        return $this->hasOne('App\Customer', 'id', 'supplier_id');
+    }
+
+    public function purchase_advice() {
+        return $this->hasOne('App\PurchaseAdvise', 'id', 'purchase_advice_id');
+    }
+
 }
