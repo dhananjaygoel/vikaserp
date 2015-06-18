@@ -362,7 +362,7 @@ class OrderController extends Controller {
 
     public function store_delivery_order($id) {
         $input_data = Input::all();
-        $validator = Validator::make($input_data, DeliveryOrder::$order_to_delivery_order_rules);
+        $validator = Validator::make($input_data, Order::$order_to_delivery_order_rules);
         if ($validator->passes()) {
             $user = Auth::user();
             $order = Order::where('id', '=', $id)->with('all_order_products')->first();

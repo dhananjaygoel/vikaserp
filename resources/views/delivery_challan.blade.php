@@ -1,7 +1,7 @@
 
 <?php
 //echo'<pre>';
-//print_r($allorders[0]['order_cancelled']['cancelled_by']);
+//print_r($allorders);
 //echo '</pre>';
 //exit;
 ?>
@@ -25,7 +25,11 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
-
+                    @if(sizeof($allorders)==0)
+                    <div class="alert alert-info no_data_msg_container">
+                        Currently no orders have been added to Delivery Challan.
+                    </div>
+                    @else
                     @if (Session::has('flash_message'))
                     <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
                     @endif
@@ -39,59 +43,59 @@
                                         <th class="text-center">Party Name</th>
                                         <th class="text-center">Serial Number</th>
                                         <th class="text-center">Present Shipping</th>
-
-
-
-<!--     <th class="col-md-2">Amount</th> -->
-
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>                    
-
-
+                                    <?php $k=1;?>
+                                    @foreach($allorders as $challan)
+                                    @if($challan->challan_status == 'pending')
+                                    
                                     <tr>
-                                        <td class="text-center">1</td>
-                                        <td class="text-center">Party1</td>
-                                        <td class="text-center">Apr15/04/01/01</td>                                        
-                                        <td class="text-center">600</td>
-                                    <!--      <td>
-                                            <div class="row product-price">
-                                            <div class="form-group col-md-6">
-                                                <input type="text" class="form-control" id="Amount" placeholder="Amount">
-                                               
-                                            </div>
-                                            <div class="form-group col-md-2 difference_form">
-                                           
-                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
-                                            </div>
-                                            </div>
-                                        </td>-->
+                                        <td class="text-center">{{$k++}}</td>
+                                        <td class="text-center">{{$challan['customer']->owner_name}}</td>
+                                        <td class="text-center">
+                                            @if($challan['delivery_order']->serial_no == '')
+                                                --
+                                            @elseif($challan['delivery_order']->serial_no != '')
+                                            {{$challan['delivery_order']->serial_no}}
+                                            @endif
+                                        </td>                                        
+                                        <td class="text-center"><?php
+                                            
+                                        $total_shipping =0;
+                                        foreach($challan['all_order_products'] as $products){
+                                            $total_shipping= $total_shipping + $products['present_shipping'];
+//                                            echo ' '.$products['present_shipping'];
+                                        }
+                                        echo $total_shipping;
+                                        ?></td>
+                                    
 
 
                                         <td class="text-center">
-                                            <a href="{{url('delivery_challan/1')}}" class="table-link" title="view">
+                                            <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
 
-                                            <a href="{{url('delivery_challan/1/edit')}}" class="table-link" title="edit">
+                                            <a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
 
-                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#myModal1">
+                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan_{{$challan->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
 
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal" title="delete">
+                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_{{$challan->id}}" title="delete">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -101,23 +105,25 @@
                                         </td>
 
                                     </tr>
-                                    
 
 
-                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                                <div class="modal fade" id="delete_challan_{{$challan->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
-
+                                            {!! Form::open(array('method'=>'POST','url'=>url('delivery_challan',$challan->id), 'id'=>'delete_delivery_challan_form'))!!}
+                                            <input name="_method" type="hidden" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{csrf_token()}}">
                                             <div class="modal-body">
                                                 <div class="delete">
                                                     <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                     <div class="pwd">
                                                         <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" placeholder="" type="text"></div>
+                                                        <div class="pwdr"><input class="form-control" placeholder="" name="password" type="password"></div>
 
                                                     </div>
                                                     <div class="clearfix"></div>
@@ -130,13 +136,14 @@
                                             <div class="modal-footer">
 
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
+                                                <button type="submit" class="btn btn-default" id="yes">Yes</button>
                                             </div>
+                                             {!! Form::close() !!}
                                         </div>
                                     </div>
                                 </div>    
 
-                                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="print_challan_{{$challan->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -177,25 +184,19 @@
                                         </div>
                                     </div>
                                 </div> 
+                                    @endif
+                                    @endforeach
 
                                 </tbody>
                             </table>
 
                             <span class="pull-right">
-                                <ul class="pagination pull-right">
-                                    <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-                                    <li><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
-                                    <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
-                                </ul>
-
+                                <?php echo $allorders->render();?>
                             </span>
 
                         </div>    
                     </div>
+                    @endif
                 </div>
             </div>
         </div>

@@ -32,10 +32,11 @@
                         @endif
 
                         <div class="form-group">
-                            Date: 29 April, 2015
+                            Date : {{date('d F, Y')}}
                         </div> 
                         {!!Form::open(array('method'=>'PUT','url'=>url('delivery_order/'.$delivery_data[0]['id']),'id'=>'edit_delivery_order'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
+                        
                         
                         @if($delivery_data[0]['customer']->customer_status =="pending")
                         <div class="form-group">
@@ -247,7 +248,7 @@
                                     <tbody>
                                         <tr class="cdtable">
                                             <td class="cdfirst">VAT Percentage:</td>
-                                            <td><input id="price" class="form-control" placeholder="VAT Percentage" name="price" value="{{ $delivery_data[0]->vat_percentage }}" type="text"></td>
+                                            <td><input id="price" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ $delivery_data[0]->vat_percentage }}" type="text"></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -260,7 +261,7 @@
                         <div class="form-group">
                             <label for="inquiry_remark">Remark</label>
                             <textarea class="form-control" id="order_remark" name="order_remark"  rows="3">
-                                    {{ $delivery_data[0]->remarks }}
+{{ $delivery_data[0]->remarks }}
                             </textarea>
                         </div>
                         <div >

@@ -35,4 +35,9 @@ class Order extends Model {
         return $this->hasOne('App\OrderCancelled', 'order_id', 'id');
     }
     
+    public static $order_to_delivery_order_rules = array(
+        'vehicle_number' => 'required',
+        'driver_name' => 'required',
+        'driver_contact' => 'required|min:10|max:20'
+    );
 }

@@ -95,7 +95,7 @@
 
                         <div class="inquiry_table col-md-12">
                             <div class="table-responsive">
-                                <table id="add_product_table" class="table table-hover  ">
+                                <table id="add_product_table_delivery_order" class="table table-hover  ">
                                     <tbody>
                                         <tr class="headingunderline">
                                             <td><span>Select Product</span></td>
@@ -162,7 +162,7 @@
                                                     <div class="form-group pull-left">
 
                                                         <label for="addmore"></label>
-                                                        <a class="table-link" title="add more" id="add_product_row">
+                                                        <a class="table-link" title="add more" id="add_product_row_delivery_order">
                                                             <span class="fa-stack more_button" >
                                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                                 <i class="fa fa-plus fa-stack-1x fa-inverse"></i>

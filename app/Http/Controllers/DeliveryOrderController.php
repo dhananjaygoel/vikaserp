@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Hash;
 use Auth;
-
+use App\DeliveryChallan;
 class DeliveryOrderController extends Controller {
 
     /**
@@ -344,30 +344,80 @@ class DeliveryOrderController extends Controller {
         return view('pending_delivery_order', compact('delivery_data'));
     }
     
+    
     public function create_delivery_challan($id) {
-        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.product_category')->where('id', $id)->get();
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.product_category')->where('id', $id)->first();
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
+      return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
+    }
 
-        echo '<pre>';
-        print_r($delivery_data->toArray());
-        echo '</pre>';
-        exit;
-        return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
+    public function store_delivery_challan($id) {
+
+        $input_data = Input::all();
+        $validator = Validator::make($input_data, DeliveryOrder::$order_to_delivery_challan_rules);
+        if ($validator->passes()) {
+        $i = 0;
+        $j = count($input_data['product']);
         
-//        $order = DeliveryOrder::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.product_category', 'customer')->first();
-//        $units = Units::all();
-//        $delivery_location = DeliveryLocation::all();
-//        $customers = Customer::all();
-//        return view('create_delivery_challan', compact('order', 'delivery_location', 'units', 'customers'));
+        foreach ($input_data['product'] as $product_data) {
+            if ($product_data['name'] == "") {
+                $i++;
+            }
+        }
+//        echo '<pre>';
+//        print_r($input_data['product']);
+//        echo '</pre>';
+//        exit;
+        if ($i == $j) {
+            return Redirect::back()->with('validation_message', 'Please enter at least one product details');
+        }
+        
+        $delivery_challan =new DeliveryChallan();
+        $delivery_challan->order_id=$input_data['order_id'];
+        $delivery_challan->delivery_order_id = $id;
+        $delivery_challan->customer_id = $input_data['customer_id'];
+        $delivery_challan->created_by = Auth::id();
+        $delivery_challan->bill_number = $input_data['billno'];
+        $delivery_challan->discount = $input_data['discount'];
+        $delivery_challan->freight = $input_data['freight'];
+        $delivery_challan->loading_charge = $input_data['loading'];
+        $delivery_challan->loaded_by = $input_data['loadedby'];
+        $delivery_challan->labours = $input_data['labour'];
+        $delivery_challan->vat_percentage = $input_data['vat_percentage'];
+        $delivery_challan->grand_total = $input_data['grand_total'];
+        $delivery_challan->remarks = $input_data['challan_remark'];
+        $delivery_challan->challan_status = "Pending";
+        $delivery_challan->save();
+        
+        $delivery_challan_id = DB::getPdo()->lastInsertId();
+        if ($j != 0) { 
+            $order_products = array();
+            foreach ($input_data['product'] as $product_data) {
+                if ($product_data['name'] != "") {
+                    $order_products = [
+                        'order_id' => $delivery_challan_id,
+                        'order_type' => 'delivery_challan',
+                        'product_category_id' => $product_data['id'],
+                        'unit_id' => $product_data['units'],
+                        'actual_pieces'=>$product_data['actual_pieces'],
+                        'quantity' => $product_data['quantity'],
+                        'present_shipping' => $product_data['present_shipping'],
+                        'price' => $product_data['price']                        
+                    ];
+                    $add_order_products = AllOrderProducts::create($order_products);
+                }
+            }
+        }
+        return redirect('delivery_order')->with('validation_message', 'One Delivery Challan is successfuly created.');
+        } else {
+            $error_msg = $validator->messages();
+            return Redirect::back()->withInput()->withErrors($validator);
+        }
     }
-    public function store_delivery_challan($id){
-        $order = DeliveryOrder::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.product_category', 'customer')->first();
-        $units = Units::all();
-        $delivery_location = DeliveryLocation::all();
-        $customers = Customer::all();
-        return view('create_delivery_challan', compact('order', 'delivery_location', 'units', 'customers'));
-    }
+
+
+
     
 }

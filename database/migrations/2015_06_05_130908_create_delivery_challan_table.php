@@ -26,8 +26,9 @@ class CreateDeliveryChallanTable extends Migration {
                         $table->integer('freight');
                         $table->integer('loading_charge');
                         $table->string('vat_percentage',20);
-                        $table->string('total_price',20);
+                        $table->string('grand_price',20);
                         $table->enum('challan_status',array('pending','completed'));
+                        $table->text('remarks');
                         $table->softDeletes();
                         $table->timestamps();
 		});

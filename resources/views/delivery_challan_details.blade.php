@@ -18,7 +18,156 @@
             <div class="col-lg-12">
                 <div class="main-box"> 
                     <div class="main-box-body clearfix">
+
+
+
+                        <div class="form-group">
+                            <label><b>Party Name:</b> {{$allorder['customer']->owner_name}}</label>
+
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label><b>Serial Number:</b> {{$allorder['delivery_order']->serial_no}}</label>
+
+                        </div>
+                        <hr>
+
+                        <div class="form-group">
+                            <label ><b> <span class="underline">Product Details</span></b></label>
+
+                        </div>
                         
+
+
+                        <div class="table-responsive">
+                            <table id="add_product_table" class="table customerview_table">
+                                <tbody>
+                                    <tr class="headingunderline">
+                                        <td class="col-md-2"><span>Product Name(Alias)</span></td>
+                                        <td class="col-md-1"><span>Actual Quantity</span></td>
+
+                                        <td class="col-md-1"><span>Actual Pieces</span></td>
+
+                                        <td class="col-md-1"><span>Unit</span></td>
+                                        <td class="col-md-2"><span>Present Shipping</span></td>
+                                        <td class="col-md-2"><span>Rate</span></td>
+                                        <td class="col-md-3"><span>Amount</span></td>
+
+                                    </tr>
+                                    <?php $total_amount = 0; ?>
+                                    @foreach($allorder['all_order_products'] as $key=>$product)
+                                    <tr id="add_row_{{$key}}" class="add_product_row">
+
+                                        <td class="col-md-2">
+                                            <div class="form-group searchproduct">
+
+                                                {{$product['product_category']['product_category_name']}}
+
+                                            </div>
+                                        </td>
+                                        <td class="col-md-1">
+                                            <div class="form-group">
+                                                {{$product->quantity}}
+                                            </div>
+                                        </td>
+                                        <td class="col-md-1">
+                                            <div class="form-group">
+                                                {{$product->actual_pieces}}
+                                            </div>
+                                        </td>
+
+                                        <td class="col-md-1">
+                                            <div class="form-group ">
+                                                {{$product['unit']['unit_name']}}
+                                            </div>
+                                        </td>
+                                        <td class="col-md-2">
+                                            <div class="form-group">
+                                                {{$product->present_shipping}}
+                                            </div>
+                                        </td>
+                                        <td class="col-md-2">
+                                            <div class="form-group">
+                                                {{$product->price}}
+                                            </div>
+                                        </td>
+                                        <td class="col-md-3">
+                                            <div class="form-group">
+                                                <?php
+                                                $amount = $product->quantity * $product->price;
+                                                $total_amount = $amount + $total_amount;
+                                                echo $amount;
+                                                ?>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        
+                        <div class="form-group">
+                            <label for="vehicle_name"><b class="challan">Discount</b></label>
+                            {{$allorder->discount}}
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="driver_name"><b class="challan">Freight</b></label>
+                            {{$allorder->freight}}
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="total"><b class="challan">Total</b><span class="gtotal">{{$total_amount}}</span></label>
+
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="driver_contact"><b class="challan">Loading</b></label>
+                            {{$allorder->loading_charge}}
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="loadedby"><b class="challan">Loaded By</b></label>
+                            {{$allorder->loaded_by}}
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="labour"><b class="challan">Labour </b></label>
+                            {{$allorder->labours}}
+                        </div>
+                        <hr>
+
+
+                        <div class="form-group">
+
+                            <label for="Plusvat"><b class="challan">Plus VAT</b> Yes/No</label>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="driver_contact"><b class="challan">VAT Percentage</b> {{$allorder->vat_percentage}}</label>
+
+                        </div>
+
+                        <hr>
+                        <div class="form-group">
+                            <label for="total"><b class="challan">Grand Total</b><span class="gtotal">{{$allorder->grand_total}}</span></label>
+
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="billno"><b class="challan">Bill Number</b></label>
+                            {{$allorder->bill_number}}
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="challan_remark"><b class="challan">Remark</b></label>
+                            <textarea class="form-control" id="challan_remark" name="challan_remark"  rows="3" readonly="readonly"> {{$allorder->remarks}}</textarea>
+                        </div>
+
+
                     </div>
                 </div>
             </div>

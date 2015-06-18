@@ -100,7 +100,7 @@ $(document).ready(function() {
                 '</td>' +
                 '<td class="col-md-1">' +
                 '<div class="form-group">' +
-                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="text">' +
+                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="text" onfocus="grand_total_delivery_order();">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
@@ -286,8 +286,8 @@ function product_autocomplete(id) {
             });
         },
         select: function(event, ui) {
-            alert(ui.item.id);
-            alert(ui.item.product_price);
+//            alert(ui.item.id);
+//            alert(ui.item.product_price);
             $("#product_price_" + id).val(ui.item.product_price);
             $("#add_product_id_" + id).val(ui.item.id);
 //            var next_row = $("#product_price_" + id).parent().parent().parent().next().attr("id");
