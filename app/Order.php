@@ -3,9 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Order extends Model {
 
+    use SoftDeletes;
     /**
      * The database table used by the model.
      *
@@ -19,7 +20,8 @@ class Order extends Model {
      * @var array
      */
     protected $fillable = ['order_source','supplier_id','customer_id', 'created_by', 'delivery_location_id', 'vat_percentage', 'estimated_delivery_date','expected_delivery_date', 'remarks', 'order_status', 'other_location'];
-
+    protected $dates = ['deleted_at'];
+    
     public function customer() {
         return $this->hasOne('App\Customer', 'id', 'customer_id');
     }

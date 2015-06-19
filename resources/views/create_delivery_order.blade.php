@@ -111,26 +111,29 @@
 
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
-                                                    <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['product_category']->product_category_name}}" readonly="readonly" >
+                                                    {{$product['product_category']->product_category_name}}
+                                                    <input class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['product_category']->product_category_name}}" readonly="readonly" >
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}"  value="{{$product->product_category_id}}" readonly="readonly">
-                                                    <i class="fa fa-search search-icon"></i>
+                                                    
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="text" readonly="readonly">
+                                                    {{$product->quantity}}
+                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="hidden" >
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group ">
-                                                    <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" readonly="readonly">
+                                                    
+                                                    
                                                         @foreach($units as $unit)
                                                         @if($product->unit_id == $unit->id)
-                                                        <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
-
+                                                        {{$unit->unit_name}}
+                                                        <input type="hidden" value="{{$unit->id}}" name="product[{{$key}}][units]">
                                                         @endif
                                                         @endforeach
-                                                    </select>
+                                                    
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -140,13 +143,15 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]" readonly="readonly">
+                                                    {{$product->price}}
+                                                    <input type="hidden" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]" readonly="readonly">
                                                     <?php $total = $total + $product->price; ?>
                                                 </div>
                                             </td>
                                             <td class="col-md-4">
                                                 <div class="form-group">
-                                                    <input id="remark" class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text" readonly="readonly">
+                                                    {{$product->remarks}}
+                                                    <input id="remark" class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="hidden" readonly="readonly">
                                                 </div>
                                             </td>
                                         </tr>
@@ -213,13 +218,21 @@
                                 <tr class="cdtable">
                                     
                                     <td class="cdfirst">VAT Percentage:</td>
-                                    <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->vat_percentage}}" type="text" readonly="readonly"></td>
+                                    
+                                    <td>
+                                        {{$order->vat_percentage}}
+                                        <input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->vat_percentage}}" type="hidden" readonly="readonly">
+                                    </td>
                                 </tr>
                                 @endif
 
                                 <tr class="cdtable">
                                     <td class="cdfirst">Grand Total:</td>
-                                    <td><input type="text" name="grand_total" id ="grand_total" class="form-control" value="{{$total}}" readonly="readonly"></td>
+                                    
+                                    <td>
+                                        {{$total}}
+                                        <input type="hidden" name="grand_total" id ="grand_total" class="form-control" value="{{$total}}" readonly="readonly">
+                                    </td>
                                 </tr>
                                 <tr class="cdtable">
                                     <td class="cdfirst">Vehicle Number:</td>

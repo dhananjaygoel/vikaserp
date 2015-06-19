@@ -104,7 +104,8 @@
 
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input id="present_shipping_{{$key}}" class="form-control text-center" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{ $product->present_shipping}}" type="text" readonly="readonly">
+                                                    {{ $product->present_shipping}}
+                                                    <input id="present_shipping_{{$key}}" class="form-control text-center" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{ $product->present_shipping}}" type="hidden" readonly="readonly">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -206,10 +207,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="vatp"><b class="challan">VAT Percentage : </b><input type="text" name="vat_percentage" id="vat_percentage" value="{{$delivery_data->vat_percentage}}" readonly="readonly"></label>
+                            <label for="vatp"><b class="challan">VAT Percentage : </b>
+                                {{$delivery_data->vat_percentage}}
+                                <input type="hidden" name="vat_percentage" id="vat_percentage" value="{{$delivery_data->vat_percentage}}" readonly="readonly"></label>
                         </div>    
                         <div class="form-group">
-                            <label for="total"><b class="challan">Grand Total : </b><span class="gtotal"><input type="text" class="form-group" name="grand_total" id="grand_total" readonly="readonly"></span></label>
+                            <label for="total"><b class="challan">Grand Total : </b><span class="gtotal">
+                                    <input type="text" class="form-group" name="grand_total" id="grand_total" readonly="readonly"></span></label>
 
                         </div>
                         <div class="form-group">

@@ -18,7 +18,8 @@ class CreateDeliveryChallanTable extends Migration {
                         $table->integer('order_id');
                         $table->integer('delivery_order_id');
                         $table->integer('customer_id');
-			$table->integer('created_by');                        
+			$table->integer('created_by');   
+                        $table->string('serial_number');
                         $table->string('bill_number');
                         $table->string('loaded_by');
                         $table->integer('labours');

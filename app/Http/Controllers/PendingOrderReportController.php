@@ -65,6 +65,13 @@ class PendingOrderReportController extends Controller {
                         ->where('other_location','=',$_GET['location_filter'])
                         ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(2);
             }
+        }elseif((isset($_GET['size_filter'])) && $_GET['size_filter'] != '') { 
+//            if($_GET['location_filter'] != '0') { 
+                $allorders = Order::where('order_status', '=', 'pending')
+//                        ->all_order_products()
+//                            ->where('all_order_products','=',$_GET['size_filter'])
+                        ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(2);
+//            }
         }
         else {
             
@@ -75,9 +82,14 @@ class PendingOrderReportController extends Controller {
         $customers = Customer::all();
         $delivery_location = DeliveryLocation::all();
         $delivery_order = DeliveryOrder::all();
-//        $allorder_products = AllOrderProducts::all()->order ;
+        $allorder_products = AllOrderProducts::groupBy('quantity')->get();
+//                where('order_type','=','order')->get();
+        echo '<pre>';
+        print_r($allorders->toArray());
+        echo '</pre>';
+        exit;
         $allorders->setPath('pending_order_report');
-        return View::make('pending_order_report', compact('allorders', 'users', 'customers', 'delivery_location','delivery_order'));
+        return View::make('pending_order_report', compact('allorders', 'users', 'customers', 'delivery_location','delivery_order','allorder_products'));
     }
 
 }

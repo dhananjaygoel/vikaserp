@@ -10,6 +10,7 @@
                     $count = count($name_array);
                     $page_name = $name_array[$count - 1];
                     ?>
+                    @if(Auth::user()->id == 0)
                     <li class="{{ (Request::is('*dashboard*') ? 'active' : '') }}">
                         <a href="{{url('dashboard')}}">
                             <i class="fa fa-dashboard"></i>
@@ -17,6 +18,8 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
+                    @endif
+                    @if(Auth::user()->id == 0 || Auth::user()->id == 1 )
                     <li class="{{ (Request::is('*users*') ? 'active' : '') }}">
                         <a href="{{url()}}/users">
                             <i class="fa fa-user"></i>
@@ -24,6 +27,8 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
+                    @endif
+                    @if(Auth::user()->id == 0 || Auth::user()->id == 1 )
                     <li class="{{ (Request::is('customers*') ? 'active' : '') }}">
                         <a href="{{url('customers')}}">
                             <i class="fa fa-male"></i>
@@ -31,6 +36,8 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
+                    @endif
+                    @if(Auth::user()->id == 0 || Auth::user()->id == 1 )
                     <li class="{{ (Request::is('pending_customers*') ? 'active' : '') }}">
                         <a href="{{url('pending_customers')}}">
                             <i class="fa fa-book"></i>
@@ -38,7 +45,8 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
-
+                    @endif
+                    @if(Auth::user()->id == 0 || Auth::user()->id == 1 || Auth::user()->id == 2)
                     <li class="{{ (Request::is('*inquiry*') ? 'active' : '') }}">
                         <a href="{{url("inquiry")}}">
                             <i class="fa fa-info"></i>
@@ -46,6 +54,8 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
+                    @endif
+                    
                     <li class="<?php
                     if (Request::is('*orders*') || Request::is('*delivery_order*') || Request::is('*delivery_challan*') || Request::is('*pending_delivery_order*') || Request::is('*pending_order_report*')) {
                         echo 'active';
@@ -78,11 +88,14 @@
                                     Pending Delivery Order Report
                                 </a>
                             </li>
-                            <li class="<?php echo ($page_name == 'delivery_orders_challan_report.php') ? 'active' : ''; ?>">
-                                <a href="delivery_orders_challan_report.php">
+                            @if(Auth::user()->id == 0 ||Auth::user()->id == 1 || Auth::user()->id == 2)
+                            <li class="{{ (Request::is('*sales_daybook*') ? 'active' : '') }}">
+                                <a href="{{url('sales_daybook')}}">
                                     Sales Daybook
                                 </a>
                             </li>
+                            @endif
+                            
                             <li class="{{ (Request::is('*pending_order_report*') ? 'active' : '') }}">
                                 <a href="{{url('pending_order_report')}}">
                                     Pending Order Report
@@ -102,11 +115,13 @@
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
                         <ul class="submenu">
+                            @if(Auth::user()->id == 0 ||Auth::user()->id == 1)
                             <li class="{{ (Request::is('*purchase_orders*') ? 'active' : '') }}">
                                 <a href="{{url("purchase_orders")}}">
                                     Purchase Order
                                 </a>
                             </li>
+                            @endif
                             <li class="{{ (Request::is('*purchaseorder_advise*') ? 'active' : '') }}">
                                 <a href="{{url('purchaseorder_advise')}}">
                                     Purchase Advice
@@ -128,13 +143,16 @@
                                     Pending Purchase Advise Report
                                 </a>
                             </li>
+                            @if(Auth::user()->id == 0 || Auth::user()->id == 1)
                             <li class="<?php echo ($page_name == 'purchaseorder_challanreport.php') ? 'active' : ''; ?>">
                                 <a href="purchaseorder_challanreport.php">
                                     Purchase Daybook
                                 </a>
                             </li>
+                            @endif
                         </ul>
                     </li>
+                    
                     <li class="<?php
                     if (Request::is('*product_category*') || Request::is('*product_sub_category*')) {
                         echo 'active';
@@ -193,6 +211,7 @@
                             </li>
                         </ul>
                     </li>
+                    @if(Auth::user()->id == 0)
                     <li class="{{ (Request::is('*customer_manager*') ? 'active' : '') }}">
                         <a href="{{url("customer_manager")}}">
                             <i class="fa fa-asterisk"></i>
@@ -200,6 +219,8 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
+                    @endif
+                    @if(Auth::user()->id == 0)
                     <li class="{{ (Request::is('*security*') ? 'active' : '') }}">
                         <a href="{{url("security")}}">
                             <i class="fa fa-lock"></i>
@@ -207,7 +228,7 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
-
+                    @endif
                 </ul>
             </div>
         </div>

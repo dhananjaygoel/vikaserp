@@ -172,7 +172,7 @@
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
-                                            {!! Form::open(array('method'=>'POST','url'=>url('order_cancelled'), 'id'=>'cancel_order_form'))!!}
+                                            {!! Form::open(array('method'=>'POST','url'=>url('manual_complete_order'), 'id'=>'cancel_order_form'))!!}
 
                                             <input type="hidden" name="order_id" value="{{$order->id}}">
                                             <div class="modal-body">

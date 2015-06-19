@@ -75,7 +75,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('purchaseorder_advise', 'PurchaseAdviseController');
     Route::get('pending_purchase_advice', 'PurchaseAdviseController@pending_purchase_advice');
     Route::resource('orders', 'OrderController');
-    Route::post('order_cancelled', 'OrderController@manual_complete_order');
+    Route::post('manual_complete_order', 'OrderController@manual_complete_order');
     Route::resource('create_purchase_advice', 'PurchaseOrderController@create_purchase_advice');
     Route::post('store_advise', 'PurchaseAdviseController@store_advise');
     Route::resource('purchaseorder_advise_challan', 'PurchaseAdviseController@purchaseorder_advise_challan');
@@ -91,18 +91,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('create_delivery_challan/{id}', 'DeliveryOrderController@create_delivery_challan');
     Route::post('create_delivery_challan/{id}', 'DeliveryOrderController@store_delivery_challan');
 
-    Route::get('pending_inquiry', function() {
-        return 'Pending Inquiry ';
-    });
-    Route::get('delivery_orders', function() {
-        return 'Delivery Orders';
-    });
-    Route::get('pending_delivery_orders', function() {
-        return 'Pending Delivery Orders';
-    });
-    Route::get('delivery_order_challan', function() {
-        return 'Delivery Order Challan';
-    });
+    Route::get('sales_daybook','SalesDaybookController@index');
+    Route::post('delete_sales_daybook/{id}','SalesDaybookController@delete_challan');
+    Route::post('delete_multiple_challan','SalesDaybookController@delete_multiple_challan');
+    Route::post('sales_daybook/date','SalesDaybookController@challan_date');   
+    
+    Route::post('print_delivery_order/{id}','DeliveryOrderController@print_delivery_order');
+    Route::post('print_delivery_challan/{id}','DeliveryChallanController@print_delivery_challan');
 });
 
 

@@ -386,7 +386,7 @@ class DeliveryOrderController extends Controller {
         $delivery_challan->loaded_by = $input_data['loadedby'];
         $delivery_challan->labours = $input_data['labour'];
         $delivery_challan->vat_percentage = $input_data['vat_percentage'];
-        $delivery_challan->grand_total = $input_data['grand_total'];
+        $delivery_challan->grand_price = $input_data['grand_total'];
         $delivery_challan->remarks = $input_data['challan_remark'];
         $delivery_challan->challan_status = "Pending";
         $delivery_challan->save();
@@ -418,6 +418,18 @@ class DeliveryOrderController extends Controller {
     }
 
 
+    //Generate Serial number and print Delivery order
+    public function print_delivery_order($id){
+        $current_date = date("M/y/m/");
+        
+        $date_letter = $current_date."".$id;
+        DeliveryOrder::where('id', $id)->update(array(
+            'serial_no'=>$date_letter
+            ));
+        return redirect('delivery_order')->with('validation_message', 'Delivery order is successfuly printed.');
+//        echo $date_letter;
+        
+    }
 
     
 }

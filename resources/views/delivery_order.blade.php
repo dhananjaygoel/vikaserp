@@ -84,24 +84,42 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @if($delivery->serial_no == "")
                                             <a href="{{URL::action('DeliveryOrderController@edit', ['id'=> $delivery->id])}}" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @elseif($delivery->serial_no != "")
+                                            <span class="table-link" title="edit">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </span>
+                                            @endif
                                             <a href="{{url('create_delivery_challan/'.$delivery->id)}}" class="table-link" title="Delivery challan">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-book fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#myModal1">
+                                            @if($delivery->serial_no == "")
+                                            <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan_{{$delivery->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @elseif($delivery->serial_no != "")
+                                            <span class="table-link" title="print">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-print fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </span>
+                                            @endif
                                             <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal{{$delivery->id}}" title="delete">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -146,35 +164,37 @@
                                         </div>
                                     </div>
                                 </div>
-                                @endforeach
-                                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                
+                                <div class="modal fade" id="print_challan_{{$delivery->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
+                                            {!! Form::open(array('url'=>url('print_delivery_order/'.$delivery->id), 'method' => 'post')) !!}
                                             <div class="modal-body">
                                                 <form method="POST" action="" accept-charset="UTF-8" >
                                                     <div class="row print_time "> 
                                                         <div class="col-md-12"> Print By <br> 05:00 PM</div> 
                                                     </div>
                                                     <div class="checkbox">
-                                                        <label><input type="checkbox" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
+                                                        <label><input type="checkbox" value="" checked="checked"><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
                                                     </div>
                                                     <div class="clearfix"></div>
                                                     <hr>
                                                     <div >
-                                                        <button type="button" class="btn btn-primary form_button_footer" >Print</button>
+                                                        <button type="submit" class="btn btn-primary form_button_footer">Print</button>
 
-                                                        <a href="delivery_orders.php" class="btn btn-default form_button_footer">Cancel</a>
+                                                        <a href="{{url('delivery_order')}}" class="btn btn-default form_button_footer">Cancel</a>
                                                     </div>
                                                     <div class="clearfix"></div>
-                                                </form>
+                                                </form>{!! Form::close() !!}
                                             </div>           
                                         </div>
                                     </div>
                                 </div> 
+                                @endforeach
                                 </tbody>
                             </table>
                             <span class="pull-right">

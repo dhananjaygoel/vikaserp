@@ -55,10 +55,10 @@
                                         <td class="text-center">{{$k++}}</td>
                                         <td class="text-center">{{$challan['customer']->owner_name}}</td>
                                         <td class="text-center">
-                                            @if($challan['delivery_order']->serial_no == '')
-                                                --
-                                            @elseif($challan['delivery_order']->serial_no != '')
-                                            {{$challan['delivery_order']->serial_no}}
+                                            @if($challan->serial_number == '')
+                                                
+                                            @elseif($challan->serial_number != '')
+                                            {{$challan->serial_number}}
                                             @endif
                                         </td>                                        
                                         <td class="text-center"><?php
@@ -80,7 +80,7 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-
+                                            
                                             <a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -154,9 +154,11 @@
 
 
                                             <div class="modal-body">
-                                                <form method="POST" action="" accept-charset="UTF-8" >
+                                                <form method="POST" action="print_delivery_challan/{{$challan->id}}" accept-charset="UTF-8" >
+                                                    <input type="hidden" name="_token"value="{{csrf_token()}}">
 
-
+                                                    <input type="hidden" name="serial_number" value="{{$challan['delivery_order']->serial_no}}">
+                                                    <input type="hidden" name="delivery_order_id" value="{{$challan['delivery_order']->id}}">
                                                     <div class="row print_time"> 
                                                         <div class="col-md-12"> Print By <br> 05:00 PM</div> 
                                                     </div>
@@ -166,13 +168,13 @@
                                                     <div class="clearfix"></div>
                                                     <hr>
                                                     <div >
-                                                        <button type="button" class="btn btn-primary form_button_footer" >Generate Challan</button>
+                                                        <button type="submit" class="btn btn-primary form_button_footer" >Generate Challan</button>
                                                         <!--<button type="button" class="btn btn-primary form_button_footer" >Send Message</button>-->
-                                                        <a href="delivery_orders_challan.php" class="btn btn-default form_button_footer">Cancel</a>
+                                                        <a href="{{url('delivery_challa')}}" class="btn btn-default form_button_footer">Cancel</a>
                                                     </div>
 
                                                     <div class="clearfix"></div>
-                                                </form>
+                                               {!! Form::close() !!}
 
 
                                             </div>           
