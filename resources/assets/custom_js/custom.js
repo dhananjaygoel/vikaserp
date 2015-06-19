@@ -146,14 +146,13 @@ $('#add_more_product').click(function(){
             for (var key in arr1) {
                 html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
             }
-            $("#units_" + current_row_count).html(html);
-        });
+            $("#units_" + current_row_count).html(html);        });
         
         var str = ' <tr id="add_row_' + current_row_count + '" class="add_product_row">'+
                 '    <td>'+
                '<div class="form-group searchproduct">' +
                 '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +
-                '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
+                '<input type="hidden" name="product[' + current_row_count + '][product_category_id]" id="add_product_id_' + current_row_count + '">' +
                 '<i class="fa fa-search search-icon"></i>' +
                 '</div>' +
                 '    </td>'+
@@ -164,14 +163,14 @@ $('#add_more_product').click(function(){
                 '    </td>'+
                 '    <td>'+
                 '        <div class="form-group ">'+
-                '           <select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
+                '           <select class="form-control" name="product[' + current_row_count + '][unit_id]" id="units_' + current_row_count + '">' +
                 '               <option value="" selected="">Unit</option>' +
                 '           </select>' +
                 '        </div>'+
                 '    </td>  '+
                 '    <td>  '+
                 '        <div class="form-group">'+
-                '            <input id="shipping" class="form-control" placeholder="Present Shipping" name="shipping" value="" type="text">'+
+                '            <input id="shipping" class="form-control" placeholder="Present Shipping" name="present_shipping" value="" type="text">'+
                 '        </div>'+
                 '    </td>'+
                 '    <td class="shippingcolumn">'+

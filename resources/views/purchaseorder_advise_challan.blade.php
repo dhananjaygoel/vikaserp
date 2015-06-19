@@ -27,6 +27,8 @@
                 <form method="POST" action="{{URL::action('PurchaseChallanController@store')}}" accept-charset="UTF-8" >
                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                     <input type="hidden" name="purchase_advice_id" value="{{$purchase_advise->id}}"/>
+                    <input type="hidden" name="purchase_order_id" value="{{$purchase_advise->purchase_order_id}}"/>
+                    <input type="hidden" name="delivery_location_id" value="{{$purchase_advise->delivery_location_id}}"/>
 
                     <div class="form-group">
                         <label><b>Bill Date:</b>{{$purchase_advise->purchase_advice_date}}
@@ -39,8 +41,9 @@
                         </label>
                     </div>
                     <div class="form-group">
-                        <label><b>Created By:</b> {{$purchase_advise->owner_name }}
-                            <input type="hidden" name="created_by" value="{{$purchase_advise->id }}"/> 
+                        <label><b>Created By:</b> {{$purchase_advise['supplier']->owner_name }}
+                            <input type="hidden" name="supplier_id" value="{{$purchase_advise['supplier_id']->id }}"/> 
+                            <input type="hidden" name="created_by" value="{{$purchase_advise->created_by }}"/> 
                         </label>
 
                     </div>
@@ -134,7 +137,7 @@
                     </div>
                     <div class="form-group">
                         <label for="vehicle_name"><b class="challan">Vehicle Number</b></label>
-                        <input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{$products->vehicle_number}}" type="text">
+                        <input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{$purchase_advise->vehicle_number}}" type="text">
                     </div>
                     <div class="form-group">
                         <label for="vehicle_name"><b class="challan">Discount</b></label>
@@ -163,8 +166,8 @@
                         <label for="Plusvat"><b class="challan">Plus VAT</b> Yes/No</label>
                     </div>
                     <div class="form-group">
-                        <label for="driver_contact"><b class="challan">VAT Percentage</b> {{$products->vat_percentage}}</label>
-                        <input type="hidden" value="{{$products->vat_percentage}}" name="vat_percentage"/>
+                        <label for="driver_contact"><b class="challan">VAT Percentage</b> {{$purchase_advise->vat_percentage}}</label>
+                        <input type="hidden" value="{{$purchase_advise->vat_percentage}}" name="vat_percentage"/>
                     </div>
                     <div class="form-group">
                         <label for="total"><b class="challan">Grand Total</b> $25000</label>
@@ -176,7 +179,7 @@
                     <div class="form-group">
                         <label for="inquiry_remark"><span class="checksms">Remark</span></label>
                         <textarea class="form-control" id="inquiry_remark" name="remark"  rows="3">
-                            {{$products->remarks}}
+                            {{$purchase_advise->remarks}}
                         </textarea>
                     </div>
                     <!--   <button title="SMS would be sent to Relationship Manager" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> -->

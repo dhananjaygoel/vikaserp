@@ -33,7 +33,7 @@ class PurchaseAdviseController extends Controller {
         if (Input::has('purchaseaAdviseFilter') && Input::get('purchaseaAdviseFilter') != '') {
             $q->where('advice_status', '=', Input::get('purchaseaAdviseFilter'));
         }
-        $purchase_advise = $q->paginate(2);
+        $purchase_advise = $q->paginate(10);
         $purchase_advise->setPath('purchaseorder_advise');
 
         return View::make('purchase_advise', array('purchase_advise' => $purchase_advise));
@@ -295,7 +295,7 @@ class PurchaseAdviseController extends Controller {
 
         $locations = DeliveryLocation::all();
         $units = Units::all();
-
+        
         return view('purchaseorder_advise_challan', compact('purchase_advise', 'locations', 'units'));
     }
 

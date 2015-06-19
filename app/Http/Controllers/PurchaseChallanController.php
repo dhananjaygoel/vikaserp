@@ -23,8 +23,18 @@ class PurchaseChallanController extends Controller {
      * @return Response
      */
     public function index() {
-        $purchase_challan = PurchaseChallan::with('supplier', 'purchase_advice')->Paginate(2);
+
+//        $purchase_challan = PurchaseChallan::with('supplier', 'purchase_advice')->Paginate(10);
+//        $purchase_challan->setPath('purchase_challan');
+
+        $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier')->Paginate(10);
         $purchase_challan->setPath('purchase_challan');
+
+//        echo '<pre>';
+//        print_r($purchase_challan->toArray());
+//        echo '</pre>';
+//        exit;
+
         return view('purchase_challan', compact('purchase_challan'));
     }
 
@@ -52,7 +62,10 @@ class PurchaseChallanController extends Controller {
         $add_challan = PurchaseChallan::create([
                     'expected_delivery_date' => $request->input('bill_date'),
                     'purchase_advice_id' => $request->input('purchase_advice_id'),
+                    'purchase_order_id' => $request->input('purchase_order_id'),
+                    'delivery_location_id' => $request->input('delivery_location_id'),
                     'serial_number' => $request->input('serial_no'),
+                    'supplier_id' => $request->input('supplier_id'),
                     'created_by' => $request->input('created_by'),
                     'vehicle_number' => $request->input('vehicle_number'),
                     'freight' => $request->input('Freight'),
@@ -97,7 +110,8 @@ class PurchaseChallanController extends Controller {
      * @return Response
      */
     public function show($id) {
-        //
+        $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'purchase_product.product_sub_category', 'purchase_product.unit')->where('id', $id)->first();
+        return view('view_purchase_challan', compact('purchase_challan'));
     }
 
     /**
@@ -107,7 +121,14 @@ class PurchaseChallanController extends Controller {
      * @return Response
      */
     public function edit($id) {
-        //
+        $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'purchase_product.product_sub_category', 'purchase_product.unit')->where('id', $id)->first();
+        
+//        echo '<pre>';
+//        print_r($purchase_challan->toArray());
+//        echo '</pre>';
+//        exit;
+        
+        return view('edit_purchase_challan', compact('purchase_challan'));
     }
 
     /**

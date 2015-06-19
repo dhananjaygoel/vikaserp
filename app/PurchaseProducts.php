@@ -27,5 +27,8 @@ class PurchaseProducts extends Model {
     public function product_category() {
         return $this->hasOne('App\ProductCategory', 'id', 'product_category_id');
     }
+    public function product_sub_category() {
+        return $this->hasOne('App\ProductSubCategory', 'product_category_id', 'product_category_id');
+    }
 
 }

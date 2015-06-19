@@ -20,6 +20,8 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
+                        
+                        
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
                                 <thead>
@@ -44,14 +46,14 @@
                                         <td class="text-center">{{$challan['purchase_advice']->purchase_advice_date}}</td>
                                         <td class="text-center">250</td>
                                         <td class="text-center">
-                                            <a href="view_purchasechallan.php" class="table-link" title="view">
+                                            <a href="{{URL::action('PurchaseChallanController@show',['id'=> $challan->id]) }}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
 
-                                            <a href="edit_purchasechallan.php" class="table-link" title="edit">
+                                            <a href="{{URL::action('PurchaseChallanController@edit',['id'=> $challan->id])}}" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -143,11 +145,9 @@
                                 @endforeach
                                 </tbody>
                             </table>
-
                             <span class="pull-right">
                                 <?php echo $purchase_challan->render(); ?>
                             </span>
-
                         </div>
                     </div>
                 </div>
