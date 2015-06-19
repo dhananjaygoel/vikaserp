@@ -105,7 +105,7 @@
                     </li>
 
                     <li class="<?php
-                    if (Request::is('*purchase_orders*') || Request::is('*purchaseorder_advise*') || Request::is('*purchase_challan*') || Request::is('*purchase_order_report*')) {
+                    if (Request::is('*purchase_orders*') || Request::is('*purchaseorder_advise*') || Request::is('*purchase_challan*') || Request::is('*purchase_order_report*') || Request::is('*purchase_order_daybook*')) {
                         echo 'active';
                     }
                     ?>">
@@ -144,8 +144,8 @@
                                 </a>
                             </li>
                             @if(Auth::user()->id == 0 || Auth::user()->id == 1)
-                            <li class="<?php echo ($page_name == 'purchaseorder_challanreport.php') ? 'active' : ''; ?>">
-                                <a href="purchaseorder_challanreport.php">
+                            <li class="{{ (Request::is('*purchase_order_daybook*') ? 'active' : '') }}">
+                                <a href="{{url('purchase_order_daybook')}}">
                                     Purchase Daybook
                                 </a>
                             </li>

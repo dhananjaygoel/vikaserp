@@ -25,8 +25,7 @@
                         <div class="alert alert-success alert-success1">
                             {{Session::get('success')}}                            
                         </div>
-                        @endif
-                        
+                        @endif                        
                         
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
@@ -97,7 +96,7 @@
                                                     <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                     <div class="pwd">
                                                         <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" placeholder="" type="password" name="password"></div>
+                                                        <div class="pwdr"><input class="form-control" required="" placeholder="" type="password" name="password"></div>
                                                     </div>
                                                     <div class="clearfix"></div>
                                                     <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
@@ -111,7 +110,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -119,9 +117,6 @@
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
-
-
-
                                             <div class="modal-body">
                                                 <form method="POST" action="" accept-charset="UTF-8" >
 
@@ -141,10 +136,7 @@
 
                                                     <div class="clearfix"></div>
                                                 </form>
-
-
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -159,7 +151,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 @stop

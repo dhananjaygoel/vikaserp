@@ -23,7 +23,6 @@
                     @endforeach                       
                 </div>
                 @endif 
-
                 <form method="POST" action="{{URL::action('PurchaseChallanController@store')}}" accept-charset="UTF-8" >
                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                     <input type="hidden" name="purchase_advice_id" value="{{$purchase_advise->id}}"/>
@@ -42,10 +41,9 @@
                     </div>
                     <div class="form-group">
                         <label><b>Created By:</b> {{$purchase_advise['supplier']->owner_name }}
-                            <input type="hidden" name="supplier_id" value="{{$purchase_advise['supplier_id']->id }}"/> 
+                            <input type="hidden" name="supplier_id" value="{{$purchase_advise['supplier']->id }}"/> 
                             <input type="hidden" name="created_by" value="{{$purchase_advise->created_by }}"/> 
                         </label>
-
                     </div>
                     <div class="table-responsive">
                         <table id="table-example" class="table table_deliverchallan serial purchaseorder_advide_table">
@@ -61,10 +59,8 @@
                                 <?php $total_price = 0; ?>
                                 @foreach($purchase_advise['purchase_products'] as $key=>$products)
                                 <tr id="add_row_{{$key}}" class="add_product_row">
-
                             <input type="hidden" name="product[{{$key}}][purchase_advice_id]" value="{{$purchase_advise->id}}"/>
                             <input type="hidden" name="product[{{$key}}][order_type]" value="purchase_advice"/>
-
                             <td>
                                 <div class="form-group">
                                     {{$products['product_category']['product_sub_category']->alias_name}}
@@ -94,7 +90,6 @@
                                     <div class="form-group col-md-12">
                                         <!--<input type="text" class="form-control" id="difference" value="{{$products->price}}" placeholder="Rate">-->
                                         <input type="text" class="form-control" id="product_price_{{$key}}" value="{{$products->price}}" name="product[{{$key}}][price]" placeholder="Rate">
-
                                     </div>                                         
                                 </div>
                             </td>
@@ -105,7 +100,6 @@
                                 </div>
                             </td>
                             </tr>
-
                             @endforeach                         
                             </tbody>
                         </table>

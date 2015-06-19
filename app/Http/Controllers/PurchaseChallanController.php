@@ -13,6 +13,8 @@ use Input;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use Hash;
+use Auth;
 use App\Quotation;
 
 class PurchaseChallanController extends Controller {
@@ -23,13 +25,9 @@ class PurchaseChallanController extends Controller {
      * @return Response
      */
     public function index() {
-
-//        $purchase_challan = PurchaseChallan::with('supplier', 'purchase_advice')->Paginate(10);
-//        $purchase_challan->setPath('purchase_challan');
-
+        
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier')->Paginate(10);
         $purchase_challan->setPath('purchase_challan');
-
         return view('purchase_challan', compact('purchase_challan'));
     }
 
@@ -71,11 +69,12 @@ class PurchaseChallanController extends Controller {
         $challan_id = DB::getPdo()->lastInsertId();
         $input_data = Input::all();
         $order_products = array();
+
         foreach ($input_data['product'] as $product_data) {
 //            if ($product_data['name'] != "") {
             $order_products = [
                 'purchase_order_id' => $challan_id,
-                'order_type' => 'purchase_advice',
+                'order_type' => 'purchase_challan',
                 'product_category_id' => $product_data['product_category_id'],
                 'unit_id' => $product_data['unit_id'],
                 'quantity' => $product_data['quantity'],
@@ -87,8 +86,7 @@ class PurchaseChallanController extends Controller {
 //            }
         }
 
-
-        return redirect('purchaseorder_advise')->with('flash_success_message', 'Challan details successfully added.');
+        return redirect('purchase_challan')->with('success', 'Challan details successfully added.');
     }
 
     /**
