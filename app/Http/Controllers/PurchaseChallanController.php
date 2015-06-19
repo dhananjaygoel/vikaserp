@@ -30,11 +30,6 @@ class PurchaseChallanController extends Controller {
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier')->Paginate(10);
         $purchase_challan->setPath('purchase_challan');
 
-//        echo '<pre>';
-//        print_r($purchase_challan->toArray());
-//        echo '</pre>';
-//        exit;
-
         return view('purchase_challan', compact('purchase_challan'));
     }
 
@@ -54,11 +49,6 @@ class PurchaseChallanController extends Controller {
      */
     public function store(PurchaseChallanRequest $request) {
 
-//        echo '<pre>';
-//        print_r(Input::all());
-//        echo '</pre>';
-//        exit;
-
         $add_challan = PurchaseChallan::create([
                     'expected_delivery_date' => $request->input('bill_date'),
                     'purchase_advice_id' => $request->input('purchase_advice_id'),
@@ -77,8 +67,6 @@ class PurchaseChallanController extends Controller {
                     'order_status' => 'pending',
                     'vat_percentage' => $request->input('vat_percentage')
         ]);
-
-
 
         $challan_id = DB::getPdo()->lastInsertId();
         $input_data = Input::all();
@@ -110,6 +98,7 @@ class PurchaseChallanController extends Controller {
      * @return Response
      */
     public function show($id) {
+
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'purchase_product.product_sub_category', 'purchase_product.unit')->where('id', $id)->first();
         return view('view_purchase_challan', compact('purchase_challan'));
     }
@@ -121,13 +110,8 @@ class PurchaseChallanController extends Controller {
      * @return Response
      */
     public function edit($id) {
+
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'purchase_product.product_sub_category', 'purchase_product.unit')->where('id', $id)->first();
-        
-//        echo '<pre>';
-//        print_r($purchase_challan->toArray());
-//        echo '</pre>';
-//        exit;
-        
         return view('edit_purchase_challan', compact('purchase_challan'));
     }
 
@@ -137,8 +121,46 @@ class PurchaseChallanController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function update($id) {
-        //
+    public function update($id, PurchaseChallanRequest $request) {
+
+        $challan_data = Input::all();
+        $purchase = array(
+            'vehicle_number' => $request->input('vehicle_number'),
+            'freight' => $request->input('Freight'),
+            'unloaded_by' => $request->input('loadedby'),
+            'unloading' => $request->input('unloading'),
+            'labours' => $request->input('labour'),
+            'bill_number' => $request->input('billno'),
+            'remarks' => $request->input('remarks'),
+            'remarks' => $request->input('remarks'),
+            'discount' => $request->input('discount')
+        );
+
+        PurchaseChallan::where('id', $id)
+                ->update($purchase);
+
+        PurchaseProducts::where('purchase_order_id', $id)
+                ->where('order_type', 'purchase_challan')
+                ->delete();
+
+        $input_data = Input::all();
+
+        $order_products = array();
+        foreach ($input_data['product'] as $product_data) {
+            $order_products = [
+                'purchase_order_id' => $id,
+                'order_type' => 'purchase_challan',
+                'product_category_id' => $product_data['product_category_id'],
+                'unit_id' => $product_data['unit_id'],
+                'quantity' => $product_data['quantity'],
+                'present_shipping' => $product_data['present_shipping'],
+                'price' => $product_data['price'],
+            ];
+
+            $add_order_products = PurchaseProducts::create($order_products);
+        }
+
+        return redirect('purchase_challan')->with('success', 'Challan details successfully updated');
     }
 
     /**

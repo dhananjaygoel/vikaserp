@@ -21,6 +21,12 @@
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
                         
+                        @if (Session::has('success'))
+                        <div class="alert alert-success alert-success1">
+                            {{Session::get('success')}}                            
+                        </div>
+                        @endif
+                        
                         
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">

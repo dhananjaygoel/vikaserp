@@ -158,11 +158,11 @@ $('#add_more_product').click(function(){
                 '    </td>'+
                 '    <td>'+
                 '        <div class="form-group">'+
-                '            <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">'+
+                '            <input id="qty" class="form-control" placeholder="Actual Quantity" name="product[' + current_row_count + '][quantity]" value="" type="text">'+
                 '        </div>'+
                 '    </td>'+
                 '    <td>'+
-                '        <div class="form-group ">'+
+                '        <div class="form-group">'+
                 '           <select class="form-control" name="product[' + current_row_count + '][unit_id]" id="units_' + current_row_count + '">' +
                 '               <option value="" selected="">Unit</option>' +
                 '           </select>' +
@@ -170,7 +170,7 @@ $('#add_more_product').click(function(){
                 '    </td>  '+
                 '    <td>  '+
                 '        <div class="form-group">'+
-                '            <input id="shipping" class="form-control" placeholder="Present Shipping" name="present_shipping" value="" type="text">'+
+                '            <input id="shipping" class="form-control" placeholder="Present Shipping" name="product[' + current_row_count + '][present_shipping]" value="" type="text">'+
                 '        </div>'+
                 '    </td>'+
                 '    <td class="shippingcolumn">'+
