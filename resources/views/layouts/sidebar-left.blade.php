@@ -10,7 +10,7 @@
                     $count = count($name_array);
                     $page_name = $name_array[$count - 1];
                     ?>
-                    @if(Auth::user()->id == 0)
+                    @if(Auth::user()->role_id == 0)
                     <li class="{{ (Request::is('*dashboard*') ? 'active' : '') }}">
                         <a href="{{url('dashboard')}}">
                             <i class="fa fa-dashboard"></i>
@@ -19,7 +19,7 @@
                         </a>
                     </li>
                     @endif
-                    @if(Auth::user()->id == 0 || Auth::user()->id == 1 )
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 )
                     <li class="{{ (Request::is('*users*') ? 'active' : '') }}">
                         <a href="{{url()}}/users">
                             <i class="fa fa-user"></i>
@@ -28,7 +28,7 @@
                         </a>
                     </li>
                     @endif
-                    @if(Auth::user()->id == 0 || Auth::user()->id == 1 )
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 )
                     <li class="{{ (Request::is('customers*') ? 'active' : '') }}">
                         <a href="{{url('customers')}}">
                             <i class="fa fa-male"></i>
@@ -37,7 +37,7 @@
                         </a>
                     </li>
                     @endif
-                    @if(Auth::user()->id == 0 || Auth::user()->id == 1 )
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 )
                     <li class="{{ (Request::is('pending_customers*') ? 'active' : '') }}">
                         <a href="{{url('pending_customers')}}">
                             <i class="fa fa-book"></i>
@@ -46,7 +46,7 @@
                         </a>
                     </li>
                     @endif
-                    @if(Auth::user()->id == 0 || Auth::user()->id == 1 || Auth::user()->id == 2)
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
                     <li class="{{ (Request::is('*inquiry*') ? 'active' : '') }}">
                         <a href="{{url("inquiry")}}">
                             <i class="fa fa-info"></i>
@@ -88,7 +88,7 @@
                                     Pending Delivery Order Report
                                 </a>
                             </li>
-                            @if(Auth::user()->id == 0 ||Auth::user()->id == 1 || Auth::user()->id == 2)
+                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
                             <li class="{{ (Request::is('*sales_daybook*') ? 'active' : '') }}">
                                 <a href="{{url('sales_daybook')}}">
                                     Sales Daybook
@@ -115,7 +115,7 @@
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
                         <ul class="submenu">
-                            @if(Auth::user()->id == 0 ||Auth::user()->id == 1)
+                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1)
                             <li class="{{ (Request::is('*purchase_orders*') ? 'active' : '') }}">
                                 <a href="{{url("purchase_orders")}}">
                                     Purchase Order
@@ -143,7 +143,7 @@
                                     Pending Purchase Advise Report
                                 </a>
                             </li>
-                            @if(Auth::user()->id == 0 || Auth::user()->id == 1)
+                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                             <li class="{{ (Request::is('*purchase_order_daybook*') ? 'active' : '') }}">
                                 <a href="{{url('purchase_order_daybook')}}">
                                     Purchase Daybook
@@ -211,7 +211,7 @@
                             </li>
                         </ul>
                     </li>
-                    @if(Auth::user()->id == 0)
+                    @if(Auth::user()->role_id == 0)
                     <li class="{{ (Request::is('*customer_manager*') ? 'active' : '') }}">
                         <a href="{{url("customer_manager")}}">
                             <i class="fa fa-asterisk"></i>
@@ -220,7 +220,7 @@
                         </a>
                     </li>
                     @endif
-                    @if(Auth::user()->id == 0)
+                    @if(Auth::user()->role_id == 0)
                     <li class="{{ (Request::is('*security*') ? 'active' : '') }}">
                         <a href="{{url("security")}}">
                             <i class="fa fa-lock"></i>
