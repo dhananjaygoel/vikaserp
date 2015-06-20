@@ -11,6 +11,11 @@
                 </ol>
                 <div class="clearfix">
                     <h1 class="pull-left">View Delivery Challan</h1>
+                    <div class="pull-right top-page-ui">
+                        <a href="{{url('delivery_challan/'.$allorder->id.'/edit')}}" class="btn btn-primary pull-right">
+                            Edit Delivery Challan
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

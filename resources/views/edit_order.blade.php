@@ -54,12 +54,12 @@
                             <div class="form-group">
                                 @if($order->order_source == 'warehouse')
                                 <div class="radio">
-                                    <input checked="" value="warehouse" id="optionsRadios5" name="status" type="radio" onchange="show_hide_supplier($order - > order_source)">
-                                    <label for="optionsRadios5">Warehouse</label>
-                                    <input  value="supplier" id="optionsRadios6" name="status" type="radio">
-                                    <label for="optionsRadios6">Supplier</label>
+                                    <input checked="" value="warehouse" id="warehouse_radio" name="status" type="radio" onchange="show_hide_supplier($order - > order_source)">
+                                    <label for="warehouse_radio">Warehouse</label>
+                                    <input  value="supplier" id="supplier_radio" name="status" type="radio">
+                                    <label for="supplier_radio">Supplier</label>
                                 </div>
-                                <div class="supplier" style="display:none">
+                                <div class="supplier_order" style="display:none">
                                     <select class="form-control" name="supplier_id" id="add_status_type">
                                         <option value="" selected="">Select supplier</option>
                                         @if(count($customers)>0)
@@ -71,12 +71,12 @@
                                 </div>
                                 @elseif($order->order_source == 'supplier')
                                 <div class="radio">
-                                    <input value="warehouse" id="optionsRadios5" name="status" type="radio">
-                                    <label for="optionsRadios5">Warehouse</label>
-                                    <input  checked="" value="supplier" id="optionsRadios6" name="status" type="radio" onchange="show_hide_supplier($order - > order_source)">
-                                    <label for="optionsRadios6">Supplier</label>
+                                    <input value="warehouse" id="warehouse_radio" name="status" type="radio">
+                                    <label for="warehouse_radio">Warehouse</label>
+                                    <input  checked="" value="supplier" id="supplier_radio" name="status" type="radio" onchange="show_hide_supplier($order - > order_source)">
+                                    <label for="supplier_radio">Supplier</label>
                                 </div>
-                                <div class="supplier">
+                                <div class="supplier_order">
                                     <select class="form-control" name="supplier_id" id="add_status_type">
                                         <option value="" >Select supplier</option>
                                         @if(count($customers)>0)
@@ -99,10 +99,10 @@
                             <div class="form-group">
                                 <label>Customer</label>
                                 <div class="radio">
-                                    <input value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
-                                    <label for ="optionsRadios1">Existing</label>
-                                    <input checked="" value="new_customer" id="optionsRadios2" name="customer_status" type="radio" onchange="show_hide_customer('Pending');">
-                                    <label for="optionsRadios2">New</label>
+                                    <input value="existing_customer" id="existing_customer" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
+                                    <label for ="existing_customer">Existing</label>
+                                    <input checked="" value="new_customer" id="new_customer" name="customer_status" type="radio" onchange="show_hide_customer('Pending');">
+                                    <label for="new_customer">New</label>
                                 </div>
                                 <div class="customer_select" style="display: none">
                                     <div class="col-md-4">
@@ -344,15 +344,7 @@
                         </div>
                         @endif 
 
-                            <div class="form-group col-md-4 targetdate">
-
-                                <label for="time">Estimated Delivery Date:</label>
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input type="text" name="estimated_date" class="form-control" id="estimated_delivery_date" value="{{date('Y-m-d', strtotime($order->estimated_delivery_date))}}">
-                                </div>
-
-                            </div>
+                            
                             <div class="clearfix"></div>
                             <div class="form-group col-md-4 targetdate">
                                 <label for="date">Expected Delivery Date: </label>

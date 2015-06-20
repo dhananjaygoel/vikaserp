@@ -26,7 +26,7 @@ class SalesDaybookController extends Controller {
     public function index() {
 
 
-        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products', 'delivery_order', 'user')->orderBy('created_at', 'desc')->Paginate(10);
+        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products', 'delivery_order', 'user')->orderBy('created_at', 'desc')->Paginate(1);
         $challan_date = '';
         $allorders->setPath('sales_daybook');
         return view('sales_daybook', compact('allorders', 'challan_date'));
@@ -50,9 +50,9 @@ class SalesDaybookController extends Controller {
 
                 $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
                             ->whereRaw('DATE(created_at) = ?', [$challan_date])
-                            ->with('customer', 'all_order_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(10);
+                            ->with('customer', 'all_order_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(1);
             $challan_date = $input_data['challan_date'];
-            $allorders->setPath('date/');
+            $allorders->setPath('sales_daybook_date');
             return view('sales_daybook', compact('allorders', 'challan_date'));
         } else {
             $error_msg = $validator->messages();

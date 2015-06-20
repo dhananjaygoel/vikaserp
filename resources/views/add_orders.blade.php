@@ -35,12 +35,12 @@
                             @endif
                             <div class="form-group">
                                 <div class="radio">
-                                    <input checked="" value="warehouse" id="optionsRadios3" name="status" type="radio">
-                                    <label for="optionsRadios3">Warehouse</label>
-                                    <input  value="supplier" id="optionsRadios4" name="status" type="radio">
-                                    <label for="optionsRadios4">Supplier</label>
+                                    <input checked="" value="warehouse" id="warehouse_radio" name="status" type="radio">
+                                    <label for="warehouse_radio">Warehouse</label>
+                                    <input  value="supplier" id="supplier_radio" name="status" type="radio">
+                                    <label for="supplier_radio">Supplier</label>
                                 </div>
-                                <div class="supplier" style="display:none">
+                                <div class="supplier_order" style="display:none">
                                     <select class="form-control" name="supplier_id" id="add_status_type">
                                         <option value="" selected="">Select supplier</option>
                                         @if(count($customers)>0)
@@ -60,7 +60,7 @@
                                     <input  value="new_customer" id="new_customer" name="customer_status" type="radio">
                                     <label for="new_customer">New</label>
                                 </div>
-                                <div class="customer_select" >
+                                <div class="customer_select_order" >
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
                                             <input class="form-control" placeholder="Enter Customer Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
@@ -71,7 +71,7 @@
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="exist_field" style="display: none">
+                            <div class="new_customer_details" style="display: none">
                                 <div class="form-group">
                                     <label for="name">Customer Name</label>
                                     <input id="name" class="form-control" placeholder="Name" name="customer_name" value="" type="text">
@@ -205,13 +205,13 @@
                             <div class="clearfix"></div>
                             <div class="form-group">
                                 <div class="radio">
-                                    <input checked="" value="include_vat" id="optionsRadios5" name="status1" type="radio">
-                                    <label for="optionsRadios5">All Inclusive</label>
-                                    <input value="exclude_vat" id="optionsRadios6" name="status1" type="radio">
-                                    <label for="optionsRadios6">Plus VAT</label>
+                                    <input checked="" value="include_vat" id="all_inclusive" name="status1" type="radio">
+                                    <label for="all_inclusive">All Inclusive</label>
+                                    <input value="exclude_vat" id="vat_inclusive" name="status1" type="radio">
+                                    <label for="vat_inclusive">Plus VAT</label>
                                 </div>
                             </div>
-                            <div class="plusvat " style="display: none">
+                            <div class="vat_field " style="display: none">
                                 <div class="form-group">
                                     <table id="table-example" class="table ">
                                         <tbody>
@@ -223,13 +223,7 @@
                                     </table>
                                 </div>
                             </div> 
-                            <div class="form-group col-md-4 targetdate">
-                                <label for="time">Estimated Delivery Date:</label>
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input type="text" name="estimated_date" class="form-control" id="estimated_delivery_date">
-                                </div>
-                            </div>
+                            
                             <div class="clearfix"></div>
                             <div class="form-group col-md-4 targetdate">
                                 <label for="time">Expected Delivery Date: </label>

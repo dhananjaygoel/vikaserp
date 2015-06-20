@@ -1,30 +1,28 @@
 $(document).ready(function () {
-    $("#optionsRadios1").click(function () {
-        $(".supplier").hide();
-        $(".exist_field").hide();
-        $(".customer_select").show();
-    });
-    $("#optionsRadios2").click(function () {
-
-        $(".exist_field").show();
-        $(".customer_select").hide();
-        $(".supplier").hide();
-    });
-
-    $("#optionsRadios3").click(function () {
-        $(".supplier").hide();
+    $("#warehouse_radio").click(function () {
+        $(".supplier_order").hide();
 
     });
-    $("#optionsRadios4").click(function () {
-        $(".supplier").show();
+    $("#supplier_radio").click(function () {
+        $(".supplier_order").show();
 
     });
-    $("#optionsRadios6").click(function () {
-        $(".plusvat").show();
+    $("#existing_customer").click(function () {        
+        $(".new_customer_details").hide();
+        $(".customer_select_order").show();
+    });
+    $("#new_customer").click(function () {
+        $(".new_customer_details").show();
+        $(".customer_select_order").hide();       
+    });
+
+    
+    $("#vat_inclusive").click(function () {
+        $(".vat_field").show();
 
     });
-    $("#optionsRadios5").click(function () {
-        $(".plusvat").hide();
+    $("#all_inclusive").click(function () {
+        $(".vat_field").hide();
 
     });
     $('#add_order_location').change(function () {

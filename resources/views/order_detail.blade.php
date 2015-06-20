@@ -17,11 +17,13 @@
                 </ol>
                 <div class="clearfix">
                     <h1 class="pull-left"></h1>
+                    @if( Auth::user()->role_id != 3 )
                     <div class="pull-right top-page-ui">
                         <a href="{{url('orders/'.$order->id.'/edit')}}" class="btn btn-primary pull-right">
                             Edit Order
                         </a>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -29,9 +31,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box">
-                    <header class="main-box-header clearfix">
-                        <h2><i class="fa fa-dashboard"></i> &nbsp; View Order </h2>
-                    </header>            
+                                
                     <div class="main-box-body clearfix">
 
                         <div class="inquiry_table col-md-12">
@@ -163,10 +163,7 @@
 
                                         </tr>
 
-                                        <tr>
-                                            <td><span>Estimated Delivery Date: </span>{{$order->estimated_delivery_date}}</td>
-
-                                        </tr>   
+                                          
 
                                         <tr>
                                             <td><span>Expected Delivery Date: </span>{{$order->expected_delivery_date}}</td>

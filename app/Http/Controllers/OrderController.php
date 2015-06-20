@@ -130,7 +130,7 @@ class OrderController extends Controller {
         $order->created_by = Auth::id();
         $order->delivery_location_id = $input_data['add_order_location'];
         $order->vat_percentage = $vat_price;
-        $order->estimated_delivery_date = date_format(date_create($input_data['estimated_date']), 'Y-m-d');
+//        $order->estimated_delivery_date = date_format(date_create($input_data['estimated_date']), 'Y-m-d');
         $order->expected_delivery_date = date_format(date_create($input_data['expected_date']), 'Y-m-d');
         $order->remarks = $input_data['order_remark'];
         $order->order_status = "Pending";
@@ -155,7 +155,7 @@ class OrderController extends Controller {
                 $add_order_products = AllOrderProducts::create($order_products);
             }
         }
-        return redirect('orders/' . $order_id . '/edit')->with('flash_message', 'Order details successfully added.');
+        return redirect('orders')->with('flash_message', 'Order details successfully added.');
     }
 
     /**
@@ -258,7 +258,7 @@ class OrderController extends Controller {
             'created_by' => Auth::id(),
             'delivery_location_id' => $input_data['add_inquiry_location'],
             'vat_percentage' => $input_data['vat_percentage'],
-            'estimated_delivery_date' => date_format(date_create($input_data['estimated_date']), 'Y-m-d'),
+//            'estimated_delivery_date' => date_format(date_create($input_data['estimated_date']), 'Y-m-d'),
             'expected_delivery_date' => date_format(date_create($input_data['expected_date']), 'Y-m-d'),
             'remarks' => $input_data['order_remark'],
             'order_status' => "Pending"
@@ -291,7 +291,7 @@ class OrderController extends Controller {
             }
         }
 
-        return redirect('orders/' . $id . '/edit')->with('flash_message', 'Order details successfully modified.');
+        return redirect('orders')->with('flash_message', 'Order details successfully modified.');
     }
 
     /**
@@ -374,7 +374,7 @@ class OrderController extends Controller {
             $delivery_order->delivery_location_id = $order->delivery_location_id;
             $delivery_order->other_location = $order->other_location;
             $delivery_order->vat_percentage = $order->vat_percentage;
-            $delivery_order->estimated_delivery_date = $order->estimated_delivery_date;
+//            $delivery_order->estimated_delivery_date = $order->estimated_delivery_date;
             $delivery_order->expected_delivery_date = $order->expected_delivery_date;
             $delivery_order->remarks = $input_data['remarks'];
             $delivery_order->vehicle_number = $input_data['vehicle_number'];
@@ -387,12 +387,14 @@ class OrderController extends Controller {
             $order_id = DB::getPdo()->lastInsertId();
             foreach ($input_data['product'] as $product_data) {
                 if ($product_data['name'] != "") {
+                    //'quantity' => $product_data['quantity'],
+                    $quantity = $product_data['quantity'] - $product_data['present_shipping'];
                     $order_products = [
                         'order_id' => $order_id,
                         'order_type' => 'delivery_order',
                         'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
-                        'quantity' => $product_data['quantity'],
+                        'quantity' => $quantity,
                         'present_shipping' => $product_data['present_shipping'],
                         'price' => $product_data['price'],
                         'remarks' => $product_data['remark']

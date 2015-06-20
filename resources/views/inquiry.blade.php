@@ -11,10 +11,10 @@
                 </ol>
                 <div class="clearfix">
                     <h1 class="pull-left">Inquiry</h1>
-                    <div class="pull-right top-page-ui">
+                    <div class="pull-right top-page-ui">                        
                         <a href="{{URL::action('InquiryController@create')}}" class="btn btn-primary pull-right">
                             <i class="fa fa-plus-circle fa-lg"></i> Add New Inquiry
-                        </a>
+                        </a> 
                         <div class="form-group pull-right">
                             <div class="col-md-12">
                                 <form method="GET" action="{{url('inquiry')}}">
@@ -93,12 +93,14 @@
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @if( Auth::user()->role_id == 0 )
                                             <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_inquiry_{{$inquiry['id']}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @endif
                                         </td>
                                     </tr>
                                 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

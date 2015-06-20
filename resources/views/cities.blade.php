@@ -13,12 +13,13 @@
 
                 <div class="clearfix">
                     <h1 class="pull-left">City</h1>
-
+                    @if( Auth::user()->role_id == 0  )
                     <div class="pull-right top-page-ui">
                         <a href="{{URL::action('CityController@create')}}" class="btn btn-primary pull-right">
                             <i class="fa fa-plus-circle fa-lg"></i> Add New City
                         </a>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -45,7 +46,9 @@
                                         <th class="col-md-1">#</th>
                                         <th>State Name</th>
                                         <th>City Name</th>
+                                        @if( Auth::user()->role_id == 0 )
                                         <th class="text-center">Actions</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -55,6 +58,7 @@
                                         <td class="col-md-1">{{$i++}}</td>
                                         <td>{{$cities_data['states']->state_name}}</td>
                                         <td>{{$cities_data->city_name}}</td>
+                                        @if( Auth::user()->role_id == 0 )
                                         <td class="text-center">
                                             <a href="{{ Url::action('CityController@edit', ['id' => $cities_data->id]) }}" class="table-link">
                                                 <span class="fa-stack">
@@ -70,6 +74,7 @@
                                             </a>
 
                                         </td>
+                                        @endif
                                     </tr>
 
                                 <div class="modal fade" id="delete_city_modal_{{$cities_data->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

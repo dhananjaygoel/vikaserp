@@ -42,6 +42,12 @@ Route::controllers([
 Route::get('logout', 'DashboardController@logout');
 Route::get('/', 'Auth\AuthController@getLogin');
 Route::group(['middleware' => ['auth']], function() {
+    //    Route::group(['middleware' => 'admin_mw'], function() {
+//        Route::get('customers', 'CustomerController',['only' => ['index', 'show']]);
+//    });
+//    Route::group(['middleware' => 'super_admin_mw'], function() {
+//        Route::resource('customers', 'CustomerController');
+//    });
     Route::resource('security', 'SecurityController');
     Route::get('dashboard', 'DashboardController@index');
     Route::get('home', 'DashboardController@homeredirect');
@@ -97,7 +103,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('sales_daybook','SalesDaybookController@index');
     Route::post('delete_sales_daybook/{id}','SalesDaybookController@delete_challan');
     Route::post('delete_multiple_challan','SalesDaybookController@delete_multiple_challan');
-    Route::post('sales_daybook/date','SalesDaybookController@challan_date');   
+    Route::post('sales_daybook_date','SalesDaybookController@challan_date');   
     
     Route::post('print_delivery_order/{id}','DeliveryOrderController@print_delivery_order');
     Route::post('print_delivery_challan/{id}','DeliveryChallanController@print_delivery_challan');

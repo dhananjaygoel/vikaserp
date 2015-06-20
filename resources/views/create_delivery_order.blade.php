@@ -213,7 +213,7 @@
                                 @elseif($order->vat_percentage != 0)
                                 <tr class="cdtable">
                                     <td class="cdfirst">Plus VAT:</td>
-                                    <td>No</td>
+                                    <td>Yes</td>
                                 </tr>
                                 <tr class="cdtable">
                                     
