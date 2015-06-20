@@ -6,44 +6,81 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
+                    <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Purchase Daybook</span></li>
                 </ol>
                 <div class="clearfix">
-                    <h1 class="pull-left col-md-7">Purchase Daybook</h1>
-                    <div class="pull-right top-page-ui col-md-5">
-                        <div class="col-md-6 ">
+                    <h1 class="pull-left col-md-6">Purchase Daybook</h1>
+                    <div class="pull-right top-page-ui col-md-6">
+                        <div class="col-md-8">
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input type="text" class="form-control" id="datepickerDate">
+                                    <form action="{{URL::action('PurchaseDaybookController@index')}}" method="GET" >
+                                        <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control delivery_challan_date" name="date" id="sales_daybook_date" <?php
+                                            if (Input::get('date') != "") {
+                                                echo "value='" . Input::get('date') . "'";
+                                            }
+                                            ?>>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button type="submit" class="btn btn-primary form_button_footer"><i class="fa fa-search"></i></button>
+                                        </div>
+                                         <div class="clearfix"></div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                        <div class="pull-right col-md-5">
-                            <button type="button" class="btn btn-primary form_button_footer" onClick="location.href = 'print_purchasedaybook.php'" >Print</button>
-                            <button type="button" class="btn btn-primary form_button_footer" >Export</button>
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-primary form_button_footer" >Print</button>
+                            <button type="button" class="btn btn-primary form_button_footer" >Export</button>                         
                         </div>
+                        <div class="clearfix"></div>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="selectall">
-                        <button type="button" class="btn btn-primary form_button_footer" >Select All</button>
-                    </div>
+                    <div class="clearfix"></div>
                 </div>
             </div>
-        </div>
-        <br/>
-        <div id="table1" class="row">				
-            <div class="col-lg-12">
-                <div class="main-box clearfix">
-                    <div class="main-box-body main_contents clearfix">
-                        <div class="table-responsive">
-                            <table id="table-example" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th class="cb">#</th>
-                                        <th>Date</th>
+            <br/>
+            <div id="table1" class="row">				
+                <div class="col-lg-12">
+                    <div class="main-box clearfix">
+                        <div class="main-box-body main_contents clearfix">
+
+                            @if(Session::has('success'))
+                            <div class="clearfix"> &nbsp;</div>
+                            <div class="alert alert-success alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <strong> {{ Session::get('success') }} </strong>
+                            </div>
+                            @endif
+                            @if(Session::has('error'))
+                            <div class="clearfix"> &nbsp;</div>
+                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <strong> {{ Session::get('error') }} </strong>
+                            </div>
+                            @endif
+
+
+                            @if(sizeof($purchase_daybook) != 0)
+                            <div class="table-responsive">
+                                <form action="{{url('delete_all_daybook')}}" method="POST">
+                                    <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                    <table id="table-example" class="table table-hover">
+                                        <thead>
+                                            <?php $i = 1; ?>                                   
+                                            <tr>
+                                                <th class="cb"> 
+                                        <div class="checkbox">
+                                            <label style="font-weight: bold;">
+                                                <input onclick="select_all_checkbox();" all_checked="allunchecked" type="checkbox" id="select_all_button" value="" />
+                                                Select All
+                                            </label>
+                                        </div>
+                                        </th>
+                                        <th> Date </th>
                                         <th>Serial Number</th>
                                         <th>Party</th>
                                         <th>Truck Number</th>
@@ -56,186 +93,114 @@
                                         <th>Bill Number</th> 
                                         <th>Remarks </th> 
                                         <th>Action </th>
-                                    </tr>
-                                </thead>
-                                <tbody>                    
-                                    <tr>
-                                        <td><input type="radio" name="radio-1" id="radio-1" /><span class="cbt">1</span></td>
-                                        <td>16 April,2015</td>
-                                        <td>PO/Apr15/04/01/01</td>
-                                        <td>Party1</td>
-                                        <td>MH 14 BS 3022</td>                                        
-                                        <td>                                    
-                                            Warehouse
-                                        </td>
-                                        <td>Name1 </td>
-                                        <td>Lorem</td>
-                                        <td>56</td>
-                                        <td>50 </td>
-                                        <td>500 </td>
-                                        <td></td>
-                                        <td>Lorem ipsum</td>
-                                        <td>  <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal" >
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="radio" name="radio-1" id="radio-1" /><span class="cbt">2</span></td>
-                                        <td>19 April,2015</td>
-                                        <td>PO/Apr15/04/01/01</td>
-                                        <td>Party2</td>
-                                        <td>MH 14 BS 3022</td>                                        
-                                        <td>                                    
-                                            Customer
-                                        </td>
-                                        <td>Name1 </td>
-                                        <td>ipsum</td>
-                                        <td>56</td>
-                                        <td>50 </td>
-                                        <td>500 </td>
-                                        <td>Pune 01</td>
-                                        <td>Lorem ipsum</td>
-                                        <td>  <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal" >
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="radio" name="radio-1" id="radio-1" /><span class="cbt">3</span></td>
-                                        <td>21 April,2015</td>
-                                        <td>PO/Apr15/04/01/01</td>
-                                        <td>Party3</td>
-                                        <td>MH 14 BS 3022</td>                                        
-                                        <td>                                    
-                                            Warehouse
-                                        </td>
+                                        </tr>
+                                        </thead>
+                                        <tbody> 
+                                            @foreach($purchase_daybook as $daybook) 
+                                            <tr>
+                                                <td><input type="checkbox" name="daybook[]" id="daybook[]" value="{{ $daybook->id }}" /><span class="cbt">{{ $i++ }}</span></td>
+                                                <td>{{ date("d F, Y", strtotime($daybook['purchase_advice']->purchase_advice_date)) }}</td>
+                                                <td>{{ $daybook->serial_number }}</td>
+                                                <td>{{ $daybook['supplier']->owner_name }}</td>
+                                                <td>{{ $daybook->vehicle_number }}</td>                                        
+                                                <td>{{ $daybook['supplier']->owner_name }}</td>
+                                                <td>{{ $daybook['orderedby']->first_name }} </td>
+                                                <td>{{ $daybook->unloaded_by }} </td>
+                                                <td>{{ $daybook->labours }}</td>    
+                                                <td>56</td>
+                                                <td>{{ $daybook->amount }}</td>                                        
+                                                <td>{{ $daybook->bill_number }}</td>
+                                                <td>{{ $daybook->remarks }}</td>
+                                                <td>  <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal{{$daybook->id}}" >
+                                                        <span class="fa-stack">
+                                                            <i class="fa fa-square fa-stack-2x"></i>
+                                                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                        </span>
+                                                    </a>
+                                                </td>
+                                            </tr>
 
-                                        <td>Name1 </td>
-
-                                        <td>65</td>
-                                        <td>lorem</td>
-                                        <td>50 </td>
-                                        <td>500 </td>
-                                        <td></td>
-                                        <td>lorem ipsum</td>
-                                        <td>  <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal" >
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="radio" name="radio-1" id="radio-1" /><span class="cbt">4</span></td>
-                                        <td>25 April,2015</td>
-                                        <td>PO/Apr15/04/01/01</td>
-                                        <td>Party4</td>
-                                        <td>MH 14 BS 3022</td>                                        
-                                        <td>                                    
-                                            Customer
-                                        </td>
-                                        <td>Name1 </td>
-
-                                        <td>35</td>
-                                        <td>Ipsum</td>
-                                        <td>50 </td>
-                                        <td>500 </td>
-                                        <td>Mum 01</td>
-                                        <td>lorem ipsum</td>
-                                        <td>  <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal" >
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                                <h4 class="modal-title" id="myModalLabel"></h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="delete">
-                                                    <div><b>UserID:</b> 9988776655</div>
-                                                    <div class="pwd">
-                                                        <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" placeholder="" type="text"></div>
+                                        <div class="modal fade" id="myModal{{$daybook->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                                        <h4 class="modal-title" id="myModalLabel"></h4>
                                                     </div>
-                                                    <div class="clearfix"></div>
-                                                    <div class="delp">Are you sure you want to <b>delete </b> ?</div>
+                                                    {!! Form::open(array('method'=>'POST','url'=>url('purchase_order_daybook',$daybook->id), 'id'=>'delete_purchase_challan_form'))!!}
+                                                    <div class="modal-body">
+                                                        <div class="delete">
+                                                            <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
+                                                            <div class="pwd">
+                                                                <div class="pwdl"><b>Password:</b></div>
+                                                                <div class="pwdr"><input class="form-control" placeholder="" type="password" name="password"></div>
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                            <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                                        <button type="button" class="btn btn-default" onclick="this.form.submit();" id="yes">Yes</button>
+                                                    </div>
+                                                    {!! Form::close() !!}
                                                 </div>
-                                            </div>          
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
                                             </div>
-                                        </div>
+                                        </div>                                       
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                    <div class="pull-right deletebutton">
+                                        <a href="#" class="table-link danger" data-toggle="modal" data-target="#del_all_model" >
+                                            <button type="button" class="btn btn-primary form_button_footer" >Delete All</button>
+                                        </a>
                                     </div>
-                                </div>    
-                                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                                <h4 class="modal-title" id="myModalLabel"></h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form method="POST" action="" accept-charset="UTF-8" >
-                                                    <div class="form-group">
-                                                        <label for="vehicle_name">Vehicle Name</label>
-                                                        <input id="vehicle_name" class="form-control" placeholder="Vehicle Name" name="vehicle_name" value="" type="text">
+                                    <div class="modal fade" id="del_all_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel"></h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="modal-body">
+                                                        <div class="delete">
+                                                            <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
+                                                            <div class="pwd">
+                                                                <div class="pwdl"><b>Password:</b></div>
+                                                                <div class="pwdr"><input class="form-control" type="password" name="delete_all_password" id="delete_all_password"></div>
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                            <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label for="driver_name">Driver Name</label>
-                                                        <input id="driver_name" class="form-control" placeholder="Driver Name " name="driver_name" value="" type="text">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="driver_contact">Driver Contact</label>
-                                                        <input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="" type="text">
-                                                    </div>
-                                                    <hr>
-                                                    <div >
-                                                        <button type="button" class="btn btn-primary form_button_footer" >Print</button>
-                                                        <a href="orders.php" class="btn btn-default form_button_footer">Cancel</a>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                                        <button type="submit" class="btn btn-default" id="btnmodel">Yes</button>
                                                     </div>
                                                     <div class="clearfix"></div>
-                                                </form>
-                                            </div>           
+                                                </div>           
+                                            </div>
                                         </div>
-                                    </div>
-                                </div> 
-                                </tbody>
-                            </table>
-                            <div class="pull-right deletebutton">
-                                <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal" ><button type="button" class="btn btn-primary form_button_footer" >Delete</button></a>
+                                    </div> 
+                                </form>
+                                <div class="clearfix"></div>
+                                <span class="pull-right">
+                                    <ul class="pagination pull-right">
+                                        <?php echo $purchase_daybook->render(); ?>
+                                    </ul>
+                                </span>
                             </div>
-                            <div class="clearfix"></div>
-                            <span class="pull-right">
-                                <ul class="pagination pull-right">
-                                    <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-                                    <li><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
-                                    <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
-                                </ul>
-                            </span>
+                            @else
+                            <div class="clearfix"> &nbsp;</div>
+                            <div class="alert alert-info alert-dismissible" role="alert">
+                                <strong> No purchase day book records found</strong>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-@stop
+    @stop

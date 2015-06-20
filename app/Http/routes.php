@@ -63,6 +63,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('delivery_order', 'DeliveryOrderController');
     Route::resource('pending_delivery_order', 'DeliveryOrderController@pending_delivery_order');
     Route::resource('purchase_order_daybook', 'PurchaseDaybookController');
+    Route::post('purchase_order_daybook/{id}', 'PurchaseDaybookController@destroy');
+    Route::post('delete_all_daybook', 'PurchaseDaybookController@delete_all_daybook');
 
     Route::get('change_password', 'PasswordController@getPassword');
     Route::post('change_password', 'PasswordController@postPassword');

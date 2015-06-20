@@ -32,8 +32,8 @@ class PurchaseChallan extends Model {
         return $this->hasMany('App\PurchaseProducts', 'purchase_order_id', 'id');
     }
     
-//    public function Purchase_Products() {
-//        return $this->hasMany('App\PurchaseProducts', 'purchase_order_id', 'id');
-//    }
+    public function orderedby() {
+        return $this->hasOne('App\User', 'id', 'created_by');
+    }
 
 }
