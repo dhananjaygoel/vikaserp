@@ -193,22 +193,16 @@ function select_all_checkbox() {
 
 
 /**
- * Add checkbox id to array
+ * Calculate quantity on
+ * on present shiping
  */
-function get_checked(id) {
-//    alert("checked"+id);
-//    
-//      challan_ids = [];  
-//        var count = $('.add_product_row').length;
-//        for (var i = 1; i <= count; i++) {
-//                    
-//            if ($('#checkbox'+i).prop("checked") == true) {
-//                challan_ids[i]=$('#checkbox'+i).val();
-//            }
-//        }
-//        var ch_len = challan_ids.length;
-//        alert("checked" + id + 'count ' + ch_len );
-
+function change_quantity(key){
+    var quantity = $("#quantity_"+key).val();
+    var present_shipping = $("#present_shipping_"+key).val();
+    var rem_quantity = quantity - present_shipping;
+//    alert(quantity);
+    $("#total_quantity_"+key).html("<span>"+rem_quantity+"</span");
+    
 }
 function grand_total_delivery_order() {
     /**

@@ -119,7 +119,9 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
+                                                    <span id="total_quantity_{{$key}}">
                                                     {{$product->quantity}}
+                                                    </span>
                                                     <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="hidden" >
                                                 </div>
                                             </td>
@@ -138,7 +140,7 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="" type="text">
+                                                    <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="" type="text" onblur="change_quantity({{$key}});">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
