@@ -9,3 +9,8 @@
     .units_dropdown{
         width: 90% !important;
     }
+ .customer_select_order
+{
+    padding-bottom: 15px !important;
+}
+.supplier_order{width:30%}

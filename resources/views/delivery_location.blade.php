@@ -13,12 +13,13 @@
 
                 <div class="clearfix">
                     <h1 class="pull-left">Location</h1>
-
+                    @if( Auth::user()->role_id == 0  )
                     <div class="pull-right top-page-ui">
                         <a href="{{URL::action('DeliveryLocationController@create')}}" class="btn btn-primary pull-right">
                             <i class="fa fa-plus-circle fa-lg"></i> Add New Location
                         </a>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -47,8 +48,9 @@
                                         <th>State Name</th>
                                         <th>City Name</th>
                                         <th>Delivery Location</th>
-
+                                        @if( Auth::user()->role_id == 0 )
                                         <th class="text-center">Actions</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -59,6 +61,7 @@
                                         <td>{{$location_data['city']['states']->state_name}}</td>
                                         <td>{{$location_data['city']->city_name}}</td>
                                         <td>{{$location_data->area_name}}</td>
+                                        @if( Auth::user()->role_id == 0 )
                                         <td class="text-center">
                                             <a href="{{ Url::action('DeliveryLocationController@edit', ['id' => $location_data->id]) }}" class="table-link">
                                                 <span class="fa-stack">
@@ -74,6 +77,7 @@
                                             </a>
 
                                         </td>
+                                        @endif
                                     </tr>
 
                                 <div class="modal fade" id="delete_location_modal_{{$location_data->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

@@ -336,9 +336,7 @@ class DeliveryOrderController extends Controller {
         } else {
             $delivery_data = DeliveryOrder::with('user')->where('order_status', 'pending')->paginate(10);
         }
-
-
-
+        
         $delivery_data->setPath('pending_delivery_order');
         
         return view('pending_delivery_order', compact('delivery_data'));
@@ -424,7 +422,8 @@ class DeliveryOrderController extends Controller {
         
         $date_letter = $current_date."".$id;
         DeliveryOrder::where('id', $id)->update(array(
-            'serial_no'=>$date_letter
+            'serial_no'=>$date_letter,
+            'order_status' => "Completed"
             ));
         return redirect('delivery_order')->with('validation_message', 'Delivery order is successfuly printed.');
 //        echo $date_letter;

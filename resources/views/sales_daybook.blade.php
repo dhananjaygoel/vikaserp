@@ -28,7 +28,7 @@
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 
-                                    <form action="{{url('sales_daybook/date')}}" method="POST">
+                                    <form action="{{url('sales_daybook_date')}}" method="POST">
                                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                                         <div class="col-sm-6 ">
                                             <input type="text" class="form-control delivery_challan_date" name="challan_date" id="sales_daybook_date" value="{{$challan_date}}">
@@ -50,11 +50,11 @@
 
                 </div>
                 <div class="clearfix"></div>
-                <div class="col-md-3">
+<!--                <div class="col-md-3">
                     <div class="selectall">
                         <button type="button" class="btn btn-primary form_button_footer" id="select_all_button" onclick="select_all_checkbox();" all_checked="allunchecked">Select All</button>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
         <div class="row">
@@ -87,8 +87,12 @@
                                 <table id="add_product_table_delivery_challan" class="table table-hover">
                                     <thead>
                                         <tr>
-
-                                            <th class="text-center">#</th>
+                                            @if( Auth::user()->role_id == 0 )
+                                            <th class="text-left"><input type="checkbox" class="table-link" id ="select_all_button" onclick="select_all_checkbox();" all_checked="allunchecked" >Select All</th>
+                                            @endif
+                                            @if( Auth::user()->role_id == 1 )
+                                            <th>#</th>
+                                            @endif
                                             <th>Date</th>
                                             <th>Serial</th>
                                             <th>Party</th>
@@ -101,7 +105,9 @@
                                             <th>Amount </th>
                                             <th>Bill Number</th> 
                                             <th>Remarks </th> 
+                                            @if( Auth::user()->role_id == 0)
                                             <th>Action </th>
+                                            @endif
 
                                         </tr>
                                     </thead>
@@ -112,7 +118,12 @@
                                         
 
                                         <tr class="add_product_row">
-                                            <td ><input type="checkbox" id ="checkbox_{{$k}}" name="challan_id[{{$k}}][checkbox]" value="{{$challan->id}}" ></td>
+                                            @if( Auth::user()->role_id == 0 )
+                                            <td class="text-center"><input type="checkbox" id ="checkbox_{{$k}}" name="challan_id[{{$k}}][checkbox]" value="{{$challan->id}}" >{{$k}}</td>
+                                            @endif
+                                            @if( Auth::user()->role_id == 1)
+                                            <th>{{$k}}</th>
+                                            @endif
                                             <td >{{$challan["customer"]->owner_name}}</td>
                                             <td >
                                                 @if($challan->serial_number == '')
@@ -141,7 +152,7 @@
 
 
 
-
+                                            @if( Auth::user()->role_id == 0)
                                             <td>
 
                                                 <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_{{$challan->id}}" title="delete">
@@ -152,8 +163,10 @@
                                                 </a>
 
                                             </td>
+                                            @endif
                                             <?php $k++; ?>
                                         </tr>
+                                        @if( Auth::user()->role_id == 0  )
                                     <div class="modal fade" id="delete_challan_{{$challan->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -186,7 +199,8 @@
                                                 {!! Form::close() !!}
                                             </div>
                                         </div>
-                                    </div>    
+                                    </div>  
+                                    @endif
 
 
                                     
@@ -196,6 +210,7 @@
 
 
                                 </table>
+                                @if( Auth::user()->role_id == 0  )
                                 <div class="modal fade" id="delete_challan_selected" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -231,6 +246,7 @@
                                 <div class="pull-right deletebutton">
                                     <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_selected" ><button type="button" class="btn btn-primary form_button_footer" >Delete</button></a>
                                 </div>
+                                @endif
                             </form>
                             <div class="clearfix"></div>
                             <span class="pull-right">

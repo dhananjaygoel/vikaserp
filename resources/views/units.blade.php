@@ -13,12 +13,13 @@
 
                 <div class="clearfix">
                     <h1 class="pull-left">Unit</h1>
-
+                    @if( Auth::user()->role_id == 0  )
                     <div class="pull-right top-page-ui">
                         <a href="{{URL::action('UnitController@create')}}" class="btn btn-primary pull-right">
                             <i class="fa fa-plus-circle fa-lg"></i> Add New Unit
                         </a>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -45,8 +46,9 @@
                                         <th class="col-md-1">#</th>
 
                                         <th>Unit</th>
-
+                                        @if( Auth::user()->role_id == 0  )
                                         <th class="text-center">Actions</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -55,6 +57,7 @@
                                     <tr>
                                         <td class="col-md-1">{{$i++}}</td>
                                         <td>{{$units_data->unit_name}}</td>
+                                        @if( Auth::user()->role_id == 0  )
                                         <td class="text-center">
                                             <a href="{{ Url::action('UnitController@edit', ['id' => $units_data->id]) }}" class="table-link">
                                                 <span class="fa-stack">
@@ -70,6 +73,7 @@
                                             </a>
 
                                         </td>
+                                        @endif
                                     </tr>
 
                                 <div class="modal fade" id="delete_unit_modal_{{$units_data->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

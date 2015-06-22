@@ -84,10 +84,7 @@ class PendingOrderReportController extends Controller {
         $delivery_order = DeliveryOrder::all();
         $allorder_products = AllOrderProducts::groupBy('quantity')->get();
 //                where('order_type','=','order')->get();
-        echo '<pre>';
-        print_r($allorders->toArray());
-        echo '</pre>';
-        exit;
+
         $allorders->setPath('pending_order_report');
         return View::make('pending_order_report', compact('allorders', 'users', 'customers', 'delivery_location','delivery_order','allorder_products'));
     }

@@ -34,11 +34,13 @@
                                 </form>
                             </div>	
                         </div>
+                        @if( Auth::user()->role_id == 0 )
                         <div class="col-md-4">
                             <a href="{{URL::action('ProductsubController@create')}}" class="btn btn-primary pull-right">
                                 <i class="fa fa-plus-circle fa-lg" style="cursor: pointer;"></i> Add Product Category
                             </a>
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -70,8 +72,10 @@
                                         <th>Size</th>
                                         <th >Thickness</th>
                                         <th>Weight</th>
-                                        <th class="col-md-2">Difference</th>                                                         
+                                        <th class="col-md-2">Difference</th>  
+                                        @if( Auth::user()->role_id == 0 )
                                         <th >Actions</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody> 
@@ -113,7 +117,8 @@
                                                     </div>
                                                 </div>
                                             </form>
-                                        </td>                                        
+                                        </td> 
+                                        @if( Auth::user()->role_id == 0 )
                                         <td>
                                             <a href="{{URL::action('ProductsubController@edit',['id'=>$produ_sub->id])}}" class="table-link">
                                                 <span class="fa-stack">
@@ -128,6 +133,7 @@
                                                 </span>
                                             </a>
                                         </td>
+                                        @endif
                                     </tr>                           
                                     <?php $i++; ?>
                                     @endif

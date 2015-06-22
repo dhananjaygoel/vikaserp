@@ -1,30 +1,28 @@
 $(document).ready(function () {
-    $("#optionsRadios1").click(function () {
-        $(".supplier").hide();
-        $(".exist_field").hide();
-        $(".customer_select").show();
-    });
-    $("#optionsRadios2").click(function () {
-
-        $(".exist_field").show();
-        $(".customer_select").hide();
-        $(".supplier").hide();
-    });
-
-    $("#optionsRadios3").click(function () {
-        $(".supplier").hide();
+    $("#warehouse_radio").click(function () {
+        $(".supplier_order").hide();
 
     });
-    $("#optionsRadios4").click(function () {
-        $(".supplier").show();
+    $("#supplier_radio").click(function () {
+        $(".supplier_order").show();
 
     });
-    $("#optionsRadios6").click(function () {
-        $(".plusvat").show();
+    $("#existing_customer").click(function () {        
+        $(".new_customer_details").hide();
+        $(".customer_select_order").show();
+    });
+    $("#new_customer").click(function () {
+        $(".new_customer_details").show();
+        $(".customer_select_order").hide();       
+    });
+
+    
+    $("#vat_inclusive").click(function () {
+        $(".vat_field").show();
 
     });
-    $("#optionsRadios5").click(function () {
-        $(".plusvat").hide();
+    $("#all_inclusive").click(function () {
+        $(".vat_field").hide();
 
     });
     $('#add_order_location').change(function () {
@@ -195,22 +193,16 @@ function select_all_checkbox() {
 
 
 /**
- * Add checkbox id to array
+ * Calculate quantity on
+ * on present shiping
  */
-function get_checked(id) {
-//    alert("checked"+id);
-//    
-//      challan_ids = [];  
-//        var count = $('.add_product_row').length;
-//        for (var i = 1; i <= count; i++) {
-//                    
-//            if ($('#checkbox'+i).prop("checked") == true) {
-//                challan_ids[i]=$('#checkbox'+i).val();
-//            }
-//        }
-//        var ch_len = challan_ids.length;
-//        alert("checked" + id + 'count ' + ch_len );
-
+function change_quantity(key){
+    var quantity = $("#quantity_"+key).val();
+    var present_shipping = $("#present_shipping_"+key).val();
+    var rem_quantity = quantity - present_shipping;
+//    alert(quantity);
+    $("#total_quantity_"+key).html("<span>"+rem_quantity+"</span");
+    
 }
 function grand_total_delivery_order() {
     /**
