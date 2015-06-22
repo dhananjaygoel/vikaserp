@@ -20,6 +20,10 @@ class ProductSubCategory extends Model implements AuthenticatableContract, CanRe
     
     public function product_category() {
         return $this->hasone('App\ProductCategory', 'id', 'product_category_id');
+    }
+    
+    public function product_unit() {
+        return $this->hasone('App\Units', 'id', 'unit_id');
     }  
    
 

@@ -26,7 +26,8 @@ class ProductSubCategoryRequest extends Request {
             'select_product_categroy' => 'required',            
             'alias_name' => 'required|min:2|max:100',
             'size' => 'required',
-            'weight' => 'required',
+            'price' => 'required',
+            'units' => 'required',
             'difference' => 'required'
         ];
     }

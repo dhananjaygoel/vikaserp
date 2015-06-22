@@ -70,8 +70,9 @@
                                         <th>Product Name</th>
                                         <th>Alias Name</th>
                                         <th>Size</th>
-                                        <th >Thickness</th>
-                                        <th>Weight</th>
+                                        <th>Thickness</th>
+                                        <th>Units</th>
+                                        <th>Price</th>
                                         <th class="col-md-2">Difference</th>  
                                         @if( Auth::user()->role_id == 0 )
                                         <th >Actions</th>
@@ -103,7 +104,14 @@
                                             {{'--'}}
                                             @endif
                                         </td>
-                                        <td>{{ $produ_sub->weight}}</td>
+                                        <td>
+                                            @foreach($units as $unit)
+                                            @if($unit->id ==  $produ_sub->unit_id)
+                                            {{ $unit->unit_name}}
+                                            @endif
+                                            @endforeach
+                                        </td>
+                                        <td>{{ $produ_sub->price }}</td>
                                         <td>
                                             <form method="post" action="{{URL::action('ProductsubController@update_difference')}}">
                                                 <div class="row product-price">

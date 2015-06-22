@@ -18,12 +18,14 @@ use App\Http\Requests\ProductSubCategoryRequest;
 use App\Http\Requests\UserValidation;
 use Input;
 use DB;
+use App\Units;
 
 class ProductsubController extends Controller {
 
     public function index() {
 
         $product_type = ProductType::all();
+        $units = Units::all();
         $product_sub_cat = "";
 
         if (Input::get('product_filter') != "") {
@@ -37,7 +39,7 @@ class ProductsubController extends Controller {
 
             $product_sub_cat = ProductSubCategory::with(['product_category' =>
                         function($query) {
-                            $query->where('product_category_name', 'like', '%'.Input::get('search_text').'%');
+                            $query->where('product_category_name', 'like', '%' . Input::get('search_text') . '%');
                         }])
                     ->Paginate(10);
         } else {
@@ -46,12 +48,13 @@ class ProductsubController extends Controller {
         }
 
         $product_sub_cat->setPath('product_sub_category');
-        return view('product_sub_category', compact('product_sub_cat', 'product_type'));
+        return view('product_sub_category', compact('product_sub_cat', 'product_type','units'));
     }
 
     public function create() {
         $product_type = ProductType::all();
-        return view('add_product_sub_category', compact('product_type'));
+        $units = Units::all();
+        return view('add_product_sub_category', compact('product_type','units'));
     }
 
     public function get_product_category() {
@@ -75,7 +78,8 @@ class ProductsubController extends Controller {
         $ProductSubCategory->product_category_id = $request->input('select_product_categroy');
         $ProductSubCategory->alias_name = $request->input('alias_name');
         $ProductSubCategory->size = $request->input('size');
-        $ProductSubCategory->weight = $request->input('weight');
+        $ProductSubCategory->price = $request->input('price');
+        $ProductSubCategory->unit_id = $request->input('units');
         $ProductSubCategory->thickness = $request->input('thickness');
         $ProductSubCategory->difference = $request->input('difference');
         $ProductSubCategory->save();
@@ -101,17 +105,19 @@ class ProductsubController extends Controller {
 
         $product_type = ProductType::all();
         $prod_category = ProductCategory::all();
-        $prod_sub_cat = ProductSubCategory::with('product_category')->where('id', $id)->get();
-        return view('edit_product_sub_category', compact('product_type', 'prod_sub_cat', 'prod_category'));
+        $units = Units::all();
+        $prod_sub_cat = ProductSubCategory::with('product_category','product_unit')->where('id', $id)->first();      
+        return view('edit_product_sub_category', compact('product_type', 'prod_sub_cat', 'prod_category', 'units'));
     }
 
     public function update($id, ProductSubCategoryRequest $request) {
 
         $pro_sub_cat = array(
             'product_category_id' => $request->input('select_product_categroy'),
-            'alias_name'=> $request->input('alias_name'),
+            'alias_name' => $request->input('alias_name'),
             'size' => $request->input('size'),
-            'weight' => $request->input('weight'),
+            'price' => $request->input('price'),
+            'unit_id' => $request->input('units'),
             'thickness' => $request->input('thickness'),
             'difference' => $request->input('difference')
         );

@@ -62,10 +62,20 @@
                                     <input id="thickness" class="form-control" placeholder="Product Thickness" name="thickness" value="{{ old('thickness') }}" type="text">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="weight">Product Weight</label>
-                                <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="{{ old('weight') }}" type="text">
+                            <div class="form-group col-md-3">
+                                <label for="weight">Units</label>
+                                <select class="form-control" name="units">
+                                    <option selected="" disabled="">--select--</option>
+                                    @foreach($units as $unit)
+                                    <option value="{{$unit->id}}">{{$unit->unit_name}} </option>
+                                    @endforeach
+                                </select>
                             </div>
+                            <div class="form-group col-md-3">
+                                <label for="weight">Product price per unit</label>
+                                <input id="weight" class="form-control" placeholder="Product Weight" name="price" value="{{ old('price') }}" type="text">
+                            </div>
+                            <div class="clearfix"></div>
                             <div class="form-group">
                                 <label for="difference">Difference</label>
                                 <input id="difference" class="form-control" placeholder=" Difference" name="difference" value="{{ old('difference') }}" type="text">
