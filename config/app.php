@@ -135,7 +135,8 @@ return [
 		'Illuminate\Translation\TranslationServiceProvider',
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
-                'Illuminate\Html\HtmlServiceProvider',
+                'Illuminate\Html\HtmlServiceProvider', 
+                'Maatwebsite\Excel\ExcelServiceProvider',
 
 		/*
 		 * Application Service Providers...
@@ -145,6 +146,7 @@ return [
 		'App\Providers\ConfigServiceProvider',
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
+                
 
 	],
 
@@ -195,6 +197,7 @@ return [
 		'View'      => 'Illuminate\Support\Facades\View',
                 'Form'      => 'Illuminate\Html\FormFacade',
                 'HTML'      => 'Illuminate\Html\HtmlFacade',
+                'Excel' => 'Maatwebsite\Excel\Facades\Excel',
 
 	],
 

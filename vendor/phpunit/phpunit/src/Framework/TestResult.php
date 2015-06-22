@@ -586,20 +586,17 @@ class PHPUnit_Framework_TestResult implements Countable
                 $this->beStrictAboutTestSize &&
                 extension_loaded('pcntl') && class_exists('PHP_Invoker')) {
                 switch ($test->getSize()) {
-                    case PHPUnit_Util_Test::SMALL: {
+                    case PHPUnit_Util_Test::SMALL:
                         $_timeout = $this->timeoutForSmallTests;
-                        }
-                    break;
+                        break;
 
-                    case PHPUnit_Util_Test::MEDIUM: {
+                    case PHPUnit_Util_Test::MEDIUM:
                         $_timeout = $this->timeoutForMediumTests;
-                        }
-                    break;
+                        break;
 
-                    case PHPUnit_Util_Test::LARGE: {
+                    case PHPUnit_Util_Test::LARGE:
                         $_timeout = $this->timeoutForLargeTests;
-                        }
-                    break;
+                        break;
                 }
 
                 $invoker = new PHP_Invoker;
@@ -619,8 +616,11 @@ class PHPUnit_Framework_TestResult implements Countable
             }
         } catch (PHPUnit_Framework_Exception $e) {
             $error = true;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $e     = new PHPUnit_Framework_ExceptionWrapper($e);
+            $error = true;
+        } catch (Exception $e) {
+            $e = new PHPUnit_Framework_ExceptionWrapper($e);
             $error = true;
         }
 

@@ -35,7 +35,7 @@
                         </div>
                         <div class="col-md-4">
                             <button type="button" class="btn btn-primary form_button_footer" >Print</button>
-                            <button type="button" class="btn btn-primary form_button_footer" >Export</button>                         
+                            <a href="{{url('expert_purchase_daybook')}}" class="btn btn-primary form_button_footer" >Export</a>                         
                         </div>
                         <div class="clearfix"></div>
                     </div>

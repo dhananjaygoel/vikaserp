@@ -13,14 +13,11 @@ use Input;
 use Illuminate\Support\Facades\DB;
 use Hash;
 use Auth;
+use App\Vendor\Phpoffice\Phpexcel\Classes;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PurchaseDaybookController extends Controller {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
     public function index() {
 
         $purchase_daybook = 0;
@@ -35,22 +32,13 @@ class PurchaseDaybookController extends Controller {
             $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier')->Paginate(10);
             $purchase_daybook->setPath('purchase_order_daybook');
         }
-//        echo '<pre>';
-//        print_r($purchase_daybook->toArray());
-//        echo '</pre>';
-//        exit;  
         return view('purchase_order_daybook', compact('purchase_daybook'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
     public function delete_all_daybook() {
-       
+
         $id = Input::all();
-       
+
         if (Hash::check(Input::get('delete_all_password'), Auth::user()->password)) {
 
             foreach ($id['daybook'] as $key) {
@@ -65,55 +53,23 @@ class PurchaseDaybookController extends Controller {
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store() {
+    public function expert_purchase_daybook() {
+
+        Excel::create('Filename', function($excel) {
+
+            $excel->sheet('Sheetname', function($sheet) {
+
+                $sheet->fromArray(array(
+                    array('data1', 'data2'),
+                    array('data3', 'data4')
+                ));
+            });
+        })->export('xls');
         
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id) {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id) {
-        
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function update($id) {
-        
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id) {
-
-        echo 'hi';
         exit;
+    }
+
+    public function destroy($id) {
 
         if (Hash::check(Input::get('password'), Auth::user()->password)) {
             $delete_purchase_challan = PurchaseChallan::find($id)->delete();
