@@ -78,8 +78,8 @@
                             </select>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="weight">Product price per unit</label>
-                            <input id="weight" class="form-control" placeholder="Product Weight" name="price" value="{{$prod_sub_cat->price}}" type="text">
+                            <label for="weight">Product weight</label>
+                            <input id="weight" class="form-control" placeholder="Product Weight" name="weight" disabled="" value="1" type="text">
                         </div>
                         <div class="clearfix"></div>
                         <div class="form-group">

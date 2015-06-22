@@ -79,7 +79,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('inquiry', 'InquiryController');
     Route::get('fetch_existing_customer', 'InquiryController@fetch_existing_customer');
     Route::get('fetch_products', 'InquiryController@fetch_products');
-    Route::post('store_price', 'InquiryController@store_price');
+    Route::post('store_price', 'InquiryController@store_price');    
+    Route::get('get_product_sub_category', 'InquiryController@get_product_sub_category');
+    
     Route::get('get_units', 'UnitController@get_units');
     Route::resource('purchase_orders', 'PurchaseOrderController');
     Route::resource('purchaseorder_advise', 'PurchaseAdviseController');

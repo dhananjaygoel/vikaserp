@@ -379,6 +379,6 @@ $(function($) {
             });
         </script>
 
-
+        <input type="hidden" id="site_url" value="{{url()}}"
     </body>
 </html>

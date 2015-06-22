@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','Inquiry')
+@section('title','Add Inquiry')
 @section('content')
 <div class="row">
     <div class="col-lg-12">
@@ -98,7 +98,7 @@
                                                     </td>
                                                     <td class="col-md-2">
                                                         <div class="form-group ">
-                                                            <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
+                                                            <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}" onchange="calulate_price(<?php echo $i; ?>);">
                                                                 <option value="" selected="">Unit</option>
                                                                 @foreach($units as $unit)
                                                                 <option value="{{$unit->id}}">{{$unit->unit_name}}</option>

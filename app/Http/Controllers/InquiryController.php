@@ -270,8 +270,8 @@ class InquiryController extends Controller {
     public function fetch_products() {
         $term = '%' . Input::get('term') . '%';
         $products = ProductCategory::with(array('product_sub_categories' => function($query) use ($term) {
-                $query->where('alias_name', 'like', $term)->get();
-            })
+                        $query->where('alias_name', 'like', $term)->get();
+                    })
                 )->get();
 
         if (count($products) > 0) {
@@ -297,6 +297,30 @@ class InquiryController extends Controller {
     public function store_price() {
         $input_data = Input::all();
         $update_price = InquiryProducts::where('id', '=', $input_data['id'])->update(['price' => $input_data['updated_price']]);
+    }
+
+    public function get_product_sub_category() {
+
+        $product = ProductCategory::with('product_sub_categories')->where('id', Input::get('added_product_id'))->first();
+        $units = Units::all();
+           
+        $unit = array();
+        $i = 0;
+        foreach ($units as $u){
+           $unit[$i]['id'] =  $u->id;
+           $unit[$i]['unit_name'] =  $u->unit_name;
+           $i++;
+        }
+
+        $prod = array();
+        $i = 0;
+        $prod[$i]['id'] = $product->id;
+        $prod[$i]['unit_id'] = $product['product_sub_categories'][0]->unit_id;
+        $prod[$i]['price'] = $product->price;
+
+        
+        echo json_encode(array('prod' => $prod, 'unit'=> $unit));
+        exit;
     }
 
 }

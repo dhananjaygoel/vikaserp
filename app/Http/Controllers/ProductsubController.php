@@ -78,7 +78,7 @@ class ProductsubController extends Controller {
         $ProductSubCategory->product_category_id = $request->input('select_product_categroy');
         $ProductSubCategory->alias_name = $request->input('alias_name');
         $ProductSubCategory->size = $request->input('size');
-        $ProductSubCategory->price = $request->input('price');
+        $ProductSubCategory->weight = $request->input('weight');
         $ProductSubCategory->unit_id = $request->input('units');
         $ProductSubCategory->thickness = $request->input('thickness');
         $ProductSubCategory->difference = $request->input('difference');
@@ -116,7 +116,7 @@ class ProductsubController extends Controller {
             'product_category_id' => $request->input('select_product_categroy'),
             'alias_name' => $request->input('alias_name'),
             'size' => $request->input('size'),
-            'price' => $request->input('price'),
+            'weight' => $request->input('weight'),
             'unit_id' => $request->input('units'),
             'thickness' => $request->input('thickness'),
             'difference' => $request->input('difference')
