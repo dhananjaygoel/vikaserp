@@ -212,8 +212,6 @@ class PurchaseOrderController extends Controller {
        
 
         Mail::send('emails.purchaseemail', ['key' => 'value'], function($message) {
-            
-            $message->from(' cmrunalini@agstechnologies.com', 'Laravel');
 
             $message->to('kdilip@agstechnologies.com', 'John Smith')->subject('Welcome!');
         });
