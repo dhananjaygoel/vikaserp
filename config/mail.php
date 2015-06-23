@@ -16,8 +16,8 @@ return [
      */
 
 //	'driver' => env('MAIL_DRIVER', 'smtp'),
-//    'driver' => 'mail',
-    'driver' => 'mailgun',
+    'driver' => 'mail',
+//    'driver' => 'smtp',
     /*
       |--------------------------------------------------------------------------
       | SMTP Host Address
@@ -29,8 +29,7 @@ return [
       |
      */
 //    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-//    'host' => 'mail.agstechnologies.com',
-    'host' => 'smtp.mailgun.org',
+    'host' => 'mail.agstechnologies.com',
     /*
       |--------------------------------------------------------------------------
       | SMTP Host Port
@@ -65,7 +64,7 @@ return [
       |
      */
 //    'encryption' => 'tls',
-    'encryption' => 'tls',
+    'encryption' => '',
     /*
       |--------------------------------------------------------------------------
       | SMTP Server Username

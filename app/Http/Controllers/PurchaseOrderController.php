@@ -45,7 +45,7 @@ class PurchaseOrderController extends Controller {
         }
         $purchase_orders = $q->orderBy('created_at', 'desc')
                 ->with('customer', 'delivery_location', 'user', 'purchase_products')
-                ->Paginate(4);
+                ->Paginate(10);
         $purchase_orders->setPath('purchase_orders');
         return view('purchase_order', compact('purchase_orders'));
     }
@@ -101,15 +101,10 @@ class PurchaseOrderController extends Controller {
 
 
 //            $customers = Customer::find($input_data['autocomplete_supplier_id']);
-
-
-            $customer = Customer::findOrFail($input_data['autocomplete_supplier_id']);
-            Mail::send('emails.purchase_order', ['customer' => $customer], function ($m) use ($customer) {
-                $m->to($customer->email, $customer->first_name)->subject('Purchase order generated');
-            });
-
-
-
+//            $customer = Customer::findOrFail($input_data['autocomplete_supplier_id']);
+//            Mail::send('emails.purchase_order', ['customer' => $customer], function ($m) use ($customer) {
+//                $m->to($customer->email, $customer->first_name)->subject('Purchase order generated');
+//            });
 //            echo $customers->owner_name;
 //            echo '<pre>';
 //            print_r($customers->toArray());
@@ -122,7 +117,6 @@ class PurchaseOrderController extends Controller {
 //                        $message->from($data['from']);
 //                        $message->to($data['to'])->subject('Updated of the order');
 //                    });
-
 //            echo '<pre>';
 //            print_r($a);
 //            echo '</pre>';
@@ -215,6 +209,10 @@ class PurchaseOrderController extends Controller {
      */
     public function update($id) {
 
+        Mail::raw('Laravel with Mailgun is easy!', function($message) {
+            $message->to('kdilip@agstechnologies.com');
+        });
+
         $input_data = Input::all();
 
         $i = 0;
@@ -249,12 +247,12 @@ class PurchaseOrderController extends Controller {
 
 
 //                $data = array('from' => 'admin@steel-trading-automation.com', 'to' => $customers->email);
-                $data = array('from' => 'admin@steel-trading-automation.com', 'to' => 'kdilip@agstechnologies.com');
-
-                Mail::send('emails.purchase_order', array('name' => $customers->owner_name), function($message) use ($data) {
-                    $message->from($data['from']);
-                    $message->to($data['to'])->subject('Updated of the order');
-                });
+//                $data = array('from' => 'admin@steel-trading-automation.com', 'to' => 'kdilip@agstechnologies.com');
+//
+//                Mail::send('emails.purchase_order', array('name' => $customers->owner_name), function($message) use ($data) {
+//                    $message->from($data['from']);
+//                    $message->to($data['to'])->subject('Updated of the order');
+//                });
 
 
 
