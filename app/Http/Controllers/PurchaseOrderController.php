@@ -95,9 +95,14 @@ class PurchaseOrderController extends Controller {
             }
         } elseif ($input_data['supplier_status'] == "existing_supplier") {
 
-            $customers = Customer::find($input_data['autocomplete_supplier_id']);
             
             
+            
+            
+            
+            $customers = Customer::find($input_data['autocomplete_supplier_id']); 
+            
+//            echo $customers->owner_name;
 //            echo '<pre>';
 //            print_r($customers->toArray());
 //            echo '</pre>';
@@ -110,8 +115,9 @@ class PurchaseOrderController extends Controller {
                 $message->to($data['to'])->subject('Updated of the order');
             });
 
-
-
+     
+            
+           
             $validator = Validator::make($input_data, Customer::$existing_supplier_inquiry_rules);
             if ($validator->passes()) {
                 $customer_id = $input_data['autocomplete_supplier_id'];

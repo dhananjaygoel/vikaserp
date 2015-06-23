@@ -4,5 +4,5 @@ You have modified your information.
     <hr style="width: 100% !important;">
     <br>
     <p>Regards,</p>
-    <p>- Steel Trading Automation <br/><a href="{{url()}}" target="_blank">{{url()}}</a></p>
+    <p>- Steel Trading Automation</p>
 </div>
