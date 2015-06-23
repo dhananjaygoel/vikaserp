@@ -95,7 +95,7 @@ class PurchaseOrderController extends Controller {
             }
         } elseif ($input_data['supplier_status'] == "existing_supplier") {
 
-
+            $customers = Customer::find($input_data['autocomplete_supplier_id']);
             //                $data = array('from' => 'admin@steel-trading-automation.com', 'to' => $customers->email);
             $data = array('from' => 'admin@steel-trading-automation.com', 'to' => 'kdilip@agstechnologies.com');
 
