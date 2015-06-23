@@ -100,7 +100,15 @@ class PurchaseOrderController extends Controller {
 
 
 
-            $customers = Customer::find($input_data['autocomplete_supplier_id']);
+//            $customers = Customer::find($input_data['autocomplete_supplier_id']);
+
+
+            $customer = Customer::findOrFail($input_data['autocomplete_supplier_id']);
+            Mail::send('emails.purchase_order', ['customer' => $customer], function ($m) use ($customer) {
+                $m->to($customer->email, $customer->first_name)->subject('Purchase order generated');
+            });
+
+
 
 //            echo $customers->owner_name;
 //            echo '<pre>';
@@ -108,12 +116,12 @@ class PurchaseOrderController extends Controller {
 //            echo '</pre>';
 //            exit;
             //                $data = array('from' => 'admin@steel-trading-automation.com', 'to' => $customers->email);
-            $data = array('from' => 'admin@steel-trading-automation.com', 'to' => 'kdilip@agstechnologies.com');
-
-            $a = Mail::send('emails.purchase_order', array('name' => $customers->owner_name), function($message) use ($data) {
-                        $message->from($data['from']);
-                        $message->to($data['to'])->subject('Updated of the order');
-                    });
+//            $data = array('from' => 'admin@steel-trading-automation.com', 'to' => 'kdilip@agstechnologies.com');
+//
+//            $a = Mail::send('emails.purchase_order', array('name' => $customers->owner_name), function($message) use ($data) {
+//                        $message->from($data['from']);
+//                        $message->to($data['to'])->subject('Updated of the order');
+//                    });
 
             echo '<pre>';
             print_r($a);
