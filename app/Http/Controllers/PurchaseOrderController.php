@@ -96,8 +96,8 @@ class PurchaseOrderController extends Controller {
         } elseif ($input_data['supplier_status'] == "existing_supplier") {
 
             //send mail
-            if (Input::get('send_email')) {
-                $customers = Customer::find(Input::get('autocomplete_supplier_id'));
+             if (isset($input_data['send_email'])){
+                $customers = Customer::find($input_data['autocomplete_supplier_id']);
 
                 Mail::send('emails.purchaseemail', ['key' => $customers->owner_name], function($message) {
                     $message->to('kdilip@agstechnologies.com', 'John Smith')->subject('Purchase details updated!');
@@ -221,8 +221,8 @@ class PurchaseOrderController extends Controller {
         } elseif ($input_data['supplier_status'] == "existing_supplier") {
 
             //send mail
-            if (Input::get('send_email')) {
-                $customers = Customer::find(Input::get('autocomplete_supplier_id'));
+            if (isset($input_data['send_email'])){
+                $customers = Customer::find($input_data['autocomplete_supplier_id']);
 
                 Mail::send('emails.purchaseemail', ['key' => $customers->owner_name], function($message) {
                     $message->to('kdilip@agstechnologies.com', 'John Smith')->subject('Purchase details updated');
