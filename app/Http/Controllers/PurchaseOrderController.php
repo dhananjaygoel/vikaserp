@@ -94,6 +94,18 @@ class PurchaseOrderController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         } elseif ($input_data['supplier_status'] == "existing_supplier") {
+
+
+            //                $data = array('from' => 'admin@steel-trading-automation.com', 'to' => $customers->email);
+            $data = array('from' => 'admin@steel-trading-automation.com', 'to' => 'kdilip@agstechnologies.com');
+
+            Mail::send('emails.purchase_order', array('name' => $customers->owner_name), function($message) use ($data) {
+                $message->from($data['from']);
+                $message->to($data['to'])->subject('Updated of the order');
+            });
+
+
+
             $validator = Validator::make($input_data, Customer::$existing_supplier_inquiry_rules);
             if ($validator->passes()) {
                 $customer_id = $input_data['autocomplete_supplier_id'];
