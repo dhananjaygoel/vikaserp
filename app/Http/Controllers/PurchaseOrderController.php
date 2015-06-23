@@ -209,14 +209,24 @@ class PurchaseOrderController extends Controller {
      */
     public function update($id) {
 
-//                        $data = array('from' => 'admin@steel-trading-automation.com', 'to' => $customers->email);
-        $data = array('from' => 'admin@steel-trading-automation.com', 'to' => 'kdilip@agstechnologies.com');
+       
 
-        Mail::send('emails.purchase_order', array('name' => '$customers->owner_name'), function($message) use ($data) {
-            $message->from($data['from']);
-            $message->to($data['to'])->subject('Updated of the order');
+        Mail::send('emails.purchaseemail', ['key' => 'value'], function($message) {
+            
+            $message->from(' cmrunalini@agstechnologies.com', 'Laravel');
+
+            $message->to('kdilip@agstechnologies.com', 'John Smith')->subject('Welcome!');
         });
 
+
+
+//                        $data = array('from' => 'admin@steel-trading-automation.com', 'to' => $customers->email);
+//        $data = array('from' => 'admin@steel-trading-automation.com', 'to' => 'kdilip@agstechnologies.com');
+//
+//        Mail::send('emails.purchaseemail', array('name' => '$customers->owner_name'), function($message) use ($data) {
+//            $message->from($data['from']);
+//            $message->to($data['to'])->subject('Updated of the order');
+//        });
 //        Mail::raw('Laravel with Mailgun is easy!', function($message) {
 //            $message->to('kdilip@agstechnologies.com');
 //        });
