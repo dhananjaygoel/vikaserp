@@ -262,7 +262,7 @@ class PurchaseOrderController extends Controller {
                 'order_for' => $input_data['order_for'],
                 'vat_percentage' => $input_data['vat_percentage'],
 //                'expected_delivery_date' => date_format(date_create($input_data['expected_delivery_date']), 'Y-m-d'),
-                'expected_delivery_date' => date('Y-m-d', strtotime($input_data['expected_delivery_date'])),
+//                'expected_delivery_date' => date('Y-m-d', strtotime($input_data['expected_delivery_date'])),
                 'remarks' => $input_data['purchase_order_remark'],
                 'inquiry_status' => "Pending",
                 'other_location' => $input_data['other_location_name']
