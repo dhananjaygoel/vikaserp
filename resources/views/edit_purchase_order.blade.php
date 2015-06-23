@@ -61,7 +61,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group searchproduct">
                                         <input class="form-control" placeholder="Enter Supplier Name " type="text" name="existing_supplier_name" id="existing_supplier_name">
-                                        <input type="hidden" id="existing_supplier_id" name="autocomplete_supplier_id">
+                                        <input type="hidden" id="existing_supplier_id" name="autocomplete_supplier_id" value="{{$purchase_order['customer']->id}}">
                                         <i class="fa fa-search search-icon"></i>
                                     </div>
                                 </div>
@@ -92,7 +92,7 @@
                             <div class="col-md-12">
                                 <div class="form-group searchproduct">
                                     <input class="form-control" placeholder="Enter Supplier Name " type="text" name="existing_supplier_name" id="existing_supplier_name" value="{{$purchase_order['customer']->owner_name}}">
-                                    <input type="hidden" id="existing_supplier_id" name="autocomplete_supplier_id">
+                                    <input type="hidden" id="existing_supplier_id" name="autocomplete_supplier_id" value="{{$purchase_order['customer']->id}}">
                                     <i class="fa fa-search search-icon"></i>
                                 </div>
                             </div>
