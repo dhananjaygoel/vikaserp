@@ -95,13 +95,13 @@ class PurchaseOrderController extends Controller {
             }
         } elseif ($input_data['supplier_status'] == "existing_supplier") {
 
-            
-            
-            
-            
-            
-            $customers = Customer::find($input_data['autocomplete_supplier_id']); 
-            
+
+
+
+
+
+            $customers = Customer::find($input_data['autocomplete_supplier_id']);
+
 //            echo $customers->owner_name;
 //            echo '<pre>';
 //            print_r($customers->toArray());
@@ -110,14 +110,17 @@ class PurchaseOrderController extends Controller {
             //                $data = array('from' => 'admin@steel-trading-automation.com', 'to' => $customers->email);
             $data = array('from' => 'admin@steel-trading-automation.com', 'to' => 'kdilip@agstechnologies.com');
 
-            Mail::send('emails.purchase_order', array('name' => $customers->owner_name), function($message) use ($data) {
-                $message->from($data['from']);
-                $message->to($data['to'])->subject('Updated of the order');
-            });
+            $a = Mail::send('emails.purchase_order', array('name' => $customers->owner_name), function($message) use ($data) {
+                        $message->from($data['from']);
+                        $message->to($data['to'])->subject('Updated of the order');
+                    });
 
-     
-            
-           
+            echo '<pre>';
+            print_r($a);
+            echo '</pre>';
+            exit;
+
+
             $validator = Validator::make($input_data, Customer::$existing_supplier_inquiry_rules);
             if ($validator->passes()) {
                 $customer_id = $input_data['autocomplete_supplier_id'];
@@ -274,7 +277,7 @@ class PurchaseOrderController extends Controller {
                 'created_by' => Auth::id(),
                 'delivery_location_id' => $input_data['purchase_order_location'],
                 'vat_percentage' => $input_data['vat_percentage'],
-                'expected_delivery_date' => date_format(date_create($input_data['expected_delivery_date']), 'Y-m-d'),
+//                'expected_delivery_date' => date_format(date_create($input_data['expected_delivery_date']), 'Y-m-d'),
                 'remarks' => $input_data['purchase_order_remark'],
                 'inquiry_status' => "Pending"
             ];
