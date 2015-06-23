@@ -18,6 +18,7 @@ use Auth;
 use DB;
 use Hash;
 use Mail;
+use Illuminate\Contracts\Mail\Mailer as Mail;
 use App\PurchaseOrderCanceled;
 use App\PurchaseAdvise;
 
