@@ -95,6 +95,7 @@
                                         </tr>
                                         <?php $total=0;?>
                                         @foreach($order['all_order_products'] as $key=>$product)
+                                        @if($product->order_type =='order')
                                         <tr id="add_row_{{$key}}" class="add_product_row">
 
                                             <td class="col-md-3">
@@ -125,6 +126,7 @@
                                                 </div>
                                             </td>
                                         </tr>
+                                        @endif
                                         @endforeach
 
 

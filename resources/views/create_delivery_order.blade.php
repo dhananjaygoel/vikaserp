@@ -95,6 +95,7 @@
 
                         <div class="inquiry_table col-md-12">
                             <div class="table-responsive">
+                                <div id="flash_error_present_shipping"></div>
                                 <table id="add_product_table_delivery_order" class="table table-hover  ">
                                     <tbody>
                                         <tr class="headingunderline">
@@ -102,11 +103,13 @@
                                             <td><span>Quantity</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Present Shipping</span></td>
+                                            <td><span>Pending Order</span></td>
                                             <td><span>Price</span></td>
                                             <td><span>Remark</span></td>
                                         </tr>
                                         <?php $total = 0; ?>
                                         @foreach($order['all_order_products'] as $key=>$product)
+                                        @if($product->order_type =='order')
                                         <tr id="add_row_{{$key}}" class="add_product_row">
 
                                             <td class="col-md-3">
@@ -119,16 +122,14 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <span id="total_quantity_{{$key}}">
+                                                    
                                                     {{$product->quantity}}
-                                                    </span>
+                                                    
                                                     <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="hidden" >
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
-                                                <div class="form-group ">
-                                                    
-                                                    
+                                                <div class="form-group "> 
                                                         @foreach($units as $unit)
                                                         @if($product->unit_id == $unit->id)
                                                         {{$unit->unit_name}}
@@ -145,6 +146,11 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
+                                                    <div id="pending_qunatity_{{$key}}"><span class="text-center">{{$product->quantity}}</span></div>
+                                                </div>
+                                            </td>
+                                            <td class="col-md-2">
+                                                <div class="form-group">
                                                     {{$product->price}}
                                                     <input type="hidden" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]" readonly="readonly">
                                                     <?php $total = $total + $product->price; ?>
@@ -157,6 +163,7 @@
                                                 </div>
                                             </td>
                                         </tr>
+                                        @endif
                                         @endforeach
 
                                     </tbody>

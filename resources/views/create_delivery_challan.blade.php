@@ -32,7 +32,7 @@
                         @if (Session::has('validation_message'))
                         <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('validation_message') }}</div>
                         @endif
-
+                        <div id="flash_error_present_shipping"></div>
                         @if (count($errors) > 0)
                         <div role="alert" class="alert alert-warning">                         
                             @foreach ($errors->all() as $error)
@@ -48,8 +48,8 @@
                         {!!Form::open(array('method'=>'POST','url'=>url('create_delivery_challan/'.$delivery_data['id']),'id'=>'create_delivery_challan_form'))!!}
                         <input type="hidden" name="order_id" value="{{$delivery_data->order_id}}">
                         <input type="hidden" name="customer_id" value="{{$delivery_data['customer']->id}}">
-                                              
-                        
+
+
                         <div class="form-group">
 
                             <span>Serial Number: </span> 
@@ -74,7 +74,7 @@
                                     <tbody> 
                                         <tr class="headingunderline">
                                             <td><span>Select Product</span></td>
-                                            <td><span>Quantity</span></td>
+                                            <td><span>Actual Quantity</span></td>
                                             <td><span>Actual Pieces</span></td>                                            
                                             <td><span>Presenting Shipping</span></td>
                                             <td><span>Rate</span></td>
@@ -83,6 +83,7 @@
                                         </tr>
 
                                         @foreach($delivery_data['delivery_product'] as $key=>$product)
+                                        @if($product->order_type =='delivery_order')
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-2">
                                                 <div class="form-group searchproduct">
@@ -93,7 +94,12 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" type="text">
+                                                    <input id="quantity_{{$key}}" type="hidden" value="{{ $product->quantity}}" name="product[{{$key}}][quantity]">
+                                                    @if($product->quantity >=0)
+                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{$product->actual_quantity}}" type="text">
+                                                    @elseif($product->quantity <0)
+                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="" type="text">
+                                                    @endif
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -105,19 +111,19 @@
                                             <td class="col-md-2">
                                                 <div class="form-group">
                                                     {{ $product->present_shipping}}
-                                                    <input id="present_shipping_{{$key}}" class="form-control text-center" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{ $product->present_shipping}}" type="hidden" readonly="readonly">
+                                                    <input id="present_shipping_{{$key}}" class="form-control text-center" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{ $product->present_shipping}}" type="hidden" >
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">                                                    
-                                                    <input type="text" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price">
+                                                    <input type="text" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="change_amount({{$key}})">
 
                                                 </div>
 
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group ">
-                                                    
+
 
                                                     @foreach($units as $unit)
                                                     @if($unit->id == $product->unit_id)
@@ -130,11 +136,12 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    Amount{{($key+1)}}
+                                                    <div id="amount_{{$key}}"><span class="text-center">{{$product->price* $product->present_shipping}}</span></div>
                                                 </div>
                                             </td>
 
                                         </tr>
+                                        @endif
                                         @endforeach
                                         <?php //} ?>
                                     </tbody>

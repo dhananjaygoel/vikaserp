@@ -45,7 +45,9 @@
                                         <option value="" selected="">Select supplier</option>
                                         @if(count($customers)>0)
                                         @foreach($customers as $customer)
+                                        @if($customer->customer_status == 'permanent')
                                         <option value="{{$customer->id}}" >{{$customer->owner_name}}</option>
+                                        @endif
                                         @endforeach
                                         @endif
 

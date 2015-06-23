@@ -158,17 +158,52 @@ class DeliveryChallanController extends Controller {
 
     //Generate Serial number and print Delivery Challan
     public function print_delivery_challan($id) {
-        $serial_number_delivery_order= Input::get('serial_number');
+        $serial_number_delivery_order = Input::get('serial_number');
 //        $delivery_order_id = Input::get('delivery_order_id');
 //        $current_date = date("M/y/m/");
 //        $date_letter =  $date.$delivery_order_id. "/" . $id;
-        $date_letter =  $serial_number_delivery_order. "/" . $id;
+        $date_letter = $serial_number_delivery_order . "/" . $id;
         DeliveryChallan::where('id', $id)->update(array(
             'serial_number' => $date_letter,
             'challan_status' => "completed"
         ));
+        $this->checkpending_quantity();
+
         return redirect('delivery_challan')->with('validation_message', 'Delivery order is successfuly printed.');
 //        echo $date_letter;
+    }
+
+    function checkpending_quantity() {
+        $allorders = Order::all();
+        $allorder_new = [];
+        foreach ($allorders as $order) {
+            $delivery_orders = DeliveryOrder::where('order_id', $order->id)->get();
+
+            $gen_dc = 1;
+            $pending_quantity = 0;
+            foreach ($delivery_orders as $del_order) {
+                $delivery_challans = DeliveryChallan::where('delivery_order_id', $del_order->id)->get();
+                foreach ($delivery_challans as $del_challan) {
+                    $gen_dc = 0;
+                    $all_order_products = AllOrderProducts::where('order_id', $order->id)->where('order_type', 'delivery_order')->get();
+                    foreach ($all_order_products as $products) {
+                        $p_qty = $products['quantity'] - $products['present_shipping'];
+                        $pending_quantity = $pending_quantity + $p_qty;
+                    }
+                }
+            }
+//            echo '<br>pending quantity ' . $pending_quantity . ' order ' . $order->id;
+            if ($gen_dc != 1 && $pending_quantity == 0 && $order->order_status !='completed') {
+                
+                Order::where('id', $order->id)->update(array(
+                    'order_status' => "completed"
+                ));
+            }
+
+
+//            
+//            $allorders['total_pending_quantity_'.$order->id]=$pending_quantity;
+        }
     }
 
 }

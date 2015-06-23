@@ -68,6 +68,7 @@
 
                                         </tr>
                                         @foreach($allorder['all_order_products'] as $key=>$product)
+                                        @if($product->order_type =='delivery_challan')
                                         <tr id="add_row_{{$key}}" class="add_product_row">
 
                                             <td class="col-md-2">
@@ -113,6 +114,7 @@
                                                 </div>
                                             </td>
                                         </tr>
+                                        @endif
                                         @endforeach
 
                                     </tbody>

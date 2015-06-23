@@ -1,7 +1,8 @@
 <?php
-//echo'<pre>';
-//print_r($allorders[0]['order_cancelled']['cancelled_by']);
-//echo '</pre>';
+//echo count($allorders);
+////echo'<pre>';
+////print_r($allorders);
+////echo '</pre>';
 //exit;
 ?>
 @extends('layouts.master')
@@ -93,14 +94,18 @@
                                         <td><?php
                                         $total_quantity = 0;
                                         foreach ($order['all_order_products'] as $key => $product) {
+                                            if($product->order_type =='order'){
                                             $total_quantity = $total_quantity + $product['quantity'];
+                                            }
                                         }
                                         echo $total_quantity;
                                         ?></td>
                                         <td><?php
                                         $total_quantity = 0;
                                         foreach ($order['all_order_products'] as $key => $product) {
-                                            $total_quantity = $total_quantity + $product['quantity'];
+                                            if($product->order_type =='order'){
+                                                $total_quantity = $total_quantity + $product['quantity'];
+                                            }
                                         }
                                         echo $total_quantity;
                                         ?></td>

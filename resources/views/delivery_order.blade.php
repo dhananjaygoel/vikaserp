@@ -68,7 +68,7 @@
                                     <?php $i = ($delivery_data->currentPage() - 1 ) * $delivery_data->perPage() + 1; ?>
                                     @foreach($delivery_data as $delivery)
                                     <tr>
-                                        <td>{{ $i }}</td>
+                                        <td>{{ $i++ }}</td>
                                         <td>{{ $delivery->estimated_delivery_date }}</td>
                                         <td>
                                             @if($delivery->serial_no != "")

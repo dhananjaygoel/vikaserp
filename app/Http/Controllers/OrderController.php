@@ -23,6 +23,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ManualCompleteOrderRequest;
 use App\DeliveryOrder;
+use App\DeliveryChallan;
+
 
 class OrderController extends Controller {
 
@@ -45,7 +47,7 @@ class OrderController extends Controller {
         }
 
         $users = User::all();
-
+        $allorders = $this->checkpending_quantity($allorders);
         $allorders->setPath('orders');
         return View::make('orders', compact('allorders', 'users', 'cancelledorders'));
     }
@@ -145,7 +147,7 @@ class OrderController extends Controller {
             if ($product_data['name'] != "") {
                 $order_products = [
                     'order_id' => $order_id,
-                    'order_type'=>'order',
+                    'order_type' => 'order',
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
@@ -313,10 +315,10 @@ class OrderController extends Controller {
         if (Hash::check($password, $current_user->password)) {
 
             $order = Order::find($id);
-            
-            $all_order_products = AllOrderProducts::where('order_id','=',$id)->where('order_type','=','order');
 
-            foreach($all_order_products as $products){
+            $all_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'order');
+
+            foreach ($all_order_products as $products) {
                 $products->delete();
             }
             $order->delete();
@@ -388,13 +390,12 @@ class OrderController extends Controller {
             foreach ($input_data['product'] as $product_data) {
                 if ($product_data['name'] != "") {
                     //'quantity' => $product_data['quantity'],
-                    $quantity = $product_data['quantity'] - $product_data['present_shipping'];
                     $order_products = [
                         'order_id' => $order_id,
                         'order_type' => 'delivery_order',
                         'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
-                        'quantity' => $quantity,
+                        'quantity' => $product_data['quantity'],
                         'present_shipping' => $product_data['present_shipping'],
                         'price' => $product_data['price'],
                         'remarks' => $product_data['remark']
@@ -407,6 +408,22 @@ class OrderController extends Controller {
             $error_msg = $validator->messages();
             return Redirect::back()->withInput()->withErrors($validator);
         }
+    }
+
+    function checkpending_quantity($allorders) {
+//        foreach ($allorders as $order) {
+//            $delivery_orders = DeliveryOrder::where('order_id', $order->id)->get();
+//            $pending_quantity=0;
+//            foreach ($delivery_orders as $del_order) {
+//                $all_order_products = AllOrderProducts::where('order_id', $del_order->id)->where('order_type', 'delivery_order')->get();
+//                foreach ($all_order_products as $products) {
+//                    $p_qty= $products['quantity']-$products['present_shipping'];
+//                    $pending_quantity = $pending_quantity+$p_qty;
+//                }
+//            }
+//            $allorders['total_pending_quantity_'.$order->id]=$pending_quantity;
+//        }
+        return $allorders;
     }
 
 }

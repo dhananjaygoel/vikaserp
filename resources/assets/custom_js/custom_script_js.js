@@ -7,16 +7,16 @@ $(document).ready(function () {
         $(".supplier_order").show();
 
     });
-    $("#existing_customer").click(function () {        
+    $("#existing_customer").click(function () {
         $(".new_customer_details").hide();
         $(".customer_select_order").show();
     });
     $("#new_customer").click(function () {
         $(".new_customer_details").show();
-        $(".customer_select_order").hide();       
+        $(".customer_select_order").hide();
     });
 
-    
+
     $("#vat_inclusive").click(function () {
         $(".vat_field").show();
 
@@ -196,13 +196,34 @@ function select_all_checkbox() {
  * Calculate quantity on
  * on present shiping
  */
-function change_quantity(key){
-    var quantity = $("#quantity_"+key).val();
-    var present_shipping = $("#present_shipping_"+key).val();
-    var rem_quantity = quantity - present_shipping;
-//    alert(quantity);
-    $("#total_quantity_"+key).html("<span>"+rem_quantity+"</span");
+function change_quantity(key) {
+
+    var quantity = $("#quantity_" + key).val();
+    var present_shipping = $("#present_shipping_" + key).val();
     
+    if (parseInt(present_shipping) > parseInt(quantity)) {
+        alert("Present Shipping should not greater than quantity.");
+//        var shipping_error = '<div id="flash_error_present_shipping" class="alert alert-warning no_data_msg_container"> Present Shipping should not greater than quantity.</div>';
+//        $("#flash_error_present_shipping").html(shipping_error);
+        $("#present_shipping_" + key).val(0);  
+        $("#pending_qunatity_" + key).html("<span>" + quantity + "</span");
+    }else{
+        $("#flash_error_present_shipping").html('');
+        var rem_quantity = quantity - present_shipping;
+//    alert(quantity);
+        $("#pending_qunatity_" + key).html("<span class='text-center'>" + rem_quantity + "</span");
+    }
+
+}
+
+
+/**
+ * Change Amount
+ */
+function name(key) {
+    var price = $("#product_price_"+key).val();
+    var quantity = $("#quantity_"+key).val();
+    alert('price' +price+" qty "+quantity);
 }
 function grand_total_delivery_order() {
     /**

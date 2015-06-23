@@ -19,6 +19,7 @@ class CreateAllOrderProductsTable extends Migration {
                         $table->enum('order_type', array('order', 'delivery_order', 'delivery_challan'))->comment('order type');			
                         $table->integer('product_category_id')->comment('Product category');
                         $table->integer('unit_id')->comment('Unit for product');
+                        $table->integer('actual_quantity')->comment('Actual Quantity for product');
                         $table->integer('quantity')->comment('Quantity for product');
                         $table->integer('actual_pieces')->comment('Actual pieces of product');
                         $table->integer('price')->comment('Price for product');
