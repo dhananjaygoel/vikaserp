@@ -96,7 +96,7 @@ class PurchaseOrderController extends Controller {
         } elseif ($input_data['supplier_status'] == "existing_supplier") {
 
             //send mail
-            if (isset(Input::get('send_email'))) {
+            if (Input::get('send_email')) {
                 $customers = Customer::find(Input::get('autocomplete_supplier_id'));
 
                 Mail::send('emails.purchaseemail', ['key' => $customers->owner_name], function($message) {
@@ -221,7 +221,7 @@ class PurchaseOrderController extends Controller {
         } elseif ($input_data['supplier_status'] == "existing_supplier") {
 
             //send mail
-            if (isset(Input::get('send_email'))) {
+            if (Input::get('send_email')) {
                 $customers = Customer::find(Input::get('autocomplete_supplier_id'));
 
                 Mail::send('emails.purchaseemail', ['key' => $customers->owner_name], function($message) {
