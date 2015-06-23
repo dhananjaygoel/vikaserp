@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use Auth;
+use App\Order;
+use App\Inquiry;
 
 class DashboardController extends Controller {
 
@@ -17,8 +19,13 @@ class DashboardController extends Controller {
      * @return Response
      */
     public function index() {
-
-        return view('dashboard');
+        
+        $order = Order::all()->count();
+        $pending_order = Order::where('order_status','pending')->count();
+        $inquiry = Inquiry::all()->count();
+        $pending_inquiry = Inquiry::where('inquiry_status','pending')->count();
+        
+        return view('dashboard', compact('order','pending_order','inquiry','pending_inquiry'));
     }
 
     public function logout() {
