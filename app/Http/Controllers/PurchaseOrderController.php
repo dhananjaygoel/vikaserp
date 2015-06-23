@@ -179,7 +179,9 @@ class PurchaseOrderController extends Controller {
      * @return Response
      */
     public function update($id) {
+
         $input_data = Input::all();
+
         $i = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
@@ -191,6 +193,7 @@ class PurchaseOrderController extends Controller {
             return Redirect::back()->with('flash_message', 'Please insert product details');
         }
         $customers = Customer::find($input_data['supplier_id']);
+
         if ($input_data['supplier_status'] == "new_supplier") {
             $validator = Validator::make($input_data, Customer::$new_supplier_inquiry_rules);
             if ($validator->passes()) {
@@ -208,6 +211,18 @@ class PurchaseOrderController extends Controller {
         } elseif ($input_data['supplier_status'] == "existing_supplier") {
             $validator = Validator::make($input_data, Customer::$existing_supplier_inquiry_rules);
             if ($validator->passes()) {
+
+
+//                $data = array('from' => 'admin@steel-trading-automation.com', 'to' => $customers->email);
+                $data = array('from' => 'admin@steel-trading-automation.com', 'to' => 'kdilip@agstechnologies.com');
+
+                Mail::send('emails.purchase_order', array('name' => $customers->owner_name), function($message) use ($data) {
+                    $message->from($data['from']);
+                    $message->to($data['to'])->subject('Updated of the order');
+                });
+
+
+
                 $customer_id = $input_data['autocomplete_supplier_id'];
             } else {
                 $error_msg = $validator->messages();
