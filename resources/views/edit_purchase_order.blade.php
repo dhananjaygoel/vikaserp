@@ -299,7 +299,7 @@
                         <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3">{{$purchase_order->remarks}}</textarea>
                     </div>
                     <div class="checkbox">
-                        <label><input type="checkbox" value=""><span class="checksms">Send Email to Party</span></label>
+                        <label><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email to Party</span></label>
                     </div>
                     <hr>
                     <div>

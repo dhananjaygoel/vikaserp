@@ -95,35 +95,16 @@ class PurchaseOrderController extends Controller {
             }
         } elseif ($input_data['supplier_status'] == "existing_supplier") {
 
+            //send mail
+            if (isset(send_email('send_email'))) {
+                $customers = Customer::find(Input::get('autocomplete_supplier_id'));
 
+                Mail::send('emails.purchaseemail', ['key' => $customers->owner_name], function($message) {
+                    $message->to('kdilip@agstechnologies.com', 'John Smith')->subject('Purchase details updated!');
+                });
+            }
+            
 
-
-
-
-//            $customers = Customer::find($input_data['autocomplete_supplier_id']);
-//            $customer = Customer::findOrFail($input_data['autocomplete_supplier_id']);
-//            Mail::send('emails.purchase_order', ['customer' => $customer], function ($m) use ($customer) {
-//                $m->to($customer->email, $customer->first_name)->subject('Purchase order generated');
-//            });
-//            echo $customers->owner_name;
-//            echo '<pre>';
-//            print_r($customers->toArray());
-//            echo '</pre>';
-//            exit;
-            //                $data = array('from' => 'admin@steel-trading-automation.com', 'to' => $customers->email);
-//            $data = array('from' => 'admin@steel-trading-automation.com', 'to' => 'kdilip@agstechnologies.com');
-//
-//            $a = Mail::send('emails.purchase_order', array('name' => $customers->owner_name), function($message) use ($data) {
-//                        $message->from($data['from']);
-//                        $message->to($data['to'])->subject('Updated of the order');
-//                    });
-//            echo '<pre>';
-//            print_r($a);
-//            echo '</pre>';
-//            exit;
-
-
-            $validator = Validator::make($input_data, Customer::$existing_supplier_inquiry_rules);
             if ($validator->passes()) {
                 $customer_id = $input_data['autocomplete_supplier_id'];
             } else {
@@ -209,26 +190,6 @@ class PurchaseOrderController extends Controller {
      */
     public function update($id) {
 
-       
-
-        Mail::send('emails.purchaseemail', ['key' => 'value'], function($message) {
-
-            $message->to('kdilip@agstechnologies.com', 'John Smith')->subject('Welcome!');
-        });
-
-
-
-//                        $data = array('from' => 'admin@steel-trading-automation.com', 'to' => $customers->email);
-//        $data = array('from' => 'admin@steel-trading-automation.com', 'to' => 'kdilip@agstechnologies.com');
-//
-//        Mail::send('emails.purchaseemail', array('name' => '$customers->owner_name'), function($message) use ($data) {
-//            $message->from($data['from']);
-//            $message->to($data['to'])->subject('Updated of the order');
-//        });
-//        Mail::raw('Laravel with Mailgun is easy!', function($message) {
-//            $message->to('kdilip@agstechnologies.com');
-//        });
-
         $input_data = Input::all();
 
         $i = 0;
@@ -258,19 +219,19 @@ class PurchaseOrderController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         } elseif ($input_data['supplier_status'] == "existing_supplier") {
+
+            //send mail
+            if (isset(Input::get('send_email'))) {
+                $customers = Customer::find(Input::get('autocomplete_supplier_id'));
+
+                Mail::send('emails.purchaseemail', ['key' => $customers->owner_name], function($message) {
+                    $message->to('kdilip@agstechnologies.com', 'John Smith')->subject('Purchase details updated');
+                });
+            }
+
+
             $validator = Validator::make($input_data, Customer::$existing_supplier_inquiry_rules);
             if ($validator->passes()) {
-
-
-//                $data = array('from' => 'admin@steel-trading-automation.com', 'to' => $customers->email);
-//                $data = array('from' => 'admin@steel-trading-automation.com', 'to' => 'kdilip@agstechnologies.com');
-//
-//                Mail::send('emails.purchase_order', array('name' => $customers->owner_name), function($message) use ($data) {
-//                    $message->from($data['from']);
-//                    $message->to($data['to'])->subject('Updated of the order');
-//                });
-
-
 
                 $customer_id = $input_data['autocomplete_supplier_id'];
             } else {
