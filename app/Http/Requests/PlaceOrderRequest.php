@@ -22,8 +22,7 @@ class PlaceOrderRequest extends Request {
 	public function rules()
 	{
 		return [
-			'status' => 'required',                        
-                        'estimated_date'=>'required',
+			'status' => 'required',
                         'expected_date'=>'required'                        
 		];
 	}
