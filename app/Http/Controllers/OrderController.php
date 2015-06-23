@@ -18,13 +18,13 @@ use DB;
 use Auth;
 use App\User;
 use Hash;
+use Mail;
 use App\OrderCancelled;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ManualCompleteOrderRequest;
 use App\DeliveryOrder;
 use App\DeliveryChallan;
-
 
 class OrderController extends Controller {
 
@@ -335,6 +335,7 @@ class OrderController extends Controller {
     public function manual_complete_order(ManualCompleteOrderRequest $request) {
 
         $input_data = Input::all();
+
         $order_id = $input_data['order_id'];
         $reason_type = $input_data['reason_type'];
         $reason = $input_data['reason'];
@@ -350,6 +351,22 @@ class OrderController extends Controller {
         $update_order = $order->update([
             'order_status' => "Cancelled"
         ]);
+
+        //send mail
+        $orders = Order::where('id', '=', $input_data['order_id'])
+                        ->with('customer')->first();
+
+        if (isset($input_data['send_email']) && $orders['customer']->email != "") {
+
+            $customers = Customer::find($input_data['autocomplete_supplier_id']);
+
+            Mail::send('emails.order_complete_email', ['key' => $orders['customer']->owner_name], function($message) {
+                $message->to($orders['customer']->email, 'John Smith')->subject('Order Complete!');
+            });
+        }
+
+
+
         return redirect('orders')->with('flash_message', 'One order is cancelled.');
     }
 

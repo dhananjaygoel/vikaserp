@@ -1,10 +1,3 @@
-<?php
-//echo count($allorders);
-////echo'<pre>';
-////print_r($allorders);
-////echo '</pre>';
-//exit;
-?>
 @extends('layouts.master')
 @section('title','Orders')
 @section('content')
@@ -207,7 +200,7 @@
                                                     <textarea class="form-control" id="inquiry_remark" name="reason"  rows="2" placeholder="Reason"></textarea>
                                                 </div>
                                                 <div class="checkbox">
-                                                    <label class="marginsms"><input type="checkbox" value=""><span class="checksms">Send Email to Party</span></label>
+                                                    <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email to Party</span></label>
                                                     <label><input type="checkbox" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">SMS</span></label>
                                                 </div>
                                             </div>           
