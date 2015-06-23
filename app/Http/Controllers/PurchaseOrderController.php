@@ -123,10 +123,10 @@ class PurchaseOrderController extends Controller {
 //                        $message->to($data['to'])->subject('Updated of the order');
 //                    });
 
-            echo '<pre>';
-            print_r($a);
-            echo '</pre>';
-            exit;
+//            echo '<pre>';
+//            print_r($a);
+//            echo '</pre>';
+//            exit;
 
 
             $validator = Validator::make($input_data, Customer::$existing_supplier_inquiry_rules);
