@@ -15,6 +15,7 @@
                 </div>
             </div>
         </div>
+        @if(Auth::user()->role_id == 0)
         <div class="row">
             <div class="col-lg-3 col-sm-6 col-xs-12">
                 <a class="indexlink" href="{{url('orders')}}"><div class="main-box infographic-box">
@@ -110,7 +111,9 @@
                     </div></a>
             </div>
         </div>
+        @endif
         <br/>
+        @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 2)
         <div class="row text-center ">
             <div class="col-md-12">
 
@@ -125,6 +128,7 @@
 
             </div>
         </div>
+        @endif
         <br/>
         <br/>
 
