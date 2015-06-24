@@ -47,9 +47,13 @@ class OrderController extends Controller {
         }
 
         $users = User::all();
-        $allorders = $this->checkpending_quantity($allorders);
+        $pending_orders = $this->checkpending_quantity($allorders);
+//        echo '<pre>';
+//        print_r($pending_orders);
+//        echo '</pre>';
+//        exit;
         $allorders->setPath('orders');
-        return View::make('orders', compact('allorders', 'users', 'cancelledorders'));
+        return View::make('orders', compact('allorders', 'users', 'cancelledorders', 'pending_orders'));
     }
 
     /**
@@ -428,19 +432,28 @@ class OrderController extends Controller {
     }
 
     function checkpending_quantity($allorders) {
-//        foreach ($allorders as $order) {
-//            $delivery_orders = DeliveryOrder::where('order_id', $order->id)->get();
-//            $pending_quantity=0;
-//            foreach ($delivery_orders as $del_order) {
-//                $all_order_products = AllOrderProducts::where('order_id', $del_order->id)->where('order_type', 'delivery_order')->get();
-//                foreach ($all_order_products as $products) {
-//                    $p_qty= $products['quantity']-$products['present_shipping'];
-//                    $pending_quantity = $pending_quantity+$p_qty;
-//                }
-//            }
+        $pending_orders = array();
+        foreach ($allorders as $order) {
+            $delivery_orders = DeliveryOrder::where('order_id', $order->id)->get();
+            $pending_quantity = 0;
+            $total_quantity = 0;
+            foreach ($delivery_orders as $del_order) {
+                $all_order_products = AllOrderProducts::where('order_id', $del_order->id)->where('order_type', 'delivery_order')->get();
+                foreach ($all_order_products as $products) {
+                    $p_qty = $products['quantity'] - $products['present_shipping'];
+                    $pending_quantity = $pending_quantity + $p_qty;
+                    $total_quantity = $total_quantity + $products['quantity'];
+                }
+            }
+            $temp = array();
+            $temp['id'] = $order->id;
+            $temp['total_pending_quantity'] = $pending_quantity;
+            $temp['total_quantity'] = $total_quantity;
+            array_push($pending_orders, $temp);
+
 //            $allorders['total_pending_quantity_'.$order->id]=$pending_quantity;
-//        }
-        return $allorders;
+        }
+        return $pending_orders;
     }
 
 }

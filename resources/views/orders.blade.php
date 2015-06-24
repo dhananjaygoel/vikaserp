@@ -84,24 +84,13 @@
                                                 }
                                             }
                                         ?></td>
-                                        <td><?php
-                                        $total_quantity = 0;
-                                        foreach ($order['all_order_products'] as $key => $product) {
-                                            if($product->order_type =='order'){
-                                            $total_quantity = $total_quantity + $product['quantity'];
-                                            }
-                                        }
-                                        echo $total_quantity;
-                                        ?></td>
-                                        <td><?php
-                                        $total_quantity = 0;
-                                        foreach ($order['all_order_products'] as $key => $product) {
-                                            if($product->order_type =='order'){
-                                                $total_quantity = $total_quantity + $product['quantity'];
-                                            }
-                                        }
-                                        echo $total_quantity;
-                                        ?></td>
+                                        @foreach($pending_orders as $porder)
+                                        @if($porder['id'] == $order->id)
+                                        <td>{{$porder['total_quantity']}}</td>
+                                        <td>{{$porder['total_pending_quantity']}}</td>
+                                        @endif
+                                        @endforeach
+                                        
                                         <td class="text-center">
                                             <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
