@@ -42,8 +42,8 @@ Route::controllers([
 Route::get('logout', 'DashboardController@logout');
 Route::get('/', 'Auth\AuthController@getLogin');
 Route::group(['middleware' => ['auth']], function() {
-    //    Route::group(['middleware' => 'admin_mw'], function() {
-//        Route::get('customers', 'CustomerController',['only' => ['index', 'show']]);
+//        Route::group(['middleware' => ['admin_mw','super_admin_mw']], function() {
+//        Route::get('customers', 'CustomerController',['only' => ['index','show','edit']]);
 //    });
 //    Route::group(['middleware' => 'super_admin_mw'], function() {
 //        Route::resource('customers', 'CustomerController');
@@ -110,6 +110,9 @@ Route::group(['middleware' => ['auth']], function() {
     
     Route::post('print_delivery_order/{id}','DeliveryOrderController@print_delivery_order');
     Route::post('print_delivery_challan/{id}','DeliveryChallanController@print_delivery_challan');
+    Route::get('place_order/{id}','InquiryController@place_order');
+    Route::post('store_order/{id}','InquiryController@store_place_order');
+    
 });
 
 

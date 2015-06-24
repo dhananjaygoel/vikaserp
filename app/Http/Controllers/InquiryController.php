@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use Hash;
 use App\ProductSubCategory;
+use App\Order;
+use App\AllOrderProducts;
 
 class InquiryController extends Controller {
 
@@ -322,5 +324,116 @@ class InquiryController extends Controller {
         echo json_encode(array('prod' => $prod, 'unit'=> $unit));
         exit;
     }
+    /*
+     * Inquiery to Order
+     * place order
+     */
+    function place_order($id){  
+        $inquiry = Inquiry::where('id', '=', $id)->where(['inquiry_status' => 'Completed'])->get();
+        if(count($inquiry)>0){
+            return redirect('inquiry')->with('flash_message', 'Please select other inquiry, order is generated for this inquiry.');
+        }
+        
+        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category', 'customer')->first();
+        $units = Units::all();
+        $delivery_location = DeliveryLocation::all();
+        $customers = Customer::all();
+        return view('place_order', compact('inquiry','customers' , 'delivery_location', 'units'));        
+    }
+    
+    function store_place_order($id,InquiryRequest $request){
+        $input_data = Input::all();
+//        echo '<pre>';
+//        print_r($input_data);
+//        echo '</pre>';
+//        exit;
+        $i = 0;
+        $j = count($input_data['product']);
+//        echo $input_data['estimated_date'];exit;
+        foreach ($input_data['product'] as $product_data) {
+            if ($product_data['name'] == "") {
+                $i++;
+            }
+        }
 
+        if ($i == $j) {
+            return Redirect::back()->with('flash_message', 'Please insert product details');
+        }
+
+        if ($input_data['customer_status'] == "new_customer") {
+            $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
+            if ($validator->passes()) {
+                $customers = new Customer();
+                $customers->owner_name = $input_data['customer_name'];
+                $customers->contact_person = $input_data['contact_person'];
+                $customers->phone_number1 = $input_data['mobile_number'];
+                $customers->credit_period = $input_data['credit_period'];
+                $customers->customer_status = 'pending';
+                $customers->save();
+                $customer_id = $customers->id;
+            } else {
+                $error_msg = $validator->messages();
+                return Redirect::back()->withInput()->withErrors($validator);
+            }
+        } elseif ($input_data['customer_status'] == "existing_customer") {
+            $validator = Validator::make($input_data, Customer::$existing_customer_inquiry_rules);
+            if ($validator->passes()) {
+                $customer_id = $input_data['autocomplete_customer_id'];
+            } else {
+                $error_msg = $validator->messages();
+                return Redirect::back()->withInput()->withErrors($validator);
+            }
+        }
+
+        if ($input_data['status'] == 'warehouse') {
+            $order_status = 'warehouse';
+            $supplier_id = 0;
+        }
+        if ($input_data['status'] == 'supplier') {
+            $order_status = 'supplier';
+            $supplier_id = $input_data['supplier_id'];
+        }
+        if ($input_data['vat_status'] == 'include_vat') {
+            $vat_price = '';
+        }
+        if ($input_data['vat_status'] == 'exclude_vat') {
+            $vat_price = $input_data['vat_percentage'];
+        }
+//        echo 'other location '.$input_data['location'];exit;
+        $order = new Order();
+        $order->order_source = $order_status;
+        $order->supplier_id = $supplier_id;
+        $order->customer_id = $customer_id;
+        $order->created_by = Auth::id();
+        $order->delivery_location_id = $input_data['add_inquiry_location'];
+        $order->vat_percentage = $vat_price;
+//        $order->estimated_delivery_date = date_format(date_create($input_data['estimated_date']), 'Y-m-d');
+        $order->expected_delivery_date = date_format(date_create($input_data['date']), 'Y-m-d');
+        $order->remarks = $input_data['inquiry_remark'];
+        $order->order_status = "Pending";
+        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
+            $order->other_location = $input_data['other_location_name'];
+        }
+        $order->save();
+
+        $order_id = DB::getPdo()->lastInsertId();
+        $order_products = array();
+        foreach ($input_data['product'] as $product_data) {
+            if ($product_data['name'] != "") {
+                $order_products = [
+                    'order_id' => $order_id,
+                    'order_type' => 'order',
+                    'product_category_id' => $product_data['id'],
+                    'unit_id' => $product_data['units'],
+                    'quantity' => $product_data['quantity'],
+                    'price' => $product_data['price'],
+                    'remarks' => $product_data['remark'],
+                ];
+                $add_order_products = AllOrderProducts::create($order_products);
+            }
+        }
+        Inquiry::where('id', '=', $id)->update(['inquiry_status' => 'Completed']);        
+        return redirect('inquiry')->with('flash_success_message', 'One Order successfully generated for Inquiry.');
+        
+    }
 }

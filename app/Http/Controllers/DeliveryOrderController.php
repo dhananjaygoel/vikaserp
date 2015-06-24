@@ -197,13 +197,14 @@ class DeliveryOrderController extends Controller {
         $delivery_locations = DeliveryLocation::all();
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.product_category')->where('id', $id)->get();
         $customers = Customer::all();
+        $pending_orders= $this->pending_quantity_order($id);
 
 //        echo '<pre>';
 //        print_r($delivery_data->toArray());
 //        echo '</pre>';
 //        exit;
 
-        return view('edit_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
+        return view('edit_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'pending_orders'));
     }
 
     /**
@@ -215,6 +216,10 @@ class DeliveryOrderController extends Controller {
     public function update($id) {
 
         $input_data = Input::all();
+//        echo '<pre>';
+//        print_r($input_data);
+//        echo '</pre>';
+//        exit;
         $i = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
@@ -295,7 +300,7 @@ class DeliveryOrderController extends Controller {
                         'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
                         'quantity' => $product_data['quantity'],
-                        'present_shipping' => $product_data['quantity'],
+                        'present_shipping' => $product_data['present_shipping'],
                         'price' => $product_data['price'],
                         'remarks' => $product_data['remark'],
                     ];
@@ -428,6 +433,28 @@ class DeliveryOrderController extends Controller {
         return redirect('delivery_order')->with('validation_message', 'Delivery order is successfuly printed.');
 //        echo $date_letter;
         
+    }
+    
+     public function pending_quantity_order($id){
+        $pending_orders = array();
+        $all_order_products = AllOrderProducts::where('order_id', $id)->where('order_type', 'delivery_order')->get();
+        $pending_quantity = 0;
+        $total_quantity = 0;
+                foreach ($all_order_products as $products) {
+                    $p_qty = $products['quantity'] - $products['present_shipping'];
+                    $temp = array();
+                    $temp['order_id'] = $id;
+                    $temp['id']=$products['id'];
+                    $temp['product_id']=$products['product_category_id'];
+                    $temp['total_pending_quantity'] = $p_qty;                    
+                    array_push($pending_orders, $temp);
+                }
+        
+            
+
+//            $allorders['total_pending_quantity_'.$order->id]=$pending_quantity;
+        
+        return $pending_orders;
     }
 
     

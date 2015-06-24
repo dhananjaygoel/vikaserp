@@ -161,7 +161,12 @@
                                         @endif
                                         <tr>
                                             
-                                            <td><span>Grand Total: </span>{{$total}} </td>
+                                            <td><span>Grand Total: </span><?php 
+                                            $grand_total =0; 
+                                            $vat= ($total*$order->vat_percentage)/100;
+                                            $grand_total = $total + $vat;
+                                            echo $grand_total;
+                                            ?> </td>
 
                                         </tr>
 

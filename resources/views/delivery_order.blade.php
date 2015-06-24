@@ -33,7 +33,13 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
-                        
+                        @if(Session::has('error'))
+                        <div class="clearfix"> &nbsp;</div>
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <strong> {{ Session::get('error') }} </strong>
+                        </div>
+                        @endif
                         @if (Session::has('success'))
                         <div class="alert alert-success alert-success1">
                             {{Session::get('success')}}                            

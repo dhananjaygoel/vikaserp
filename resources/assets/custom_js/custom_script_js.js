@@ -31,6 +31,11 @@ $(document).ready(function () {
         }
 
     });
+    $('#add_inquiry_location').change(function () {
+        if ($('#add_order_location').val() == '-2') {
+            $('.locationtext').toggle();
+        }
+    });
 
     /**
      * Comment
@@ -139,7 +144,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-1">' +
                 '<div class="form-group">' +
-                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="text" onfocus="grand_total_delivery_order();">' +
+                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="grand_total_delivery_order();">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
@@ -149,14 +154,20 @@ $(document).ready(function () {
                 '</select>' +
                 '</div>' +
                 '</td>' +
-                '<td class="col-md-2">' +
+                '<td class="col-md-1">' +
                 '<div class="form-group">' +
-                '<input id="present_shipping_' + current_row_count + '" class="form-control text-center" placeholder="Present Shipping" name="product[' + current_row_count + '][present_shipping]" value="" type="text">' +
+                '<input id="present_shipping_' + current_row_count + '" class="form-control" placeholder="Present Shipping" name="product[' + current_row_count + '][present_shipping]" value="" type="text" onblur="change_quantity(' + current_row_count + ');">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
                 '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+                '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]" onblur="grand_total_delivery_order();">' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-1">' +
+                '<div class="form-group">' +
+                '<input id="pending_qunatity_value_' + current_row_count + '" class="form-control text-center" name="product[' + current_row_count + '][pending_quantity]" value="" type="hidden">' +
+                '<div id="pending_qunatity_' + current_row_count + '"></div>' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
@@ -170,7 +181,7 @@ $(document).ready(function () {
 
 
     challan_ids = [];
-
+    grand_total_delivery_order();
 });
 /**
  * Comment
@@ -198,21 +209,24 @@ function select_all_checkbox() {
  */
 function change_quantity(key) {
 
-    var quantity = $("#quantity_" + key).val();
+    var quantity = $("#pending_qunatity_value_" + key).val();
     var present_shipping = $("#present_shipping_" + key).val();
-    
+    var tot_quty = $("#qunatity_" + key).val();
+    ;
     if (parseInt(present_shipping) > parseInt(quantity)) {
         alert("Present Shipping should not greater than quantity.");
 //        var shipping_error = '<div id="flash_error_present_shipping" class="alert alert-warning no_data_msg_container"> Present Shipping should not greater than quantity.</div>';
 //        $("#flash_error_present_shipping").html(shipping_error);
-        $("#present_shipping_" + key).val(0);  
+        $("#present_shipping_" + key).val(0);
         $("#pending_qunatity_" + key).html("<span>" + quantity + "</span");
-    }else{
+    } else {
+
         $("#flash_error_present_shipping").html('');
-        var rem_quantity = quantity - present_shipping;
-//    alert(quantity);
+        var rem_quantity = parseInt(quantity) - parseInt(present_shipping);
+//    alert(quantity +" "+ present_shipping);
         $("#pending_qunatity_" + key).html("<span class='text-center'>" + rem_quantity + "</span");
     }
+    grand_total_delivery_order();
 
 }
 
@@ -221,23 +235,68 @@ function change_quantity(key) {
  * Change Amount
  */
 function name(key) {
-    var price = $("#product_price_"+key).val();
-    var quantity = $("#quantity_"+key).val();
-    alert('price' +price+" qty "+quantity);
+    var price = $("#product_price_" + key).val();
+    var quantity = $("#quantity_" + key).val();
+    alert('price' + price + " qty " + quantity);
 }
+//function grand_total_delivery_order(key) {
+/**
+ * Comment
+ */
+
 function grand_total_delivery_order() {
-    /**
-     * Comment
-     */
+//    var quantity = $("#quantity_"+key).val();
+//    alert('quantity '+quantity);
+//    $("#pending_qunatity_value_"+key).val(quantity);
+//    $("#pending_qunatity_"+key).html('<span class="text-center">'+quantity+'</span>');
+
     var current_row_count = $(".add_product_row").length;
+//    alert(current_row_count);
     var total_price = 0;
-    for (var i = 0; i <= current_row_count; i++) {
+    for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseInt($('#product_price_' + i).val())) {
             total_price = total_price + parseInt($('#product_price_' + i).val());
         }
     }
-    var vat_val = parseInt(parseInt(total_price) * parseInt($('#vat_percentage').val())) / 100;
+//    alert(total_price);
+    var vat_val = 0;
+
+    if ($('#optionsRadios6').is(':checked')) {
+        vat_val = (parseInt(total_price) * $('#vat_percentage').val()) / 100;
+    }
+    if ($('#optionsRadios5').is(':checked')) {
+        vat_val = 0;
+    }
     var grand_total = parseInt(total_price) + parseInt(vat_val);
+    if($("#total_price").length > 0){
+        $("#total_price").val(total_price);
+    }
+    if($("#discount_value").length > 0){
+        if($("#discount_value").val()>0){
+            
+            var discount_value = (parseFloat($("#discount_value").val())*total_price)/100;
+//            alert(discount_value );
+            grand_total = grand_total + discount_value;
+        }
+            
+    }
+    if($("#freight_value").length > 0){
+        if($("#freight_value").val()>0){
+            var freight_value = parseInt($("#freight_value").val());
+            grand_total = grand_total + freight_value;
+        }
+            
+    }
+    if($("#loading_charge").length > 0){
+        if($("#loading_charge").val()>0){
+            var loading_charge= parseInt($("#loading_charge").val());
+            grand_total = grand_total + loading_charge;
+        }
+            
+    }
+    
+//    alert(vat_val);
+    
     $('#grand_total').val(grand_total);
 }
 

@@ -12,11 +12,13 @@
 
                 <div class="clearfix">
                     <h1 class="pull-left"> View Product Category</h1>
+                    @if ( Auth::user()->role_id == 0 )         
                     <div class="pull-right top-page-ui">
                         <a href="{{ URL::action('ProductController@edit',['id'=>$product_cat[0]['id']]) }}" class="btn btn-primary pull-right">
                             Edit Product Category
                         </a>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>

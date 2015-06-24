@@ -10,7 +10,7 @@
                     <li class="active"><span>View Delivery Challan</span></li>
                 </ol>
                 <div class="clearfix">
-                    <h1 class="pull-left">View Delivery Challan</h1>
+                    
                     <div class="pull-right top-page-ui">
                         <a href="{{url('delivery_challan/'.$allorder->id.'/edit')}}" class="btn btn-primary pull-right">
                             Edit Delivery Challan
@@ -61,6 +61,7 @@
                                     </tr>
                                     <?php $total_amount = 0; ?>
                                     @foreach($allorder['all_order_products'] as $key=>$product)
+                                    @if($product->order_type =='delivery_challan')
                                     <tr id="add_row_{{$key}}" class="add_product_row">
 
                                         <td class="col-md-2">
@@ -99,13 +100,14 @@
                                         <td class="col-md-3">
                                             <div class="form-group">
                                                 <?php
-                                                $amount = $product->quantity * $product->price;
+                                                $amount = $product->present_shipping * $product->price;
                                                 $total_amount = $amount + $total_amount;
                                                 echo $amount;
                                                 ?>
                                             </div>
                                         </td>
                                     </tr>
+                                    @endif
                                     @endforeach
 
                                 </tbody>
@@ -158,7 +160,7 @@
 
                         <hr>
                         <div class="form-group">
-                            <label for="total"><b class="challan">Grand Total</b><span class="gtotal">{{$allorder->grand_total}}</span></label>
+                            <label for="total"><b class="challan">Grand Total</b><span class="gtotal">{{$allorder->grand_price}}</span></label>
 
                         </div>
                         <hr>

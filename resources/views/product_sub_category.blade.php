@@ -7,10 +7,10 @@
             <div class="col-lg-12">
                 <ol class="breadcrumb">
                     <li><a href="{{url()}}/dashboard">Home</a></li>
-                    <li class="active"><span>Product Sub Category</span></li>
+                    <li class="active"><span>Product Size</span></li>
                 </ol>
                 <div class="clearfix">
-                    <h1 class="pull-left">Product Sub Category</h1>
+                    
                     <div class=" row col-md-8 pull-right top-page-ui">
                         <div class="filter-block col-md-8 productsub_filter">       
                             <div class="form-group  col-md-5">
@@ -37,7 +37,7 @@
                         @if( Auth::user()->role_id == 0 )
                         <div class="col-md-4">
                             <a href="{{URL::action('ProductsubController@create')}}" class="btn btn-primary pull-right">
-                                <i class="fa fa-plus-circle fa-lg" style="cursor: pointer;"></i> Add Product Category
+                                <i class="fa fa-plus-circle fa-lg" style="cursor: pointer;"></i> Add Product Size
                             </a>
                         </div>
                         @endif
@@ -71,8 +71,8 @@
                                         <th>Alias Name</th>
                                         <th>Size</th>
                                         <th>Thickness</th>
-                                        <th>Units</th>
-                                        <th>Price</th>
+                                        <th>Weight</th>
+                                        
                                         <th class="col-md-2">Difference</th>  
                                         @if( Auth::user()->role_id == 0 )
                                         <th >Actions</th>
@@ -104,14 +104,15 @@
                                             {{'--'}}
                                             @endif
                                         </td>
-                                        <td>
+                                        <td>{{ $produ_sub->weight }}</td>
+<!--                                        <td>
                                             @foreach($units as $unit)
                                             @if($unit->id ==  $produ_sub->unit_id)
                                             {{ $unit->unit_name}}
                                             @endif
                                             @endforeach
-                                        </td>
-                                        <td>{{ $produ_sub->price }}</td>
+                                        </td>-->
+                                        
                                         <td>
                                             <form method="post" action="{{URL::action('ProductsubController@update_difference')}}">
                                                 <div class="row product-price">

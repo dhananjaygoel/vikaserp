@@ -100,7 +100,7 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$product->present_shipping}}" type="text" readonly="readonly">
+                                                    <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$product->present_shipping}}" type="text" readonly="readonly" onblur="change_quantity({{$key}});">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -153,19 +153,19 @@
 
                             <div class="form-group">
                                 <label for="vehicle_name"><b class="challan">Discount</b></label>
-                                <input id="vehicle_name" class="form-control" placeholder="Discount" name="discount"  value="{{$allorder->discount}}" type="text">
+                                <input id="discount_value" class="form-control" placeholder="Discount" name="discount"  value="{{$allorder->discount}}" type="text" onblur="grand_total_delivery_order();">
                             </div>
                             <div class="form-group">
                                 <label for="driver_name"><b class="challan">Freight</b></label>
-                                <input id="driver_name" class="form-control" placeholder="Freight " name="freight"  value="{{$allorder->freight}}" type="text">
+                                <input id="freight_value" class="form-control" placeholder="Freight " name="freight"  value="{{$allorder->freight}}" type="text" onblur="grand_total_delivery_order();">
                             </div>
                             <div class="form-group">
-                                <label for="total"><b class="challan">Total</b><span class="gtotal">$150000</span></label>
+                                <label for="total"><b class="challan">Total</b><span class="gtotal"><input type="text" id="total_price" name="total_price" placeholder="" readonly="readonly"></span></label>
 
                             </div>
                             <div class="form-group">
                                 <label for="driver_contact"><b class="challan">Loading</b></label>
-                                <input id="driver_contact" class="form-control" placeholder="loading" name="loading"  value="{{$allorder->loading_charge}}" type="text">
+                                <input id="loading_charge" class="form-control" placeholder="loading" name="loading"  value="{{$allorder->loading_charge}}" type="text" onblur="grand_total_delivery_order();">
                             </div>
 
                             <div class="form-group">

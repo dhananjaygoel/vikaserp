@@ -104,8 +104,8 @@
                                                 <td><span>Price</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
-                                            
-                                                <?php for ($i = 1; $i <= 6; $i++) { ?>
+
+                                            <?php for ($i = 1; $i <= 6; $i++) { ?>
                                                 <tr id="add_row_{{$i}}" class="add_product_row">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
@@ -148,8 +148,8 @@
                                                 </tr>
                                             <?php } ?>
 
-                                            
-                                            
+
+
                                         </tbody>
                                     </table>
                                     <table>
@@ -199,9 +199,9 @@
                                         <label for="location">Location </label>
                                         <input id="location" class="form-control" placeholder="Location " name="location" value="" type="text">
                                     </div>
-<!--                                    <div class="col-md-8 addlocation">
-                                        <button class="btn btn-primary btn-xs">ADD</button>
-                                    </div>-->
+                                    <!--                                    <div class="col-md-8 addlocation">
+                                                                            <button class="btn btn-primary btn-xs">ADD</button>
+                                                                        </div>-->
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -225,7 +225,7 @@
                                     </table>
                                 </div>
                             </div> 
-                            
+
                             <div class="clearfix"></div>
                             <div class="form-group col-md-4 targetdate">
                                 <label for="time">Expected Delivery Date: </label>
@@ -238,6 +238,10 @@
                             <div class="form-group">
                                 <label for="order_remark">Remark</label>
                                 <textarea class="form-control" id="order_remark" name="order_remark"  rows="3"></textarea>
+                            </div>
+                            <div class="checkbox">
+                                <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email</span></label>
+
                             </div>
                             <div >
                                 <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>

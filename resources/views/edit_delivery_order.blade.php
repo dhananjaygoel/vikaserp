@@ -118,38 +118,53 @@
                         @endif
                         <div class="inquiry_table col-md-12">
                             <div class="table-responsive">
-                                <table id="add_product_table" class="table table-hover">
+                                <table id="add_product_table_delivery_order" class="table table-hover">
                                     <tbody> 
                                         <tr class="headingunderline">
                                             <td><span>Select Product</span></td>
                                             <td><span>Quantity</span></td>
                                             <td><span>Unit</span></td>
+                                            <td><span>Present Shipping</span></td>
                                             <td><span>Price</span></td>
+                                            <td><span>Pending Quantity</span></td>
                                             <td><span>Remark</span></td>
                                         </tr>
                                                                               
                                         @foreach($delivery_data[0]['delivery_product'] as $key=>$product)
+                                        @if($product->order_type =='delivery_order')
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
-                                                    <input value="{{ $product['product_category']->product_category_name}}" class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});">
+                                                    <input value="{{ $product['product_category']->product_category_name}}" class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});">
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['product_category']->id}}">
-                                                    <i class="fa fa-search search-icon"></i>
-                                                </div>
+<!--                                                    <i class="fa fa-search search-icon"></i>-->
+                                                </div>{{ $product['product_category']->product_category_name}}
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" type="text">
+                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" type="hidden">
+                                                    {{ $product->quantity}}
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group ">
+                                                    
                                                     <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}">
-                                                        <option value="" selected="">Unit</option>
-                                                        @foreach($units as $unit)delivery_orders
-                                                        <option <?php if ($unit->id == $product->unit_id) echo 'selected=""'; ?> value="{{$unit->id}}">{{$unit->unit_name}}</option>
+                                                        @foreach($units as $unit)
+                                                        @if($product->unit_id == $unit->id)
+                                                        <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>                                                        
+                                                        @endif
                                                         @endforeach
                                                     </select>
+                                                </div>
+                                            </td>
+                                            <td class="col-md-2">
+                                                <div class="form-group col-md-6">
+                                                    <!--                                                            form for save product value-->
+                                                    <input type="text" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" placeholder="Present Shipping" >
+                                                </div>
+                                                <div class="form-group col-md-6 difference_form">
+                                                    <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->     
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -162,12 +177,25 @@
                                                     <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->     
                                                 </div>
                                             </td>
+                                            <td class="col-md-2">
+                                                <div class="form-group">
+                                                    
+                                                    @foreach($pending_orders as $porder)
+                                                    @if($porder['product_id'] == $product->product_category_id && $porder['id']== $product->id)
+                                                    <input type="hidden" value="{{$porder['total_pending_quantity']}}" id="pending_qunatity_value_{{$key}}">
+                                                    <div id="pending_qunatity_{{$key}}"><span class="text-center">{{$porder['total_pending_quantity']}}</span>
+                                                    </div>
+                                                    @endif
+                                                    @endforeach
+                                                </div>
+                                            </td>
                                             <td class="col-md-4">
                                                 <div class="form-group">
                                                     <input id="remark" class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text">
                                                 </div>
                                             </td>
                                         </tr>
+                                        @endif
                                         @endforeach
                                         <?php //} ?>
                                     </tbody>
@@ -180,7 +208,7 @@
                                                     <div class="form-group pull-left">
 
                                                         <label for="addmore"></label>
-                                                        <a class="table-link" title="add more" id="add_product_row">
+                                                        <a class="table-link" title="add more" id="add_product_row_delivery_order">
                                                             <span class="fa-stack more_button" >
                                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                                 <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
@@ -236,9 +264,9 @@
                         <div class="clearfix"></div>
                         <div class="form-group">
                             <div class="radio">
-                                <input checked="" value="include_vat" id="optionsRadios5" name="status1" type="radio">
+                                <input checked="" value="include_vat" id="optionsRadios5" name="status1" type="radio" onclick="grand_total_delivery_order();">
                                 <label for="optionsRadios5">All Inclusive</label>
-                                <input value="exclude_vat" id="optionsRadios6" name="status1" type="radio">
+                                <input value="exclude_vat" id="optionsRadios6" name="status1" type="radio" onclick="grand_total_delivery_order();">
                                 <label for="optionsRadios6">Plus VAT</label>
                             </div>
                         </div>
@@ -248,7 +276,7 @@
                                     <tbody>
                                         <tr class="cdtable">
                                             <td class="cdfirst">VAT Percentage:</td>
-                                            <td><input id="price" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ $delivery_data[0]->vat_percentage }}" type="text"></td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{ $delivery_data[0]->vat_percentage }}" type="text" onblur="grand_total_delivery_order({{$key}});"></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -256,7 +284,7 @@
                         </div> 
                         <div class="clearfix"></div>
                         <div class="form-group">
-                            <label for="grandtotal">Grand Total:<span class="gtotal"> $25000</span></label>
+                            <label for="grandtotal">Grand Total:<span class="gtotal"> <input type="text" name="grand_total" id ="grand_total" value="" readonly="readonly" ></span></label>
                         </div>
                         <div class="form-group">
                             <label for="inquiry_remark">Remark</label>

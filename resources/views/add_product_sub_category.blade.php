@@ -7,10 +7,10 @@
             <div class="col-lg-12">
                 <ol class="breadcrumb">
                     <li><a href="{{url()}}/product_sub_category">Home</a></li>
-                    <li class="active"><span>Add Product Sub Category</span></li>
+                    <li class="active"><span>Add Product Size</span></li>
                 </ol>
                 <div class="clearfix">
-                    <h1 class="pull-left"> Add Product Sub Category</h1>                    
+<!--                    <h1 class="pull-left"> Add Product Sub Category</h1>                    -->
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
                                     <input id="thickness" class="form-control" placeholder="Product Thickness" name="thickness" value="{{ old('thickness') }}" type="text">
                                 </div>
                             </div>
-                            <div class="form-group col-md-3">
+<!--                            <div class="form-group col-md-3">
                                 <label for="weight">Units</label>
                                 <select class="form-control" name="units">
                                     <option selected="" disabled="">--select--</option>
@@ -70,10 +70,10 @@
                                     <option value="{{$unit->id}}">{{$unit->unit_name}} </option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div>-->
                             <div class="form-group col-md-3">
                                 <label for="weight">Product Weight</label>
-                                <input id="weight" class="form-control" placeholder="Product Weight" name="weight" disabled="" value="1" type="text">
+                                <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="1" type="text">
                             </div>
                             <div class="clearfix"></div>
                             <div class="form-group">

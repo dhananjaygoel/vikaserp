@@ -1,6 +1,6 @@
 <?php
 //echo'<pre>';
-//print_r($order->toArray());
+//print_r($pending_orders);
 //echo '</pre>';
 //exit;
 ?>
@@ -103,8 +103,9 @@
                                             <td><span>Quantity</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Present Shipping</span></td>
-                                            <td><span>Pending Order</span></td>
+                                            
                                             <td><span>Price</span></td>
+                                            <td><span>Pending Order</span></td>
                                             <td><span>Remark</span></td>
                                         </tr>
                                         <?php $total = 0; ?>
@@ -146,20 +147,28 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <div id="pending_qunatity_{{$key}}"><span class="text-center">{{$product->quantity}}</span></div>
-                                                </div>
-                                            </td>
-                                            <td class="col-md-2">
-                                                <div class="form-group">
                                                     {{$product->price}}
                                                     <input type="hidden" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]" readonly="readonly">
                                                     <?php $total = $total + $product->price; ?>
                                                 </div>
                                             </td>
+                                            <td class="col-md-2">
+                                                <div class="form-group">
+                                                    
+                                                    @foreach($pending_orders as $porder)
+                                                    @if($porder['product_id'] == $product->product_category_id && $porder['id']== $product->id)
+                                                    <input type="hidden" value="{{$porder['total_pending_quantity']}}" id="pending_qunatity_value_{{$key}}">
+                                                    <div id="pending_qunatity_{{$key}}"><span class="text-center">{{$porder['total_pending_quantity']}}</span>
+                                                    </div>
+                                                    @endif
+                                                    @endforeach
+                                                </div>
+                                            </td>
+                                            
                                             <td class="col-md-4">
                                                 <div class="form-group">
                                                     {{$product->remarks}}
-                                                    <input id="remark" class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="hidden" readonly="readonly">
+                                                    <input id="remark"  class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="hidden" readonly="readonly">
                                                 </div>
                                             </td>
                                         </tr>
@@ -230,7 +239,7 @@
                                     
                                     <td>
                                         {{$order->vat_percentage}}
-                                        <input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->vat_percentage}}" type="hidden" readonly="readonly">
+                                        <input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->vat_percentage}}" type="hidden" readonly="readonly" onblur="grand_total_delivery_order();">
                                     </td>
                                 </tr>
                                 @endif
@@ -239,13 +248,12 @@
                                     <td class="cdfirst">Grand Total:</td>
                                     
                                     <td>
-                                        {{$total}}
-                                        <input type="hidden" name="grand_total" id ="grand_total" class="form-control" value="{{$total}}" readonly="readonly">
+                                        <input type="text" name="grand_total" id ="grand_total" class="form-control" value="{{$total}}" readonly="readonly">
                                     </td>
                                 </tr>
                                 <tr class="cdtable">
                                     <td class="cdfirst">Vehicle Number:</td>
-                                    <td><input  class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{old('vehicle_number')}}" type="text" ></td>
+                                    <td><input  class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{old('vehicle_number')}}" type="text" onblur="grand_total_delivery_order();"></td>
                                 </tr>
                                 <tr class="cdtable">
                                     <td class="cdfirst">Driver Name:</td>

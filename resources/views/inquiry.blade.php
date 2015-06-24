@@ -73,7 +73,7 @@
                                         <td class="text-center">{{$inquiry['other_location']}}</td>
                                         @endif
                                         <td class="text-center">
-                                            <a title="Place Order" href="{{ Url::action('InquiryController@create') }}" class="table-link">
+                                            <a title="Place Order" href="{{ url('place_order/'. $inquiry['id']) }}" class="table-link">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-book fa-stack-1x fa-inverse"></i>
