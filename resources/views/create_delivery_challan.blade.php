@@ -1,6 +1,6 @@
 <?php
 //echo'<pre>';
-//print_r($order->toArray());
+//print_r($delivery_data['delivery_product']->toArray());
 //echo '</pre>';
 //exit;
 ?>
@@ -115,8 +115,12 @@
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
-                                                <div class="form-group">                                                    
-                                                    <input type="text" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="change_amount({{$key}})">
+                                                <div class="form-group">     
+                                                    @foreach($price_delivery_order as $rate)
+                                                    @if($rate['product_id'] == $product['product_category']->id)
+                                                    <input type="text" class="form-control" id="product_price_{{$key}}" value="{{$rate['total_rate']}}" name="product[{{$key}}][price]" placeholder="Price" onblur="change_amount({{$key}})">
+                                                    @endif
+                                                    @endforeach
 
                                                 </div>
 
