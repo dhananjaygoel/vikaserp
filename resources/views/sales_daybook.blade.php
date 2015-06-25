@@ -44,7 +44,7 @@
                         <div class="pull-right col-md-4">
 
                             <button type="button" class="btn btn-primary form_button_footer" onClick="location.href = 'print_salesdaybook.php'" >Print</button>
-                            <button type="button" class="btn btn-primary form_button_footer" >Export</button>
+                            <a href="{{url('export_sales_daybook')}}" class="btn btn-primary form_button_footer" >Export</a> 
                         </div>
                     </div>
 

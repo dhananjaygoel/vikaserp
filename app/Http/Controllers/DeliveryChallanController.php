@@ -132,6 +132,9 @@ class DeliveryChallanController extends Controller {
      * @return Response
      */
     public function destroy($id) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 ) {
+            return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
+        }
         $password = Input::get('password');
 
         if ($password == '') {

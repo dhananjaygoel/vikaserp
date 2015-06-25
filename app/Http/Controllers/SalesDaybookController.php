@@ -15,6 +15,8 @@ use DB;
 use App\User;
 use Hash;
 use App\AllOrderProducts;
+use App\Vendor\Phpoffice\Phpexcel\Classes;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SalesDaybookController extends Controller {
 
@@ -24,9 +26,11 @@ class SalesDaybookController extends Controller {
      * @return Response
      */
     public function index() {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 ) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
 
-
-        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products', 'delivery_order', 'user')->orderBy('created_at', 'desc')->Paginate(1);
+        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products', 'delivery_order', 'user')->orderBy('created_at', 'desc')->Paginate(10);
         $challan_date = '';
         $allorders->setPath('sales_daybook');
         return view('sales_daybook', compact('allorders', 'challan_date'));
@@ -39,6 +43,9 @@ class SalesDaybookController extends Controller {
      */
 
     public function challan_date() {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $input_data = Input::all();
         $validator = Validator::make($input_data, DeliveryChallan::$challan_date_rules);
         if ($validator->passes()) {
@@ -50,7 +57,7 @@ class SalesDaybookController extends Controller {
 
                 $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
                             ->whereRaw('DATE(created_at) = ?', [$challan_date])
-                            ->with('customer', 'all_order_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(1);
+                            ->with('customer', 'all_order_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(10);
             $challan_date = $input_data['challan_date'];
             $allorders->setPath('sales_daybook_date');
             return view('sales_daybook', compact('allorders', 'challan_date'));
@@ -66,6 +73,9 @@ class SalesDaybookController extends Controller {
      * 
      */
     public function delete_multiple_challan() {
+        if (Auth::user()->role_id != 0 ) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $input_data = Input::all();
         $password = Input::get('password');
         if ($password == '') {
@@ -96,6 +106,9 @@ class SalesDaybookController extends Controller {
      * Delete Challan of particular id
      */    
     public function delete_challan($id) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $password = Input::get('password');
         if ($password == '') {
             return Redirect::to('sales_daybook')->with('error', 'Please enter your password');
@@ -111,5 +124,20 @@ class SalesDaybookController extends Controller {
         } else {
             return Redirect::to('sales_daybook')->with('error', 'Invalid password');
         }
+    }
+    
+    public function export_sales_daybook() {
+        
+        Excel::create('Filename', function($excel) {
+
+            $excel->sheet('Sheetname', function($sheet) {
+
+                $sheet->fromArray(array(
+                    array('data1', 'data2'),
+                    array('data3', 'data4')
+                ));
+            });
+        })->export('xls');        
+        exit;
     }
 }

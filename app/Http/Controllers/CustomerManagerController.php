@@ -16,12 +16,19 @@ use App\Http\Requests\StoreCustomerManager;
 
 class CustomerManagerController extends Controller {
 
+    public function __construct() {
+        
+    }
+    
     /**
      * Display a listing of the resource.
      *
      * @return Response
      */
     public function index() {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $manager = CustomerManager::all();
         return View::make('customer_manager', array('manager' => $manager));
     }
@@ -32,6 +39,9 @@ class CustomerManagerController extends Controller {
      * @return Response
      */
     public function create() {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         return View::make('add_customer_manager');
     }
 
@@ -41,6 +51,9 @@ class CustomerManagerController extends Controller {
      * @return Response
      */
     public function store(StoreCustomerManager $request) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $customer_manager = new CustomerManager();
         $customer_manager->name = Input::get('manager_name');
         $customer_manager->phone_number = Input::get('phone_number');
@@ -68,6 +81,9 @@ class CustomerManagerController extends Controller {
      * @return Response
      */
     public function edit($id) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $manager = CustomerManager::find($id);
         return View::make('edit_customer_manager', array('manager' => $manager));
     }
@@ -79,6 +95,9 @@ class CustomerManagerController extends Controller {
      * @return Response
      */
     public function update(StoreCustomerManager $request, $id) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $customer_manager = CustomerManager::find($id);
         $customer_manager->name = Input::get('manager_name');
         $customer_manager->phone_number = Input::get('phone_number');
@@ -96,6 +115,9 @@ class CustomerManagerController extends Controller {
      * @return Response
      */
     public function destroy($id) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $password = Input::get('password');
         if ($password == '') {
             return Redirect::to('customer_manager')->with('error', 'Please enter your password');

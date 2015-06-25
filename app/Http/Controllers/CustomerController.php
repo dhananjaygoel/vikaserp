@@ -16,8 +16,27 @@ use App\ProductCategory;
 use App\CustomerProductDifference;
 use App\Customer;
 use Input;
+use App\URLAccess;
 
 class CustomerController extends Controller {
+
+    public function __construct() {
+//
+//        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+////            echo 'test 1';exit;
+//            $this->middleware('admin_mw');            
+//            
+//        }else{            
+//
+//            if(Auth::user()->role_id == 1){
+////                echo 'test 2';exit;
+////                $this->middleware('guest',['except'=>['create','show']]); 
+//                $this->middleware('admin_mw',['only'=>['destroy']]);
+//            }
+//        }
+//        $this->middleware('auth', ['only' => 'create']);
+//        $this->middleware('admin_mw');
+    }
 
     /**
      * Display a listing of the resource.
@@ -25,7 +44,11 @@ class CustomerController extends Controller {
      * @return Response
      */
     public function index() {
-
+//        $user_id=[1,2,3];
+//        $this->url_access($user_id);
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $q = Customer::query();
         $q->where('customer_status', '=', 'permanent');
         if (Input::get('search') != '') {
@@ -44,7 +67,9 @@ class CustomerController extends Controller {
      * @return Response
      */
     public function create() {
-
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $managers = User::where('role_id', '=', 1)->get();
 
         $locations = DeliveryLocation::all();
@@ -61,6 +86,9 @@ class CustomerController extends Controller {
      */
     public function store(StoreCustomer $request) {
 
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $customer = new Customer();
 
         $customer->owner_name = Input::get('owner_name');
@@ -142,7 +170,9 @@ class CustomerController extends Controller {
      * @return Response
      */
     public function show($id) {
-
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $customer = Customer::with('deliverylocation', 'manager')->find($id);
 
         return View::make('customer_details', array('customer' => $customer));
@@ -155,6 +185,10 @@ class CustomerController extends Controller {
      * @return Response
      */
     public function edit($id) {
+
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $customer = Customer::where('id', '=', $id)->with('customerproduct')->first();
         if (count($customer) < 1) {
             return redirect('customers/')->with('error', 'Trying to access an invalid customer');
@@ -176,6 +210,9 @@ class CustomerController extends Controller {
      * @return Response
      */
     public function update(StoreCustomer $request, $id) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $customer = Customer::find($id);
         if (count($customer) < 1) {
             return redirect('customers/')->with('error', 'Trying to access an invalid customer');
@@ -254,7 +291,7 @@ class CustomerController extends Controller {
                     }
                 }
             }
-            
+
             return redirect('customers')->with('success', 'Customer details updated successfully');
         } else {
             return Redirect::back()->with('error', 'Some error occoured while saving customer');
@@ -268,6 +305,11 @@ class CustomerController extends Controller {
      * @return Response
      */
     public function destroy($id) {
+//        echo 'test come';
+//        exit;
+        if (Auth::user()->role_id != 0 ) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $password = Input::get('password');
         if ($password == '') {
             return Redirect::to('customers')->with('error', 'Please enter your password');

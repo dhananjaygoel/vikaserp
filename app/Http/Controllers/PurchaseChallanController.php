@@ -168,6 +168,9 @@ class PurchaseChallanController extends Controller {
      * @return Response
      */
     public function destroy($id) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         if (Hash::check(Input::get('password'), Auth::user()->password)) {
             $delete_purchase_challan = PurchaseChallan::find($id)->delete();
             return redirect('purchase_challan')->with('flash_success_message', 'Purchase challan details successfully deleted.');

@@ -44,17 +44,24 @@ class ProductsubController extends Controller {
                     ->Paginate(10);
         } else {
 
-            $product_sub_cat = ProductSubCategory::with('product_category')->Paginate(4);
+            $product_sub_cat = ProductSubCategory::with('product_category')->Paginate(10);
         }
 
         $product_sub_cat->setPath('product_sub_category');
-        return view('product_sub_category', compact('product_sub_cat', 'product_type','units'));
+        return view('product_sub_category', compact('product_sub_cat', 'product_type', 'units'));
     }
 
     public function create() {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $product_type = ProductType::all();
-        $units = Units::all();
-        return view('add_product_sub_category', compact('product_type','units'));
+        $units = Units::first();
+//        echo '<pre>';
+//        print_r($units);
+//        echo '</pre>';
+//        exit;
+        return view('add_product_sub_category', compact('product_type', 'units'));
     }
 
     public function get_product_category() {
@@ -73,7 +80,9 @@ class ProductsubController extends Controller {
     }
 
     public function store(ProductSubCategoryRequest $request) {
-
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $ProductSubCategory = new ProductSubCategory();
         $ProductSubCategory->product_category_id = $request->input('select_product_categroy');
         $ProductSubCategory->alias_name = $request->input('alias_name');
@@ -92,7 +101,9 @@ class ProductsubController extends Controller {
     }
 
     public function destroy($id) {
-
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
             ProductSubCategory::destroy($id);
             return redirect('product_sub_category')->with('flash_message', 'Product sub category details successfully deleted.');
@@ -102,11 +113,14 @@ class ProductsubController extends Controller {
     }
 
     public function edit($id) {
-
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $product_type = ProductType::all();
         $prod_category = ProductCategory::all();
-        $units = Units::all();
-        $prod_sub_cat = ProductSubCategory::with('product_category','product_unit')->where('id', $id)->first();      
+//        $units = Units::all();
+        $units = Units::first();
+        $prod_sub_cat = ProductSubCategory::with('product_category', 'product_unit')->where('id', $id)->first();
         return view('edit_product_sub_category', compact('product_type', 'prod_sub_cat', 'prod_category', 'units'));
     }
 

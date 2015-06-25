@@ -255,7 +255,8 @@ function grand_total_delivery_order() {
     var total_price = 0;
     for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseInt($('#product_price_' + i).val())) {
-            total_price = total_price + parseInt($('#product_price_' + i).val());
+            var present_shipping = parseInt($("#present_shipping_"+i).val());
+            total_price = total_price + (parseInt($('#product_price_' + i).val()) * present_shipping );
         }
     }
 //    alert(total_price);
@@ -300,3 +301,41 @@ function grand_total_delivery_order() {
     $('#grand_total').val(grand_total);
 }
 
+/**
+ * Fetch price of the product
+ */
+function fetch_price() {
+    
+    alert('text');
+//    var product_id = $("#add_product_id_"+key).val();
+//    alert(product_id);
+}
+
+/**
+ * Grand total for creating independent delivery order
+ */
+function calculate_grand_total(){
+    var current_row_count = $(".add_product_row").length;
+//    alert(current_row_count);
+    var total_price = 0;
+    for (var i = 0; i <= current_row_count + 1; i++) {
+        if (parseInt($('#product_price_' + i).val())) {
+            var quantity = parseInt($("#quantity_"+i).val());
+            total_price = total_price + (parseInt($('#product_price_' + i).val()) * quantity);
+        }
+    }
+    var vat_val = 0;
+
+    if ($('#optionsRadios6').is(':checked')) {
+        vat_val = (parseInt(total_price) * $('#vat_percentage').val()) / 100;
+    }
+    if ($('#optionsRadios5').is(':checked')) {
+        vat_val = 0;
+    }
+    var grand_total = parseInt(total_price) + parseInt(vat_val);
+    
+    $('#grand_total').val(grand_total);
+}
+function grand_total_challan(){
+    
+}

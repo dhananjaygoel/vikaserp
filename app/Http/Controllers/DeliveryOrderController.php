@@ -320,6 +320,9 @@ class DeliveryOrderController extends Controller {
      * @return Response
      */
     public function destroy($id) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 ) {
+            return Redirect::to('delivery_order')->with('error', 'You do not have permission.');
+        }
         if (Hash::check(Input::get('model_pass'), Auth::user()->password)) {
             DeliveryOrder::find($id)->delete();
             return redirect('delivery_order')->with('success', 'Delivery order details successfully deleted.');
@@ -352,6 +355,7 @@ class DeliveryOrderController extends Controller {
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.product_category')->where('id', $id)->first();
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
+        $price_delivery_order = $this->calculate_price($delivery_data);
         $customers = Customer::all();
       return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
     }
@@ -457,5 +461,16 @@ class DeliveryOrderController extends Controller {
         return $pending_orders;
     }
 
-    
+    function calculate_price($delivery_data){
+//        echo '<pre>';
+//        print_r($delivery_data->delivery_product);
+//        echo '</pre>';
+//        exit;
+        foreach($delivery_data->delivery_product as $product){
+            echo '<pre>';
+            print_r($product->product_category_id);
+            echo '</pre>';
+            exit;
+        }
+    }
 }

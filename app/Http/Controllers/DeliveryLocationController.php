@@ -14,7 +14,7 @@ use App\Http\Requests\LocationRequest;
 use App\Http\Requests\EditLocationRequest;
 use Hash;
 use Illuminate\Support\Facades\Auth;
-
+use Redirect;
 class DeliveryLocationController extends Controller {
 
     /**
@@ -34,6 +34,9 @@ class DeliveryLocationController extends Controller {
      * @return Response
      */
     public function create() {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('location')->with('error', 'You do not have permission.');
+        }
         $states = States::all();
         $cities = City::all();
         return view('add_delivery_location', compact('states', 'cities'));
@@ -45,6 +48,9 @@ class DeliveryLocationController extends Controller {
      * @return Response
      */
     public function store(LocationRequest $request) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('location')->with('error', 'You do not have permission.');
+        }
         $add_delivery_location = DeliveryLocation::create([
                     'area_name' => $request->input('area_name'),
                     'state_id' => $request->input('state'),
@@ -72,6 +78,9 @@ class DeliveryLocationController extends Controller {
      * @return Response
      */
     public function edit($id) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('location')->with('error', 'You do not have permission.');
+        }
         $delivery_location = DeliveryLocation::find($id);
         $states = States::all();
         $cities = City::all();
@@ -85,6 +94,9 @@ class DeliveryLocationController extends Controller {
      * @return Response
      */
     public function update($id, EditLocationRequest $request) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('location')->with('error', 'You do not have permission.');
+        }
         $check_location_exists = DeliveryLocation::where('area_name', '=', $request->input('area_name'))->where('id', '!=', $id)->count();
         if ($check_location_exists == 0) {
             $affectedRows = DeliveryLocation::where('id', '=', $id)->update([
@@ -105,6 +117,9 @@ class DeliveryLocationController extends Controller {
      * @return Response
      */
     public function destroy($id) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('location')->with('error', 'You do not have permission.');
+        }
         if (Hash::check(Input::get('password'), Auth::user()->password)) {
             $delete_location = DeliveryLocation::find($id)->delete();
             return redirect('location')->with('flash_success_message', 'Location details successfully deleted.');

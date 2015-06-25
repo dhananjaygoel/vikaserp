@@ -11,6 +11,7 @@ use Input;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Auth;
+use Redirect;
 
 class UnitController extends Controller {
 
@@ -20,6 +21,7 @@ class UnitController extends Controller {
      * @return Response
      */
     public function index() {
+        
         $units = Units::orderBy('created_at', 'desc')->Paginate(10);
         $units->setPath('unit');
         return view('units', compact('units'));
@@ -31,6 +33,9 @@ class UnitController extends Controller {
      * @return Response
      */
     public function create() {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('unit')->with('error', 'You do not have permission.');
+        }
         return view('add_units');
     }
 
@@ -40,6 +45,9 @@ class UnitController extends Controller {
      * @return Response
      */
     public function store(UnitsRequest $request) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('unit')->with('error', 'You do not have permission.');
+        }
         $add_units = Units::create([
                     'unit_name' => $request->input('unit_name')
         ]);
@@ -64,6 +72,9 @@ class UnitController extends Controller {
      * @return Response
      */
     public function edit($id) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('unit')->with('error', 'You do not have permission.');
+        }
         $unit = Units::find($id);
         return view('edit_units', compact('unit'));
     }
@@ -75,6 +86,9 @@ class UnitController extends Controller {
      * @return Response
      */
     public function update($id, EditUnitRequest $request) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('unit')->with('error', 'You do not have permission.');
+        }
         $check_unit_exists = Units::where('unit_name', '=', $request->input('unit_name'))->where('id', '!=', $id)->count();
         if ($check_unit_exists != 0)
             return redirect('unit/' . $id . '/edit')->with('flash_message', 'Unit name already exists');
@@ -89,6 +103,9 @@ class UnitController extends Controller {
      * @return Response
      */
     public function destroy($id) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('unit')->with('error', 'You do not have permission.');
+        }
         if (Hash::check(Input::get('password'), Auth::user()->password)) {
             $delete_unit = Units::find($id)->delete();
             return redirect('unit')->with('flash_success_message', 'Unit details successfully deleted.');

@@ -34,6 +34,9 @@ class CityController extends Controller {
      * @return Response
      */
     public function create() {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('city')->with('error', 'You do not have permission.');
+        }
         $states = States::all();
         return view('add_city', compact('states'));
     }
@@ -44,6 +47,9 @@ class CityController extends Controller {
      * @return Response
      */
     public function store(CityRequest $request) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('city')->with('error', 'You do not have permission.');
+        }
         $add_city = City::create([
                     'city_name' => $request->input('city_name'),
                     'state_id' => $request->input('state')
@@ -69,6 +75,9 @@ class CityController extends Controller {
      * @return Response
      */
     public function edit($id) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('city')->with('error', 'You do not have permission.');
+        }
         $city = City::find($id);
         $states = States::all();
         return view('edit_city', compact('city', 'states'));
@@ -81,6 +90,9 @@ class CityController extends Controller {
      * @return Response
      */
     public function update($id, EditCityRequest $request) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('city')->with('error', 'You do not have permission.');
+        }
         $check_city_exists = City::where('city_name', '=', $request->input('city_name'))->where('id', '!=', $id)->count();
         if ($check_city_exists == 0) {
             $affectedRows = City::where('id', '=', $id)->update([
@@ -99,6 +111,9 @@ class CityController extends Controller {
      * @return Response
      */
     public function destroy($id) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('city')->with('error', 'You do not have permission.');
+        }
         $location_association = DeliveryLocation::where('city_id', '=', $id)->count();
         if ($location_association == 0) {
             if (Hash::check(Input::get('password'), Auth::user()->password)) {

@@ -21,21 +21,27 @@ use DB;
 class ProductController extends Controller {
 
     public function index() {
+        
         $product_cat = ProductCategory::Paginate(10);
         $product_cat->setPath('product_category');
         return view('product_category', compact('product_cat'));
     }
 
     public function create() {
+        if (Auth::user()->role_id != 0 ) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $product_type = ProductType::all();
         return view('add_product_category', compact('product_type'));
     }
 
     public function store(ProductCategoryRequest $request) {
-
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $product_category = new ProductCategory();
         $product_category->product_type_id = $request->input('product_type');
-        $product_category->product_category_name = $request->input('product_category_name');        
+        $product_category->product_category_name = $request->input('product_category_name');
         $product_category->price = $request->input('price');
         $product_category->save();
 
@@ -49,7 +55,9 @@ class ProductController extends Controller {
     }
 
     public function destroy($id) {
-
+        if (Auth::user()->role_id != 0 ) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
             ProductCategory::destroy($id);
             return redirect('product_category')->with('success', 'Product details successfully deleted.');
@@ -59,13 +67,18 @@ class ProductController extends Controller {
     }
 
     public function edit($id) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $product_type = ProductType::all();
         $product_cat = ProductCategory::where('id', $id)->get();
         return view('edit_product_category', compact('product_cat', 'product_type'));
     }
 
     public function update($id, ProductCategoryRequest $request) {
-
+        if (Auth::user()->role_id != 0  ) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $product_data = array(
             'product_type_id' => $request->input('product_type'),
             'product_category_name' => $request->input('product_category_name'),
@@ -79,7 +92,7 @@ class ProductController extends Controller {
     }
 
     public function update_price() {
-
+        
         ProductCategory::where('id', Input::get('id'))
                 ->update(array('price' => Input::get('price')));
         return redirect('product_category')->with('success', 'Product category price successfully updated.');

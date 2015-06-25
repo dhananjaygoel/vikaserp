@@ -19,19 +19,26 @@ use DB;
 class UsersController extends Controller {
 
     public function index() {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $users_data = User::where('role_id', '!=', 0)->Paginate(5);
         $users_data->setPath('users');
         return view('users', compact('users_data'));
     }
 
     public function create() {
-
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $roles = UserRoles::where('role_id', '!=', 0)->get();
         return view('add_user', compact('roles'));
     }
 
     public function store() {
-
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $validator = Validator::make(Input::all(), User::$newuser_rules);
 
         if ($validator->passes()) {
@@ -53,22 +60,30 @@ class UsersController extends Controller {
 
     public function destroy($id) {
 
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
             User::destroy($id);
             return redirect('users')->with('flash_message', 'User details successfully deleted.');
-        }else{
+        } else {
             return redirect('users')->with('wrong', 'You have entered wrong credentials');
         }
     }
 
     public function edit($id) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $roles = UserRoles::where('role_id', '!=', 0)->get();
         $user_data = User::where('id', $id)->get();
         return view('edit_user', compact('user_data', 'roles'));
     }
 
     public function update($id) {
-
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $validator = Validator::make(Input::all(), User::$updateuser_rules);
 
         if ($validator->passes()) {

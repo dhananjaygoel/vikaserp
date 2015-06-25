@@ -96,7 +96,7 @@
                                                     </td>
                                                     <td class="col-md-1">
                                                         <div class="form-group">
-                                                            <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" value="" type="text">
+                                                            <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" value="" type="text" onblur="calculate_grand_total();">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-2">
@@ -193,9 +193,9 @@
                             <div class="clearfix"></div>
                             <div class="form-group">
                                 <div class="radio">
-                                    <input checked="" value="include_vat" id="optionsRadios5" name="status1" type="radio">
+                                    <input checked="" value="include_vat" id="optionsRadios5" name="status1" type="radio" onclick="calculate_grand_total();">
                                     <label for="optionsRadios5">All Inclusive</label>
-                                    <input value="exclude_vat" id="optionsRadios6" name="status1" type="radio">
+                                    <input value="exclude_vat" id="optionsRadios6" name="status1" type="radio" onclick="calculate_grand_total();">
                                     <label for="optionsRadios6">Plus VAT</label>
                                 </div>
                             </div>
@@ -205,7 +205,7 @@
                                         <tbody>
                                             <tr class="cdtable">
                                                 <td class="cdfirst">VAT Percentage:</td>
-                                                <td><input id="price" class="form-control" placeholder="VAT Percentage" name="vat_price" value="" type="text"></td>
+                                                <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="" type="text" onblur="calculate_grand_total();"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -213,7 +213,7 @@
                             </div> 
                             <div class="clearfix"></div>
                             <div class="form-group">
-                                <label for="grandtotal">Grand Total:<span class="gtotal"> $25000</span></label>
+                                <label for="grandtotal">Grand Total:<span class="gtotal"> <input type="text" name="grand_total" id ="grand_total" class="form-control" value="" readonly="readonly"></span></label>
                             </div>
                             <div class="form-group">
                                 <label for="inquiry_remark">Remark</label>

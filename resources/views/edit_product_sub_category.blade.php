@@ -32,6 +32,7 @@
                         <div class="form-group productcategory col-md-3">
                             <input type="hidden" name="baseurl" id="baseurl2" value="{{url()}}" />
                             <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                            <input type="hidden" name="units" id="units" value="{{$units->id}}">
                             <label for="status">Select Product Category</label>
                             <select class="form-control" name="product_type" id="product_sub_category_select">
                                 <option disabled="" selected="" value="">--Select Product Category--</option>
@@ -69,17 +70,8 @@
                             </div>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="weight">Units</label>
-                            <select class="form-control" name="units">
-                                <option selected="" disabled="">--select--</option>
-                                @foreach($units as $unit)
-                                <option <?php if($prod_sub_cat->unit_id == $unit->id) echo 'selected=""'; ?> value="{{$unit->id}}">{{$unit->unit_name}} </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group col-md-3">
                             <label for="weight">Product weight</label>
-                            <input id="weight" class="form-control" placeholder="Product Weight" name="weight" disabled="" value="1" type="text">
+                            <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="1" type="text">
                         </div>
                         <div class="clearfix"></div>
                         <div class="form-group">

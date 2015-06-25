@@ -30,6 +30,9 @@ class InquiryController extends Controller {
      * @return Response
      */
     public function index() {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         if ((isset($_GET['inquiry_filter'])) && $_GET['inquiry_filter'] != '') {
             $inquiries = Inquiry::where('inquiry_status', '=', $_GET['inquiry_filter'])
                             ->with('customer', 'delivery_location', 'inquiry_products')->orderBy('created_at', 'desc')->Paginate(5);
@@ -46,6 +49,9 @@ class InquiryController extends Controller {
      * @return Response
      */
     public function create() {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         return view('add_inquiry', compact('units', 'delivery_locations'));
@@ -147,6 +153,9 @@ class InquiryController extends Controller {
      * @return Response
      */
     public function show($id) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category', 'customer')->first();
         return view('inquiry_details', compact('inquiry'));
     }
@@ -158,6 +167,9 @@ class InquiryController extends Controller {
      * @return Response
      */
     public function edit($id) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category', 'customer')->first();
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
@@ -242,6 +254,9 @@ class InquiryController extends Controller {
      * @return Response
      */
     public function destroy($id) {
+        if (Auth::user()->role_id != 0 ) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         if (Hash::check(Input::get('password'), Auth::user()->password)) {
             $delete_inquiry = Inquiry::find($id)->delete();
             $delete_inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->delete();
@@ -329,6 +344,9 @@ class InquiryController extends Controller {
      * place order
      */
     function place_order($id){  
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $inquiry = Inquiry::where('id', '=', $id)->where(['inquiry_status' => 'Completed'])->get();
         if(count($inquiry)>0){
             return redirect('inquiry')->with('flash_message', 'Please select other inquiry, order is generated for this inquiry.');
@@ -342,11 +360,10 @@ class InquiryController extends Controller {
     }
     
     function store_place_order($id,InquiryRequest $request){
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $input_data = Input::all();
-//        echo '<pre>';
-//        print_r($input_data);
-//        echo '</pre>';
-//        exit;
         $i = 0;
         $j = count($input_data['product']);
 //        echo $input_data['estimated_date'];exit;
@@ -435,5 +452,16 @@ class InquiryController extends Controller {
         Inquiry::where('id', '=', $id)->update(['inquiry_status' => 'Completed']);        
         return redirect('inquiry')->with('flash_success_message', 'One Order successfully generated for Inquiry.');
         
+    }
+    
+    
+    /*
+     * Price calculation
+     */
+    function calculate_price($data){
+        echo '<pre>';
+        print_r($data);
+        echo '</pre>';
+        exit;
     }
 }

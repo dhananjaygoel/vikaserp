@@ -62,6 +62,9 @@ class OrderController extends Controller {
      * @return Response
      */
     public function create() {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
@@ -185,7 +188,9 @@ class OrderController extends Controller {
      * @return Response
      */
     public function edit($id) {
-
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.product_category', 'customer')->first();
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
@@ -307,7 +312,9 @@ class OrderController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $password = Input::get('password');
 
         if ($password == '') {
@@ -337,7 +344,9 @@ class OrderController extends Controller {
      */
 
     public function manual_complete_order(ManualCompleteOrderRequest $request) {
-
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $input_data = Input::all();
 
         $order_id = $input_data['order_id'];
@@ -375,43 +384,45 @@ class OrderController extends Controller {
     }
 
     public function create_delivery_order($id) {
-
+        
         $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.product_category', 'customer')->first();
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         $customers = Customer::all();
-        $pending_orders= $this->pending_quantity_order($id);
+        $pending_orders = $this->pending_quantity_order($id);
 //        echo '<pre>';
 //        print_r($pending_orders);
 //        echo '</pre>';
 //        exit;
-        return View::make('create_delivery_order', compact('order', 'delivery_location', 'units', 'customers','pending_orders'));
+        return View::make('create_delivery_order', compact('order', 'delivery_location', 'units', 'customers', 'pending_orders'));
     }
-    public function pending_quantity_order($id){
+
+    public function pending_quantity_order($id) {
         $pending_orders = array();
-        
-            $delivery_orders = DeliveryOrder::where('order_id', $id)->get();
-            
-            foreach ($delivery_orders as $del_order) {
-                $all_order_products = AllOrderProducts::where('order_id', $del_order->id)->where('order_type', 'delivery_order')->get();
-                $pending_quantity = 0;
-                $total_quantity = 0;
-                foreach ($all_order_products as $products) {
-                    $p_qty = $products['quantity'] - $products['present_shipping'];
-                    $temp = array();
-                    $temp['order_id'] = $id;
-                    $temp['id']=$products['id'];
-                    $temp['product_id']=$products['product_category_id'];
-                    $temp['total_pending_quantity'] = $p_qty;                    
-                    array_push($pending_orders, $temp);
-                }
+
+        $delivery_orders = DeliveryOrder::where('order_id', $id)->get();
+
+        foreach ($delivery_orders as $del_order) {
+            $all_order_products = AllOrderProducts::where('order_id', $del_order->id)->where('order_type', 'delivery_order')->get();
+            $pending_quantity = 0;
+            $total_quantity = 0;
+            foreach ($all_order_products as $products) {
+                $p_qty = $products['quantity'] - $products['present_shipping'];
+                $temp = array();
+                $temp['order_id'] = $id;
+                $temp['id'] = $products['id'];
+                $temp['product_id'] = $products['product_category_id'];
+                $temp['total_pending_quantity'] = $p_qty;
+                array_push($pending_orders, $temp);
             }
-            
+        }
+
 
 //            $allorders['total_pending_quantity_'.$order->id]=$pending_quantity;
-        
+
         return $pending_orders;
     }
+
     public function store_delivery_order($id) {
         $input_data = Input::all();
         $validator = Validator::make($input_data, Order::$order_to_delivery_order_rules);
@@ -471,7 +482,18 @@ class OrderController extends Controller {
                 foreach ($all_order_products as $products) {
                     $p_qty = $products['quantity'] - $products['present_shipping'];
                     $pending_quantity = $pending_quantity + $p_qty;
-                    $total_quantity = $total_quantity + $products['quantity'];
+                    $kg = Units::first();
+                    $prod_quantity = $products['quantity'];
+//                    if($products['unit_id']!=$kg->id){
+                    $product_subcategory = \App\ProductSubCategory::where('product_category_id', $products['product_category_id'])->first();
+
+
+                    $calculated_quantity = $prod_quantity / $product_subcategory['weight'];
+                    $prod_quantity = $calculated_quantity;
+//                        echo $calculated_quantity;
+//                        exit;
+//                    }                    
+                    $total_quantity = $total_quantity + $prod_quantity;
                 }
             }
             $temp = array();

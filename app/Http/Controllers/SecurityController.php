@@ -12,6 +12,7 @@ use App\User;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\EditSecurityRequest;
+
 class SecurityController extends Controller {
 
 	/**
@@ -21,6 +22,9 @@ class SecurityController extends Controller {
 	 */
 	public function index()
 	{
+            if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
 
                 $sec = Security::paginate(10);
                 $sec->setPath('security');
@@ -38,6 +42,9 @@ class SecurityController extends Controller {
 	 */
 	public function create()
 	{
+            if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
 		return view('add-security');
 	}
         
@@ -49,6 +56,9 @@ class SecurityController extends Controller {
 	 */
 	public function store(Request $request)
 	{   
+            if (Auth::user()->role_id != 0 ) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
 		$security = new Security;
                 $ipaddress= $request->input('ip_address');
                 $data = array(
@@ -72,6 +82,9 @@ class SecurityController extends Controller {
 	 */
 	public function show($id)
 	{
+            if (Auth::user()->role_id != 0 ) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
 		$security = Security::find($id);
                 
 	}
@@ -84,6 +97,9 @@ class SecurityController extends Controller {
 	 */
 	public function edit($id)
 	{
+            if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
 		$security = Security::find($id);
 
                 return view('edit-security',compact('security'));
@@ -98,6 +114,9 @@ class SecurityController extends Controller {
 	 */
 	public function update(EditSecurityRequest $request,$id)
 	{
+            if (Auth::user()->role_id != 0 ) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
                 $ipaddress = $request->input('ip_address');
                 //parameter for validation
                 $data = array(
@@ -127,6 +146,9 @@ class SecurityController extends Controller {
 	 */
 	public function destroy($id)
 	{
+            if (Auth::user()->role_id != 0 ) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
                 $password = Input::get('password');
                 if ($password == '') {
                     return Redirect::to('security')->with('error', 'Please enter your password');

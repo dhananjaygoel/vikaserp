@@ -19,7 +19,9 @@ use Maatwebsite\Excel\Facades\Excel;
 class PurchaseDaybookController extends Controller {
 
     public function index() {
-
+if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $purchase_daybook = 0;
         if (Input::get('date') != "") {
 
@@ -36,7 +38,9 @@ class PurchaseDaybookController extends Controller {
     }
 
     public function delete_all_daybook() {
-
+        if (Auth::user()->role_id != 0 ) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         $id = Input::all();
 
         if (Hash::check(Input::get('delete_all_password'), Auth::user()->password)) {
@@ -70,7 +74,9 @@ class PurchaseDaybookController extends Controller {
     }
 
     public function destroy($id) {
-
+        if (Auth::user()->role_id != 0 ) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
         if (Hash::check(Input::get('password'), Auth::user()->password)) {
             $delete_purchase_challan = PurchaseChallan::find($id)->delete();
             return redirect('purchase_order_daybook')->with('success', 'purchase day book details successfully deleted.');

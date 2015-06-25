@@ -28,6 +28,7 @@
                         @endif 
 
                         <form method="POST" action="{{URL::action('ProductsubController@store')}}" accept-charset="UTF-8" >
+                            <input type="hidden" name="units" id="units" value="{{$units->id}}">
                             <div class="form-group productcategory col-md-3">
                                 <input type="hidden" name="baseurl" id="baseurl2" value="{{url()}}" />
                                 <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
@@ -62,15 +63,9 @@
                                     <input id="thickness" class="form-control" placeholder="Product Thickness" name="thickness" value="{{ old('thickness') }}" type="text">
                                 </div>
                             </div>
-<!--                            <div class="form-group col-md-3">
-                                <label for="weight">Units</label>
-                                <select class="form-control" name="units">
-                                    <option selected="" disabled="">--select--</option>
-                                    @foreach($units as $unit)
-                                    <option value="{{$unit->id}}">{{$unit->unit_name}} </option>
-                                    @endforeach
-                                </select>
-                            </div>-->
+
+                                    
+                            
                             <div class="form-group col-md-3">
                                 <label for="weight">Product Weight</label>
                                 <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="1" type="text">
