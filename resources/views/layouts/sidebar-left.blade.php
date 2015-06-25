@@ -171,7 +171,7 @@
                             </li>
                             <li class="{{ (Request::is('*product_sub_category*') ? 'active' : '') }}">
                                 <a href="{{url()}}/product_sub_category">
-                                    Product Sub Category
+                                    Product Size
                                 </a>
                             </li>
 

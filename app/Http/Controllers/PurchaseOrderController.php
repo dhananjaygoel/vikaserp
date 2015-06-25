@@ -109,7 +109,7 @@ class PurchaseOrderController extends Controller {
                 $customers = Customer::find($input_data['autocomplete_supplier_id']);
 
                 Mail::send('emails.purchase_order_add_email', ['key' => $customers->owner_name], function($message) {
-                    $message->to('kdilip@agstechnologies.com', 'John Smith')->subject('Purchase details updated!');
+                    $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Purchase details updated!');
                 });
             }
             
@@ -242,7 +242,7 @@ class PurchaseOrderController extends Controller {
                 $customers = Customer::find($input_data['autocomplete_supplier_id']);
 
                 Mail::send('emails.purchase_order_email', ['key' => $customers->owner_name], function($message) {
-                    $message->to('kdilip@agstechnologies.com', 'John Smith')->subject('Purchase details updated');
+                    $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Purchase details updated');
                 });
             }
 

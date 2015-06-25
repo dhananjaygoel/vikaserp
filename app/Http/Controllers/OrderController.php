@@ -111,6 +111,24 @@ class OrderController extends Controller {
             $validator = Validator::make($input_data, Customer::$existing_customer_inquiry_rules);
             if ($validator->passes()) {
                 $customer_id = $input_data['autocomplete_customer_id'];
+                
+                
+                
+                
+                       //send mail
+            if (isset($input_data['send_email'])){
+                $customers = Customer::find($customer_id);
+
+                Mail::send('emails.order_complete_email', ['key' => $customers->owner_name], function($message) {
+                    $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Order details created');
+                });
+                
+                
+                
+            }
+                
+                
+                
             } else {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
@@ -234,9 +252,28 @@ class OrderController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         } elseif (isset($input_data['customer_status']) && $input_data['customer_status'] == "existing_customer") {
+            
+            
+            //mail
+            
+            
+            
             $validator = Validator::make($input_data, Customer::$existing_customer_order_rules);
             if ($validator->passes()) {
                 $customer_id = $input_data['existing_customer_id'];
+                
+                
+                  //send mail
+            if (isset($input_data['send_email'])){
+                $customers = Customer::find($customer_id);
+
+                Mail::send('emails.order_complete_email', ['key' => $customers->owner_name], function($message) {
+                    $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Order details updated');
+                });
+                
+                
+                
+            }
             } else {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
@@ -374,7 +411,10 @@ class OrderController extends Controller {
             $customers = Customer::find($input_data['autocomplete_supplier_id']);
 
             Mail::send('emails.order_complete_email', ['key' => $orders['customer']->owner_name], function($message) {
-                $message->to($orders['customer']->email, 'John Smith')->subject('Order Complete!');
+//                $message->to($orders['customer']->email, 'John Smith')->subject('Order Complete!');
+
+                $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Order Complete!');
+                
             });
         }
 
@@ -500,7 +540,7 @@ class OrderController extends Controller {
             $temp['id'] = $order->id;
             $temp['total_pending_quantity'] = $pending_quantity;
             $temp['total_quantity'] = $total_quantity;
-            array_push($pending_orders, $temp);
+            
 
 //            $allorders['total_pending_quantity_'.$order->id]=$pending_quantity;
         }

@@ -337,5 +337,58 @@ function calculate_grand_total(){
     $('#grand_total').val(grand_total);
 }
 function grand_total_challan(){
+
+    var current_row_count = $(".add_product_row").length;
+//    alert(current_row_count);
+    var total_price_products= 0;
+    for (var i = 0; i <= current_row_count + 1; i++) {
+        if (parseInt($('#product_price_' + i).val())) {
+            var unit_id = $("#units_"+i).val();
+            
+            var present_shipping = parseInt($("#present_shipping_"+i).val());
+            total_price_products = total_price_products + (parseInt($('#product_price_' + i).val()) * present_shipping );
+        }
+    }
+//    alert(total_price);
+    var vat_val = 0;
+
+    if ($('#optionsRadios6').is(':checked')) {
+        vat_val = (parseInt(total_price_products) * $('#vat_percentage').val()) / 100;
+    }
+    if ($('#optionsRadios5').is(':checked')) {
+        vat_val = 0;
+    }
+    var total_price = parseInt(total_price_products) + parseInt(vat_val);
+
+        
+   
+    if($("#discount_value").length > 0){
+        if($("#discount_value").val()>0){
+            
+            var discount_value = (parseFloat($("#discount_value").val())*total_price)/100;
+//            alert(discount_value );
+            total_price = total_price + discount_value;
+        }
+            
+    }
+    if($("#freight_value").length > 0){
+        if($("#freight_value").val()>0){
+            var freight_value = parseInt($("#freight_value").val());
+            grand_total = total_price + freight_value;
+        }
+            
+    }
+    if($("#loading_charge").length > 0){
+        if($("#loading_charge").val()>0){
+            var loading_charge= parseInt($("#loading_charge").val());
+            grand_total = total_price + loading_charge;
+        }
+            
+    }
     
+    
+//    alert(vat_val);
+    $("#total_price").val(total_price);
+    
+    $('#grand_total').val(grand_total);
 }
