@@ -133,6 +133,7 @@
                                                     @if($unit->id == $product->unit_id)
                                                     <input class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" value="{{$unit->id}}" type="hidden">
                                                     {{$unit->unit_name}}
+                                                    <input type="hidden" id="unit_name_{{$key}}" value="{{$unit->unit_name}}">
                                                     @endif
                                                     @endforeach
 
@@ -140,7 +141,7 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <div id="amount_{{$key}}"><span class="text-center">{{$product->price* $product->present_shipping}}</span></div>
+                                                    <div id="amount_{{$key}}"></div>
                                                 </div>
                                             </td>
 
@@ -182,11 +183,11 @@
                         <div class="clearfix"></div>
                         <div class="form-group">
                             <label for="vehicle_name"><b class="challan">Discount</b></label>
-                            <input id="discount_value" class="form-control" placeholder="Discount" name="discount" value="" type="text" onblur="grand_total_delivery_order();">
+                            <input id="discount_value" class="form-control" placeholder="Discount" name="discount" value="" type="text" onblur="grand_total_challan();">
                         </div>
                         <div class="form-group">
                             <label for="driver_name"><b class="challan">Freight</b></label>
-                            <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="" type="text" onblur="grand_total_delivery_order();">
+                            <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="" type="text" onblur="grand_total_challan();">
                         </div>
                         <div class="form-group">
                             <label for="total"><b class="challan">Total</b><span class="gtotal"><input type="text" id="total_price" name="total_price" placeholder="" readonly="readonly"></span></label>
@@ -195,7 +196,7 @@
                         </div>
                         <div class="form-group">
                             <label for="driver_contact"><b class="challan">Loading</b></label>
-                            <input id="loading_charge" class="form-control" placeholder="loading" name="loading" value="" type="text" onblur="grand_total_delivery_order();">
+                            <input id="loading_charge" class="form-control" placeholder="loading" name="loading" value="" type="text" onblur="grand_total_challan();">
                         </div>
 
                         <div class="form-group">

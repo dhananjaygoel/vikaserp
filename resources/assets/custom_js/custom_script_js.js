@@ -182,6 +182,9 @@ $(document).ready(function () {
 
     challan_ids = [];
     grand_total_delivery_order();
+    if($("#add_product_table_delivery_challan").length>0){
+        fetch_price();
+    }
 });
 /**
  * Comment
@@ -202,6 +205,13 @@ function select_all_checkbox() {
     }
 }
 
+/**
+ * Comment
+ */
+function getunit_name(key) {
+    var unit_name = $("#units_" + key).value();
+    alert(unit_name);
+}
 
 /**
  * Calculate quantity on
@@ -227,7 +237,7 @@ function change_quantity(key) {
         $("#pending_qunatity_" + key).html("<span class='text-center'>" + rem_quantity + "</span");
     }
     grand_total_delivery_order();
-
+    
 }
 
 
@@ -255,8 +265,8 @@ function grand_total_delivery_order() {
     var total_price = 0;
     for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseInt($('#product_price_' + i).val())) {
-            var present_shipping = parseInt($("#present_shipping_"+i).val());
-            total_price = total_price + (parseInt($('#product_price_' + i).val()) * present_shipping );
+            var present_shipping = parseInt($("#present_shipping_" + i).val());
+            total_price = total_price + (parseInt($('#product_price_' + i).val()) * present_shipping);
         }
     }
 //    alert(total_price);
@@ -269,35 +279,35 @@ function grand_total_delivery_order() {
         vat_val = 0;
     }
     var grand_total = parseInt(total_price) + parseInt(vat_val);
-    if($("#total_price").length > 0){
+    if ($("#total_price").length > 0) {
         $("#total_price").val(total_price);
     }
-    if($("#discount_value").length > 0){
-        if($("#discount_value").val()>0){
-            
-            var discount_value = (parseFloat($("#discount_value").val())*total_price)/100;
+    if ($("#discount_value").length > 0) {
+        if ($("#discount_value").val() > 0) {
+
+            var discount_value = (parseFloat($("#discount_value").val()) * total_price) / 100;
 //            alert(discount_value );
             grand_total = grand_total + discount_value;
         }
-            
+
     }
-    if($("#freight_value").length > 0){
-        if($("#freight_value").val()>0){
+    if ($("#freight_value").length > 0) {
+        if ($("#freight_value").val() > 0) {
             var freight_value = parseInt($("#freight_value").val());
             grand_total = grand_total + freight_value;
         }
-            
+
     }
-    if($("#loading_charge").length > 0){
-        if($("#loading_charge").val()>0){
-            var loading_charge= parseInt($("#loading_charge").val());
+    if ($("#loading_charge").length > 0) {
+        if ($("#loading_charge").val() > 0) {
+            var loading_charge = parseInt($("#loading_charge").val());
             grand_total = grand_total + loading_charge;
         }
-            
+
     }
-    
+
 //    alert(vat_val);
-    
+
     $('#grand_total').val(grand_total);
 }
 
@@ -305,22 +315,29 @@ function grand_total_delivery_order() {
  * Fetch price of the product
  */
 function fetch_price() {
-    
-    alert('text');
-//    var product_id = $("#add_product_id_"+key).val();
-//    alert(product_id);
+//    alert('test');
+var current_row_count = $(".add_product_row").length;
+    for (var i = 0; i <= current_row_count + 1; i++) {
+        if (parseInt($('#product_price_' + i).val())) {
+            var actual_quantity= $("#actual_quantity_"+i).val();
+            var rate = $("#product_price_"+i).val();
+            var amount = parseFloat(rate)* parseInt(actual_quantity);
+            $("#amount_"+i).html('<span class="text-center">'+amount+'</span>');
+        }
+    }
 }
 
 /**
  * Grand total for creating independent delivery order
  */
-function calculate_grand_total(){
+function calculate_grand_total() {
     var current_row_count = $(".add_product_row").length;
 //    alert(current_row_count);
     var total_price = 0;
     for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseInt($('#product_price_' + i).val())) {
-            var quantity = parseInt($("#quantity_"+i).val());
+//            
+            var quantity = parseInt($("#quantity_" + i).val());
             total_price = total_price + (parseInt($('#product_price_' + i).val()) * quantity);
         }
     }
@@ -333,20 +350,40 @@ function calculate_grand_total(){
         vat_val = 0;
     }
     var grand_total = parseInt(total_price) + parseInt(vat_val);
-    
+
     $('#grand_total').val(grand_total);
 }
-function grand_total_challan(){
+
+/*
+ * Function for grand total for challan
+ */
+function grand_total_challan() {
 
     var current_row_count = $(".add_product_row").length;
 //    alert(current_row_count);
-    var total_price_products= 0;
+    var total_price_products = 0;
     for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseInt($('#product_price_' + i).val())) {
-            var unit_id = $("#units_"+i).val();
-            
-            var present_shipping = parseInt($("#present_shipping_"+i).val());
-            total_price_products = total_price_products + (parseInt($('#product_price_' + i).val()) * present_shipping );
+            var unit_id = $("#units_" + i).val();
+            var product_id = $("#add_product_id_" + i).val();
+            var product_wt;
+            var actual_quantity = parseInt($("#actual_quantity_" + i).val());
+//            if ($("#unit_name_" + i).val() != 'kg' || $("#unit_name_" + i).val() != 'KG')
+//            {
+//                $.ajax({
+//                    type: 'GET',
+//                    url: baseurl + '/get_product_weight',
+//                    data: {product_id: product_id}
+//                }).done(function (data) {
+//                    product_wt=data;
+////                        alert(data);
+//                });
+
+//                var actual_pieces = $("#actual_pieces_" + i).val();
+//                actual_quantity = actual_pieces;
+//            }
+
+            total_price_products = total_price_products + (parseInt($('#product_price_' + i).val()) * actual_quantity);
         }
     }
 //    alert(total_price);
@@ -360,35 +397,35 @@ function grand_total_challan(){
     }
     var total_price = parseInt(total_price_products) + parseInt(vat_val);
 
-        
-   
-    if($("#discount_value").length > 0){
-        if($("#discount_value").val()>0){
-            
-            var discount_value = (parseFloat($("#discount_value").val())*total_price)/100;
+
+
+    if ($("#discount_value").length > 0) {
+        if ($("#discount_value").val() > 0) {
+
+            var discount_value = (parseFloat($("#discount_value").val()) * total_price) / 100;
 //            alert(discount_value );
             total_price = total_price + discount_value;
         }
-            
+
     }
-    if($("#freight_value").length > 0){
-        if($("#freight_value").val()>0){
+    if ($("#freight_value").length > 0) {
+        if ($("#freight_value").val() > 0) {
             var freight_value = parseInt($("#freight_value").val());
             grand_total = total_price + freight_value;
         }
-            
+
     }
-    if($("#loading_charge").length > 0){
-        if($("#loading_charge").val()>0){
-            var loading_charge= parseInt($("#loading_charge").val());
+    if ($("#loading_charge").length > 0) {
+        if ($("#loading_charge").val() > 0) {
+            var loading_charge = parseInt($("#loading_charge").val());
             grand_total = total_price + loading_charge;
         }
-            
+
     }
-    
-    
+
+
 //    alert(vat_val);
     $("#total_price").val(total_price);
-    
+
     $('#grand_total').val(grand_total);
 }

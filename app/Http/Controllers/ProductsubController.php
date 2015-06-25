@@ -148,5 +148,11 @@ class ProductsubController extends Controller {
                 ->update(array('difference' => Input::get('difference')));
         return redirect('product_sub_category')->with('success', 'Product sub category difference successfully updated.');
     }
+    public function get_product_weight(){
+        $product_id = Input::get('product_id');
+        $product_cat = ProductSubCategory::where('product_category_id',$product_id)->first();
+        $product_weight= $product_cat['weight'];
+        return $product_weight;
+    }
 
 }
