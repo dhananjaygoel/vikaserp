@@ -23,7 +23,7 @@
                         <span class="headline">Total Order </span>
                         <span class="value">
                             <span class="timer" data-from="120" data-to="2562" data-speed="1000" data-refresh-interval="50">
-                                2562
+                                {{$order}}
                             </span>
                         </span>
                     </div></a>
@@ -34,7 +34,7 @@
                         <span class="headline">Pending Order</span>
                         <span class="value">
                             <span class="timer" data-from="30" data-to="658" data-speed="800" data-refresh-interval="30">
-                                658
+                                {{$pending_order}}
                             </span>
                         </span>
                     </div></a>
@@ -45,7 +45,7 @@
                         <span class="headline">Pending Inquiries</span>
                         <span class="value">
                             <span class="timer" data-from="30" data-to="658" data-speed="800" data-refresh-interval="30">
-                                123
+                                {{$pending_inquiry}}
                             </span>
                         </span>
                     </div></a>
@@ -56,7 +56,7 @@
                         <span class="headline">Total Inquiries </span>
                         <span class="value">
                             <span class="timer" data-from="539" data-to="12526" data-speed="1100">
-                                12526
+                                {{$inquiry}}
                             </span>
                         </span>
                     </div></a>
@@ -67,7 +67,7 @@
                         <span class="headline">Total Delivery Order</span>
                         <span class="value">
                             <span class="timer" data-from="120" data-to="2562" data-speed="1000" data-refresh-interval="50">
-                                2Ton
+                                {{$deliver_sum}}Ton
                             </span>
                         </span>
                     </div></a>
@@ -78,9 +78,7 @@
                         <span class="headline">Pending Delivery Order</span>
                         <span class="value">
                             <span class="timer" data-from="120" data-to="2562" data-speed="1000" data-refresh-interval="50">
-                                1Ton
-
-
+                                {{ $deliver_pending_sum }}Ton
                             </span>
                         </span>
                     </div></a>
@@ -91,7 +89,7 @@
                         <span class="headline">Total Challan</span>
                         <span class="value">
                             <span class="timer" data-from="120" data-to="2562" data-speed="1000" data-refresh-interval="50">
-                                3Ton
+                               {{$challan_sum}}Ton
 
                             </span>
                         </span>
@@ -103,7 +101,7 @@
                         <span class="headline">Total Purchase Order</span>
                         <span class="value">
                             <span class="timer" data-from="120" data-to="2562" data-speed="1000" data-refresh-interval="50">
-                                4Ton
+                                {{$purc_order_sum}}Ton
 
 
                             </span>

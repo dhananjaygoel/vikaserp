@@ -19,26 +19,30 @@ use Maatwebsite\Excel\Facades\Excel;
 class PurchaseDaybookController extends Controller {
 
     public function index() {
-if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+
         $purchase_daybook = 0;
         if (Input::get('date') != "") {
 
             $purchase_daybook = PurchaseChallan::with('orderedby', 'supplier')
+                            ->where('order_status', 'completed')
                             ->whereHas('purchase_advice', function($query) {
                                 $query->where('purchase_advice_date', '=', date("Y-m-d", strtotime(Input::get('date'))));
                             })->Paginate(10);
         } else {
 
-            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier')->Paginate(10);
+            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier')
+                    ->where('order_status', 'completed')
+                    ->Paginate(10);
             $purchase_daybook->setPath('purchase_order_daybook');
         }
         return view('purchase_order_daybook', compact('purchase_daybook'));
     }
 
     public function delete_all_daybook() {
-        if (Auth::user()->role_id != 0 ) {
+        if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $id = Input::all();
@@ -59,22 +63,40 @@ if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
 
     public function expert_purchase_daybook() {
 
-        Excel::create('Filename', function($excel) {
+        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier')
+                ->where('order_status', 'completed')
+                ->get();
 
-            $excel->sheet('Sheetname', function($sheet) {
 
-                $sheet->fromArray(array(
-                    array('data1', 'data2'),
-                    array('data3', 'data4')
-                ));
+        $sheet_data = array();
+        foreach ($purchase_daybook as $key => $value) {
+
+            $sheet_data[$key]['date'] = date("d F, Y", strtotime($value['purchase_advice']->purchase_advice_date));
+            $sheet_data[$key]['Party_name'] = $value['supplier']->owner_name;
+            $sheet_data[$key]['vehicle_number'] = $value->vehicle_number;
+            $sheet_data[$key]['orderedby'] = $value['orderedby']->first_name;
+            $sheet_data[$key]['unloaded_by'] = $value->unloaded_by;
+            $sheet_data[$key]['labours'] = $value->labours;
+            $sheet_data[$key]['amount'] = $value->amount;
+            $sheet_data[$key]['bill_number'] = $value->bill_number;
+            $sheet_data[$key]['remarks'] = $value->remarks;
+            $sheet_data[$key]['created_at'] = $value->created_at;
+            $sheet_data[$key]['updated_at'] = $value->updated_at;
+        }
+
+
+        Excel::create('Purchase-Daybook-list', function($excel) use($sheet_data) {
+
+            $excel->sheet('Order List', function($sheet) use($sheet_data) {
+                $sheet->fromArray($sheet_data);
             });
         })->export('xls');
-        
+
         exit;
     }
 
     public function destroy($id) {
-        if (Auth::user()->role_id != 0 ) {
+        if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (Hash::check(Input::get('password'), Auth::user()->password)) {
