@@ -317,8 +317,12 @@ function grand_total_delivery_order() {
 function fetch_price() {
 //    alert('test');
 var current_row_count = $(".add_product_row").length;
+
     for (var i = 0; i <= current_row_count + 1; i++) {
-        if (parseInt($('#product_price_' + i).val())) {
+        if (parseFloat($('#product_price_' + i).val())) {
+            if($("#amount_"+i).length>0){
+                alert('text');
+            }
             var actual_quantity= $("#actual_quantity_"+i).val();
             var rate = $("#product_price_"+i).val();
             var amount = parseFloat(rate)* parseInt(actual_quantity);
