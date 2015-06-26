@@ -59,7 +59,7 @@
                                     <table id="add_product_table" class="table table-hover">
                                         <tbody>
                                             <tr class="headingunderline">
-                                                <td><span>Select Product</span></td>
+                                                <td><span>Select Product(Alias)</span></td>
                                                 <td><span>Unit</span></td>
                                                 <td><span>Present Shipping</span></td>
                                                 <td><span>Price</span></td>

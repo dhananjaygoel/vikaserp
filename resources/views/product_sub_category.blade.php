@@ -67,7 +67,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Product Name</th>
+                                        <th>Product Name(Alias)</th>
                                         <th>Alias Name</th>
                                         <th>Size</th>
                                         @if(Input::get('product_filter') != 2)
@@ -84,12 +84,6 @@
                                 <tbody> 
                                     <?php
                                     $i = ($product_sub_cat->currentPage() - 1 ) * $product_sub_cat->perPage() + 1;
-
-
-                                    //echo '<pre>';
-                                    //print_r($product_sub_cat->toarray());
-                                    //echo '</pre>';
-                                    //exit;
                                     ?>
 
                                     @foreach($product_sub_cat as $produ_sub) 

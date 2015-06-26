@@ -47,7 +47,7 @@
                                 <tbody>  
                                     <tr class="headingunderline">
                                         <td class="widthtable">
-                                            <span>Product Name</span>
+                                            <span>Product Name(Alias)</span>
                                         </td>       
                                         <td class="widthtable">
                                             <span>Actual Quantity</span>
