@@ -31,7 +31,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box">
-                                
+
                     <div class="main-box-body clearfix">
 
                         <div class="inquiry_table col-md-12">
@@ -56,7 +56,9 @@
                                         <tr><td><span><b>Customer Name:</b></span> {{$customer->owner_name}} </td></tr>
                                         <tr><td><span><b>Contact Person: </b></span> {{$customer->contact_person}}</td></tr>
                                         <tr><td><span><b>Mobile Number: </b></span>{{$customer->phone_number1}}</td></tr>
-                                        <tr> <td><span><b>Credit Period: </b></span>{{$customer->credit_period}}</td></tr>   
+                                        @if($customer->credit_period != "")
+                                        <tr> <td><span><b>Credit Period: </b></span>{{$customer->credit_period}}</td></tr>
+                                        @endif
                                         @endif
                                         @endforeach                                        
 
@@ -76,7 +78,7 @@
 
 
                                             <td>
-                                                <span> Product</span>
+                                                <span> Product(Alias)</span>
                                             </td>
                                             <td>
                                                 <span> Qty</span>
@@ -93,14 +95,15 @@
                                             </td>
 
                                         </tr>
-                                        <?php $total=0;?>
+                                        <?php
+                                        $total = 0; ?>
                                         @foreach($order['all_order_products'] as $key=>$product)
                                         @if($product->order_type =='order')
                                         <tr id="add_row_{{$key}}" class="add_product_row">
 
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
-                                                    {{$product['product_category']->product_category_name}}
+                                                    {{$product['product_category']['product_sub_category']->alias_name}}
 
                                                 </div>
                                             </td>
@@ -117,7 +120,7 @@
                                             <td class="col-md-2">
                                                 <div class="form-group">
                                                     {{$product->price}}
-                                                    <?php $total= $total+$product->price;?>
+                                                    <?php $total = $total + $product->price; ?>
                                                 </div>
                                             </td>
                                             <td class="col-md-4">
@@ -143,37 +146,32 @@
 
                                         </tr>
                                         <tr>
-                                            
+
                                             <td><span>VAT Percentage: </span>{{$order->vat_percentage}}</td>
 
                                         </tr>
                                         @elseif($order->vat_percentage ==0)
                                         <tr>
 
-                                            <td><span>Plus VAT: </span>NO</td>
-
-                                        </tr>
-                                        <tr>
-                                          
-                                            <td><span>VAT: </span>0</td>
+                                            <td><span>Plus VAT: </span>No</td>
 
                                         </tr>
                                         @endif
                                         <tr>
-                                            
-                                            <td><span>Grand Total: </span><?php 
-                                            $grand_total =0; 
-                                            $vat= ($total*$order->vat_percentage)/100;
-                                            $grand_total = $total + $vat;
-                                            echo $grand_total;
-                                            ?> </td>
+
+                                            <td><span>Grand Total: </span><?php
+                                                    $grand_total = 0;
+                                                    $vat = ($total * $order->vat_percentage) / 100;
+                                                    $grand_total = $total + $vat;
+                                                    echo $grand_total;
+                                                    ?> </td>
 
                                         </tr>
 
-                                          
+
 
                                         <tr>
-                                            <td><span>Expected Delivery Date: </span>{{$order->expected_delivery_date}}</td>
+                                            <td><span>Expected Delivery Date: </span>{{date("d F, Y", strtotime($order->expected_delivery_date)) }}</td>
 
                                         </tr>      
                                         <tr>

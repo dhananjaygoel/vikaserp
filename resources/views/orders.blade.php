@@ -21,10 +21,10 @@
                             <div class="col-md-12">
                                 <form action="{{url('orders')}}" method="GET">
                                     <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
-                                        <option value="" selected="">Status</option>
-                                        <option value="pending">Pending</option>
-                                        <option value="completed">Completed</option>
-                                        <option value="cancelled">Canceled</option>
+                                        <option disabled="" value="" selected="">Status</option>
+                                        <option <?php if (Input::get('order_filter') == 'pending') echo 'selected=""'; ?> value="pending">Pending</option>
+                                        <option <?php if (Input::get('order_filter') == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
+                                        <option <?php if (Input::get('order_filter') == 'cancelled') echo 'selected=""'; ?> value="cancelled">Canceled</option>
                                     </select>
                                 </form>
                             </div>
@@ -83,12 +83,17 @@
                                                 }
                                             }
                                             ?></td>
+                                        @if(count($pending_orders) > 0)
                                         @foreach($pending_orders as $porder)
                                         @if($porder['id'] == $order->id)
                                         <td>{{$porder['total_quantity']}}</td>
                                         <td>{{$porder['total_pending_quantity']}}</td>
                                         @endif
                                         @endforeach
+                                        @else
+                                        <td></td>
+                                        <td></td>
+                                        @endif
 
                                         <td class="text-center">
                                             <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
@@ -226,13 +231,15 @@
 
                                     <td>{{$k++}}</td>
                                     <td>{{$order['customer']->owner_name}}</td>
-                                    <td><?php
-                                            $total_quantity = 0;
-                                            foreach ($order['all_order_products'] as $key => $product) {
-                                                $total_quantity = $total_quantity + $product['quantity'];
-                                            }
-                                            echo $total_quantity;
-                                            ?></td>
+                                    @if(count($pending_orders) > 0)
+                                    @foreach($pending_orders as $porder)
+                                    @if($porder['id'] == $order->id)
+                                    <td>{{$porder['total_quantity']}}</td>                                   
+                                    @endif
+                                    @endforeach
+                                    @else
+                                    <td></td>
+                                    @endif
                                     <td>{{$order['customer']['phone_number1']}}</td>
                                     @if($order['delivery_location']['area_name'] !="")
                                     <td class="text">{{$order['delivery_location']['area_name']}}</td>
@@ -245,7 +252,7 @@
                                                 echo $u['first_name'];
                                             }
                                         }
-                                            ?></td>
+                                        ?></td>
 
 
                                     <td class="text-center">
@@ -323,11 +330,11 @@
                                         <td>{{$k++}}</td>
                                         <td>{{$order['customer']->owner_name}}</td>
                                         <td><?php
-                                        $total_quantity = 0;
-                                        foreach ($order['all_order_products'] as $key => $product) {
-                                            $total_quantity = $total_quantity + $product['quantity'];
-                                        }
-                                        echo $total_quantity;
+                                            $total_quantity = 0;
+                                            foreach ($order['all_order_products'] as $key => $product) {
+                                                $total_quantity = $total_quantity + $product['quantity'];
+                                            }
+                                            echo $total_quantity;
                                             ?></td>
                                         <td>{{$order['customer']['phone_number1']}}</td>
                                         @if($order['delivery_location']['area_name'] !="")
@@ -404,7 +411,7 @@
                                 </tbody>
                             </table>
                             <span class="pull-right">
-<?php echo $allorders->render(); ?>
+                                <?php echo $allorders->render(); ?>
                             </span>
                         </div>
                         @endif
