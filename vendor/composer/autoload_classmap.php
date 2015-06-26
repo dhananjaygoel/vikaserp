@@ -495,6 +495,7 @@ return array(
     'SessionHandlerInterface' => $vendorDir . '/symfony/http-foundation/Symfony/Component/HttpFoundation/Resources/stubs/SessionHandlerInterface.php',
     'TestCase' => $baseDir . '/tests/TestCase.php',
     'Text_Template' => $vendorDir . '/phpunit/php-text-template/Text/Template.php',
+    'UnitsSeeder' => $baseDir . '/database/seeds/UnitsSeeder.php',
     'UserRolesSeeder' => $baseDir . '/database/seeds/UserRolesSeeder.php',
     'UserSeeder' => $baseDir . '/database/seeds/UserSeeder.php',
 );
