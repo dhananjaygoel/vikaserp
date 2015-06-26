@@ -16,6 +16,9 @@ use Redirect;
 use App\User;
 use Auth;
 use Hash;
+use App\CustomerProductDifference;
+use App\Units;
+use App\DeliveryLocation;
 
 class DeliveryChallanController extends Controller {
 
@@ -56,8 +59,10 @@ class DeliveryChallanController extends Controller {
         $allorder = DeliveryChallan::where('id', '=', $id)
                         ->where('challan_status', '=', 'pending')
                         ->with('all_order_products.unit', 'all_order_products.product_category', 'customer', 'delivery_order')->first();
-
-        return View::make('edit_delivery_challan', compact('allorder'));
+        $price_delivery_order = $this->calculate_price($allorder);
+        $units = Units::all();
+        $delivery_locations = DeliveryLocation::all();
+        return View::make('edit_delivery_challan', compact('allorder','price_delivery_order','units','delivery_locations'));
     }
 
     /**
@@ -209,4 +214,43 @@ class DeliveryChallanController extends Controller {
         }
     }
 
+    
+    function calculate_price($delivery_data){
+//        echo '<pre>';
+//        print_r($delivery_data['customer']->id);
+//        echo '</pre>';
+//        exit;
+        $product_rates = array();
+        foreach($delivery_data->all_order_products as $product){            
+            
+            $sub_product = \App\ProductSubCategory::where('product_category_id',$product->product_category_id)->first();
+            $product_category= \App\ProductCategory::where('id',$product->product_category_id)->first();
+            $user_id = $delivery_data['customer']->id;
+            $users_set_price_product=  CustomerProductDifference::where('product_category_id',$product->product_category_id)
+                    ->where('customer_id',$user_id)->first();
+            $total_rate = $product_category->price;
+            $users_set_price=0;
+            if(count($users_set_price_product)>0){
+                $total_rate = $total_rate+$users_set_price_product->difference_amount;
+                $users_set_price=$users_set_price_product->difference_amount;
+            }
+            if($sub_product->difference>0){
+                $total_rate = $total_rate+$sub_product->difference;
+            }
+
+            $product_rate = array();
+                $product_rate["product_id"]=$product->product_category_id;
+                $product_rate["product_price"]=$product_category->price;
+                $product_rate["difference"]=$sub_product->difference;
+                $product_rate["difference_amount"]=$users_set_price;
+                $product_rate["total_rate"]=$total_rate;
+            array_push($product_rates, $product_rate);
+        }
+//        echo '<pre>';
+//        print_r($product_rates);
+//        echo '</pre>';
+//        exit;
+        return $product_rates;
+    }
+    
 }

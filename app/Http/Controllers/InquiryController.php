@@ -111,7 +111,8 @@ class InquiryController extends Controller {
                 'vat_percentage' => $input_data['vat_percentage'],
 //                'expected_delivery_date' => date_format(date_create($input_data['date']), 'Y-m-d'),
 //                'expected_delivery_date' => date('Y-m-d', strtotime($input_data['date'])),
-                'expected_delivery_date' => date('Y-m-d', strtotime($input_data['date'])),
+                'expected_delivery_date' => date_format(date_create($input_data['date']), 'Y-m-d'),
+                //date('Y-m-d', strtotime($input_data['date'])),
                 'remarks' => $input_data['inquiry_remark'],
                 'inquiry_status' => "Pending",
                 'other_location' => $input_data['other_location_name']

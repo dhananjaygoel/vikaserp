@@ -36,15 +36,15 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
-                    @if(sizeof($allorders)==0)
-                    <div class="alert alert-info no_data_msg_container">
-                        Currently no orders have been added.
-                    </div>
-                    @else
-                    @if (Session::has('flash_message'))
-                    <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
-                    @endif
                     <div class="main-box-body main_contents clearfix">
+                        @if(sizeof($allorders)==0)
+                        <div class="alert alert-info no_data_msg_container">
+                            Currently no orders have been added.
+                        </div>
+                        @else
+                        @if (Session::has('flash_message'))
+                        <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
+                        @endif
                         <div class="table-responsive tablepending">
                             <table id="table-example" class="table table-hover">
                                 <?php $k = 1; ?>
@@ -67,7 +67,7 @@
 
 
                                     <tr>
-                                        
+
                                         <td>{{$k++}}</td>
                                         <td>{{$order['customer']->owner_name}}</td>
                                         <td>{{$order['customer']['phone_number1']}}</td>
@@ -76,21 +76,20 @@
                                         @elseif($order['delivery_location']['area_name'] =="")
                                         <td class="text">{{$order['other_location']}}</td>
                                         @endif
-                                        <td class="text"><?php 
-                                            foreach($users as $u)
-                                            {
-                                                if($u['id'] == $order['created_by']){
+                                        <td class="text"><?php
+                                            foreach ($users as $u) {
+                                                if ($u['id'] == $order['created_by']) {
                                                     echo $u['first_name'];
                                                 }
                                             }
-                                        ?></td>
+                                            ?></td>
                                         @foreach($pending_orders as $porder)
                                         @if($porder['id'] == $order->id)
                                         <td>{{$porder['total_quantity']}}</td>
                                         <td>{{$porder['total_pending_quantity']}}</td>
                                         @endif
                                         @endforeach
-                                        
+
                                         <td class="text-center">
                                             <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -216,56 +215,55 @@
                                         <th>Mobile </th>
                                         <th>Delivery Location</th>
                                         <th>Order By</th>                                  
-                                        
+
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
-                                
-                                    @endif
-                                    
-                                    <tr>
-                                        
-                                        <td>{{$k++}}</td>
-                                        <td>{{$order['customer']->owner_name}}</td>
-                                        <td><?php
-                                        $total_quantity = 0;
-                                        foreach ($order['all_order_products'] as $key => $product) {
-                                            $total_quantity = $total_quantity + $product['quantity'];
-                                        }
-                                        echo $total_quantity;
-                                        ?></td>
-                                        <td>{{$order['customer']['phone_number1']}}</td>
-                                        @if($order['delivery_location']['area_name'] !="")
-                                        <td class="text">{{$order['delivery_location']['area_name']}}</td>
-                                        @elseif($order['delivery_location']['area_name'] =="")
-                                        <td class="text">{{$order['other_location']}}</td>
-                                        @endif
-                                        <td class="text"><?php 
-                                            foreach($users as $u)
-                                            {
-                                                if($u['id'] == $order['created_by']){
-                                                    echo $u['first_name'];
-                                                }
+
+                                @endif
+
+                                <tr>
+
+                                    <td>{{$k++}}</td>
+                                    <td>{{$order['customer']->owner_name}}</td>
+                                    <td><?php
+                                            $total_quantity = 0;
+                                            foreach ($order['all_order_products'] as $key => $product) {
+                                                $total_quantity = $total_quantity + $product['quantity'];
                                             }
-                                        ?></td>
-                                        
-                                        
-                                        <td class="text-center">
-                                            <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            
-                                            <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal_{{$order->id}}">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                            echo $total_quantity;
+                                            ?></td>
+                                    <td>{{$order['customer']['phone_number1']}}</td>
+                                    @if($order['delivery_location']['area_name'] !="")
+                                    <td class="text">{{$order['delivery_location']['area_name']}}</td>
+                                    @elseif($order['delivery_location']['area_name'] =="")
+                                    <td class="text">{{$order['other_location']}}</td>
+                                    @endif
+                                    <td class="text"><?php
+                                        foreach ($users as $u) {
+                                            if ($u['id'] == $order['created_by']) {
+                                                echo $u['first_name'];
+                                            }
+                                        }
+                                            ?></td>
+
+
+                                    <td class="text-center">
+                                        <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-search fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </a>
+
+                                        <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal_{{$order->id}}">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </a>
+                                    </td>
+                                </tr>
                                 <div class="modal fade" id="delete_orders_modal_{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -296,9 +294,9 @@
                                         </div>
                                     </div>
                                 </div>     
-                                
 
-                                    
+
+
 
                                 @endif
                                 @if($order->order_status == 'cancelled')
@@ -318,10 +316,10 @@
                                 </thead>
                                 <tbody>
                                     @endif
-                                    
-                                    
+
+
                                     <tr>
-                                        
+
                                         <td>{{$k++}}</td>
                                         <td>{{$order['customer']->owner_name}}</td>
                                         <td><?php
@@ -330,30 +328,28 @@
                                             $total_quantity = $total_quantity + $product['quantity'];
                                         }
                                         echo $total_quantity;
-                                        ?></td>
+                                            ?></td>
                                         <td>{{$order['customer']['phone_number1']}}</td>
                                         @if($order['delivery_location']['area_name'] !="")
                                         <td class="text-center">{{$order['delivery_location']['area_name']}}</td>
                                         @elseif($order['delivery_location']['area_name'] =="")
                                         <td class="text-center">{{$order['other_location']}}</td>
                                         @endif
-                                        <td><?php 
-                                            foreach($users as $u)
-                                            {
-                                                if($u['id'] == $order['created_by']){
+                                        <td><?php
+                                            foreach ($users as $u) {
+                                                if ($u['id'] == $order['created_by']) {
                                                     echo $u['first_name'];
                                                 }
                                             }
-                                        ?></td>
-                                        <td><?php 
-                                            foreach($users as $canceluser)
-                                            {
-                                                if($canceluser['id'] == $order['order_cancelled']['cancelled_by']){
+                                            ?></td>
+                                        <td><?php
+                                            foreach ($users as $canceluser) {
+                                                if ($canceluser['id'] == $order['order_cancelled']['cancelled_by']) {
                                                     echo $canceluser['first_name'];
                                                 }
                                             }
-                                        ?></td>
-                                        
+                                            ?></td>
+
                                         <td>{{$order['order_cancelled']['reason']}}</td>
                                         <td class="text-center">
                                             <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
@@ -362,7 +358,7 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            
+
                                             <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal_{{$order->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -401,14 +397,14 @@
                                         </div>
                                     </div>
                                 </div>     
-                                
+
 
                                 @endif
                                 @endforeach
                                 </tbody>
                             </table>
                             <span class="pull-right">
-                                <?php echo $allorders->render(); ?>
+<?php echo $allorders->render(); ?>
                             </span>
                         </div>
                         @endif
