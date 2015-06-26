@@ -122,3 +122,4 @@ Route::group(['middleware' => ['auth']], function() {
 
 
 
+Route::get('export/{type}', 'WelcomeController@exportExcel');
