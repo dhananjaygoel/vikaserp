@@ -14,11 +14,11 @@
                 <div class="clearfix">
                     <h1 class="pull-left">Unit</h1>
                     @if( Auth::user()->role_id == 0  )
-                    <div class="pull-right top-page-ui">
+<!--                    <div class="pull-right top-page-ui">
                         <a href="{{URL::action('UnitController@create')}}" class="btn btn-primary pull-right">
                             <i class="fa fa-plus-circle fa-lg"></i> Add New Unit
                         </a>
-                    </div>
+                    </div>-->
                     @endif
                 </div>
             </div>
@@ -47,7 +47,7 @@
 
                                         <th>Unit</th>
                                         @if( Auth::user()->role_id == 0  )
-                                        <th class="text-center">Actions</th>
+                                        <!--<th class="text-center">Actions</th>-->
                                         @endif
                                     </tr>
                                 </thead>
@@ -58,7 +58,7 @@
                                         <td class="col-md-1">{{$i++}}</td>
                                         <td>{{$units_data->unit_name}}</td>
                                         @if( Auth::user()->role_id == 0  )
-                                        <td class="text-center">
+<!--                                        <td class="text-center">
                                             <a href="{{ Url::action('UnitController@edit', ['id' => $units_data->id]) }}" class="table-link">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -72,7 +72,7 @@
                                                 </span>
                                             </a>
 
-                                        </td>
+                                        </td>-->
                                         @endif
                                     </tr>
 
