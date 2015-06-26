@@ -186,7 +186,7 @@
                                 <table id="add_product_table" class="table table-hover  ">
                                     <tbody>
                                         <tr class="headingunderline">
-                                            <td><span>Select Product</span></td>
+                                            <td><span>Select Product(Alias)</span></td>
                                             <td><span>Quantity</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Price</span></td>
@@ -198,7 +198,7 @@
 
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
-                                                    <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['product_category']->product_category_name}}" onfocus="product_autocomplete({{$key}});">
+                                                    <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['product_category']['product_sub_category']->alias_name}}" onfocus="product_autocomplete({{$key}});">
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}"  value="{{$product->product_category_id}}">
                                                     <i class="fa fa-search search-icon"></i>
                                                 </div>

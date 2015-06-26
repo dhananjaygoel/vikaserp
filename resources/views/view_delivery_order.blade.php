@@ -69,9 +69,10 @@
                                     </tr>
                                     <?php $grand = 0; ?>
                                     @foreach($delivery_data[0]['delivery_product'] as $product)
+                                    @if($product->order_type =='delivery_order')
                                     <tr>
-                                        <td> {{ $product['product_category']->product_category_name}}</td>
-                                        <td>{{$product->quantity}}</td>
+                                        <td> {{ $product['product_category']['product_sub_category']->alias_name}}</td>
+                                        <td>{{$product->present_shipping}}</td>
                                         <td>
                                             @foreach($units as $unit)
                                             @if($unit->id == $product->unit_id) {{ $unit->unit_name }} @endif
@@ -80,40 +81,56 @@
                                         <td>{{$product->price}}</td>
                                         <td>{{$product->remarks}}</td>
                                     </tr>
-                                    
-                                    <?php $grand = $grand + $product->quantity * $product->price; ?>
+
+                                    <?php
+                                    $grand = $grand + $product->present_shipping * $product->price;
+                                    $grand = $grand - $grand * $delivery_data[0]->vat_percentage / 100;
+                                    ?>
+                                    @endif
                                     @endforeach
 
                                 </tbody>
                             </table>
                             <table id="table-example" class="table table-hover customerview_table  ">
                                 <tbody>
-                                <!--<td><span>Plus VAT: </span>Yes **</td>-->
-                                </tr>
-                                <tr>
-                                    <td><span>VAT Percentage: </span>{{ $delivery_data[0]->vat_percentage }}</td>
-                                </tr>
-                                <tr>
-                                    <td><span>Grand Total: </span> {{ $grand }}</td>
-                                </tr>
-                                <tr><td><b>Vehicle Name:</b> {{ $delivery_data[0]->vehicle_number }} </td> </tr>
-                                <tr><td><b>Driver Name:</b> {{ $delivery_data[0]->driver_name }}  </td> </tr>
-                                <tr><td><b>Driver Contact:</b> {{ $delivery_data[0]->driver_contact_no }} </td> </tr>
-                                <tr>
-                                    <td><span>Delivery Location: </span>
+                                    @if($delivery_data[0]->vat_percentage != "" || $delivery_data[0]->vat_percentage > 0)  
+                                    <tr>
+                                        <td><span>Plus VAT: </span>    
+                                        Yes                                            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span>VAT Percentage: </span>{{ $delivery_data[0]->vat_percentage }}</td>
+                                    </tr>
+                                    @else
+                                    <tr>
+                                        <td><span>Plus VAT: </span>    
+                                        No                                            
+                                        </td>
+                                    </tr>
+                                    @endif                                    
+                                    
+                                    <tr>
+                                        <td><span>Grand Total: </span> {{ $grand }}</td>
+                                    </tr>
+                                    <tr><td><b>Vehicle Name:</b> {{ $delivery_data[0]->vehicle_number }} </td> </tr>
+                                    <tr><td><b>Driver Name:</b> {{ $delivery_data[0]->driver_name }}  </td> </tr>
+                                    <tr><td><b>Driver Contact:</b> {{ $delivery_data[0]->driver_contact_no }} </td> </tr>
+                                    <tr>
+                                        <td><span>Delivery Location: </span>
 
-                                        @foreach($delivery_locations as $location)
-                                        @if($location->id == $delivery_data[0]->delivery_location_id)
+                                            @foreach($delivery_locations as $location)
+                                            @if($location->id == $delivery_data[0]->delivery_location_id)
 
-                                        {{$location->area_name}}
-                                        @endif
-                                        @endforeach
+                                            {{$location->area_name}}
+                                            @endif
+                                            @endforeach
 
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><span>Remark: </span>{{ $delivery_data[0]->remarks }}</td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span>Remark: </span>{{ $delivery_data[0]->remarks }}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

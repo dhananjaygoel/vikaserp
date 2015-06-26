@@ -38,13 +38,13 @@ class DeliveryOrder extends Model implements AuthenticatableContract, CanResetPa
 
 
     public static $order_to_delivery_challan_rules = array(
-        'billno' => 'required',
-        'discount' => 'required',
-        'freight' => 'required',
-        'loading' => 'required',
-        'loadedby' => 'required',
-        'labour' => 'required',
-        'challan_remark' => 'required'
+//        'billno' => 'required',
+//        'discount' => 'required',
+//        'freight' => 'required',
+//        'loading' => 'required',
+//        'loadedby' => 'required',
+//        'labour' => 'required',
+//        'challan_remark' => 'required'
     );
     
 

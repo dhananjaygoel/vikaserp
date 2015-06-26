@@ -175,15 +175,11 @@ class DeliveryOrderController extends Controller {
      * @return Response
      */
     public function show($id) {
-        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.product_category')->where('id', $id)->get();
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.product_category.product_sub_category')->where('id', $id)->get();
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
 
-//        echo '<pre>';
-//        print_r($delivery_data->toArray());
-//        echo '</pre>';
-//        exit;
         return view('view_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
     }
 
@@ -196,14 +192,9 @@ class DeliveryOrderController extends Controller {
     public function edit($id) {
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
-        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.product_category')->where('id', $id)->get();
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.product_category.product_sub_category')->where('id', $id)->get();
         $customers = Customer::all();
         $pending_orders= $this->pending_quantity_order($id);
-
-//        echo '<pre>';
-//        print_r($delivery_data->toArray());
-//        echo '</pre>';
-//        exit;
 
         return view('edit_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'pending_orders'));
     }

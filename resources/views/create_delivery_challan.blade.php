@@ -73,7 +73,7 @@
                                 <table id="add_product_table_delivery_challan" class="table table-hover">
                                     <tbody> 
                                         <tr class="headingunderline">
-                                            <td><span>Select Product</span></td>
+                                            <td><span>Select Product(Alias)</span></td>
                                             <td><span>Actual Quantity</span></td>
                                             <td><span>Actual Pieces</span></td>                                            
                                             <td><span>Presenting Shipping</span></td>

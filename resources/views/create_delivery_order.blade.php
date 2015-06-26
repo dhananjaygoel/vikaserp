@@ -27,11 +27,6 @@
 
                     <div class="main-box-body clearfix">
 
-                        <?php
-//                                echo'<pre>';
-//                                print_r($order->toArray());
-//                                echo '</pre>';exit;
-                        ?>
                         {!! Form::open(array('method'=>'post','url'=>url('create_delivery_order',$order->id), 'id'=>'create_delivery_order_form'))!!}
 
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
@@ -56,9 +51,9 @@
                                 <tr><td><span><b>Date: </b></span> <?php echo date('d F, Y'); ?></td></tr>
                                 @if($order->order_source == 'warehouse')
                                 <tr><td><span><b>Warehouse: </b></span> yes</td></tr>
-                                <tr><td><span><b>Supplier Name:</b></span> Warehouse</td></tr>
+                                <!--<tr><td><span><b>Supplier Name:</b></span> Warehouse</td></tr>-->
                                 @elseif($order->order_source == 'supplier')
-                                <tr><td><span><b>Warehouse: </b></span> no</td></tr>
+                                <!--<tr><td><span><b>Warehouse: </b></span> no</td></tr>-->
                                 @foreach($customers as $customer)
                                 @if($customer->id == $order->supplier_id)
                                 <tr><td><span><b>Supplier Name:</b></span>  {{$customer->owner_name}} </td></tr>
@@ -70,7 +65,11 @@
                                 <tr><td><span><b>Customer Name :</b></span> {{$customer->owner_name}} </td></tr>
                                 <tr><td><span><b>Contact Person : </b></span> {{$customer->contact_person}}</td></tr>
                                 <tr><td><span><b>Mobile Number : </b></span>{{$customer->phone_number1}}</td></tr>
+
+                                @if($customer->credit_period > 0 || $customer->credit_period != 0)
                                 <tr> <td><span><b>Credit Period : </b></span>{{$customer->credit_period}}</td></tr>   
+                                @endif
+
                                 @endif
                                 @endforeach 
                                 <tr><td><span><b>Delivery Location : </b></span>
@@ -99,11 +98,11 @@
                                 <table id="add_product_table_delivery_order" class="table table-hover  ">
                                     <tbody>
                                         <tr class="headingunderline">
-                                            <td><span>Select Product</span></td>
+                                            <td><span>Select Product(Alias)</span></td>
                                             <td><span>Quantity</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Present Shipping</span></td>
-                                            
+
                                             <td><span>Price</span></td>
                                             <td><span>Pending Order</span></td>
                                             <td><span>Remark</span></td>
@@ -115,29 +114,26 @@
 
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
-                                                    {{$product['product_category']->product_category_name}}
+                                                    {{$product['product_category']['product_sub_category']->alias_name }}
                                                     <input class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['product_category']->product_category_name}}" readonly="readonly" >
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}"  value="{{$product->product_category_id}}" readonly="readonly">
-                                                    
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    
                                                     {{$product->quantity}}
-                                                    
                                                     <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="hidden" >
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group "> 
-                                                        @foreach($units as $unit)
-                                                        @if($product->unit_id == $unit->id)
-                                                        {{$unit->unit_name}}
-                                                        <input type="hidden" value="{{$unit->id}}" name="product[{{$key}}][units]">
-                                                        @endif
-                                                        @endforeach
-                                                    
+                                                    @foreach($units as $unit)
+                                                    @if($product->unit_id == $unit->id)
+                                                    {{$unit->unit_name}}
+                                                    <input type="hidden" value="{{$unit->id}}" name="product[{{$key}}][units]">
+                                                    @endif
+                                                    @endforeach
+
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -169,7 +165,7 @@
                                                     @endif
                                                 </div>
                                             </td>
-                                            
+
                                             <td class="col-md-4">
                                                 <div class="form-group">
                                                     {{$product->remarks}}
@@ -210,24 +206,9 @@
                                 </table>
                             </div>
                         </div>
-
-
-
-
-
-
-
                         <div class="clearfix"></div>
-
-                        
-
-
-
                         <table id="table-example" class="table table-hover  ">
-
-
                             <tbody>
-
                                 @if($order->vat_percentage == 0)
                                 <tr class="cdtable">
                                     <td class="cdfirst">Plus VAT:</td>
@@ -239,21 +220,20 @@
                                     <td>Yes</td>
                                 </tr>
                                 <tr class="cdtable">
-                                    
+
                                     <td class="cdfirst">VAT Percentage:</td>
-                                    
+
                                     <td>
                                         {{$order->vat_percentage}}
                                         <input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->vat_percentage}}" type="hidden" readonly="readonly" onblur="grand_total_delivery_order();">
                                     </td>
                                 </tr>
                                 @endif
-
                                 <tr class="cdtable">
                                     <td class="cdfirst">Grand Total:</td>
-                                    
+
                                     <td>
-                                        <input type="text" name="grand_total" id ="grand_total" class="form-control" value="{{$total}}" readonly="readonly">
+                                        <input type="text" name="grand_total" id ="grand_total" class="form-control" value="" readonly="readonly">
                                     </td>
                                 </tr>
                                 <tr class="cdtable">
@@ -296,7 +276,7 @@
                                 <input type="text" name="expected_date" class="form-control" value="{{date('Y-m-d', strtotime($order->expected_delivery_date))}}" readonly="readonly">
                             </div>
                         </div>
-                        
+
 
 
                         <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 

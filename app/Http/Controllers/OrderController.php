@@ -427,13 +427,13 @@ class OrderController extends Controller {
 
     public function create_delivery_order($id) {
         
-        $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.product_category', 'customer')->first();
+        $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.product_category.product_sub_category', 'customer')->first();
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         $customers = Customer::all();
         $pending_orders = $this->pending_quantity_order($id);
 //        echo '<pre>';
-//        print_r($pending_orders);
+//        print_r($order->toArray());
 //        echo '</pre>';
 //        exit;
         return View::make('create_delivery_order', compact('order', 'delivery_location', 'units', 'customers', 'pending_orders'));
