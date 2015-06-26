@@ -76,13 +76,13 @@
                                     <table id="add_product_table" class="table table-hover  ">
                                         <tbody>
                                             <tr class="headingunderline">
-                                                <td><span>Select Product</span></td>
+                                                <td><span>Select Product(Alias)</span></td>
                                                 <td><span>Quantity</span></td>
                                                 <td><span>Unit</span></td>
                                                 <td><span>Price</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
-                                            <?php for ($i = 1; $i <= 6; $i++) { ?>
+                                            <?php for ($i = 1; $i <= 10; $i++) { ?>
                                                 <tr id="add_row_{{$i}}" class="add_product_row">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
@@ -155,7 +155,9 @@
                                     <select class="form-control" name="add_inquiry_location" id="add_inquiry_location">
                                         <option value="" selected="">Delivery Location</option>
                                         @foreach($delivery_locations as $delivery_location)
+                                        @if($delivery_location->id!=0)
                                         <option value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
+                                        @endif
                                         @endforeach
                                         <option id="other_location" value="other">Other</option>
                                     </select>

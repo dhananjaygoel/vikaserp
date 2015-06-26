@@ -20,8 +20,9 @@
                                 <form method="GET" action="{{url('inquiry')}}">
                                     <select class="form-control" id="inquiry_filter" name="inquiry_filter" onchange="this.form.submit();">
                                         <option value="" selected="">Status</option>
-                                        <option value="pending">Pending</option>
-                                        <option value="completed">Completed</option>
+                                        <option <?php if (Input::get('inquiry_filter') == 'Pending') echo 'selected=""'; ?> value="Pending">Pending</option>
+                                    <option <?php if (Input::get('inquiry_filter') == 'Completed') echo 'selected=""'; ?> value="Completed">Completed</option>
+                                        
                                         <!--<option value="Canceled">Canceled</option>-->
                                     </select>
                                 </form>

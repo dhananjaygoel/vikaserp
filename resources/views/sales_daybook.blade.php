@@ -1,8 +1,11 @@
 
 <?php
+
 //echo'<pre>';
-//print_r($allorders);
+//print_r($allorders[0]->toArray());
 //echo '</pre>';
+
+
 //exit;
 ?>
 @extends('layouts.master')
@@ -124,7 +127,7 @@
                                             @if( Auth::user()->role_id == 1)
                                             <th>{{$k}}</th>
                                             @endif
-                                            <td >{{$challan["customer"]->owner_name}}</td>
+                                            <td >{{ date('d F, Y',strtotime($challan['created_at']))}}</td>
                                             <td >
                                                 @if($challan->serial_number == '')
                                                 --

@@ -120,7 +120,7 @@
                                             <td class="col-md-2">
                                                 <div class="form-group">
                                                     {{$product->price}}
-                                                    <?php $total = $total + $product->price; ?>
+                                                    <?php $total = $total + $product->price * $product->quantity; ?>
                                                 </div>
                                             </td>
                                             <td class="col-md-4">

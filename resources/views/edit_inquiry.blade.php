@@ -119,7 +119,7 @@
                                 <table id="add_product_table" class="table table-hover  ">
                                     <tbody>
                                         <tr class="headingunderline">
-                                            <td><span>Select Product</span></td>
+                                            <td><span>Select Product(Alias)</span></td>
                                             <td><span>Quantity</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Price</span></td>
@@ -129,7 +129,7 @@
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
-                                                    <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['product_category']->product_category_name}}">
+                                                    <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['product_category']['product_sub_category']->alias_name}}">
                                                     <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}">
                                                     <i class="fa fa-search search-icon"></i>
                                                 </div>
@@ -277,7 +277,7 @@
                             <label for="date">Expected Delivery Date: </label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                <input type="text" name="date" class="form-control" id="expected_delivery_date" value="{{date('m-d-Y', strtotime($inquiry->expected_delivery_date))}}" >
+                                <input type="text" name="expected_date" class="form-control" id="expected_delivery_date" value="{{date('m-d-Y', strtotime($inquiry->expected_delivery_date))}}" >
                             </div>
                         </div>
                         <div class="clearfix"></div>
