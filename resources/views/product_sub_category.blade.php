@@ -18,7 +18,7 @@
                                     <select class="form-control" name="product_filter" onchange="this.form.submit()">
                                         <option value="" selected="">--Product category--</option>
                                         @foreach($product_type as $prod_type)
-                                        <option <?php if (Input::get('product_filter') == $prod_type->id) echo 'selected="selected"'; ?> value="{{$prod_type->id}}"> {{$prod_type->name}}</option>
+                                        <option <?php if(Input::get('product_filter') == $prod_type->id) echo 'selected="selected"'; ?> value="{{$prod_type->id}}"> {{$prod_type->name}}</option>
                                         @endforeach
                                     </select> 
                                     <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
@@ -70,7 +70,9 @@
                                         <th>Product Name</th>
                                         <th>Alias Name</th>
                                         <th>Size</th>
+                                        @if(Input::get('product_filter') != 2)
                                         <th>Thickness</th>
+                                        @endif
                                         <th>Weight</th>
                                         
                                         <th class="col-md-2">Difference</th>  
@@ -97,6 +99,7 @@
                                         <td>{{ $produ_sub['product_category']->product_category_name }} </td>
                                         <td>{{ $produ_sub->alias_name }}</td>
                                         <td>{{ $produ_sub->size }}</td>
+                                        @if(Input::get('product_filter') != 2)
                                         <td>
                                             @if($produ_sub['product_category']->product_type_id == 1)
                                             {{ $produ_sub->thickness}}
@@ -104,6 +107,7 @@
                                             {{'--'}}
                                             @endif
                                         </td>
+                                        @endif
                                         <td>{{ $produ_sub->weight }} KG</td>
 <!--                                        <td>
                                             @foreach($units as $unit)
