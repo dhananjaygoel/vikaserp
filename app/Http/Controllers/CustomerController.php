@@ -47,7 +47,7 @@ class CustomerController extends Controller {
 //        $user_id=[1,2,3];
 //        $this->url_access($user_id);
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::to('orders');
         }
         $q = Customer::query();
         $q->where('customer_status', '=', 'permanent');

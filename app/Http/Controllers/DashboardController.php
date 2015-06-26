@@ -19,8 +19,9 @@ class DashboardController extends Controller {
 
     public function index() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 2) {
-            return Redirect::to('customers')->with('error', 'You do not have permission.');
+            return Redirect::to('customers');
         }
+        
         $order = Order::all()->count();
         $pending_order = Order::where('order_status', 'pending')->count();
         $inquiry = Inquiry::all()->count();
