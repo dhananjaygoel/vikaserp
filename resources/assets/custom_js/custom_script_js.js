@@ -343,13 +343,14 @@ function calculate_grand_total() {
     }
     var vat_val = 0;
 
-    if ($('#optionsRadios6').is(':checked')) {
-        vat_val = (parseInt(total_price) * $('#vat_percentage').val()) / 100;
+    if ($('#optionsRadios6').is(':checked') || parseFloat($("#vat_percentage").val())>0) {
+        vat_val = (parseInt(total_price) * parseFloat($('#vat_percentage').val())) / 100;
     }
     if ($('#optionsRadios5').is(':checked')) {
         vat_val = 0;
     }
-    var grand_total = parseInt(total_price) + parseInt(vat_val);
+    
+    var grand_total = parseInt(total_price) + parseFloat(vat_val);
 
     $('#grand_total').val(grand_total);
 }

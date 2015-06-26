@@ -154,7 +154,7 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    
+                                                    @if(count($pending_orders)>0)
                                                     @foreach($pending_orders as $porder)
                                                     @if($porder['product_id'] == $product->product_category_id && $porder['id']== $product->id)
                                                     <input type="hidden" value="{{$porder['total_pending_quantity']}}" id="pending_qunatity_value_{{$key}}">
@@ -162,6 +162,11 @@
                                                     </div>
                                                     @endif
                                                     @endforeach
+                                                    @else
+                                                    <input type="hidden" value="{{$product->quantity}}" id="pending_qunatity_value_{{$key}}">
+                                                    <div id="pending_qunatity_{{$key}}"><span class="text-center">{{$product->quantity}}</span>
+                                                    </div>
+                                                    @endif
                                                 </div>
                                             </td>
                                             

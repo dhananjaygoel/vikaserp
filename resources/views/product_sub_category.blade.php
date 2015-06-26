@@ -104,7 +104,7 @@
                                             {{'--'}}
                                             @endif
                                         </td>
-                                        <td>{{ $produ_sub->weight }}</td>
+                                        <td>{{ $produ_sub->weight }} KG</td>
 <!--                                        <td>
                                             @foreach($units as $unit)
                                             @if($unit->id ==  $produ_sub->unit_id)
