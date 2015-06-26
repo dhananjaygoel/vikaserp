@@ -31,7 +31,7 @@
                                     </tr>
                                     <tr><td><span>Contact Person: </span>{{ $delivery_data[0]['customer']->contact_person }}</td></tr>
                                     <tr>
-                                        <td><span>Date:</span> 30 April 2015</td>
+                                        <td><span>Date:</span> {{ substr($delivery_data[0]->created_at, 0,10) }}</td>
                                     </tr>
                                     <tr><td><span>Serial Number: </span> 
                                             @if($delivery_data[0]->serial_no != "")
@@ -39,7 +39,8 @@
                                             @else 
                                             {{'--'}}
                                             @endif
-                                        </td></tr>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td><span>Mobile Number: </span>{{$delivery_data[0]['customer']->phone_number1}}</td>
                                     </tr>
@@ -52,7 +53,7 @@
                                 <tbody>   
                                     <tr class="headingunderline">
                                         <td>
-                                            <span>Product</span>
+                                            <span>Product(Alias)</span>
                                         </td>
                                         <td>
                                             <span>Quantity</span>
@@ -66,6 +67,7 @@
 
                                         <td><span>Remark</span></td>
                                     </tr>
+                                    <?php $grand = 0; ?>
                                     @foreach($delivery_data[0]['delivery_product'] as $product)
                                     <tr>
                                         <td> {{ $product['product_category']->product_category_name}}</td>
@@ -78,19 +80,21 @@
                                         <td>{{$product->price}}</td>
                                         <td>{{$product->remarks}}</td>
                                     </tr>
+                                    
+                                    <?php $grand = $grand + $product->quantity * $product->price; ?>
                                     @endforeach
 
                                 </tbody>
                             </table>
                             <table id="table-example" class="table table-hover customerview_table  ">
                                 <tbody>
-                                <td><span>Plus VAT: </span>Yes **</td>
+                                <!--<td><span>Plus VAT: </span>Yes **</td>-->
                                 </tr>
                                 <tr>
                                     <td><span>VAT Percentage: </span>{{ $delivery_data[0]->vat_percentage }}</td>
                                 </tr>
                                 <tr>
-                                    <td><span>Grand Total: </span> $25000</td>
+                                    <td><span>Grand Total: </span> {{ $grand }}</td>
                                 </tr>
                                 <tr><td><b>Vehicle Name:</b> {{ $delivery_data[0]->vehicle_number }} </td> </tr>
                                 <tr><td><b>Driver Name:</b> {{ $delivery_data[0]->driver_name }}  </td> </tr>

@@ -1,6 +1,17 @@
 @extends('layouts.master')
 @section('title','Delivery Order')
 @section('content')
+
+
+<?php
+
+
+//echo '<pre>';
+//print_r($delivery_data->toArray());
+//echo '</pre>';
+//exit;
+
+?>
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
@@ -75,7 +86,7 @@
                                     @foreach($delivery_data as $delivery)
                                     <tr>
                                         <td>{{ $i++ }}</td>
-                                        <td>{{ $delivery->estimated_delivery_date }}</td>
+                                        <td>{{ substr($delivery->created_at, 0,10) }}</td>
                                         <td>
                                             @if($delivery->serial_no != "")
                                             {{ $delivery->serial_no }}
