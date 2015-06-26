@@ -25,7 +25,7 @@ class DeliveryChallanController extends Controller {
      * @return Response
      */
     public function index() {
-        $allorders = DeliveryChallan::where('challan_status', '=', 'pending')->with('customer', 'all_order_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(2);
+        $allorders = DeliveryChallan::where('challan_status', '=', 'pending')->with('customer', 'all_order_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(10);
 
         $allorders->setPath('delivery_challan');
         return view('delivery_challan', compact('allorders'));

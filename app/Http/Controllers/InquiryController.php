@@ -35,9 +35,9 @@ class InquiryController extends Controller {
         }
         if ((isset($_GET['inquiry_filter'])) && $_GET['inquiry_filter'] != '') {
             $inquiries = Inquiry::where('inquiry_status', '=', $_GET['inquiry_filter'])
-                            ->with('customer', 'delivery_location', 'inquiry_products')->orderBy('created_at', 'desc')->Paginate(5);
+                            ->with('customer', 'delivery_location', 'inquiry_products')->orderBy('created_at', 'desc')->Paginate(10);
         } else {
-            $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products')->orderBy('created_at', 'desc')->Paginate(5);
+            $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products')->orderBy('created_at', 'desc')->Paginate(10);
         }
         $inquiries->setPath('inquiry');
         return view('inquiry', compact('inquiries'));

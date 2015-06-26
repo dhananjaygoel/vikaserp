@@ -37,13 +37,13 @@ class OrderController extends Controller {
         if ((isset($_GET['order_filter'])) && $_GET['order_filter'] != '') {
             if ($_GET['order_filter'] == 'cancelled') {
                 $allorders = Order::where('order_status', '=', $_GET['order_filter'])
-                                ->with('customer', 'delivery_location', 'all_order_products', 'order_cancelled')->orderBy('created_at', 'desc')->Paginate(2);
+                                ->with('customer', 'delivery_location', 'all_order_products', 'order_cancelled')->orderBy('created_at', 'desc')->Paginate(10);
             } else {
                 $allorders = Order::where('order_status', '=', $_GET['order_filter'])
-                                ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(2);
+                                ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
             }
         } else {
-            $allorders = Order::where('order_status', '=', 'pending')->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(2);
+            $allorders = Order::where('order_status', '=', 'pending')->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
         }
 
         $users = User::all();

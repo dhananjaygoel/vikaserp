@@ -363,7 +363,7 @@ class PurchaseOrderController extends Controller {
         if (Auth::user()->role_id > 1) {
             $q->where('is_view_all', '=', 0);
         }
-        $purchase_orders = $q->Paginate(5);
+        $purchase_orders = $q->Paginate(10);
         $purchase_orders->setPath('purchase_order_report');
         $all_customers = Customer::all();
         return view('purchase_order_report', compact('purchase_orders', 'all_customers'));
