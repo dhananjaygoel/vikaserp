@@ -1,3 +1,4 @@
+
 @extends('layouts.master')
 @section('title','Inquiry')
 @section('content')
@@ -36,10 +37,11 @@
                                         <tr>
                                             <td><span>Phone Number: </span>{{$inquiry['customer']->phone_number1}}</td>
                                         </tr>
+                                        @if($inquiry['customer']->credit_period !='' || $inquiry['customer']->credit_period> 0)
                                         <tr>
                                             <td><span>Credit Period: </span>{{$inquiry['customer']->credit_period}}</td>
                                         </tr>
-
+                                        @endif
                                         <tr>
                                             <td><span class="underline">Product Details </span></td>
 
@@ -49,7 +51,7 @@
                                 <table id="table-example" class="table customerview_table">
                                     <tbody>
                                         <tr class="headingunderline">
-                                            <td><span> Product</span></td>
+                                            <td><span> Product(Alias)</span></td>
                                             <td><span> Quantity</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Price</span></td>
@@ -58,7 +60,7 @@
                                         </tr>
                                         @foreach($inquiry['inquiry_products'] as $product_data)
                                         <tr>
-                                            <td>{{$product_data['product_category']->product_category_name}}</td>
+                                            <td>{{$product_data['product_category']['product_sub_category']->alias_name}}</td>
                                             <td>{{$product_data->quantity}}</td>
                                             <td>{{$product_data['unit']->unit_name}}</td>
                                             <td>{{$product_data->price}}</td>
@@ -88,12 +90,12 @@
                                         @endif
 
                                         <tr>
-                                            <td><span>Grand Total: </span> {{$inquiry['inquiry_products']->sum('price')}}</td>
+                                            <td><span>Grand Total: </span> <?php $total = $inquiry['inquiry_products']->sum('price') * $product_data->quantity; echo $total; ?></td>
 
                                         </tr>
 
                                         <tr>
-                                            <td><span>Expected Delivery Date: </span>{{$inquiry->expected_delivery_date}}</td>
+                                            <td><span>Expected Delivery Date: </span>{{date('d F,Y',strtotime($inquiry->expected_delivery_date))}}</td>
 
                                         </tr>
                                         <tr>
@@ -107,12 +109,14 @@
 
 
                             </div>
+                            
                             <hr>
                             <div>
-                                <button title="SMS would be sent to Party and Relationship Manager" type="button" class="btn btn-primary smstooltip" >Send SMS</button><span title="SMS has been sent 5 times" class="badge enquirybadge smstooltip">5</span>
+                                <button title="SMS would be sent to Party and Relationship Manager" type="button" class="btn btn-primary smstooltip" >Send SMS</button><span title="SMS has been sent 5 times" class="badge enquirybadge smstooltip">0</span>
 
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>

@@ -140,7 +140,7 @@
                                 <table id="add_product_table" class="table table-hover  ">
                                     <tbody>
                                         <tr class="headingunderline">
-                                            <td><span>Select Product</span></td>
+                                            <td><span>Select Product(Alias)</span></td>
                                             <td><span>Quantity</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Price</span></td>
@@ -150,7 +150,7 @@
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
-                                                    <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['product_category']->product_category_name}}">
+                                                    <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['product_category']['product_sub_category']->alias_name}}">
                                                     <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}">
                                                     <i class="fa fa-search search-icon"></i>
                                                 </div>
@@ -222,17 +222,26 @@
                                 <label for="location">Delivery Location:</label>
                                 <select class="form-control" name="add_inquiry_location" id="add_inquiry_location">
                                     <option value="">Delivery Location</option>
-                                    @foreach($delivery_location as $location)
+                                    @if($inquiry->delivery_location_id != 0)
+                                    
+                                    @foreach($delivery_location as $location)                                       
+                                    
                                     @if($inquiry->delivery_location_id == $location->id)
                                     <option value="{{$location->id}}" selected="">{{$location->area_name}}</option>
                                     @else
                                     <option value="{{$location->id}}">{{$location->area_name}}</option>
                                     @endif
+                                    
                                     @endforeach
+                                    <option id="other_location" value="other">Other</option>
+                                    
+                                    @else
+                                    
                                     @if($inquiry->delivery_location_id == 0)
                                     <option id="other_location" value="other" selected="">Other</option>
                                     @else
-                                    <option id="other_location" value="other">Other</option>
+                                    
+                                    @endif
                                     @endif
                                 </select>
                             </div>
@@ -307,7 +316,7 @@
                             <label for="date">Expected Delivery Date: </label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                <input type="text" name="date" class="form-control" id="expected_delivery_date" value="{{date('m-d-Y', strtotime($inquiry->expected_delivery_date))}}" >
+                                <input type="text" name="expected_date" class="form-control" id="expected_delivery_date" value="{{date('m-d-Y', strtotime($inquiry->expected_delivery_date))}}" >
                             </div>
                         </div>
                         <div class="clearfix"></div>
@@ -316,6 +325,9 @@
                             <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3">{{$inquiry->remarks}}</textarea>
                         </div>
                         <button type="button" class="btn btn-primary" >Save and Send SMS</button>
+                        <div class="checkbox">
+                            <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email</span></label>
+                        </div>
                         <hr>
                         <div>
                             <input type="submit" class="btn btn-primary form_button_footer" value="Submit">

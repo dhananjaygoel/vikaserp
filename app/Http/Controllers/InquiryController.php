@@ -21,6 +21,7 @@ use Hash;
 use App\ProductSubCategory;
 use App\Order;
 use App\AllOrderProducts;
+use DateTime;
 
 class InquiryController extends Controller {
 
@@ -64,6 +65,7 @@ class InquiryController extends Controller {
      */
     public function store(InquiryRequest $request) {
         $input_data = Input::all();
+//    echo date_format(date_create('26-06-2015'), 'Y-m-d');exit;
         $i = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
@@ -157,7 +159,11 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category', 'customer')->first();
+        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category.product_sub_category', 'customer')->first();
+//        echo '<pre>';
+//        print_r($inquiry->toArray());
+//        echo '</pre>';
+//        exit;
         return view('inquiry_details', compact('inquiry'));
     }
 
@@ -171,7 +177,7 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category', 'customer')->first();
+        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category.product_sub_category', 'customer')->first();
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         return view('edit_inquiry', compact('inquiry', 'delivery_location', 'units'));
@@ -185,6 +191,17 @@ class InquiryController extends Controller {
      */
     public function update($id, InquiryRequest $request) {
         $input_data = Input::all();
+
+//
+//
+//        $test = new DateTime($input_data['expected_date']);
+//        echo date_format($test, 'Y-m-d');
+//
+//
+//
+////        echo $input_data['expected_date'] . 'date ' . date('Y-m-d', strtotime($input_data['expected_date']));
+//        exit;
+
         $i = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
@@ -194,6 +211,13 @@ class InquiryController extends Controller {
         }
         if ($i == $j) {
             return Redirect::back()->with('flash_message', 'Please insert product details');
+        }
+        if ($input_data['vat_status'] == 'include_vat') {
+            $vat_price = '';
+        }
+
+        if ($input_data['vat_status'] == 'exclude_vat') {
+            $vat_price = $input_data['vat_percentage'];
         }
         $customers = Customer::find($input_data['customer_id']);
         if ($input_data['customer_status'] == "new_customer") {
@@ -224,8 +248,8 @@ class InquiryController extends Controller {
             'customer_id' => $customer_id,
             'created_by' => Auth::id(),
             'delivery_location_id' => $input_data['add_inquiry_location'],
-            'vat_percentage' => $input_data['vat_percentage'],
-            'expected_delivery_date' => date_format(date_create($input_data['date']), 'Y-m-d'),
+            'vat_percentage' => $vat_price,
+            'expected_delivery_date' => date_format(date_create($input_data['expected_date']), 'Y-m-d'),
             'remarks' => $input_data['inquiry_remark'],
             'inquiry_status' => "Pending"
         ]);
@@ -255,7 +279,7 @@ class InquiryController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        if (Auth::user()->role_id != 0 ) {
+        if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (Hash::check(Input::get('password'), Auth::user()->password)) {
@@ -321,13 +345,13 @@ class InquiryController extends Controller {
 
         $product = ProductCategory::with('product_sub_categories')->where('id', Input::get('added_product_id'))->first();
         $units = Units::all();
-           
+
         $unit = array();
         $i = 0;
-        foreach ($units as $u){
-           $unit[$i]['id'] =  $u->id;
-           $unit[$i]['unit_name'] =  $u->unit_name;
-           $i++;
+        foreach ($units as $u) {
+            $unit[$i]['id'] = $u->id;
+            $unit[$i]['unit_name'] = $u->unit_name;
+            $i++;
         }
 
         $prod = array();
@@ -336,31 +360,33 @@ class InquiryController extends Controller {
         $prod[$i]['unit_id'] = $product['product_sub_categories'][0]->unit_id;
         $prod[$i]['price'] = $product->price;
 
-        
-        echo json_encode(array('prod' => $prod, 'unit'=> $unit));
+
+        echo json_encode(array('prod' => $prod, 'unit' => $unit));
         exit;
     }
+
     /*
      * Inquiery to Order
      * place order
      */
-    function place_order($id){  
+
+    function place_order($id) {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $inquiry = Inquiry::where('id', '=', $id)->where(['inquiry_status' => 'Completed'])->get();
-        if(count($inquiry)>0){
+        if (count($inquiry) > 0) {
             return redirect('inquiry')->with('flash_message', 'Please select other inquiry, order is generated for this inquiry.');
         }
-        
-        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category', 'customer')->first();
+
+        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category.product_sub_category', 'customer')->first();
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         $customers = Customer::all();
-        return view('place_order', compact('inquiry','customers' , 'delivery_location', 'units'));        
+        return view('place_order', compact('inquiry', 'customers', 'delivery_location', 'units'));
     }
-    
-    function store_place_order($id,InquiryRequest $request){
+
+    function store_place_order($id, InquiryRequest $request) {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -397,6 +423,15 @@ class InquiryController extends Controller {
             $validator = Validator::make($input_data, Customer::$existing_customer_inquiry_rules);
             if ($validator->passes()) {
                 $customer_id = $input_data['autocomplete_customer_id'];
+
+                //send mail
+                if (isset($input_data['send_email'])) {
+                    $customers = Customer::find($customer_id);
+
+                    Mail::send('emails.order_complete_email', ['key' => $customers->owner_name], function($message) {
+                        $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Order details created from Inquiry');
+                    });
+                }
             } else {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
@@ -426,7 +461,7 @@ class InquiryController extends Controller {
         $order->delivery_location_id = $input_data['add_inquiry_location'];
         $order->vat_percentage = $vat_price;
 //        $order->estimated_delivery_date = date_format(date_create($input_data['estimated_date']), 'Y-m-d');
-        $order->expected_delivery_date = date_format(date_create($input_data['date']), 'Y-m-d');
+        $order->expected_delivery_date = date_format(date_create($input_data['expected_date']), 'Y-m-d');
         $order->remarks = $input_data['inquiry_remark'];
         $order->order_status = "Pending";
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
@@ -450,19 +485,19 @@ class InquiryController extends Controller {
                 $add_order_products = AllOrderProducts::create($order_products);
             }
         }
-        Inquiry::where('id', '=', $id)->update(['inquiry_status' => 'Completed']);        
+        Inquiry::where('id', '=', $id)->update(['inquiry_status' => 'Completed']);
         return redirect('inquiry')->with('flash_success_message', 'One Order successfully generated for Inquiry.');
-        
     }
-    
-    
+
     /*
      * Price calculation
      */
-    function calculate_price($data){
+
+    function calculate_price($data) {
         echo '<pre>';
         print_r($data);
         echo '</pre>';
         exit;
     }
+
 }
