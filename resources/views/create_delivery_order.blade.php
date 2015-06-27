@@ -83,15 +83,6 @@
                                     </td></tr>
                             </tbody>
                         </table>
-                        <div class="form-group">
-
-                            <br/>                               
-                            <div class="clearfix"></div>
-
-                        </div>
-
-
-
                         <div class="inquiry_table col-md-12">
                             <div class="table-responsive">
                                 <div id="flash_error_present_shipping"></div>

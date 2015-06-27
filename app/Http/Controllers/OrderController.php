@@ -49,7 +49,6 @@ class OrderController extends Controller {
                 $allorders = Order::where('customer_id', '=', $_GET['party_filter'])
                                 ->where('order_status', '=', 'pending')
                                 ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
-
             } elseif ((isset($_GET['fulfilled_filter'])) && $_GET['fulfilled_filter'] != '') {
                 if ($_GET['fulfilled_filter'] == '0') {
                     $allorders = Order::where('order_status', '=', 'pending')
@@ -86,7 +85,6 @@ class OrderController extends Controller {
                                     function($q) use($size) {
                                         $q->where('quantity', '=', $size)->where('order_type', 'order');
                                     }))->Paginate(10);
-
             } else {
 
                 $allorders = Order::where('order_status', '=', 'pending')->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
@@ -513,13 +511,15 @@ class OrderController extends Controller {
                 array_push($pending_orders, $temp);
             }
         }
-
-
         return $pending_orders;
     }
 
     public function store_delivery_order($id) {
         $input_data = Input::all();
+//        echo '<pre>';
+//        print_r($input_data);
+//        echo '</pre>';
+//        exit;
         $validator = Validator::make($input_data, Order::$order_to_delivery_order_rules);
         if ($validator->passes()) {
             $user = Auth::user();
@@ -572,6 +572,7 @@ class OrderController extends Controller {
             $pending_quantity = 0;
             $total_quantity = 0;
             if (count($delivery_orders) > 0) {
+
                 foreach ($delivery_orders as $del_order) {
                     $all_order_products = AllOrderProducts::where('order_id', $del_order->id)->where('order_type', 'delivery_order')->get();
                     foreach ($all_order_products as $products) {
@@ -588,13 +589,16 @@ class OrderController extends Controller {
                         }
                         $total_quantity = $total_quantity + $prod_quantity;
                     }
+//                    echo '<pre>';
+//                    print_r($all_order_products->toArray());
+//                    echo '</pre>';
+//                    exit;
                 }
                 $temp = array();
                 $temp['id'] = $order->id;
                 $temp['total_pending_quantity'] = (int) $pending_quantity;
                 $temp['total_quantity'] = (int) $total_quantity;
                 array_push($pending_orders, $temp);
-
             } else {
                 $all_order_products = AllOrderProducts::where('order_id', $order->id)->where('order_type', 'order')->get();
 
@@ -617,7 +621,6 @@ class OrderController extends Controller {
                 $temp['total_quantity'] = (int) $total_quantity;
 
                 array_push($pending_orders, $temp);
-
             }
         }
 

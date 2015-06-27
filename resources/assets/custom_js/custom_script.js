@@ -51,6 +51,9 @@ $(document).ready(function() {
         },
         select: function(event, ui) {
             $("#existing_customer_id").val(ui.item.id);
+//            alert(ui.item.id);
+            $("#customer_default_location").val(ui.item.delivery_location_id);
+            default_delivery_location();
         }
     });
     $("#existing_supplier_name").autocomplete({
@@ -72,7 +75,11 @@ $(document).ready(function() {
             $("#existing_supplier_id").val(ui.item.id);
         }
     });
+    var nowDate = new Date();
+    var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
+    
     $('#expected_delivery_date').datepicker({
+        startDate: today,
         format: 'mm-dd-yyyy'
     });
     $('#datepickerDateComponent').datepicker();

@@ -45,6 +45,7 @@
                                         <div class="form-group searchproduct">
                                             <input class="form-control" placeholder="Enter Customer Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
                                             <input type="hidden" id="existing_customer_id" name="autocomplete_customer_id">
+                                            <input type="hidden" id="customer_default_location">
                                             <i class="fa fa-search search-icon"></i>
                                         </div>
                                     </div>
@@ -82,7 +83,7 @@
                                                 <td><span>Price</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
-                                            <?php for ($i = 1; $i <= 10; $i++) { ?>
+                                            <?php for ($i = 1; $i <= 3; $i++) { ?>
                                                 <tr id="add_row_{{$i}}" class="add_product_row">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">

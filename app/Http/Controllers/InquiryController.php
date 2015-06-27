@@ -299,7 +299,8 @@ class InquiryController extends Controller {
             foreach ($customers as $customer) {
                 $data_array[] = [
                     'value' => $customer->owner_name,
-                    'id' => $customer->id
+                    'id' => $customer->id,
+                    'delivery_location_id'=>$customer->delivery_location_id                        
                 ];
             }
         } else {

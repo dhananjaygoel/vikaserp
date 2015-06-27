@@ -38,8 +38,6 @@ class Order extends Model {
     }
     
     public static $order_to_delivery_order_rules = array(
-        'vehicle_number' => 'required',
-        'driver_name' => 'required',
-        'driver_contact' => 'required|min:10|max:20'
+        'driver_contact' => 'min:8|max:20'
     );
 }
