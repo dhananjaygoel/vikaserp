@@ -541,7 +541,7 @@ class OrderController extends Controller {
             $temp['id'] = $order->id;
             $temp['total_pending_quantity'] = $pending_quantity;
             $temp['total_quantity'] = $total_quantity;
-            array_push($pending_orders,$temp);
+//            array_push($pending_orders,$temp);
             }
             }else{
                 $all_order_products = AllOrderProducts::where('order_id', $order->id)->where('order_type', 'order')->get();
@@ -570,7 +570,7 @@ class OrderController extends Controller {
             $temp['id'] = $order->id;
             $temp['total_pending_quantity'] = $pending_quantity;
             $temp['total_quantity'] = $total_quantity;
-            array_push($pending_orders,$temp);
+//            array_push($pending_orders,$temp);
             }         
 
         }
