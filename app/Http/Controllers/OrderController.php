@@ -519,6 +519,7 @@ class OrderController extends Controller {
             $delivery_orders = DeliveryOrder::where('order_id', $order->id)->get();
             $pending_quantity = 0;
             $total_quantity = 0;
+            if(count($delivery_orders)>0){
             foreach ($delivery_orders as $del_order) {
                 $all_order_products = AllOrderProducts::where('order_id', $del_order->id)->where('order_type', 'delivery_order')->get();
                 foreach ($all_order_products as $products) {
@@ -526,7 +527,34 @@ class OrderController extends Controller {
                     $pending_quantity = $pending_quantity + $p_qty;
                     $kg = Units::first();
                     $prod_quantity = $products['quantity'];
-//                    if($products['unit_id']!=$kg->id){
+                    if($products['unit_id']!=$kg->id){
+                    $product_subcategory = \App\ProductSubCategory::where('product_category_id', $products['product_category_id'])->first();
+
+
+                    $calculated_quantity = $prod_quantity / $product_subcategory['weight'];
+                    $prod_quantity = $calculated_quantity;
+
+                    }                    
+                    $total_quantity = $total_quantity + $prod_quantity;
+                }
+                $temp = array();
+            $temp['id'] = $order->id;
+            $temp['total_pending_quantity'] = $pending_quantity;
+            $temp['total_quantity'] = $total_quantity;
+            array_push($pending_orders,$temp);
+            }
+            }else{
+                $all_order_products = AllOrderProducts::where('order_id', $order->id)->where('order_type', 'order')->get();
+//                echo '<pre>';
+//                print_r($all_order_products->toArray());
+//                echo '</pre>';
+//                exit;
+                foreach ($all_order_products as $products) {
+                    $p_qty = $products['quantity'];
+                    $pending_quantity = $pending_quantity + $p_qty;
+                    $kg = Units::first();
+                    $prod_quantity = $products['quantity'];
+                    if($products['unit_id']!=$kg->id){
                     $product_subcategory = \App\ProductSubCategory::where('product_category_id', $products['product_category_id'])->first();
 
 
@@ -534,18 +562,19 @@ class OrderController extends Controller {
                     $prod_quantity = $calculated_quantity;
 //                        echo $calculated_quantity;
 //                        exit;
-//                    }                    
+                    }                    
                     $total_quantity = $total_quantity + $prod_quantity;
                 }
-            }
-            $temp = array();
+//                echo $total_quantity." ".$pending_quantity."<br>";
+                $temp = array();
             $temp['id'] = $order->id;
             $temp['total_pending_quantity'] = $pending_quantity;
             $temp['total_quantity'] = $total_quantity;
-            
+            array_push($pending_orders,$temp);
+            }         
 
-//            $allorders['total_pending_quantity_'.$order->id]=$pending_quantity;
         }
+
         return $pending_orders;
     }
 

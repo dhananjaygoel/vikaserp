@@ -201,13 +201,18 @@
                                 <label for="location">Delivery Location:</label>
                                 <select class="form-control" name="add_inquiry_location" id="add_inquiry_location">
                                     <option value="">Delivery Location</option>
+                                    
                                     @foreach($delivery_location as $location)
+                                  
+                                    @if($location->status=='permanent')
                                     @if($inquiry->delivery_location_id == $location->id)
                                     <option value="{{$location->id}}" selected="">{{$location->area_name}}</option>
                                     @else
                                     <option value="{{$location->id}}">{{$location->area_name}}</option>
                                     @endif
+                                    @endif
                                     @endforeach
+                                    
                                     @if($inquiry->delivery_location_id == 0)
                                     <option id="other_location" value="other" selected="">Other</option>
                                     @else
