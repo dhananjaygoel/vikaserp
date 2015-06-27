@@ -17,6 +17,8 @@ use App\CustomerProductDifference;
 use App\Customer;
 use Input;
 use App\URLAccess;
+use App\States;
+use App\City;
 
 class CustomerController extends Controller {
 
@@ -73,10 +75,12 @@ class CustomerController extends Controller {
         $managers = User::where('role_id', '=', 1)->get();
 
         $locations = DeliveryLocation::all();
+        $states = States::all();
+        $cities = City::all();
 
         $product_category = ProductCategory::all();
 
-        return View::make('add_customers', array('managers' => $managers, 'locations' => $locations, 'product_category' => $product_category));
+        return View::make('add_customers', array('managers' => $managers, 'locations' => $locations, 'product_category' => $product_category, 'states' => $states , 'cities' =>$cities));
     }
 
     /**
@@ -114,16 +118,16 @@ class CustomerController extends Controller {
         }
 
         $customer->tally_name = Input::get('tally_name');
-        $customer->tally_category = Input::get('tally_category');
-        $customer->tally_sub_category = Input::get('tally_sub_category');
+//        $customer->tally_category = Input::get('tally_category');
+//        $customer->tally_sub_category = Input::get('tally_sub_category');
         $customer->phone_number1 = Input::get('phone_number1');
 
-        if (Input::has('vat_tin_number')) {
-            $customer->vat_tin_number = Input::get('vat_tin_number');
-        }
-        if (Input::has('excise_number')) {
-            $customer->excise_number = Input::get('excise_number');
-        }
+//        if (Input::has('vat_tin_number')) {
+//            $customer->vat_tin_number = Input::get('vat_tin_number');
+//        }
+//        if (Input::has('excise_number')) {
+//            $customer->excise_number = Input::get('excise_number');
+//        }
         if (Input::has('username')) {
             $customer->username = Input::get('username');
         }
@@ -174,8 +178,9 @@ class CustomerController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $customer = Customer::with('deliverylocation', 'manager')->find($id);
-
-        return View::make('customer_details', array('customer' => $customer));
+        $states = States::all();
+        $cities = City::all();
+        return View::make('customer_details', array('customer' => $customer, 'states' => $states , 'cities' =>$cities));
     }
 
     /**
@@ -185,7 +190,8 @@ class CustomerController extends Controller {
      * @return Response
      */
     public function edit($id) {
-
+        $states = States::all();
+        $cities = City::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -200,7 +206,7 @@ class CustomerController extends Controller {
 
         $product_category = ProductCategory::all();
 
-        return View::make('edit_customers', array('customer' => $customer, 'managers' => $managers, 'locations' => $locations, 'product_category' => $product_category));
+        return View::make('edit_customers', array('customer' => $customer, 'managers' => $managers, 'locations' => $locations, 'product_category' => $product_category, 'states' => $states , 'cities' =>$cities));
     }
 
     /**

@@ -29,6 +29,11 @@ class UserRolesSeeder extends Seeder {
                         'role_id' => '3',
                         'name' => 'Delivery Staff'
                     ),
+                    array(
+                        'id' => '5',
+                        'role_id' => '4',
+                        'name' => 'Account User'
+                    ),
         ));
     }
 

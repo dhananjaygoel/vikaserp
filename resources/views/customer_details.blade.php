@@ -42,11 +42,24 @@
                                         <td><span>Address2: </span> {{$customer->address2}}</td>
                                     </tr>
                                     <tr>
-                                        <td class="col-md-4"><span>City:</span> {{$customer->city}}</td>
+                                        <td><span>State:</span>
+                                            @foreach($states as $state)
+                                            @if($state->id == $customer->state)
+                                            {{$state->state_name}}
+                                            @endif
+                                            @endforeach
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td><span>State:</span> {{$customer->state}}</td>
+                                        <td class="col-md-4"><span>City:</span> 
+                                            @foreach($cities as $city)
+                                            @if($customer->city == $city->id)
+                                            {{$city->city_name}}
+                                            @endif
+                                            @endforeach
+                                        </td>
                                     </tr>
+
                                     <tr>
                                         <td><span>Zip:</span> {{$customer->zip}}</td>
                                     </tr>
@@ -56,24 +69,14 @@
                                     <tr>
                                         <td><span>Tally Name:</span> {{$customer->tally_name}}</td>
                                     </tr>
-                                    <tr>
-                                        <td><span>Tally Category:</span> {{$customer->tally_category}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span>Tally Subcategory:</span> {{$customer->tally_sub_category}}</td>
-                                    </tr>
+                                    
                                     <tr>
                                         <td><span>Phone Number1:</span> {{$customer->phone_number1}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Phone Number2:</span> {{$customer->phone_number2}}</td>
                                     </tr>
-                                    <tr>
-                                        <td><span>VAT-TIN Number:</span> {{$customer->vat_tin_number}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span>Excise Number:</span> {{$customer->excise_number}}</td>
-                                    </tr>
+                                    
                                     <tr>
                                         <td><span>Delivery Location:</span> {{$customer['deliverylocation']->area_name}} <em>({{$customer['deliverylocation']['city']->city_name}}, {{$customer['deliverylocation']['state']->state_name}})</em></td>
                                     </tr>

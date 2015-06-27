@@ -28,7 +28,7 @@
                         </a>
                     </li>
                     @endif
-                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 )
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 4 )
                     <li class="{{ (Request::is('customers*') ? 'active' : '') }}">
                         <a href="{{url('customers')}}">
                             <i class="fa fa-male"></i>
@@ -67,6 +67,7 @@
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
                         <ul class="submenu">
+                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3) 
                             <li class="{{ (Request::is('*orders*') ? 'active' : '') }}">
                                 <a href="{{url('orders')}}" >
                                     Order
@@ -88,6 +89,7 @@
                                     Pending Delivery Order Report
                                 </a>
                             </li>
+                            @endif
                             @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
                             <li class="{{ (Request::is('*sales_daybook*') ? 'active' : '') }}">
                                 <a href="{{url('sales_daybook')}}">
@@ -122,6 +124,7 @@
                                 </a>
                             </li>
                             @endif
+                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3) 
                             <li class="{{ (Request::is('*purchaseorder_advise*') ? 'active' : '') }}">
                                 <a href="{{url('purchaseorder_advise')}}">
                                     Purchase Advice
@@ -143,7 +146,8 @@
                                     Pending Purchase Advise Report
                                 </a>
                             </li>
-                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
+                            @endif
+                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->user_id == 4)
                             <li class="{{ (Request::is('*purchase_order_daybook*') ? 'active' : '') }}">
                                 <a href="{{url('purchase_order_daybook')}}">
                                     Purchase Daybook
@@ -152,7 +156,7 @@
                             @endif
                         </ul>
                     </li>
-                    
+                    @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3) 
                     <li class="<?php
                     if (Request::is('*product_category*') || Request::is('*product_sub_category*')) {
                         echo 'active';
@@ -211,7 +215,10 @@
                             </li>
                         </ul>
                     </li>
+                    @endif
                     @if(Auth::user()->role_id == 0)
+                    <div style="display:none">
+<!--                        Do not display customer Module-->
                     <li class="{{ (Request::is('*customer_manager*') ? 'active' : '') }}">
                         <a href="{{url("customer_manager")}}">
                             <i class="fa fa-asterisk"></i>
@@ -219,6 +226,7 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
+                    </div>
                     @endif
                     @if(Auth::user()->role_id == 0)
                     <li class="{{ (Request::is('*security*') ? 'active' : '') }}">

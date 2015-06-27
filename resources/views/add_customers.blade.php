@@ -61,13 +61,31 @@
                                 <label for="address2">Address 2</label>
                                 <input id="address2" class="form-control" placeholder="Address 2" name="address2" value="{{ Input::old('address2')}}" type="text">
                             </div>
-                            <div class="form-group">
-                                <label for="city">City<span class="mandatory">*</span></label>
-                                <input id="city" class="form-control" placeholder="City" name="city" value="{{ Input::old('city')}}" type="text">
-                            </div>
+                            <!--                            <div class="form-group">
+                                                            <label for="city">City<span class="mandatory">*</span></label>
+                                                            <input id="city" class="form-control" placeholder="City" name="city" value="{{ Input::old('city')}}" type="text">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="state">State<span class="mandatory">*</span></label>
+                                                            <input id="state" class="form-control" placeholder="State" name="state" value="{{ Input::old('state')}}" type="text">
+                                                        </div>-->
                             <div class="form-group">
                                 <label for="state">State<span class="mandatory">*</span></label>
-                                <input id="state" class="form-control" placeholder="State" name="state" value="{{ Input::old('state')}}" type="text">
+                                <select class="form-control" id="state" name="state">
+                                    <option value="" selected="">Select State</option>
+                                    @foreach($states as $state)
+                                    <option value="{{$state->id}}">{{$state->state_name}}</option>                                    
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City<span class="mandatory">*</span></label>
+                                <select class="form-control" id="city"  name="city">
+                                    <option value="" selected="">Select City</option>
+                                    @foreach($cities as $city)
+                                    <option value="{{$city->id}}">{{$city->city_name}}</option>                                    
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="zip">Zip</label>
@@ -81,14 +99,14 @@
                                 <label for="tally_name">Tally Name<span class="mandatory">*</span></label>
                                 <input id="tally_name" class="form-control" placeholder="Tally Name " name="tally_name" value="{{ Input::old('tally_name')}}" type="text">
                             </div> 
-                            <div class="form-group">
-                                <label for="tally_category">Tally Category<span class="mandatory">*</span></label>
-                                <input id="tally_category" class="form-control" placeholder="Tally Category " name="tally_category" value="{{ Input::old('tally_category')}}" type="text">
-                            </div> 
-                            <div class="form-group">
-                                <label for="tally_sub_category">Tally Subcategory<span class="mandatory">*</span></label>
-                                <input id="tally_sub_category" class="form-control" placeholder="Tally Subcategory " name="tally_sub_category" value="{{ Input::old('tally_sub_category')}}" type="text">
-                            </div> 
+                            <!--                            <div class="form-group">
+                                                            <label for="tally_category">Tally Category<span class="mandatory">*</span></label>
+                                                            <input id="tally_category" class="form-control" placeholder="Tally Category " name="tally_category" value="{{ Input::old('tally_category')}}" type="text">
+                                                        </div> 
+                                                        <div class="form-group">
+                                                            <label for="tally_sub_category">Tally Subcategory<span class="mandatory">*</span></label>
+                                                            <input id="tally_sub_category" class="form-control" placeholder="Tally Subcategory " name="tally_sub_category" value="{{ Input::old('tally_sub_category')}}" type="text">
+                                                        </div> -->
                             <div class="form-group">
                                 <label for="phone_number1">Phone number 1<span class="mandatory">*</span></label>
                                 <input id="phone_number1" class="form-control" placeholder="Phone number " name="phone_number1" value="{{ Input::old('phone_number1')}}" type="text">
@@ -97,14 +115,14 @@
                                 <label for="phone_number2">Phone Number 2</label>
                                 <input id="phone_number2" class="form-control" placeholder="Phone Number 2" name="phone_number2" value="{{ Input::old('phone_number2')}}" type="text">
                             </div>
-                            <div class="form-group">
-                                <label for="vat_tin_number">VAT-TIN Number</label>
-                                <input id="vat_tin_number" class="form-control" placeholder="VAT-TIN Number" name="vat_tin_number" value="{{ Input::old('vat_tin_number')}}" type="text">
-                            </div>
-                            <div class="form-group">
-                                <label for="excise_number">Excise Number</label>
-                                <input id="excise_number" class="form-control" placeholder="Excise Number" name="excise_number" value="{{ Input::old('excise_number')}}" type="text">
-                            </div>
+                            <!--                            <div class="form-group">
+                                                            <label for="vat_tin_number">VAT-TIN Number</label>
+                                                            <input id="vat_tin_number" class="form-control" placeholder="VAT-TIN Number" name="vat_tin_number" value="{{ Input::old('vat_tin_number')}}" type="text">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="excise_number">Excise Number</label>
+                                                            <input id="excise_number" class="form-control" placeholder="Excise Number" name="excise_number" value="{{ Input::old('excise_number')}}" type="text">
+                                                        </div>-->
                             <div class="form-group col-md-4 del_loc ">
                                 <label for="delivery_location">Delivery Location:<span class="mandatory">*</span></label>
                                 <select class="form-control" id="delivery_location" name="delivery_location">

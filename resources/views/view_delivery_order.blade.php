@@ -110,9 +110,7 @@
                                     </tr>
                                     @endif                                    
                                     
-                                    <tr>
-                                        <td><span>Grand Total: </span> {{ $grand }}</td>
-                                    </tr>
+                                    
                                     <tr><td><b>Vehicle Name:</b> {{ $delivery_data[0]->vehicle_number }} </td> </tr>
                                     <tr><td><b>Driver Name:</b> {{ $delivery_data[0]->driver_name }}  </td> </tr>
                                     <tr><td><b>Driver Contact:</b> {{ $delivery_data[0]->driver_contact_no }} </td> </tr>

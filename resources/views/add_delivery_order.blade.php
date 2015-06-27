@@ -213,9 +213,7 @@
                                 </div>
                             </div> 
                             <div class="clearfix"></div>
-                            <div class="form-group">
-                                <label for="grandtotal">Grand Total:<span class="gtotal"> <input type="text" name="grand_total" id ="grand_total" class="form-control" value="" readonly="readonly"></span></label>
-                            </div>
+
                             <div class="form-group">
                                 <label for="inquiry_remark">Remark</label>
                                 <textarea class="form-control" id="order_remark" name="order_remark"  rows="3"></textarea>

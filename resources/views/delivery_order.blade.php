@@ -65,9 +65,10 @@
                             <table id="table-example" class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
+                                        <th class="">#</th>
                                         <th>Date</th>
                                         <th>Serial Number</th>
+                                        <th class="text-center">Create Delivery Challan</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -83,7 +84,24 @@
                                             @else
                                             {{ '--' }}
                                             @endif
-                                        </td>                                    
+                                        </td>    
+                                        <td class="text-center">
+                                            @if($delivery->order_status == 'completed')
+                                            <a href="{{url('create_delivery_challan/'.$delivery->id)}}" class="table-link" title="Delivery challan">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-book fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                            @elseif($delivery->order_status != 'completed')
+                                            <a href="" class="table-link" title="Delivery challan">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-book fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                            @endif
+                                        </td>
                                         <td class="text-center">
                                             <a href="{{URL::action('DeliveryOrderController@show',['id'=> $delivery->id])}}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -99,28 +117,14 @@
                                                 </span>
                                             </a>
                                             @elseif($delivery->serial_no != "")
-                                            <span class="table-link" title="edit">
+                                            <a class="table-link" title="edit" >
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </span>
-                                            @endif
-                                            @if($delivery->order_status == 'completed')
-                                            <a href="{{url('create_delivery_challan/'.$delivery->id)}}" class="table-link" title="Delivery challan">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-book fa-stack-1x fa-inverse"></i>
-                                                </span>
                                             </a>
-                                            @elseif($delivery->order_status != 'completed')
-                                            <span href="" class="table-link" title="Delivery challan">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-book fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </span>
                                             @endif
+                                            
                                             @if($delivery->serial_no == "")
                                             <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan_{{$delivery->id}}">
                                                 <span class="fa-stack">
@@ -129,12 +133,12 @@
                                                 </span>
                                             </a>
                                             @elseif($delivery->serial_no != "")
-                                            <span class="table-link" title="print">
+                                            <a class="table-link" title="print">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </span>
+                                            </a>
                                             @endif
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                             <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal{{$delivery->id}}" title="delete">

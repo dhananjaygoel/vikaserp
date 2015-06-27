@@ -220,13 +220,13 @@
                                     </td>
                                 </tr>
                                 @endif
-                                <tr class="cdtable">
+<!--                                <tr class="cdtable">
                                     <td class="cdfirst">Grand Total:</td>
 
                                     <td>
                                         <input type="text" name="grand_total" id ="grand_total" class="form-control" value="" readonly="readonly">
                                     </td>
-                                </tr>
+                                </tr>-->
                                 <tr class="cdtable">
                                     <td class="cdfirst">Vehicle Number:</td>
                                     <td><input  class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{old('vehicle_number')}}" type="text" onblur="grand_total_delivery_order();"></td>

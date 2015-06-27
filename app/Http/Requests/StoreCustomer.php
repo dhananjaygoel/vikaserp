@@ -23,11 +23,9 @@ class StoreCustomer extends Request {
 	{
 		return [
 			'owner_name' => 'required|max:100',
-			'city' => 'required|max:100',
-			'state' => 'required|max:100',
+			'city' => 'required',
+			'state' => 'required',
 			'tally_name' => 'required|max:100',
-			'tally_category' => 'required|max:100',
-			'tally_sub_category' => 'required|max:100',
 			'phone_number1' => 'required|integer|digits_between:10,15',
                         'email' => 'required|email|unique:users',
                         'delivery_location' => 'required',
