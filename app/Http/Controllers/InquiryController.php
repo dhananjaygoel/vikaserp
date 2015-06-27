@@ -178,10 +178,7 @@ class InquiryController extends Controller {
         $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category.product_sub_category', 'customer')->first();
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
-        return view('edit_inqu//        echo '<pre>';
-//        print_r($inquiry->toArray());
-//        echo '</pre>';
-//        exit;iry', compact('inquiry', 'delivery_location', 'units'));
+        return view('edit_inquiry', compact('inquiry', 'delivery_location', 'units'));
     }
 
     /**
