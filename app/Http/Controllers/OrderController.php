@@ -530,8 +530,8 @@ class OrderController extends Controller {
                 }
                 $temp = array();
                     $temp['id'] = $order->id;
-                    $temp['total_pending_quantity'] = $pending_quantity;
-                    $temp['total_quantity'] = $total_quantity;
+                    $temp['total_pending_quantity'] = (int)$pending_quantity;
+                    $temp['total_quantity'] = (int)$total_quantity;
 //                    if (count($pending_orders) > 0) {
 //                        foreach ($pending_orders as $pending) {
 //                            if ($pending['id'] != $order->id) {
@@ -561,8 +561,8 @@ class OrderController extends Controller {
 //                echo $total_quantity." ".$pending_quantity."<br>";
                 $temp = array();
                 $temp['id'] = $order->id;
-                $temp['total_pending_quantity'] = $pending_quantity;
-                $temp['total_quantity'] = $total_quantity;
+                $temp['total_pending_quantity'] = (int) $pending_quantity;
+                $temp['total_quantity'] = (int) $total_quantity;
 //                if (count($pending_orders) > 0) {
 //                    foreach ($pending_orders as $pending) {
 //                        if ($pending['id'] != $order->id) {
