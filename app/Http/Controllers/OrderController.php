@@ -111,24 +111,18 @@ class OrderController extends Controller {
             $validator = Validator::make($input_data, Customer::$existing_customer_inquiry_rules);
             if ($validator->passes()) {
                 $customer_id = $input_data['autocomplete_customer_id'];
-                
-                
-                
-                
-                       //send mail
-            if (isset($input_data['send_email'])){
-                $customers = Customer::find($customer_id);
 
-                Mail::send('emails.order_complete_email', ['key' => $customers->owner_name], function($message) {
-                    $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Order details created');
-                });
-                
-                
-                
-            }
-                
-                
-                
+
+
+
+                //send mail
+                if (isset($input_data['send_email'])) {
+                    $customers = Customer::find($customer_id);
+
+                    Mail::send('emails.order_complete_email', ['key' => $customers->owner_name], function($message) {
+                        $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Order details created');
+                    });
+                }
             } else {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
@@ -196,7 +190,7 @@ class OrderController extends Controller {
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         $customers = Customer::all();
-        
+
         return View::make('order_detail', compact('order', 'delivery_location', 'units', 'customers'));
     }
 
@@ -214,7 +208,7 @@ class OrderController extends Controller {
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         $customers = Customer::all();
-        
+
         return View::make('edit_order', compact('order', 'delivery_location', 'units', 'customers'));
     }
 
@@ -254,28 +248,25 @@ class OrderController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         } elseif (isset($input_data['customer_status']) && $input_data['customer_status'] == "existing_customer") {
-            
-            
+
+
             //mail
-            
-            
-            
+
+
+
             $validator = Validator::make($input_data, Customer::$existing_customer_order_rules);
             if ($validator->passes()) {
                 $customer_id = $input_data['existing_customer_id'];
-                
-                
-                  //send mail
-            if (isset($input_data['send_email'])){
-                $customers = Customer::find($customer_id);
 
-                Mail::send('emails.order_complete_email', ['key' => $customers->owner_name], function($message) {
-                    $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Order details updated');
-                });
-                
-                
-                
-            }
+
+                //send mail
+                if (isset($input_data['send_email'])) {
+                    $customers = Customer::find($customer_id);
+
+                    Mail::send('emails.order_complete_email', ['key' => $customers->owner_name], function($message) {
+                        $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Order details updated');
+                    });
+                }
             } else {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
@@ -416,7 +407,6 @@ class OrderController extends Controller {
 //                $message->to($orders['customer']->email, 'John Smith')->subject('Order Complete!');
 
                 $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Order Complete!');
-                
             });
         }
 
@@ -426,7 +416,7 @@ class OrderController extends Controller {
     }
 
     public function create_delivery_order($id) {
-        
+
         $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.product_category', 'customer')->first();
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
@@ -519,60 +509,68 @@ class OrderController extends Controller {
             $delivery_orders = DeliveryOrder::where('order_id', $order->id)->get();
             $pending_quantity = 0;
             $total_quantity = 0;
-            if(count($delivery_orders)>0){
-            foreach ($delivery_orders as $del_order) {
-                $all_order_products = AllOrderProducts::where('order_id', $del_order->id)->where('order_type', 'delivery_order')->get();
-                foreach ($all_order_products as $products) {
-                    $p_qty = $products['quantity'] - $products['present_shipping'];
-                    $pending_quantity = $pending_quantity + $p_qty;
-                    $kg = Units::first();
-                    $prod_quantity = $products['quantity'];
-                    if($products['unit_id']!=$kg->id){
-                    $product_subcategory = \App\ProductSubCategory::where('product_category_id', $products['product_category_id'])->first();
+            if (count($delivery_orders) > 0) {
+                foreach ($delivery_orders as $del_order) {
+                    $all_order_products = AllOrderProducts::where('order_id', $del_order->id)->where('order_type', 'delivery_order')->get();
+                    foreach ($all_order_products as $products) {
+                        $p_qty = $products['quantity'] - $products['present_shipping'];
+                        $pending_quantity = $pending_quantity + $p_qty;
+                        $kg = Units::first();
+                        $prod_quantity = $products['quantity'];
+                        if ($products['unit_id'] != $kg->id) {
+                            $product_subcategory = \App\ProductSubCategory::where('product_category_id', $products['product_category_id'])->first();
 
 
-                    $calculated_quantity = $prod_quantity / $product_subcategory['weight'];
-                    $prod_quantity = $calculated_quantity;
-
-                    }                    
-                    $total_quantity = $total_quantity + $prod_quantity;
+                            $calculated_quantity = $prod_quantity / $product_subcategory['weight'];
+                            $prod_quantity = $calculated_quantity;
+                        }
+                        $total_quantity = $total_quantity + $prod_quantity;
+                    }
+                    
                 }
                 $temp = array();
-            $temp['id'] = $order->id;
-            $temp['total_pending_quantity'] = $pending_quantity;
-            $temp['total_quantity'] = $total_quantity;
-//            array_push($pending_orders,$temp);
-            }
-            }else{
+                    $temp['id'] = $order->id;
+                    $temp['total_pending_quantity'] = $pending_quantity;
+                    $temp['total_quantity'] = $total_quantity;
+//                    if (count($pending_orders) > 0) {
+//                        foreach ($pending_orders as $pending) {
+//                            if ($pending['id'] != $order->id) {
+                                array_push($pending_orders, $temp);
+//                            }
+//                        }
+//                    }
+            } else {
                 $all_order_products = AllOrderProducts::where('order_id', $order->id)->where('order_type', 'order')->get();
-//                echo '<pre>';
-//                print_r($all_order_products->toArray());
-//                echo '</pre>';
-//                exit;
+
                 foreach ($all_order_products as $products) {
                     $p_qty = $products['quantity'];
                     $pending_quantity = $pending_quantity + $p_qty;
                     $kg = Units::first();
                     $prod_quantity = $products['quantity'];
-                    if($products['unit_id']!=$kg->id){
-                    $product_subcategory = \App\ProductSubCategory::where('product_category_id', $products['product_category_id'])->first();
+                    if ($products['unit_id'] != $kg->id) {
+                        $product_subcategory = \App\ProductSubCategory::where('product_category_id', $products['product_category_id'])->first();
 
 
-                    $calculated_quantity = $prod_quantity / $product_subcategory['weight'];
-                    $prod_quantity = $calculated_quantity;
+                        $calculated_quantity = $prod_quantity / $product_subcategory['weight'];
+                        $prod_quantity = $calculated_quantity;
 //                        echo $calculated_quantity;
 //                        exit;
-                    }                    
+                    }
                     $total_quantity = $total_quantity + $prod_quantity;
                 }
 //                echo $total_quantity." ".$pending_quantity."<br>";
                 $temp = array();
-            $temp['id'] = $order->id;
-            $temp['total_pending_quantity'] = $pending_quantity;
-            $temp['total_quantity'] = $total_quantity;
-//            array_push($pending_orders,$temp);
-            }         
-
+                $temp['id'] = $order->id;
+                $temp['total_pending_quantity'] = $pending_quantity;
+                $temp['total_quantity'] = $total_quantity;
+//                if (count($pending_orders) > 0) {
+//                    foreach ($pending_orders as $pending) {
+//                        if ($pending['id'] != $order->id) {
+                            array_push($pending_orders, $temp);
+//                        }
+//                    }
+//                }
+            }
         }
 
         return $pending_orders;
