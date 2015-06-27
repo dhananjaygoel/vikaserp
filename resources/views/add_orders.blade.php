@@ -122,7 +122,7 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group ">
                                                             <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
-                                                                <option value="" selected="">Unit</option>
+                                                                <!--<option value="" selected="">Unit</option>-->
                                                                 @foreach($units as $unit)
                                                                 <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
                                                                 @endforeach
@@ -186,7 +186,9 @@
                                     <select class="form-control" name="add_order_location" id="add_order_location">
                                         <option value="" selected="">Delivery Location</option>
                                         @foreach($delivery_locations as $delivery_location)
+                                        @if($delivery_location->status=='permanent' && $delivery_location->id!=0)
                                         <option value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
+                                        @endif
                                         @endforeach
                                         <option id="other_location" value="-2">Other</option>
                                     </select>

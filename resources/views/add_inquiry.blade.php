@@ -155,7 +155,7 @@
                                     <select class="form-control" name="add_inquiry_location" id="add_inquiry_location">
                                         <option value="" selected="">Delivery Location</option>
                                         @foreach($delivery_locations as $delivery_location)
-                                        @if($delivery_location->id!=0)
+                                        @if($delivery_location->status=='permanent' && $delivery_location->id!=0)
                                         <option value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
                                         @endif
                                         @endforeach
@@ -199,7 +199,7 @@
                                 <label for="date">Expected Delivery Date: </label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input type="text" name="date" class="form-control" id="expected_delivery_date">
+                                    <input type="text" name="expected_date" class="form-control" id="expected_delivery_date">
                                 </div>
                             </div>
                             <div class="clearfix"></div>

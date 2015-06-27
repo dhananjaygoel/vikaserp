@@ -23,8 +23,7 @@ class InquiryRequest extends Request {
     public function rules() {
         return [
             'add_inquiry_location' => 'required',
-            'date' => 'required',
-            'inquiry_remark' => 'required'
+            'expected_date' => 'required',            
         ];
     }
 

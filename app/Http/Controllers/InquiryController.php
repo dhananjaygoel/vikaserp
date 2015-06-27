@@ -65,9 +65,10 @@ class InquiryController extends Controller {
      */
     public function store(InquiryRequest $request) {
         $input_data = Input::all();
-        $date = $input_data['date'];
+
+        $date = $input_data['expected_date'];
         $datetime = new DateTime($date);
-//        echo $datetime->format('Y-m-d');
+//        echo $datetime->format('Y-m-d');exit;
 
         $i = 0;
         $j = count($input_data['product']);
@@ -104,20 +105,17 @@ class InquiryController extends Controller {
             }
         }
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
-            $add_delivery_location = DeliveryLocation::create([
-                        'area_name' => $input_data['other_location_name'],
-                        'status' => 'pending'
-            ]);
+//            $add_delivery_location = DeliveryLocation::create([
+//                        'area_name' => $input_data['other_location_name'],
+//                        'status' => 'pending'
+//            ]);
             $location_id = DB::getPdo()->lastInsertId();
             $add_inquiry_array = [
                 'customer_id' => $customer_id,
                 'created_by' => Auth::id(),
                 'delivery_location_id' => $location_id,
                 'vat_percentage' => $input_data['vat_percentage'],
-//                'expected_delivery_date' => date_format(date_create($input_data['date']), 'Y-m-d'),
-//                'expected_delivery_date' => date('Y-m-d', strtotime($input_data['date'])),
                 'expected_delivery_date' => $datetime->format('Y-m-d'),
-                //date('Y-m-d', strtotime($input_data['date'])),
                 'remarks' => $input_data['inquiry_remark'],
                 'inquiry_status' => "Pending",
                 'other_location' => $input_data['other_location_name']
@@ -128,7 +126,7 @@ class InquiryController extends Controller {
                 'created_by' => Auth::id(),
                 'delivery_location_id' => $input_data['add_inquiry_location'],
                 'vat_percentage' => $input_data['vat_percentage'],
-                'expected_delivery_date' => date('Y-m-d', strtotime($input_data['date'])),
+                'expected_delivery_date' => $datetime->format('Y-m-d'),
                 'remarks' => $input_data['inquiry_remark'],
                 'inquiry_status' => "Pending"
             ];
@@ -163,10 +161,7 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category.product_sub_category', 'customer')->first();
-//        echo '<pre>';
-//        print_r($inquiry->toArray());
-//        echo '</pre>';
-//        exit;
+
         return view('inquiry_details', compact('inquiry'));
     }
 
@@ -183,7 +178,10 @@ class InquiryController extends Controller {
         $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category.product_sub_category', 'customer')->first();
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
-        return view('edit_inquiry', compact('inquiry', 'delivery_location', 'units'));
+        return view('edit_inqu//        echo '<pre>';
+//        print_r($inquiry->toArray());
+//        echo '</pre>';
+//        exit;iry', compact('inquiry', 'delivery_location', 'units'));
     }
 
     /**
@@ -194,20 +192,10 @@ class InquiryController extends Controller {
      */
     public function update($id, InquiryRequest $request) {
         $input_data = Input::all();
-        $date = $input_data['expected_date'];
-
+        
+        $date = strtotime($input_data['expected_date']);
         $datetime = new DateTime($date);
-//        $datetime->format('Y-m-d');
-//
-//
-//        $test = new DateTime($input_data['expected_date']);
-//        echo date_format($test, 'Y-m-d');
-//
-//
-//
-////        echo $input_data['expected_date'] . 'date ' . date('Y-m-d', strtotime($input_data['expected_date']));
-//        exit;
-
+//        echo $datetime->format('Y-m-d');
         $i = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
@@ -249,16 +237,26 @@ class InquiryController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
+        $location_id = $input_data['add_inquiry_location'];
+        if ($input_data['add_inquiry_location'] == 'other') {
+            $location_id = 0;
+            $other_location = $input_data['other_location_name'];
+        }
         $inquiry = Inquiry::find($id);
         $update_inquiry = $inquiry->update([
             'customer_id' => $customer_id,
             'created_by' => Auth::id(),
-            'delivery_location_id' => $input_data['add_inquiry_location'],
+            'delivery_location_id' => $location_id, // $input_data['add_inquiry_location'],
             'vat_percentage' => $vat_price,
             'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['inquiry_remark'],
             'inquiry_status' => "Pending"
         ]);
+        if ($location_id == 0) {
+            $inquiry->update([
+                'other_location' =>$other_location
+            ]);
+        }
         $inquiry_products = array();
 
         $delete_old_inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->delete();
