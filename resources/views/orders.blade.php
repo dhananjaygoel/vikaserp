@@ -12,29 +12,81 @@
                 <div class="filter-block">
                     <h1 class="pull-left">Orders</h1>                                 
                     <div class="pull-right top-page-ui">
-                        @if( Auth::user()->role_id != 3 )
-                        <a href="{{url('orders/create')}}" class="btn btn-primary pull-right">
-                            <i class="fa fa-plus-circle fa-lg"></i> Place Order
-                        </a>
-                        @endif
+
                         <div class="form-group pull-right">
                             <div class="col-md-12">
                                 <form action="{{url('orders')}}" method="GET">
-                                    <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
-                                        <option disabled="" value="" selected="">Status</option>
-                                        <option <?php if (Input::get('order_filter') == 'pending') echo 'selected=""'; ?> value="pending">Pending</option>
-                                        <option <?php if (Input::get('order_filter') == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
-                                        <option <?php if (Input::get('order_filter') == 'cancelled') echo 'selected=""'; ?> value="cancelled">Canceled</option>
-                                    </select>
-                                </form>
+                                    <div class="col-md-2">
+                                        <form action="{{url('orders')}}" method="GET">
+                                            <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
+                                                <option value="" selected="">Status</option>
+                                                <option <?php if (Input::get('order_filter') == 'pending') echo 'selected=""'; ?> value="pending">Pending</option>
+                                                <option <?php if (Input::get('order_filter') == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
+                                                <option <?php if (Input::get('order_filter') == 'cancelled') echo 'selected=""'; ?> value="cancelled">Canceled</option>
+                                            </select>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <form action="{{url('orders')}}" method="GET">
+                                            <select class="form-control" id="user_filter3" name="party_filter" onchange="this.form.submit();">
+                                                <option value="" selected="">Select Party</option>
+                                                @foreach($customers as $customer)
+                                                <option <?php if (Input::get('party_filter') == $customer->id) echo 'selected=""'; ?>value="{{$customer->id}}">{{$customer->owner_name}}</option>
+                                                @endforeach                                        
+                                            </select> 
+                                        </form>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <form action="{{url('orders')}}" method="GET">
+                                            <select class="form-control" id="user_filter3" name="fulfilled_filter" onchange="this.form.submit();">
+                                                <option value="" selected="">Fulfilled</option>
+                                                <option value="0" >Warehouse</option>
+                                                <option value="all" >Direct</option>
+                                                @foreach($customers as $customer)
+                                                <option <?php if (Input::get('fulfilled_filter') == $customer->id) echo 'selected=""'; ?>value="{{$customer->id}}">{{$customer->owner_name}}</option>
+                                                @endforeach
+                                            </select> 
+                                        </form>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <form action="{{url('orders')}}" method="GET">
+                                            <select class="form-control" id="user_filter3" name="location_filter" onchange="this.form.submit();">
+                                                <option value="" selected="">Select Location</option>
+                                                @foreach($delivery_location as $location)                                        
+                                                <option <?php if (Input::get('location_filter') == $location->id) echo 'selected=""'; ?>value="{{$location->id}}">{{$location->area_name}}</option>
+                                                @endforeach 
+
+                                            </select> 
+                                        </form>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <form action="{{url('orders')}}" method="GET">
+                                            <select class="form-control" id="user_filter3" name="size_filter" onchange="this.form.submit();">
+                                                <option value="" selected="">Size</option>
+                                                @foreach($delivery_location as $location)                                        
+                                                <option <?php if (Input::get('size_filter') == $location->id) echo 'selected=""'; ?> value="{{$location->id}}">{{$location->area_name}}</option>
+                                                @endforeach 
+
+                                            </select>  
+                                        </form>
+                                    </div>
+
+
+                                    <div class="col-md-2">
+                                        @if( Auth::user()->role_id != 3 )
+                                        <a href="{{url('orders/create')}}" class="btn btn-primary pull-right">
+                                            <i class="fa fa-plus-circle fa-lg"></i> Place Order
+                                        </a>
+                                        @endif
+                                    </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-        
+
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">

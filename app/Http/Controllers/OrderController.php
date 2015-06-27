@@ -43,17 +43,86 @@ class OrderController extends Controller {
                                 ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
             }
         } else {
-            $allorders = Order::where('order_status', '=', 'pending')->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
+//            $allorders = Order::where('order_status', '=', 'pending')->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
+//        }
+
+            if ((isset($_GET['party_filter'])) && $_GET['party_filter'] != '') {
+
+                $allorders = Order::where('customer_id', '=', $_GET['party_filter'])
+                                ->where('order_status', '=', 'pending')
+                                ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
+//                echo '<pre>';
+//                print_r($allorders);
+//                echo '</pre>';
+//                exit;
+            } elseif ((isset($_GET['fulfilled_filter'])) && $_GET['fulfilled_filter'] != '') {
+                if ($_GET['fulfilled_filter'] == '0') {
+                    $allorders = Order::where('order_status', '=', 'pending')
+                                    ->where('order_source', '=', 'warehouse')
+                                    ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
+                } else {
+                    if ($_GET['fulfilled_filter'] == 'all') {
+                        $allorders = $allorders = Order::where('order_status', '=', 'pending')
+                                        ->where('order_source', '=', 'supplier')
+                                        ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
+                    } else {
+                        $allorders = Order::where('order_status', '=', 'pending')
+                                        ->where('order_source', '=', 'supplier')
+                                        ->where('supplier_id', '=', $_GET['fulfilled_filter'])
+                                        ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
+                    }
+                }
+            } elseif ((isset($_GET['location_filter'])) && $_GET['location_filter'] != '') {
+                if ($_GET['location_filter'] != '0') {
+                    $allorders = Order::where('order_status', '=', 'pending')
+                                    ->where('delivery_location_id', '=', $_GET['location_filter'])
+                                    ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
+                } else {
+                    $allorders = Order::where('order_status', '=', 'pending')
+                                    ->where('other_location', '=', $_GET['location_filter'])
+                                    ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
+                }
+            } elseif ((isset($_GET['size_filter'])) && $_GET['size_filter'] != '') {
+
+//            if($_GET['location_filter'] != '0') { 
+                //'all_order_products.quantity',$_GET['size_filter'])
+//                        ->all_order_products()
+//                            ->where('all_order_products','=',$_GET['size_filter'])
+                /*
+                 * ->where(function($q) use($size) {
+                  $q->where($size, '<=', 'sum(quantity)');
+                  })
+                 */
+                $size = $_GET['size_filter'];
+
+                $allorders = Order::where('order_status', '=', 'pending')
+                                ->with(array('customer', 'delivery_location', 'all_order_products' =>
+                                    function($q) use($size) {
+                                        $q->where('quantity', '=', $size)->where('order_type', 'order');
+                                    }))->Paginate(10);
+
+//            }
+            } else {
+
+                $allorders = Order::where('order_status', '=', 'pending')->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
+            }
         }
 
         $users = User::all();
+        $customers = Customer::all();
+        $delivery_location = DeliveryLocation::all();
+        $delivery_order = DeliveryOrder::all();
+        $allorder_products = AllOrderProducts::where('order_type', 'order')->groupBy('quantity')->get();
+
+        $users = User::all();
         $pending_orders = $this->checkpending_quantity($allorders);
+
 //        echo '<pre>';
 //        print_r($pending_orders);
 //        echo '</pre>';
 //        exit;
         $allorders->setPath('orders');
-        return View::make('orders', compact('allorders', 'users', 'cancelledorders', 'pending_orders'));
+        return View::make('orders', compact('delivery_location', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders'));
     }
 
     /**
@@ -87,10 +156,32 @@ class OrderController extends Controller {
                 $i++;
             }
         }
-
         if ($i == $j) {
             return Redirect::back()->with('flash_message', 'Please insert product details');
         }
+
+        $i = 0;
+        $error_msg = array();
+        foreach ($input_data['product'] as $product_data) {
+            $msg = array();
+            if ($product_data['name'] != "") {
+                if ($product_data['price'] == "") {
+                    $msg[$i]['quantity'] = 'Please insert price for product details';
+                }
+                if ($product_data['quantity'] == "") {
+                    $msg[$i++]['quantity'] = 'Please insert qantity for product details';
+                }
+                array_push($error_msg, $msg);
+            }
+        }
+        if (count($error_msg) > 0) {
+            return Redirect::back()->withInput()->withErrors($error_msg);
+        }
+        echo '<pre>';
+        print_r($input_data);
+        echo '</pre>';
+        exit;
+
 
         if ($input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
@@ -143,6 +234,7 @@ class OrderController extends Controller {
         if ($input_data['status1'] == 'exclude_vat') {
             $vat_price = $input_data['vat_price'];
         }
+
 //        echo 'other location '.$input_data['location'];exit;
         $order = new Order();
         $order->order_source = $order_status;
@@ -526,16 +618,15 @@ class OrderController extends Controller {
                         }
                         $total_quantity = $total_quantity + $prod_quantity;
                     }
-                    
                 }
                 $temp = array();
-                    $temp['id'] = $order->id;
-                    $temp['total_pending_quantity'] = (int)$pending_quantity;
-                    $temp['total_quantity'] = (int)$total_quantity;
+                $temp['id'] = $order->id;
+                $temp['total_pending_quantity'] = (int) $pending_quantity;
+                $temp['total_quantity'] = (int) $total_quantity;
 //                    if (count($pending_orders) > 0) {
 //                        foreach ($pending_orders as $pending) {
 //                            if ($pending['id'] != $order->id) {
-                                array_push($pending_orders, $temp);
+                array_push($pending_orders, $temp);
 //                            }
 //                        }
 //                    }
@@ -566,7 +657,7 @@ class OrderController extends Controller {
 //                if (count($pending_orders) > 0) {
 //                    foreach ($pending_orders as $pending) {
 //                        if ($pending['id'] != $order->id) {
-                            array_push($pending_orders, $temp);
+                array_push($pending_orders, $temp);
 //                        }
 //                    }
 //                }

@@ -65,7 +65,10 @@ class InquiryController extends Controller {
      */
     public function store(InquiryRequest $request) {
         $input_data = Input::all();
-//    echo date_format(date_create('26-06-2015'), 'Y-m-d');exit;
+        $date = $input_data['date'];
+        $datetime = new DateTime($date);
+//        echo $datetime->format('Y-m-d');
+
         $i = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
@@ -113,7 +116,7 @@ class InquiryController extends Controller {
                 'vat_percentage' => $input_data['vat_percentage'],
 //                'expected_delivery_date' => date_format(date_create($input_data['date']), 'Y-m-d'),
 //                'expected_delivery_date' => date('Y-m-d', strtotime($input_data['date'])),
-                'expected_delivery_date' => date_format(date_create($input_data['date']), 'Y-m-d'),
+                'expected_delivery_date' => $datetime->format('Y-m-d'),
                 //date('Y-m-d', strtotime($input_data['date'])),
                 'remarks' => $input_data['inquiry_remark'],
                 'inquiry_status' => "Pending",
@@ -191,7 +194,10 @@ class InquiryController extends Controller {
      */
     public function update($id, InquiryRequest $request) {
         $input_data = Input::all();
+        $date = $input_data['expected_date'];
 
+        $datetime = new DateTime($date);
+//        $datetime->format('Y-m-d');
 //
 //
 //        $test = new DateTime($input_data['expected_date']);
@@ -249,7 +255,7 @@ class InquiryController extends Controller {
             'created_by' => Auth::id(),
             'delivery_location_id' => $input_data['add_inquiry_location'],
             'vat_percentage' => $vat_price,
-            'expected_delivery_date' => date_format(date_create($input_data['expected_date']), 'Y-m-d'),
+            'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['inquiry_remark'],
             'inquiry_status' => "Pending"
         ]);
@@ -391,6 +397,11 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $input_data = Input::all();
+        $date = $input_data['date'];
+
+        $datetime = new DateTime($date);
+//        $datetime->format('Y-m-d');
+
         $i = 0;
         $j = count($input_data['product']);
 //        echo $input_data['estimated_date'];exit;
@@ -461,7 +472,7 @@ class InquiryController extends Controller {
         $order->delivery_location_id = $input_data['add_inquiry_location'];
         $order->vat_percentage = $vat_price;
 //        $order->estimated_delivery_date = date_format(date_create($input_data['estimated_date']), 'Y-m-d');
-        $order->expected_delivery_date = date_format(date_create($input_data['expected_date']), 'Y-m-d');
+        $order->expected_delivery_date = $datetime->format('Y-m-d');
         $order->remarks = $input_data['inquiry_remark'];
         $order->order_status = "Pending";
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
