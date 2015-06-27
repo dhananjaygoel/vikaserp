@@ -198,7 +198,6 @@ $('#add_more_product').click(function () {
 function calulate_price(counter) {
 
     var unit_id = $('#units_' + counter).val();
-//    alert(unit_id);
 
     var quantity = $('#quantity_' + counter).val();
     var added_product_id = $('#add_product_id_' + counter).val();

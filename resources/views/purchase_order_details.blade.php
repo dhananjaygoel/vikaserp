@@ -23,9 +23,6 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box">
-                    <header class="main-box-header clearfix">
-                        <h2><i class="fa fa-dashboard"></i> &nbsp; View Purchase Order </h2>
-                    </header>
                     <div class="main-box-body clearfix">
                         <div class="inquiry_table col-md-12">
                             <div class="table-responsive">
@@ -34,27 +31,36 @@
                                         <tr><td><span>Supplier Name:</span> {{$purchase_orders['customer']->owner_name}}</td></tr>
                                         <tr><td><span>Contact Person:</span>{{$purchase_orders['customer']->contact_person}}</td></tr>
                                         <tr><td><span>Mobile Number: </span>{{$purchase_orders['customer']->phone_number1}}</td></tr>
+
+                                        @if($purchase_orders['customer']->credit_period > 0 || $purchase_orders['customer']->credit_period != "")
                                         <tr> <td><span>Credit Period: </span>{{$purchase_orders['customer']->credit_period}}</td></tr>
+                                        @endif
+
                                         <tr><td><span class="underline">Ordered Product Details </span></td>
                                     </tbody>
                                 </table>
                                 <table id="table-example" class="table table-hover customerview_table  ">
                                     <tbody>
                                         <tr class="headingunderline">
-                                            <td><span> Product</span></td>
+                                            <td><span> Product(Alias) </span></td>
                                             <td><span> Qty</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Price</span></td>
                                             <td class="widthtable"><span>Remark</span></td>
                                         </tr>
+                                        <?php $total = 0; ?>
                                         @foreach($purchase_orders['purchase_products'] as $product_data)
                                         <tr>
-                                            <td>{{$product_data['product_category']->product_category_name}}</td>
+                                            <td>{{$product_data['product_category']['product_sub_category']->alias_name}}</td>
                                             <td>{{$product_data->quantity}}</td>
                                             <td>{{$product_data['unit']->unit_name}}</td>
                                             <td>{{$product_data->price}}</td>
                                             <td>{{$product_data->remarks}}</td>
                                         </tr>
+                                        <?php 
+                                        
+                                        $total += $product_data->quantity * $product_data->price; 
+                                        ?>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -66,7 +72,8 @@
                                         <tr><td><span>Plus VAT: </span>Yes</td></tr>
                                         <tr><td><span>VAT Percentage: </span>{{$purchase_orders['vat_percentage']."%"}}</td></tr>
                                         @endif
-                                        <tr><td><span>Grand Total: </span> {{$purchase_orders['purchase_products']->sum('price')}}</td></tr>
+                                        
+                                        <tr><td><span>Grand Total: </span> {{$total}}</td></tr>
                                         <tr><td><span>Expected Delivery Date: </span>{{$purchase_orders['expected_delivery_date']}}</td></tr>
                                         <tr><td><span>Delivery Location: </span>{{$purchase_orders['delivery_location']->area_name}}</td></tr>
                                         <tr><td><span>Remark: </span>{{$purchase_orders['remarks']}}</td></tr>

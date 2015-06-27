@@ -15,18 +15,62 @@
                         <a href="{{URL::action('PurchaseOrderController@create')}}"  class="btn btn-primary pull-right">
                             <i class="fa fa-plus-circle fa-lg"></i> Place Purchase Order
                         </a>
-                        <div class="form-group pull-right">
-                            <div class="col-md-12">
-                                <form method="GET" action="{{url('purchase_orders')}}">
-                                    <select class="form-control" id="purchase_order_filter" name="purchase_order_filter" onchange="this.form.submit();">
-                                        <option value="">Status</option>
-                                        <option value="pending" <?php if (isset($_GET['purchase_order_filter']) && ($_GET['purchase_order_filter'] == "pending")) echo "selected=''"; ?>>Pending</option>
-                                        <option value="completed" <?php if (isset($_GET['purchase_order_filter']) && ($_GET['purchase_order_filter'] == "completed")) echo "selected=''"; ?>>Completed</option>
-                                        <option value="canceled" <?php if (isset($_GET['purchase_order_filter']) && ($_GET['purchase_order_filter'] == "canceled")) echo "selected=''"; ?>>Canceled</option>
-                                    </select>
-                                </form>
+
+
+                        <div class="filter-block pull-right">
+                            <div class="form-group pull-left">
+                                <div class="col-md-12">
+                                    <form method="GET" action="{{url('purchase_orders')}}">
+                                        <select class="form-control" id="user_filter" name="pending_purchase_order" onchange="this.form.submit();">
+                                            <option value="" selected="">Select Party</option>
+                                            @foreach($all_customers as $customer)
+                                            <option value="{{$customer->id}}" <?php if ((isset($_GET['pending_purchase_order'])) && $_GET['pending_purchase_order'] == $customer->id) echo "selected=''"; ?>>{{$customer->owner_name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </form>
+                                </div>
                             </div>
+                            <div class="form-group pull-left">
+                                <div class="col-md-12">
+                                    <select class="form-control" id="user_filter4" name="user_filter">
+                                        <option value="" selected="">Select size</option>
+                                        <option value="2">20 kg</option>
+                                        <option value="2">30 kg</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group pull-left">
+                                <div class="col-md-12">
+                                    <form method="GET" action="{{url('purchase_orders')}}">
+                                        <select class="form-control" id="order_for_filter" name="order_for_filter" onchange="this.form.submit();">
+                                            <option value="" selected="">Order For</option>
+                                            <option value="warehouse">Warehouse</option>
+                                            <option value="direct">Direct</option>
+                                        </select>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group pull-left">
+                                <div class="col-md-12">
+                                    <form method="GET" action="{{url('purchase_orders')}}">
+                                        <select class="form-control" id="purchase_order_filter" name="purchase_order_filter" onchange="this.form.submit();">
+                                            <option value="">Status</option>
+                                            <option value="pending" <?php if (isset($_GET['purchase_order_filter']) && ($_GET['purchase_order_filter'] == "pending")) echo "selected=''"; ?>>Pending</option>
+                                            <option value="completed" <?php if (isset($_GET['purchase_order_filter']) && ($_GET['purchase_order_filter'] == "completed")) echo "selected=''"; ?>>Completed</option>
+                                            <option value="canceled" <?php if (isset($_GET['purchase_order_filter']) && ($_GET['purchase_order_filter'] == "canceled")) echo "selected=''"; ?>>Canceled</option>
+                                        </select>
+                                    </form>
+                                </div>
+                            </div>
+
+
                         </div>
+
+
+
+
                     </div>
                 </div>
             </div>

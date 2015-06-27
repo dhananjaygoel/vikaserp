@@ -128,7 +128,7 @@
                                     <tr id="add_row_{{$key}}" class="add_product_row">
                                         <td class="col-md-3">
                                             <div class="form-group searchproduct">
-                                                <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['product_category']->product_category_name}}">
+                                                <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['product_category']['product_sub_category']->alias_name}}">
                                                 <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}">
                                                 <i class="fa fa-search search-icon"></i>
                                             </div>
@@ -296,7 +296,7 @@
 
                     <div class="form-group">
                         <label for="inquiry_remark">Remark</label>
-                        <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3">{{$purchase_order->remarks}}</textarea>
+                        <textarea class="form-control" id="inquiry_remark" name="purchase_order_remark"  rows="3">{{$purchase_order->remarks}}</textarea>
                     </div>
                     <div class="checkbox">
                         <label><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email to Party</span></label>

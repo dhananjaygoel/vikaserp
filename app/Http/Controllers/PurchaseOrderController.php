@@ -20,19 +20,28 @@ use Hash;
 use Mail;
 use App\PurchaseOrderCanceled;
 use App\PurchaseAdvise;
+use DateTime;
 
 class PurchaseOrderController extends Controller {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
     public function index() {
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 ) {
+        
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
-        }
+        }        
+        
         $q = PurchaseOrder::query();
+        
+        if ((isset($_GET['pending_purchase_order'])) && $_GET['pending_purchase_order'] != '') {
+            $q->where('supplier_id', '=', $_GET['pending_purchase_order'])->get();
+        }
+        if ((isset($_GET['order_for_filter'])) && $_GET['order_for_filter'] == 'warehouse') {
+            $q->where('order_for', '=', 0)->get();
+        } elseif ((isset($_GET['order_for_filter'])) && $_GET['order_for_filter'] == 'direct') {
+            $q->where('order_for', '!=', 0)->get();
+        }
+        
+
         if (Auth::user()->role_id > 1) {
             if ((isset($_GET['purchase_order_filter'])) && $_GET['purchase_order_filter'] != '') {
                 $q = $q->where('order_status', '=', $_GET['purchase_order_filter'])
@@ -41,16 +50,19 @@ class PurchaseOrderController extends Controller {
                 $q = $q->where('is_view_all', '=', 0);
             }
         }
+        
         if (Auth::user()->role_id < 1) {
             if ((isset($_GET['purchase_order_filter'])) && $_GET['purchase_order_filter'] != '') {
                 $q = $q->where('order_status', '=', $_GET['purchase_order_filter']);
             }
         }
+        
         $purchase_orders = $q->orderBy('created_at', 'desc')
                 ->with('customer', 'delivery_location', 'user', 'purchase_products')
                 ->Paginate(10);
+        $all_customers = Customer::all();
         $purchase_orders->setPath('purchase_orders');
-        return view('purchase_order', compact('purchase_orders'));
+        return view('purchase_order', compact('purchase_orders', 'all_customers'));
     }
 
     /**
@@ -59,7 +71,7 @@ class PurchaseOrderController extends Controller {
      * @return Response
      */
     public function create() {
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 ) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $units = Units::all();
@@ -74,10 +86,14 @@ class PurchaseOrderController extends Controller {
      * @return Response
      */
     public function store(PurchaseOrderRequest $request) {
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1  ) {
+
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+
         $input_data = Input::all();
+
+
         $i = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
@@ -85,9 +101,11 @@ class PurchaseOrderController extends Controller {
                 $i++;
             }
         }
+
         if ($i == $j) {
             return Redirect::back()->with('flash_message', 'Please insert product details');
         }
+
         if ($input_data['supplier_status'] == "new_supplier") {
             $validator = Validator::make($input_data, Customer::$new_supplier_inquiry_rules);
             if ($validator->passes()) {
@@ -104,23 +122,25 @@ class PurchaseOrderController extends Controller {
             }
         } elseif ($input_data['supplier_status'] == "existing_supplier") {
 
-            //send mail
-             if (isset($input_data['send_email'])){
-                $customers = Customer::find($input_data['autocomplete_supplier_id']);
+            $validate = Validator::make($input_data, array('autocomplete_supplier_id' => 'required'));
 
-                Mail::send('emails.purchase_order_add_email', ['key' => $customers->owner_name], function($message) {
-                    $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Purchase details updated!');
-                });
-            }
-            
-
-            if ($validator->passes()) {
+            if ($validate->passes()) {
                 $customer_id = $input_data['autocomplete_supplier_id'];
+
+                //send mail
+                if (isset($input_data['send_email'])) {
+                    $customers = Customer::find($input_data['autocomplete_supplier_id']);
+
+                    Mail::send('emails.purchase_order_add_email', ['key' => $customers->owner_name], function($message) {
+                        $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Purchase details updated!');
+                    });
+                }
             } else {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
+
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
             $add_delivery_location = DeliveryLocation::create([
                         'area_name' => $input_data['other_location_name'],
@@ -128,19 +148,24 @@ class PurchaseOrderController extends Controller {
             ]);
             $location_id = DB::getPdo()->lastInsertId();
         } else {
+
             $location_id = $input_data['purchase_order_location'];
         }
+
+        $date = $input_data['expected_delivery_date'];
+        $datetime = new DateTime($date);
+
         $add_purchase_order_array = [
             'supplier_id' => $customer_id,
             'created_by' => Auth::id(),
             'delivery_location_id' => $location_id,
             'order_for' => $input_data['order_for'],
             'vat_percentage' => $input_data['vat_percentage'],
-//            'expected_delivery_date' => date_format(date_create($input_data['expected_delivery_date']), 'Y-m-d'),
-//                'expected_delivery_date' => date('Y-m-d', strtotime($input_data['expected_delivery_date'])),
+            'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['purchase_order_remark'],
-            'inquiry_status' => "Pending",
+            'inquiry_status' => "pending",
         ];
+
         $add_purchase_order = PurchaseOrder::create($add_purchase_order_array);
         $purchase_order_id = DB::getPdo()->lastInsertId();
         $purchase_order_products = array();
@@ -157,13 +182,8 @@ class PurchaseOrderController extends Controller {
                 $add_purchase_order_products = PurchaseProducts::create($purchase_order_products);
             }
         }
-//        if (isset($input_data['send_email'])) {
-//            $customer = Customer::findOrFail($customer_id);
-//            Mail::send('emails.purchase_order', ['customer' => $customer], function ($m) use ($customer) {
-//                $m->to($customer->email, $customer->first_name)->subject('Purchase order generated');
-//            });
-//        }
-        return redirect('purchase_orders/' . $purchase_order_id . '/edit')->with('flash_message', 'Purchase order details successfully added.');
+
+        return redirect('purchase_orders')->with('flash_message', 'Purchase order details successfully added.');
     }
 
     /**
@@ -173,10 +193,12 @@ class PurchaseOrderController extends Controller {
      * @return Response
      */
     public function show($id) {
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 ) {
+
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $purchase_orders = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'purchase_products.product_category', 'customer')->first();
+
+        $purchase_orders = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'purchase_products.product_category.product_sub_category', 'customer')->first();
         return view('purchase_order_details', compact('purchase_orders'));
     }
 
@@ -187,10 +209,12 @@ class PurchaseOrderController extends Controller {
      * @return Response
      */
     public function edit($id) {
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $purchase_order = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'purchase_products.product_category', 'customer')->first();
+
+        $purchase_order = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'purchase_products.product_category.product_sub_category', 'customer')->first();
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::where('customer_status', '=', 'permanent')->get();
@@ -204,7 +228,8 @@ class PurchaseOrderController extends Controller {
      * @return Response
      */
     public function update($id) {
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 ) {
+
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $input_data = Input::all();
@@ -216,6 +241,7 @@ class PurchaseOrderController extends Controller {
                 $i++;
             }
         }
+
         if ($i == $j) {
             return Redirect::back()->with('flash_message', 'Please insert product details');
         }
@@ -238,14 +264,13 @@ class PurchaseOrderController extends Controller {
         } elseif ($input_data['supplier_status'] == "existing_supplier") {
 
             //send mail
-            if (isset($input_data['send_email'])){
+            if (isset($input_data['send_email'])) {
                 $customers = Customer::find($input_data['autocomplete_supplier_id']);
 
                 Mail::send('emails.purchase_order_email', ['key' => $customers->owner_name], function($message) {
                     $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Purchase details updated');
                 });
             }
-
 
             $validator = Validator::make($input_data, Customer::$existing_supplier_inquiry_rules);
             if ($validator->passes()) {
@@ -256,18 +281,22 @@ class PurchaseOrderController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
+
+        $date = strtotime($input_data['expected_delivery_date']);
+        $datetime = new DateTime($date);
+
         $purchase_order = PurchaseOrder::find($id);
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
+
             $add_purchase_order_array = [
                 'supplier_id' => $customer_id,
                 'created_by' => Auth::id(),
                 'delivery_location_id' => $input_data['purchase_order_location'],
                 'order_for' => $input_data['order_for'],
                 'vat_percentage' => $input_data['vat_percentage'],
-//                'expected_delivery_date' => date_format(date_create($input_data['expected_delivery_date']), 'Y-m-d'),
-//                'expected_delivery_date' => date('Y-m-d', strtotime($input_data['expected_delivery_date'])),
+                'expected_delivery_date' => $datetime->format('Y-m-d'),
                 'remarks' => $input_data['purchase_order_remark'],
-                'inquiry_status' => "Pending",
+                'inquiry_status' => "pending",
                 'other_location' => $input_data['other_location_name']
             ];
         } else {
@@ -277,18 +306,19 @@ class PurchaseOrderController extends Controller {
                 'created_by' => Auth::id(),
                 'delivery_location_id' => $input_data['purchase_order_location'],
                 'vat_percentage' => $input_data['vat_percentage'],
-//                'expected_delivery_date' => date_format(date_create($input_data['expected_delivery_date']), 'Y-m-d'),
+                'expected_delivery_date' => $datetime->format('Y-m-d'),
                 'remarks' => $input_data['purchase_order_remark'],
-                'inquiry_status' => "Pending"
+                'inquiry_status' => "pending"
             ];
         }
+
         $update_purchase_order = $purchase_order->update($add_purchase_order_array);
         $purchase_order_products = array();
         $delete_old_purchase_products = PurchaseProducts::where('purchase_order_id', '=', $id)->delete();
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
                 $purchase_order_products = [
-                    'purchase_order_id' => $purchase_order_id,
+                    'purchase_order_id' => $id,
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
@@ -298,7 +328,7 @@ class PurchaseOrderController extends Controller {
                 $add_purchase_order_products = PurchaseProducts::create($purchase_order_products);
             }
         }
-        return redirect('purchase_orders/' . $purchase_order_id . '/edit')->with('flash_message', 'Purchase order details successfully added.');
+        return redirect('purchase_orders')->with('flash_message', 'Purchase order details successfully updated.');
     }
 
     /**
@@ -329,10 +359,7 @@ class PurchaseOrderController extends Controller {
                 $orders['pending'] = $a->quantity - $a->present_shipping;
             }
         }
-//        echo '<pre>';
-//        print_r($purchase_orders);
-//        echo '</pre>';
-//        exit;
+
         return view('create_purchase_advice', compact('purchase_orders'));
     }
 

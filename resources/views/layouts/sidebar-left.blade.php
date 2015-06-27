@@ -96,11 +96,11 @@
                             </li>
                             @endif
                             
-                            <li class="{{ (Request::is('*pending_order_report*') ? 'active' : '') }}">
+<!--                            <li class="{{ (Request::is('*pending_order_report*') ? 'active' : '') }}">
                                 <a href="{{url('pending_order_report')}}">
                                     Pending Order Report
                                 </a>
-                            </li>
+                            </li>-->
                         </ul>
                     </li>
 
@@ -133,11 +133,11 @@
                                 </a>
                             </li>
 
-                            <li class="{{ (Request::is('*purchase_order_report*') ? 'active' : '') }}">
+<!--                            <li class="{{ (Request::is('*purchase_order_report*') ? 'active' : '') }}">
                                 <a href="{{url('purchase_order_report')}}" >
                                     Purchase Order Report
                                 </a>
-                            </li>
+                            </li>-->
                             <li class="<?php echo ($page_name == 'purchaseorder_advisereport.php') ? 'active' : ''; ?>">
                                 <a href="{{url('pending_purchase_advice')}}">
                                     Pending Purchase Advise Report
