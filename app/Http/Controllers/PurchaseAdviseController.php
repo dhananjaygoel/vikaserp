@@ -19,6 +19,7 @@ use App\Units;
 use App\Http\Requests\StorePurchaseAdvise;
 use Redirect;
 use Validator;
+use DateTime;
 
 class PurchaseAdviseController extends Controller {
 
@@ -159,7 +160,7 @@ class PurchaseAdviseController extends Controller {
      * @return Response
      */
     public function edit($id) {
-        $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.product_category')->find($id);
+        $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.product_category.product_sub_category')->find($id);
 
         $locations = DeliveryLocation::all();
         $units = Units::all();
@@ -174,6 +175,7 @@ class PurchaseAdviseController extends Controller {
      * @return Response
      */
     public function update($id) {
+
         $input_data = Input::all();
         $purchase_advise = PurchaseAdvise::find($id);
         $purchase_advise->update(
@@ -209,6 +211,8 @@ class PurchaseAdviseController extends Controller {
                 }
             }
         }
+
+        return redirect('purchaseorder_advise')->with('success', 'Purchase advise updated successfully');
     }
 
     /**
@@ -238,50 +242,67 @@ class PurchaseAdviseController extends Controller {
     }
 
     public function store_advise() {
+
         $input_data = Input::all();
-        $add_purchase_advice_array = [
-            'supplier_id' => $input_data['supplier_id'],
-            'created_by' => Auth::id(),
-            'purchase_advice_date' => $input_data['bill_date'],
-            'delivery_location_id' => $input_data['delivery_location_id'],
-            'vat_percentage' => $input_data['vat_percentage'],
-            'expected_delivery_date' => $input_data['expected_delivery_date'],
-            'remarks' => $input_data['grand_remark'],
-            'advice_status' => 'in_process',
-            'vehicle_number' => $input_data['vehicle_number'],
-            'purchase_order_id' => $input_data['id']
-        ];
-        $add_purchase_advice = PurchaseAdvise::create($add_purchase_advice_array);
-        $purchase_advice_id = DB::getPdo()->lastInsertId();
-        $purchase_advice_products = array();
-        foreach ($input_data['product'] as $product_data) {
-            if (isset($product_data['name']) || ($product_data['id'] != "")) {
-                if ($product_data['present_shipping'] != "") {
-                    $purchase_advice_products = [
-                        'purchase_order_id' => $purchase_advice_id,
-                        'product_category_id' => $product_data['id'],
-                        'unit_id' => $product_data['units'],
-                        'quantity' => $product_data['quantity'],
-                        'price' => $product_data['price'],
-                        'remarks' => $product_data['remark'],
-                        'order_type' => 'purchase_advice',
-                        'present_shipping' => $product_data['present_shipping']
-                    ];
-                } elseif ($product_data['present_shipping'] == "") {
-                    $purchase_advice_products = [
-                        'purchase_order_id' => $purchase_advice_id,
-                        'product_category_id' => $product_data['id'],
-                        'unit_id' => $product_data['units'],
-                        'quantity' => $product_data['quantity'],
-                        'price' => $product_data['price'],
-                        'remarks' => $product_data['remark'],
-                        'order_type' => 'purchase_advice',
-                    ];
+        $validator = Validator::make($input_data, PurchaseAdvise::$store_purchase_validation);
+        if ($validator->passes()) {
+
+            $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['bill_date']);
+            $date = strtotime($date_string);
+            $datetime = new DateTime($date);
+
+            $add_purchase_advice_array = [
+                'supplier_id' => $input_data['supplier_id'],
+                'created_by' => Auth::id(),
+                'purchase_advice_date' => $datetime->format('Y-m-d'),
+                'delivery_location_id' => $input_data['delivery_location_id'],
+                'vat_percentage' => $input_data['vat_percentage'],
+                'expected_delivery_date' => $input_data['expected_delivery_date'],
+                'remarks' => $input_data['grand_remark'],
+                'advice_status' => 'in_process',
+                'vehicle_number' => $input_data['vehicle_number'],
+                'purchase_order_id' => $input_data['id']
+            ];
+
+            $add_purchase_advice = PurchaseAdvise::create($add_purchase_advice_array);
+            $purchase_advice_id = DB::getPdo()->lastInsertId();
+            $purchase_advice_products = array();
+
+            foreach ($input_data['product'] as $product_data) {
+                if (isset($product_data['name']) || ($product_data['id'] != "")) {
+                    if ($product_data['present_shipping'] != "") {
+                        $purchase_advice_products = [
+                            'purchase_order_id' => $purchase_advice_id,
+                            'product_category_id' => $product_data['id'],
+                            'unit_id' => $product_data['units'],
+                            'quantity' => $product_data['quantity'],
+                            'price' => $product_data['price'],
+                            'remarks' => $product_data['remark'],
+                            'order_type' => 'purchase_advice',
+                            'present_shipping' => $product_data['present_shipping']
+                        ];
+                    } elseif ($product_data['present_shipping'] == "") {
+
+                        $purchase_advice_products = [
+                            'purchase_order_id' => $purchase_advice_id,
+                            'product_category_id' => $product_data['id'],
+                            'unit_id' => $product_data['units'],
+                            'quantity' => $product_data['quantity'],
+                            'price' => $product_data['price'],
+                            'remarks' => $product_data['remark'],
+                            'order_type' => 'purchase_advice',
+                        ];
+                    }
+
+                    $add_purchase_advice_products = PurchaseProducts::create($purchase_advice_products);
                 }
-                $add_purchase_advice_products = PurchaseProducts::create($purchase_advice_products);
             }
+            return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advice details successfully added.');
+        } else {
+
+            $error_msg = $validator->messages();
+            return Redirect::back()->withInput()->withErrors($validator);
         }
-        return redirect('create_purchase_advice/' . $input_data['id'])->with('flash_message', 'Purchase advice details successfully added.');
     }
 
     public function pending_purchase_advice() {
@@ -298,7 +319,7 @@ class PurchaseAdviseController extends Controller {
 
         $locations = DeliveryLocation::all();
         $units = Units::all();
-        
+
         return view('purchaseorder_advise_challan', compact('purchase_advise', 'locations', 'units'));
     }
 

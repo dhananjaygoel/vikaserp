@@ -10,7 +10,7 @@
                     <li class="active"><span>Add Product Size</span></li>
                 </ol>
                 <div class="clearfix">
-<!--                    <h1 class="pull-left"> Add Product Sub Category</h1>                    -->
+                    <!--                    <h1 class="pull-left"> Add Product Sub Category</h1>                    -->
                 </div>
             </div>
         </div>
@@ -64,13 +64,17 @@
                                 </div>
                             </div>
 
-                                    
-                            
+
+
                             <div class="form-group col-md-3">
                                 <label for="weight">Product Weight</label>
                                 <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="1" type="text">
                             </div>
                             <div class="clearfix"></div>
+                            <div class="form-group">
+                                <label for="difference">Standard Length</label>
+                                <input id="standard_length" class="form-control" placeholder=" Standard Length" name="standard_length" value="{{ old('standard_length') }}" type="text">
+                            </div>
                             <div class="form-group">
                                 <label for="difference">Difference</label>
                                 <input id="difference" class="form-control" placeholder=" Difference" name="difference" value="{{ old('difference') }}" type="text">

@@ -25,13 +25,13 @@ use DateTime;
 class PurchaseOrderController extends Controller {
 
     public function index() {
-        
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
-        }        
-        
+        }
+
         $q = PurchaseOrder::query();
-        
+
         if ((isset($_GET['pending_purchase_order'])) && $_GET['pending_purchase_order'] != '') {
             $q->where('supplier_id', '=', $_GET['pending_purchase_order'])->get();
         }
@@ -40,7 +40,7 @@ class PurchaseOrderController extends Controller {
         } elseif ((isset($_GET['order_for_filter'])) && $_GET['order_for_filter'] == 'direct') {
             $q->where('order_for', '!=', 0)->get();
         }
-        
+
 
         if (Auth::user()->role_id > 1) {
             if ((isset($_GET['purchase_order_filter'])) && $_GET['purchase_order_filter'] != '') {
@@ -50,13 +50,13 @@ class PurchaseOrderController extends Controller {
                 $q = $q->where('is_view_all', '=', 0);
             }
         }
-        
+
         if (Auth::user()->role_id < 1) {
             if ((isset($_GET['purchase_order_filter'])) && $_GET['purchase_order_filter'] != '') {
                 $q = $q->where('order_status', '=', $_GET['purchase_order_filter']);
             }
         }
-        
+
         $purchase_orders = $q->orderBy('created_at', 'desc')
                 ->with('customer', 'delivery_location', 'user', 'purchase_products')
                 ->Paginate(10);
@@ -152,7 +152,8 @@ class PurchaseOrderController extends Controller {
             $location_id = $input_data['purchase_order_location'];
         }
 
-        $date = $input_data['expected_delivery_date'];
+        $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_delivery_date']);
+        $date = date("Y-m-d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
 
         $add_purchase_order_array = [
@@ -282,8 +283,10 @@ class PurchaseOrderController extends Controller {
             }
         }
 
-        $date = strtotime($input_data['expected_delivery_date']);
+        $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_delivery_date']);
+        $date = date("Y-m-d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
+
 
         $purchase_order = PurchaseOrder::find($id);
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
@@ -351,7 +354,8 @@ class PurchaseOrderController extends Controller {
     }
 
     public function create_purchase_advice($order_id) {
-        $purchase_orders = PurchaseOrder::where('id', '=', $order_id)->with('purchase_products.unit', 'purchase_products.product_category', 'customer', 'purchase_advice.purchase_products')->first();
+
+        $purchase_orders = PurchaseOrder::where('id', '=', $order_id)->with('purchase_products.unit', 'purchase_products.product_category.product_sub_category', 'customer', 'purchase_advice.purchase_products')->first();
 
         foreach ($purchase_orders as $orders) {
             $check_if_advice_exists = PurchaseAdvise::where('purchase_order_id', '=', $order_id)->with('purchase_products')->get();

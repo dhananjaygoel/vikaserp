@@ -90,17 +90,17 @@
                                             <td><span>VAT Percentage: </span> {{$purchase_advise->vat_percentage.'%'}}</td>
                                         </tr>
                                     <?php } ?>
-                                    <tr>
+<!--                                    <tr>
                                         <td><span>Grand Total: </span> 5000</td>
-                                    </tr>
-                                    <tr>
+                                    </tr>-->
+<!--                                    <tr>
                                         <td><span>Total Price: </span>Lorem</td>
-                                    </tr>   
+                                    </tr>   -->
                                     <tr>
                                         <td><span>Expected Delivery Date: </span>{{$purchase_advise->expected_delivery_date}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Vehicle Name: </span> {{$purchase_advise->vehicle_number}}</td>
+                                        <td><span>Vehicle Number: </span> {{$purchase_advise->vehicle_number}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Delivery Location: </span> {{$purchase_advise['location']->area_name}}</td>

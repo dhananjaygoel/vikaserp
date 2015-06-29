@@ -67,14 +67,13 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Product Name(Alias)</th>
+                                        <th>Product Name</th>
                                         <th>Alias Name</th>
-                                        <th>Size</th>
+                                        <th>Size(Meter)</th>
                                         @if(Input::get('product_filter') != 2)
                                         <th>Thickness</th>
                                         @endif
-                                        <th>Weight</th>
-                                        
+                                        <th>Weight(KG)</th>                                        
                                         <th class="col-md-2">Difference</th>  
                                         @if( Auth::user()->role_id == 0 )
                                         <th >Actions</th>

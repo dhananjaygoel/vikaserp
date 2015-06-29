@@ -15,6 +15,7 @@ class CreateDeliveryLocationsTable extends Migration {
             $table->increments('id');
             $table->integer('state_id');
             $table->integer('city_id');
+            $table->string('difference');
             $table->string('area_name', 200);
             $table->enum('status', array('pending', 'permanent'));
             $table->timestamps();

@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('states', 'StatesController');
     Route::resource('city', 'CityController');
     Route::resource('location', 'DeliveryLocationController');
+    Route::post('delivery_difference', 'DeliveryLocationController@delivery_difference');
     Route::resource('customers', 'CustomerController');
     Route::resource('pending_customers', 'PendingCustomerController');
     Route::resource('customer_manager', 'CustomerManagerController');

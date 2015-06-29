@@ -70,20 +70,20 @@
                                             <tr id="add_row_{{$key}}" class="add_product_row">
                                                 <td class="col-md-3">
                                                     <div class="form-group searchproduct">
-                                                        {{$product['product_category']->product_category_name}}
+                                                        {{$product['product_category']['product_sub_category']->alias_name}}
                                                         <input class="form-control" type="hidden" name="product[{{$key}}][name]">
                                                         <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}">
                                                         <input type="hidden" name="product[{{$key}}][purchase_product_id]" value="{{$product->id}}">
                                                     </div>
                                                 </td>
-                                                <td class="col-md-2">
+                                                <td class="col-md-1">
                                                     <div class="form-group ">
                                                         {{$product['unit']->unit_name}}
                                                     </div>
                                                 </td>
                                                 <td class="col-md-2">
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]">
+                                                        <input type="text" class="form-control" value="{{$product->present_shipping}}" onblur="change_quantity(<?php echo $key; ?>)"  name="product[{{$key}}][present_shipping]">
                                                     </div>
                                                 </td>
                                                 <td class="col-md-2">
@@ -91,8 +91,13 @@
                                                         <input type="text" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
                                                     </div>
                                                 </td>
-                                                <td><?php $pending_quantity = $product->quantity - $product->present_shipping; echo $pending_quantity; ?></td>
-                                                <td class="col-md-4">
+                                                <td class="col-md-1">
+                                                    <div class="form-group">
+                                                        <?php $pending_quantity = $product->quantity - $product->present_shipping; ?>
+                                                        <input type="text" class="form-control" value="{{ $pending_quantity}}" id="pending_order_{{$key}}" name="pending_order_{{$key}}"/>
+                                                    </div>
+                                                </td>
+                                                <td class="col-md-3">
                                                     <div class="form-group">
                                                         <input id="remark" class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text">
                                                     </div>

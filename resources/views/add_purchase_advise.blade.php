@@ -235,15 +235,15 @@
 
                                 </div>
                             </div> 
-                            <div class="form-group">
+<!--                            <div class="form-group">
 
                                 <label for="price">Total Price</label>
                                 <input id="price" class="form-control" placeholder="Total Price" name="total_price" value="" type="text">
 
-                            </div>
+                            </div>-->
                             <div class="form-group">
                                 <label for="cp">Vehicle Number </label>
-                                <input id="cp" class="form-control" placeholder="Vehicle Name" name="vehicle_number" value="" type="text">
+                                <input id="cp" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="" type="text">
 
                             </div>
                             <div class="form-group col-md-4 targetdate">

@@ -57,10 +57,7 @@ class ProductsubController extends Controller {
         }
         $product_type = ProductType::all();
         $units = Units::first();
-//        echo '<pre>';
-//        print_r($units);
-//        echo '</pre>';
-//        exit;
+
         return view('add_product_sub_category', compact('product_type', 'units'));
     }
 
@@ -90,6 +87,7 @@ class ProductsubController extends Controller {
         $ProductSubCategory->weight = $request->input('weight');
         $ProductSubCategory->unit_id = $request->input('units');
         $ProductSubCategory->thickness = $request->input('thickness');
+        $ProductSubCategory->standard_length = $request->input('standard_length');
         $ProductSubCategory->difference = $request->input('difference');
         $ProductSubCategory->save();
 
@@ -133,6 +131,7 @@ class ProductsubController extends Controller {
             'weight' => $request->input('weight'),
             'unit_id' => $request->input('units'),
             'thickness' => $request->input('thickness'),
+            'standard_length' => $request->input('standard_length'),
             'difference' => $request->input('difference')
         );
 
@@ -148,10 +147,11 @@ class ProductsubController extends Controller {
                 ->update(array('difference' => Input::get('difference')));
         return redirect('product_sub_category')->with('success', 'Product sub category difference successfully updated.');
     }
-    public function get_product_weight(){
+
+    public function get_product_weight() {
         $product_id = Input::get('product_id');
-        $product_cat = ProductSubCategory::where('product_category_id',$product_id)->first();
-        $product_weight= $product_cat['weight'];
+        $product_cat = ProductSubCategory::where('product_category_id', $product_id)->first();
+        $product_weight = $product_cat['weight'];
         return $product_weight;
     }
 

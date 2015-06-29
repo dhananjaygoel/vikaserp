@@ -27,15 +27,17 @@ class PurchaseAdvise extends Model {
     public function party() {
         return $this->hasOne('App\Customer', 'id', 'order_for');
     }
-    
+
     public function location() {
         return $this->hasOne('App\DeliveryLocation', 'id', 'delivery_location_id');
     }
-    
+
     public function purchase_products() {
         return $this->hasMany('App\PurchaseProducts', 'purchase_order_id', 'id')->where('order_type', '=', 'purchase_advice');
     }
-    
-    
-    
+
+    public static $store_purchase_validation = array(
+        'bill_date' => 'required'
+    );
+
 }

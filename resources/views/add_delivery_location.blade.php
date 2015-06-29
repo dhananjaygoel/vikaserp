@@ -56,9 +56,12 @@
                                 <label for="area_name">Area Name</label>
                                 <input id="area_name" class="form-control" placeholder="Area Name" name="area_name" value="{{Input::old('area_name')}}" type="text">
                             </div>
+                            <div class="form-group">
+                                <label for="area_name">Difference</label>
+                                <input id="difference" class="form-control" placeholder="Difference" name="difference" value="{{Input::old('difference')}}" type="text">
+                            </div>
                             <hr>
                             <div>
-                                <!--<button type="submit" class="btn btn-primary form_button_footer" >Submit</button>-->
                                 <input type="submit" class="btn btn-primary form_button_footer" value="Submit">
                                 <a href="{{URL::to('location')}}" class="btn btn-default form_button_footer">Back</a>
                             </div>

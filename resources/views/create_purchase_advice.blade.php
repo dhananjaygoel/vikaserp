@@ -60,43 +60,46 @@
                                     <table id="add_product_table" class="table table-hover  ">
                                         <tbody>
                                             <tr class="headingunderline">
-                                                <td class="col-md-3"><span> Product Name</span></td>
+                                                <td class="col-md-3"><span> Product Name(Alias)</span></td>
                                                 <td class="col-md-1"><span>Unit</span></td>
                                                 <td class="col-md-2"><span>Pending Order</span</td>
                                                 <td class="col-md-2"><span>Present Shipping</span></td>
-                                                <td class="col-md-1"></td>
+                                                <td class="col-md-1">Price</td>
                                                 <td class="col-md-3"><span>Remark</span></td>
-
                                             </tr>
                                             @foreach($purchase_orders['purchase_products'] as $key=>$product_data)
+                                            @if($product_data->order_type == 'purchase_order')
                                             <tr id="add_row_{{++$key}}" class="add_product_row">
                                                 <td>
-                                                    {{$product_data['product_category']->product_category_name}}
+                                                    {{$product_data['product_category']['product_sub_category']->alias_name}}
                                                     <input type="hidden" name="product[{{$key}}][id]" value="{{$product_data['product_category']->id}}">
                                                 </td>
                                                 <td class="col-md-1">
                                                     {{$product_data['unit']->unit_name}}
                                                     <input type="hidden" name="product[{{$key}}][units]" value="{{$product_data['unit']->id}}">
                                                 </td>
-                                                <td>Pending Order</td>
+                                                <td>
+                                                    <input class="form-control" type="text" name="pending_order" id="pending_order_{{$key}}" readonly="" value="{{$product_data->quantity}}"/>
+                                                    <input class="form-control" type="hidden" name="pending_order_org" id="pending_order_org{{$key}}" value="{{$product_data->quantity}}"/>
+                                                </td>
                                                 <td>
                                                     <div class="form-group pshipping">
-                                                        @if(isset($product_data['present_shipping']))
-                                                        <input id="{{"present_shipping_".$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$product_data['present_shipping']}}" type="text">
+                                                        @if($product_data->present_shipping != 0)
+                                                        <input id="{{"present_shipping_".$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" onblur="calutate_pending_order(<?php echo $product_data->quantity . ',' . $key; ?>)" value="{{$product_data->present_shipping}}" type="text">
                                                         @else
-                                                        <input id="{{"present_shipping_".$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="" type="text">
+                                                        <input id="{{"present_shipping_".$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" onblur="calutate_pending_order(<?php echo $product_data->quantity . ',' . $key; ?>);" value="" type="text">
                                                         @endif
                                                     </div>
                                                 </td>
-                                                <td class="col-md-1"></td>
+                                                <td class="col-md-1">{{$product_data->price}}</td>
                                                 <td>
                                                     {{$product_data->remarks}}
                                                     <input type="hidden" name="product[{{$key}}][remark]" value="{{$product_data->remarks}}">
                                                     <input type="hidden" name="product[{{$key}}][price]" value="{{$product_data->price}}">
                                                     <input type="hidden" name="product[{{$key}}][quantity]" value="{{$product_data->quantity}}">
                                                 </td>
-
                                             </tr>
+                                            @endif
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -139,7 +142,7 @@
                                         @endif
                                         <tr class="cdtable">
                                             <td class="cdfirst">Vehicle Number:</td>
-                                            <td><input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="" type="text" required=""></td>
+                                            <td><input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="" type="text"></td>
                                         </tr>
                                         </tbody>
                                     </table>
