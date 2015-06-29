@@ -199,8 +199,20 @@
                                <table id="table-example" class="table table-hover customerview_table  ">
                                 
                                         
-                                            <tbody>   
-                                                <tr>
+                                            <tbody>  
+                                        <tr>
+                                        <td><span>Total: </span>$15000</td>
+                                     
+                                        </tr>
+                                         <tr>
+                                        <td><span>Bill Number: </span>Lorem ipsum</td>
+                                     
+                                        </tr>
+                                        <tr>
+                                        <td><span>Loading: </span>Lorem ipsum</td>
+                                     
+                                        </tr>
+                                        <tr>
                                         <td><span>Discount: </span>5%</td>
                                      
                                         </tr>
@@ -212,18 +224,7 @@
                                         <td><span>Total: </span>$15000</td>
                                      
                                         </tr>
-                                        <tr>
-                                        <td><span>Loading: </span>Lorem ipsum</td>
-                                     
-                                        </tr>
-                                        <tr>
-                                        <td><span>Loaded By: </span>Lorem ipsum</td>
-                                     
-                                        </tr>
-                                        <tr>
-                                        <td><span>Labours: </span>Lorem ipsum</td>
-                                     
-                                        </tr>
+                                       
                                         
                                         <tr>
                                         <td><span>Plus VAT: </span>Yes</td>
@@ -234,7 +235,7 @@
                                      
                                         </tr>
                                         <tr>
-                                        <td><span>VAT: </span></td>
+                                        <td><span>VAT Amount: </span>500</td>
                                      
                                         </tr>
                                         <tr>

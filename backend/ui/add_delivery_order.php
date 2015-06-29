@@ -60,7 +60,7 @@
 									</div>
 								</div>
 							</div>
-											<div  class="row">
+<div  class="row">
     <div class="col-lg-12">
         <div class="main-box">
                      
@@ -668,21 +668,11 @@
                     </div>
                         </div>-->
                        <div class="clearfix"></div>
-                    <div class="form-group">
-                        <label for="grandtotal">Grand Total:<span class="gtotal"> $25000</span></label>
-                        
-                    </div>
-                                   
-             
-        
                 <div class="form-group">
                     <label for="vehicle_name">Vehicle Number</label>
                     <input id="vehicle_name" class="form-control" placeholder="Vehicle Number" name="vehicle_name" value="" type="text">
                 </div>
-                <div class="form-group">
-                    <label for="driver_name">Driver Name</label>
-                    <input id="driver_name" class="form-control" placeholder="Driver Name " name="driver_name" value="" type="text">
-                </div>
+                
                     <div class="form-group">
                     <label for="driver_contact">Driver Contact</label>
                     <input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="" type="text">

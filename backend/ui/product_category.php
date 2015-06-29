@@ -75,9 +75,11 @@
                                 <thead>
                                     <tr>
                                         <th class="col-md-1">#</th>
-                                        <th class="col-md-3">Name</th>
-                                        <th class="col-md-2">Type</th>
-                                        <th class="col-md-3">Price</th>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Add Date</th>
+                                        <th>Updated Date</th>
+                                        <th class="col-md-2">Price</th>
                                                                                                  
                                         <th>Actions</th>
                                     </tr>
@@ -89,6 +91,8 @@
                                         <td>1</td>
                                         <td>Category Name 1</td>
                                         <td>Pipe</td>
+                                        <td>25 June,2015</td>
+                                        <td>27 June,2015</td>
                                         <td>
                                             <div class="row product-price">
                                             <div class="form-group col-md-6">
@@ -125,6 +129,8 @@
                                         <td>2</td>
                                         <td>Category Name 2</td>
                                         <td>Structure</td>
+                                         <td>25 June,2015</td>
+                                        <td>27 June,2015</td>
                                          <td>
                                              <div class="row product-price">
                                             <div class="form-group col-md-6">

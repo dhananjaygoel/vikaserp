@@ -221,10 +221,10 @@
                                         <td><span>Total: </span>$15000</td>
                                      
                                         </tr>
-                                        <tr>
+                                        <!--<tr>
                                         <td><span>Unloading: </span>Lorem ipsum</td>
                                      
-                                        </tr>
+                                        </tr>-->
                                         <tr>
                                         <td><span>Unloaded By: </span>Lorem ipsum</td>
                                      

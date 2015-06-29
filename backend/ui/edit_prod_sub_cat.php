@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>Add Product Sub Category - Vikas Associate Order Automation System</title>
+	<title>Edit Product Size - Vikas Associate Order Automation System</title>
 	
 	<!-- bootstrap -->
 	<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css" />
@@ -50,7 +50,7 @@
 								<div class="col-lg-12">
 									<ol class="breadcrumb">
 										<li><a href="#">Home</a></li>
-										<li class="active"><span>Edit Product Sub Category</span></li>
+										<li class="active"><span>Edit Product Size</span></li>
 									</ol>
 									
 								</div>
@@ -89,8 +89,12 @@
                     <label for="size">Alias Name</label>
                     <input id="alias_name" class="form-control" placeholder="Alias Name" name="name" value="" type="text">
                 </div>
+                <div class="form-group">
+                    <label for="size">Product Standard Length (meter)</label>
+                    <input id="length" class="form-control" placeholder="Product Standard Length" name="length" value="" type="text">
+                </div>
                     <div class="form-group">
-                    <label for="size">Product Size</label>
+                    <label for="size">Product Size (meter)</label>
                     <input id="size" class="form-control" placeholder="Product Size" name="size" value="" type="text">
                 </div>
                
@@ -101,7 +105,7 @@
                 </div>
             </div>
                 <div class="form-group">
-                    <label for="weight">Product Weight</label>
+                    <label for="weight">Product Weight (kg)</label>
                     <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="" type="text">
                 </div>
                     <div class="form-group">

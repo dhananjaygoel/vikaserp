@@ -498,18 +498,12 @@
                                                         <td class="cdfirst">VAT Percentage:</td>
                                                         <td>5%</td>
                                                     </tr>
-                                                    <tr class="cdtable">
-                                                        <td class="cdfirst">Grand Total:</td>
-                                                        <td>$25000</td>
-                                                    </tr>
+                                                   
                                                     <tr class="cdtable">
                                                         <td class="cdfirst">Vehicle Number:</td>
                                                         <td><input id="price" class="form-control" placeholder="Vehicle Number" name="Number" value="" type="text"></td>
                                                     </tr>
-                                                    <tr class="cdtable">
-                                                        <td class="cdfirst">Driver Name:</td>
-                                                        <td><input id="price" class="form-control" placeholder="Driver Name" name="name" value="" type="text"></td>
-                                                    </tr>
+                                                   
                                                    <tr class="cdtable">
                                                         <td class="cdfirst">Driver Contact:</td>
                                                         <td><input id="price" class="form-control" placeholder="Driver Contact" name="price" value="" type="text"></td>

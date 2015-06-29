@@ -91,7 +91,10 @@
                     <label for="area_name">Area Name</label>
                     <input id="area_name" class="form-control" placeholder="Area Name" name="area_name" value="" type="text">
                 </div>
-                    
+                <div class="form-group">
+                    <label for="difference">Difference</label>
+                    <input id="difference" class="form-control" placeholder="Difference" name="difference" value="" type="text">
+                </div> 
                                                                     
                 
                 

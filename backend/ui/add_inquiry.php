@@ -796,9 +796,9 @@ $(document).ready(function(){
     });
 });
 $('#datepickerDate').datepicker({
-		  format: 'mm-dd-yyyy'
+		  format: 'mm-dd-yyyy',
+                  minDate: 0
 		});
- $('#datepickerDateComponent').datepicker();
 </script>
 <script>
 $(document).ready(function(){

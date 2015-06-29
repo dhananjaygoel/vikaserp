@@ -99,11 +99,11 @@
                                     
                                         </tr>
                                         <tr>
-                                            <td class="col-md-4"><span>City:</span> Ipsum</td>
+                                            <td class="col-md-4"><span>State:</span> Ipsum</td>
                                            
                                             
                                         </tr>
-                                        <tr> <td><span>State:</span> Lorem </td></tr>
+                                        <tr> <td><span>City:</span> Lorem </td></tr>
                                         <tr><td><span>Zip:</span> 302021</td></tr>
                                         <tr>
                                             <td><span>Email:</span> <a href="mailto:"/>Info@company.com</a></td>
@@ -113,22 +113,14 @@
                                             <td><span>Tally Name:</span> Tally1</td>
                                     
                                         </tr>
-                                        <tr>
-                                            <td><span>Tally Category:</span> Lorem</td>
-                                    
-                                        </tr>
-                                        <tr>
-                                            <td><span>Tally Subcategory:</span> Ipsum</td>
-                                    
-                                        </tr>
+                                     
                                         <tr>
                                             <td><span>Phone Number1:</span> 123456789</td>
                                             
                                             
                                         </tr>
                                         <tr><td><span>Phone Number2:</span> 123456789</td></tr>
-                                        <tr> <td><span>VAT-TIN Number:</span> 654321</td></tr>
-                                        <tr><td><span>Excise Number:</span> 2345678</td></tr>
+                                        
                                         <tr>
                                             <td><span>Delivery Location:</span> Ex-warehouse</td>
                                     

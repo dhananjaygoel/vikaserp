@@ -64,7 +64,7 @@
                                                                                         <select class="form-control" id="user_filter" name="user_filter">
                                                                                     <option value="" selected="">Status</option>
                                                                                     <option value="2">Delivered</option>
-                                                                                    <option value="2">Inprocess</option>
+                                                                                    <option value="2">Inprogress</option>
                                                                                     
                                                                                      
                                                                                     
@@ -91,9 +91,13 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Date</th>
+                                       <!-- <th>Serial Number</th>-->
+                                        <th>Party Name</th>
+                                        <th>Delivery Location</th>
+                                        <th>Qnty</th>
+                                        <th>Vehicle Number</th>
                                        
-                                        <th>Serial Number</th>
-                                        
+                                        <th>Delivery Challan</th>
                                       
                                         <th class="text-center">Actions</th>
                                     </tr>
@@ -104,9 +108,19 @@
                                         <tr>
                                         <td>1</td>
                                         <td>09 Apr 2015</td>
-                                   
-                                        <td>Apr16/04/01</td>                                        
-                                       
+                                       <!-- <td>Apr16/04/01</td>  -->
+                                        <td>Lorem Ipsum</td>
+                                        <td>Pune</td>
+                                        <td>20</td>
+                                        <td>Lorem ipsum</td>
+                                        <td>
+                                              <a href="delivery_orders_challanbutton.php" class="table-link" title="Delivery challan">
+                                                <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                        </td>
                                         <td class="text-center">
                                             
                                              <a href="view_deliveryorder.php" class="table-link" title="view">
@@ -122,12 +136,6 @@
                                                 </span>
                                             </a>
                                           
-                                              <a href="delivery_orders_challanbutton.php" class="table-link" title="Delivery challan">
-                                                <span class="fa-stack">
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
                                               <a href="" class="table-link" title="print" data-toggle="modal" data-target="#myModal1">
                                                 <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
@@ -146,9 +154,18 @@
                                                                         <tr>
                                         <td>2</td>
                                         <td>08 Apr 2015</td>
-                                    
-                                        <td>Apr16/04/01</td>                                        
-                                      
+                                         <td>Lorem Ipsum</td>
+                                        <td>Pune</td>
+                                        <td>20</td>
+                                        <td>Lorem ipsum</td>                                  
+                                        <td>
+                                              <a href="delivery_orders_challanbutton.php" class="table-link" title="Delivery challan">
+                                                <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                        </td>
                                         <td class="text-center">
                                             
                                             
@@ -165,12 +182,7 @@
 							<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                               <a href="" class="table-link" title="Delivery challan">
-                                                <span class="fa-stack">
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
+                                            
                                              <a href="" class="table-link" title="print" data-toggle="modal" data-target="#myModal1">
                                                 <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>

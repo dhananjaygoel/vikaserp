@@ -227,12 +227,7 @@
                                         <td><span>VAT: </span>Lorem</td>
                                     
                                         </tr>
-                                         <tr>
-                                        <td><span>Grand Total: </span> 5000</td>
-                                    
-                                        </tr>
-                                      
-                                         
+                                       
                                         
                                      <tr>
                                         <td><span>Expected Delivery Date: </span>25 April,2015</td>

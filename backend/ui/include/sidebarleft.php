@@ -79,11 +79,11 @@
 													Sales Daybook
 												</a>
 											</li>
-											<li class="<?php echo ($page_name=='pending_orders.php')?'active':'';?>">
+											<!--<li class="<?php echo ($page_name=='pending_orders.php')?'active':'';?>">
 												<a href="pending_orders.php">
 													Pending Order Report
 												</a>
-											</li>
+											</li>-->
 										</ul>
 									</li>
                                                                         <li class=" <?php echo ($page_name=='purchaseorders.php') || ($page_name=='create_purchase_advise.php') || ($page_name=='purchaseorder_advise.php') || ($page_name=='purchaseorder_challan.php') || ($page_name=='purchaseorder_report.php') || ($page_name=='purchaseorder_advisereport.php') || ($page_name=='purchaseorder_challanreport.php') || ($page_name=='add_placeorder.php') || ($page_name=='purchaseorder_view.php') || ($page_name=='edit_purchaseorders.php') || ($page_name=='createpurchase_order.php') || ($page_name=='view_purchaseadvice.php') || ($page_name=='edit_purchaseadvice.php') || ($page_name=='purchaseorder_challanbutton.php') || ($page_name=='view_purchasechallan.php') || ($page_name=='edit_purchasechallan.php') ?'active':'';?>">
@@ -108,11 +108,11 @@
 													Purchase Challan
 												</a>
 											</li>
-											<li class="<?php echo ($page_name=='purchaseorder_report.php')?'active':'';?>" >
+											<!--<li class="<?php echo ($page_name=='purchaseorder_report.php')?'active':'';?>" >
 												<a href="purchaseorder_report.php">
 													Purchase Order Report
 												</a>
-											</li>
+											</li>-->
                                                                                         <li class="<?php echo ($page_name=='purchaseorder_advisereport.php')?'active':'';?>">
 												<a href="purchaseorder_advisereport.php">
 													Pending Purchase Advise Report
@@ -139,7 +139,7 @@
 											</li>
 											<li class="<?php echo ($page_name=='product_sub_category.php')?'active':'';?>">
 												<a href="product_sub_category.php">
-													Product Sub Category
+													Product Size
 												</a>
 											</li>
 											
@@ -175,13 +175,14 @@
 											</li>
 										</ul>
 									</li>
+                                                                        <!--
                                                                         <li class="<?php echo ($page_name=='customermanager.php') || ($page_name=='edit_customermanager.php') ?'active':'';?>">
 										<a href="customermanager.php">
 											<i class="fa fa-asterisk"></i>
 											<span>Customer Manager</span>
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
-									</li>
+									</li>-->
                                                                       <li class="<?php echo ($page_name=='security.php') || ($page_name=='add_security.php') || ($page_name=='edit_security.php')?'active':'';?>">
 										<a href="security.php">
 											<i class="fa fa-lock"></i>

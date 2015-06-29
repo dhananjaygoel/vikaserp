@@ -75,7 +75,7 @@
                                         <th>Contact Person</th>
                                         <th>Phone</th>
                                         <th>Delivery Location </th>                                                            
-                                                                                       
+                                        <th>Add to Customer</th>                                              
                                        <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -89,13 +89,16 @@
                                                                            
                                         <td>123456789 </td>
                                         <td>Pune</td>
-                                        <td class="text-center">
-                                            <a href="add_pendingcustomer.php" class="table-link" title="Add to customer">
+                                        <td>
+                                          <a href="add_pendingcustomer.php" class="table-link" title="Add to customer">
                                                 <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
 							<i class="fa fa-plus fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a>    
+                                            </a>  
+                                        </td>
+                                        <td class="text-center">
+                                                
                                             <a href="edit_pendingcustomer.php" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
@@ -119,13 +122,16 @@
                                                                            
                                         <td>123456789 </td>
                                         <td>Noida</td>
-                                     <td class="text-center">
-                                            <a href="add_pendingcustomer.php" class="table-link" title="Add to customer">
+                                        <td>
+                                          <a href="add_pendingcustomer.php" class="table-link" title="Add to customer">
                                                 <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
 							<i class="fa fa-plus fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a>    
+                                            </a>  
+                                        </td>
+                                     <td class="text-center">
+                                               
                                             <a href="edit_pendingcustomer.php" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>

@@ -786,11 +786,12 @@ $(document).ready(function(){
     });
 });
 $('#datepickerDate').datepicker({
-		  format: 'mm-dd-yyyy'
+		  format: 'mm-dd-yyyy',
+                   minDate:0,
 		});
  $('#datepickerDateComponent').datepicker();
  $('#datepickerDate1').datepicker({
-		  format: 'mm-dd-yyyy'
+		  format: 'mm-dd-yyyy',
 		});
  $('#datepickerDateComponent1').datepicker();
 </script>

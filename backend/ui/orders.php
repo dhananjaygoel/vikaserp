@@ -60,10 +60,54 @@
 											<a href="add_order.php" class="btn btn-primary pull-right">
 												<i class="fa fa-plus-circle fa-lg"></i> Place Order
 											</a>
+                                                                                      <div class="form-group pull-left">
+                                                                                        <div class="col-md-12">
+                                                                                        <select class="form-control" id="user_filter" name="user_filter">
+                                                                                    <option value="" selected="">Select Party</option>
+                                                                                    <option value="2">Party Name 1</option>
+                                                                                     <option value="2">Party Name 2</option>
+                                                                                    
+                                                                                                                
+                                                                                </select>
+                                                                                        </div>
+                                                                                        </div>
+                                                                                                          <div class="form-group pull-left">
+                                                                                    <select class="form-control" id="user_filter1" name="user_filter">
+                                                                                                   
+                                                                                                    <option id="warehouse" value="1" selected="">Warehouse</option>
+                                                                                                    <option id="direct" value="2">Direct</option>
+
+                                                                                                    </select> 
+												</div>
+                                                                                    <div class="form-group pull-left">
+                                                                                        <div class="col-md-12">
+                                                                                        <select class="form-control" id="user_filter" name="user_filter">
+                                                                                    <option value="" selected="">Select Location</option>
+                                                                                    <option value="2">Delhi</option>
+                                                                                     <option value="2">Mumbai</option>
+                                                                                     
+                                                                                    
+                                                                                                                
+                                                                                </select>
+                                                                                        </div>
+                                                                                        </div>
+                                                                                    <div class="form-group pull-left">
+                                                                                        <div class="col-md-12">
+                                                                                        <select class="form-control" id="user_filter" name="user_filter">
+                                                                                    <option value="" selected="">Select Size</option>
+                                                                                    <option value="2">30 kg</option>
+                                                                                     <option value="2">20 kg</option>
+                                                                                     
+                                                                                    
+                                                                                                                
+                                                                                </select>
+                                                                                        </div>
+                                                                                        </div>
+                                                                                    
                                                                                        <div class="form-group pull-right">
                                                                                         <div class="col-md-12">
                                                                                         <select class="form-control" id="user_filter3" name="user_filter">
-                                                                                    <option value="" selected="">Status</option>
+                                                                                    
                                                                                     <option value="1">Pending</option>
                                                                                     <option value="2">Completed</option>
                                                                                     <option value="3">Canceled</option>
@@ -94,11 +138,11 @@
                                         <th>Customer Name</th>
                                         <th>Mobile </th> 
                                         <th>Delivery Location</th>                                                            
-                                        <th>Order By</th>
-                                        <th>Total Quantity</th>
+                                        <!--<th>Order By</th>
+                                        <th>Total Quantity</th>-->
                                         <th>Pending Quantity</th>                                                          
-                                        
-                                        <th class="text-center">Actions</th>
+                                        <th>Delivery Order</th>
+                                        <th class="col-md-3 text-center">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>                    
@@ -109,10 +153,17 @@
                                         <td>Name 1</td>
                                         <td>9999999999 </td>
                                         <td>Pune</td>
-                                        <td>Lorem Ipsum</td>
-                                        <td>100</td>                                        
+                                        <!-- <td>Lorem Ipsum</td>
+                                       <td>100</td> -->                                       
                                         <td>50</td>
-                                        
+                                        <td>
+                                            <a href="createdelivery_order.php" class="table-link" title="Create Delivery order">
+                                                <span class="fa-stack">
+                                                          <i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                        </td>
                                         <td class="text-center">
                                            
                                             <a href="order_view.php" class="table-link" title="view">
@@ -134,12 +185,7 @@
 							<i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                             <a href="createdelivery_order.php" class="table-link" title="Create Delivery order">
-                                                <span class="fa-stack">
-                                                          <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
+                                             
                                              <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#myModal">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -154,10 +200,16 @@
                                         <td>2</td>
                                         <td>Name 2</td>
                                         <td>9988776655 </td>
-                                        <td>Pune</td>
-                                        <td>Lorem Ipsum</td>
-                                        <td>100</td>                                        
+                                        <td>Pune</td>                    
                                         <td>50</td>
+                                        <td>
+                                            <a href="createdelivery_order.php" class="table-link" title="Create Delivery order">
+                                                <span class="fa-stack">
+                                                          <i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                        </td>
                                         <td class="text-center">
                                               <a href="order_view.php" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -178,12 +230,7 @@
 							<i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                                <a href="createdelivery_order.php" class="table-link" title="Create Delivery order">
-                                                <span class="fa-stack">
-                                                          <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
+                                             
                                               <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#myModal">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -304,7 +351,7 @@
                                         <th>Total Quantity</th>
                                         <th>Mobile </th>                                                            
                                         <th>Delivery Location</th>                                                            
-                                        <th>Order By</th>
+                                       <!--  <th>Order By</th>-->
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -318,7 +365,7 @@
                                         <td>100</td>                                        
                                         <td>9999999999 </td>
                                         <td>Pune</td>
-                                        <td>Lorem Ipsum</td>
+                                        <!-- <td>Lorem Ipsum</td>-->
                                         <td class="text-center">
                                            
                                             <a href="order_view.php" class="table-link" title="view">
@@ -348,7 +395,7 @@
                                         <td>500</td>                                        
                                         <td>9999999999 </td>
                                         <td>Mumbai</td>
-                                        <td>Lorem </td>
+                                        
                                         <td class="text-center">
                                               <a href="order_view.php" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -475,7 +522,7 @@
                                         <th>Mobile </th>    
                                         
                                         <th>Delivery Location</th>                                                            
-                                        <th>Order By</th>
+                                       <!--  <th>Order By</th>-->
                                         <th>Cancel By</th>
                                         <th>Reason</th>
                                         <th class="text-center">Actions</th>
@@ -491,7 +538,7 @@
                                         <td>100</td>                                        
                                         <td>9999999999 </td>
                                         <td>Pune</td>
-                                        <td>Lorem </td>
+                                        
                                         <td>Admin </td>
                                         <td>Lorem ipsum dollar </td>
                                         <td class="text-center">
@@ -521,7 +568,7 @@
                                         <td>500</td>                                        
                                         <td>9999999999 </td>
                                         <td>Mumbai</td>
-                                        <td>Ipsum </td>
+                                        
                                         <td>Admin </td>
                                         <td>Lorem ipsum dollar </td>
                                         <td class="text-center">

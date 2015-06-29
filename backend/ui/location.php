@@ -78,7 +78,7 @@
                                         <th>State Name</th>
                                         <th>City Name</th>      
                                         <th>Area Name</th>
-                                                                          
+                                        <th class="col-md-2">Difference</th>                                   
                                         
                                                                                                    
                                         <th class="text-center">Actions</th>
@@ -92,7 +92,18 @@
                                         <td>Maharashtra</td>
                                         <td>Pune</td>
                                         <td>Shivajinagar</td>
-                                        
+                                          <td>
+                                            <div class="row product-price">
+                                            <div class="form-group col-md-6">
+                                           <input type="text" class="form-control" id="difference">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-2 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                        </td> 
                                         
                                        
                                         <td class="text-center">
@@ -117,6 +128,18 @@
                                         <td>Bihar</td>
                                         <td>Patna</td>
                                         <td>Belusarai</td>
+                                          <td>
+                                            <div class="row product-price">
+                                            <div class="form-group col-md-6">
+                                           <input type="text" class="form-control" id="difference">
+                                               
+                                            </div>
+                                            <div class="form-group col-md-2 difference_form">
+                                           
+                                           <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                            </div>
+                                            </div>
+                                        </td> 
                                         <td class="text-center">
                                             
                                             <a href="edit_location.php" class="table-link">

@@ -66,8 +66,38 @@
                                                                                     <option value="" selected="">Status</option>
                                                                                     <option value="1">Pending</option>
                                                                                     <option value="2">Completed</option>
-                                                                                    <option value="3">Canceled</option>
+                                                                                    <option value="3">Canceled</option>                       
+                                                                                    </select>
+                                                                                        </div>
+                                                                                        </div>
+                                                                                      <div class="form-group pull-left">
+                                                                                        <div class="col-md-12">
+                                                                                        <select class="form-control" id="user_filter" name="user_filter">
+                                                                                    <option value="" selected="">Select Party</option>
+                                                                                    <option value="2">Party Name 1</option>
+                                                                                     <option value="2">Party Name 2</option>
                                                                                     
+                                                                                                                
+                                                                                </select>
+                                                                                        </div>
+                                                                                        </div>
+                                                                                     <div class="form-group pull-left">
+                                                                                        <div class="col-md-12">
+                                                                                        <select class="form-control" id="user_filter4" name="user_filter">
+                                                                                    <option value="" selected="">Select size</option>
+                                                                                    <option value="2">20 kg</option>
+                                                                                     <option value="2">30 kg</option>
+                                                                                    
+                                                                                                                
+                                                                                </select>
+                                                                                        </div>
+                                                                                        </div>
+                                                                                    <div class="form-group pull-left">
+                                                                                        <div class="col-md-12">
+                                                                                        <select class="form-control" id="user_filter1" name="user_filter">
+                                                                                    <option value="" selected="">Order For</option>
+                                                                                    <option value="1">Warehouse</option>
+                                                                                    <option value="2">Direct</option>
                                                                                      
                                                                                     
                                                                                                                 
@@ -93,16 +123,13 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Supplier Name</th>
-                                         <th>Mobile </th> 
-                                         <th>Delivery Location</th> 
-                                           <th>Order By</th>
-                                           <th>Total Quantity</th>
+                                        <th>Mobile </th> 
+                                        <th>Delivery Location</th> 
+                                        <th>Order By</th>
+                                        <th>Total Quantity</th>
                                         <th>Pending Quantity</th>
-                                        
-                                                                                                
-                                                                                                  
-                                      
-                                        <th class="text-center">Actions</th>
+                                        <th>Purchase Advice</th>
+                                        <th class="col-md-3 text-center">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>                    
@@ -114,9 +141,16 @@
                                         <td>9999999999 </td>
                                         <td>Pune</td>
                                         <td>Lorem</td>
-                                          <td>100</td> 
+                                        <td>100</td> 
                                         <td>35</td>
-                                                                             
+                                        <td>
+                                              <a href="createpurchase_order.php" class="table-link" title="Create Purchase Advice">
+                                                <span class="fa-stack">
+                                                          <i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                        </td>                                     
                                         
                                       
                                         <td class="text-center">
@@ -139,12 +173,7 @@
 							<i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                              <a href="createpurchase_order.php" class="table-link" title="Create Purchase Advice">
-                                                <span class="fa-stack">
-                                                          <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
+                                            
                                              <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -162,6 +191,14 @@
                                         <td>Lorem</td>
                                           <td>500</td> 
                                         <td>15</td>
+                                         <td>
+                                              <a href="createpurchase_order.php" class="table-link" title="Create Purchase Advice">
+                                                <span class="fa-stack">
+                                                          <i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                        </td>
                                         <td class="text-center">
                                              <a href="purchaseorder_view.php" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -182,12 +219,7 @@
 							<i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                              <a href="createpurchase_order.php" class="table-link" title="Create Purchase Advice">
-                                                <span class="fa-stack">
-                                                          <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
+                                            
                                              <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>

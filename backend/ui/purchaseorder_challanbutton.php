@@ -495,10 +495,11 @@
                                                         <label for="total"><b class="challan">Total</b> $15000</label>
 
                                                     </div>
+                                                    <!--
                                                     <div class="form-group">
                                                         <label for="driver_contact"><b class="challan">Unloading</b></label>
                                                         <input id="driver_contact" class="form-control" placeholder="unloading" name="loading" value="" type="text">
-                                                    </div>
+                                                    </div>-->
 
                                                     <div class="form-group">
                                                         <label for="loadedby"><b class="challan">Unloaded By</b></label>

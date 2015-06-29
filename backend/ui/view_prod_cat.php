@@ -84,6 +84,14 @@
                                             <td><span>Sub Product Category Name:</span> Lorem Ipsum</td>
                                     
                                         </tr>
+                                         <tr>
+                                        <td><span>Add Date:</span> 25 June,2015</td>
+                                    
+                                        </tr>
+                                        <tr>
+                                        <td><span>Updated Date:</span> 27 June,2015</td>
+                                    
+                                        </tr>
                                         <tr>
                                         <td><span>Price: </span></td>
                                     

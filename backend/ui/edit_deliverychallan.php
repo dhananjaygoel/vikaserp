@@ -90,11 +90,12 @@
                                                        
                                                     </tr>
                                                     <tr>
-                                                   <td>
+                                                   <td>Product1
+                                                   <!--    
                                                    <div class="searchproduct">
                                                     <input class="form-control" placeholder="Product name " type="text">
                                                         <i class="fa fa-search search-icon"></i>
-                                                        </div>
+                                                        </div>-->
                                                     </td>
                                                      <td>
                                                     <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
@@ -130,10 +131,7 @@
                                                 </tr>
                                                    <tr>
                                                      <td>
-                                                   <div class="searchproduct">
-                                                    <input class="form-control" placeholder="Product name " type="text">
-                                                        <i class="fa fa-search search-icon"></i>
-                                                        </div>
+                                                   Product2
                                                     </td>
                                                      <td>
                                                     <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
@@ -170,10 +168,7 @@
                                                    
                                                  <tr>
                                                      <td>
-                                                  <div class="searchproduct">
-                                                    <input class="form-control" placeholder="Product name " type="text">
-                                                        <i class="fa fa-search search-icon"></i>
-                                                        </div>
+                                                  Product3
                                                     </td>
                                                       <td>
                                                     <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
@@ -210,10 +205,7 @@
                                                    
                                                     <tr>
                                                      <td>
-                                                   <div class="searchproduct">
-                                                    <input class="form-control" placeholder="Product name " type="text">
-                                                        <i class="fa fa-search search-icon"></i>
-                                                        </div>
+                                                   Product4
                                                     </td>
                                                      <td>
                                                     <input id="quantity" class="form-control" placeholder="Qnty" name="quantity" value="" type="text">
@@ -454,11 +446,18 @@
                                                 </tbody>
                                             </table>
                  </div>
-                
-                 
-                  
-                                    
-               
+                 <div class="form-group">
+                    <label for="total"><b class="challan">Total</b><span class="gtotal">$150000</span></label>
+                    
+                </div>
+                <div class="form-group">
+                    <label for="billno"><b class="challan">Bill Number</b></label>
+                    <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="text">
+                </div>
+                <div class="form-group">
+                        <label for="driver_contact"><b class="challan">Loading</b></label>
+                    <input id="driver_contact" class="form-control" placeholder="loading" name="loading" value="" type="text">
+                </div>
                     <div class="form-group">
                         <label for="vehicle_name"><b class="challan">Discount</b></label>
                     <input id="vehicle_name" class="form-control" placeholder="Discount" name="Discount" value="" type="text">
@@ -467,54 +466,27 @@
                     <label for="driver_name"><b class="challan">Freight</b></label>
                     <input id="driver_name" class="form-control" placeholder="Freight " name="Freight" value="" type="text">
                 </div>
-                <div class="form-group">
+
+                 <div class="form-group">
                     <label for="total"><b class="challan">Total</b><span class="gtotal">$150000</span></label>
                     
                 </div>
-                    <div class="form-group">
-                        <label for="driver_contact"><b class="challan">Loading</b></label>
-                    <input id="driver_contact" class="form-control" placeholder="loading" name="loading" value="" type="text">
-                </div>
-                  
-                    <div class="form-group">
-                        <label for="loadedby"><b class="challan">Loaded By</b></label>
-                    <input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby" value="" type="text">
-                </div>
-                <div class="form-group">
-                            <label for="labour"><b class="challan">Labour </b></label>
-                    <input id="labour" class="form-control" placeholder="Labour" name="labour" value="" type="text">
-                </div>
-                
-              
-                 
-                                                <div class="form-group">
-                  
+                                             <div class="form-group">
                                              <label for="Plusvat"><b class="challan">Plus VAT</b> Yes/No</label>
-                </div>
-                                                            
-                                             <div class="form-group">
-                                                 <label for="driver_contact"><b class="challan">VAT Percentage</b> 5%</label>
+                                             </div>
+                    <div class="form-group">
+                                                 <label for="vatp"><b class="challan">VAT Percentage</b> 5%</label>        
 
-                </div>
-                                                 <!--
+                                             </div>    
                                              <div class="form-group">
-                                                 <label for="driver_contact"><b class="challan">VAT</b></label>
-                    <input id="driver_contact" class="form-control" placeholder="VAT" name="VAT" value="" type="text">
-                </div>
-                                                 <div class="form-group">
-                    <label for="grandtotal"><b class="challan">Grand Total</b></label>
-                    <input id="grandtotal" class="form-control" placeholder="Grand Total" name="grandtotal" value="" type="text">
-                </div>
-                   -->
-                           
-                <div class="form-group">
+                                             <label for="vatamount"><b class="challan">VAT Amount</b> 500</label>
+                                             </div>             
+                                           
+                       <div class="form-group">
                         <label for="total"><b class="challan">Grand Total</b><span class="gtotal">$250000</span></label>
                    
                 </div>
-                   <div class="form-group">
-                    <label for="billno"><b class="challan">Bill Number</b></label>
-                    <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="text">
-                </div>
+                    
                 <div class="form-group">
                     <label for="inquiry_remark"><b class="challan">Remark</b></label>
                     <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3"></textarea>

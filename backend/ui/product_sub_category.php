@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>Product Sub  Category - Vikas Associate Order Automation System</title>
+	<title>Product Size - Vikas Associate Order Automation System</title>
 	
 	<!-- bootstrap -->
 	<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css" />
@@ -50,11 +50,11 @@
 								<div class="col-lg-12">
 									<ol class="breadcrumb">
 										<li><a href="#">Home</a></li>
-										<li class="active"><span>Product Sub Category</span></li>
+										<li class="active"><span>Product Size</span></li>
 									</ol>
 									
 								<div class="clearfix">
-										<h1 class="pull-left">Product Sub Category</h1>
+										<h1 class="pull-left">Product Size</h1>
 										
 										<div class=" row col-md-8 pull-right top-page-ui">
 										    <div class="filter-block col-md-8 productsub_filter">       
@@ -91,11 +91,12 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Product Name</th>
-                                         <th>Alias Name</th>
-                                        <th>Size</th>
-                                        <th >Thickness</th>
-                                        <th>Weight</th>
+                                        <th>Product Category</th>
+                                        <th>Alias Name</th>
+                                        <th>Standard Length (meter)</th>
+                                        <th>Size (meter)</th>
+                                        <th>Thickness</th>
+                                        <th>Weight (kg)</th>
                                         <th class="col-md-2">Difference</th>                                                         
                                         <th >Actions</th>
                                     </tr>
@@ -107,7 +108,8 @@
                                         <td >1</td>
                                         <td>CRP Pipe </td>
                                         <td>Lorem </td>
-                                        <td>60 mm</td>
+                                        <td>1 meter</td>
+                                        <td>6 meter</td>
                                         <td>30 mm</td>
                                         <td>10 kg</td>
                                            <td>
@@ -144,7 +146,8 @@
                                         <td>2</td>
                                         <td>CRP Structure </td>
                                         <td>Ipsum</td>
-                                        <td>20 mm</td>
+                                        <td>1 meter </td>
+                                        <td>10 meter</td>
                                         <td>10 mm</td>
                                         <td>5 kg</td>
                                        <td>
@@ -241,11 +244,11 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Product Name</th>
+                                        <th>Product Category</th>
                                          <th>Alias Name</th>
-                                        <th>Size</th>
-                                        
-                                        <th>Weight</th>
+                                        <th>Standard Length (meter)</th>
+                                        <th>Size (meter)</th>
+                                        <th>Weight (kg)</th>
                                         <th class="col-md-2">Difference</th>                                                         
                                         <th >Actions</th>
                                     </tr>
@@ -257,7 +260,8 @@
                                         <td >1</td>
                                         <td>CRP Pipe </td>
                                         <td>Lorem</td>
-                                        <td>60 mm</td>
+                                        <td>1 meter</td>
+                                        <td>6 meter</td>
                                         
                                         <td>10 kg</td>
                                            <td>
@@ -294,7 +298,8 @@
                                         <td>2</td>
                                         <td>CRP Structure </td>
                                         <td>Ipsum</td>
-                                        <td>20 mm</td>
+                                        <td>2 meter</td>
+                                        <td>6 meter</td>
                                         
                                         <td>5 kg</td>
                                        <td>

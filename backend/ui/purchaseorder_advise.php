@@ -65,11 +65,7 @@
                                                                                         <select class="form-control" id="user_filter" name="user_filter">
                                                                                     <option value="" selected="">Status</option>
                                                                                     <option value="2">Delivered</option>
-                                                                                    <option value="2">Inprocess</option>
-                                                                                    
-                                                                                     
-                                                                                    
-                                                                                                                
+                                                                                    <option value="2">Inprogress</option>                       
                                                                                 </select>
                                                                                         </div>
                                                                                         </div>
@@ -91,7 +87,7 @@
                                         <th>Date</th>
                                         
                                         <th>Serial Number</th>
-                                       
+                                        <th>Purchase Challan</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -103,7 +99,14 @@
                                         <td>09 Apr 2015</td>
                                      
                                         <td>PO/Apr15/04/01</td>                                        
-                                        
+                                        <td>
+                                            <a href="purchaseorder_challanbutton.php" class="table-link" title="purchase challan" >
+                                                <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a> 
+                                        </td>
                                         <td class="text-center">
                                             
                                              <a href="view_purchaseadvice.php" class="table-link" title="view">
@@ -116,14 +119,6 @@
                                                 <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
 							<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            
-                                            
-                                              <a href="purchaseorder_challanbutton.php" class="table-link" title="purchase challan" >
-                                                <span class="fa-stack">
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
                                             <a href="" class="table-link" title="print" data-toggle="modal" data-target="#myModal1">
@@ -146,7 +141,14 @@
                                         <td>08 Apr 2015</td>
                                  
                                         <td>PO/Apr15/04/01</td>                                        
-                                       
+                                        <td>
+                                            <a href="purchaseorder_challanbutton.php" class="table-link" title="purchase challan" >
+                                                <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a> 
+                                        </td>
                                         <td class="text-center">
                                             
                                            <a href="view_purchaseadvice.php" class="table-link" title="view">
@@ -161,14 +163,7 @@
 							<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            
                                            
-                                             <a href="purchaseorder_challanbutton.php" class="table-link" title="purchase challan" >
-                                                <span class="fa-stack">
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-							<i class="fa fa-book fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
                                               <a href="" class="table-link" title="print" data-toggle="modal" data-target="#myModal1">
                                                 <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>

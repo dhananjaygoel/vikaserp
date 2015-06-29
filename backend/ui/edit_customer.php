@@ -86,14 +86,26 @@
                     <label for="address2">Address 2</label>
                     <input id="address2" class="form-control" placeholder="Address 2" name="address2" value="" type="text">
                 </div>
-                <div class="form-group">
-                    <label for="city">City<span class="mandatory">*</span></label>
-                    <input id="city" class="form-control" placeholder="City" name="city" value="" type="text">
-                </div>
-                    <div class="form-group">
+                <div class="form-group col-md-4 del_loc">
                     <label for="state">State<span class="mandatory">*</span></label>
-                    <input id="state" class="form-control" placeholder="State" name="state" value="" type="text">
-                </div>
+                    <select class="form-control">
+                          <option>State</option>
+                          <option>State1</option>
+                          <option>State2</option>
+                          <option>State3</option>
+                        </select>
+                </div>  
+                    <div class="clearfix"></div>
+                <div class="form-group col-md-4 del_loc">
+                    <label for="city">City<span class="mandatory">*</span></label>
+                    <select class="form-control">
+                          <option>City</option>
+                          <option>City1</option>
+                          <option>City2</option>
+                          <option>City3</option>
+                        </select>
+                </div>  
+                    <div class="clearfix"></div>
                    <div class="form-group">
                     <label for="state">Zip</label>
                     <input id="zip" class="form-control" placeholder="Zip" name="zip" value="" type="text">
@@ -106,14 +118,7 @@
                     <label for="tally">Tally Name<span class="mandatory">*</span></label>
                     <input id="tally" class="form-control" placeholder="Tally Name " name="tally" value="" type="text">
                 </div>                           
-                    <div class="form-group">
-                    <label for="tallycat">Tally Category<span class="mandatory">*</span></label>
-                    <input id="tally" class="form-control" placeholder="Tally Category " name="tallycat" value="" type="text">
-                </div> 
-                      <div class="form-group">
-                    <label for="tallysubcat">Tally Subcategory<span class="mandatory">*</span></label>
-                    <input id="tally" class="form-control" placeholder="Tally Subcategory " name="tallysubcat" value="" type="text">
-                </div> 
+   
                 <div class="form-group">
                     <label for="Phone_number">Phone number 1<span class="mandatory">*</span></label>
                     <input id="Phone_number" class="form-control" placeholder="Phone number " name="telephone_number" value="" type="text">
@@ -123,14 +128,7 @@
                     <label for="mobile_number">Phone Number 2</label>
                     <input id="mobile_number" class="form-control" placeholder="Phone Number 2" name="mobile_number" value="" type="text">
                 </div>
-                <div class="form-group">
-                    <label for="vat_number">VAT-TIN Number</label>
-                    <input id="vat_number" class="form-control" placeholder="VAT-TIN Number" name="vat_number" value="" type="text">
-                </div>
-                <div class="form-group">
-                    <label for="excise_number">Excise Number</label>
-                    <input id="excise_number" class="form-control" placeholder="Excise Number" name="excise_number" value="" type="text">
-                </div>
+  
                     <div class="form-group col-md-4 del_loc ">
                     <label for="del_loc">Delivery Location:<span class="mandatory">*</span></label>
                         <select class="form-control" id="del_loc">

@@ -183,10 +183,7 @@
                                         <td><span>VAT: </span>Lorem</td>
                                     
                                         </tr>
-                                         <tr>
-                                        <td><span>Grand Total: </span> 5000</td>
-                                    
-                                        </tr>
+                                         
                                      <tr>
                                         <td><span>Total Price: </span>Lorem</td>
                                     
@@ -200,7 +197,7 @@
                                          
                                                 
                                                 <tr>
-                                        <td><span>Vehicle Name: </span>Lorem Ipsum</td>
+                                        <td><span>Vehicle Number: </span>Lorem Ipsum</td>
                                     
                                         </tr>
                                                 <tr>

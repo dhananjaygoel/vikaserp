@@ -57,7 +57,15 @@
 										<h1 class="pull-left">Delivery challan</h1>
 										
 										<div class="pull-right top-page-ui">
-											
+                                                                                       <div class="form-group pull-right">
+                                                                                        <div class="col-md-12">
+                                                                                        <select class="form-control" id="user_filter" name="user_filter">
+                                                                                    <option value="" selected="">Status</option>
+                                                                                    <option value="2">Completed</option>
+                                                                                    <option value="2">Inprogress</option>                     
+                                                                                        </select>
+                                                                                        </div>
+                                                                                        </div>
 										</div>
 									</div>
 								</div>
