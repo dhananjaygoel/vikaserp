@@ -28,7 +28,12 @@ class DeliveryChallanController extends Controller {
      * @return Response
      */
     public function index() {
-        $allorders = DeliveryChallan::where('challan_status', '=', 'pending')->with('customer', 'all_order_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(10);
+
+        if ((isset($_GET['status_filter'])) && $_GET['status_filter'] != '') {
+            $allorders = DeliveryChallan::where('challan_status', '=', $_GET['status_filter'])->with('customer', 'all_order_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(10);
+        } else {
+            $allorders = DeliveryChallan::where('challan_status', '=', 'pending')->with('customer', 'all_order_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(10);
+        }
 
         $allorders->setPath('delivery_challan');
         return view('delivery_challan', compact('allorders'));
@@ -62,7 +67,7 @@ class DeliveryChallanController extends Controller {
         $price_delivery_order = $this->calculate_price($allorder);
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
-        return View::make('edit_delivery_challan', compact('allorder','price_delivery_order','units','delivery_locations'));
+        return View::make('edit_delivery_challan', compact('allorder', 'price_delivery_order', 'units', 'delivery_locations'));
     }
 
     /**
@@ -137,7 +142,7 @@ class DeliveryChallanController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 ) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
         }
         $password = Input::get('password');
@@ -201,8 +206,8 @@ class DeliveryChallanController extends Controller {
                 }
             }
 //            echo '<br>pending quantity ' . $pending_quantity . ' order ' . $order->id;
-            if ($gen_dc != 1 && $pending_quantity == 0 && $order->order_status !='completed') {
-                
+            if ($gen_dc != 1 && $pending_quantity == 0 && $order->order_status != 'completed') {
+
                 Order::where('id', $order->id)->update(array(
                     'order_status' => "completed"
                 ));
@@ -214,36 +219,35 @@ class DeliveryChallanController extends Controller {
         }
     }
 
-    
-    function calculate_price($delivery_data){
+    function calculate_price($delivery_data) {
 //        echo '<pre>';
 //        print_r($delivery_data['customer']->id);
 //        echo '</pre>';
 //        exit;
         $product_rates = array();
-        foreach($delivery_data->all_order_products as $product){            
-            
-            $sub_product = \App\ProductSubCategory::where('product_category_id',$product->product_category_id)->first();
-            $product_category= \App\ProductCategory::where('id',$product->product_category_id)->first();
+        foreach ($delivery_data->all_order_products as $product) {
+
+            $sub_product = \App\ProductSubCategory::where('product_category_id', $product->product_category_id)->first();
+            $product_category = \App\ProductCategory::where('id', $product->product_category_id)->first();
             $user_id = $delivery_data['customer']->id;
-            $users_set_price_product=  CustomerProductDifference::where('product_category_id',$product->product_category_id)
-                    ->where('customer_id',$user_id)->first();
+            $users_set_price_product = CustomerProductDifference::where('product_category_id', $product->product_category_id)
+                            ->where('customer_id', $user_id)->first();
             $total_rate = $product_category->price;
-            $users_set_price=0;
-            if(count($users_set_price_product)>0){
-                $total_rate = $total_rate+$users_set_price_product->difference_amount;
-                $users_set_price=$users_set_price_product->difference_amount;
+            $users_set_price = 0;
+            if (count($users_set_price_product) > 0) {
+                $total_rate = $total_rate + $users_set_price_product->difference_amount;
+                $users_set_price = $users_set_price_product->difference_amount;
             }
-            if($sub_product->difference>0){
-                $total_rate = $total_rate+$sub_product->difference;
+            if ($sub_product->difference > 0) {
+                $total_rate = $total_rate + $sub_product->difference;
             }
 
             $product_rate = array();
-                $product_rate["product_id"]=$product->product_category_id;
-                $product_rate["product_price"]=$product_category->price;
-                $product_rate["difference"]=$sub_product->difference;
-                $product_rate["difference_amount"]=$users_set_price;
-                $product_rate["total_rate"]=$total_rate;
+            $product_rate["product_id"] = $product->product_category_id;
+            $product_rate["product_price"] = $product_category->price;
+            $product_rate["difference"] = $sub_product->difference;
+            $product_rate["difference_amount"] = $users_set_price;
+            $product_rate["total_rate"] = $total_rate;
             array_push($product_rates, $product_rate);
         }
 //        echo '<pre>';
@@ -252,5 +256,5 @@ class DeliveryChallanController extends Controller {
 //        exit;
         return $product_rates;
     }
-    
+
 }

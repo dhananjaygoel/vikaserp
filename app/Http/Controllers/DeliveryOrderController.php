@@ -131,11 +131,11 @@ class DeliveryOrderController extends Controller {
         $delivery_order->delivery_location_id = $input_data['add_order_location'];
         $delivery_order->vat_percentage = $vat_price;
         $delivery_order->estimate_price = 0;
-        $delivery_order->estimated_delivery_date = date_format(date_create(date("Y-m-d")), 'Y-m-d');
+//        $delivery_order->estimated_delivery_date = date_format(date_create(date("Y-m-d")), 'Y-m-d');
         $delivery_order->expected_delivery_date = date_format(date_create(date("Y-m-d")), 'Y-m-d');
         $delivery_order->remarks = $input_data['order_remark'];
         $delivery_order->vehicle_number = $input_data['vehicle_number'];
-        $delivery_order->driver_name = $input_data['driver_name'];
+//        $delivery_order->driver_name = $input_data['driver_name'];
         $delivery_order->driver_contact_no = $input_data['driver_contact'];
         $delivery_order->order_status = "Pending";
 
@@ -272,7 +272,7 @@ class DeliveryOrderController extends Controller {
             'expected_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
             'remarks' => $input_data['order_remark'],
             'vehicle_number' => $input_data['vehicle_number'],
-            'driver_name' => $input_data['driver_name'],
+//            'driver_name' => $input_data['driver_name'],
             'driver_contact_no' => $input_data['driver_contact'],
             'order_status' => "Pending"
         ));
@@ -365,10 +365,7 @@ class DeliveryOrderController extends Controller {
                 $i++;
             }
         }
-//        echo '<pre>';
-//        print_r($input_data['product']);
-//        echo '</pre>';
-//        exit;
+
         if ($i == $j) {
             return Redirect::back()->with('validation_message', 'Please enter at least one product details');
         }
@@ -489,6 +486,31 @@ class DeliveryOrderController extends Controller {
 //        echo '</pre>';
 //        exit;
         return $product_rates;
+    }
+    
+    function product_price() {
+        $input_data=Input::get("product_id");
+        $customer_id = Input::get("customer_id");
+        $delivery_location_id=Input::get("delivery_location_id");
+        
+        $product_category = \App\ProductCategory::where('id',$input_data)->first();
+        $product_price = $product_category->price;
+        $product_sub_category = \App\ProductSubCategory::where('product_category_id',$input_data)->first();
+        $product_difference = $product_sub_category['difference'];
+        $customer_product = CustomerProductDifference::where('customer_id',$customer_id)
+                        ->where('product_category_id',$input_data)->first();
+        $customer_difference=0;
+        if(count($customer_product)>0){
+            $customer_difference = $customer_product->difference_amount;
+        }
+        $data_array[] = [
+                'product_id' => $input_data,
+                'product_price'=>$product_price,
+                'product_difference'=>$product_difference,
+                'customer_difference'=>$customer_difference
+            ];
+        echo json_encode(array('data_array' => $data_array));
+//        echo json_encode($product_category->toArray());
     }
     
 }

@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ManualCompleteOrderRequest;
 use App\DeliveryOrder;
 use App\DeliveryChallan;
+use App\ProductSubCategory;
 
 class OrderController extends Controller {
 
@@ -81,10 +82,14 @@ class OrderController extends Controller {
                 $size = $_GET['size_filter'];
 
                 $allorders = Order::where('order_status', '=', 'pending')
-                                ->with(array('customer', 'delivery_location', 'all_order_products' =>
+                                ->with(array('customer', 'delivery_location', 'all_order_products.product_category.product_sub_category' =>
                                     function($q) use($size) {
-                                        $q->where('quantity', '=', $size)->where('order_type', 'order');
+                                        $q->where('size', '=', $size);
                                     }))->Paginate(10);
+//                echo '<pre>';
+//                print_r($allorders);
+//                echo '</pre>';
+//                exit;
             } else {
 
                 $allorders = Order::where('order_status', '=', 'pending')->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
@@ -95,13 +100,14 @@ class OrderController extends Controller {
         $customers = Customer::all();
         $delivery_location = DeliveryLocation::all();
         $delivery_order = DeliveryOrder::all();
-        $allorder_products = AllOrderProducts::where('order_type', 'order')->groupBy('quantity')->get();
+//        $allorder_products = AllOrderProducts::where('order_type', 'order')->groupBy('quantity')->get();
+        $product_size = ProductSubCategory::all();
 
         $users = User::all();
         $pending_orders = $this->checkpending_quantity($allorders);
 
         $allorders->setPath('orders');
-        return View::make('orders', compact('delivery_location', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders'));
+        return View::make('orders', compact('delivery_location', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size'));
     }
 
     /**
@@ -536,7 +542,7 @@ class OrderController extends Controller {
             $delivery_order->expected_delivery_date = $order->expected_delivery_date;
             $delivery_order->remarks = $input_data['remarks'];
             $delivery_order->vehicle_number = $input_data['vehicle_number'];
-            $delivery_order->driver_name = $input_data['driver_name'];
+//            $delivery_order->driver_name = $input_data['driver_name'];
             $delivery_order->driver_contact_no = $input_data['driver_contact'];
             $delivery_order->order_status = 'Pending';
             $delivery_order->save();

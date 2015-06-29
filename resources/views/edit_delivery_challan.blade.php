@@ -64,7 +64,8 @@
                                             <td><span>Unit</span></td>
                                             <td><span>Amount</span></td>
                                         </tr>
-                                        @foreach($allorder['all_order_products'] as $key=>$product)
+                                        <?php $key=1;?>
+                                        @foreach($allorder['all_order_products'] as $product)
                                         @if($product->order_type =='delivery_challan')
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-2">
@@ -78,7 +79,7 @@
                                                 <div class="form-group">
                                                     <input id="quantity_{{$key}}" type="hidden" value="{{ $product->quantity}}" name="product[{{$key}}][quantity]">
                                                     @if($product->present_shipping >=0)
-                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{$product->present_shipping}}" type="text" onblur="fetch_price();">
+                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{$product->actual_quantity}}" type="text" onblur="fetch_price();">
                                                     @elseif($product->present_shipping <0)
                                                     <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="" type="text">
                                                     @endif
@@ -100,7 +101,7 @@
                                                 <div class="form-group">     
                                                     @foreach($price_delivery_order as $rate)
                                                     @if($rate['product_id'] == $product['product_category']->id)
-                                                    <?php $product_price = $rate['total_rate'];?>
+                                                    <?php $product_price = $rate['total_rate']; ?>
                                                     @endif
                                                     @endforeach
                                                     <input type="text" class="form-control" id="product_price_{{$key}}" value="{{$product_price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="change_amount({{$key}})">
@@ -128,6 +129,7 @@
                                             </td>
 
                                         </tr>
+                                        <?php $key++?>
                                         @endif
                                         @endforeach
 
@@ -162,24 +164,30 @@
                             </div>
 
 
-
-
-
                             <div class="form-group">
-                                <label for="vehicle_name"><b class="challan">Discount</b></label>
-                                <input id="discount_value" class="form-control" placeholder="Discount" name="discount"  value="{{$allorder->discount}}" type="text" onblur="grand_total_delivery_order();">
+                                <label for="total"><b class="challan">Total</b><span class="gtotal"><input type="text" id="total_price" name="total_price" placeholder="" readonly="readonly"></span></label>                           
+
+                            </div>
+                            <div class="form-group">
+                                <label for="billno"><b class="challan">Bill Number</b></label>
+                                <input id="billno" class="form-control" placeholder="Bill Number" name="billno"  value="{{$allorder->bill_number}}" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="driver_contact"><b class="challan">Loading</b></label>
+                                <input id="loading_charge" class="form-control" placeholder="loading" name="loading"  value="{{$allorder->loading_charge}}" type="text" onblur="grand_total_delivery_order();">
+                            </div>
+                            <div class="form-group">
+                                <label for="vehicle_name"><b class="challan">Discount(In percentage)</b></label>
+                                <input id="discount_value" class="form-control" placeholder="Discount, example :10" name="discount"  value="{{$allorder->discount}}" type="text" onblur="grand_total_delivery_order();">
                             </div>
                             <div class="form-group">
                                 <label for="driver_name"><b class="challan">Freight</b></label>
                                 <input id="freight_value" class="form-control" placeholder="Freight " name="freight"  value="{{$allorder->freight}}" type="text" onblur="grand_total_delivery_order();">
                             </div>
-                            <div class="form-group">
-                                <label for="total"><b class="challan">Total</b><span class="gtotal"><input type="text" id="total_price" name="total_price" placeholder="" readonly="readonly"></span></label>
 
-                            </div>
                             <div class="form-group">
-                                <label for="driver_contact"><b class="challan">Loading</b></label>
-                                <input id="loading_charge" class="form-control" placeholder="loading" name="loading"  value="{{$allorder->loading_charge}}" type="text" onblur="grand_total_delivery_order();">
+                                <label for="driver_contact"><b class="challan">Total</b></label>
+                                <span id="total_l_d_f"></span>
                             </div>
 
                             <div class="form-group">
@@ -192,26 +200,23 @@
                             </div>
 
 
-
-                            <div class="form-group">
-
-                                <label for="Plusvat"><b class="challan">Plus VAT</b> Yes/No</label>
-                            </div>
-
+                            @if($allorder->vat_percentage >0)
                             <div class="form-group">
                                 <label for="driver_contact"><b class="challan">VAT Percentage</b> <input type="text" name="vat_percentage" id="vat_percentage" value="{{$allorder->vat_percentage}}" readonly="readonly"></label>
-
                             </div>
+                            <div class="form-group">
+                                <label for="vatp"><b class="challan">VAT Value : </b>
+                                    <span id="vat_val"></span>
+                                </label>
+                            </div>
+                            @endif
 
 
                             <div class="form-group">
                                 <label for="total"><b class="challan">Grand Total</b><span class="gtotal"><input type="text" class="form-group" name="grand_total" id="grand_total" readonly="readonly"  value="{{$allorder->grand_total}}"></span></label>
 
                             </div>
-                            <div class="form-group">
-                                <label for="billno"><b class="challan">Bill Number</b></label>
-                                <input id="billno" class="form-control" placeholder="Bill Number" name="billno"  value="{{$allorder->bill_number}}" type="text">
-                            </div>
+
                             <div class="form-group">
                                 <label for="challan_remark"><b class="challan">Remark</b></label>
                                 <textarea class="form-control" id="challan_remark" name="challan_remark"  rows="3"> {{$allorder->remarks}}</textarea>

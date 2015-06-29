@@ -232,10 +232,7 @@
                             <label for="vehicle_name">Vehicle Number</label>
                             <input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{ $delivery_data[0]->vehicle_number }}" type="text">
                         </div>
-                        <div class="form-group">
-                            <label for="driver_name">Driver Name</label>
-                            <input id="driver_name" class="form-control" placeholder="Driver Name " name="driver_name" value="{{ $delivery_data[0]->driver_name }}" type="text">
-                        </div>
+                        
                         <div class="form-group">
                             <label for="driver_contact">Driver Contact</label>
                             <input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="{{ $delivery_data[0]->driver_contact_no }}" type="text">
@@ -246,7 +243,9 @@
                                 <select class="form-control" name="add_order_location" id="order_location">
                                     <option value="" selected="">Delivery Location</option>
                                     @foreach($delivery_locations as $delivery_location)
+                                    @if($delivery_location->status=='permanent' && $delivery_location->id!=0)
                                     <option <?php if ($delivery_location->id == $delivery_data[0]->delivery_location_id) echo 'selected=""'; ?>  value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
+                                    @endif
                                     @endforeach
                                     <option id="other_location" value="-2">Other</option>
                                 </select>
