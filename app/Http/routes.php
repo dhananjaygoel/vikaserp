@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('states', 'StatesController');
     Route::resource('city', 'CityController');
     Route::resource('location', 'DeliveryLocationController');
+    Route::post('delivery_difference', 'DeliveryLocationController@delivery_difference');
     Route::resource('customers', 'CustomerController');
     Route::resource('pending_customers', 'PendingCustomerController');
     Route::resource('customer_manager', 'CustomerManagerController');
@@ -114,6 +115,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('store_order/{id}','InquiryController@store_place_order');
     Route::resource('export_sales_daybook', 'SalesDaybookController@export_sales_daybook'); 
     Route::post('get_product_weight','ProductsubController@get_product_weight');
+    Route::get('fetch_product_price','DeliveryOrderController@product_price');
     
 });
 

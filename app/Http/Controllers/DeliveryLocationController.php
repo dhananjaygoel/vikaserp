@@ -15,6 +15,7 @@ use App\Http\Requests\EditLocationRequest;
 use Hash;
 use Illuminate\Support\Facades\Auth;
 use Redirect;
+
 class DeliveryLocationController extends Controller {
 
     /**
@@ -55,7 +56,8 @@ class DeliveryLocationController extends Controller {
                     'area_name' => $request->input('area_name'),
                     'state_id' => $request->input('state'),
                     'city_id' => $request->input('city'),
-                    'status' => 'permanent'
+                    'status' => 'permanent',
+                    'difference' => 'difference'
         ]);
         $id = DB::getPdo()->lastInsertId();
         return redirect('location')->with('flash_success_message', 'Location details successfully added.');
@@ -103,7 +105,8 @@ class DeliveryLocationController extends Controller {
                 'state_id' => $request->input('state'),
                 'city_id' => $request->input('city'),
                 'area_name' => $request->input('area_name'),
-                'status' => 'permanent'
+                'status' => 'permanent',
+                'difference' => 'difference'
             ]);
             return redirect('location')->with('flash_success_message', 'Location details successfully modified.');
         } else
@@ -125,6 +128,18 @@ class DeliveryLocationController extends Controller {
             return redirect('location')->with('flash_success_message', 'Location details successfully deleted.');
         } else
             return redirect('location')->with('flash_message', 'Please enter a correct password');
+    }
+
+    public function delivery_difference() {
+        $data = Input::all();
+
+        if ($data['difference'] != "") {
+            $del = DeliveryLocation::where('id', '=', $data['id'])->update([
+                'difference' => $data['difference']
+            ]);
+            return redirect('location')->with('flash_success_message', 'Location difference successfully modified.');
+        } else
+            return redirect('location')->with('flash_message', 'Unable to update the delivery location');
     }
 
 }

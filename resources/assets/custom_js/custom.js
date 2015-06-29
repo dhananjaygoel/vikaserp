@@ -8,24 +8,10 @@ $(document).ready(function () {
 
     });
 
-//    $('#product_sub_category_select').change(function () {
-//        
-//        var prod = $('#product_sub_category_select').val();
-////        alert(prod);
-//        if(prod == 1){
-//           $('.thick12').css('display','block');
-//        }
-//        
-//        if(prod == 2){
-//            $('.thick12').css('display','none');
-//        }
-//        
-//    });
-
     $('#product_sub_category_select').change(function () {
 
         var prod = $('#product_sub_category_select').val();
-//        alert(prod);
+
         if (prod == 1) {
             $('.thick12').css('display', 'block');
         }
@@ -192,9 +178,6 @@ $('#add_more_product').click(function () {
 
 });
 
-/**
- * Comment
- */
 function calulate_price(counter) {
 
     var unit_id = $('#units_' + counter).val();
@@ -242,7 +225,7 @@ function calulate_price(counter) {
 
 
         if (unit_type == "kilo") {
-            
+
             if (unit_id == 1) {
                 var gram_price = price_per_unit / 1000;
                 var tatal = quantity * gram_price;
@@ -251,63 +234,41 @@ function calulate_price(counter) {
             } else if (unit_id == 2) {
                 var tatal = quantity * price_per_unit;
                 $('#product_price_' + counter).val(tatal);
-            }else if (unit_id == 3) {
-                 var tatal = quantity * price_per_unit * 100;
+            } else if (unit_id == 3) {
+                var tatal = quantity * price_per_unit * 100;
                 $('#product_price_' + counter).val(tatal);
-            }else if (unit_id == 4) {
-                 var tatal = quantity * price_per_unit * 100 * 10;
+            } else if (unit_id == 4) {
+                var tatal = quantity * price_per_unit * 100 * 10;
                 $('#product_price_' + counter).val(tatal);
             }
         }
-        
-        
+
+
         if (unit_type == "kwintal") {
-            
+
         }
 
-
-
-
-
-
-
-
-//        for (var key in units) {
-//            var unit_type = "";
-//            var price_per_unit = 0;
-//
-//            if (units[key].id == product[0].unit_id) {
-//
-//                unit_type = units[key].unit_name;
-//                price_per_unit = product[0].price;
-//
-//            }
-
-//                if (unit_type == 'kilo') {
-//                    price_per_unit = product[0].price / 1000;
-//                } else {
-//                    var tatal = quantity * product[0].price;
-//                    $('#product_price_' + counter).val(tatal);
-//                }
-
-//            if (units[key].id == unit_id) {
-//                if (units[key].unit_name == 'gram') {
-//                    var tatal = quantity * product[0].price;
-//                    $('#product_price_' + counter).val(tatal);
-//                }
-//
-//                if (units[key].unit_name == 'kilo') {
-//                    var tatal = quantity * 1000 * product[0].price;
-//                    $('#product_price_' + counter).val(tatal);
-//                }
-//            }
-
-
-
-//        }
     });
 }
 
+/**
+ * calutate_pending_order
+ */
+function calutate_pending_order(qty, key) {
+
+    var shipping = $('#present_shipping_' + key).val();
+    var pending = $('#pending_order_org' + key).val();
+
+    if (parseInt(shipping) <= parseInt(pending)) {
+        $('#pending_order_' + key).val(pending - shipping);
+    } else {
+        alert('Present shipping should not be greater than pending order')
+    }
+
+
+
+
+}
 
 
 

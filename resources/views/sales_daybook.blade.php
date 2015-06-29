@@ -63,7 +63,10 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
-                    @if(sizeof($allorders)==0)
+                    
+                    <div class="main-box-body main_contents clearfix">
+
+                        @if(sizeof($allorders)==0)
                     <div class="alert alert-info no_data_msg_container">
                         Currently no orders have been added to Delivery Challan.
                     </div>
@@ -82,8 +85,6 @@
                         @endforeach                            
                     </div>
                     @endif
-                    <div class="main-box-body main_contents clearfix">
-
                         <div class="table-responsive">
                             <form action="{{url('delete_multiple_challan')}}" method="POST">
                                 <input type="hidden" name="_token" value="{{csrf_token()}}">

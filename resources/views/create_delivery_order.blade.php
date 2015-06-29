@@ -1,6 +1,6 @@
 <?php
 //echo'<pre>';
-//print_r($pending_orders);
+//print_r($orders['customer']);
 //echo '</pre>';
 //exit;
 ?>
@@ -32,7 +32,7 @@
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="order_id" value="{{$order->id}}">
                         <input type="hidden" name="customer_id" value="{{$order['customer']->id}}" id="hidden_cutomer_id">
-
+                        
                         @if (count($errors) > 0)
                         <div role="alert" class="alert alert-warning">
                             <ul>
@@ -231,10 +231,10 @@
                                     <td class="cdfirst">Vehicle Number:</td>
                                     <td><input  class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{old('vehicle_number')}}" type="text" onblur="grand_total_delivery_order();"></td>
                                 </tr>
-                                <tr class="cdtable">
+<!--                                <tr class="cdtable">
                                     <td class="cdfirst">Driver Name:</td>
                                     <td><input  class="form-control" placeholder="Driver Name" name="driver_name" value="{{old('driver_name')}}" type="text"></td>
-                                </tr>
+                                </tr>-->
                                 <tr class="cdtable">
                                     <td class="cdfirst">Driver Contact:</td>
                                     <td><input  class="form-control" placeholder="Driver Contact" name="driver_contact" value="{{old('driver_contact')}}" type="text"></td>

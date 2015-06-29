@@ -47,7 +47,7 @@
                         <hr>
                         {!!Form::open(array('method'=>'POST','url'=>url('create_delivery_challan/'.$delivery_data['id']),'id'=>'create_delivery_challan_form'))!!}
                         <input type="hidden" name="order_id" value="{{$delivery_data->order_id}}">
-                        <input type="hidden" name="customer_id" value="{{$delivery_data['customer']->id}}">
+                        <input type="hidden" id="customer_id" name="customer_id" value="{{$delivery_data['customer']->id}}">
 
 
                         <div class="form-group">
@@ -81,30 +81,31 @@
                                             <td><span>Unit</span></td>
                                             <td><span>Amount</span></td>
                                         </tr>
-
-                                        @foreach($delivery_data['delivery_product'] as $key=>$product)
+                                        <?php $key = 1; ?>
+                                        @foreach($delivery_data['delivery_product'] as $product)
                                         @if($product->order_type =='delivery_order')
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-2">
                                                 <div class="form-group searchproduct">
-                                                    <input value="{{ $product['product_category']->product_category_name}}" class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});">
+                                                    {{ $product['product_category']->product_category_name}}
+
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['product_category']->id}}">
-                                                    <i class="fa fa-search search-icon"></i>
+                                                    <!--<i class="fa fa-search search-icon"></i>-->
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
                                                     <input id="quantity_{{$key}}" type="hidden" value="{{ $product->quantity}}" name="product[{{$key}}][quantity]">
                                                     @if($product->present_shipping >=0)
-                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{$product->present_shipping}}" type="text" onblur="grand_total_challan();">
+                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{$product->present_shipping}}" type="text" onblur="fetch_price();">
                                                     @elseif($product->present_shipping <0)
-                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="" type="text" onblur="grand_total_challan();">
+                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="" type="text" >
                                                     @endif
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input id="actual_pieces_{{$key}}" class="form-control" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{$product->actual_pieces}}" type="text" onblur="grand_total_challan();">
+                                                    <input id="actual_pieces_{{$key}}" class="form-control" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="" type="text" onblur="grand_total_challan();">
                                                 </div>
                                             </td>
 
@@ -118,7 +119,7 @@
                                                 <div class="form-group">     
                                                     @foreach($price_delivery_order as $rate)
                                                     @if($rate['product_id'] == $product['product_category']->id)
-                                                    <?php $product_price = $rate['total_rate'];?>                                                    
+                                                    <?php $product_price = $rate['total_rate']; ?>                                                    
                                                     @endif
                                                     @endforeach
                                                     <input type="text" class="form-control" id="product_price_{{$key}}" value="{{$product_price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="change_amount({{$key}})">
@@ -146,9 +147,10 @@
                                             </td>
 
                                         </tr>
+                                        <?php $key++; ?>
                                         @endif
                                         @endforeach
-                                        <?php //} ?>
+
                                     </tbody>
                                 </table>
                                 <table>
@@ -181,22 +183,30 @@
                         </div>
 
                         <div class="clearfix"></div>
+
                         <div class="form-group">
-                            <label for="vehicle_name"><b class="challan">Discount</b></label>
-                            <input id="discount_value" class="form-control" placeholder="Discount" name="discount" value="" type="text" onblur="grand_total_challan();">
+                            <label for="total"><b class="challan">Total</b><span class="gtotal"><input type="text" id="total_price" name="total_price" placeholder="" readonly="readonly"></span></label>                           
+
+                        </div>
+                        <div class="form-group">
+                            <label for="billno"><b class="challan">Bill Number</b></label>
+                            <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label for="driver_contact"><b class="challan">Loading</b></label>
+                            <input id="loading_charge" class="form-control" placeholder="loading" name="loading" value="" type="text" onblur="grand_total_challan();">
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicle_name"><b class="challan">Discount(In percentage)</b></label>
+                            <input id="discount_value" class="form-control" placeholder="Discount, example :10" name="discount" value="" type="text" onblur="grand_total_challan();">
                         </div>
                         <div class="form-group">
                             <label for="driver_name"><b class="challan">Freight</b></label>
                             <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="" type="text" onblur="grand_total_challan();">
                         </div>
                         <div class="form-group">
-                            <label for="total"><b class="challan">Total</b><span class="gtotal"><input type="text" id="total_price" name="total_price" placeholder="" readonly="readonly"></span></label>
-                            
-
-                        </div>
-                        <div class="form-group">
-                            <label for="driver_contact"><b class="challan">Loading</b></label>
-                            <input id="loading_charge" class="form-control" placeholder="loading" name="loading" value="" type="text" onblur="grand_total_challan();">
+                            <label for="driver_contact"><b class="challan">Total</b></label>
+                            <div id="total_l_d_f"></div>
                         </div>
 
                         <div class="form-group">
@@ -209,30 +219,32 @@
                         </div>
 
 
-
+                        @if($delivery_data->vat_percentage==0)
                         <div class="form-group">
 
-                            <label for="Plusvat"><b class="challan">Plus VAT : </b> @if($delivery_data->vat_percentage==0)NO 
-                                @else
-                                Yes
-                                @endif
+                            <label for="Plusvat"><b class="challan">Plus VAT : </b> No
                             </label>
                         </div>
-
+                        @else
                         <div class="form-group">
                             <label for="vatp"><b class="challan">VAT Percentage : </b>
                                 {{$delivery_data->vat_percentage}}
                                 <input type="hidden" name="vat_percentage" id="vat_percentage" value="{{$delivery_data->vat_percentage}}" readonly="readonly"></label>
-                        </div>    
+                        </div>
+                        <div class="form-group">
+                            <label for="vatp"><b class="challan">VAT Value : </b>
+                                <span id="vat_val"></span>
+                            </label>
+                        </div>
+                        @endif
+
+
                         <div class="form-group">
                             <label for="total"><b class="challan">Grand Total : </b><span class="gtotal">
                                     <input type="text" class="form-group" name="grand_total" id="grand_total" readonly="readonly"></span></label>
 
                         </div>
-                        <div class="form-group">
-                            <label for="billno"><b class="challan">Bill Number</b></label>
-                            <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="text">
-                        </div>
+
                         <div class="form-group">
                             <label for="challan_remark"><b class="challan">Remark</b></label>
                             <textarea class="form-control" id="challan_remark" name="challan_remark"  rows="3"></textarea>

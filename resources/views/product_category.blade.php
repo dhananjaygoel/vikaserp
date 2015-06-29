@@ -3,14 +3,13 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">
-
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
                     <li><a href="{{url()}}/dashboard">Home</a></li>
                     <li class="active"><span>Product Category</span></li>
                 </ol>
-                
+
                 <div class="clearfix">
                     <h1 class="pull-left">Product Category</h1>
                     @if(Auth::user()->role_id == 0)
@@ -54,8 +53,10 @@
                                     <tr>
                                         <th class="col-md-1">#</th>
                                         <th class="col-md-2">Name</th>
-                                        <th class="col-md-2">Type</th>
-                                        <th class="col-md-3">Price</th>
+                                        <th class="col-md-1">Type</th>
+                                        <th class="col-md-2">Price</th>
+                                        <th class="col-md-2">Created</th>
+                                        <th class="col-md-2">Updated</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -72,6 +73,7 @@
                                             {{'structure'}}
                                             @endif
                                         </td>
+
                                         <td>
                                             <form method="post" action="{{URL::action('ProductController@update_price')}}">
                                                 <div class="row product-price">
@@ -85,7 +87,9 @@
                                                     </div>
                                                 </div>
                                             </form>
-                                        </td>                                    
+                                        </td> 
+                                        <td>{{date("d F, Y", strtotime($product->created_at))}}</td>
+                                        <td>{{date("d F, Y", strtotime($product->updated_at))}}</td>
                                         <td>
                                             <a href="{{URL::action('ProductController@show',['id'=> $product->id])}}" class="table-link" title="view">
                                                 <span class="fa-stack">

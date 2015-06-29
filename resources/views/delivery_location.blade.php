@@ -48,6 +48,7 @@
                                         <th>State Name</th>
                                         <th>City Name</th>
                                         <th>Delivery Location</th>
+                                        <th>Difference</th>
                                         @if( Auth::user()->role_id == 0 )
                                         <th class="text-center">Actions</th>
                                         @endif
@@ -61,6 +62,20 @@
                                         <td>{{$location_data['city']['states']->state_name}}</td>
                                         <td>{{$location_data['city']->city_name}}</td>
                                         <td>{{$location_data->area_name}}</td>
+                                        <td>
+                                            <form method="post" action="{{URL::action('DeliveryLocationController@delivery_difference')}}">
+                                                <div class="row product-price">
+                                                    <div class="form-group col-md-6">
+                                                        <input type="text" class="form-control" required="" name="difference" value="{{ $location_data->difference }}">
+                                                        <input type="hidden" class="form-control" name="id" value="{{ $location_data->id}}">
+                                                        <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                                    </div>
+                                                    <div class="form-group col-md-2 difference_form">
+                                                        <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </td>
                                         @if( Auth::user()->role_id == 0 )
                                         <td class="text-center">
                                             <a href="{{ Url::action('DeliveryLocationController@edit', ['id' => $location_data->id]) }}" class="table-link">

@@ -75,6 +75,10 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="form-group">
+                            <label for="difference">Standard Length</label>
+                            <input id="standard_length" class="form-control" placeholder=" Standard Length" name="standard_length" value="{{$prod_sub_cat->standard_length}}" type="text">
+                        </div>
+                        <div class="form-group">
                             <label for="difference">Difference</label>
                             <input id="difference" class="form-control" placeholder=" Difference" name="difference" value="{{$prod_sub_cat->difference}}" type="text">
                         </div>
