@@ -27,5 +27,6 @@ class LocationRequest extends Request {
             'area_name' => 'required|unique:delivery_locations'
         ];
     }
+    protected $fillable = ['city','state','area_name','difference'];
 
 }

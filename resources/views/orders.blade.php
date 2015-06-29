@@ -103,10 +103,9 @@
                                         <th>Customer Name</th>
                                         <th>Mobile </th>
                                         <th>Delivery Location</th>
-                                        <th>Order By</th>
-                                        <th>Total Quantity</th>
+<!--                                        <th>Order By</th>                                        -->
                                         <th>Pending Quantity</th>
-                                        <th>Create Delivery Order</th>
+                                        <th class="text-center">Create Delivery Order</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead><tbody>
@@ -118,22 +117,21 @@
                                         <td>{{$k++}}</td>
                                         <td>{{$order['customer']->owner_name}}</td>
                                         <td>{{$order['customer']['phone_number1']}}</td>
-                                        @if($order['delivery_location']['area_name'] !="")
+                                        @if($order->delivery_location_id !=0)
                                         <td class="text">{{$order['delivery_location']['area_name']}}</td>
-                                        @elseif($order['delivery_location']['area_name'] =="")
+                                        @elseif($order->delivery_location_id ==0 )
                                         <td class="text">{{$order['other_location']}}</td>
                                         @endif
-                                        <td class="text"><?php
+<!--                                        <td class="text"><?php
                                             foreach ($users as $u) {
                                                 if ($u['id'] == $order['created_by']) {
                                                     echo $u['first_name'];
                                                 }
                                             }
-                                            ?></td>
+                                            ?></td>-->
                                         @if(count($pending_orders) > 0)
                                         @foreach($pending_orders as $porder)
-                                        @if($porder['id'] == $order->id)
-                                        <td>{{$porder['total_quantity']}}</td>
+                                        @if($porder['id'] == $order->id)                                       
                                         <td>{{$porder['total_pending_quantity']}}</td>
                                         @endif
                                         @endforeach

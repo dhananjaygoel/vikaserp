@@ -1,3 +1,9 @@
+<?php
+//echo '<pre>';
+//print_r($delivery_data);
+//echo '</pre>';
+//exit;
+?>
 @extends('layouts.master')
 @section('title','Delivery Order')
 @section('content')
@@ -67,7 +73,10 @@
                                     <tr>
                                         <th class="">#</th>
                                         <th>Date</th>
-                                        <th>Serial Number</th>
+                                        <th>Party Name</th>
+                                        <th>Delivery Location</th>
+                                        <th>Quantity</th>
+                                        <th>Vehicle Number</th>
                                         <th class="text-center">Create Delivery Challan</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
@@ -78,13 +87,32 @@
                                     <tr>
                                         <td>{{ $i++ }}</td>
                                         <td>{{date("d F, Y", strtotime($delivery->created_at)) }}</td>
+                                        <td>       
+                                            {{$delivery['customer']->owner_name}}
+                                        </td> 
                                         <td>
-                                            @if($delivery->serial_no != "")
-                                            {{ $delivery->serial_no }}
-                                            @else
-                                            {{ '--' }}
+                                            @if($delivery->delivery_location_id!=0)
+                                            @foreach($delivery_locations as $location)
+                                            @if($location->id == $delivery->delivery_location_id)
+                                            {{$location->area_name}}
                                             @endif
-                                        </td>    
+                                            @endforeach
+                                            @else
+                                            {{$delivery->other_location}}
+                                            @endif
+                                           
+                                        </td> 
+                                        <td>
+                                            @foreach($pending_orders as $pending)
+                                            @if($pending['id'] == $delivery->id)
+                                            {{$pending['total_quantity']}}
+                                            @endif
+                                            @endforeach
+                                           
+                                        </td> 
+                                        <td>
+                                           {{$delivery->vehicle_number}}
+                                        </td> 
                                         <td class="text-center">
                                             @if($delivery->order_status == 'completed')
                                             <a href="{{url('create_delivery_challan/'.$delivery->id)}}" class="table-link" title="Delivery challan">
@@ -94,12 +122,12 @@
                                                 </span>
                                             </a>
                                             @elseif($delivery->order_status != 'completed')
-                                            <a href="" class="table-link" title="Delivery challan">
+                                            <span class="table-link" title="Delivery challan">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-book fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a>
+                                            </span>
                                             @endif
                                         </td>
                                         <td class="text-center">
@@ -117,12 +145,12 @@
                                                 </span>
                                             </a>
                                             @elseif($delivery->serial_no != "")
-                                            <a class="table-link" title="edit" >
+                                            <span class="table-link" title="edit" >
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a>
+                                            </span>
                                             @endif
                                             
                                             @if($delivery->serial_no == "")
@@ -133,12 +161,12 @@
                                                 </span>
                                             </a>
                                             @elseif($delivery->serial_no != "")
-                                            <a class="table-link" title="print">
+                                            <span class="table-link" title="print">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a>
+                                            </span>
                                             @endif
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                             <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal{{$delivery->id}}" title="delete">

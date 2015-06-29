@@ -104,34 +104,54 @@ class InquiryController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
+//        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
+////            $add_delivery_location = DeliveryLocation::create([
+////                        'area_name' => $input_data['other_location_name'],
+////                        'status' => 'pending'
+////            ]);
+////            $location_id = DB::getPdo()->lastInsertId();
+//            $add_inquiry_array = [
+//                'customer_id' => $customer_id,
+//                'created_by' => Auth::id(),
+//                'delivery_location_id' => 0,                
+//                'vat_percentage' => $input_data['vat_percentage'],
+//                'expected_delivery_date' => $datetime->format('Y-m-d'),
+//                'remarks' => $input_data['inquiry_remark'],
+//                'inquiry_status' => "Pending",
+//                'other_location' => $input_data['other_location_name'],
+//                'other_location_difference' => $input_data['other_location_difference']
+//            ];
+//        } else {
+//            $add_inquiry_array = [
+//                'customer_id' => $customer_id,
+//                'created_by' => Auth::id(),
+//                'delivery_location_id' => $input_data['add_inquiry_location'],
+//                'vat_percentage' => $input_data['vat_percentage'],
+//                'expected_delivery_date' => $datetime->format('Y-m-d'),
+//                'remarks' => $input_data['inquiry_remark'],
+//                'inquiry_status' => "Pending"
+//            ];
+//        }
+//        echo '<pre>';
+//        print_r($add_inquiry_array);
+//        echo '</pre>';
+//        exit;
+        $add_inquiry = new Inquiry();//::create($add_inquiry_array);
+        $add_inquiry->customer_id= $customer_id;
+        $add_inquiry->created_by=Auth::id();
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
-//            $add_delivery_location = DeliveryLocation::create([
-//                        'area_name' => $input_data['other_location_name'],
-//                        'status' => 'pending'
-//            ]);
-            $location_id = DB::getPdo()->lastInsertId();
-            $add_inquiry_array = [
-                'customer_id' => $customer_id,
-                'created_by' => Auth::id(),
-                'delivery_location_id' => $location_id,
-                'vat_percentage' => $input_data['vat_percentage'],
-                'expected_delivery_date' => $datetime->format('Y-m-d'),
-                'remarks' => $input_data['inquiry_remark'],
-                'inquiry_status' => "Pending",
-                'other_location' => $input_data['other_location_name']
-            ];
-        } else {
-            $add_inquiry_array = [
-                'customer_id' => $customer_id,
-                'created_by' => Auth::id(),
-                'delivery_location_id' => $input_data['add_inquiry_location'],
-                'vat_percentage' => $input_data['vat_percentage'],
-                'expected_delivery_date' => $datetime->format('Y-m-d'),
-                'remarks' => $input_data['inquiry_remark'],
-                'inquiry_status' => "Pending"
-            ];
+            $add_inquiry->delivery_location_id = 0;                
+            $add_inquiry->other_location = $input_data['other_location_name'];
+            $add_inquiry->other_location_difference = $input_data['other_location_difference'];
+        }else{
+            $add_inquiry->delivery_location_id = $input_data['add_inquiry_location'];
         }
-        $add_inquiry = Inquiry::create($add_inquiry_array);
+        $add_inquiry->vat_percentage = $input_data['vat_percentage'];
+        $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
+        $add_inquiry->remarks = $input_data['inquiry_remark'];
+        $add_inquiry->inquiry_status = "Pending";
+        $add_inquiry->save();
+        
         $inquiry_id = DB::getPdo()->lastInsertId();
         $inquiry_products = array();
         foreach ($input_data['product'] as $product_data) {
@@ -189,7 +209,10 @@ class InquiryController extends Controller {
      */
     public function update($id, InquiryRequest $request) {
         $input_data = Input::all();
-        
+//        echo '<pre>';
+//        print_r($input_data);
+//        echo '</pre>';
+//        exit;
         $date = strtotime($input_data['expected_date']);
         $datetime = new DateTime($date);
 //        echo $datetime->format('Y-m-d');
@@ -238,20 +261,33 @@ class InquiryController extends Controller {
         if ($input_data['add_inquiry_location'] == 'other') {
             $location_id = 0;
             $other_location = $input_data['other_location_name'];
+            $other_location_difference = $input_data['other_location_difference'];
+//            echo $other_location;exit;
         }
+        
         $inquiry = Inquiry::find($id);
         $update_inquiry = $inquiry->update([
             'customer_id' => $customer_id,
             'created_by' => Auth::id(),
-            'delivery_location_id' => $location_id, // $input_data['add_inquiry_location'],
+             // $input_data['add_inquiry_location'],
             'vat_percentage' => $vat_price,
             'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['inquiry_remark'],
             'inquiry_status' => "Pending"
         ]);
         if ($location_id == 0) {
+//            
             $inquiry->update([
-                'other_location' =>$other_location
+                'delivery_location_id' => 0,
+                'other_location' =>$other_location,
+                'other_location_difference' => $other_location_difference
+            ]);
+//            echo 'test';exit;
+        }else{
+            $inquiry->update([
+                'other_location' =>'',
+                'other_location_difference' => '',
+                'delivery_location_id' => $location_id
             ]);
         }
         $inquiry_products = array();
@@ -393,9 +429,12 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $input_data = Input::all();
-        $date = $input_data['date'];
-
+        $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
+        $date = date("Y-m-d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
+//        $date = $input_data['expected_date'];
+//
+//        $datetime = new DateTime($date);
 //        $datetime->format('Y-m-d');
 
         $i = 0;
@@ -473,6 +512,7 @@ class InquiryController extends Controller {
         $order->order_status = "Pending";
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
             $order->other_location = $input_data['other_location_name'];
+            $order->other_location_difference = $input_data['other_location_difference'];
         }
         $order->save();
 

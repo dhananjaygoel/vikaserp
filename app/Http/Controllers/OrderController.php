@@ -86,13 +86,11 @@ class OrderController extends Controller {
                                     function($q) use($size) {
                                         $q->where('size', '=', $size);
                                     }))->Paginate(10);
-//                echo '<pre>';
-//                print_r($allorders);
-//                echo '</pre>';
-//                exit;
             } else {
 
-                $allorders = Order::where('order_status', '=', 'pending')->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
+                $allorders = Order::where('order_status', '=', 'pending')
+                                ->where('order_source', '=', 'warehouse')
+                                ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
             }
         }
 
@@ -133,6 +131,10 @@ class OrderController extends Controller {
     public function store(PlaceOrderRequest $request) {
 
         $input_data = Input::all();
+//        echo '<pre>';
+//        print_r($input_data);
+//        echo '</pre>';
+//        exit;
         $i = 0;
         $j = count($input_data['product']);
 //        echo $input_data['estimated_date'];exit;
@@ -144,26 +146,26 @@ class OrderController extends Controller {
         if ($i == $j) {
             return Redirect::back()->with('flash_message', 'Please insert product details');
         }
+//        echo 'test';exit;
+//        $i = 0;
+//        $error_msg = array();
+//        foreach ($input_data['product'] as $product_data) {
+//            $msg = array();
+//            if ($product_data['name'] != "") {
+//                if ($product_data['price'] == "") {
+//                    $msg[$i]['quantity'] = 'Please insert price for product details';
+//                }
+//                if ($product_data['quantity'] == "") {
+//                    $msg[$i++]['quantity'] = 'Please insert qantity for product details';
+//                }
+//                array_push($error_msg, $msg);
+//            }
+//        }
+//        if (count($error_msg) > 0) {
+//            return Redirect::back()->withInput()->withErrors($error_msg);
+//        }
 
-        $i = 0;
-        $error_msg = array();
-        foreach ($input_data['product'] as $product_data) {
-            $msg = array();
-            if ($product_data['name'] != "") {
-                if ($product_data['price'] == "") {
-                    $msg[$i]['quantity'] = 'Please insert price for product details';
-                }
-                if ($product_data['quantity'] == "") {
-                    $msg[$i++]['quantity'] = 'Please insert qantity for product details';
-                }
-                array_push($error_msg, $msg);
-            }
-        }
-        if (count($error_msg) > 0) {
-            return Redirect::back()->withInput()->withErrors($error_msg);
-        }
-
-
+//        echo 'test';exit;
         if ($input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
@@ -206,7 +208,7 @@ class OrderController extends Controller {
             $supplier_id = 0;
         }
         if ($input_data['status'] == 'supplier') {
-            $order_status = 'supplier';
+            $other_location_difference;$order_status = 'supplier';
             $supplier_id = $input_data['supplier_id'];
         }
         if ($input_data['status1'] == 'include_vat') {
@@ -221,14 +223,18 @@ class OrderController extends Controller {
         $order->supplier_id = $supplier_id;
         $order->customer_id = $customer_id;
         $order->created_by = Auth::id();
-        $order->delivery_location_id = $input_data['add_order_location'];
+        
         $order->vat_percentage = $vat_price;
 //        $order->estimated_delivery_date = date_format(date_create($input_data['estimated_date']), 'Y-m-d');
         $order->expected_delivery_date = date_format(date_create($input_data['expected_date']), 'Y-m-d');
         $order->remarks = $input_data['order_remark'];
         $order->order_status = "Pending";
         if (isset($input_data['location']) && ($input_data['location'] != "")) {
+            $order->delivery_location_id = 0;
             $order->other_location = $input_data['location'];
+            $order-> other_location_difference= $input_data['other_location_difference'];
+        }else{
+            $order->delivery_location_id = $input_data['add_order_location'];
         }
         $order->save();
 
@@ -378,12 +384,14 @@ class OrderController extends Controller {
         ]);
         if ($input_data['add_inquiry_location'] == 0) {
             $update_order = $order->update([
-                'other_location' => $input_data['other_location_name']
+                'other_location' => $input_data['other_location_name'],
+                'other_location_difference'=> $input_data['other_location_difference']
             ]);
         }
         if ($input_data['add_inquiry_location'] != 0) {
             $update_order = $order->update([
-                'other_location' => ''
+                'other_location' => '',
+                'other_location_difference'=>''
             ]);
         }
 

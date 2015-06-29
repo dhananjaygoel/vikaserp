@@ -90,7 +90,7 @@
                                         @endif
 
                                         <tr>
-                                            <td><span>Grand Total: </span> <?php $total = $inquiry['inquiry_products']->sum('price') * $product_data->quantity; echo $total; ?></td>
+                                            <td><span>Total: </span> <?php $total = $inquiry['inquiry_products']->sum('price') * $product_data->quantity; echo $total; ?></td>
 
                                         </tr>
 

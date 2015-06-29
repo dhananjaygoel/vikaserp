@@ -22,7 +22,7 @@ class CreatePurchaseOrderTable extends Migration {
             $table->integer('total_price');
             $table->date('expected_delivery_date');
             $table->text('remarks');
-            $table->enum('order_status', array('pending', 'completed', 'canceled'));
+            $table->enum('order_status', array('pending', 'completed', 'canceled'));            
             $table->timestamps();
             $table->softDeletes();
         });

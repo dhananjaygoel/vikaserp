@@ -30,6 +30,7 @@ class CreateDeliveryOrderTable extends Migration {
             $table->string('driver_name');
             $table->string('driver_contact_no', 20);
             $table->enum('order_status', array('pending', 'completed', 'cancelled'));
+            $table->string('other_location_difference')->comment('Contains other delivery location');
             $table->softDeletes();
             $table->timestamps();
         });

@@ -32,7 +32,7 @@
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="order_id" value="{{$order->id}}">
                         <input type="hidden" name="customer_id" value="{{$order['customer']->id}}" id="hidden_cutomer_id">
-                        
+
                         @if (count($errors) > 0)
                         <div role="alert" class="alert alert-warning">
                             <ul>
@@ -72,31 +72,46 @@
 
                                 @endif
                                 @endforeach 
+
+                                @if($order->delivery_location_id !=0)
+                                @foreach($delivery_location as $location)
+                                @if($order->delivery_location_id == $location->id)
                                 <tr><td><span><b>Delivery Location : </b></span>
-                                        @foreach($delivery_location as $location)
-                                        @if($order->delivery_location_id == $location->id)
+
+
                                         {{$location->area_name}}
-
-                                        @endif
-                                        @endforeach
-
                                     </td></tr>
+
+                                @endif
+                                @endforeach
+                                @else
+                                <tr><td><span><b>Delivery Location : </b></span></td></tr>
+                                <tr>
+                                <td><span><b>Delivery Location</b>: </span>{{$order->other_location}}</td>
+                                </tr><tr>
+                                <td><span><b>Delivery Location Difference</b>: </span>{{$order->other_location_difference}}</td>
+                                </tr>
+                            @endif
+
+
+                            </tr>
                             </tbody>
                         </table>
+                        
                         <div class="inquiry_table col-md-12">
                             <div class="table-responsive">
                                 <div id="flash_error_present_shipping"></div>
                                 <table id="add_product_table_delivery_order" class="table table-hover  ">
                                     <tbody>
                                         <tr class="headingunderline">
-                                            <td><span>Select Product(Alias)</span></td>
-                                            <td><span>Quantity</span></td>
-                                            <td><span>Unit</span></td>
-                                            <td><span>Present Shipping</span></td>
+                                            <td><span><b>Select Product(Alias)</b></span></td>
+                                            <td><span><b>Quantity</b></span></td>
+                                            <td><span><b>Unit</b></span></td>
+                                            <td><span><b>Present Shipping</b></span></td>
 
-                                            <td><span>Price</span></td>
-                                            <td><span>Pending Order</span></td>
-                                            <td><span>Remark</span></td>
+                                            <td><span><b>Price</b></span></td>
+                                            <td><span><b>Pending Order</b></span></td>
+                                            <td><span><b>Remark</b></span></td>
                                         </tr>
                                         <?php $total = 0; ?>
                                         @foreach($order['all_order_products'] as $key=>$product)

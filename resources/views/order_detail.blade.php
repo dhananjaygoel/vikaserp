@@ -159,7 +159,7 @@
                                         @endif
                                         <tr>
 
-                                            <td><span>Grand Total: </span><?php
+                                            <td><span>Total: </span><?php
                                                     $grand_total = 0;
                                                     $vat = ($total * $order->vat_percentage) / 100;
                                                     $grand_total = $total + $vat;
@@ -175,12 +175,17 @@
 
                                         </tr>      
                                         <tr>
+                                            @if($order->delivery_location_id !=0)
                                             @foreach($delivery_location as $location)
                                             @if($order->delivery_location_id == $location->id)
                                             <td><span>Delivery Location: </span>{{$location->area_name}}</td>
 
                                             @endif
-                                            @endforeach                                          
+                                            @endforeach                          
+                                            @else
+                                            <td><span>Delivery Location: </span>{{$order->other_location}}</td>
+                                            <td><span>Delivery Location Difference: </span>{{$order->other_location_difference}}</td>
+                                            @endif
 
                                         </tr>
                                         <tr>

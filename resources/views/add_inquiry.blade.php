@@ -170,6 +170,11 @@
                                     <div class="form-group col-md-4">
                                         <label for="location">Location </label>
                                         <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="" type="text">
+                                        
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="location">Other Location Difference</label>
+                                        <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="" type="text">
                                     </div>
                                 </div>
                             </div>

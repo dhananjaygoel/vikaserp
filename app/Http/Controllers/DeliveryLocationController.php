@@ -49,17 +49,19 @@ class DeliveryLocationController extends Controller {
      * @return Response
      */
     public function store(LocationRequest $request) {
+
         if (Auth::user()->role_id != 0) {
             return Redirect::to('location')->with('error', 'You do not have permission.');
         }
-        $add_delivery_location = DeliveryLocation::create([
-                    'area_name' => $request->input('area_name'),
-                    'state_id' => $request->input('state'),
-                    'city_id' => $request->input('city'),
-                    'status' => 'permanent',
-                    'difference' => 'difference'
-        ]);
-        $id = DB::getPdo()->lastInsertId();
+        
+        $location = new DeliveryLocation();
+        $location->area_name= $request->input('area_name');
+        $location->state_id = $request->input('state');
+        $location->city_id = $request->input('city');
+        $location->difference = $request->input('difference');
+        $location->status = 'permanent';
+        $location->save();
+        
         return redirect('location')->with('flash_success_message', 'Location details successfully added.');
     }
 
@@ -106,7 +108,7 @@ class DeliveryLocationController extends Controller {
                 'city_id' => $request->input('city'),
                 'area_name' => $request->input('area_name'),
                 'status' => 'permanent',
-                'difference' => 'difference'
+                'difference' => $request->input('difference')
             ]);
             return redirect('location')->with('flash_success_message', 'Location details successfully modified.');
         } else
