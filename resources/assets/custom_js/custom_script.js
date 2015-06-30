@@ -81,8 +81,8 @@ $(document).ready(function() {
     var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
     
     $('#expected_delivery_date').datepicker({
-        startDate: today,
-        format: 'mm-dd-yyyy'
+        format: 'mm-dd-yyyy',
+        startDate: today        
     });
     $('#datepickerDateComponent').datepicker();
     $("#add_product_row").on("click", function() {

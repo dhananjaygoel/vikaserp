@@ -55,12 +55,12 @@ $(document).ready(function () {
     var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
 
     $('#expected_delivery_date_order').datepicker({
-        startDate: today,
-        format: 'dd-mm-yyyy'
+        format: 'mm-dd-yyyy',
+        startDate: today
     });
     $('#estimated_delivery_date').datepicker({
-        startDate: today,
-        format: 'dd-mm-yyyy'
+        format: 'mm-dd-yyyy',
+        startDate: today
 
     });
     $('#sales_daybook_date').datepicker({

@@ -98,6 +98,7 @@
                                         <th>Order By</th>
                                         <th>Total Quantity</th>
                                         <th>Pending Quantity</th>
+                                        <th class="text-center">Create Purchase Advice</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -111,7 +112,15 @@
                                         <td></td>
                                         <td>{{$purchase_order['user']->first_name}}</td>
                                         <td>{{$purchase_order['purchase_products']->sum('quantity')}}</td>
-                                        <td>35</td>
+                                        <td></td>
+                                        <td class="text-center">
+                                            <a href="{{ url('create_purchase_advice'.'/'.$purchase_order->id)}}" class="table-link" title="Create Purchase Advice">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-book fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                        </td>
                                         <td class="text-center">
                                             <a href="{{ Url::action('PurchaseOrderController@show', ['id' => $purchase_order->id]) }}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -131,12 +140,7 @@
                                                     <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="{{ url('create_purchase_advice'.'/'.$purchase_order->id)}}" class="table-link" title="Create Purchase Advice">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-book fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
+                                            
                                             <a class="table-link danger" data-toggle="modal" data-target="#delete_purchase_order_{{$purchase_order->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>

@@ -74,11 +74,14 @@ $(document).ready(function () {
     });
 });
 $('#datepickerDate').datepicker({
-    format: 'mm-dd-yyyy'
+    format: 'mm-dd-yyyy',
+    startDate: today
+
 });
 $('#datepickerDateComponent').datepicker();
 $('#datepickerDate1').datepicker({
-    format: 'mm-dd-yyyy'
+    format: 'mm-dd-yyyy',
+    startDate: today
 });
 $('#datepickerDateComponent1').datepicker();
 
@@ -104,7 +107,7 @@ $(document).ready(function () {
 
     });
 
-    
+
 
 });
 
@@ -257,10 +260,6 @@ function calutate_pending_order(qty, key) {
     } else {
         alert('Present shipping should not be greater than pending order')
     }
-
-
-
-
 }
 
 

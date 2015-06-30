@@ -65,6 +65,7 @@
                                         <th>#</th>
                                         <th>Date</th>
                                         <th>Serial Number</th>
+                                        <th class="text-center">Create Purchase Challan</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -77,6 +78,12 @@
                                         <td>{{$i}}</td>
                                         <td>{{$pa->purchase_advice_date}}</td>
                                         <td>{{$pa->serial_number}}</td>
+                                        <td class="text-center"><a href="{{ url('purchaseorder_advise_challan/'.$pa->id)}}" class="table-link" title="purchase challan" >
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-book fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a></td>
                                         <td class="text-center">
                                             <a href="{{url('purchaseorder_advise/'.$pa->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -90,12 +97,7 @@
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="{{ url('purchaseorder_advise_challan/'.$pa->id)}}" class="table-link" title="purchase challan" >
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-book fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
+
                                             <a href="" class="table-link" title="print" data-toggle="modal" data-target="#printModal">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
