@@ -375,7 +375,9 @@ class DeliveryOrderController extends Controller {
             $delivery_challan->delivery_order_id = $id;
             $delivery_challan->customer_id = $input_data['customer_id'];
             $delivery_challan->created_by = Auth::id();
-            $delivery_challan->bill_number = $input_data['billno'];
+            if (isset($input_data['billno'])) {
+                $delivery_challan->bill_number = $input_data['billno'];
+            }
             $delivery_challan->discount = $input_data['discount'];
             $delivery_challan->freight = $input_data['freight'];
             $delivery_challan->loading_charge = $input_data['loading'];

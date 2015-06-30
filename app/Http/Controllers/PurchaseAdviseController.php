@@ -48,11 +48,11 @@ class PurchaseAdviseController extends Controller {
     public function create() {
         $customers = Customer::where('customer_status', '=', 'permanent')->get();
 
-        $locations = DeliveryLocation::all();
+        $delivery_locations = DeliveryLocation::all();
 
         $units = Units::all();
 
-        return View::make('add_purchase_advise', array('customers' => $customers, 'locations' => $locations, 'units' => $units));
+        return View::make('add_purchase_advise', array('customers' => $customers, 'delivery_locations' => $delivery_locations, 'units' => $units));
     }
 
     /**
@@ -111,10 +111,14 @@ class PurchaseAdviseController extends Controller {
             $purchase_advise_array['vat_percentage'] = $input_data['vat_percentage'];
         }
         if (isset($input_data['delivery_location_id']) && $input_data['delivery_location_id'] == "other") {
-            $delivery_location = DeliveryLocation::create(array('area_name' => $input_data['new_location'], 'status' => 'pending'));
-            $purchase_advise_array['delivery_location_id'] = $delivery_location->id;
+//            $delivery_location = DeliveryLocation::create(array('area_name' => $input_data['new_location'], 'status' => 'pending'));
+            $purchase_advise_array['delivery_location_id'] = 0;
+            $purchase_advise_array['other_location']=$input_data['other_location_name'];
+            $purchase_advise_array['other_location_difference']=$input_data['other_location_difference'];
         } else {
             $purchase_advise_array['delivery_location_id'] = $input_data['delivery_location_id'];
+            $purchase_advise_array['other_location']='';
+            $purchase_advise_array['other_location_difference']='';        
         }
 
 
@@ -148,7 +152,7 @@ class PurchaseAdviseController extends Controller {
      * @return Response
      */
     public function show($id) {
-        $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.product_category')->find($id);
+        $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.product_sub_category')->find($id);
 
         return View::make('view_purchase_advice', array('purchase_advise' => $purchase_advise));
     }
@@ -256,6 +260,8 @@ class PurchaseAdviseController extends Controller {
                 'created_by' => Auth::id(),
                 'purchase_advice_date' => $datetime->format('Y-m-d'),
                 'delivery_location_id' => $input_data['delivery_location_id'],
+                'other_location' => $input_data['other_location'],
+                'other_location_difference' => $input_data['other_location_difference'],
                 'vat_percentage' => $input_data['vat_percentage'],
                 'expected_delivery_date' => $input_data['expected_delivery_date'],
                 'remarks' => $input_data['grand_remark'],

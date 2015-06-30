@@ -47,6 +47,7 @@
                                         <div class="form-group searchproduct">
                                             <input class="form-control" placeholder="Enter Supplier Name " type="text" name="existing_supplier_name" id="existing_supplier_name">
                                             <input type="hidden" id="existing_supplier_id" name="autocomplete_supplier_id">
+                                            <input type="hidden" id="customer_default_location">
                                             <i class="fa fa-search search-icon"></i>
                                         </div>
                                     </div>
@@ -68,7 +69,7 @@
                             </div>
                             <div class="inquiry_table col-md-12">
                                 <div class="table-responsive">
-                                    <table id="add_product_table" class="table table-hover  ">
+                                    <table id="add_product_table_purchase" class="table table-hover  ">
                                         <tbody>
                                             <tr class="headingunderline">
                                                 <td><span>Select Product(Alias)</span></td>
@@ -81,7 +82,7 @@
                                                 <tr id="add_row_{{$i}}" class="add_product_row">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
-                                                            <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});">
+                                                            <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_purchase_product_name_{{$i}}" onfocus="product_autocomplete_purchase({{$i}});">
                                                             <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
                                                             <i class="fa fa-search search-icon"></i>
                                                         </div>
@@ -94,7 +95,6 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group ">
                                                             <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
-                                                                <option value="" selected="">Unit</option>
                                                                 @foreach($units as $unit)
                                                                 <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
                                                                 @endforeach
@@ -147,7 +147,9 @@
                                     <select class="form-control" name="purchase_order_location" id="add_inquiry_location">
                                         <option value="" selected="">Delivery Location</option>
                                         @foreach($delivery_locations as $delivery_location)
+                                        @if($delivery_location->status == 'permanent')
                                         <option value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
+                                        @endif
                                         @endforeach
                                         <option id="other_location" value="other">Other</option>
                                     </select>
@@ -159,6 +161,10 @@
                                     <div class="form-group col-md-4">
                                         <label for="location">Location </label>
                                         <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="" type="text">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="location">Other Location Difference</label>
+                                        <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="" type="text">
                                     </div>
                                 </div>
                             </div>

@@ -108,7 +108,10 @@ class DeliveryChallanController extends Controller {
                 'remarks' => $input_data['challan_remark'],
                 'challan_status' => "Pending"
             ]);
-
+            if (isset($input_data['billno'])) {
+               $delivery_challan->update([
+                   "bill_number" => $input_data['billno']]);
+            }
             $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
             if ($j != 0) {
                 $order_products = array();
@@ -183,7 +186,7 @@ class DeliveryChallanController extends Controller {
         $this->checkpending_quantity();
 
         return redirect('delivery_challan')->with('validation_message', 'Delivery order is successfuly printed.');
-//        echo $date_letter;
+
     }
 
     function checkpending_quantity() {
@@ -205,25 +208,17 @@ class DeliveryChallanController extends Controller {
                     }
                 }
             }
-//            echo '<br>pending quantity ' . $pending_quantity . ' order ' . $order->id;
             if ($gen_dc != 1 && $pending_quantity == 0 && $order->order_status != 'completed') {
 
                 Order::where('id', $order->id)->update(array(
                     'order_status' => "completed"
                 ));
             }
-
-
-//            
-//            $allorders['total_pending_quantity_'.$order->id]=$pending_quantity;
         }
     }
 
     function calculate_price($delivery_data) {
-//        echo '<pre>';
-//        print_r($delivery_data['customer']->id);
-//        echo '</pre>';
-//        exit;
+
         $product_rates = array();
         foreach ($delivery_data->all_order_products as $product) {
 
@@ -250,10 +245,6 @@ class DeliveryChallanController extends Controller {
             $product_rate["total_rate"] = $total_rate;
             array_push($product_rates, $product_rate);
         }
-//        echo '<pre>';
-//        print_r($product_rates);
-//        echo '</pre>';
-//        exit;
         return $product_rates;
     }
 

@@ -104,14 +104,7 @@ $(document).ready(function () {
 
     });
 
-    $('#order_location').change(function () {
-
-        if ($('#order_location').val() == '-2') {
-            $('.locationtext').show();
-        } else {
-            $('.locationtext').hide();
-        }
-    });
+    
 
 });
 
@@ -128,7 +121,7 @@ $('#add_more_product').click(function () {
     }).done(function (data) {
         var main_array = JSON.parse(data);
         var arr1 = main_array['units'];
-        var html = '<option value="" selected="">Unit</option>';
+        var html = '';
         for (var key in arr1) {
             html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
         }
@@ -138,20 +131,20 @@ $('#add_more_product').click(function () {
     var str = ' <tr id="add_row_' + current_row_count + '" class="add_product_row">' +
             '    <td>' +
             '<div class="form-group searchproduct">' +
-            '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +
+            '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_purchase_product_name_' + current_row_count + '" onfocus="product_autocomplete_purchase(' + current_row_count + ');">' +
             '<input type="hidden" name="product[' + current_row_count + '][product_category_id]" id="add_product_id_' + current_row_count + '">' +
             '<i class="fa fa-search search-icon"></i>' +
             '</div>' +
             '    </td>' +
             '    <td>' +
             '        <div class="form-group">' +
-            '            <input id="qty" class="form-control" placeholder="Actual Quantity" name="product[' + current_row_count + '][quantity]" value="" type="text">' +
+            '            <input id="actual_quantity_' + current_row_count + '" class="form-control" placeholder="Actual Quantity" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="purchase_challan_calculation();">' +
             '        </div>' +
             '    </td>' +
             '    <td>' +
             '        <div class="form-group">' +
             '           <select class="form-control" name="product[' + current_row_count + '][unit_id]" id="units_' + current_row_count + '">' +
-            '               <option value="" selected="">Unit</option>' +
+            '               ' +
             '           </select>' +
             '        </div>' +
             '    </td>  ' +
@@ -163,13 +156,13 @@ $('#add_more_product').click(function () {
             '    <td class="shippingcolumn">' +
             '        <div class="row ">' +
             '            <div class="form-group col-md-12">' +
-            '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+            '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]" onblur="purchase_challan_calculation();">' +
             '            </div>' +
             '        </div>' +
             '    </td>' +
             '    <td>   ' +
             '        <div class="form-group">' +
-            '            <input id="amount" class="form-control" placeholder="Amount" name="Amount" value="" type="text">' +
+            '            <div id="amount_' + current_row_count + '"></div>' +
             '        </div>' +
             '    </td>' +
             '</tr>';

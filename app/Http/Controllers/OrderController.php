@@ -131,13 +131,8 @@ class OrderController extends Controller {
     public function store(PlaceOrderRequest $request) {
 
         $input_data = Input::all();
-//        echo '<pre>';
-//        print_r($input_data);
-//        echo '</pre>';
-//        exit;
         $i = 0;
         $j = count($input_data['product']);
-//        echo $input_data['estimated_date'];exit;
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] == "") {
                 $i++;
@@ -146,26 +141,7 @@ class OrderController extends Controller {
         if ($i == $j) {
             return Redirect::back()->with('flash_message', 'Please insert product details');
         }
-//        echo 'test';exit;
-//        $i = 0;
-//        $error_msg = array();
-//        foreach ($input_data['product'] as $product_data) {
-//            $msg = array();
-//            if ($product_data['name'] != "") {
-//                if ($product_data['price'] == "") {
-//                    $msg[$i]['quantity'] = 'Please insert price for product details';
-//                }
-//                if ($product_data['quantity'] == "") {
-//                    $msg[$i++]['quantity'] = 'Please insert qantity for product details';
-//                }
-//                array_push($error_msg, $msg);
-//            }
-//        }
-//        if (count($error_msg) > 0) {
-//            return Redirect::back()->withInput()->withErrors($error_msg);
-//        }
 
-//        echo 'test';exit;
         if ($input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
@@ -185,10 +161,6 @@ class OrderController extends Controller {
             $validator = Validator::make($input_data, Customer::$existing_customer_inquiry_rules);
             if ($validator->passes()) {
                 $customer_id = $input_data['autocomplete_customer_id'];
-
-
-
-
                 //send mail
                 if (isset($input_data['send_email'])) {
                     $customers = Customer::find($customer_id);

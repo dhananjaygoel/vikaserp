@@ -70,7 +70,7 @@
                             <td>
                                 <div class="form-group">
                                     <!--<input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="{{$products->present_shipping}}" type="text">-->
-                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][quantity]" value="{{$products->present_shipping}}" type="text">
+                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][quantity]" value="{{$products->present_shipping}}" type="text" onblur="purchase_challan_calculation();">
                                 </div>
                             </td>
                             <td> 
@@ -94,16 +94,15 @@
                                 </div>
                             </td>
                             <td>   
-                                <div class="form-group">
-                                    <?php $total_price += $products->present_shipping * $products->price; ?>
-                                    {{ $products->present_shipping * $products->price }}
+                                <div class="form-group">                                    
+                                    <div id="amount_{{$key}}">{{ $products->present_shipping * $products->price }}</div>
                                 </div>
                             </td>
                             </tr>
                             @endforeach                         
                             </tbody>
                         </table>
-                        <table>
+                        <table >
                             <tr class="row5">
                                 <td>
                                     <div class="add_button1">
@@ -127,49 +126,57 @@
                         </table>
                     </div>
                     <div class="form-group">
-                        <label><b>Total Actual Quantity:</b> {{$total_price}}</label>
+                        <label><b>Total Actual Quantity :</b> <div id="total_actual_quantity"></div></label>
                     </div>
                     <div class="form-group">
                         <label for="vehicle_name"><b class="challan">Vehicle Number</b></label>
                         <input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{$purchase_advise->vehicle_number}}" type="text">
                     </div>
                     <div class="form-group">
-                        <label for="vehicle_name"><b class="challan">Discount</b></label>
-                        <input id="discount" class="form-control" placeholder="Discount" name="discount" value="" type="text">
+                        <label for="vehicle_name"><b class="challan">Discount (In Percentage)</b></label>
+                        <input id="discount" class="form-control" placeholder="Discount, example : 10" name="discount" value="" type="text" onblur="purchase_challan_calculation();">
                     </div>
                     <div class="form-group">
                         <label for="driver_name"><b class="challan">Freight</b></label>
-                        <input id="driver_name" class="form-control" placeholder="Freight " name="Freight" value="" type="text">
+                        <input id="freight" class="form-control" placeholder="Freight " name="Freight" value="" type="text" onblur="purchase_challan_calculation();">
                     </div>
                     <div class="form-group">
-                        <label for="total"><b class="challan">Total</b> $15000</label>
+                        <label for="total"><b class="challan">Total :</b> <div id="total_price"></div></label>
                     </div>
+                    
                     <div class="form-group">
-                        <label for="driver_contact"><b class="challan">Unloading</b></label>
-                        <input id="driver_contact" class="form-control" placeholder="unloading" name="unloading" value="" type="text">
-                    </div>
-                    <div class="form-group">
-                        <label for="loadedby"><b class="challan">Loaded By</b></label>
-                        <input id="loadedby" class="form-control" placeholder="unloaded By" name="loadedby" value="" type="text">
+                        <label for="loadedby"><b class="challan">Unloaded By</b></label>
+                        <input id="loadedby" class="form-control" placeholder="Unloaded By" name="loadedby" value="" type="text">
                     </div>
                     <div class="form-group">
                         <label for="labour"><b class="challan">Labour </b></label>
                         <input id="labour" class="form-control" placeholder="Labour" name="labour" value="" type="text">
                     </div>
+                    @if($purchase_advise->vat_percentage==0 || $purchase_advise->vat_percentage== '')
                     <div class="form-group">
-                        <label for="Plusvat"><b class="challan">Plus VAT</b> Yes/No</label>
+                        <label for="Plusvat"><b class="challan">Plus VAT</b> : No </label>
                     </div>
+                    @else
                     <div class="form-group">
                         <label for="driver_contact"><b class="challan">VAT Percentage</b> {{$purchase_advise->vat_percentage}}</label>
-                        <input type="hidden" value="{{$purchase_advise->vat_percentage}}" name="vat_percentage"/>
+                        <input id="vat_percentage" type="hidden" value="{{$purchase_advise->vat_percentage}}" name="vat_percentage"/>
+                        
                     </div>
                     <div class="form-group">
-                        <label for="total"><b class="challan">Grand Total</b> $25000</label>
+                        <label for="driver_contact"><b class="challan">VAT Value :</b> <div id="vat_value"></div></label>
                     </div>
+                    @endif
+                    <div class="form-group">
+                        <label for="total"><b class="challan">Grand Total :</b> <div id="grand_total"></div>
+                        </label>
+                        <input type="hidden" id="grand_total_val" name="grand_total">
+                    </div>
+                    @if($purchase_advise->vat_percentage>0)
                     <div class="form-group">
                         <label for="billno"><b class="challan">Bill Number</b></label>
                         <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="text">
                     </div>
+                    @endif
                     <div class="form-group">
                         <label for="inquiry_remark"><span class="checksms">Remark</span></label>
                         <textarea class="form-control" id="inquiry_remark" name="remark"  rows="3">

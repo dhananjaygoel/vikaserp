@@ -23,6 +23,8 @@ class CreatePurchaseOrderTable extends Migration {
             $table->date('expected_delivery_date');
             $table->text('remarks');
             $table->enum('order_status', array('pending', 'completed', 'canceled'));            
+            $table->string('other_location')->comment('Contains other delivery location');
+            $table->string('other_location_difference')->comment('Contains other delivery location difference');            
             $table->timestamps();
             $table->softDeletes();
         });

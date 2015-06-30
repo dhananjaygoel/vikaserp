@@ -151,8 +151,16 @@
                                             <tr>
                                                 <td>
                                                     <span><b>Delivery Location: </b></span>
+                                                    
+                                                    @if($purchase_orders->delivery_location_id !=0)
                                                     {{$purchase_orders['delivery_location']->area_name}}
                                                     <input type="hidden" name="delivery_location_id" value="{{$purchase_orders['delivery_location_id']}}">
+                                                    @else
+                                                    {{$purchase_orders->other_location}}
+                                                    @endif
+                                                    <input type="hidden" name="delivery_location_id" value="{{$purchase_orders['delivery_location_id']}}">
+                                                    <input type="hidden" name="other_location" value="{{$purchase_orders['other_location']}}">
+                                                    <input type="hidden" name="other_location_difference" value="{{$purchase_orders['other_location_difference']}}">
                                                 </td>
                                             </tr>
                                             <tr>

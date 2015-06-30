@@ -161,7 +161,7 @@
                                             <td class="col-md-2">
                                                 <div class="form-group col-md-6">
                                                     <!--                                                            form for save product value-->
-                                                    <input type="text" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" placeholder="Present Shipping" >
+                                                    <input type="text" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" placeholder="Present Shipping" onblur="change_quantity();">
                                                 </div>
                                                 <div class="form-group col-md-6 difference_form">
                                                     <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->     

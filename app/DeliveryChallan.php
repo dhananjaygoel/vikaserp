@@ -42,7 +42,7 @@ class DeliveryChallan extends Model {
     
     
     
-    //for sales Daybook
+    //for sales Daybook Date filter
     public static $challan_date_rules = array(
         'challan_date' => 'required|date'        
     );

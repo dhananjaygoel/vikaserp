@@ -68,35 +68,42 @@
                                             <span>Remark</span>
                                         </td>
                                     </tr>
+                                    <?php $total_quantity = 0;
+                                    $total_amount = 0; ?>
                                     @foreach($purchase_challan['purchase_product'] as $product_data)
+                                    @if($product_data->order_type == 'purchase_challan')
                                     <tr>
                                         <td> {{$product_data['product_sub_category']->alias_name}} </td>
                                         <td> {{$product_data->quantity}}</td>
                                         <td> {{$product_data['unit']->unit_name}} </td>
                                         <td> {{$product_data->present_shipping}}</td> 
                                         <td> {{$product_data->price}}</td>
-                                        <td> 35</td>
+                                        <td> <?php
+                                            $total_quantity += $product_data->quantity;
+                                            $amount = $product_data->quantity * $product_data->price;
+                                            echo $amount;
+                                            $total_amount = $total_amount + $amount;
+                                            ?></td>
                                         <td> {{$product_data->remarks}}</td>
                                     </tr>
+                                    @endif
                                     @endforeach
                                 </tbody>
                             </table>
                             <table id="table-example" class="table table-hover customerview_table  ">
                                 <tbody>   
                                     <tr>
-                                        <td><span>Total Actual Quantity: </span>500</td>
+                                        <td><span>Total Actual Quantity: </span>{{$total_quantity}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Discount: </span>{{$purchase_challan->discount}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Freight: </span>{{ $purchase_challan->discount }}</td>
+                                        <td><span>Freight: </span>{{ $purchase_challan->freight }}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Total: </span>$15000</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span>Unloading: </span>{{ $purchase_challan->unloading }}</td>
+                                        <td><span>Total: </span><?php $total = $total_amount + (($purchase_challan->discount * $total_amount) / 100) + $purchase_challan->freight;
+                                            echo $total; ?></td>
                                     </tr>
                                     <tr>
                                         <td><span>Unloaded By: </span>{{ $purchase_challan->unloaded_by }}</td>
@@ -104,20 +111,28 @@
                                     <tr>
                                         <td><span>Labour: </span>{{ $purchase_challan->labours }}</td>
                                     </tr>
-                                    <tr>
-                                        <td><span>Plus VAT: </span>Yes</td>
-                                    </tr>
+                                    @if($purchase_challan->vat_percentage>0)
                                     <tr>
                                         <td><span>VAT Percentage: </span>{{ $purchase_challan->vat_percentage }}</td>
                                     </tr>
+                                    @else
                                     <tr>
-                                        <td><span>Grand Total:</span>$25000</td>
+                                        <td><span>Plus VAT: </span>No</td>
+                                    </tr>
+                                    @endif
+                                    <tr>
+                                        <td><span>Grand Total:</span>{{$purchase_challan->grand_total}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Vehicle Name: </span>{{ $purchase_challan->vehicle_number }}</td>
                                     </tr> 
                                     <tr>
-                                        <td><span>Delivery Location: </span>{{ $purchase_challan->vat_percentage }}</td>
+                                        <td><span>Delivery Location: </span>
+                                            @if($purchase_challan->delivery_location_id !=0)
+                                            {{$purchase_challan['location']->area_name}}
+                                            @else
+                                            {{$purchase_challan->other_location}}
+                                            @endif</td>
                                     </tr>
                                     <tr>
                                         <td><span>Remark: </span>{{ $purchase_challan->remarks }}</td>

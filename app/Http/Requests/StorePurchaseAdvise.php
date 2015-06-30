@@ -22,12 +22,8 @@ class StorePurchaseAdvise extends Request {
 	public function rules()
 	{
 		return [
-			'bill_date' => 'required',
-			'total_price' => 'required|integer',
+			'bill_date' => 'required',			
 			'vehicle_number' => 'required',
-			'expected_delivery_date' => 'required',
-			'remarks' => 'required',
-			'delivery_location_id' => 'required',
 		];
 	}
 

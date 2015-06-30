@@ -141,16 +141,16 @@ class PurchaseOrderController extends Controller {
             }
         }
 
-        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
-            $add_delivery_location = DeliveryLocation::create([
-                        'area_name' => $input_data['other_location_name'],
-                        'status' => 'pending'
-            ]);
-            $location_id = DB::getPdo()->lastInsertId();
-        } else {
-
-            $location_id = $input_data['purchase_order_location'];
-        }
+//        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
+//            $add_delivery_location = DeliveryLocation::create([
+//                        'area_name' => $input_data['other_location_name'],
+//                        'status' => 'pending'
+//            ]);
+//            $location_id = DB::getPdo()->lastInsertId();
+//        } else {
+//
+//            $location_id = $input_data['purchase_order_location'];
+//        }
 
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_delivery_date']);
         $date = date("Y-m-d", strtotime(str_replace('-', '/', $date_string)));
@@ -159,16 +159,32 @@ class PurchaseOrderController extends Controller {
         $add_purchase_order_array = [
             'supplier_id' => $customer_id,
             'created_by' => Auth::id(),
-            'delivery_location_id' => $location_id,
+//            'delivery_location_id' => $location_id,
             'order_for' => $input_data['order_for'],
             'vat_percentage' => $input_data['vat_percentage'],
             'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['purchase_order_remark'],
-            'inquiry_status' => "pending",
+            'order_status' => "pending",
         ];
 
         $add_purchase_order = PurchaseOrder::create($add_purchase_order_array);
         $purchase_order_id = DB::getPdo()->lastInsertId();
+        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
+            $add_delivery_location = PurchaseOrder::where('id', $purchase_order_id)->update([
+                'delivery_location_id' => 0,
+                'other_location' => $input_data['other_location_name'],
+                'other_location_difference' => $input_data['other_location_difference'],
+//                 'difference' => $input_data['other_location_difference'],
+            ]);
+//            $location_id = DB::getPdo()->lastInsertId();
+        } else {
+            $add_delivery_location = PurchaseOrder::where('id', $purchase_order_id)->update([
+                'delivery_location_id' => $input_data['purchase_order_location'],
+                'other_location' => '',
+                'other_location_difference' => '',
+            ]);
+//            $location_id = $input_data['purchase_order_location'];
+        }
         $purchase_order_products = array();
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
@@ -289,33 +305,45 @@ class PurchaseOrderController extends Controller {
 
 
         $purchase_order = PurchaseOrder::find($id);
-        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
-
-            $add_purchase_order_array = [
-                'supplier_id' => $customer_id,
-                'created_by' => Auth::id(),
-                'delivery_location_id' => $input_data['purchase_order_location'],
-                'order_for' => $input_data['order_for'],
-                'vat_percentage' => $input_data['vat_percentage'],
-                'expected_delivery_date' => $datetime->format('Y-m-d'),
-                'remarks' => $input_data['purchase_order_remark'],
-                'inquiry_status' => "pending",
-                'other_location' => $input_data['other_location_name']
-            ];
-        } else {
+//        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
+//
+//            $add_purchase_order_array = [
+//                'supplier_id' => $customer_id,
+//                'created_by' => Auth::id(),                
+//                'order_for' => $input_data['order_for'],
+//                'vat_percentage' => $input_data['vat_percentage'],
+//                'expected_delivery_date' => $datetime->format('Y-m-d'),
+//                'remarks' => $input_data['purchase_order_remark'],
+//                'order_status' => "pending"                
+//            ];
+//        } else {
             $add_purchase_order_array = [
                 'is_view_all' => $input_data['viewable_by'],
                 'supplier_id' => $customer_id,
                 'created_by' => Auth::id(),
-                'delivery_location_id' => $input_data['purchase_order_location'],
                 'vat_percentage' => $input_data['vat_percentage'],
                 'expected_delivery_date' => $datetime->format('Y-m-d'),
                 'remarks' => $input_data['purchase_order_remark'],
-                'inquiry_status' => "pending"
+                'order_status' => "pending"
             ];
-        }
+//        }
 
         $update_purchase_order = $purchase_order->update($add_purchase_order_array);
+        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
+            $purchase_order->update([
+                'delivery_location_id' => 0,
+                'other_location' => $input_data['other_location_name'],
+                'other_location_difference' => $input_data['other_location_difference'],
+            ]);
+//            $location_id = DB::getPdo()->lastInsertId();
+        } else {
+             $purchase_order->update([
+                'delivery_location_id' => $input_data['purchase_order_location'],
+                'other_location' => '',
+                'other_location_difference' => '',
+            ]);
+//            $location_id = $input_data['purchase_order_location'];
+        }
         $purchase_order_products = array();
         $delete_old_purchase_products = PurchaseProducts::where('purchase_order_id', '=', $id)->delete();
         foreach ($input_data['product'] as $product_data) {

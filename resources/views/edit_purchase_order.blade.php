@@ -115,7 +115,7 @@
                     @endif
                     <div class="inquiry_table col-md-12" >
                         <div class="table-responsive">
-                            <table id="add_product_table" class="table table-hover">
+                            <table id="add_product_table_purchase" class="table table-hover">
                                 <tbody>
                                     <tr class="headingunderline">
                                         <td><span>Select Product(Alias)</span></td>
@@ -125,10 +125,11 @@
                                         <td><span>Remark</span></td>
                                     </tr>
                                     @foreach($purchase_order['purchase_products'] as $key=>$product)
+                                    @if($product->order_type == 'purchase_order')
                                     <tr id="add_row_{{$key}}" class="add_product_row">
                                         <td class="col-md-3">
                                             <div class="form-group searchproduct">
-                                                <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['product_category']['product_sub_category']->alias_name}}">
+                                                <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_purchase_product_name_{{$key}}" value="{{$product['product_category']['product_sub_category']->alias_name}}" onfocus="product_autocomplete_purchase({{$key}});">
                                                 <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}">
                                                 <i class="fa fa-search search-icon"></i>
                                             </div>
@@ -163,6 +164,7 @@
                                             </div>
                                         </td>
                                     </tr>
+                                    @endif
                                     @endforeach
                                 </tbody>
                             </table>
@@ -199,19 +201,26 @@
                             <label for="location">Delivery Location:</label>
                             <select class="form-control" name="purchase_order_location" id="add_inquiry_location">
                                 <option value="" selected="">Delivery Location</option>
+                                
                                 @foreach($delivery_locations as $delivery_location)
+
+                                @if($delivery_location->status == 'permanent')
+
                                 @if($purchase_order->delivery_location_id == $delivery_location->id)
                                 <option value="{{$delivery_location->id}}" selected="">{{$delivery_location->area_name}}</option>
                                 @else
                                 <option value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
                                 @endif
+
+                                @endif 
                                 @endforeach
-                                @if($purchase_order->delivery_location_id == 0)
-                                <option id="other_location" value="other" selected="">Other</option>
+                                @if( $purchase_order->delivery_location_id == 0)
+                                <option id="other_location_db" value="other" selected="">Other </option>
                                 @else
-                                <option id="other_location" value="other">Other</option>
-                                @endif
-                                <option id="other_location" value="other">Other</option>
+                                <option id="other_location_db" value="other">Other </option>
+                                @endif 
+                                
+
                             </select>
                         </div>
                     </div>
@@ -223,6 +232,24 @@
                                 <label for="location">Location </label>
                                 <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="{{$purchase_order->other_location}}" type="text">
                             </div>
+                            <div class="col-md-4">
+                            <label for="location">Other Location Difference</label>
+                            <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="{{$purchase_order->other_location_difference}}" type="text">
+                        </div>
+                        </div>
+                        
+                    </div>
+                    @else
+                    <div class="locationtext" id="other_location_input_wrapper">
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label for="location">Location </label>
+                                <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="" type="text">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="location">Other Location Difference</label>
+                                <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="" type="text">
+                            </div>
                         </div>
                     </div>
                     @endif
@@ -233,6 +260,7 @@
                             <select class="form-control" id="orderfor" name="order_for">
                                 <option value="0">Warehouse</option>
                                 @foreach($customers as $supplier)
+
                                 <option value="{{$supplier->id}}">{{$supplier->owner_name}}</option>
                                 @endforeach
                             </select>

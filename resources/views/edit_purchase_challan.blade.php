@@ -32,9 +32,11 @@
                         <div class="form-group">
                             <label><b>Bill Date:</b> {{$purchase_challan['purchase_advice']->purchase_advice_date}} </label>
                         </div>
+                        @if($purchase_challan->bill_number!='')
                         <div class="form-group">
                             <label><b>Bill Number:</b> {{ $purchase_challan->bill_number }} </label>
                         </div>
+                        @endif
                         <div class="form-group">
                             <label><b>Party Name:</b> {{  $purchase_challan['supplier']->owner_name }} </label>
                         </div>
@@ -96,43 +98,6 @@
 
                                     @endforeach
 
-
-
-
-<!--                                    <tr>
-    <td>
-        <div class="form-group">
-            Product1
-        </div>
-    </td>
-    <td>
-        <div class="form-group">
-            <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="" type="text">
-        </div>
-    </td>
-    <td> 
-        <div class="form-group">
-            Unit
-        </div>
-    </td>
-    <td>  
-        <div class="form-group text-center">
-            Shipping1
-        </div>
-    </td>
-    <td class="shippingcolumn">
-        <div class="row ">
-            <div class="form-group col-md-12">
-                <input type="text" class="form-control" id="difference" value="" placeholder="Rate">
-            </div>
-        </div>
-    </td>
-    <td>   
-        <div class="form-group">
-            Amount1
-        </div>
-    </td>
-</tr>                                       -->
                                 </tbody>
                             </table>
                             <table>
@@ -171,18 +136,14 @@
                         </div>
                         <div class="form-group">
                             <label for="driver_name"><b class="challan">Freight</b></label>
-                            <input id="driver_name" class="form-control" placeholder="Freight " name="Freight" value="{{ $purchase_challan->discount }}" type="text">
+                            <input id="driver_name" class="form-control" placeholder="Freight " name="Freight" value="{{ $purchase_challan->freight }}" type="text">
                         </div>
                         <div class="form-group">
-                            <label for="total"><b class="challan">Total</b> $15000</label>
+                            <label for="total"><b class="challan">Total</b> </label>
                         </div>
                         <div class="form-group">
-                            <label for="driver_contact"><b class="challan">Unloading</b></label>
-                            <input id="driver_contact" class="form-control" placeholder="unloading" name="unloading" value="{{ $purchase_challan->unloading }}" type="text">
-                        </div>
-                        <div class="form-group">
-                            <label for="loadedby"><b class="challan">Unloaded By</b></label>
-                            <input id="loadedby" class="form-control" placeholder="unloaded By" name="loadedby" value="{{ $purchase_challan->unloaded_by }}" type="text">
+                            <label for="loadedby"><b class="challan">Loaded By</b></label>
+                            <input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby" value="{{ $purchase_challan->loaded_by }}" type="text">
                         </div>
                         <div class="form-group">
                             <label for="labour"><b class="challan">Labour </b></label>
@@ -197,10 +158,12 @@
                         <div class="form-group">
                             <label for="total"><b class="challan">Grand Total</b> $25000</label>
                         </div>
+                        @if($purchase_challan->bill_number!='')
                         <div class="form-group">
                             <label for="billno"><b class="challan">Bill Number</b></label>
                             <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="{{ $purchase_challan->bill_number }}" type="text">
                         </div>
+                        @endif
                         <div class="form-group">
                             <label for="inquiry_remark"><b class="challan">Remark</b></label>
                             <textarea class="form-control" id="inquiry_remark" name="remarks"  rows="3">

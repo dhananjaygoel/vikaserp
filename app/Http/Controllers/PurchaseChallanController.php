@@ -25,7 +25,7 @@ class PurchaseChallanController extends Controller {
      * @return Response
      */
     public function index() {
-        
+
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier')->Paginate(10);
         $purchase_challan->setPath('purchase_challan');
         return view('purchase_challan', compact('purchase_challan'));
@@ -46,27 +46,56 @@ class PurchaseChallanController extends Controller {
      * @return Response
      */
     public function store(PurchaseChallanRequest $request) {
+        $input_data = Input::all();
 
-        $add_challan = PurchaseChallan::create([
-                    'expected_delivery_date' => $request->input('bill_date'),
-                    'purchase_advice_id' => $request->input('purchase_advice_id'),
-                    'purchase_order_id' => $request->input('purchase_order_id'),
-                    'delivery_location_id' => $request->input('delivery_location_id'),
-                    'serial_number' => $request->input('serial_no'),
-                    'supplier_id' => $request->input('supplier_id'),
-                    'created_by' => $request->input('created_by'),
-                    'vehicle_number' => $request->input('vehicle_number'),
-                    'freight' => $request->input('Freight'),
-                    'unloaded_by' => $request->input('unloading'),
-                    'unloading' => $request->input('loadedby'),
-                    'labours' => $request->input('labour'),
-                    'bill_number' => $request->input('billno'),
-                    'remarks' => $request->input('remark'),
-                    'order_status' => 'pending',
-                    'vat_percentage' => $request->input('vat_percentage')
-        ]);
+//        $add_challan = PurchaseChallan::create([
+//                    'expected_delivery_date' => $request->input('bill_date'),
+//                    'purchase_advice_id' => $request->input('purchase_advice_id'),
+//                    'purchase_order_id' => $request->input('purchase_order_id'),
+//                    'delivery_location_id' => $request->input('delivery_location_id'),
+//                    'serial_number' => $request->input('serial_no'),
+//                    'supplier_id' => $request->input('supplier_id'),
+//                    'created_by' => $request->input('created_by'),
+//                    'vehicle_number' => $request->input('vehicle_number'),
+//                    'discount' => $request->input('discount'),                    
+//                    'unloaded_by' => $request->input('loadedby'),
+//                    'labours' => $request->input('labour'),
+//                    'remarks' => $request->input('remark'),
+//                    'order_status' => 'pending',
+//        ]);
+
+
+        $add_challan = new PurchaseChallan();
+        $add_challan->expected_delivery_date = $request->input('bill_date');
+        $add_challan->purchase_advice_id = $request->input('purchase_advice_id');
+        $add_challan->purchase_order_id = $request->input('purchase_order_id');
+        $add_challan->delivery_location_id = $request->input('delivery_location_id');
+        $add_challan->serial_number = $request->input('serial_no');
+        $add_challan->supplier_id = $request->input('supplier_id');
+        $add_challan->created_by = $request->input('created_by');
+        $add_challan->vehicle_number = $request->input('vehicle_number');
+        $add_challan->discount = $request->input('discount');
+        $add_challan->unloaded_by = $request->input('loadedby');
+        $add_challan->labours = $request->input('labour');
+        $add_challan->remarks = $request->input('remark');
+        $add_challan->grand_total =  $request->input('grand_total');
+        $add_challan->order_status = 'pending';
+        $add_challan->freight = $input_data['Freight'];
+        $add_challan->save();
 
         $challan_id = DB::getPdo()->lastInsertId();
+        $challan = PurchaseChallan::find($challan_id);
+        
+        if (isset($input_data['billno']) && $input_data['billno'] != '') {
+            $challan->update([
+                'bill_number' => $request->input('billno')
+            ]);
+        }
+        if (isset($input_data['vat_percentage']) && $input_data['vat_percentage'] != '') {
+            $challan->update([
+                'vat_percentage' => $request->input('vat_percentage')
+            ]);
+        }
         $input_data = Input::all();
         $order_products = array();
 

@@ -26,7 +26,10 @@ class CreatePurchaseAdviceTable extends Migration {
             $table->text('remarks');
             $table->enum('advice_status', array('delivered', 'in_process'));
             $table->string('vehicle_number');
+            $table->string('other_location')->comment('Contains other delivery location');
+            $table->string('other_location_difference')->comment('Contains other delivery location difference');            
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

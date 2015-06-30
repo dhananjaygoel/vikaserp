@@ -108,7 +108,7 @@
                                         <td>{{$i++}}</td>
                                         <td>{{$purchase_order['customer']->owner_name}}</td>
                                         <td>{{$purchase_order['customer']->phone_number1}}</td>
-                                        <td>{{$purchase_order['delivery_location']->area_name}}</td>
+                                        <td></td>
                                         <td>{{$purchase_order['user']->first_name}}</td>
                                         <td>{{$purchase_order['purchase_products']->sum('quantity')}}</td>
                                         <td>35</td>

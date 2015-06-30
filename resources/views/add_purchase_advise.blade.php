@@ -68,13 +68,15 @@
 
                                 </div>
                                 <div class="supplier">
-                                    <select class="form-control" name="supplier_id" id="add_status_type">
+                                    <select class="form-control" name="supplier_id" id="supplier_select" onchange="get_default_location();">
                                         <option value="" selected="">Select supplier</option>
                                         @if(count($customers))
                                         @foreach($customers as $c)
-                                        <option value="{{$c->id}}">{{$c->owner_name}}</option>
+                                        <option value="{{$c->id}}" default_location="{{$c->delivery_location_id}}">{{$c->owner_name}}</option>
+                                        
                                         @endforeach
                                         @endif
+                                        <input type="hidden" id="customer_default_location">
                                     </select>
                                 </div>
                             </div>
@@ -121,7 +123,7 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group ">
                                                             <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
-                                                                <option value="" selected="">Unit</option>
+                                                                <!--<option value="" selected="">Unit</option>-->
                                                                 @foreach($units as $unit)
                                                                 <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
                                                                 @endforeach
@@ -176,23 +178,28 @@
                             <div class="row col-md-4">  
                                 <div class="form-group">
                                     <label for="loc1">Delivery Location:</label>
-                                    <select class="form-control" name="delivery_location_id" id="loc1">
-                                        <option value="">Select delivery location</option>
-                                        @if(count($locations))
-                                        @foreach($locations as $l)
-                                        <option value="{{$l->id}}">{{$l->area_name}}</option>
-                                        @endforeach
+                                    <select class="form-control" name="delivery_location_id" id="add_inquiry_location">
+                                        <option value="" selected="">Delivery Location</option>
+                                        @foreach($delivery_locations as $delivery_location)
+                                        @if($delivery_location->status == 'permanent')
+                                        <option value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
                                         @endif
-                                        <option id="other" value="other">Other</option>
+                                        @endforeach
+                                        <option id="other_location" value="other">Other</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
-                            <div class="locationtext">
+                            
+                            <div class="locationtext" id="other_location_input_wrapper">
                                 <div class="row">
                                     <div class="form-group col-md-4">
                                         <label for="location">Location </label>
-                                        <input id="location" class="form-control" placeholder="Location " name="new_location" value="" type="text">
+                                        <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="" type="text">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="location">Other Location Difference</label>
+                                        <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="" type="text">
                                     </div>
                                 </div>
                             </div>
@@ -235,12 +242,12 @@
 
                                 </div>
                             </div> 
-<!--                            <div class="form-group">
+                            <!--<div class="form-group">-->
 
-                                <label for="price">Total Price</label>
-                                <input id="price" class="form-control" placeholder="Total Price" name="total_price" value="" type="text">
+                                <!--<label for="price">Total Price</label>-->
+                                <input id="price" class="form-control" placeholder="Total Price" name="total_price" value="" type="hidden">
 
-                            </div>-->
+                            <!--</div>-->
                             <div class="form-group">
                                 <label for="cp">Vehicle Number </label>
                                 <input id="cp" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="" type="text">

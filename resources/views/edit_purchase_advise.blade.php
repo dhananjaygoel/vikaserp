@@ -138,7 +138,12 @@
                                 <tbody>
                                     <tr class="cdtable">
                                         <td class="cdfirst">Delivery Location:</td>
-                                        <td> {{$purchase_advise['location']->area_name}}</td>
+                                        <td>@if($purchase_advise->delivery_location_id !=0)
+                                            {{$purchase_advise['location']->area_name}}
+                                        @else
+                                            {{$purchase_advise->other_location}}
+                                        @endif
+                                            </td>
                                     </tr>
                                     <?php
                                     if ($purchase_advise->vat_percentage != '') {

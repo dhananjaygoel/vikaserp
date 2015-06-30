@@ -188,10 +188,12 @@
                             <label for="total"><b class="challan">Total</b><span class="gtotal"><input type="text" id="total_price" name="total_price" placeholder="" readonly="readonly"></span></label>                           
 
                         </div>
+                        @if($delivery_data->vat_percentage>0)
                         <div class="form-group">
                             <label for="billno"><b class="challan">Bill Number</b></label>
                             <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="text">
                         </div>
+                        @endif
                         <div class="form-group">
                             <label for="driver_contact"><b class="challan">Loading</b></label>
                             <input id="loading_charge" class="form-control" placeholder="loading" name="loading" value="" type="text" onblur="grand_total_challan();">

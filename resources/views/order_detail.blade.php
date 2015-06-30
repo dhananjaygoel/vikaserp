@@ -42,8 +42,7 @@
 
                                     <tbody> 
                                         @if($order->order_source == 'warehouse')
-                                        <tr><td><span><b>Warehouse: </b></span> yes</td></tr>
-                                        <tr><td><span><b>Supplier Name:</b></span> Warehouse</td></tr>
+                                        <tr><td><span><b>Warehouse: </b></span> yes</td></tr>                                        
                                         @elseif($order->order_source == 'supplier')
                                         @foreach($customers as $customer)
                                         @if($customer->id == $order->supplier_id)

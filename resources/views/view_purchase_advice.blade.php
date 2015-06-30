@@ -60,13 +60,15 @@
                                         <td><span>Remark</span></td>
                                     </tr>
                                     @foreach($purchase_advise['purchase_products'] as $product_data)
+                                    @if($product_data->order_type == 'purchase_advice')
                                     <tr>
-                                        <td>{{$product_data['product_category']->product_category_name}}</td>
+                                        <td>{{$product_data['product_sub_category']->alias_name}}</td>
                                         <td>{{$product_data['unit']->unit_name}}</td>
                                         <td>{{$product_data->present_shipping}}</td>
                                         <td>{{$product_data->price}}</td>
                                         <td>{{$product_data->remarks}}</td>
                                     </tr>
+                                    @endif
                                     @endforeach
                                 </tbody>
                             </table>
@@ -103,7 +105,13 @@
                                         <td><span>Vehicle Number: </span> {{$purchase_advise->vehicle_number}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Delivery Location: </span> {{$purchase_advise['location']->area_name}}</td>
+                                        <td><span>Delivery Location: </span> 
+                                        @if($purchase_advise->delivery_location_id !=0)
+                                            {{$purchase_advise['location']->area_name}}
+                                        @else
+                                            {{$purchase_advise->other_location}}
+                                        @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td><span>Remark: </span> {{$purchase_advise->remarks}}</td>

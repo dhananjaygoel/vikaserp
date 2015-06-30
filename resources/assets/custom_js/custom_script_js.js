@@ -117,10 +117,10 @@ $(document).ready(function () {
                 '</select>' +
                 '</div>' +
                 '</td>' +
-                '<td class="col-md-2">'+
-                '<div class="form-group">'+
-                '<div id="amount_' + current_row_count + '"></div>'+
-                '</div>'+
+                '<td class="col-md-2">' +
+                '<div class="form-group">' +
+                '<div id="amount_' + current_row_count + '"></div>' +
+                '</div>' +
                 '</td>' +
                 '</tr>';
         $("#add_product_table_delivery_challan").children("tbody").append(html);
@@ -226,11 +226,11 @@ function getunit_name(key) {
  */
 function change_quantity(key) {
 
-    var quantity = $("#pending_qunatity_value_" + key).val();
+    var quantity = $("#pending_qunatity_" + key).val();
     var present_shipping = $("#present_shipping_" + key).val();
     var tot_quty = $("#qunatity_" + key).val();
-
-    if (parseInt(present_shipping) > parseInt(quantity)) {
+    var total = parseInt(quantity) + parseInt(present_shipping);
+    if (total > parseInt(tot_quty)) {
         alert("Present Shipping should not greater than quantity.");
 //        var shipping_error = '<div id="flash_error_present_shipping" class="alert alert-warning no_data_msg_container"> Present Shipping should not greater than quantity.</div>';
 //        $("#flash_error_present_shipping").html(shipping_error);
@@ -257,15 +257,15 @@ function product_rate(key) {
 //    alert('price' + price + " qty " + quantity);
 
 //alert($("#add_product_id_" + key).val());
-var product_id = $("#add_product_id_" + key).val();
-var customer_id = $("#customer_id").val();
+    var product_id = $("#add_product_id_" + key).val();
+    var customer_id = $("#customer_id").val();
     $.ajax({
         url: baseurl + '/fetch_product_price',
-        data: { "customer_id":customer_id,"product_id": product_id
-                },
+        data: {"customer_id": customer_id, "product_id": product_id
+        },
         success: function (data) {
-                    var main_array = JSON.parse(data);
-                    var arr1 = main_array['data_array'];
+            var main_array = JSON.parse(data);
+            var arr1 = main_array['data_array'];
 //                    response(arr1);
 //            alert(arr1[0]);
             var product_price = arr1[0].product_price;
@@ -273,8 +273,8 @@ var customer_id = $("#customer_id").val();
             var customer_difference = arr1[0].customer_difference;
 //            alert(product_price+" diff"+product_difference+" u d"+customer_difference);
             var rate = parseInt(product_price) + parseInt(product_difference) + parseInt(customer_difference);
-            $("#product_price_"+key).val(rate );
-            
+            $("#product_price_" + key).val(rate);
+
         }
     });
 }
@@ -348,7 +348,7 @@ function fetch_price() {
 //    alert('test');
     var current_row_count = $(".add_product_row").length;
 
-    for (var i = 0; i <= current_row_count+1; i++) {
+    for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseFloat($('#product_price_' + i).val())) {
 
             var quantity = $("#actual_quantity_" + i).val();
@@ -356,10 +356,10 @@ function fetch_price() {
              * Calculate checking wih KG and other in
              * quantity field
              */
-            if($("#actual_quantity_" + i).val()>0 && $("#actual_quantity_" + i).val()!=0 || $("#actual_quantity_" + i).val()!=''){
+            if ($("#actual_quantity_" + i).val() > 0 && $("#actual_quantity_" + i).val() != 0 || $("#actual_quantity_" + i).val() != '') {
                 quantity = parseFloat($("#actual_quantity_" + i).val());
             }
-            if($("#actual_pieces_" + i).val()>0 && $("#actual_quantity_" + i).val()==0 || $("#actual_quantity_" + i).val()=='' ){
+            if ($("#actual_pieces_" + i).val() > 0 && $("#actual_quantity_" + i).val() == 0 || $("#actual_quantity_" + i).val() == '') {
                 quantity = parseFloat($("#actual_pieces_" + i).val());
             }
             var rate = $("#product_price_" + i).val();
@@ -384,18 +384,6 @@ function calculate_grand_total() {
             total_price = total_price + (parseInt($('#product_price_' + i).val()) * quantity);
         }
     }
-    var vat_val = 0;
-
-//    if ($('#optionsRadios6').is(':checked') || parseFloat($("#vat_percentage").val()) > 0) {
-//        vat_val = (parseInt(total_price) * parseFloat($('#vat_percentage').val())) / 100;
-//    }
-//    if ($('#optionsRadios5').is(':checked')) {
-//        vat_val = 0;
-//    }
-
-//    var grand_total = parseInt(total_price) + parseFloat(vat_val);
-//
-//    $('#grand_total').val(grand_total);
 }
 /**
  * Default Delivery Location for existing customers
@@ -428,10 +416,10 @@ function grand_total_challan() {
             var product_id = $("#add_product_id_" + i).val();
             var product_wt;
             var quantity = 0;
-            if($("#actual_quantity_" + i).val()>0 && $("#actual_quantity_" + i).val()!=0 || $("#actual_quantity_" + i).val()!=''){
+            if ($("#actual_quantity_" + i).val() > 0 && $("#actual_quantity_" + i).val() != 0 || $("#actual_quantity_" + i).val() != '') {
                 quantity = parseFloat($("#actual_quantity_" + i).val());
             }
-            if($("#actual_pieces_" + i).val()>0 && $("#actual_quantity_" + i).val()==0 || $("#actual_quantity_" + i).val()=='' ){
+            if ($("#actual_pieces_" + i).val() > 0 && $("#actual_quantity_" + i).val() == 0 || $("#actual_quantity_" + i).val() == '') {
                 quantity = parseFloat($("#actual_pieces_" + i).val());
             }
 //            if ($("#unit_name_" + i).val() != 'kg' || $("#unit_name_" + i).val() != 'KG')
@@ -456,30 +444,32 @@ function grand_total_challan() {
     var vat_val = 0;
 
 
-    
+
 //    alert(vat_val);
     var total_price = parseFloat(total_price_products);
 
 
-    total_l_d_f
+//    total_l_d_f
     $("#total_price").val(total_price_products);
-   
+var discount_value=0;
     if ($("#discount_value").length > 0) {
         if (parseInt($("#discount_value").val())) {
 
-            var discount_value = (parseFloat($("#discount_value").val()) * total_price) / 100;
+            discount_value = (parseFloat($("#discount_value").val()) * total_price) / 100;
 //            alert(discount_value );
-            total_price = total_price - discount_value;
+//            total_price = total_price - discount_value;
         }
 
     }
+    var freight_value=0;
     if ($("#freight_value").length > 0) {
         if (parseInt($("#freight_value").val())) {
             var freight_value = $("#freight_value").val();
-            total_price = total_price + parseInt(freight_value);
+//            total_price = total_price + parseInt(freight_value);
         }
 
     }
+    total_price = (total_price - discount_value) + freight_value;
     if ($("#loading_charge").length > 0) {
         if (parseInt($("#loading_charge").val())) {
             var loading_charge = parseInt($("#loading_charge").val());
@@ -487,8 +477,8 @@ function grand_total_challan() {
         }
 
     }
-     
-    $("#total_l_d_f").html("<span class='text-center'>"+total_price+"</span>");
+
+    $("#total_l_d_f").html("<span class='text-center'>" + total_price + "</span>");
     if (parseFloat($('#vat_percentage').val()) > 0) {
         vat_val = (total_price * parseFloat($('#vat_percentage').val())) / 100;
         $("#vat_val").html("" + vat_val + "")
@@ -496,6 +486,95 @@ function grand_total_challan() {
     if (parseFloat($('#vat_percentage').val()) == 0) {
         vat_val = 0;
     }
-    grand_total = total_price  + parseFloat(vat_val);
+    grand_total = total_price + parseFloat(vat_val);
     $('#grand_total').val(grand_total);
+}
+
+/**
+ * Calculate total amount value for purchase
+ */
+function purchase_challan_calculation() {
+    var current_row_count = $(".add_product_row").length;
+    var total_actual_quantity = 0;
+    var total_amount_product = 0;
+    for (var i = 0; i <= current_row_count + 1; i++) {
+        if (parseFloat($('#product_price_' + i).val())) {
+
+            var quantity = parseFloat($("#actual_quantity_" + i).val());
+
+            var rate = $("#product_price_" + i).val();
+            var amount = parseFloat(rate) * parseFloat(quantity);
+            $("#amount_" + i).html('' + amount + '');
+            total_actual_quantity = total_actual_quantity+parseFloat(quantity);
+            total_amount_product = total_amount_product + amount;
+         
+        }
+    }
+    $("#total_actual_quantity").html(''+total_actual_quantity);
+    var discount_value =0;
+    if(parseFloat( $("#discount").val())>0){
+         discount_value= $("#discount").val();
+    }
+    
+    var freight_amount= 0;
+    if(parseInt($("#freight").val())>0){
+        freight_amount = $("#freight").val();
+    }
+    var discount_amount = (parseFloat(discount_value) * total_amount_product)/ 100;
+    
+    
+    var total_price = total_amount_product - discount_amount + parseInt(freight_amount);
+    $("#total_price").html(''+total_price);
+    
+    var vat_val = 0;
+    if($("#vat_percentage").val()>0 && $("#vat_percentage").val() !=''){
+        
+        vat_val = (total_price * parseFloat($('#vat_percentage').val())) / 100;
+        $("#vat_value").html(''+vat_val);
+    }
+    
+    var grand_total = total_price + vat_val ;
+    $("#grand_total").html(''+grand_total);
+    $("#grand_total_val").val(grand_total);
+}
+/**
+ * for default delivery location for Purchase Advice
+ */
+function get_default_location() {
+    var supplier_id = $("#supplier_select").val();
+    var default_location;
+    $("#supplier_select").find("option").each(function (i, opt) {
+        if (opt.value === supplier_id) {
+            default_location = $(opt).attr('default_location');
+            $("#customer_default_location").val(default_location);
+        }
+    });
+    default_delivery_location();
+}
+
+/**
+ * product_autocomplete for purchase
+ */
+function product_autocomplete_purchase(id) {
+    $("#add_purchase_product_name_" + id).autocomplete({
+        minLength: 1,
+        dataType: 'json',
+        type: 'GET',
+        source: function (request, response) {
+            $.ajax({
+                url: baseurl + '/fetch_products',
+                data: {"term": request.term},
+                success: function (data) {
+                    var main_array = JSON.parse(data);
+                    var arr1 = main_array['data_array'];
+                    response(arr1);
+                },
+            });
+        },
+        select: function (event, ui) {
+            $("#add_product_id_" + id).val(ui.item.id);
+//            $("#product_price_" + id).val(ui.item.product_price);            
+        }
+    });
+//alert(id+'id is called');
 }
