@@ -94,7 +94,7 @@
                                                     <!--<i class="fa fa-search search-icon"></i>-->
                                                 </div>
                                             </td>
-                                            <td class="col-md-1">
+                                            <td class="col-md-1 sfdsf">
                                                 <div class="form-group">
                                                     <input id="quantity_{{$key}}" type="hidden" value="{{ $product->quantity}}" name="product[{{$key}}][quantity]">
                                                     @if($product->present_shipping >=0)

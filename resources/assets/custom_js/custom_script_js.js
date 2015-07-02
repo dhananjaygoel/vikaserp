@@ -226,23 +226,29 @@ function getunit_name(key) {
  */
 function change_quantity(key) {
 
-    var quantity = $("#pending_qunatity_" + key).val();
-    var present_shipping = $("#present_shipping_" + key).val();
-    var tot_quty = $("#qunatity_" + key).val();
-    var total = parseInt(quantity) + parseInt(present_shipping);
-    if (total > parseInt(tot_quty)) {
-        alert("Present Shipping should not greater than quantity.");
-//        var shipping_error = '<div id="flash_error_present_shipping" class="alert alert-warning no_data_msg_container"> Present Shipping should not greater than quantity.</div>';
-//        $("#flash_error_present_shipping").html(shipping_error);
-        $("#present_shipping_" + key).val(0);
-        $("#pending_qunatity_" + key).html("<span>" + quantity + "</span");
-    } else {
 
-        $("#flash_error_present_shipping").html('');
-        var rem_quantity = parseInt(quantity) - parseInt(present_shipping);
-//    alert(quantity +" "+ present_shipping);
-        $("#pending_qunatity_" + key).html("<span class='text-center'>" + rem_quantity + "</span");
+    var quantity = $("#pending_qunatity_" + key).val();
+    var present_shipping = $("#present_shipping_" + key).val();//ok
+    var tot_quty = $("#quantity_" + key).val(); //ok
+    var total = parseInt(quantity) + parseInt(present_shipping);
+
+    if (parseInt(present_shipping) > parseInt(tot_quty)) {
+        alert('present Shipping is greater than the quantity')
+    } else {
+        $("#pending_qunatity_" + key).html("<span>" + (parseInt(tot_quty) - parseInt(present_shipping)) + "</span");
     }
+
+
+//    if (total > parseInt(tot_quty)) {
+//        alert("Present Shipping should not greater than quantity.");
+//        $("#present_shipping_" + key).val(0);
+//        $("#pending_qunatity_" + key).html("<span>" + quantity + "</span");
+//    } else {
+//
+//        $("#flash_error_present_shipping").html('');
+//        var rem_quantity = parseInt(quantity) - parseInt(present_shipping);
+//        $("#pending_qunatity_" + key).html("<span class='text-center'>" + rem_quantity + "</span");
+//    }
     grand_total_delivery_order();
 
 }
@@ -451,7 +457,7 @@ function grand_total_challan() {
 
 //    total_l_d_f
     $("#total_price").val(total_price_products);
-var discount_value=0;
+    var discount_value = 0;
     if ($("#discount_value").length > 0) {
         if (parseInt($("#discount_value").val())) {
 
@@ -461,7 +467,7 @@ var discount_value=0;
         }
 
     }
-    var freight_value=0;
+    var freight_value = 0;
     if ($("#freight_value").length > 0) {
         if (parseInt($("#freight_value").val())) {
             var freight_value = $("#freight_value").val();
@@ -505,36 +511,36 @@ function purchase_challan_calculation() {
             var rate = $("#product_price_" + i).val();
             var amount = parseFloat(rate) * parseFloat(quantity);
             $("#amount_" + i).html('' + amount + '');
-            total_actual_quantity = total_actual_quantity+parseFloat(quantity);
+            total_actual_quantity = total_actual_quantity + parseFloat(quantity);
             total_amount_product = total_amount_product + amount;
-         
+
         }
     }
-    $("#total_actual_quantity").html(''+total_actual_quantity);
-    var discount_value =0;
-    if(parseFloat( $("#discount").val())>0){
-         discount_value= $("#discount").val();
+    $("#total_actual_quantity").html('' + total_actual_quantity);
+    var discount_value = 0;
+    if (parseFloat($("#discount").val()) > 0) {
+        discount_value = $("#discount").val();
     }
-    
-    var freight_amount= 0;
-    if(parseInt($("#freight").val())>0){
+
+    var freight_amount = 0;
+    if (parseInt($("#freight").val()) > 0) {
         freight_amount = $("#freight").val();
     }
-    var discount_amount = (parseFloat(discount_value) * total_amount_product)/ 100;
-    
-    
+    var discount_amount = (parseFloat(discount_value) * total_amount_product) / 100;
+
+
     var total_price = total_amount_product - discount_amount + parseInt(freight_amount);
-    $("#total_price").html(''+total_price);
-    
+    $("#total_price").html('' + total_price);
+
     var vat_val = 0;
-    if($("#vat_percentage").val()>0 && $("#vat_percentage").val() !=''){
-        
+    if ($("#vat_percentage").val() > 0 && $("#vat_percentage").val() != '') {
+
         vat_val = (total_price * parseFloat($('#vat_percentage').val())) / 100;
-        $("#vat_value").html(''+vat_val);
+        $("#vat_value").html('' + vat_val);
     }
-    
-    var grand_total = total_price + vat_val ;
-    $("#grand_total").html(''+grand_total);
+
+    var grand_total = total_price + vat_val;
+    $("#grand_total").html('' + grand_total);
     $("#grand_total_val").val(grand_total);
 }
 /**
