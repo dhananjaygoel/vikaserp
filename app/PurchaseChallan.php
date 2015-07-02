@@ -36,7 +36,11 @@ class PurchaseChallan extends Model {
         return $this->hasOne('App\User', 'id', 'created_by');
     }
     
-    public function location_details() {
+    public function all_purchase_products() {
+        return $this->hasMany('App\PurchaseProducts', 'purchase_order_id', 'id')->where('order_type', '=', 'purchase_challan');
+    }
+    
+    public function delivery_location() {
         return $this->hasOne('App\DeliveryLocation', 'id', 'delivery_location_id');
     }
 
