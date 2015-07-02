@@ -36,9 +36,12 @@ class InquiryController extends Controller {
         }
         if ((isset($_GET['inquiry_filter'])) && $_GET['inquiry_filter'] != '') {
             $inquiries = Inquiry::where('inquiry_status', '=', $_GET['inquiry_filter'])
-                            ->with('customer', 'delivery_location', 'inquiry_products')->orderBy('created_at', 'desc')->Paginate(10);
+                            ->with('customer', 'delivery_location', 'inquiry_products')
+                            ->orderBy('created_at', 'desc')->Paginate(10);
         } else {
-            $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products')->orderBy('created_at', 'desc')->Paginate(10);
+            $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products')
+                            ->where('inquiry_status', 'pending')
+                            ->orderBy('created_at', 'desc')->Paginate(10);
         }
         $inquiries->setPath('inquiry');
         return view('inquiry', compact('inquiries'));
@@ -186,7 +189,7 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category.product_sub_category', 'customer')->first();
-               
+
         return view('inquiry_details', compact('inquiry'));
     }
 
