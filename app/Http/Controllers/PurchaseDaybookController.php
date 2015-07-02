@@ -63,25 +63,25 @@ class PurchaseDaybookController extends Controller {
 
     public function expert_purchase_daybook() {
 
-        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier')
+        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products', 'delivery_location')
                 ->where('order_status', 'completed')
                 ->get();
-
+        
 
         $sheet_data = array();
         foreach ($purchase_daybook as $key => $value) {
 
-            $sheet_data[$key]['date'] = date("d F, Y", strtotime($value['purchase_advice']->purchase_advice_date));
-            $sheet_data[$key]['Party_name'] = $value['supplier']->owner_name;
-            $sheet_data[$key]['vehicle_number'] = $value->vehicle_number;
-            $sheet_data[$key]['orderedby'] = $value['orderedby']->first_name;
-            $sheet_data[$key]['unloaded_by'] = $value->unloaded_by;
-            $sheet_data[$key]['labours'] = $value->labours;
-            $sheet_data[$key]['amount'] = $value->amount;
+            $sheet_data[$key]['Sl no.'] = $value->serial_number;
+            $sheet_data[$key]['Pa no.'] = $value['purchase_advice']->serial_number;
+            $sheet_data[$key]['Name'] = $value['supplier']->owner_name;
+            $sheet_data[$key]['Delivery Location'] = $value['delivery_location']->area_name;
+            $sheet_data[$key]['Quantity'] = $value['all_purchase_products']->sum('quantity');
+            $sheet_data[$key]['amount'] = $value->grand_total;
             $sheet_data[$key]['bill_number'] = $value->bill_number;
+            $sheet_data[$key]['vehicle_number'] = $value->vehicle_number;
+            $sheet_data[$key]['Unloaded By'] = $value->unloaded_by;
+            $sheet_data[$key]['labours'] = $value->labours;
             $sheet_data[$key]['remarks'] = $value->remarks;
-            $sheet_data[$key]['created_at'] = $value->created_at;
-            $sheet_data[$key]['updated_at'] = $value->updated_at;
         }
 
 
@@ -91,8 +91,6 @@ class PurchaseDaybookController extends Controller {
                 $sheet->fromArray($sheet_data);
             });
         })->export('xls');
-
-        exit;
     }
 
     public function destroy($id) {

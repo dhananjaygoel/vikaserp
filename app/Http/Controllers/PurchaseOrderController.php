@@ -136,8 +136,8 @@ class PurchaseOrderController extends Controller {
                     });
                 }
             } else {
-                $error_msg = $validator->messages();
-                return Redirect::back()->withInput()->withErrors($validator);
+                $error_msg = $validate->messages();
+                return Redirect::back()->withInput()->withErrors($validate);
             }
         }
 
