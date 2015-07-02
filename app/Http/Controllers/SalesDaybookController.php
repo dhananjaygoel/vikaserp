@@ -128,34 +128,24 @@ class SalesDaybookController extends Controller {
     
     public function export_sales_daybook() {
         
-        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products', 'delivery_order', 'user')
-                ->get();
-//        echo '<pre>';
-//        print_r($allorders->toArray());
-//        echo '</pre>';
-//        exit;
+        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products', 'delivery_order', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
         
-
+        
         $sheet_data = array();
         foreach ($allorders as $key => $value) {
 
-            $sheet_data[$key]['date'] = date("d F, Y", strtotime($value->created_at));
-            $sheet_data[$key]['Party_name'] = $value['customer']->owner_name;
-            $sheet_data[$key]['vehicle_number'] = $value['delivery_order']->vehicle_number;
-            $sheet_data[$key]['orderedby'] = $value['user'][0]->first_name;
-            $sheet_data[$key]['loaded_by'] = $value->loaded_by;
-            $sheet_data[$key]['labours'] = $value->labours;
-            $sheet_data[$key]['amount'] = $value->amount;
-            $sheet_data[$key]['bill_number'] = $value->bill_number;
-            $sheet_data[$key]['remarks'] = $value->remarks;
-            $sheet_data[$key]['created_at'] = $value->created_at;
-            $sheet_data[$key]['updated_at'] = $value->updated_at;
+            $sheet_data[$key]['Sr no.'] = $value->serial_number;
+            $sheet_data[$key]['Do No.'] = $value['delivery_order']->serial_no;
+            $sheet_data[$key]['Name'] = $value['customer']->owner_name;
+            $sheet_data[$key]['Delivery Location'] = $value['delivery_location']->area_name;
+            $sheet_data[$key]['Quantity'] = $value['all_order_products']->sum('quantity');
+            $sheet_data[$key]['Amount'] = $value->grand_price;
+            $sheet_data[$key]['Bill No.'] = $value->bill_number;
+            $sheet_data[$key]['Truck No.'] = $value['delivery_order']->vehicle_number;
+            $sheet_data[$key]['Loaded By'] = $value->loaded_by;
+            $sheet_data[$key]['Labour'] = $value->labours;
+            $sheet_data[$key]['Remarks'] = $value->remarks;
         }
-        
-//        echo '<pre>';
-//        print_r($sheet_data);
-//        echo '</pre>';
-//        exit;
 
         Excel::create('Sales-Daybook-list', function($excel) use($sheet_data) {
 
@@ -163,9 +153,5 @@ class SalesDaybookController extends Controller {
                 $sheet->fromArray($sheet_data);
             });
         })->export('xls');
-
-        exit;
-        
-        
     }
 }

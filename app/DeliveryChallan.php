@@ -40,6 +40,10 @@ class DeliveryChallan extends Model {
         return $this->hasMany('App\User', 'id', 'created_by');
     }
     
+    public function delivery_location() {
+        return $this->hasOne('App\DeliveryLocation', 'id', 'delivery_order_id');
+    }
+    
     
     
     //for sales Daybook Date filter

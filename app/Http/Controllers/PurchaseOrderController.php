@@ -137,8 +137,8 @@ class PurchaseOrderController extends Controller {
                     });
                 }
             } else {
-                $error_msg = $validator->messages();
-                return Redirect::back()->withInput()->withErrors($validator);
+                $error_msg = $validate->messages();
+                return Redirect::back()->withInput()->withErrors($validate);
             }
         }
 
@@ -245,9 +245,6 @@ class PurchaseOrderController extends Controller {
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function update($id) {
 
