@@ -69,14 +69,9 @@ class InquiryController extends Controller {
     public function store(InquiryRequest $request) {
         $input_data = Input::all();
 
-//        $date = $input_data['expected_date'];
-//        $datetime = new DateTime($date);
-//        echo $datetime->format('Y-m-d');exit;
-
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
         $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
-
 
         $i = 0;
         $j = count($input_data['product']);

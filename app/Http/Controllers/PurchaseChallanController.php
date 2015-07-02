@@ -27,7 +27,10 @@ class PurchaseChallanController extends Controller {
      */
     public function index() {
 
-        $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier')->Paginate(10);
+        $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier')
+                ->where('order_status', 'pending')
+                ->Paginate(10);
+        
         $purchase_challan->setPath('purchase_challan');
         return view('purchase_challan', compact('purchase_challan'));
     }
@@ -209,7 +212,7 @@ class PurchaseChallanController extends Controller {
     }
 
     public function print_purchase_challan($id) {
-     
+
         $current_date = date("M/y/m/");
 
         $date_letter = $current_date . "" . $id;
@@ -217,7 +220,7 @@ class PurchaseChallanController extends Controller {
             'serial_number' => $date_letter,
             'order_status' => "Completed"
         ));
-        
+
         return redirect('purchase_challan')->with('success', 'Purchase challan is successfuly printed.');
     }
 

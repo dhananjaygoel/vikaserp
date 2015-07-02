@@ -26,6 +26,7 @@ use App\Http\Requests\ManualCompleteOrderRequest;
 use App\DeliveryOrder;
 use App\DeliveryChallan;
 use App\ProductSubCategory;
+use DateTime;
 
 class OrderController extends Controller {
 
@@ -35,6 +36,7 @@ class OrderController extends Controller {
      * @return Response
      */
     public function index() {
+
         if ((isset($_GET['order_filter'])) && $_GET['order_filter'] != '') {
             if ($_GET['order_filter'] == 'cancelled') {
                 $allorders = Order::where('order_status', '=', $_GET['order_filter'])
@@ -90,7 +92,8 @@ class OrderController extends Controller {
 
                 $allorders = Order::where('order_status', '=', 'pending')
                                 ->where('order_source', '=', 'warehouse')
-                                ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
+                                ->with('customer', 'delivery_location', 'all_order_products')
+                                ->orderBy('created_at', 'desc')->Paginate(10);
             }
         }
 
@@ -180,7 +183,8 @@ class OrderController extends Controller {
             $supplier_id = 0;
         }
         if ($input_data['status'] == 'supplier') {
-            $other_location_difference;$order_status = 'supplier';
+            $other_location_difference;
+            $order_status = 'supplier';
             $supplier_id = $input_data['supplier_id'];
         }
         if ($input_data['status1'] == 'include_vat') {
@@ -195,17 +199,23 @@ class OrderController extends Controller {
         $order->supplier_id = $supplier_id;
         $order->customer_id = $customer_id;
         $order->created_by = Auth::id();
-        
+
         $order->vat_percentage = $vat_price;
 //        $order->estimated_delivery_date = date_format(date_create($input_data['estimated_date']), 'Y-m-d');
-        $order->expected_delivery_date = date_format(date_create($input_data['expected_date']), 'Y-m-d');
+
+        $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
+        $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+        $datetime = new DateTime($date);
+
+        $order->expected_delivery_date = $datetime->format('Y-m-d');
+
         $order->remarks = $input_data['order_remark'];
         $order->order_status = "Pending";
         if (isset($input_data['location']) && ($input_data['location'] != "")) {
             $order->delivery_location_id = 0;
             $order->other_location = $input_data['location'];
-            $order-> other_location_difference= $input_data['other_location_difference'];
-        }else{
+            $order->other_location_difference = $input_data['other_location_difference'];
+        } else {
             $order->delivery_location_id = $input_data['add_order_location'];
         }
         $order->save();
@@ -357,13 +367,13 @@ class OrderController extends Controller {
         if ($input_data['add_inquiry_location'] == 0) {
             $update_order = $order->update([
                 'other_location' => $input_data['other_location_name'],
-                'other_location_difference'=> $input_data['other_location_difference']
+                'other_location_difference' => $input_data['other_location_difference']
             ]);
         }
         if ($input_data['add_inquiry_location'] != 0) {
             $update_order = $order->update([
                 'other_location' => '',
-                'other_location_difference'=>''
+                'other_location_difference' => ''
             ]);
         }
 

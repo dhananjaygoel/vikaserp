@@ -359,7 +359,7 @@ class DeliveryOrderController extends Controller {
         if ($validator->passes()) {
             $i = 0;
             $j = count($input_data['product']);
-            
+
             foreach ($input_data['product'] as $product_data) {
                 if ($product_data['name'] == "") {
                     $i++;
@@ -375,15 +375,21 @@ class DeliveryOrderController extends Controller {
             $delivery_challan->delivery_order_id = $id;
             $delivery_challan->customer_id = $input_data['customer_id'];
             $delivery_challan->created_by = Auth::id();
+
             if (isset($input_data['billno'])) {
                 $delivery_challan->bill_number = $input_data['billno'];
             }
+
             $delivery_challan->discount = $input_data['discount'];
             $delivery_challan->freight = $input_data['freight'];
             $delivery_challan->loading_charge = $input_data['loading'];
             $delivery_challan->loaded_by = $input_data['loadedby'];
             $delivery_challan->labours = $input_data['labour'];
-            $delivery_challan->vat_percentage = $input_data['vat_percentage'];
+
+            if (isset($input_data['vat_percentage'])) {
+                $delivery_challan->vat_percentage = $input_data['vat_percentage'];
+            }
+
             $delivery_challan->grand_price = $input_data['grand_total'];
             $delivery_challan->remarks = $input_data['challan_remark'];
             $delivery_challan->challan_status = "Pending";
