@@ -55,9 +55,9 @@
                         </a>
                     </li>
                     @endif
-                    
+
                     <li class="<?php
-                    if (Request::is('*orders*') || Request::is('*delivery_order*') || Request::is('*delivery_challan*') || Request::is('*pending_delivery_order*') || Request::is('*pending_order_report*')) {
+                    if (Request::is('*orders*') || Request::is('*delivery_order*') || Request::is('*delivery_challan*') || Request::is('*pending_delivery_order*') || Request::is('*pending_order_report*')|| Request::is('*sales_daybook*')) {
                         echo 'active';
                     }
                     ?>">
@@ -97,17 +97,17 @@
                                 </a>
                             </li>
                             @endif
-                            
-<!--                            <li class="{{ (Request::is('*pending_order_report*') ? 'active' : '') }}">
-                                <a href="{{url('pending_order_report')}}">
-                                    Pending Order Report
-                                </a>
-                            </li>-->
+
+                            <!--                            <li class="{{ (Request::is('*pending_order_report*') ? 'active' : '') }}">
+                                                            <a href="{{url('pending_order_report')}}">
+                                                                Pending Order Report
+                                                            </a>
+                                                        </li>-->
                         </ul>
                     </li>
 
                     <li class="<?php
-                    if (Request::is('*purchase_orders*') || Request::is('*purchaseorder_advise*') || Request::is('*purchase_challan*') || Request::is('*purchase_order_report*') || Request::is('*purchase_order_daybook*')) {
+                    if (Request::is('*purchase_orders*') || Request::is('*purchaseorder_advise*') || Request::is('*purchase_challan*') || Request::is('*purchase_order_report*') || Request::is('*purchase_order_daybook*') || Request::is('*pending_purchase_advice*')) {
                         echo 'active';
                     }
                     ?>">
@@ -136,12 +136,12 @@
                                 </a>
                             </li>
 
-<!--                            <li class="{{ (Request::is('*purchase_order_report*') ? 'active' : '') }}">
-                                <a href="{{url('purchase_order_report')}}" >
-                                    Purchase Order Report
-                                </a>
-                            </li>-->
-                            <li class="<?php echo ($page_name == 'purchaseorder_advisereport.php') ? 'active' : ''; ?>">
+                            <!--                            <li class="{{ (Request::is('*purchase_order_report*') ? 'active' : '') }}">
+                                                            <a href="{{url('purchase_order_report')}}" >
+                                                                Purchase Order Report
+                                                            </a>
+                                                        </li>-->
+                            <li class="{{ (Request::is('*pending_purchase_advice*') ? 'active' : '') }}">
                                 <a href="{{url('pending_purchase_advice')}}">
                                     Pending Purchase Advise Report
                                 </a>
@@ -218,14 +218,14 @@
                     @endif
                     @if(Auth::user()->role_id == 0)
                     <div style="display:none">
-<!--                        Do not display customer Module-->
-                    <li class="{{ (Request::is('*customer_manager*') ? 'active' : '') }}">
-                        <a href="{{url("customer_manager")}}">
-                            <i class="fa fa-asterisk"></i>
-                            <span>Customer Manager</span>
-                            <span class="label label-info label-circle pull-right"></span>
-                        </a>
-                    </li>
+                        <!--                        Do not display customer Module-->
+                        <li class="{{ (Request::is('*customer_manager*') ? 'active' : '') }}">
+                            <a href="{{url("customer_manager")}}">
+                                <i class="fa fa-asterisk"></i>
+                                <span>Customer Manager</span>
+                                <span class="label label-info label-circle pull-right"></span>
+                            </a>
+                        </li>
                     </div>
                     @endif
                     @if(Auth::user()->role_id == 0)

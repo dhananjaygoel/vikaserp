@@ -133,7 +133,7 @@
                                         <td>
                                             <span>Delivery Location: </span>
                                             @if($purchase_challan->delivery_location_id != 0 )
-                                            {{$purchase_challan['location_details']->area_name}}
+                                            {{$purchase_challan['delivery_location']->area_name}}
                                             @else
                                             {{$purchase_challan->other_location}}
                                             @endif</td>

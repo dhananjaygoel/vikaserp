@@ -127,7 +127,7 @@ class PurchaseChallanController extends Controller {
      */
     public function show($id) {
 
-        $purchase_challan = PurchaseChallan::with('purchase_advice', 'location_details', 'supplier', 'purchase_product.product_sub_category', 'purchase_product.unit')->where('id', $id)->first();
+        $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'purchase_product.product_sub_category', 'purchase_product.unit')->where('id', $id)->first();
 
         return view('view_purchase_challan', compact('purchase_challan'));
     }

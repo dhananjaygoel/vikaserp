@@ -66,9 +66,14 @@ class InquiryController extends Controller {
     public function store(InquiryRequest $request) {
         $input_data = Input::all();
 
-        $date = $input_data['expected_date'];
-        $datetime = new DateTime($date);
+//        $date = $input_data['expected_date'];
+//        $datetime = new DateTime($date);
 //        echo $datetime->format('Y-m-d');exit;
+
+        $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
+        $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+        $datetime = new DateTime($date);
+
 
         $i = 0;
         $j = count($input_data['product']);
@@ -136,14 +141,14 @@ class InquiryController extends Controller {
 //        print_r($add_inquiry_array);
 //        echo '</pre>';
 //        exit;
-        $add_inquiry = new Inquiry();//::create($add_inquiry_array);
-        $add_inquiry->customer_id= $customer_id;
-        $add_inquiry->created_by=Auth::id();
+        $add_inquiry = new Inquiry(); //::create($add_inquiry_array);
+        $add_inquiry->customer_id = $customer_id;
+        $add_inquiry->created_by = Auth::id();
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
-            $add_inquiry->delivery_location_id = 0;                
+            $add_inquiry->delivery_location_id = 0;
             $add_inquiry->other_location = $input_data['other_location_name'];
             $add_inquiry->other_location_difference = $input_data['other_location_difference'];
-        }else{
+        } else {
             $add_inquiry->delivery_location_id = $input_data['add_inquiry_location'];
         }
         $add_inquiry->vat_percentage = $input_data['vat_percentage'];
@@ -151,7 +156,7 @@ class InquiryController extends Controller {
         $add_inquiry->remarks = $input_data['inquiry_remark'];
         $add_inquiry->inquiry_status = "Pending";
         $add_inquiry->save();
-        
+
         $inquiry_id = DB::getPdo()->lastInsertId();
         $inquiry_products = array();
         foreach ($input_data['product'] as $product_data) {
@@ -181,7 +186,7 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category.product_sub_category', 'customer')->first();
-
+               
         return view('inquiry_details', compact('inquiry'));
     }
 
@@ -264,12 +269,12 @@ class InquiryController extends Controller {
             $other_location_difference = $input_data['other_location_difference'];
 //            echo $other_location;exit;
         }
-        
+
         $inquiry = Inquiry::find($id);
         $update_inquiry = $inquiry->update([
             'customer_id' => $customer_id,
             'created_by' => Auth::id(),
-             // $input_data['add_inquiry_location'],
+            // $input_data['add_inquiry_location'],
             'vat_percentage' => $vat_price,
             'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['inquiry_remark'],
@@ -279,13 +284,13 @@ class InquiryController extends Controller {
 //            
             $inquiry->update([
                 'delivery_location_id' => 0,
-                'other_location' =>$other_location,
+                'other_location' => $other_location,
                 'other_location_difference' => $other_location_difference
             ]);
 //            echo 'test';exit;
-        }else{
+        } else {
             $inquiry->update([
-                'other_location' =>'',
+                'other_location' => '',
                 'other_location_difference' => '',
                 'delivery_location_id' => $location_id
             ]);
@@ -336,7 +341,7 @@ class InquiryController extends Controller {
                 $data_array[] = [
                     'value' => $customer->owner_name,
                     'id' => $customer->id,
-                    'delivery_location_id'=>$customer->delivery_location_id                        
+                    'delivery_location_id' => $customer->delivery_location_id
                 ];
             }
         } else {
