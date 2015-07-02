@@ -89,6 +89,7 @@
                                                 <div class="form-group searchproduct">
                                                     {{ $product['product_category']->product_category_name}}
 
+                                                    <input type="hidden" name="product[{{$key}}][name]" id="name_{{$key}}" value="{{$product['product_category']->product_category_name}}">
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['product_category']->id}}">
                                                     <!--<i class="fa fa-search search-icon"></i>-->
                                                 </div>

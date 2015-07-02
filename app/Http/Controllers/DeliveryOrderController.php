@@ -359,7 +359,7 @@ class DeliveryOrderController extends Controller {
         if ($validator->passes()) {
             $i = 0;
             $j = count($input_data['product']);
-
+            
             foreach ($input_data['product'] as $product_data) {
                 if ($product_data['name'] == "") {
                     $i++;
@@ -408,7 +408,7 @@ class DeliveryOrderController extends Controller {
                     }
                 }
             }
-            return redirect('delivery_order')->with('validation_message', 'One Delivery Challan is successfuly created.');
+            return redirect('delivery_order')->with('success', 'One Delivery Challan is successfully created.');
         } else {
             $error_msg = $validator->messages();
             return Redirect::back()->withInput()->withErrors($validator);

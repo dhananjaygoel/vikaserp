@@ -1,13 +1,6 @@
-<?php
-//echo '<pre>';
-//print_r($delivery_data);
-//echo '</pre>';
-//exit;
-?>
 @extends('layouts.master')
 @section('title','Delivery Order')
 @section('content')
-
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
@@ -65,7 +58,7 @@
                             {{Session::get('wrong')}}                            
                         </div>
                         @endif
-                        
+
                         @if(sizeof($delivery_data) != 0)
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
@@ -100,7 +93,7 @@
                                             @else
                                             {{$delivery->other_location}}
                                             @endif
-                                           
+
                                         </td> 
                                         <td>
                                             @foreach($pending_orders as $pending)
@@ -108,10 +101,10 @@
                                             {{$pending['total_quantity']}}
                                             @endif
                                             @endforeach
-                                           
+
                                         </td> 
                                         <td>
-                                           {{$delivery->vehicle_number}}
+                                            {{$delivery->vehicle_number}}
                                         </td> 
                                         <td class="text-center">
                                             @if($delivery->order_status == 'completed')
@@ -152,7 +145,7 @@
                                                 </span>
                                             </span>
                                             @endif
-                                            
+
                                             @if($delivery->serial_no == "")
                                             <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan_{{$delivery->id}}">
                                                 <span class="fa-stack">
@@ -214,7 +207,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="modal fade" id="print_challan_{{$delivery->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">

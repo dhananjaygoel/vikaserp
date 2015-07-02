@@ -50,7 +50,7 @@ class DeliveryChallanController extends Controller {
         $allorder = DeliveryChallan::where('id', '=', $id)
                         ->where('challan_status', '=', 'pending')
                         ->with('all_order_products.unit', 'all_order_products.product_category', 'customer', 'delivery_order')->first();
-
+  
         return View::make('delivery_challan_details', compact('allorder'));
     }
 
@@ -109,8 +109,8 @@ class DeliveryChallanController extends Controller {
                 'challan_status' => "Pending"
             ]);
             if (isset($input_data['billno'])) {
-               $delivery_challan->update([
-                   "bill_number" => $input_data['billno']]);
+                $delivery_challan->update([
+                    "bill_number" => $input_data['billno']]);
             }
             $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
             if ($j != 0) {
@@ -186,7 +186,6 @@ class DeliveryChallanController extends Controller {
         $this->checkpending_quantity();
 
         return redirect('delivery_challan')->with('validation_message', 'Delivery order is successfuly printed.');
-
     }
 
     function checkpending_quantity() {

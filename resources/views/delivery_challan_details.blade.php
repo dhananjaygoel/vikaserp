@@ -10,7 +10,7 @@
                     <li class="active"><span>View Delivery Challan</span></li>
                 </ol>
                 <div class="clearfix">
-                    
+
                     <div class="pull-right top-page-ui">
                         <a href="{{url('delivery_challan/'.$allorder->id.'/edit')}}" class="btn btn-primary pull-right">
                             Edit Delivery Challan
@@ -23,36 +23,24 @@
             <div class="col-lg-12">
                 <div class="main-box"> 
                     <div class="main-box-body clearfix">
-
-
-
                         <div class="form-group">
                             <label><b>Party Name:</b> {{$allorder['customer']->owner_name}}</label>
-
                         </div>
                         <hr>
                         <div class="form-group">
                             <label><b>Serial Number:</b> {{$allorder['delivery_order']->serial_no}}</label>
-
                         </div>
                         <hr>
-
                         <div class="form-group">
                             <label ><b> <span class="underline">Product Details</span></b></label>
-
                         </div>
-                        
-
-
                         <div class="table-responsive">
                             <table id="add_product_table" class="table customerview_table">
                                 <tbody>
                                     <tr class="headingunderline">
                                         <td class="col-md-2"><span>Product Name(Alias)</span></td>
                                         <td class="col-md-1"><span>Actual Quantity</span></td>
-
                                         <td class="col-md-1"><span>Actual Pieces</span></td>
-
                                         <td class="col-md-1"><span>Unit</span></td>
                                         <td class="col-md-2"><span>Present Shipping</span></td>
                                         <td class="col-md-2"><span>Rate</span></td>
@@ -115,7 +103,6 @@
 
                         </div>
 
-                        
                         <div class="form-group">
                             <label for="vehicle_name"><b class="challan">Discount</b></label>
                             {{$allorder->discount}}
@@ -146,11 +133,11 @@
                             {{$allorder->labours}}
                         </div>
                         <hr>
+                        
 
-
+                        @if($allorder->vat_percentage != "" || $allorder->vat_percentage != 0)
                         <div class="form-group">
-
-                            <label for="Plusvat"><b class="challan">Plus VAT</b> Yes/No</label>
+                            <label for="Plusvat"><b class="challan">Plus VAT</b> Yes</label>
                         </div>
                         <hr>
                         <div class="form-group">
@@ -159,6 +146,14 @@
                         </div>
 
                         <hr>
+                        @else
+                        <div class="form-group">
+                            <label for="Plusvat"><b class="challan">Plus VAT</b> No</label>
+                        </div>
+                        <hr>
+                        @endif
+
+
                         <div class="form-group">
                             <label for="total"><b class="challan">Grand Total</b><span class="gtotal">{{$allorder->grand_price}}</span></label>
 
