@@ -20,13 +20,13 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
-                        
+
                         @if (Session::has('success'))
                         <div class="alert alert-success alert-success1">
                             {{Session::get('success')}}                            
                         </div>
                         @endif                        
-                        
+
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
                                 <thead>
@@ -65,7 +65,7 @@
                                                 </span>
                                             </a>
 
-                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#myModal1">
+                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_model_{{$challan->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
@@ -110,32 +110,31 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="print_model_{{$challan->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
-                                            <div class="modal-body">
-                                                <form method="POST" action="" accept-charset="UTF-8" >
-
-                                                    <div class="row print_time">
-                                                        <div class="col-md-12"> Print By <br> 05:00 PM</div>
-                                                    </div>
-                                                    <div class="checkbox">
-                                                        <label><input type="checkbox" value=""  ><span title="SMS would be sent to Relationship Manager" class="checksms smstooltip">Send SMS</span></label>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                    <hr>
-                                                    <div >
-                                                        <button type="button" class="btn btn-primary form_button_footer" >Generate Challan</button>
-
-                                                        <a href="purchaseorder_challan.php" class="btn btn-default form_button_footer">Cancel</a>
-                                                    </div>
-
-                                                    <div class="clearfix"></div>
-                                                </form>
+                                            <div class="modal-body print_delivery_order">
+                                                {!! Form::open(array('url'=>url('print_purchase_challan/'.$challan->id), 'method' => 'post')) !!}
+                                                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                                <input type="hidden" name="challan_id" value="{{$challan->id}}"/>
+                                                <div class="row print_time">
+                                                    <div class="col-md-12"> Print By <br> 05:00 PM</div>
+                                                </div>
+                                                <div class="checkbox">
+                                                    <label><input type="checkbox" value=""  ><span title="SMS would be sent to Relationship Manager" class="checksms smstooltip">Send SMS</span></label>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <hr>
+                                                <div >
+                                                    <button type="submit" class="btn btn-primary form_button_footer" >Generate Challan</button>
+                                                    <a href="#" class="btn btn-default form_button_footer">Cancel</a>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                {!! Form::close() !!}
                                             </div>
                                         </div>
                                     </div>

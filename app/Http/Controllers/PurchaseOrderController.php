@@ -87,6 +87,7 @@ class PurchaseOrderController extends Controller {
      */
     public function store(PurchaseOrderRequest $request) {
 
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -151,9 +152,13 @@ class PurchaseOrderController extends Controller {
 //
 //            $location_id = $input_data['purchase_order_location'];
 //        }
+//        $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_delivery_date']);
+//        $date = date("Y-m-d", strtotime(str_replace('-', '/', $date_string)));
+//        $datetime = new DateTime($date);
+
 
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_delivery_date']);
-        $date = date("Y-m-d", strtotime(str_replace('-', '/', $date_string)));
+        $date = date("Y/m/d", strtotime($date_string));
         $datetime = new DateTime($date);
 
         $add_purchase_order_array = [
@@ -317,15 +322,15 @@ class PurchaseOrderController extends Controller {
 //                'order_status' => "pending"                
 //            ];
 //        } else {
-            $add_purchase_order_array = [
-                'is_view_all' => $input_data['viewable_by'],
-                'supplier_id' => $customer_id,
-                'created_by' => Auth::id(),
-                'vat_percentage' => $input_data['vat_percentage'],
-                'expected_delivery_date' => $datetime->format('Y-m-d'),
-                'remarks' => $input_data['purchase_order_remark'],
-                'order_status' => "pending"
-            ];
+        $add_purchase_order_array = [
+            'is_view_all' => $input_data['viewable_by'],
+            'supplier_id' => $customer_id,
+            'created_by' => Auth::id(),
+            'vat_percentage' => $input_data['vat_percentage'],
+            'expected_delivery_date' => $datetime->format('Y-m-d'),
+            'remarks' => $input_data['purchase_order_remark'],
+            'order_status' => "pending"
+        ];
 //        }
 
         $update_purchase_order = $purchase_order->update($add_purchase_order_array);
@@ -337,7 +342,7 @@ class PurchaseOrderController extends Controller {
             ]);
 //            $location_id = DB::getPdo()->lastInsertId();
         } else {
-             $purchase_order->update([
+            $purchase_order->update([
                 'delivery_location_id' => $input_data['purchase_order_location'],
                 'other_location' => '',
                 'other_location_difference' => '',

@@ -113,12 +113,12 @@ class PurchaseAdviseController extends Controller {
         if (isset($input_data['delivery_location_id']) && $input_data['delivery_location_id'] == "other") {
 //            $delivery_location = DeliveryLocation::create(array('area_name' => $input_data['new_location'], 'status' => 'pending'));
             $purchase_advise_array['delivery_location_id'] = 0;
-            $purchase_advise_array['other_location']=$input_data['other_location_name'];
-            $purchase_advise_array['other_location_difference']=$input_data['other_location_difference'];
+            $purchase_advise_array['other_location'] = $input_data['other_location_name'];
+            $purchase_advise_array['other_location_difference'] = $input_data['other_location_difference'];
         } else {
             $purchase_advise_array['delivery_location_id'] = $input_data['delivery_location_id'];
-            $purchase_advise_array['other_location']='';
-            $purchase_advise_array['other_location_difference']='';        
+            $purchase_advise_array['other_location'] = '';
+            $purchase_advise_array['other_location_difference'] = '';
         }
 
 
@@ -251,8 +251,11 @@ class PurchaseAdviseController extends Controller {
         $validator = Validator::make($input_data, PurchaseAdvise::$store_purchase_validation);
         if ($validator->passes()) {
 
+//            $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['bill_date']);
+//            $date = strtotime($date_string);
+//            $datetime = new DateTime($date);
             $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['bill_date']);
-            $date = strtotime($date_string);
+            $date = date("Y/m/d", strtotime($date_string));
             $datetime = new DateTime($date);
 
             $add_purchase_advice_array = [
@@ -313,7 +316,7 @@ class PurchaseAdviseController extends Controller {
 
     public function pending_purchase_advice() {
 
-        $pending_advise = PurchaseAdvise::where('advice_status', '=', 'in_process')->with('purchase_products', 'supplier', 'party')->paginate(1);
+        $pending_advise = PurchaseAdvise::where('advice_status', '=', 'in_process')->with('purchase_products', 'supplier', 'party')->paginate(10);
         $pending_advise->setPath('pending_purchase_advice');
 
         return View::make('pending_purchase_advice', array('pending_advise' => $pending_advise));

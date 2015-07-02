@@ -22,9 +22,8 @@ class PurchaseChallanRequest extends Request {
      */
     public function rules() {
         return [
-            'vehicle_number' => 'required',
             'Freight' => 'required',
-            'loadedby' => 'required',
+            'unloaded_by' => 'required',
             'labour' => 'required',
         ];
     }

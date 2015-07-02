@@ -35,5 +35,9 @@ class PurchaseChallan extends Model {
     public function orderedby() {
         return $this->hasOne('App\User', 'id', 'created_by');
     }
+    
+    public function location_details() {
+        return $this->hasOne('App\DeliveryLocation', 'id', 'delivery_location_id');
+    }
 
 }

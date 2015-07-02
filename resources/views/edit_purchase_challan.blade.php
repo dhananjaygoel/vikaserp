@@ -142,8 +142,8 @@
                             <label for="total"><b class="challan">Total</b> </label>
                         </div>
                         <div class="form-group">
-                            <label for="loadedby"><b class="challan">Loaded By</b></label>
-                            <input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby" value="{{ $purchase_challan->loaded_by }}" type="text">
+                            <label for="loadedby"><b class="challan">Unloaded By</b></label>
+                            <input id="loadedby" class="form-control" placeholder="Unloaded By" name="unloaded_by" value="{{ $purchase_challan->unloaded_by }}" type="text">
                         </div>
                         <div class="form-group">
                             <label for="labour"><b class="challan">Labour </b></label>

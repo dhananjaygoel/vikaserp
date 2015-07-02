@@ -16,6 +16,7 @@ use DB;
 use Hash;
 use Auth;
 use App\Quotation;
+use App\DeliveryLocation;
 
 class PurchaseChallanController extends Controller {
 
@@ -75,17 +76,17 @@ class PurchaseChallanController extends Controller {
         $add_challan->created_by = $request->input('created_by');
         $add_challan->vehicle_number = $request->input('vehicle_number');
         $add_challan->discount = $request->input('discount');
-        $add_challan->unloaded_by = $request->input('loadedby');
+        $add_challan->unloaded_by = $request->input('unloaded_by');
         $add_challan->labours = $request->input('labour');
         $add_challan->remarks = $request->input('remark');
-        $add_challan->grand_total =  $request->input('grand_total');
+        $add_challan->grand_total = $request->input('grand_total');
         $add_challan->order_status = 'pending';
         $add_challan->freight = $input_data['Freight'];
         $add_challan->save();
 
         $challan_id = DB::getPdo()->lastInsertId();
         $challan = PurchaseChallan::find($challan_id);
-        
+
         if (isset($input_data['billno']) && $input_data['billno'] != '') {
             $challan->update([
                 'bill_number' => $request->input('billno')
@@ -126,7 +127,8 @@ class PurchaseChallanController extends Controller {
      */
     public function show($id) {
 
-        $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'purchase_product.product_sub_category', 'purchase_product.unit')->where('id', $id)->first();
+        $purchase_challan = PurchaseChallan::with('purchase_advice', 'location_details', 'supplier', 'purchase_product.product_sub_category', 'purchase_product.unit')->where('id', $id)->first();
+
         return view('view_purchase_challan', compact('purchase_challan'));
     }
 
@@ -154,8 +156,7 @@ class PurchaseChallanController extends Controller {
         $purchase = array(
             'vehicle_number' => $request->input('vehicle_number'),
             'freight' => $request->input('Freight'),
-            'unloaded_by' => $request->input('loadedby'),
-            'unloading' => $request->input('unloading'),
+            'unloaded_by' => $request->input('unloaded_by'),
             'labours' => $request->input('labour'),
             'bill_number' => $request->input('billno'),
             'remarks' => $request->input('remarks'),
@@ -205,6 +206,19 @@ class PurchaseChallanController extends Controller {
             return redirect('purchase_challan')->with('flash_success_message', 'Purchase challan details successfully deleted.');
         } else
             return redirect('purchase_challan')->with('flash_message', 'Please enter a correct password');
+    }
+
+    public function print_purchase_challan($id) {
+     
+        $current_date = date("M/y/m/");
+
+        $date_letter = $current_date . "" . $id;
+        PurchaseChallan::where('id', $id)->update(array(
+            'serial_number' => $date_letter,
+            'order_status' => "Completed"
+        ));
+        
+        return redirect('purchase_challan')->with('success', 'Purchase challan is successfuly printed.');
     }
 
 }

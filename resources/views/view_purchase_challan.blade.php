@@ -69,7 +69,8 @@
                                         </td>
                                     </tr>
                                     <?php $total_quantity = 0;
-                                    $total_amount = 0; ?>
+                                    $total_amount = 0;
+                                    ?>
                                     @foreach($purchase_challan['purchase_product'] as $product_data)
                                     @if($product_data->order_type == 'purchase_challan')
                                     <tr>
@@ -103,7 +104,8 @@
                                     </tr>
                                     <tr>
                                         <td><span>Total: </span><?php $total = $total_amount + (($purchase_challan->discount * $total_amount) / 100) + $purchase_challan->freight;
-                                            echo $total; ?></td>
+                                            echo $total;
+                                            ?></td>
                                     </tr>
                                     <tr>
                                         <td><span>Unloaded By: </span>{{ $purchase_challan->unloaded_by }}</td>
@@ -126,10 +128,12 @@
                                     <tr>
                                         <td><span>Vehicle Name: </span>{{ $purchase_challan->vehicle_number }}</td>
                                     </tr> 
+
                                     <tr>
-                                        <td><span>Delivery Location: </span>
-                                            @if($purchase_challan->delivery_location_id !=0)
-                                            {{$purchase_challan['location']->area_name}}
+                                        <td>
+                                            <span>Delivery Location: </span>
+                                            @if($purchase_challan->delivery_location_id != 0 )
+                                            {{$purchase_challan['location_details']->area_name}}
                                             @else
                                             {{$purchase_challan->other_location}}
                                             @endif</td>

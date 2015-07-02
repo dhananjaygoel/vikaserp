@@ -109,6 +109,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('delete_multiple_challan','SalesDaybookController@delete_multiple_challan');
     Route::post('sales_daybook_date','SalesDaybookController@challan_date');   
     
+    Route::post('print_purchase_challan/{id}','PurchaseChallanController@print_purchase_challan');
+    
     Route::post('print_delivery_order/{id}','DeliveryOrderController@print_delivery_order');
     Route::post('print_delivery_challan/{id}','DeliveryChallanController@print_delivery_challan');
     Route::get('place_order/{id}','InquiryController@place_order');

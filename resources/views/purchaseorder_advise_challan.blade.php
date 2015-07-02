@@ -146,7 +146,7 @@
                     
                     <div class="form-group">
                         <label for="loadedby"><b class="challan">Unloaded By</b></label>
-                        <input id="loadedby" class="form-control" placeholder="Unloaded By" name="loadedby" value="" type="text">
+                        <input id="loadedby" class="form-control" placeholder="Unloaded By" name="unloaded_by" value="" type="text">
                     </div>
                     <div class="form-group">
                         <label for="labour"><b class="challan">Labour </b></label>

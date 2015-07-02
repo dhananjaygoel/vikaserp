@@ -56,15 +56,15 @@
                             <div class="exist_field"  style="display:none">
                                 <div class="form-group">
                                     <label for="name"> Supplier Name</label>
-                                    <input id="name" class="form-control" placeholder="Supplier Name" name="supplier_name" value="" type="text">
+                                    <input id="name" class="form-control" placeholder="Supplier Name" name="supplier_name" value="{{Input::old('supplier_name')}}" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label for="mobile_number">Mobile Number </label>
-                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" type="text">
+                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{Input::old('mobile_number')}}" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label for="period">Credit Period</label>
-                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="text">
+                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{Input::old('credit_period')}}" type="text">
                                 </div>
                             </div>
                             <div class="inquiry_table col-md-12">
@@ -160,11 +160,11 @@
                                 <div class="row">
                                     <div class="form-group col-md-4">
                                         <label for="location">Location </label>
-                                        <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="" type="text">
+                                        <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="{{Input::old('other_location_name')}}" type="text">
                                     </div>
                                     <div class="col-md-4">
                                         <label for="location">Other Location Difference</label>
-                                        <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="" type="text">
+                                        <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="{{Input::old('other_location_difference')}}" type="text">
                                     </div>
                                 </div>
                             </div>
@@ -195,7 +195,7 @@
                                         <tbody>
                                             <tr class="cdtable">
                                                 <td class="cdfirst">VAT Percentage:</td>
-                                                <td><input id="price" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="" type="text"></td>
+                                                <td><input id="price" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{Input::old('vat_percentage')}}" type="text"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -205,13 +205,13 @@
                                 <label for="time">Expected Delivery Date:</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input type="text" name="expected_delivery_date" class="form-control" id="datepickerDate">
+                                    <input type="text" name="expected_delivery_date" class="form-control" id="datepickerDate" value="{{Input::old('expected_delivery_date')}}" >
                                 </div>
                             </div>
                             <div class="clearfix"></div>
                             <div class="form-group">
                                 <label for="inquiry_remark">Remark:</label>
-                                <textarea class="form-control" id="inquiry_remark" name="purchase_order_remark"  rows="3"></textarea>
+                                <textarea class="form-control" id="inquiry_remark" name="purchase_order_remark" rows="3"></textarea>
                             </div>
                             <div>
                                 <div class="checkbox">
