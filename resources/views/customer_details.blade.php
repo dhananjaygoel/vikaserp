@@ -87,7 +87,7 @@
                                         <td><span>Password:</span> </td>
                                     </tr>
                                     <tr>
-                                        <td><span>Credit Period:</span> {{$customer->credit_period}}</td>
+                                        <td><span>Credit Period(Days):</span> {{$customer->credit_period}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Relationship Manager:</span> {{$customer['manager']->first_name}}&nbsp;{{$customer['manager']->last_name}}</td>

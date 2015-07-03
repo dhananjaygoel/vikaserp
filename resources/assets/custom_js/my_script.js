@@ -11,7 +11,8 @@ $('.deleteCustomer').click(function () {
 });
 
 $('#bill_date').datepicker({
-    format: 'dd-mm-yyyy'
+    format: 'dd-mm-yyyy',
+    autoclose: true
 });
 
 $('#search').keypress(function (e) {

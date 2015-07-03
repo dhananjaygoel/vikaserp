@@ -134,7 +134,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="period">Credit Period</label>
+                                <label for="period">Credit Period(Days)</label>
                                 <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$order['customer']->credit_period}}" type="text">
                             </div>
                         </div>
@@ -174,7 +174,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="period">Credit Period</label>
+                                <label for="period">Credit Period(Days)</label>
                                 <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="text">
                             </div>
                         </div>
@@ -211,7 +211,6 @@
                                             <td class="col-md-2">
                                                 <div class="form-group ">
                                                     <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}">
-                                                        <option value="">Unit</option>
                                                         @foreach($units as $unit)
                                                         @if($product->unit_id == $unit->id)
                                                         <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>

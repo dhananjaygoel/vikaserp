@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','Product Sub Category')
+@section('title','Product Size')
 @section('content')
 <div class="row">
     <div class="col-lg-12">
@@ -9,8 +9,7 @@
                     <li><a href="{{url()}}/dashboard">Home</a></li>
                     <li class="active"><span>Product Size</span></li>
                 </ol>
-                <div class="clearfix">
-                    
+                <div class="clearfix">                    
                     <div class=" row col-md-8 pull-right top-page-ui">
                         <div class="filter-block col-md-8 productsub_filter">       
                             <div class="form-group  col-md-5">
@@ -18,7 +17,7 @@
                                     <select class="form-control" name="product_filter" onchange="this.form.submit()">
                                         <option value="" selected="">--Product category--</option>
                                         @foreach($product_type as $prod_type)
-                                        <option <?php if(Input::get('product_filter') == $prod_type->id) echo 'selected="selected"'; ?> value="{{$prod_type->id}}"> {{$prod_type->name}}</option>
+                                        <option <?php if (Input::get('product_filter') == $prod_type->id) echo 'selected="selected"'; ?> value="{{$prod_type->id}}"> {{$prod_type->name}}</option>
                                         @endforeach
                                     </select> 
                                     <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
@@ -74,6 +73,7 @@
                                         <th>Thickness</th>
                                         @endif
                                         <th>Weight(KG)</th>                                        
+                                        <th>Standard Length</th>                                        
                                         <th class="col-md-2">Difference</th>  
                                         @if( Auth::user()->role_id == 0 )
                                         <th >Actions</th>
@@ -102,6 +102,7 @@
                                         </td>
                                         @endif
                                         <td>{{ $produ_sub->weight }} KG</td>
+                                        <td>{{ $produ_sub->standard_length }}</td>
 <!--                                        <td>
                                             @foreach($units as $unit)
                                             @if($unit->id ==  $produ_sub->unit_id)
@@ -109,7 +110,7 @@
                                             @endif
                                             @endforeach
                                         </td>-->
-                                        
+
                                         <td>
                                             <form method="post" action="{{URL::action('ProductsubController@update_difference')}}">
                                                 <div class="row product-price">

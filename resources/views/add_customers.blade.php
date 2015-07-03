@@ -146,7 +146,7 @@
                                 <input id="confirm_password" class="form-control" placeholder="Confirm Password" name="confirm_password" value="" type="password">
                             </div>
                             <div class="form-group">
-                                <label for="credit_period">Credit Period</label>
+                                <label for="credit_period">Credit Period(Days)</label>
                                 <input id="credit_period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ Input::old('credit_period')}}" type="text">
                             </div>
                             <div class="form-group col-md-4 del_loc ">

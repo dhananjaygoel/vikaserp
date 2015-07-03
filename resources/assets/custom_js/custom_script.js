@@ -82,7 +82,8 @@ $(document).ready(function() {
     
     $('#expected_delivery_date').datepicker({
         format: 'mm-dd-yyyy',
-        startDate: today        
+        startDate: today,
+        autoclose: true
     });
     $('#datepickerDateComponent').datepicker();
     $("#add_product_row").on("click", function() {
@@ -93,7 +94,7 @@ $(document).ready(function() {
         }).done(function(data) {
             var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
-            var html = '<option value="" selected="">Unit</option>';
+            var html = '';
             for (var key in arr1) {
                 html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
             }
@@ -115,7 +116,6 @@ $(document).ready(function() {
                 '<td class="col-md-2">' +
                 '<div class="form-group ">' +
                 '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
-                '<option value="" selected="">Unit</option>' +
                 '</select>' +
                 '</div>' +
                 '</td>' +
@@ -147,7 +147,6 @@ $(document).ready(function() {
                 '<td class="col-md-2">' +
                 '<div class="form-group ">' +
                 '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
-                '<option value="" selected="">Unit</option>' +
                 '</select>' +
                 '</div>' +
                 '</td>' +
@@ -172,7 +171,7 @@ $(document).ready(function() {
         }).done(function(data) {
             var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
-            var html = '<option value="" selected="">Unit</option>';
+            var html = '';
             for (var key in arr1) {
                 html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
             }
@@ -189,7 +188,6 @@ $(document).ready(function() {
                 '<td class="col-md-1" colspan="2">' +
                 '<div class="form-group" style="float: left; width: 40%;">' +
                 '<select class="form-control units_dropdown" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
-                '<option value="" selected="">Unit</option>' +
                 '</select>' +
                 '</div>' +
                 '<div class="form-group"  style="float: left; margin-right: 10px; width: 35%;">' +
@@ -223,7 +221,7 @@ $(document).ready(function() {
         }).done(function(data) {
             var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
-            var html = '<option value="" selected="">Unit</option>';
+            var html = '';
             for (var key in arr1) {
                 html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
             }
@@ -240,7 +238,6 @@ $(document).ready(function() {
                 '<td class="col-md-2">' +
                 '<div class="form-group ">' +
                 '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
-                '<option value="" selected="">Unit</option>' +
                 '</select>' +
                 '</div>' +
                 '</td>' +

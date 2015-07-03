@@ -89,7 +89,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="period">Credit Period</label>
+                                    <label for="period">Credit Period(Days)</label>
                                     <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="text">
                                 </div>
                             </div>
@@ -123,8 +123,7 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group ">
                                                             <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
-                                                                <!--<option value="" selected="">Unit</option>-->
-                                                                @foreach($units as $unit)
+                                                               @foreach($units as $unit)
                                                                 <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
                                                                 @endforeach
                                                             </select>
@@ -205,7 +204,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="location">Other Location Difference</label>
-                                        <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="" type="text">
+                                        <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="" type="text">
                                     </div>
                                     <!--                                    <div class="col-md-8 addlocation">
                                                                             <button class="btn btn-primary btn-xs">ADD</button>

@@ -67,7 +67,7 @@
                                 <tr><td><span><b>Mobile Number : </b></span>{{$customer->phone_number1}}</td></tr>
 
                                 @if($customer->credit_period > 0 || $customer->credit_period != 0)
-                                <tr> <td><span><b>Credit Period : </b></span>{{$customer->credit_period}}</td></tr>   
+                                <tr> <td><span><b>Credit Period(Days) : </b></span>{{$customer->credit_period}}</td></tr>   
                                 @endif
 
                                 @endif

@@ -39,7 +39,7 @@
                                         </tr>
                                         @if($inquiry['customer']->credit_period !='' || $inquiry['customer']->credit_period > 0)
                                         <tr>
-                                            <td><span>Credit Period: </span>{{$inquiry['customer']->credit_period}}</td>
+                                            <td><span>Credit Period(Days): </span>{{$inquiry['customer']->credit_period}}</td>
                                         </tr>
                                         @endif
                                         <tr>

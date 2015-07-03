@@ -77,7 +77,7 @@
                                 <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{$purchase_order['customer']->mobile_number}}" type="text">
                             </div>
                             <div class="form-group">
-                                <label for="period">Credit Period</label>
+                                <label for="period">Credit Period(Days)</label>
                                 <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$purchase_order['customer']->credit_period}}" type="text">
                             </div>
                         </div>
@@ -108,7 +108,7 @@
                             <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{$purchase_order['customer']->mobile_number}}" type="text">
                         </div>
                         <div class="form-group">
-                            <label for="period">Credit Period</label>
+                            <label for="period">Credit Period(Days)</label>
                             <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$purchase_order['customer']->credit_period}}" type="text">
                         </div>
                     </div>

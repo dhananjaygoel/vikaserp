@@ -91,7 +91,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="credit_period">Credit Period</label>
+                                    <label for="credit_period">Credit Period(Days)</label>
                                     <input id="credit_period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="text">
                                 </div>
                             </div>
@@ -123,7 +123,6 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group ">
                                                             <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
-                                                                <!--<option value="" selected="">Unit</option>-->
                                                                 @foreach($units as $unit)
                                                                 <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
                                                                 @endforeach

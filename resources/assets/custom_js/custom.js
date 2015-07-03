@@ -75,13 +75,15 @@ $(document).ready(function () {
 });
 $('#datepickerDate').datepicker({
     format: 'mm-dd-yyyy',
-    startDate: today
+    startDate: today,
+    autoclose: true
 
 });
 $('#datepickerDateComponent').datepicker();
 $('#datepickerDate1').datepicker({
     format: 'mm-dd-yyyy',
-    startDate: today
+    startDate: today,
+    autoclose: true
 });
 $('#datepickerDateComponent1').datepicker();
 
@@ -285,8 +287,13 @@ function state_option() {
         $('#city').html(str);
     });
 
-
 }
 
+$('#expected_delivery_date').datepicker().on('changeDate', function (e) {
+    $('#expected_delivery_date').datepicker('hide');
+});
 
-
+//$('#expected_delivery_date').datepicker().on('changeDate', function (ev)
+//{
+//    $('.datepicker').hide();
+//});

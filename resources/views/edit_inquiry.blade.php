@@ -69,7 +69,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="period">Credit Period</label>
+                                <label for="period">Credit Period(Days)</label>
                                 <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$inquiry['customer']->credit_period}}" type="text">
                             </div>
                         </div>
@@ -109,7 +109,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="period">Credit Period</label>
+                                <label for="period">Credit Period(Days)</label>
                                 <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="text">
                             </div>
                         </div>
@@ -142,7 +142,6 @@
                                             <td class="col-md-2">
                                                 <div class="form-group ">
                                                     <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}">
-                                                        <option value="">Unit</option>
                                                         @foreach($units as $unit)
                                                         @if($product->unit_id == $unit->id)
                                                         <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
@@ -200,7 +199,7 @@
                             <div class="form-group">
                                 <label for="location">Delivery Location:</label>
                                 <select class="form-control" name="add_inquiry_location" id="add_inquiry_location">
-                                    <option value="">Delivery Location</option>
+                                    <option value="" disabled="">Delivery Location</option>
                                     @foreach($delivery_location as $location)
                                     @if($location->status=='permanent' && $location->id!=0)
                                     @if($inquiry->delivery_location_id == $location->id)
@@ -228,7 +227,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="location">Other Location Difference</label>
-                                    <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="{{$inquiry->other_location_difference}}" type="text">
+                                    <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="{{$inquiry->other_location_difference}}" type="text">
                                 </div>
                             </div>
                         </div>
@@ -241,7 +240,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="location">Other Location Difference</label>
-                                    <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="" type="text">
+                                    <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="" type="text">
                                 </div>
                             </div>
                         </div>

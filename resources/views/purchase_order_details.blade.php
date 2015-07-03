@@ -33,7 +33,7 @@
                                         <tr><td><span>Mobile Number: </span>{{$purchase_orders['customer']->phone_number1}}</td></tr>
 
                                         @if($purchase_orders['customer']->credit_period > 0 || $purchase_orders['customer']->credit_period != "")
-                                        <tr> <td><span>Credit Period: </span>{{$purchase_orders['customer']->credit_period}}</td></tr>
+                                        <tr> <td><span>Credit Period(Days): </span>{{$purchase_orders['customer']->credit_period}}</td></tr>
                                         @endif
 
                                         <tr><td><span class="underline">Ordered Product Details </span></td>

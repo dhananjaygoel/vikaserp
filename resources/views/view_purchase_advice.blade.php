@@ -43,7 +43,7 @@
                                         <td><span>Mobile Number: </span>{{$purchase_advise['supplier']->phone_number1}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Credit Period: </span> {{$purchase_advise['supplier']->credit_period}}</td>
+                                        <td><span>Credit Period(Days): </span> {{$purchase_advise['supplier']->credit_period}}</td>
                                     </tr>
                                     <tr>
                                         <td><span class="underline"> Product Details </span></td>

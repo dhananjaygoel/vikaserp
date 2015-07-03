@@ -71,7 +71,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="period">Credit Period</label>
+                                    <label for="period">Credit Period(Days)</label>
                                     <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ old('mobile_number') }}" type="text">
                                 </div>
                             </div>
@@ -86,7 +86,7 @@
                                                 <td><span>Price</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
-                                            <?php for ($i = 1; $i <=10; $i++) { ?>
+                                            <?php for ($i = 1; $i <= 10; $i++) { ?>
                                                 <tr id="add_row_{{$i}}" class="add_product_row">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
@@ -103,7 +103,6 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group ">
                                                             <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
-                                                                <option value="" selected="">Unit</option>
                                                                 @foreach($units as $unit)
                                                                 <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
                                                                 @endforeach
@@ -162,10 +161,10 @@
                                 <label for="vehicle_name">Vehicle Number</label>
                                 <input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="" type="text">
                             </div>
-<!--                            <div class="form-group">
-                                <label for="driver_name">Driver Name</label>
-                                <input id="driver_name" class="form-control" placeholder="Driver Name " name="driver_name" value="" type="text">
-                            </div>-->
+                            <!--                            <div class="form-group">
+                                                            <label for="driver_name">Driver Name</label>
+                                                            <input id="driver_name" class="form-control" placeholder="Driver Name " name="driver_name" value="" type="text">
+                                                        </div>-->
                             <div class="form-group">
                                 <label for="driver_contact">Driver Contact</label>
                                 <input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="" type="text">
