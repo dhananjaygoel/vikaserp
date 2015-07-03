@@ -17,10 +17,7 @@
                             Edit Purchase Advice
                         </a>
                     </div>
-
-
                 </div>
-
             </div>
         </div>
         <div class="row">

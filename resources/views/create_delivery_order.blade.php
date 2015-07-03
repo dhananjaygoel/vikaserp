@@ -1,9 +1,3 @@
-<?php
-//echo'<pre>';
-//print_r($orders['customer']);
-//echo '</pre>';
-//exit;
-?>
 @extends('layouts.master')
 @section('title','Create Delivery Order')
 @section('content')
@@ -16,10 +10,8 @@
                     <li><a href="{{url('orders')}}">Orders</a></li>
                     <li class="active"><span>Create Delivery Order</span></li>
                 </ol>
-
             </div>
         </div>
-
         <div  class="row">
             <div class="col-lg-12">
                 <div class="main-box">
@@ -69,7 +61,6 @@
                                 @if($customer->credit_period > 0 || $customer->credit_period != 0)
                                 <tr> <td><span><b>Credit Period(Days) : </b></span>{{$customer->credit_period}}</td></tr>   
                                 @endif
-
                                 @endif
                                 @endforeach 
 
@@ -77,11 +68,9 @@
                                 @foreach($delivery_location as $location)
                                 @if($order->delivery_location_id == $location->id)
                                 <tr><td><span><b>Delivery Location : </b></span>
-
-
                                         {{$location->area_name}}
-                                    </td></tr>
-
+                                    </td>
+                                </tr>
                                 @endif
                                 @endforeach
                                 @else
@@ -108,7 +97,6 @@
                                             <td><span><b>Quantity</b></span></td>
                                             <td><span><b>Unit</b></span></td>
                                             <td><span><b>Present Shipping</b></span></td>
-
                                             <td><span><b>Price</b></span></td>
                                             <td><span><b>Pending Order</b></span></td>
                                             <td><span><b>Remark</b></span></td>
@@ -144,7 +132,7 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="" type="text" onblur="change_quantity({{$key}});">
+                                                    <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$product->quantity}}" type="text" onblur="change_quantity({{$key}});">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">

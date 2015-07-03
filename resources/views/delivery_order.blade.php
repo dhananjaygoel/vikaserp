@@ -222,7 +222,7 @@
                                                         <div class="col-md-12"> Print By <br> 05:00 PM</div> 
                                                     </div>
                                                     <div class="checkbox">
-                                                        <label><input type="checkbox" value="" checked="checked"><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
+                                                        <label><input type="checkbox" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
                                                     </div>
                                                     <div class="clearfix"></div>
                                                     <hr>

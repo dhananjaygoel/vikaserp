@@ -56,7 +56,7 @@
                                             <span>Product(Alias)</span>
                                         </td>
                                         <td>
-                                            <span>Quantity</span>
+                                            <span>Present shipping Qty</span>
                                         </td>
                                         <td>
                                             <span>Unit</span>
