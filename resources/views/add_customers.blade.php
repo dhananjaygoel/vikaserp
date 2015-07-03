@@ -71,7 +71,7 @@
                                                         </div>-->
                             <div class="form-group">
                                 <label for="state">State<span class="mandatory">*</span></label>
-                                <select class="form-control" id="state" name="state">
+                                <select class="form-control" id="state" name="state" onchange="state_option()">
                                     <option value="" selected="">Select State</option>
                                     @foreach($states as $state)
                                     <option value="{{$state->id}}">{{$state->state_name}}</option>                                    

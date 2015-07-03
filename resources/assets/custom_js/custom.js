@@ -262,6 +262,31 @@ function calutate_pending_order(qty, key) {
     }
 }
 
+/**
+ * Comment
+ */
+function state_option() {
+
+    var state = $("#state").val();
+    var site_url = $('#site_url').val();
+
+    $.ajax({
+        type: "GET",
+        url: site_url + '/get_city',
+        data: {state: state},
+    }).done(function (data) {
+        var main_array = JSON.parse(data);
+        var city = main_array['city'];
+        var str = '';
+        var str = '<option value="" selected=""> --Select City-- </option>';
+        for (var key in city) {
+            str += '<option value="' + city[key].id + '"> ' + city[key].city_name + ' </option>';
+        }
+        $('#city').html(str);
+    });
+
+
+}
 
 
 

@@ -80,7 +80,7 @@ class CustomerController extends Controller {
 
         $product_category = ProductCategory::all();
 
-        return View::make('add_customers', array('managers' => $managers, 'locations' => $locations, 'product_category' => $product_category, 'states' => $states , 'cities' =>$cities));
+        return View::make('add_customers', array('managers' => $managers, 'locations' => $locations, 'product_category' => $product_category, 'states' => $states, 'cities' => $cities));
     }
 
     /**
@@ -180,7 +180,7 @@ class CustomerController extends Controller {
         $customer = Customer::with('deliverylocation', 'manager')->find($id);
         $states = States::all();
         $cities = City::all();
-        return View::make('customer_details', array('customer' => $customer, 'states' => $states , 'cities' =>$cities));
+        return View::make('customer_details', array('customer' => $customer, 'states' => $states, 'cities' => $cities));
     }
 
     /**
@@ -206,7 +206,7 @@ class CustomerController extends Controller {
 
         $product_category = ProductCategory::all();
 
-        return View::make('edit_customers', array('customer' => $customer, 'managers' => $managers, 'locations' => $locations, 'product_category' => $product_category, 'states' => $states , 'cities' =>$cities));
+        return View::make('edit_customers', array('customer' => $customer, 'managers' => $managers, 'locations' => $locations, 'product_category' => $product_category, 'states' => $states, 'cities' => $cities));
     }
 
     /**
@@ -313,7 +313,7 @@ class CustomerController extends Controller {
     public function destroy($id) {
 //        echo 'test come';
 //        exit;
-        if (Auth::user()->role_id != 0 ) {
+        if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $password = Input::get('password');
@@ -330,6 +330,22 @@ class CustomerController extends Controller {
         } else {
             return Redirect::to('customers')->with('error', 'Invalid password');
         }
+    }
+
+    public function get_city() {
+        $state_id = Input::get('state');
+
+        $data = City::where('state_id', $state_id)->get();
+
+        $city = array();
+        $i = 0;
+        foreach ($data as $key => $val) {
+            $city[$i]['id'] = $data[$key]->id;
+            $city[$i]['city_name'] = $data[$key]->city_name;
+            $i++;
+        }
+        echo json_encode(array('city' => $city));
+        exit;
     }
 
 }
