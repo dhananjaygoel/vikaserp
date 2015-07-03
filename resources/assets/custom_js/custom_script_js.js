@@ -233,7 +233,8 @@ function change_quantity(key) {
     var total = parseInt(quantity) + parseInt(present_shipping);
 
     if (parseInt(present_shipping) > parseInt(tot_quty)) {
-        alert('present Shipping is greater than the quantity')
+        alert('present Shipping is greater than the quantity');
+        $("#present_shipping_" + key).val(0);
     } else {
         $("#pending_qunatity_" + key).html("<span>" + (parseInt(tot_quty) - parseInt(present_shipping)) + "</span");
     }
@@ -290,62 +291,62 @@ function product_rate(key) {
 /**
  * Grand total for Delivery order
  */
-//
-//function grand_total_delivery_order() {
-////    var quantity = $("#quantity_"+key).val();
-////    alert('quantity '+quantity);
-////    $("#pending_qunatity_value_"+key).val(quantity);
-////    $("#pending_qunatity_"+key).html('<span class="text-center">'+quantity+'</span>');
-//
-//    var current_row_count = $(".add_product_row").length;
-////    alert(current_row_count);
-//    var total_price = 0;
-//    for (var i = 0; i <= current_row_count + 1; i++) {
-//        if (parseInt($('#product_price_' + i).val())) {
-//            var present_shipping = parseInt($("#present_shipping_" + i).val());
-//            total_price = total_price + (parseInt($('#product_price_' + i).val()) * present_shipping);
-//        }
-//    }
-////    alert(total_price);
-//    var vat_val = 0;
-//
-//    if ($('#optionsRadios6').is(':checked')) {
-//        vat_val = (parseInt(total_price) * $('#vat_percentage').val()) / 100;
-//    }
-//    if ($('#optionsRadios5').is(':checked')) {
-//        vat_val = 0;
-//    }
-//    var grand_total = parseInt(total_price) + parseInt(vat_val);
-//    if ($("#total_price").length > 0) {
-//        $("#total_price").val(total_price);
-//    }
-//    if ($("#discount_value").length > 0) {
-//        if ($("#discount_value").val() > 0) {
-//
-//            var discount_value = (parseFloat($("#discount_value").val()) * total_price) / 100;
-////            alert(discount_value );
-//            grand_total = grand_total - discount_value;
-//        }
-//
-//    }
-//    if ($("#freight_value").length > 0) {
-//        if ($("#freight_value").val() > 0) {
-//            var freight_value = $("#freight_value").val();
-//            total_price = total_price + freight_value;
-//        }
-//
-//    }
-//    if ($("#loading_charge").length > 0) {
-//        if ($("#loading_charge").val() > 0) {
-//            var loading_charge = parseInt($("#loading_charge").val());
-//            grand_total = grand_total + loading_charge;
-//        }
-//
-//    }
-//
-//
-//    $('#grand_total').val(grand_total);
-//}
+
+function grand_total_delivery_order() {
+//    var quantity = $("#quantity_"+key).val();
+//    alert('quantity '+quantity);
+//    $("#pending_qunatity_value_"+key).val(quantity);
+//    $("#pending_qunatity_"+key).html('<span class="text-center">'+quantity+'</span>');
+
+    var current_row_count = $(".add_product_row").length;
+//    alert(current_row_count);
+    var total_price = 0;
+    for (var i = 0; i <= current_row_count + 1; i++) {
+        if (parseInt($('#product_price_' + i).val())) {
+            var present_shipping = parseInt($("#present_shipping_" + i).val());
+            total_price = total_price + (parseInt($('#product_price_' + i).val()) * present_shipping);
+        }
+    }
+//    alert(total_price);
+    var vat_val = 0;
+
+    if ($('#optionsRadios6').is(':checked')) {
+        vat_val = (parseInt(total_price) * $('#vat_percentage').val()) / 100;
+    }
+    if ($('#optionsRadios5').is(':checked')) {
+        vat_val = 0;
+    }
+    var grand_total = parseInt(total_price) + parseInt(vat_val);
+    if ($("#total_price").length > 0) {
+        $("#total_price").val(total_price);
+    }
+    if ($("#discount_value").length > 0) {
+        if ($("#discount_value").val() > 0) {
+
+            var discount_value = (parseFloat($("#discount_value").val()) * total_price) / 100;
+//            alert(discount_value );
+            grand_total = grand_total - discount_value;
+        }
+
+    }
+    if ($("#freight_value").length > 0) {
+        if ($("#freight_value").val() > 0) {
+            var freight_value = $("#freight_value").val();
+            total_price = total_price + freight_value;
+        }
+
+    }
+    if ($("#loading_charge").length > 0) {
+        if ($("#loading_charge").val() > 0) {
+            var loading_charge = parseInt($("#loading_charge").val());
+            grand_total = grand_total + loading_charge;
+        }
+
+    }
+
+
+    $('#grand_total').val(grand_total);
+}
 
 /**
  * Fetch price of the product
@@ -470,7 +471,7 @@ function grand_total_challan() {
     var freight_value = 0;
     if ($("#freight_value").length > 0) {
         if (parseInt($("#freight_value").val())) {
-            var freight_value = $("#freight_value").val();
+            var freight_value = parseInt($("#freight_value").val());
 //            total_price = total_price + parseInt(freight_value);
         }
 
