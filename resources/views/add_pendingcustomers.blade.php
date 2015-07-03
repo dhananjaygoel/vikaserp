@@ -80,14 +80,14 @@
                                 <label for="tally_name">Tally Name<span class="mandatory">*</span></label>
                                 <input id="tally_name" class="form-control" placeholder="Tally Name " name="tally_name" value="{{ $customer->tally_name}}" type="text">
                             </div> 
-                            <div class="form-group">
+<!--                            <div class="form-group">
                                 <label for="tally_category">Tally Category<span class="mandatory">*</span></label>
                                 <input id="tally_category" class="form-control" placeholder="Tally Category " name="tally_category" value="{{$customer->tally_category}}" type="text">
                             </div> 
                             <div class="form-group">
                                 <label for="tally_sub_category">Tally Subcategory<span class="mandatory">*</span></label>
                                 <input id="tally_sub_category" class="form-control" placeholder="Tally Subcategory " name="tally_sub_category" value="{{$customer->tally_sub_category}}" type="text">
-                            </div> 
+                            </div> -->
                             <div class="form-group">
                                 <label for="phone_number1">Phone number 1<span class="mandatory">*</span></label>
                                 <input id="phone_number1" class="form-control" placeholder="Phone number " name="phone_number1" value="{{$customer->phone_number1}}" type="text">
@@ -96,14 +96,14 @@
                                 <label for="phone_number2">Phone Number 2</label>
                                 <input id="phone_number2" class="form-control" placeholder="Phone Number 2" name="phone_number2" value="{{$customer->phone_number2}}" type="text">
                             </div>
-                            <div class="form-group">
+<!--                            <div class="form-group">
                                 <label for="vat_tin_number">VAT-TIN Number</label>
                                 <input id="vat_tin_number" class="form-control" placeholder="VAT-TIN Number" name="vat_tin_number" value="{{$customer->vat_tin_number}}" type="text">
                             </div>
                             <div class="form-group">
                                 <label for="excise_number">Excise Number</label>
                                 <input id="excise_number" class="form-control" placeholder="Excise Number" name="excise_number" value="{{$customer->excise_number}}" type="text">
-                            </div>
+                            </div>-->
                             <div class="form-group col-md-4 del_loc ">
                                 <label for="delivery_location">Delivery Location:<span class="mandatory">*</span></label>
                                 <select class="form-control" id="delivery_location" name="delivery_location">
