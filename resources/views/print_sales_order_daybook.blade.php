@@ -1,7 +1,6 @@
 <html>
     <head>
         <title>Print</title>
-        <!-- bootstrap -->
         {!! HTML::style('/resources/assets/css/bootstrap/bootstrap.min.css') !!}
         {!! HTML::script('/resources/assets/js/jquery.js') !!}
     </head>
@@ -23,13 +22,12 @@
                     <td>remarks</td>
                 </tr>
                 <?php $i = 1; ?>
-                @foreach ($purchase_daybook as $obj)
-
+                @foreach ($allorders as $obj)
                 <?php
                 $qty = 0;
                 $amount = 0;
                 ?>
-                @foreach ($obj['all_purchase_products'] as $total_qty)
+                @foreach ($obj['all_order_products'] as $total_qty)
                 <?php
                 $qty += $total_qty->present_shipping;
                 $amount += $total_qty->present_shipping * $total_qty->price;
@@ -39,7 +37,7 @@
                     <td>{{$i++ }}</td>
                     <td>{{ $obj->serial_number }}</td>
                     <td>dummy</td>
-                    <td>{{$obj['supplier']->owner_name }}</td>
+                    <td>{{$obj['customer']->owner_name }}</td>
                     <td>{{$obj['delivery_location']->area_name}}</td>
                     <td>{{$qty }}</td>
                     <td>{{$amount }}</td>

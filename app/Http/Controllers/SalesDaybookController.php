@@ -26,7 +26,7 @@ class SalesDaybookController extends Controller {
      * @return Response
      */
     public function index() {
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 ) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
@@ -35,7 +35,7 @@ class SalesDaybookController extends Controller {
         $allorders->setPath('sales_daybook');
         return view('sales_daybook', compact('allorders', 'challan_date'));
     }
-    
+
     /*
      * Challan date function is for sales daybook 
      * All records of selected date
@@ -55,7 +55,7 @@ class SalesDaybookController extends Controller {
             $d = date("d", strtotime($date));
             $challan_date = \Carbon\Carbon::create($y, $m, $d, 0, 0, 0);
 
-                $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
+            $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
                             ->whereRaw('DATE(created_at) = ?', [$challan_date])
                             ->with('customer', 'all_order_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(10);
             $challan_date = $input_data['challan_date'];
@@ -67,13 +67,13 @@ class SalesDaybookController extends Controller {
         }
     }
 
-    
     /*
      * Delete multiple selected challan
      * 
      */
+
     public function delete_multiple_challan() {
-        if (Auth::user()->role_id != 0 ) {
+        if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $input_data = Input::all();
@@ -101,10 +101,10 @@ class SalesDaybookController extends Controller {
         }
     }
 
-    
     /*
      * Delete Challan of particular id
-     */    
+     */
+
     public function delete_challan($id) {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -125,12 +125,12 @@ class SalesDaybookController extends Controller {
             return Redirect::to('sales_daybook')->with('error', 'Invalid password');
         }
     }
-    
+
     public function export_sales_daybook() {
-        
+
         $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products', 'delivery_order', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
-        
-        
+
+
         $sheet_data = array();
         foreach ($allorders as $key => $value) {
 
@@ -154,4 +154,11 @@ class SalesDaybookController extends Controller {
             });
         })->export('xls');
     }
+
+    public function print_sales_order_daybook() {
+
+        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products', 'delivery_order', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
+        return view('print_sales_order_daybook', compact('allorders'));
+    }
+
 }

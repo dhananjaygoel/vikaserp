@@ -11,11 +11,7 @@
                 </ol>
                 <div class="filter-block">
                     <h1 class="pull-left">Sales Daybook</h1>
-
                     <div class="pull-right top-page-ui col-md-7">
-
-
-
                         <div class="col-md-8 ">
                             <div class="form-group">
                                 <div class="input-group">
@@ -35,8 +31,7 @@
                         </div>
 
                         <div class="pull-right col-md-4">
-
-                            <button type="button" class="btn btn-primary form_button_footer" onClick="location.href = 'print_salesdaybook.php'" >Print</button>
+                            <a href="{{url('print_sales_order_daybook')}}" class="btn btn-primary form_button_footer" >Print</a> 
                             <a href="{{url('export_sales_daybook')}}" class="btn btn-primary form_button_footer" >Export</a> 
                         </div>
                     </div>
@@ -48,26 +43,26 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
-                   <div class="main-box-body main_contents clearfix">
+                    <div class="main-box-body main_contents clearfix">
                         @if(sizeof($allorders)==0)
-                    <div class="alert alert-info no_data_msg_container">
-                        Currently no orders have been added to Delivery Challan.
-                    </div>
-                    @else
-                    @if (Session::has('flash_message'))
-                    <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
-                    @endif
-                    @if (Session::has('error'))
-                    <div id="flash_error" class="alert alert-danger no_data_msg_container">{{ Session::get('error') }}</div>
-                    @endif
+                        <div class="alert alert-info no_data_msg_container">
+                            Currently no orders have been added to Delivery Challan.
+                        </div>
+                        @else
+                        @if (Session::has('flash_message'))
+                        <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
+                        @endif
+                        @if (Session::has('error'))
+                        <div id="flash_error" class="alert alert-danger no_data_msg_container">{{ Session::get('error') }}</div>
+                        @endif
 
-                    @if (count($errors) > 0)
-                    <div role="alert" class="alert alert-danger">                         
-                        @foreach ($errors->all() as $error)
-                        <p>{{ $error }}</p>
-                        @endforeach                            
-                    </div>
-                    @endif
+                        @if (count($errors) > 0)
+                        <div role="alert" class="alert alert-danger">                         
+                            @foreach ($errors->all() as $error)
+                            <p>{{ $error }}</p>
+                            @endforeach                            
+                        </div>
+                        @endif
                         <div class="table-responsive">
                             <form action="{{url('delete_multiple_challan')}}" method="POST">
                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
@@ -182,7 +177,7 @@
                                     </div>  
                                     @endif                                    
                                     @endforeach                                    
-                                </tbody>
+                                    </tbody>
                                 </table>
                                 @if( Auth::user()->role_id == 0  )
                                 <div class="modal fade" id="delete_challan_selected" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
