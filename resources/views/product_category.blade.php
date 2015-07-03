@@ -64,7 +64,7 @@
                                     <?php $i = ($product_cat->currentPage() - 1 ) * $product_cat->perPage() + 1; ?>
                                     @foreach($product_cat as $product)
                                     <tr>
-                                        <td>{{ $i }}</td>
+                                        <td>{{ $i++ }}</td>
                                         <td>{{ $product->product_category_name }}</td>                                        
                                         <td>                                        
                                             @if($product->product_type_id == 1)
@@ -113,7 +113,6 @@
                                             @endif
                                         </td>
                                     </tr>
-                                    <?php $i++; ?>
                                 <div class="modal fade" id="myModal{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">

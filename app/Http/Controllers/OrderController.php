@@ -81,17 +81,30 @@ class OrderController extends Controller {
                 }
             } elseif ((isset($_GET['size_filter'])) && $_GET['size_filter'] != '') {
 
-                $size = $_GET['size_filter'];
+                $sizes = $_GET['size_filter'];
 
-                $allorders = Order::where('order_status', '=', 'pending')
-                                ->with(array('customer', 'delivery_location', 'all_order_products.product_category.product_sub_category' =>
-                                    function($q) use($size) {
-                                        $q->where('size', '=', $size);
-                                    }))->Paginate(10);
+                $allorders = Order::
+                        with(array('customer', 'delivery_location', 'all_order_products.product_category.product_sub_category' =>
+                            function($q) use($sizes) {
+                                $q->where('size', $sizes);
+                            }))->Paginate(10);
+//                            
+//                            
+//                            
+//                $allorders = Order::
+////                        where('order_status', '=', 'pending')
+//                        with(array('customer', 'delivery_location', 'all_order_products.product_category.product_sub_category' =>
+//                            function($q) use($size) {
+//                                $q->where('size', '=', $size);
+//                            }))->Paginate(10);
+//                echo '<pre>';
+//                print_r($allorders->toArray());
+//                echo '</pre>';
+//                exit;
             } else {
 
                 $allorders = Order::where('order_status', '=', 'pending')
-                                ->where('order_source', '=', 'warehouse')
+//                                ->where('order_source', '=', 'warehouse')
                                 ->with('customer', 'delivery_location', 'all_order_products')
                                 ->orderBy('created_at', 'desc')->Paginate(10);
             }

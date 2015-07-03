@@ -1,9 +1,3 @@
-<?php
-//echo'<pre>';
-//print_r($order->toArray());
-//echo '</pre>';
-//exit;
-?>
 @extends('layouts.master')
 @section('title','Order Details')
 @section('content')
@@ -31,15 +25,10 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box">
-
                     <div class="main-box-body clearfix">
-
                         <div class="inquiry_table col-md-12">
-
                             <div class="table-responsive">
                                 <table id="table-example" class="table table-hover customerview_table  ">
-
-
                                     <tbody> 
                                         @if($order->order_source == 'warehouse')
                                         <tr><td><span><b>Warehouse: </b></span> yes</td></tr>                                        
@@ -59,23 +48,15 @@
                                         <tr> <td><span><b>Credit Period: </b></span>{{$customer->credit_period}}</td></tr>
                                         @endif
                                         @endif
-                                        @endforeach                                        
-
-
-
+                                        @endforeach                                     
                                         <tr>
                                             <td><span class="underline">Ordered Product Details </span></td>
-
                                         </tr>
                                     </tbody>
                                 </table>
                                 <table id="table-example" class="table table-hover customerview_table  ">
-
-
                                     <tbody>   
                                         <tr class="headingunderline">
-
-
                                             <td>
                                                 <span> Product(Alias)</span>
                                             </td>
@@ -85,17 +66,14 @@
                                             <td>
                                                 <span>Unit</span>
                                             </td>
-
                                             <td>
                                                 <span>Price</span>
                                             </td>
                                             <td class="widthtable">
                                                 <span>Remark</span>
                                             </td>
-
                                         </tr>
-                                        <?php
-                                        $total = 0; ?>
+                                        <?php $total = 0; ?>
                                         @foreach($order['all_order_products'] as $key=>$product)
                                         @if($product->order_type =='order')
                                         <tr id="add_row_{{$key}}" class="add_product_row">
@@ -130,82 +108,57 @@
                                         </tr>
                                         @endif
                                         @endforeach
-
-
                                     </tbody>
                                 </table>
                                 <table id="table-example" class="table table-hover customerview_table  ">
-
-
                                     <tbody> 
                                         @if($order->vat_percentage !=0)
                                         <tr>
-
                                             <td><span>Plus VAT: </span>Yes</td>
-
                                         </tr>
                                         <tr>
-
                                             <td><span>VAT Percentage: </span>{{$order->vat_percentage}}</td>
-
                                         </tr>
                                         @elseif($order->vat_percentage ==0)
                                         <tr>
-
                                             <td><span>Plus VAT: </span>No</td>
-
                                         </tr>
                                         @endif
                                         <tr>
-
                                             <td><span>Total: </span><?php
-                                                    $grand_total = 0;
-                                                    $vat = ($total * $order->vat_percentage) / 100;
-                                                    $grand_total = $total + $vat;
-                                                    echo $grand_total;
-                                                    ?> </td>
-
+                                                $grand_total = 0;
+                                                $vat = ($total * $order->vat_percentage) / 100;
+                                                $grand_total = $total + $vat;
+                                                echo $grand_total;
+                                                ?> </td>
                                         </tr>
-
-
-
                                         <tr>
                                             <td><span>Expected Delivery Date: </span>{{date("d F, Y", strtotime($order->expected_delivery_date)) }}</td>
-
                                         </tr>      
                                         <tr>
                                             @if($order->delivery_location_id !=0)
                                             @foreach($delivery_location as $location)
                                             @if($order->delivery_location_id == $location->id)
                                             <td><span>Delivery Location: </span>{{$location->area_name}}</td>
-
                                             @endif
                                             @endforeach                          
                                             @else
                                             <td><span>Delivery Location: </span>{{$order->other_location}}</td>
                                             <td><span>Delivery Location Difference: </span>{{$order->other_location_difference}}</td>
                                             @endif
-
                                         </tr>
                                         <tr>
                                             <td><span>Remark: </span>{{$order->remarks}}</td>
-
                                         </tr>
-
-
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
-
-
                         <div class="clearfix"></div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 @stop

@@ -81,7 +81,7 @@
                             <div class="form-group">
                                 <label for="city">City<span class="mandatory">*</span></label>
                                 <select class="form-control" id="city"  name="city">
-                                    <option value="" selected="">Select City</option>
+                                    <option value="" selected="">--Select City--</option>
                                     @foreach($cities as $city)
                                     <option value="{{$city->id}}">{{$city->city_name}}</option>                                    
                                     @endforeach

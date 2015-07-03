@@ -19,7 +19,7 @@
                                     <div class="col-md-2"> 
 
                                         <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
-                                            <option disabled="" value="" selected="">Status</option>
+                                            <option disabled="" value="" selected="">--Status-- </option>
                                             <option <?php if (Input::get('order_filter') == 'pending') echo 'selected=""'; ?> value="pending">Pending</option>
                                             <option <?php if (Input::get('order_filter') == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
                                             <option <?php if (Input::get('order_filter') == 'cancelled') echo 'selected=""'; ?> value="cancelled">Canceled</option>
@@ -28,7 +28,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <select class="form-control" id="user_filter3" name="party_filter" onchange="this.form.submit();">
-                                            <option value="" selected="">Select Party</option>
+                                            <option value="" selected="">--Select Party--</option>
                                             @foreach($customers as $customer)
                                             <option <?php if (Input::get('party_filter') == $customer->id) echo 'selected=""'; ?> value="{{$customer->id}}">{{$customer->owner_name}}</option>
                                             @endforeach                                        
@@ -36,43 +36,40 @@
                                     </div>
                                     <div class="col-md-2">
                                         <select class="form-control" id="user_filter3" name="fulfilled_filter" onchange="this.form.submit();">
-                                            <option value="" selected="">Fulfilled</option>
+                                            <option value="" selected="">--Fulfilled by--</option>
                                             <option <?php if (Input::get('fulfilled_filter') == '0') echo 'selected=""'; ?>value="0" >Warehouse</option>
                                             <option <?php if (Input::get('fulfilled_filter') == 'all') echo 'selected=""'; ?>value="all" >Direct</option>
-                                            @foreach($customers as $customer)
-                                            <option <?php if (Input::get('fulfilled_filter') == $customer->id) echo 'selected=""'; ?> value="{{$customer->id}}">{{$customer->owner_name}}</option>
-                                            @endforeach
                                         </select> 
                                     </div>
                                     <div class="col-md-2">
                                         <select class="form-control" id="user_filter3" name="location_filter" onchange="this.form.submit();">
-                                            <option value="" selected="">Select Location</option>
+                                            <option value="" selected="">--Select Location--</option>
                                             @foreach($delivery_location as $location) 
                                             @if($location->status=='permanent' && $location->id!=0)
                                             <option <?php if (Input::get('location_filter') == $location->id) echo 'selected=""'; ?> value="{{$location->id}}">{{$location->area_name}}</option>
                                             @endif
                                             @endforeach 
-
                                         </select> 
                                     </div>
                                     <div class="col-md-2">
                                         <select class="form-control" id="user_filter3" name="size_filter" onchange="this.form.submit();">
-                                            <option value="" selected="">Select Size</option>
-                                            @foreach($product_size as $product)
-                                            
+                                            <option value="" selected="">--Select Size--</option>
+                                            @foreach($product_size as $product)                                            
                                             <option <?php if (Input::get('size_filter') == $product->size) echo 'selected=""'; ?> value="{{$product->size}}">{{$product->size}}</option>
-                                            
                                             @endforeach                                        
                                         </select>
                                     </div>
+
+                                    <div class="col-md-2">
+                                        @if( Auth::user()->role_id != 3 )
+                                        <a href="{{url('orders/create')}}" class="btn btn-primary pull-right">
+                                            <i class="fa fa-plus-circle fa-lg"></i> Place Order
+                                        </a>
+                                        @endif
+                                    </div>
+
                                 </form>
-                                <div class="col-md-2">
-                                    @if( Auth::user()->role_id != 3 )
-                                    <a href="{{url('orders/create')}}" class="btn btn-primary pull-right">
-                                        <i class="fa fa-plus-circle fa-lg"></i> Place Order
-                                    </a>
-                                    @endif
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -93,7 +90,8 @@
                         @endif
                         <div class="table-responsive tablepending">
                             <table id="table-example" class="table table-hover">
-                                <?php $k = 1; ?>
+                                <?php $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1; ?>
+                                
                                 @foreach($allorders as $order)
                                 @if($order->order_status == 'pending')
                                 @if($k==1)
@@ -123,12 +121,12 @@
                                         <td class="text">{{$order['other_location']}}</td>
                                         @endif
 <!--                                        <td class="text"><?php
-                                            foreach ($users as $u) {
-                                                if ($u['id'] == $order['created_by']) {
-                                                    echo $u['first_name'];
-                                                }
+                                        foreach ($users as $u) {
+                                            if ($u['id'] == $order['created_by']) {
+                                                echo $u['first_name'];
                                             }
-                                            ?></td>-->
+                                        }
+                                        ?></td>-->
                                         @if(count($pending_orders) > 0)
                                         @foreach($pending_orders as $porder)
                                         @if($porder['id'] == $order->id)                                       

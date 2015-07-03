@@ -28,14 +28,14 @@
                                         <div class="col-sm-2">
                                             <button type="submit" class="btn btn-primary form_button_footer"><i class="fa fa-search"></i></button>
                                         </div>
-                                         <div class="clearfix"></div>
+                                        <div class="clearfix"></div>
                                     </form>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <button type="button" class="btn btn-primary form_button_footer" >Print</button>
-                            <a href="{{url('expert_purchase_daybook')}}" class="btn btn-primary form_button_footer" >Export</a>                         
+                            <a href="{{url('print_purchase_daybook')}}" class="btn btn-primary form_button_footer" > Print </a>
+                            <a href="{{url('expert_purchase_daybook')}}" class="btn btn-primary form_button_footer" > Export </a>                         
                         </div>
                         <div class="clearfix"></div>
                     </div>

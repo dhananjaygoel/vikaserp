@@ -1,13 +1,3 @@
-
-<?php
-
-//echo'<pre>';
-//print_r($allorders[0]->toArray());
-//echo '</pre>';
-
-
-//exit;
-?>
 @extends('layouts.master')
 @section('title','Sales Daybook')
 @section('content')
@@ -53,19 +43,12 @@
 
                 </div>
                 <div class="clearfix"></div>
-<!--                <div class="col-md-3">
-                    <div class="selectall">
-                        <button type="button" class="btn btn-primary form_button_footer" id="select_all_button" onclick="select_all_checkbox();" all_checked="allunchecked">Select All</button>
-                    </div>
-                </div>-->
             </div>
         </div>
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
-                    
-                    <div class="main-box-body main_contents clearfix">
-
+                   <div class="main-box-body main_contents clearfix">
                         @if(sizeof($allorders)==0)
                     <div class="alert alert-info no_data_msg_container">
                         Currently no orders have been added to Delivery Challan.
@@ -92,7 +75,7 @@
                                     <thead>
                                         <tr>
                                             @if( Auth::user()->role_id == 0 )
-                                            <th class="text-left"><input type="checkbox" class="table-link" id ="select_all_button" onclick="select_all_checkbox();" all_checked="allunchecked" >Select All</th>
+                                            <th class="text-left"><input type="checkbox" class="table-link" id ="select_all_button" onclick="select_all_checkbox();" all_checked="allunchecked" >Select All To Delete</th>
                                             @endif
                                             @if( Auth::user()->role_id == 1 )
                                             <th>#</th>
@@ -112,18 +95,17 @@
                                             @if( Auth::user()->role_id == 0)
                                             <th>Action </th>
                                             @endif
-
                                         </tr>
                                     </thead>
                                     <tbody id="challan_data" >    
-
-                                        <?php $k = 0; ?>
-                                        @foreach($allorders as $challan)
-                                        
-
+                                        <?php $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1; ?> 
+                                        @foreach($allorders as $challan)                                       
                                         <tr class="add_product_row">
                                             @if( Auth::user()->role_id == 0 )
-                                            <td class="text-center"><input type="checkbox" id ="checkbox_{{$k}}" name="challan_id[{{$k}}][checkbox]" value="{{$challan->id}}" >{{$k}}</td>
+                                            <td class="text-center">
+                                                <input type="checkbox" id ="checkbox_{{$k}}" name="challan_id[{{$k}}][checkbox]" value="{{$challan->id}}" > 
+                                                &nbsp; {{$k++}}
+                                            </td>
                                             @endif
                                             @if( Auth::user()->role_id == 1)
                                             <th>{{$k}}</th>
@@ -153,13 +135,8 @@
                                             <td >{{$challan->grand_total}}</td>
                                             <td >{{$challan->bill_number}}</td>
                                             <td>{{$challan->remarks}}</td>
-
-
-
                                             @if( Auth::user()->role_id == 0)
-                                            <td>
-
-                                                <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_{{$challan->id}}" title="delete">
+                                            <td>                                                <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_{{$challan->id}}" title="delete">
                                                     <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
                                                         <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -168,7 +145,6 @@
 
                                             </td>
                                             @endif
-                                            <?php $k++; ?>
                                         </tr>
                                         @if( Auth::user()->role_id == 0  )
                                     <div class="modal fade" id="delete_challan_{{$challan->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -204,15 +180,9 @@
                                             </div>
                                         </div>
                                     </div>  
-                                    @endif
-
-
-                                    
-                                    @endforeach
-
-                                    </tbody>
-
-
+                                    @endif                                    
+                                    @endforeach                                    
+                                </tbody>
                                 </table>
                                 @if( Auth::user()->role_id == 0  )
                                 <div class="modal fade" id="delete_challan_selected" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

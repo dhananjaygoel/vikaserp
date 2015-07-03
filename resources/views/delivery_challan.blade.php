@@ -47,7 +47,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>                    
-                                    <?php $k = 1; ?>
+                                    <?php $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1; ?>
                                     @foreach($allorders as $challan)
                                     @if($challan->challan_status == 'pending')
 
@@ -156,7 +156,7 @@
                                                     <div >
                                                         <button type="submit" class="btn btn-primary form_button_footer" >Generate Challan</button>
                                                         <!--<button type="button" class="btn btn-primary form_button_footer" >Send Message</button>-->
-                                                        <a href="{{url('delivery_challa')}}" class="btn btn-default form_button_footer">Cancel</a>
+                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                                                     </div>
                                                     <div class="clearfix"></div>
                                                     {!! Form::close() !!}
@@ -284,7 +284,7 @@
                                                     <div >
                                                         <button type="submit" class="btn btn-primary form_button_footer" >Generate Challan</button>
                                                         <!--<button type="button" class="btn btn-primary form_button_footer" >Send Message</button>-->
-                                                        <a href="{{url('delivery_challa')}}" class="btn btn-default form_button_footer">Cancel</a>
+                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                                                     </div>
 
                                                     <div class="clearfix"></div>

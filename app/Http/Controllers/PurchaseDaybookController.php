@@ -61,12 +61,24 @@ class PurchaseDaybookController extends Controller {
         }
     }
 
+    public function destroy($id) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
+        if (Hash::check(Input::get('password'), Auth::user()->password)) {
+            $delete_purchase_challan = PurchaseChallan::find($id)->delete();
+            return redirect('purchase_order_daybook')->with('success', 'purchase day book details successfully deleted.');
+        } else {
+            return redirect('purchase_order_daybook')->with('error', 'Please enter a correct password');
+        }
+    }
+
     public function expert_purchase_daybook() {
 
         $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products', 'delivery_location')
                 ->where('order_status', 'completed')
                 ->get();
-        
+
 
         $sheet_data = array();
         foreach ($purchase_daybook as $key => $value) {
@@ -84,7 +96,6 @@ class PurchaseDaybookController extends Controller {
             $sheet_data[$key]['remarks'] = $value->remarks;
         }
 
-
         Excel::create('Purchase-Daybook-list', function($excel) use($sheet_data) {
 
             $excel->sheet('Order List', function($sheet) use($sheet_data) {
@@ -93,16 +104,14 @@ class PurchaseDaybookController extends Controller {
         })->export('xls');
     }
 
-    public function destroy($id) {
-        if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
-        }
-        if (Hash::check(Input::get('password'), Auth::user()->password)) {
-            $delete_purchase_challan = PurchaseChallan::find($id)->delete();
-            return redirect('purchase_order_daybook')->with('success', 'purchase day book details successfully deleted.');
-        } else {
-            return redirect('purchase_order_daybook')->with('error', 'Please enter a correct password');
-        }
+    public function print_purchase_daybook() {
+
+        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products', 'delivery_location')
+                ->where('order_status', 'completed')
+                ->get();
+
+
+        return view('print_purchase_order_daybook', compact('purchase_daybook'));
     }
 
 }
