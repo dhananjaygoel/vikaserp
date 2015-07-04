@@ -209,10 +209,7 @@ class DeliveryOrderController extends Controller {
     public function update($id) {
 
         $input_data = Input::all();
-//        echo '<pre>';
-//        print_r($input_data);
-//        echo '</pre>';
-//        exit;
+
         $i = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
@@ -423,6 +420,7 @@ class DeliveryOrderController extends Controller {
 
     //Generate Serial number and print Delivery order
     public function print_delivery_order($id) {
+
         $current_date = date("M/y/m/");
 
         $date_letter = $current_date . "" . $id;
@@ -430,8 +428,14 @@ class DeliveryOrderController extends Controller {
             'serial_no' => $date_letter,
             'order_status' => "Completed"
         ));
-        return redirect('delivery_order')->with('validation_message', 'Delivery order is successfuly printed.');
-//        echo $date_letter;
+
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.product_category.product_sub_category', 'location')->where('id', $id)->first();
+        $units = Units::all();
+        $delivery_locations = DeliveryLocation::all();
+        $customers = Customer::all();
+
+        return view('print_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
+//        return redirect('delivery_order')->with('validation_message', 'Delivery order is successfuly printed.');
     }
 
     public function pending_quantity_order($id) {
@@ -457,10 +461,7 @@ class DeliveryOrderController extends Controller {
     }
 
     function calculate_price($delivery_data) {
-//        echo '<pre>';
-//        print_r($delivery_data['customer']->id);
-//        echo '</pre>';
-//        exit;
+
         $product_rates = array();
         foreach ($delivery_data->delivery_product as $product) {
 

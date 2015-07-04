@@ -1,27 +1,100 @@
+<!DOCTYPE html>
 <html>
     <head>
-        <title>Print</title>
-        {!! HTML::style('/resources/assets/css/bootstrap/bootstrap.min.css') !!}
-        {!! HTML::script('/resources/assets/js/jquery.js') !!}
+        <title>Sales-Daybook</title>
+        <meta charset="windows-1252">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body onload="window.print();">
-        <table id="add_product_table_purchase" class="table table-hover">
-            <tbody>
-                <tr>
-                    <td>#</td>
-                    <td>Challan sr. No</td>
-                    <td>Do. No</td>
-                    <td>Name</td>
-                    <td>Delivery Location</td>
-                    <td>Qty</td>
-                    <td>Amount</td>
-                    <td>bill No.</td>
-                    <td>truck no</td>
-                    <td>loaded by</td>
-                    <td>labour</td>
-                    <td>remarks</td>
-                </tr>
-                <?php $i = 1; ?>
+        <style>
+            .divTable{
+                display:table;         
+                width:100%;         
+                background-color:#fff;
+                border-top: 1px solid #ccc;
+                border-bottom: 1px solid #ccc;
+            }
+            .divRow{
+
+                width:auto;
+                clear:both; 
+                border-top: 1px solid #ccc;
+            }
+            .divCell{
+                float:left;
+                display:table-column;         
+                width:7%;         
+                padding: 5px;
+                border-right: 1px solid #ccc;
+            }
+            .divCell:last-child
+            {
+                border: none;
+            }
+            .divRow:last-child
+            {
+                border-top: none;
+                border-bottom:  1px solid #ccc;
+            }
+            .headRow{
+                display:table-row;
+                text-align: center;
+            }        
+
+
+            .invoice
+            {
+                width:100%;
+                border: 1px solid #ccc;
+                float: left;
+                padding: 0px;
+                overflow: hidden;
+            }
+
+
+
+
+            .title
+            {
+                width: 100%;
+                text-align: center;
+                border-bottom: 1px solid #ccc;
+                padding: 10px 0px 10px 5px;
+                font-weight: 600;
+            }
+            .center
+            {
+                text-align: center;
+            }
+        </style>
+        <div class="invoice">
+            <div class="title">
+                Sales-Daybook
+            </div>            
+            <div class="divTable">
+                <div class="headRow">
+                    <div  class="divCell">#</div>
+                    <div  class="divCell">Challan sr. No</div>
+                    <div  class="divCell">Do. No</div>
+                    <div  class="divCell">Name</div>
+                    <div  class="divCell">Del Loc</div>
+                    <div  class="divCell">Qty</div>
+                    <div  class="divCell">Amount</div>  
+                    <div  class="divCell">Bill No.</div>
+                    <div  class="divCell">Truck No</div>
+                    <div  class="divCell">Loaded By</div>
+                    <div  class="divCell">Labour</div>
+                    <div  class="divCell">Remarks</div>
+                </div>
+
+                <?php
+                $i = 1;
+
+//                echo '<pre>';
+//                print_r($allorders->toArray());
+//                echo '</pre>';
+//                exit;
+                ?>
                 @foreach ($allorders as $obj)
                 <?php
                 $qty = 0;
@@ -33,23 +106,30 @@
                 $amount += $total_qty->present_shipping * $total_qty->price;
                 ?>
                 @endforeach
-                <tr>
-                    <td>{{$i++ }}</td>
-                    <td>{{ $obj->serial_number }}</td>
-                    <td>dummy</td>
-                    <td>{{$obj['customer']->owner_name }}</td>
-                    <td>{{$obj['delivery_location']->area_name}}</td>
-                    <td>{{$qty }}</td>
-                    <td>{{$amount }}</td>
-                    <td>{{$obj->bill_number }}</td>
-                    <td>{{$obj->vehicle_number }}</td>
-                    <td>{{$obj->unloaded_by }}</td>
-                    <td>{{$obj->labours }}</td>
-                    <td>{{$obj->remarks }}</td>
-                </tr>
-                @endforeach
 
-            </tbody>
-        </table>
+                <div class="divRow">
+                    <div class="divCell center">{{$i++ }}</div>
+                    <div class="divCell">{{ $obj->serial_number }}</div>
+                    <div class="divCell">xxx</div>
+                    <div class="divCell">{{ $obj['customer']->owner_name }}</div>
+                    <div class="divCell">
+                        @if(sizeof($obj['delivery_location']) > 0)
+                        {{ $obj['delivery_location']->area_name}}
+                        @else
+                        --
+                        @endif                        
+                    </div>
+                    <div class="divCell">{{ $qty }}</div> 
+                    <div class="divCell">{{ $amount }}</div>
+                    <div class="divCell">{{ $obj->bill_number }}</div>
+                    <div class="divCell">{{ $obj->vehicle_number }}</div>
+                    <div class="divCell">{{ $obj->unloaded_by }}</div>
+                    <div class="divCell">{{ $obj->labours }}</div> 
+                    <div class="divCell">{{ $obj->remarks }}</div> 
+                </div>
+                @endforeach
+            </div>
+        </div>    
     </body>
 </html>
+

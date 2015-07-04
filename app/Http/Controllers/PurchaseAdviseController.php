@@ -30,7 +30,7 @@ class PurchaseAdviseController extends Controller {
      */
     public function index() {
 
-        $q = PurchaseAdvise::query()->with('supplier','purchase_products');
+        $q = PurchaseAdvise::query()->with('supplier', 'purchase_products');
 
         if (Input::has('purchaseaAdviseFilter') && Input::get('purchaseaAdviseFilter') != '') {
             $q->where('advice_status', '=', Input::get('purchaseaAdviseFilter'));
@@ -332,6 +332,19 @@ class PurchaseAdviseController extends Controller {
         $units = Units::all();
 
         return view('purchaseorder_advise_challan', compact('purchase_advise', 'locations', 'units'));
+    }
+
+    public function print_purchase_advise($id) {
+        
+        return view('print_purchase_advise');
+        
+//        $current_date = date("M/y/m/");
+//
+//        $date_letter = $current_date . "" . $id;
+//        DeliveryOrder::where('id', $id)->update(array(
+//            'serial_no' => $date_letter,
+//            'order_status' => "Completed"
+//        ));
     }
 
 }

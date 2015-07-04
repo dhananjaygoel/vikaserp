@@ -89,7 +89,10 @@ Route::group(['middleware' => ['auth']], function() {
     
     Route::get('get_units', 'UnitController@get_units');
     Route::resource('purchase_orders', 'PurchaseOrderController');
+    
     Route::resource('purchaseorder_advise', 'PurchaseAdviseController');
+    Route::resource('print_purchase_advise', 'PurchaseAdviseController@print_purchase_advise');
+    
     Route::get('pending_purchase_advice', 'PurchaseAdviseController@pending_purchase_advice');
     Route::resource('orders', 'OrderController');
     Route::post('manual_complete_order', 'OrderController@manual_complete_order');

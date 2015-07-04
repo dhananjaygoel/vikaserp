@@ -3,7 +3,6 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">
-
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
@@ -163,7 +162,7 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
-                                                <form method="POST" action="" accept-charset="UTF-8" >
+                                                {!! Form::open(array('url'=>url('print_delivery_order/'.$delivery->id), 'method' => 'post')) !!}
                                                     <div class="row print_time "> 
                                                         <div class="col-md-12"> Print By <br> 05:00 PM</div> 
                                                     </div>
@@ -173,11 +172,11 @@
                                                     <div class="clearfix"></div>
                                                     <hr>
                                                     <div >
-                                                        <a href="purchaseorder_advise.php" type="button" class="btn btn-primary form_button_footer" >Print</a>
+                                                        <a href="#" type="button" class="btn btn-primary form_button_footer" >Print</a>
                                                         <button class="btn btn-default form_button_footer" data-dismiss="modal">Cancel</button>
                                                     </div>
                                                     <div class="clearfix"></div>
-                                                </form>
+                                                 {!! Form::close() !!}
                                             </div>
                                         </div>
                                     </div>

@@ -29,10 +29,12 @@
                                 </div>
                             </div>
                         </div>
+                        @if(sizeof($allorders) > 0)
                         <div class="pull-right col-md-4">
                             <a href="{{url('print_sales_order_daybook')}}" class="btn btn-primary form_button_footer" >Print</a> 
                             <a href="{{url('export_sales_daybook')}}" class="btn btn-primary form_button_footer" >Export</a> 
                         </div>
+                        @endif
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -103,7 +105,7 @@
                                             @if( Auth::user()->role_id == 1)
                                             <th>{{$k}}</th>
                                             @endif
-                                            <td >{{ date('d F, Y',strtotime($challan['created_at']))}}</td>
+                                            <td >{{ date('d F, Y',strtotime($challan['updated_at']))}}</td>
                                             <td >
                                                 @if($challan->serial_number == '')
                                                 --
@@ -113,7 +115,9 @@
                                             </td> 
                                             <td >{{$challan["customer"]->owner_name}}</td>
                                             <td >{{$challan["delivery_order"]->vehicle_number}}</td>
+
                                             <td >{{$challan["delivery_order"]->order_source}}</td>
+
                                             <td >{{$challan['user'][0]->first_name}}</td>
                                             <td>{{$challan->loaded_by}}</td>
                                             <td >{{$challan->labours}}</td>
@@ -219,7 +223,7 @@
                             </form>
                             <div class="clearfix"></div>
                             <span class="pull-right">
-                                <?php echo $allorders->render(); ?>
+<?php echo $allorders->render(); ?>
                             </span>
 
                         </div>    
