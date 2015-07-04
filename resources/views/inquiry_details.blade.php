@@ -1,10 +1,8 @@
-
 @extends('layouts.master')
 @section('title','Inquiry')
 @section('content')
 <div class="row">
     <div class="col-lg-12">
-
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
@@ -42,12 +40,29 @@
                                             <td><span>Credit Period(Days): </span>{{$inquiry['customer']->credit_period}}</td>
                                         </tr>
                                         @endif
+
+                                        @if($inquiry->delivery_location_id != 0)
+                                        @foreach($delivery_location as $location)
+                                        @if($inquiry->delivery_location_id == $location->id)
+                                        <tr>
+                                            <td><span class="underline">Delivery Location: </span> {{$location->area_name}} </td>
+                                        </tr>
+                                        @endif
+                                        @endforeach
+                                        @else
+                                        <tr>
+                                            <td><span class="underline">Other Location: </span> {{$inquiry->other_location}} </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="underline">Other Location Difference: </span> {{$inquiry->other_location_difference}} </td>
+                                        </tr>
+                                        @endif
+
                                         <tr>
                                             <td><span class="underline">Product Details </span></td>
-
                                         </tr>
                                     </tbody>
-                                </table>
+                                </table>                               
                                 <table id="table-example" class="table customerview_table">
                                     <tbody>
                                         <tr class="headingunderline">
@@ -90,7 +105,10 @@
                                         @endif
 
                                         <tr>
-                                            <td><span>Total: </span> <?php $total = $inquiry['inquiry_products']->sum('price') * $product_data->quantity; echo $total; ?></td>
+                                            <td><span>Total: </span> <?php
+                                                $total = $inquiry['inquiry_products']->sum('price') * $product_data->quantity;
+                                                echo $total;
+                                                ?></td>
 
                                         </tr>
 
@@ -109,7 +127,7 @@
 
 
                             </div>
-                            
+
                             <hr>
                             <div>
                                 <button title="SMS would be sent to Party and Relationship Manager" type="button" class="btn btn-primary smstooltip" >Send SMS</button><span title="SMS has been sent 5 times" class="badge enquirybadge smstooltip">0</span>

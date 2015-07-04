@@ -1,3 +1,9 @@
+<?php
+//echo '<pre>';
+//print_r($purchase_daybook->toArray());
+//echo '</pre>';
+//exit;
+?>
 @extends('layouts.master')
 @section('title','Purchase Order Daybook')
 @section('content')
@@ -63,7 +69,6 @@
                             </div>
                             @endif
 
-
                             @if(sizeof($purchase_daybook) != 0)
                             <div class="table-responsive">
                                 <form action="{{url('delete_all_daybook')}}" method="POST">
@@ -76,7 +81,7 @@
                                         <div class="checkbox">
                                             <label style="font-weight: bold;">
                                                 <input onclick="select_all_checkbox();" all_checked="allunchecked" type="checkbox" id="select_all_button" value="" />
-                                                Select All
+                                                Select All to Delete
                                             </label>
                                         </div>
                                         </th>
@@ -97,9 +102,19 @@
                                         </thead>
                                         <tbody> 
                                             @foreach($purchase_daybook as $daybook) 
+                                            <?php
+                                            $total_qty = 0;
+                                            $total_amount = 0;
+                                            ?>
+                                            @foreach($daybook['all_purchase_products'] as $total)
+                                            <?php
+                                            $total_qty += $total->present_shipping;
+                                            $total_amount += $total->price * $total->present_shipping;
+                                            ?>
+                                            @endforeach
                                             <tr>
                                                 <td><input type="checkbox" name="daybook[]" id="daybook[]" value="{{ $daybook->id }}" /><span class="cbt">{{ $i++ }}</span></td>
-                                                <td>{{ date("d F, Y", strtotime($daybook['purchase_advice']->purchase_advice_date)) }}</td>
+                                                <td>{{ date("d F, Y", strtotime($daybook->updated_at)) }}</td>
                                                 <td>{{ $daybook->serial_number }}</td>
                                                 <td>{{ $daybook['supplier']->owner_name }}</td>
                                                 <td>{{ $daybook->vehicle_number }}</td>                                        
@@ -107,10 +122,16 @@
                                                 <td>{{ $daybook['orderedby']->first_name }} </td>
                                                 <td>{{ $daybook->unloaded_by }} </td>
                                                 <td>{{ $daybook->labours }}</td>    
-                                                <td>56</td>
-                                                <td>{{ $daybook->amount }}</td>                                        
+                                                <td>{{ $total_qty }}</td>
+                                                <td>{{ $total_amount }}</td>                                        
                                                 <td>{{ $daybook->bill_number }}</td>
-                                                <td>{{ $daybook->remarks }}</td>
+                                                <td>
+                                                    @if((strlen(trim($daybook->remarks))) > 50)                                                
+                                                    {{ substr(trim($daybook->remarks),0,50)}} ..
+                                                    @else
+                                                    {{$daybook->remarks}}
+                                                    @endif
+                                                </td>
                                                 <td>  <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal{{$daybook->id}}" >
                                                         <span class="fa-stack">
                                                             <i class="fa fa-square fa-stack-2x"></i>

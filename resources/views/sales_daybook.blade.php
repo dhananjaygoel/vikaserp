@@ -29,13 +29,11 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="pull-right col-md-4">
                             <a href="{{url('print_sales_order_daybook')}}" class="btn btn-primary form_button_footer" >Print</a> 
                             <a href="{{url('export_sales_daybook')}}" class="btn btn-primary form_button_footer" >Export</a> 
                         </div>
                     </div>
-
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -119,7 +117,8 @@
                                             <td >{{$challan['user'][0]->first_name}}</td>
                                             <td>{{$challan->loaded_by}}</td>
                                             <td >{{$challan->labours}}</td>
-                                            <td><?php
+                                            <td>
+                                                <?php
                                                 $total_qunatity = 0;
                                                 foreach ($challan["all_order_products"] as $products) {
                                                     $total_qunatity = $total_qunatity + $products["actual_pieces"];
@@ -129,7 +128,13 @@
                                             </td>
                                             <td >{{$challan->grand_total}}</td>
                                             <td >{{$challan->bill_number}}</td>
-                                            <td>{{$challan->remarks}}</td>
+                                            <td>                                                
+                                                @if((strlen(trim($challan->remarks))) > 50)                                                
+                                                {{ substr(trim($challan->remarks),0,50)}} ..
+                                                @else
+                                                {{$challan->remarks}}
+                                                @endif
+                                            </td>
                                             @if( Auth::user()->role_id == 0)
                                             <td>                                                <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_{{$challan->id}}" title="delete">
                                                     <span class="fa-stack">
@@ -137,7 +142,6 @@
                                                         <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                                     </span>
                                                 </a>
-
                                             </td>
                                             @endif
                                         </tr>
@@ -161,13 +165,9 @@
                                                         </div>
                                                         <div class="clearfix"></div>
                                                         <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
-
-
                                                     </div>
-
                                                 </div>           
                                                 <div class="modal-footer">
-
                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                     <button type="button" class="btn btn-default" id="yes" onclick="this.form.submit();">Yes</button>
                                                 </div>

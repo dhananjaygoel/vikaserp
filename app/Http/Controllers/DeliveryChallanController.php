@@ -50,7 +50,7 @@ class DeliveryChallanController extends Controller {
         $allorder = DeliveryChallan::where('id', '=', $id)
                         ->where('challan_status', '=', 'pending')
                         ->with('all_order_products.unit', 'all_order_products.product_category', 'customer', 'delivery_order')->first();
-  
+
         return View::make('delivery_challan_details', compact('allorder'));
     }
 
@@ -103,15 +103,21 @@ class DeliveryChallanController extends Controller {
                 'loading_charge' => $input_data['loading'],
                 'loaded_by' => $input_data['loadedby'],
                 'labours' => $input_data['labour'],
-                'vat_percentage' => $input_data['vat_percentage'],
                 'grand_price' => $input_data['grand_total'],
                 'remarks' => $input_data['challan_remark'],
                 'challan_status' => "Pending"
             ]);
+
+            if (isset($input_data['vat_percentage'])) {
+                $delivery_challan->update([
+                    'vat_percentage' => $input_data['vat_percentage']]);
+            }
+
             if (isset($input_data['billno'])) {
                 $delivery_challan->update([
                     "bill_number" => $input_data['billno']]);
             }
+
             $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
             if ($j != 0) {
                 $order_products = array();
@@ -174,10 +180,8 @@ class DeliveryChallanController extends Controller {
 
     //Generate Serial number and print Delivery Challan
     public function print_delivery_challan($id) {
+
         $serial_number_delivery_order = Input::get('serial_number');
-//        $delivery_order_id = Input::get('delivery_order_id');
-//        $current_date = date("M/y/m/");
-//        $date_letter =  $date.$delivery_order_id. "/" . $id;
         $date_letter = $serial_number_delivery_order . "/" . $id;
         DeliveryChallan::where('id', $id)->update(array(
             'serial_number' => $date_letter,

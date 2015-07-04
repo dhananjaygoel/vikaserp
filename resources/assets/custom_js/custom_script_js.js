@@ -26,11 +26,16 @@ $(document).ready(function () {
 
     });
     $('#add_order_location').change(function () {
+        
+//        alert('hi');
         if ($('#add_order_location').val() == '-2') {
-            $('.locationtext').toggle();
+            $('.locationtext').show();
+        }else{
+             $('.locationtext').hide();
         }
 
     });
+    
     $('#add_inquiry_location').change(function () {
         if ($('#add_order_location').val() == '-2') {
             $('.locationtext').toggle();

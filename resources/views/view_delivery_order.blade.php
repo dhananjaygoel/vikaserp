@@ -44,6 +44,20 @@
                                     <tr>
                                         <td><span>Mobile Number: </span>{{$delivery_data[0]['customer']->phone_number1}}</td>
                                     </tr>
+
+                                    <tr>
+                                        <td><span>Delivery Location: </span>
+
+                                            @foreach($delivery_locations as $location)
+                                            @if($location->id == $delivery_data[0]->delivery_location_id)
+
+                                            {{$location->area_name}}
+                                            @endif
+                                            @endforeach
+
+                                        </td>
+                                    </tr>
+
                                     <tr>
                                         <td><span class="underline"> Product Details </span></td>
                                     </tr>
@@ -96,7 +110,7 @@
                                     @if($delivery_data[0]->vat_percentage != "" || $delivery_data[0]->vat_percentage > 0)  
                                     <tr>
                                         <td><span>Plus VAT: </span>    
-                                        Yes                                            
+                                            Yes                                            
                                         </td>
                                     </tr>
                                     <tr>
@@ -105,27 +119,16 @@
                                     @else
                                     <tr>
                                         <td><span>Plus VAT: </span>    
-                                        No                                            
+                                            No                                            
                                         </td>
                                     </tr>
                                     @endif                                    
-                                    
-                                    
+
+
                                     <tr><td><b>Vehicle Name:</b> {{ $delivery_data[0]->vehicle_number }} </td> </tr>
-                                    
+
                                     <tr><td><b>Driver Contact:</b> {{ $delivery_data[0]->driver_contact_no }} </td> </tr>
-                                    <tr>
-                                        <td><span>Delivery Location: </span>
 
-                                            @foreach($delivery_locations as $location)
-                                            @if($location->id == $delivery_data[0]->delivery_location_id)
-
-                                            {{$location->area_name}}
-                                            @endif
-                                            @endforeach
-
-                                        </td>
-                                    </tr>
                                     <tr>
                                         <td><span>Remark: </span>{{ $delivery_data[0]->remarks }}</td>
                                     </tr>

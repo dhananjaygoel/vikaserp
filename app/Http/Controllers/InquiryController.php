@@ -154,8 +154,9 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category.product_sub_category', 'customer')->first();
+        $delivery_location = DeliveryLocation::all();
 
-        return view('inquiry_details', compact('inquiry'));
+        return view('inquiry_details', compact('inquiry', 'delivery_location'));
     }
 
     /**
@@ -183,7 +184,7 @@ class InquiryController extends Controller {
     public function update($id, InquiryRequest $request) {
 
         $input_data = Input::all();
-        
+
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
         $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
@@ -231,7 +232,7 @@ class InquiryController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
-        
+
         $location_id = $input_data['add_inquiry_location'];
         if ($input_data['add_inquiry_location'] == 'other') {
             $location_id = 0;

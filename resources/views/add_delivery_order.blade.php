@@ -75,6 +75,31 @@
                                     <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ old('mobile_number') }}" type="text">
                                 </div>
                             </div>
+
+                            <div class="row col-md-4">
+                                <div class="form-group">
+                                    <label for="location">Delivery Location:</label>
+                                    <select class="form-control" name="add_order_location" id="add_order_location">
+                                        <option value="" selected="">Delivery Location</option>
+                                        @foreach($delivery_locations as $delivery_location)
+                                        @if($delivery_location->status=='permanent' && $delivery_location->id!=0)
+                                        <option value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
+                                        @endif
+                                        @endforeach
+                                        <option id="other_location" value="-2">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="locationtext">
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <label for="location">Location </label>
+                                        <input id="location" class="form-control" placeholder="Location " name="location" value="" type="text">
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="inquiry_table col-md-12">
                                 <div class="table-responsive">
                                     <table id="add_product_table" class="table table-hover">
@@ -169,29 +194,7 @@
                                 <label for="driver_contact">Driver Contact</label>
                                 <input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="" type="text">
                             </div>
-                            <div class="row col-md-4">
-                                <div class="form-group">
-                                    <label for="location">Delivery Location:</label>
-                                    <select class="form-control" name="add_order_location" id="add_order_location">
-                                        <option value="" selected="">Delivery Location</option>
-                                        @foreach($delivery_locations as $delivery_location)
-                                        @if($delivery_location->status=='permanent' && $delivery_location->id!=0)
-                                        <option value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
-                                        @endif
-                                        @endforeach
-                                        <option id="other_location" value="-2">Other</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div class="locationtext">
-                                <div class="row">
-                                    <div class="form-group col-md-4">
-                                        <label for="location">Location </label>
-                                        <input id="location" class="form-control" placeholder="Location " name="location" value="" type="text">
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="clearfix"></div>
                             <div class="form-group">
                                 <div class="radio">

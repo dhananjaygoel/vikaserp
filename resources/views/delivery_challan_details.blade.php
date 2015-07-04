@@ -137,18 +137,18 @@
 
                         @if($allorder->vat_percentage != "" || $allorder->vat_percentage != 0)
                         <div class="form-group">
-                            <label for="Plusvat"><b class="challan">Plus VAT</b> Yes</label>
+                            <label for="Plusvat"><b class="challan">VAT</b> Yes</label>
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label for="driver_contact"><b class="challan">VAT Percentage</b> {{$allorder->vat_percentage}}</label>
+                            <label for="driver_contact"><b class="challan">VAT Percentage</b> {{$allorder->vat_percentage}} %</label>
 
                         </div>
 
                         <hr>
                         @else
                         <div class="form-group">
-                            <label for="Plusvat"><b class="challan">Plus VAT</b> No</label>
+                            <label for="Plusvat"><b class="challan">VAT</b> No</label>
                         </div>
                         <hr>
                         @endif

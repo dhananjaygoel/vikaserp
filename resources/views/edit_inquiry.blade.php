@@ -114,6 +114,58 @@
                             </div>
                         </div>
                         @endif
+
+                        <div class="row col-md-4">
+                            <div class="form-group">
+                                <label for="location">Delivery Location:</label>
+                                <select class="form-control" name="add_inquiry_location" id="add_inquiry_location">
+                                    <option value="" disabled="">Delivery Location</option>
+                                    @foreach($delivery_location as $location)
+                                    @if($location->status=='permanent' && $location->id!=0)
+                                    @if($inquiry->delivery_location_id == $location->id)
+                                    <option value="{{$location->id}}" selected="">{{$location->area_name}}</option>
+                                    @else
+                                    <option value="{{$location->id}}">{{$location->area_name}}</option>
+                                    @endif
+                                    @endif
+                                    @endforeach
+                                    @if($inquiry->delivery_location_id == 0)
+                                    <option id="other_location" value="other" selected="">Other</option>
+                                    @else
+                                    <option id="other_location" value="other">Other</option>
+                                    @endif
+                                </select>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        @if($inquiry->delivery_location_id==0)
+                        <div class="locationtext" id="other_location_input_wrapper" style="display: block;">
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label for="location">Location </label>
+                                    <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="{{$inquiry->other_location}}" type="text">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="location">Other Location Difference</label>
+                                    <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="{{$inquiry->other_location_difference}}" type="text">
+                                </div>
+                            </div>
+                        </div>
+                        @else
+                        <div class="locationtext" id="other_location_input_wrapper" style="display: none;">
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label for="location">Location </label>
+                                    <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="" type="text">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="location">Other Location Difference</label>
+                                    <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="" type="text">
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+
                         <div class="inquiry_table col-md-12">
                             <div class="table-responsive">
                                 <table id="add_product_table" class="table table-hover  ">
@@ -195,56 +247,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="row col-md-4">
-                            <div class="form-group">
-                                <label for="location">Delivery Location:</label>
-                                <select class="form-control" name="add_inquiry_location" id="add_inquiry_location">
-                                    <option value="" disabled="">Delivery Location</option>
-                                    @foreach($delivery_location as $location)
-                                    @if($location->status=='permanent' && $location->id!=0)
-                                    @if($inquiry->delivery_location_id == $location->id)
-                                    <option value="{{$location->id}}" selected="">{{$location->area_name}}</option>
-                                    @else
-                                    <option value="{{$location->id}}">{{$location->area_name}}</option>
-                                    @endif
-                                    @endif
-                                    @endforeach
-                                    @if($inquiry->delivery_location_id == 0)
-                                    <option id="other_location" value="other" selected="">Other</option>
-                                    @else
-                                    <option id="other_location" value="other">Other</option>
-                                    @endif
-                                </select>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                        @if($inquiry->delivery_location_id==0)
-                        <div class="locationtext" id="other_location_input_wrapper" style="display: block;">
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label for="location">Location </label>
-                                    <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="{{$inquiry->other_location}}" type="text">
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="location">Other Location Difference</label>
-                                    <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="{{$inquiry->other_location_difference}}" type="text">
-                                </div>
-                            </div>
-                        </div>
-                        @else
-                        <div class="locationtext" id="other_location_input_wrapper" style="display: none;">
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label for="location">Location </label>
-                                    <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="" type="text">
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="location">Other Location Difference</label>
-                                    <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="" type="text">
-                                </div>
-                            </div>
-                        </div>
-                        @endif
+
                         <div class="clearfix"></div>
                         @if($inquiry->vat_percentage == 0)
                         <div class="form-group">

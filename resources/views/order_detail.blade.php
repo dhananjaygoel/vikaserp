@@ -48,10 +48,25 @@
                                         <tr> <td><span><b>Credit Period(Days): </b></span>{{$customer->credit_period}}</td></tr>
                                         @endif
                                         @endif
-                                        @endforeach                                     
+                                        @endforeach  
+                                        
+                                        <tr>
+                                            @if($order->delivery_location_id !=0)
+                                            @foreach($delivery_location as $location)
+                                            @if($order->delivery_location_id == $location->id)
+                                            <td><span>Delivery Location: </span>{{$location->area_name}}</td>
+                                            @endif
+                                            @endforeach                          
+                                            @else
+                                            <td><span>Delivery Location: </span>{{$order->other_location}}</td>
+                                            <td><span>Delivery Location Difference: </span>{{$order->other_location_difference}}</td>
+                                            @endif
+                                        </tr>                                        
+                                        
                                         <tr>
                                             <td><span class="underline">Ordered Product Details </span></td>
                                         </tr>
+                                        
                                     </tbody>
                                 </table>
                                 <table id="table-example" class="table table-hover customerview_table  ">
@@ -72,7 +87,7 @@
                                             <td class="widthtable">
                                                 <span>Remark</span>
                                             </td>
-                                        </tr>
+                                        </tr>                                      
                                         <?php $total = 0; ?>
                                         @foreach($order['all_order_products'] as $key=>$product)
                                         @if($product->order_type =='order')
@@ -135,18 +150,7 @@
                                         <tr>
                                             <td><span>Expected Delivery Date: </span>{{date("d F, Y", strtotime($order->expected_delivery_date)) }}</td>
                                         </tr>      
-                                        <tr>
-                                            @if($order->delivery_location_id !=0)
-                                            @foreach($delivery_location as $location)
-                                            @if($order->delivery_location_id == $location->id)
-                                            <td><span>Delivery Location: </span>{{$location->area_name}}</td>
-                                            @endif
-                                            @endforeach                          
-                                            @else
-                                            <td><span>Delivery Location: </span>{{$order->other_location}}</td>
-                                            <td><span>Delivery Location Difference: </span>{{$order->other_location_difference}}</td>
-                                            @endif
-                                        </tr>
+                                        
                                         <tr>
                                             <td><span>Remark: </span>{{$order->remarks}}</td>
                                         </tr>

@@ -64,6 +64,9 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Date</th>
+                                        <th>Party Name</th>
+                                        <th>Vechile Number</th>
+                                        <th>Quantity</th>
                                         <th>Serial Number</th>
                                         <th class="text-center">Create Purchase Challan</th>
                                         <th class="text-center">Actions</th>
@@ -74,9 +77,17 @@
                                     $i = ($purchase_advise->currentPage() - 1) * $purchase_advise->perPage() + 1;
                                     ?>
                                     @foreach($purchase_advise as $key=>$pa)
+                                    
+                                    <?php $qty_sum = 0; ?>
+                                    @foreach($pa['purchase_products'] as $prod)
+                                    <?php $qty_sum += $prod->quantity; ?>
+                                    @endforeach
                                     <tr>
                                         <td>{{$i}}</td>
                                         <td>{{$pa->purchase_advice_date}}</td>
+                                        <td>{{$pa['supplier']->owner_name}}</td>
+                                        <td>{{$pa->vehicle_number}}</td>
+                                        <td>{{$qty_sum}}</td>
                                         <td>{{$pa->serial_number}}</td>
                                         <td class="text-center"><a href="{{ url('purchaseorder_advise_challan/'.$pa->id)}}" class="table-link" title="purchase challan" >
                                                 <span class="fa-stack">

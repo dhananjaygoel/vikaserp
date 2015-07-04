@@ -1,9 +1,3 @@
-<?php
-//echo '<pre>';
-//print_r($allorder->toArray());
-//echo '</pre>';
-//exit;
-?>
 @extends('layouts.master')
 @section('title','Edit Delivery Challan')
 @section('content')
@@ -25,12 +19,9 @@
                 <div class="main-box"> 
                     <div class="main-box-body clearfix">
                         <form method="POST" action="{{url('delivery_challan/'.$allorder->id)}}" accept-charset="UTF-8" >
-
-
                             @if (Session::has('validation_message'))
                             <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('validation_message') }}</div>
                             @endif
-
                             @if (count($errors) > 0)
                             <div role="alert" class="alert alert-warning">                         
                                 @foreach ($errors->all() as $error)
@@ -40,16 +31,12 @@
                             @endif
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input name="_method" type="hidden" value="PUT">
-
-
                             <div class="form-group">
                                 <label><b>Party Name:</b> {{$allorder['customer']->owner_name}}</label>
-
                             </div>
                             <hr>
                             <div class="form-group">
                                 <label><b>Serial Number:</b> {{$allorder['delivery_order']->serial_no}}</label>
-
                             </div>
                             <hr>
                             <div class="table-responsive">
@@ -64,7 +51,7 @@
                                             <td><span>Unit</span></td>
                                             <td><span>Amount</span></td>
                                         </tr>
-                                        <?php $key=1;?>
+                                        <?php $key = 1; ?>
                                         @foreach($allorder['all_order_products'] as $product)
                                         @if($product->order_type =='delivery_challan')
                                         <tr id="add_row_{{$key}}" class="add_product_row">
@@ -129,7 +116,7 @@
                                             </td>
 
                                         </tr>
-                                        <?php $key++?>
+                                        <?php $key++ ?>
                                         @endif
                                         @endforeach
 
@@ -200,7 +187,7 @@
                             </div>
 
 
-                            @if($allorder->vat_percentage >0)
+                            @if($allorder->vat_percentage > 0)
                             <div class="form-group">
                                 <label for="driver_contact"><b class="challan">VAT Percentage</b> <input type="text" name="vat_percentage" id="vat_percentage" value="{{$allorder->vat_percentage}}" readonly="readonly"></label>
                             </div>
@@ -208,6 +195,10 @@
                                 <label for="vatp"><b class="challan">VAT Value : </b>
                                     <span id="vat_val"></span>
                                 </label>
+                            </div>
+                            @else
+                            <div class="form-group">
+                                <label for="Plusvat"><b class="challan">VAT</b> No</label>
                             </div>
                             @endif
 

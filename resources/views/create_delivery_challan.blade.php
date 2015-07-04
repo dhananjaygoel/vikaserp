@@ -1,34 +1,20 @@
-<?php
-//echo'<pre>';
-//print_r($delivery_data['delivery_product']->toArray());
-//echo '</pre>';
-//exit;
-?>
 @extends('layouts.master')
 @section('title','Delivery Challan')
 @section('content')
 <div class="row">
     <div class="col-lg-12">
-
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
                     <li><a href="{{url('delivery_order')}}">Delivery Order</a></li>
                     <li class="active"><span>Delivery Challan</span></li>
                 </ol>
-
             </div>
         </div>
-
         <div  class="row">
             <div class="col-lg-12">
                 <div class="main-box">
-
-
                     <div class="main-box-body clearfix">
-
-
-
                         @if (Session::has('validation_message'))
                         <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('validation_message') }}</div>
                         @endif
@@ -48,10 +34,7 @@
                         {!!Form::open(array('method'=>'POST','url'=>url('create_delivery_challan/'.$delivery_data['id']),'id'=>'create_delivery_challan_form'))!!}
                         <input type="hidden" name="order_id" value="{{$delivery_data->order_id}}">
                         <input type="hidden" id="customer_id" name="customer_id" value="{{$delivery_data['customer']->id}}">
-
-
                         <div class="form-group">
-
                             <span>Serial Number: </span> 
                             @if($delivery_data->serial_no != "")
                             {{$delivery_data->serial_no}} 
@@ -64,10 +47,7 @@
                             <td><span>Party:</span> {{ $delivery_data['customer']->owner_name }}</td>
                         </div>
                         <hr>
-
-
                         <div class="form-group underline">Product Details</div>
-
                         <div class="inquiry_table col-md-12">
                             <div class="table-responsive">
                                 <table id="add_product_table_delivery_challan" class="table table-hover">
@@ -187,14 +167,8 @@
 
                         <div class="form-group">
                             <label for="total"><b class="challan">Total</b><span class="gtotal"><input type="text" id="total_price" name="total_price" placeholder="" readonly="readonly"></span></label>                           
+                        </div>
 
-                        </div>
-                        @if($delivery_data->vat_percentage>0)
-                        <div class="form-group">
-                            <label for="billno"><b class="challan">Bill Number</b></label>
-                            <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="text">
-                        </div>
-                        @endif
                         <div class="form-group">
                             <label for="driver_contact"><b class="challan">Loading</b></label>
                             <input id="loading_charge" class="form-control" placeholder="loading" name="loading" value="" type="text" onblur="grand_total_challan();">
@@ -243,10 +217,19 @@
 
 
                         <div class="form-group">
-                            <label for="total"><b class="challan">Grand Total : </b><span class="gtotal">
-                                    <input type="text" class="form-group" name="grand_total" id="grand_total" readonly="readonly"></span></label>
-
+                            <label for="total"><b class="challan">Grand Total : </b>
+                                <span class="gtotal">
+                                    <input type="text" class="form-group" name="grand_total" id="grand_total" readonly="readonly">
+                                </span>
+                            </label>
                         </div>
+
+                        @if($delivery_data->vat_percentage > 0)
+                        <div class="form-group">
+                            <label for="billno"><b class="challan">Bill Number</b></label>
+                            <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="text">
+                        </div>
+                        @endif
 
                         <div class="form-group">
                             <label for="challan_remark"><b class="challan">Remark</b></label>

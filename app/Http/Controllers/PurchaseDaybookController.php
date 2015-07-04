@@ -33,11 +33,12 @@ class PurchaseDaybookController extends Controller {
                             })->Paginate(10);
         } else {
 
-            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier')
+            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier','all_purchase_products')
                     ->where('order_status', 'completed')
                     ->Paginate(10);
             $purchase_daybook->setPath('purchase_order_daybook');
         }
+        
         return view('purchase_order_daybook', compact('purchase_daybook'));
     }
 

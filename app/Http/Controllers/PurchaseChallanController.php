@@ -50,24 +50,8 @@ class PurchaseChallanController extends Controller {
      * @return Response
      */
     public function store(PurchaseChallanRequest $request) {
+
         $input_data = Input::all();
-
-//        $add_challan = PurchaseChallan::create([
-//                    'expected_delivery_date' => $request->input('bill_date'),
-//                    'purchase_advice_id' => $request->input('purchase_advice_id'),
-//                    'purchase_order_id' => $request->input('purchase_order_id'),
-//                    'delivery_location_id' => $request->input('delivery_location_id'),
-//                    'serial_number' => $request->input('serial_no'),
-//                    'supplier_id' => $request->input('supplier_id'),
-//                    'created_by' => $request->input('created_by'),
-//                    'vehicle_number' => $request->input('vehicle_number'),
-//                    'discount' => $request->input('discount'),                    
-//                    'unloaded_by' => $request->input('loadedby'),
-//                    'labours' => $request->input('labour'),
-//                    'remarks' => $request->input('remark'),
-//                    'order_status' => 'pending',
-//        ]);
-
 
         $add_challan = new PurchaseChallan();
         $add_challan->expected_delivery_date = $request->input('bill_date');

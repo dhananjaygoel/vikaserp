@@ -30,10 +30,12 @@ class PurchaseAdviseController extends Controller {
      */
     public function index() {
 
-        $q = PurchaseAdvise::query();
+        $q = PurchaseAdvise::query()->with('supplier','purchase_products');
+
         if (Input::has('purchaseaAdviseFilter') && Input::get('purchaseaAdviseFilter') != '') {
             $q->where('advice_status', '=', Input::get('purchaseaAdviseFilter'));
         }
+
         $purchase_advise = $q->paginate(10);
         $purchase_advise->setPath('purchaseorder_advise');
 
