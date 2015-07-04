@@ -74,10 +74,12 @@
                                                     {{$product_data['product_category']['product_sub_category']->alias_name}}
                                                     <input type="hidden" name="product[{{$key}}][id]" value="{{$product_data['product_category']->id}}">
                                                 </td>
+
                                                 <td class="col-md-1">
                                                     {{$product_data['unit']->unit_name}}
                                                     <input type="hidden" name="product[{{$key}}][units]" value="{{$product_data['unit']->id}}">
                                                 </td>
+
                                                 <td>
                                                     <input class="form-control" type="text" name="pending_order" id="pending_order_{{$key}}" readonly="" value="{{$product_data->quantity}}"/>
                                                     <input class="form-control" type="hidden" name="pending_order_org" id="pending_order_org{{$key}}" value="{{$product_data->quantity}}"/>
@@ -151,7 +153,7 @@
                                             <tr>
                                                 <td>
                                                     <span><b>Delivery Location: </b></span>
-                                                    
+
                                                     @if($purchase_orders->delivery_location_id !=0)
                                                     {{$purchase_orders['delivery_location']->area_name}}
                                                     <input type="hidden" name="delivery_location_id" value="{{$purchase_orders['delivery_location_id']}}">

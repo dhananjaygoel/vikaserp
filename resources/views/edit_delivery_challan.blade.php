@@ -164,7 +164,7 @@
                                 <input id="loading_charge" class="form-control" placeholder="loading" name="loading"  value="{{$allorder->loading_charge}}" type="text" onblur="grand_total_delivery_order();">
                             </div>
                             <div class="form-group">
-                                <label for="vehicle_name"><b class="challan">Discount(In percentage)</b></label>
+                                <label for="vehicle_name"><b class="challan">Discount</b></label>
                                 <input id="discount_value" class="form-control" placeholder="Discount, example :10" name="discount"  value="{{$allorder->discount}}" type="text" onblur="grand_total_delivery_order();">
                             </div>
                             <div class="form-group">

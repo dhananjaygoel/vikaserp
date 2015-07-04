@@ -76,17 +76,17 @@
                                 @else
                                 <tr><td><span><b>Delivery Location : </b></span></td></tr>
                                 <tr>
-                                <td><span><b>Delivery Location</b>: </span>{{$order->other_location}}</td>
+                                    <td><span><b>Delivery Location</b>: </span>{{$order->other_location}}</td>
                                 </tr><tr>
-                                <td><span><b>Delivery Location Difference</b>: </span>{{$order->other_location_difference}}</td>
+                                    <td><span><b>Delivery Location Difference</b>: </span>{{$order->other_location_difference}}</td>
                                 </tr>
-                            @endif
+                                @endif
 
 
-                            </tr>
+                                </tr>
                             </tbody>
                         </table>
-                        
+
                         <div class="inquiry_table col-md-12">
                             <div class="table-responsive">
                                 <div id="flash_error_present_shipping"></div>
@@ -132,7 +132,14 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$product->quantity}}" type="text" onblur="change_quantity({{$key}});">
+                                                    <?php $present_shipping = 0; ?>
+                                                    @if($order->order_source == 'warehouse')
+                                                    <?php $present_shipping = 0; ?>
+                                                    @else
+                                                    <?php $present_shipping = $product->quantity; ?>                                                    
+                                                    @endif
+                                                    
+                                                    <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$present_shipping}}" type="text" onblur="change_quantity({{$key}});">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -246,8 +253,6 @@
                                     <td class="cdfirst">Remark:</td>
                                     <td><input class="form-control cdbox" placeholder="Remark" name="remarks" value="{{$order->remarks}}" type="text"></td>
                                 </tr>
-
-
                             </tbody>
                         </table>
 
@@ -260,7 +265,6 @@
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                 <input type="text" name="estimated_date" class="form-control" value="{{date('Y-m-d', strtotime($order->estimated_delivery_date))}}" readonly="readonly">
                             </div>
-
                         </div>
                         <div class="clearfix"></div>
                         <div class="form-group col-md-4 targetdate" style="display: none">
@@ -270,17 +274,12 @@
                                 <input type="text" name="expected_date" class="form-control" value="{{date('Y-m-d', strtotime($order->expected_delivery_date))}}" readonly="readonly">
                             </div>
                         </div>
-
-
-
                         <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
                         <hr>
                         <div >
                             <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
-
                             <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>
                         </div>
-
                         <div class="clearfix"></div>
                         </form>
                         <div class="clearfix"></div>
@@ -288,7 +287,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 @stop

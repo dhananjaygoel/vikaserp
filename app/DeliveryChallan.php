@@ -20,7 +20,7 @@ class DeliveryChallan extends Model {
      *
      * @var array
      */
-    protected $fillable = ['order_id','delivery_order_id', 'customer_id', 'created_by',  'bill_number','loaded_by', 'labours','	discount', 'freight', '	loading_charge', 'vat_percentage', 'grand_total', 'challan_status', 'remarks'];
+    protected $fillable = ['order_id','delivery_order_id', 'customer_id', 'created_by',  'bill_number','loaded_by', 'labours','discount', 'freight', 'loading_charge', 'vat_percentage', 'grand_total', 'challan_status', 'remarks'];
 
     protected $dates = ['deleted_at'];
     

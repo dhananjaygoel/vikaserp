@@ -78,9 +78,14 @@ class DeliveryChallanController extends Controller {
      */
     public function update($id) {
         $input_data = Input::all();
+        
+//        
+//        echo '<pre>';
+//        print_r($input_data);
+//        echo '</pre>'; exit;
+        
         $validator = Validator::make($input_data, DeliveryOrder::$order_to_delivery_challan_rules);
         if ($validator->passes()) {
-
 
             $i = 0;
             $j = count($input_data['product']);
@@ -98,7 +103,6 @@ class DeliveryChallanController extends Controller {
             $delivery_challan = DeliveryChallan::find($id);
             $update_challan = $delivery_challan->update([
                 'bill_number' => $input_data['billno'],
-                'discount' => $input_data['discount'],
                 'freight' => $input_data['freight'],
                 'loading_charge' => $input_data['loading'],
                 'loaded_by' => $input_data['loadedby'],
@@ -108,6 +112,11 @@ class DeliveryChallanController extends Controller {
                 'challan_status' => "Pending"
             ]);
 
+            if (isset($input_data['discount'])) {
+                $delivery_challan->update([
+                    'discount' => $input_data['discount']]);
+            }
+            
             if (isset($input_data['vat_percentage'])) {
                 $delivery_challan->update([
                     'vat_percentage' => $input_data['vat_percentage']]);
