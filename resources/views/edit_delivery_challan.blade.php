@@ -77,7 +77,6 @@
                                                     <input id="actual_pieces_{{$key}}" class="form-control" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{$product->actual_pieces}}" type="text" onblur="fetch_price();">
                                                 </div>
                                             </td>
-
                                             <td class="col-md-2">
                                                 <div class="form-group">
                                                     {{ $product->present_shipping}}

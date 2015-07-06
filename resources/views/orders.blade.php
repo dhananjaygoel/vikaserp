@@ -1,3 +1,11 @@
+<?php
+//echo '<pre>';
+//print_r($allorders->toArray());
+//echo '</pre>'; 
+//exit;
+
+?>
+
 @extends('layouts.master')
 @section('title','Orders')
 @section('content')
@@ -16,15 +24,14 @@
                         <div class="form-group pull-right">
                             <div class="col-md-12">
                                 <form action="{{url('orders')}}" method="GET">
-                                    <div class="col-md-2"> 
 
+                                    <div class="col-md-2"> 
                                         <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
-                                            <option disabled="" value="" selected="">--Status-- </option>
+                                            <option value="" selected="">--Status-- </option>
                                             <option <?php if (Input::get('order_filter') == 'pending') echo 'selected=""'; ?> value="pending">Pending</option>
                                             <option <?php if (Input::get('order_filter') == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
                                             <option <?php if (Input::get('order_filter') == 'cancelled') echo 'selected=""'; ?> value="cancelled">Canceled</option>
                                         </select>
-
                                     </div>
                                     <div class="col-md-2">
                                         <select class="form-control" id="user_filter3" name="party_filter" onchange="this.form.submit();">
@@ -59,17 +66,14 @@
                                             @endforeach                                        
                                         </select>
                                     </div>
-
-                                    <div class="col-md-2">
+                                    <div class="col-md-2  pull-right">
                                         @if( Auth::user()->role_id != 3 )
                                         <a href="{{url('orders/create')}}" class="btn btn-primary pull-right">
                                             <i class="fa fa-plus-circle fa-lg"></i> Place Order
                                         </a>
                                         @endif
                                     </div>
-
                                 </form>
-
                             </div>
                         </div>
                     </div>
@@ -91,7 +95,6 @@
                         <div class="table-responsive tablepending">
                             <table id="table-example" class="table table-hover">
                                 <?php $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1; ?>
-                                
                                 @foreach($allorders as $order)
                                 @if($order->order_status == 'pending')
                                 @if($k==1)
@@ -101,17 +104,14 @@
                                         <th>Customer Name</th>
                                         <th>Mobile </th>
                                         <th>Delivery Location</th>
-<!--                                        <th>Order By</th>                                        -->
                                         <th>Pending Quantity</th>
                                         <th class="text-center">Create Delivery Order</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
-                                </thead><tbody>
+                                </thead>
+                                <tbody>
                                     @endif
-
-
                                     <tr>
-
                                         <td>{{$k++}}</td>
                                         <td>{{$order['customer']->owner_name}}</td>
                                         <td>{{$order['customer']['phone_number1']}}</td>
@@ -145,7 +145,6 @@
                                                 </span>
                                             </a>
                                         </td>
-
                                         <td class="text-center">
                                             <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -167,7 +166,6 @@
                                                 </span>
                                             </a>
                                             @endif
-
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                             <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal_{{$order->id}}">
                                                 <span class="fa-stack">
@@ -200,7 +198,6 @@
                                                 </div>
                                             </div>           
                                             <div class="modal-footer">
-
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
                                             </div>
@@ -216,7 +213,6 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             {!! Form::open(array('method'=>'POST','url'=>url('manual_complete_order'), 'id'=>'cancel_order_form'))!!}
-
                                             <input type="hidden" name="order_id" value="{{$order->id}}">
                                             <div class="modal-body">
                                                 <p> Are you sure to complete the Order?</p>
@@ -227,12 +223,10 @@
                                                 <div class="radio">
                                                     <input  id="delivery" value="delivery" name="reason_type" type="radio">
                                                     <label for="delivery">Late Delivery</label>
-
                                                 </div>
                                                 <div class="radio">
                                                     <input  id="quality" value="quality" name="reason_type" type="radio">
                                                     <label for="quality">Undesired Quality</label>
-
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="reason"><b>Reason</b></label>
@@ -244,7 +238,6 @@
                                                 </div>
                                             </div>           
                                             <div class="modal-footer">
-
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" >Yes</button>
                                             </div>
@@ -252,9 +245,6 @@
                                         </div>
                                     </div>
                                 </div> 
-
-
-
                                 @endif
                                 @if($order->order_status == 'completed')
                                 @if($k==1)
@@ -266,15 +256,11 @@
                                         <th>Mobile </th>
                                         <th>Delivery Location</th>
                                         <th>Order By</th>                                  
-
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
-
                                 @endif
-
                                 <tr>
-
                                     <td>{{$k++}}</td>
                                     <td>{{$order['customer']->owner_name}}</td>
                                     @if(count($pending_orders) > 0)
@@ -299,8 +285,6 @@
                                             }
                                         }
                                         ?></td>
-
-
                                     <td class="text-center">
                                         <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
                                             <span class="fa-stack">
@@ -308,7 +292,6 @@
                                                 <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                             </span>
                                         </a>
-
                                         <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal_{{$order->id}}">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
@@ -347,10 +330,6 @@
                                         </div>
                                     </div>
                                 </div>     
-
-
-
-
                                 @endif
                                 @if($order->order_status == 'cancelled')
                                 @if($k==1)
@@ -369,10 +348,7 @@
                                 </thead>
                                 <tbody>
                                     @endif
-
-
                                     <tr>
-
                                         <td>{{$k++}}</td>
                                         <td>{{$order['customer']->owner_name}}</td>
                                         <td><?php
@@ -411,7 +387,6 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-
                                             <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal_{{$order->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -442,7 +417,6 @@
                                                 </div>
                                             </div>           
                                             <div class="modal-footer">
-
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
                                             </div>
@@ -450,8 +424,6 @@
                                         </div>
                                     </div>
                                 </div>     
-
-
                                 @endif
                                 @endforeach
                                 </tbody>

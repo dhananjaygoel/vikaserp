@@ -38,6 +38,7 @@ class OrderController extends Controller {
     public function index() {
 
         if ((isset($_GET['order_filter'])) && $_GET['order_filter'] != '') {
+            
             if ($_GET['order_filter'] == 'cancelled') {
                 $allorders = Order::where('order_status', '=', $_GET['order_filter'])
                                 ->with('customer', 'delivery_location', 'all_order_products', 'order_cancelled')->orderBy('created_at', 'desc')->Paginate(10);
@@ -83,24 +84,18 @@ class OrderController extends Controller {
 
                 $sizes = $_GET['size_filter'];
 
-                $allorders = Order::
-                        with(array('customer', 'delivery_location', 'all_order_products.product_category.product_sub_category' =>
-                            function($q) use($sizes) {
-                                $q->where('size', $sizes);
-                            }))->Paginate(10);
-//                            
-//                            
-//                            
+                $allorders = Order::with(
+                                array('customer', 'delivery_location', 'all_order_products.product_category.product_sub_category' =>
+                                    function($q) use($sizes) {
+                                        $q->where('size', '=', $sizes);
+                                    }))->Paginate(10);
+
 //                $allorders = Order::
 ////                        where('order_status', '=', 'pending')
 //                        with(array('customer', 'delivery_location', 'all_order_products.product_category.product_sub_category' =>
 //                            function($q) use($size) {
 //                                $q->where('size', '=', $size);
 //                            }))->Paginate(10);
-//                echo '<pre>';
-//                print_r($allorders->toArray());
-//                echo '</pre>';
-//                exit;
             } else {
 
                 $allorders = Order::where('order_status', '=', 'pending')
@@ -322,15 +317,10 @@ class OrderController extends Controller {
             }
         } elseif (isset($input_data['customer_status']) && $input_data['customer_status'] == "existing_customer") {
 
-
             //mail
-
-
-
             $validator = Validator::make($input_data, Customer::$existing_customer_order_rules);
             if ($validator->passes()) {
                 $customer_id = $input_data['existing_customer_id'];
-
 
                 //send mail
                 if (isset($input_data['send_email'])) {
@@ -345,7 +335,6 @@ class OrderController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
-
 
         if ($input_data['status'] == 'warehouse') {
             $order_status = 'warehouse';
@@ -480,7 +469,6 @@ class OrderController extends Controller {
 
             Mail::send('emails.order_complete_email', ['key' => $orders['customer']->owner_name], function($message) {
 //                $message->to($orders['customer']->email, 'John Smith')->subject('Order Complete!');
-
                 $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Order Complete!');
             });
         }
@@ -525,10 +513,7 @@ class OrderController extends Controller {
 
     public function store_delivery_order($id) {
         $input_data = Input::all();
-//        echo '<pre>';
-//        print_r($input_data);
-//        echo '</pre>';
-//        exit;
+
         $validator = Validator::make($input_data, Order::$order_to_delivery_order_rules);
         if ($validator->passes()) {
             $user = Auth::user();
@@ -598,10 +583,6 @@ class OrderController extends Controller {
                         }
                         $total_quantity = $total_quantity + $prod_quantity;
                     }
-//                    echo '<pre>';
-//                    print_r($all_order_products->toArray());
-//                    echo '</pre>';
-//                    exit;
                 }
                 $temp = array();
                 $temp['id'] = $order->id;
@@ -632,7 +613,6 @@ class OrderController extends Controller {
                 array_push($pending_orders, $temp);
             }
         }
-
         return $pending_orders;
     }
 
