@@ -253,9 +253,6 @@ class PurchaseAdviseController extends Controller {
         $validator = Validator::make($input_data, PurchaseAdvise::$store_purchase_validation);
         if ($validator->passes()) {
 
-//            $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['bill_date']);
-//            $date = strtotime($date_string);
-//            $datetime = new DateTime($date);
             $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['bill_date']);
             $date = date("Y/m/d", strtotime($date_string));
             $datetime = new DateTime($date);
@@ -334,17 +331,20 @@ class PurchaseAdviseController extends Controller {
         return view('purchaseorder_advise_challan', compact('purchase_advise', 'locations', 'units'));
     }
 
-    public function print_purchase_advise($id) {
-        
-        return view('print_purchase_advise');
-        
-//        $current_date = date("M/y/m/");
-//
-//        $date_letter = $current_date . "" . $id;
-//        DeliveryOrder::where('id', $id)->update(array(
-//            'serial_no' => $date_letter,
-//            'order_status' => "Completed"
-//        ));
+    public function print_purchase_advise() {
+
+        $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.product_sub_category')->find(Input::get('pa_id'));
+
+
+        $current_date = date("M/y/m/");
+
+        $date_letter = 'PO/' . $current_date . "" . Input::get('pa_id');
+        PurchaseAdvise::where('id', Input::get('pa_id'))->update(array(
+            'serial_number' => $date_letter,
+            'advice_status' => "delivered"
+        ));
+
+        return view('print_purchase_advise', compact('purchase_advise'));
     }
 
 }

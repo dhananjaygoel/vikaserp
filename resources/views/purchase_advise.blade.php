@@ -76,7 +76,7 @@
                                     $i = ($purchase_advise->currentPage() - 1) * $purchase_advise->perPage() + 1;
                                     ?>
                                     @foreach($purchase_advise as $key=>$pa)
-                                    
+
                                     <?php $qty_sum = 0; ?>
                                     @foreach($pa['purchase_products'] as $prod)
                                     <?php $qty_sum += $prod->quantity; ?>
@@ -108,7 +108,7 @@
                                                 </span>
                                             </a>
 
-                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#printModal">
+                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#printModal{{$pa->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
@@ -154,7 +154,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal fade" id="printModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="printModal{{$pa->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -162,21 +162,23 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
-                                                {!! Form::open(array('url'=>url('print_delivery_order/'.$delivery->id), 'method' => 'post')) !!}
-                                                    <div class="row print_time "> 
-                                                        <div class="col-md-12"> Print By <br> 05:00 PM</div> 
-                                                    </div>
-                                                    <div class="checkbox">
-                                                        <label><input type="checkbox" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                    <hr>
-                                                    <div >
-                                                        <a href="#" type="button" class="btn btn-primary form_button_footer" >Print</a>
-                                                        <button class="btn btn-default form_button_footer" data-dismiss="modal">Cancel</button>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                 {!! Form::close() !!}
+                                                {!! Form::open(array('url'=>url('print_purchase_advise/'), 'method' => 'post')) !!}
+                                                <div class="row print_time "> 
+                                                    <div class="col-md-12"> Print By <br> 05:00 PM</div> 
+                                                </div>
+                                                <div class="checkbox">
+                                                    <label><input type="checkbox" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <hr>
+                                                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                                <input type="hidden" name="pa_id" value="{{$pa->id}}"/>
+                                                <div >
+                                                    <button type="submit" class="btn btn-primary form_button_footer" >Print</button>
+                                                    <button class="btn btn-default form_button_footer" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                {!! Form::close() !!}
                                             </div>
                                         </div>
                                     </div>

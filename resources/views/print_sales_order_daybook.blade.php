@@ -89,11 +89,6 @@
 
                 <?php
                 $i = 1;
-
-//                echo '<pre>';
-//                print_r($allorders->toArray());
-//                echo '</pre>';
-//                exit;
                 ?>
                 @foreach ($allorders as $obj)
                 <?php

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Purchase Advice</title>
+        <title>Delivery Order</title>
+        <meta charset="windows-1252">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body onload="window.print();">
@@ -137,13 +138,13 @@
         </style>
         <div class="invoice">
             <div class="title">
-                Purchase Advice
+                Delivery Order
             </div>
             <div class="delivery-details">
                 <div class="do-no">
-                    DO Number:
-                    {{ $purchase_advise->serial_number}}
+                    DO Number: {{ $delivery_data->serial_no }}
                 </div>
+                
                 <div class="date">
                     Date: {{ date('d F, Y')}}
                 </div>
@@ -152,20 +153,21 @@
                 </div>
             </div>
             <div class="name">
-                Name: {{ $purchase_advise['supplier']->owner_name}}
+                Name: {{ $delivery_data['customer']->owner_name }}
             </div>
             <div class="trk-mobile">
                 <div class="trk-no">
-                    Trk No: {{ $purchase_advise->vehicle_number}}
+                    Trk No: {{ $delivery_data->vehicle_number }}
                 </div>
                 <div class="mob-no">
-                    Driver Mob: xxx
+                    Driver Mob: {{ $delivery_data->driver_contact_no }}
                 </div>
             </div>
             <div class="del">
-                Del @: {{ $purchase_advise['location']->area_name }}
+                Delivery @: {{ $delivery_data['location']->area_name }}
             </div>
             <div class="divTable">
+                
                 <div class="headRow">
                     <div  class="divCell">Sr.</div>
                     <div  class="divCell">Size</div>
@@ -174,18 +176,18 @@
                     <div  class="divCell">Act pcs</div>
                     <div  class="divCell">Act Qty</div>                
                 </div>
-                <?
-                $i=1;
-                ?>
-                @foreach($purchase_advise['purchase_products'] as $prod)
+                
+                <?php $i = 1; ?>
+                @foreach($delivery_data['delivery_product'] as $product)
+                
                 <div class="divRow">
                     <div class="divCell">{{ $i++ }}</div>
-                    <div class="divCell">{{ $prod['product_sub_category']->size }}</div>
+                    <div class="divCell">{{ $product['product_category']['product_sub_category']->size }}</div>
                     <div class="divCell">xxx</div>
-                    <div class="divCell">{{ $prod->quantity }}</div>
-                    <div class="divCell">xxx</div>
-                    <div class="divCell">{{ $prod->present_shipping }}</div>                
-                </div>
+                    <div class="divCell">{{ $product->quantity }}</div>
+                    <div class="divCell">{{ $product->actual_pieces }}</div>
+                    <div class="divCell">{{ $product->actual_quantity }}</div>                
+                </div>                
                 @endforeach
             </div>
             <div class="footer">
@@ -193,7 +195,7 @@
                     Remark
                 </div>
                 <div class="content">
-                    {{$purchase_advise->remarks}}
+                    {{ $product->remarks }}
                     <hr>
                 </div>
             </div>
