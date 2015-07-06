@@ -30,7 +30,7 @@ class PurchaseChallanController extends Controller {
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier')
                 ->where('order_status', 'pending')
                 ->Paginate(10);
-        
+
         $purchase_challan->setPath('purchase_challan');
         return view('purchase_challan', compact('purchase_challan'));
     }
@@ -205,7 +205,10 @@ class PurchaseChallanController extends Controller {
             'order_status' => "Completed"
         ));
 
-        return redirect('purchase_challan')->with('success', 'Purchase challan is successfuly printed.');
+        $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'purchase_product.product_sub_category', 'purchase_product.unit')->where('id', $id)->first();
+
+        return view('print_purchase_challan', compact('purchase_challan'));
+//        return redirect('purchase_challan')->with('success', 'Purchase challan is successfuly printed.');
     }
 
 }

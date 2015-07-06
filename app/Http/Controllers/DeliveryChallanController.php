@@ -78,12 +78,7 @@ class DeliveryChallanController extends Controller {
      */
     public function update($id) {
         $input_data = Input::all();
-        
-//        
-//        echo '<pre>';
-//        print_r($input_data);
-//        echo '</pre>'; exit;
-        
+
         $validator = Validator::make($input_data, DeliveryOrder::$order_to_delivery_challan_rules);
         if ($validator->passes()) {
 
@@ -116,7 +111,7 @@ class DeliveryChallanController extends Controller {
                 $delivery_challan->update([
                     'discount' => $input_data['discount']]);
             }
-            
+
             if (isset($input_data['vat_percentage'])) {
                 $delivery_challan->update([
                     'vat_percentage' => $input_data['vat_percentage']]);
@@ -189,16 +184,21 @@ class DeliveryChallanController extends Controller {
 
     //Generate Serial number and print Delivery Challan
     public function print_delivery_challan($id) {
-
         $serial_number_delivery_order = Input::get('serial_number');
         $date_letter = $serial_number_delivery_order . "/" . $id;
         DeliveryChallan::where('id', $id)->update(array(
             'serial_number' => $date_letter,
             'challan_status' => "completed"
         ));
+
         $this->checkpending_quantity();
 
-        return redirect('delivery_challan')->with('validation_message', 'Delivery order is successfuly printed.');
+        $allorder = DeliveryChallan::where('id', '=', $id)
+                        ->where('challan_status', '=', 'completed')
+                        ->with('all_order_products.unit', 'all_order_products.product_category.product_sub_category', 'customer', 'delivery_order.location')->first();
+
+        return view('print_delivery_challan', compact('allorder'));
+//        return redirect('delivery_challan')->with('validation_message', 'Delivery order is successfuly printed.');
     }
 
     function checkpending_quantity() {
