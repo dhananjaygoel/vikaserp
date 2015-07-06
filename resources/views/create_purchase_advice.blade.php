@@ -57,12 +57,13 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <table id="add_product_table" class="table table-hover  ">
+                                    <table id="create_purchase_advise_table" class="table table-hover  ">
                                         <tbody>
                                             <tr class="headingunderline">
                                                 <td class="col-md-3"><span> Product Name(Alias)</span></td>
                                                 <td class="col-md-1"><span>Unit</span></td>
-                                                <td class="col-md-2"><span>Pending Order</span</td>
+                                                <td class="col-md-1"><span>Actual Pieces</span></td>
+                                                <td class="col-md-1"><span>Pending Order</span</td>
                                                 <td class="col-md-2"><span>Present Shipping</span></td>
                                                 <td class="col-md-1">Price</td>
                                                 <td class="col-md-3"><span>Remark</span></td>
@@ -78,6 +79,10 @@
                                                 <td class="col-md-1">
                                                     {{$product_data['unit']->unit_name}}
                                                     <input type="hidden" name="product[{{$key}}][units]" value="{{$product_data['unit']->id}}">
+                                                </td>
+
+                                                <td class="col-md-1">
+                                                    <input type="text" class="form-control" name="product[{{$key}}][actual_pieces]" value="">
                                                 </td>
 
                                                 <td>
@@ -111,7 +116,6 @@
                                                 <td>
                                                     <div class="add_button1">
                                                         <div class="form-group pull-left">
-
                                                             <label for="addmore"></label>
                                                             <a href="#" class="table-link" title="add more" id="add_purchase_advice_product_row">
                                                                 <span class="fa-stack more_button" >
@@ -119,7 +123,6 @@
                                                                     <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
                                                                 </span>
                                                             </a>
-
                                                         </div>
                                                     </div>
                                                 </td>

@@ -2,34 +2,34 @@ var baseurl = $('#baseurl').attr('name');
 var _token = $('#csrf_token').attr('content');
 
 
-$(document).ready(function() {
-    $("#existing_customer").click(function() {
+$(document).ready(function () {
+    $("#existing_customer").click(function () {
         $(".exist_field").hide();
         $(".customer_select").show();
     });
-    $("#new_customer").click(function() {
+    $("#new_customer").click(function () {
         $(".exist_field").show();
         $(".customer_select").hide();
     });
-    $("#optionsRadios4").click(function() {
+    $("#optionsRadios4").click(function () {
         $(".plusvat").show();
     });
-    $("#optionsRadios3").click(function() {
+    $("#optionsRadios3").click(function () {
         $(".plusvat").hide();
     });
-    $("#existing_supplier").click(function() {
+    $("#existing_supplier").click(function () {
         $(".exist_field").hide();
         $(".customer_select").show();
     });
-    $("#new_supplier").click(function() {
+    $("#new_supplier").click(function () {
         $(".exist_field").show();
         $(".customer_select").hide();
     });
-    $("#exclusive_of_vat").click(function() {
+    $("#exclusive_of_vat").click(function () {
         $(".plusvat").show();
 
     });
-    $("#inclusive_of_vat").click(function() {
+    $("#inclusive_of_vat").click(function () {
         $(".plusvat").hide();
 
     });
@@ -38,18 +38,18 @@ $(document).ready(function() {
         minLength: 1,
         dataType: 'json',
         type: 'GET',
-        source: function(request, response) {
+        source: function (request, response) {
             $.ajax({
                 url: baseurl + '/fetch_existing_customer',
                 data: {"term": request.term},
-                success: function(data) {
+                success: function (data) {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
                     response(arr1);
                 },
             });
         },
-        select: function(event, ui) {
+        select: function (event, ui) {
             $("#existing_customer_id").val(ui.item.id);
 //            alert(ui.item.id);
             $("#customer_default_location").val(ui.item.delivery_location_id);
@@ -60,18 +60,18 @@ $(document).ready(function() {
         minLength: 1,
         dataType: 'json',
         type: 'GET',
-        source: function(request, response) {
+        source: function (request, response) {
             $.ajax({
                 url: baseurl + '/fetch_existing_customer',
                 data: {"term": request.term},
-                success: function(data) {
+                success: function (data) {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
                     response(arr1);
                 },
             });
         },
-        select: function(event, ui) {
+        select: function (event, ui) {
             $("#existing_supplier_id").val(ui.item.id);
             $("#customer_default_location").val(ui.item.delivery_location_id);
             default_delivery_location();
@@ -79,19 +79,19 @@ $(document).ready(function() {
     });
     var nowDate = new Date();
     var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
-    
+
     $('#expected_delivery_date').datepicker({
         format: 'mm-dd-yyyy',
         startDate: today,
         autoclose: true
     });
     $('#datepickerDateComponent').datepicker();
-    $("#add_product_row").on("click", function() {
+    $("#add_product_row").on("click", function () {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
             type: "GET",
             url: baseurl + '/get_units'
-        }).done(function(data) {
+        }).done(function (data) {
             var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
@@ -163,12 +163,13 @@ $(document).ready(function() {
                 '</tr>';
         $("#add_product_table_purchase").children("tbody").append(purchase_html);
     });
-    $("#add_purchase_advice_product_row").on("click", function() {
+
+    $("#add_purchase_advice_product_row").on("click", function () {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
             type: "GET",
             url: baseurl + '/get_units'
-        }).done(function(data) {
+        }).done(function (data) {
             var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
@@ -185,13 +186,20 @@ $(document).ready(function() {
                 '<i class="fa fa-search search-icon"></i>' +
                 '</div>' +
                 '</td>' +
-                '<td class="col-md-1" colspan="2">' +
-                '<div class="form-group" style="float: left; width: 40%;">' +
+                '<td class="col-md-1">' +
+                '<div class="form-group">' +
                 '<select class="form-control units_dropdown" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
                 '</select>' +
                 '</div>' +
-                '<div class="form-group"  style="float: left; margin-right: 10px; width: 35%;">' +
-                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="text">' +
+                '</td>' +
+                '<td class="col-md-1">' +
+                '<div class="form-group">' +
+                '<input type="text" class="form-control" placeholder="actual_pieces" id="actual_pieces' + current_row_count + '" name="product[' + current_row_count + '][actual_pieces]">' +
+                '</div>' +
+                '</td>' +
+                '<td>' +
+                '<div class="form-group" >' +
+                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="sfdsfs" name="product[' + current_row_count + '][quantity]" value="" type="text">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
@@ -210,15 +218,15 @@ $(document).ready(function() {
                 '</div>' +
                 '</td>' +
                 '</tr>';
-        $("#add_product_table").children("tbody").append(html);
+        $("#create_purchase_advise_table").children("tbody").append(html);
     });
 
-    $("#add_editadvice_product_row").on("click", function() {
+    $("#add_editadvice_product_row").on("click", function () {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
             type: "GET",
             url: baseurl + '/get_units'
-        }).done(function(data) {
+        }).done(function (data) {
             var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
@@ -260,7 +268,7 @@ $(document).ready(function() {
         $("#add_product_table").children("tbody").append(html);
     });
 
-    $("#add_inquiry_location").on("change", function() {
+    $("#add_inquiry_location").on("change", function () {
         if ($("#add_inquiry_location").val() == "other")
             $("#other_location_input_wrapper").show();
         else
@@ -285,7 +293,7 @@ function save_price_inquiry_view(id) {
             type: 'POST',
             url: baseurl + '/store_price',
             data: {id: id, _token: _token, updated_price: updated_price}
-        }).done(function() {
+        }).done(function () {
             location.reload();
         });
     }
@@ -312,18 +320,18 @@ function product_autocomplete(id) {
         minLength: 1,
         dataType: 'json',
         type: 'GET',
-        source: function(request, response) {
+        source: function (request, response) {
             $.ajax({
                 url: baseurl + '/fetch_products',
                 data: {"term": request.term},
-                success: function(data) {
+                success: function (data) {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
                     response(arr1);
                 },
             });
         },
-        select: function(event, ui) {
+        select: function (event, ui) {
 //            alert(ui.item.id);
 //            alert(ui.item.product_price);
             $("#product_price_" + id).val(ui.item.product_price);
@@ -345,7 +353,7 @@ function fetch_city() {
         type: 'GET',
         url: baseurl + '/get_cities',
         data: {state_id: state_id}
-    }).done(function(data) {
+    }).done(function (data) {
         var main_array = JSON.parse(data);
         var arr1 = main_array['cities'];
         var html = '';

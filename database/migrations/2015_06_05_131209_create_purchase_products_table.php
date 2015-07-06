@@ -18,6 +18,7 @@ class CreatePurchaseProductsTable extends Migration {
             $table->integer('product_category_id');
             $table->integer('unit_id');
             $table->integer('quantity');
+            $table->integer('actual_pieces');
             $table->integer('price');
             $table->integer('present_shipping');
             $table->text('remarks');

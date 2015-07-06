@@ -56,14 +56,15 @@
                             </div>
                             <div class="inquiry_table col-md-12" >
                                 <div class="table-responsive">
-                                    <table id="add_product_table" class="table table-hover">
+                                    <table id="create_purchase_advise_table" class="table table-hover">
                                         <tbody>
                                             <tr class="headingunderline">
                                                 <td><span>Select Product(Alias)</span></td>
                                                 <td><span>Unit</span></td>
-                                                <td><span>Present Shipping</span></td>
-                                                <td><span>Price</span></td>
+                                                <td><span>Actual Pieces</span></td>
                                                 <td><span>Pending Order</span></td>
+                                                <td><span>Present Shipping</span></td>
+                                                <td><span>Price</span></td>                                                
                                                 <td><span>Remark</span></td>
                                             </tr>
                                             @foreach($purchase_advise['purchase_products'] as $key=>$product)
@@ -71,7 +72,7 @@
                                                 <td class="col-md-3">
                                                     <div class="form-group searchproduct">
                                                         {{$product['product_category']['product_sub_category']->alias_name}}
-                                                        <input class="form-control" type="hidden" name="product[{{$key}}][name]">
+                                                        <input class="form-control" type="hidden" name="product[{{$key}}][name]" value="{{$product['product_sub_category']->alias_name}}">
                                                         <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}">
                                                         <input type="hidden" name="product[{{$key}}][purchase_product_id]" value="{{$product->id}}">
                                                     </div>
@@ -81,20 +82,26 @@
                                                         {{$product['unit']->unit_name}}
                                                     </div>
                                                 </td>
-                                                <td class="col-md-2">
+                                                <td class="col-md-1">
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control" value="{{$product->present_shipping}}" onblur="change_quantity(<?php echo $key; ?>)"  name="product[{{$key}}][present_shipping]">
+                                                        <input type="text" class="form-control" value="{{$product->actual_pieces}}" name="product[{{$key}}][actual_pieces]">
                                                     </div>
                                                 </td>
-                                                <td class="col-md-2">
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
-                                                    </div>
-                                                </td>
+
                                                 <td class="col-md-1">
                                                     <div class="form-group">
                                                         <?php $pending_quantity = $product->quantity - $product->present_shipping; ?>
                                                         <input type="text" class="form-control" value="{{ $pending_quantity}}" id="pending_order_{{$key}}" name="pending_order_{{$key}}"/>
+                                                    </div>
+                                                </td>
+                                                <td class="col-md-1">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" value="{{$product->present_shipping}}" id='present_shipping_{{$key}}' onblur="calutate_pending_order(<?php echo $product->quantity . ',' . $key; ?>)"  name="product[{{$key}}][present_shipping]">
+                                                    </div>
+                                                </td> 
+                                                <td class="col-md-1">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
                                                     </div>
                                                 </td>
                                                 <td class="col-md-3">
@@ -112,15 +119,13 @@
                                                 <td>
                                                     <div class="add_button1">
                                                         <div class="form-group pull-left">
-
                                                             <label for="addmore"></label>
-                                                            <a class="table-link" title="add more" id="add_editadvice_product_row">
+                                                            <a class="table-link" title="add more" id="add_purchase_advice_product_row">
                                                                 <span class="fa-stack more_button" >
                                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                                     <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
                                                                 </span>
                                                             </a>
-
                                                         </div>
                                                     </div>
                                                 </td>
@@ -140,10 +145,10 @@
                                         <td class="cdfirst">Delivery Location:</td>
                                         <td>@if($purchase_advise->delivery_location_id !=0)
                                             {{$purchase_advise['location']->area_name}}
-                                        @else
+                                            @else
                                             {{$purchase_advise->other_location}}
-                                        @endif
-                                            </td>
+                                            @endif
+                                        </td>
                                     </tr>
                                     <?php
                                     if ($purchase_advise->vat_percentage != '') {

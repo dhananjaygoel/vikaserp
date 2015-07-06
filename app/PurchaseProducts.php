@@ -18,7 +18,7 @@ class PurchaseProducts extends Model {
      *
      * @var array
      */
-    protected $fillable = ['purchase_order_id', 'order_type', 'product_category_id', 'unit_id', 'quantity', 'price', 'present_shipping', 'remarks'];
+    protected $fillable = ['purchase_order_id', 'order_type', 'product_category_id', 'unit_id', 'actual_pieces','quantity', 'price', 'present_shipping', 'remarks'];
 
     public function unit() {
         return $this->hasOne('App\Units', 'id', 'unit_id');

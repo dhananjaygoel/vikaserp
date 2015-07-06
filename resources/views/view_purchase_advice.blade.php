@@ -52,6 +52,7 @@
                                     <tr class="headingunderline">
                                         <td><span>Product</span></td>
                                         <td><span>Unit</span></td>
+                                        <td><span>Actual Pieces</span></td>
                                         <td class="col-md-2" ><span>Present Shipping</span></td>
                                         <td><span>Price</span></td>
                                         <td><span>Remark</span></td>
@@ -61,6 +62,7 @@
                                     <tr>
                                         <td>{{$product_data['product_sub_category']->alias_name}}</td>
                                         <td>{{$product_data['unit']->unit_name}}</td>
+                                        <td>{{$product_data->actual_pieces}}</td>
                                         <td>{{$product_data->present_shipping}}</td>
                                         <td>{{$product_data->price}}</td>
                                         <td>{{$product_data->remarks}}</td>

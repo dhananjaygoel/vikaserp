@@ -190,6 +190,7 @@ class PurchaseAdviseController extends Controller {
                     'vehicle_number' => $input_data['vehicle_number']
         ));
 
+
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
 
@@ -200,6 +201,7 @@ class PurchaseAdviseController extends Controller {
                                 'present_shipping' => $product_data['present_shipping'],
                                 'price' => $product_data['price'],
                                 'remarks' => $product_data['remark'],
+                                'actual_pieces' => $product_data['actual_pieces'],
                             ]
                     );
                 } else {
@@ -208,11 +210,14 @@ class PurchaseAdviseController extends Controller {
                         'order_type' => 'purchase_advice',
                         'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
+                        'actual_pieces' => $product_data['actual_pieces'],
                         'quantity' => $product_data['present_shipping'],
+                        'actual_pieces' => $product_data['actual_pieces'],
                         'price' => $product_data['price'],
                         'remarks' => $product_data['remark'],
                         'present_shipping' => $product_data['present_shipping']
                     ];
+                    
                     $add_purchase_advise_products = PurchaseProducts::create($purchase_advise_products);
                 }
             }
@@ -228,9 +233,11 @@ class PurchaseAdviseController extends Controller {
      * @return Response
      */
     public function destroy($id) {
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+
         $password = Input::get('password');
         if ($password == '') {
             return Redirect::to('purchaseorder_advise')->with('error', 'Please enter your password');
@@ -250,6 +257,7 @@ class PurchaseAdviseController extends Controller {
     public function store_advise() {
 
         $input_data = Input::all();
+
         $validator = Validator::make($input_data, PurchaseAdvise::$store_purchase_validation);
         if ($validator->passes()) {
 
@@ -283,6 +291,7 @@ class PurchaseAdviseController extends Controller {
                             'purchase_order_id' => $purchase_advice_id,
                             'product_category_id' => $product_data['id'],
                             'unit_id' => $product_data['units'],
+                            'actual_pieces' => $product_data['actual_pieces'],
                             'quantity' => $product_data['quantity'],
                             'price' => $product_data['price'],
                             'remarks' => $product_data['remark'],
@@ -295,6 +304,7 @@ class PurchaseAdviseController extends Controller {
                             'purchase_order_id' => $purchase_advice_id,
                             'product_category_id' => $product_data['id'],
                             'unit_id' => $product_data['units'],
+                            'actual_pieces' => $product_data['actual_pieces'],
                             'quantity' => $product_data['quantity'],
                             'price' => $product_data['price'],
                             'remarks' => $product_data['remark'],
