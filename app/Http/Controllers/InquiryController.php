@@ -22,6 +22,7 @@ use App\ProductSubCategory;
 use App\Order;
 use App\AllOrderProducts;
 use DateTime;
+use App\CustomerProductDifference;
 
 class InquiryController extends Controller {
 
@@ -31,19 +32,25 @@ class InquiryController extends Controller {
      * @return Response
      */
     public function index() {
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+
         if ((isset($_GET['inquiry_filter'])) && $_GET['inquiry_filter'] != '') {
+
             $inquiries = Inquiry::where('inquiry_status', '=', $_GET['inquiry_filter'])
                             ->with('customer', 'delivery_location', 'inquiry_products')
                             ->orderBy('created_at', 'desc')->Paginate(10);
         } else {
-            $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products')
+
+            $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.product_category.product_sub_category', 'inquiry_products.unit')
                             ->where('inquiry_status', 'pending')
                             ->orderBy('created_at', 'desc')->Paginate(10);
         }
+
         $inquiries->setPath('inquiry');
+
         return view('inquiry', compact('inquiries'));
     }
 
@@ -323,20 +330,55 @@ class InquiryController extends Controller {
     }
 
     public function fetch_products() {
+
+        $delivery_location = Input::get('delivery_location');
+        $customer_id = Input::get('customer_id');
+
+        $location_diff = 0;
+
+        if ($delivery_location > 0) {
+            $location = DeliveryLocation::where('id', $delivery_location)->first();
+            $location_diff = $location->difference;
+        } else if (Input::get('location_difference') > 0) {
+            $location_diff = Input::get('location_difference');
+        }
+
+
+//        if (Input::get('location_difference') > 0) {
+//
+//            $location_diff = Input::get('location_difference');
+//        } else {
+//            $location = DeliveryLocation::where('id', $delivery_location)->first();
+//            $location_diff = $location->difference;
+//        }
+
         $term = '%' . Input::get('term') . '%';
         $products = ProductCategory::with(array('product_sub_categories' => function($query) use ($term) {
                         $query->where('alias_name', 'like', $term)->get();
                     })
                 )->get();
 
+
         if (count($products) > 0) {
             foreach ($products as $product) {
                 if (!empty($product['product_sub_categories'])) {
                     foreach ($product['product_sub_categories'] as $product_sub_cat) {
+
+                        if ($customer_id > 0) {
+                            $customer = CustomerProductDifference::where('customer_id', $customer_id)
+                                            ->where('product_category_id', $product->id)->first();
+                            $cust = $customer->difference_amount;
+                        } else {
+                            $cust = 0;
+                        }
+
+
+                        $product_sub = ProductSubCategory::where('product_category_id', $product->id)->first();
+
                         $data_array[] = [
                             'value' => $product_sub_cat->alias_name,
                             'id' => $product->id,
-                            'product_price' => $product->price
+                            'product_price' => $product->price + $cust + $location_diff + $product_sub->difference
                         ];
                     }
                 }

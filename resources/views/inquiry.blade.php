@@ -21,8 +21,8 @@
                                     <select class="form-control" id="inquiry_filter" name="inquiry_filter" onchange="this.form.submit();">
                                         <option value="" selected="">Status</option>
                                         <option <?php if (Input::get('inquiry_filter') == 'Pending') echo 'selected=""'; ?> value="Pending">Pending</option>
-                                    <option <?php if (Input::get('inquiry_filter') == 'Completed') echo 'selected=""'; ?> value="Completed">Completed</option>
-                                        
+                                        <option <?php if (Input::get('inquiry_filter') == 'Completed') echo 'selected=""'; ?> value="Completed">Completed</option>
+
                                         <!--<option value="Canceled">Canceled</option>-->
                                     </select>
                                 </form>
@@ -66,7 +66,32 @@
                                     <tr>
                                         <td class="text-center">{{$i++}}</td>
                                         <td class="text-center">{{$inquiry['customer']['owner_name']}}</td>
-                                        <td class="text-center">{{$inquiry['inquiry_products']->sum('quantity')}}</td>
+
+                                        <?php $qty = 0; ?>
+                                        @foreach($inquiry['inquiry_products'] as $prod)
+
+
+                                        @if($prod['unit']->unit_name == 'KG')
+                                        <?php
+                                        $qty += $prod->quantity;
+                                        ?>
+                                        @endif
+
+                                        @if($prod['unit']->unit_name == 'Pieces')
+                                        <?php
+                                        $qty += $prod->quantity * $prod['product_category']['product_sub_category']->weight;
+                                        ?>
+                                        @endif
+
+                                        @if($prod['unit']->unit_name == 'Meter')
+                                        <?php
+                                        $qty += ($prod->quantity/$prod['product_category']['product_sub_category']->size) * $prod['product_category']['product_sub_category']->weight;
+                                        ?>
+                                        @endif                                      
+                                        @endforeach
+
+                                        <td class="text-center">{{$qty}}</td>
+
                                         <td class="text-center">{{$inquiry['customer']['phone_number1']}} </td>
                                         @if($inquiry['delivery_location']['area_name'] !="")
                                         <td class="text-center">{{$inquiry['delivery_location']['area_name']}}</td>
@@ -148,13 +173,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <?php // $i++; ?>
+<?php // $i++;  ?>
                                 @endforeach
                                 </tbody>
                             </table>
 
                             <span class="pull-right">
-                                <?php echo $inquiries->render(); ?>
+<?php echo $inquiries->render(); ?>
                             </span>
 
                         </div>

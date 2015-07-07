@@ -1,16 +1,22 @@
 .ui-state-focus{
-        background: none !important;
-        border: none !important;
-        border-radius: none !important;
-    }
-    .alert-warning ul li{
-        list-style: none !important;
-    }
-    .units_dropdown{
-        width: 90% !important;
-    }
- .customer_select_order
+    background: none !important;
+    border: none !important;
+    border-radius: none !important;
+}
+.alert-warning ul li{
+    list-style: none !important;
+}
+.units_dropdown{
+    width: 90% !important;
+}
+.customer_select_order
 {
     padding-bottom: 15px !important;
 }
 .supplier_order{width:30%}
+
+
+.loadinggif {
+    background:url('http://www.hsi.com.hk/HSI-Net/pages/images/en/share/ajax-loader.gif') no-repeat right center;
+    margin-right: 50px;
+}

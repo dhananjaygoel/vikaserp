@@ -48,7 +48,10 @@
                                             <input type="hidden" id="customer_default_location">
                                             <i class="fa fa-search search-icon"></i>
                                         </div>
+                                        
+                                        <!--<p style>Please select the Customer name</p>-->
                                     </div>
+                                    
                                 </div>
                                 <div class="clearfix"></div>
                             </div>

@@ -26,16 +26,16 @@ $(document).ready(function () {
 
     });
     $('#add_order_location').change(function () {
-        
+
 //        alert('hi');
         if ($('#add_order_location').val() == '-2') {
             $('.locationtext').show();
-        }else{
-             $('.locationtext').hide();
+        } else {
+            $('.locationtext').hide();
         }
 
     });
-    
+
     $('#add_inquiry_location').change(function () {
         if ($('#add_order_location').val() == '-2') {
             $('.locationtext').toggle();
@@ -236,10 +236,10 @@ function change_quantity(key) {
     var present_shipping = $("#present_shipping_" + key).val();//ok
     var tot_quty = $("#quantity_" + key).val(); //ok
     var total = parseInt(quantity) + parseInt(present_shipping);
-    
-    alert(quantity)
-    alert(tot_quty)
-    alert(present_shipping)
+
+//    alert(quantity)
+//    alert(tot_quty)
+//    alert(present_shipping)
 
     if (parseInt(present_shipping) > parseInt(tot_quty)) {
         alert('present Shipping is greater than the quantity');
@@ -500,11 +500,11 @@ function grand_total_challan() {
         vat_val = (total_price * parseFloat($('#vat_percentage').val())) / 100;
         $("#vat_val").html("" + vat_val + "")
     }
-    
+
     if (parseFloat($('#vat_percentage').val()) == 0) {
         vat_val = 0;
     }
-    
+
     grand_total = total_price + parseFloat(vat_val);
     $('#grand_total').val(grand_total);
 }
@@ -575,11 +575,14 @@ function get_default_location() {
  * product_autocomplete for purchase
  */
 function product_autocomplete_purchase(id) {
+
     $("#add_purchase_product_name_" + id).autocomplete({
         minLength: 1,
         dataType: 'json',
         type: 'GET',
         source: function (request, response) {
+            $("#add_purchase_product_name_" + id).addClass('loadinggif');
+//            $(".search-icon").hide();
             $.ajax({
                 url: baseurl + '/fetch_products',
                 data: {"term": request.term},
@@ -592,7 +595,9 @@ function product_autocomplete_purchase(id) {
         },
         select: function (event, ui) {
             $("#add_product_id_" + id).val(ui.item.id);
-//            $("#product_price_" + id).val(ui.item.product_price);            
+//            $("#product_price_" + id).val(ui.item.product_price); 
+            $("#add_purchase_product_name_" + id).removeClass('loadinggif');
+//            $(".search-icon").show();
         }
     });
 //alert(id+'id is called');
