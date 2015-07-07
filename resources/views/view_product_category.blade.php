@@ -14,7 +14,7 @@
                     <h1 class="pull-left"> View Product Category</h1>
                     @if ( Auth::user()->role_id == 0 )         
                     <div class="pull-right top-page-ui">
-                        <a href="{{ URL::action('ProductController@edit',['id'=>$product_cat[0]['id']]) }}" class="btn btn-primary pull-right">
+                        <a href="{{ URL::action('ProductController@edit',['id'=>$product_cat->id]) }}" class="btn btn-primary pull-right">
                             Edit Product Category
                         </a>
                     </div>
@@ -32,22 +32,22 @@
                                     <tr>
                                         <td>
                                             <span>Product Category Type:</span> 
-                                            @if($product_cat[0]['product_type_id'] == 1)
-                                            {{'Pipe'}}
+                                            @if($product_cat->product_type_id == 1)
+                                            {{$product_cat['product_type']->name}}
                                             @else
-                                            {{'structure'}}
+                                            {{$product_cat['product_type']->name}}
                                             @endif
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><span>Sub Product Category Name:</span> {{ $product_cat[0]['product_category_name'] }}</td>
+                                        <td><span>Sub Product Category Name:</span> {{ $product_cat->product_category_name }}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Sub Product Category Alias Name:</span> {{ $product_cat[0]['alias_name'] }}</td>
+                                        <td><span>Sub Product Category Alias Name:</span> {{ isset($product_cat['product_sub_category'])?$product_cat['product_sub_category']->alias_name: 'No Alias' }}</td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <span>Price: </span>{{ $product_cat[0]['price'] }}
+                                            <span>Price: </span>{{ $product_cat->price }}
                                         </td>
                                     </tr>
                                 </tbody>

@@ -49,8 +49,8 @@ class ProductController extends Controller {
     }
 
     public function show($id) {
-        $product_cat = ProductCategory::where('id', $id)->get();
-
+        $product_cat = ProductCategory::where('id', $id)->with('product_sub_category', 'product_type')->first();
+        
         return view('view_product_category', compact('product_cat'));
     }
 
