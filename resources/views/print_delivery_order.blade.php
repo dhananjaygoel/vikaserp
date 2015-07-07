@@ -52,13 +52,11 @@
                 float: left;
 
                 padding: 30px 5px ;
-
             }
             .content
             {
                 width: 88%;
                 float: left;
-
                 padding-top: 30px;
             }
             .invoice

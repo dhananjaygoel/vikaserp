@@ -3,7 +3,6 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">
-
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
@@ -15,12 +14,9 @@
         <div  class="row">
             <div class="col-lg-12">
                 <div class="main-box">
-
-
                     <div class="main-box-body clearfix">
 
                         {!! Form::open(array('method'=>'post','url'=>url('create_delivery_order',$order->id), 'id'=>'create_delivery_order_form'))!!}
-
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="order_id" value="{{$order->id}}">
                         <input type="hidden" name="customer_id" value="{{$order['customer']->id}}" id="hidden_cutomer_id">
@@ -127,7 +123,6 @@
                                                     <input type="hidden" value="{{$unit->id}}" name="product[{{$key}}][units]">
                                                     @endif
                                                     @endforeach
-
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -149,11 +144,12 @@
                                                     <?php $total = $total + $product->price; ?>
                                                 </div>
                                             </td>
+                                            
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    @if(count($pending_orders)>0)
+                                                    @if(count($pending_orders) > 0)
                                                     @foreach($pending_orders as $porder)
-                                                    @if($porder['product_id'] == $product->product_category_id && $porder['id']== $product->id)
+                                                    @if($porder['product_id'] == $product->product_category_id)
                                                     <input type="hidden" value="{{$porder['total_pending_quantity']}}" id="pending_qunatity_value_{{$key}}">
                                                     <div id="pending_qunatity_{{$key}}"><span class="text-center">{{$porder['total_pending_quantity']}}</span>
                                                     </div>

@@ -350,8 +350,8 @@ class PurchaseAdviseController extends Controller {
 
         $date_letter = 'PO/' . $current_date . "" . Input::get('pa_id');
         PurchaseAdvise::where('id', Input::get('pa_id'))->update(array(
-            'serial_number' => $date_letter,
-            'advice_status' => "delivered"
+            'serial_number' => $date_letter
+//            'advice_status' => "delivered"
         ));
 
         return view('print_purchase_advise', compact('purchase_advise'));

@@ -225,6 +225,7 @@
                 $total_qty = 0;
                 ?>
                 @foreach($allorder['all_order_products'] as $prod)
+                @if($prod->order_type == 'delivery_challan')
                 <div class="divRow">
                     <div class="divCell">{{ $i++ }}</div>
                     <div class="divCell">{{ $prod['product_category']['product_sub_category']->size }}</div>
@@ -237,6 +238,7 @@
                 $total_price += $prod->quantity * $prod->price;
                 $total_qty += $prod->quantity;
                 ?>
+                @endif
                 @endforeach
 
             </div>
