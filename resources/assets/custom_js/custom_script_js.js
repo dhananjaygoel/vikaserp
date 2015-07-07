@@ -236,6 +236,10 @@ function change_quantity(key) {
     var present_shipping = $("#present_shipping_" + key).val();//ok
     var tot_quty = $("#quantity_" + key).val(); //ok
     var total = parseInt(quantity) + parseInt(present_shipping);
+    
+    alert(quantity)
+    alert(tot_quty)
+    alert(present_shipping)
 
     if (parseInt(present_shipping) > parseInt(tot_quty)) {
         alert('present Shipping is greater than the quantity');

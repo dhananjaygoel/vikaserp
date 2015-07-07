@@ -174,10 +174,12 @@
                     <div  class="divCell">Act pcs</div>
                     <div  class="divCell">Act Qty</div>                
                 </div>
-                <?
-                $i=1;
+                <?php
+                $i = 1;
+               
                 ?>
                 @foreach($purchase_advise['purchase_products'] as $prod)
+                @if($prod->order_type == 'purchase_advice')
                 <div class="divRow">
                     <div class="divCell">{{ $i++ }}</div>
                     <div class="divCell">{{ $prod['product_sub_category']->size }}</div>
@@ -186,6 +188,7 @@
                     <div class="divCell">xxx</div>
                     <div class="divCell">{{ $prod->present_shipping }}</div>                
                 </div>
+                @endif
                 @endforeach
             </div>
             <div class="footer">
