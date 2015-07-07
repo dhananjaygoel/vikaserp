@@ -37,7 +37,6 @@
                         {!!Form::open(array('method'=>'PUT','url'=>url('delivery_order/'.$delivery_data[0]['id']),'id'=>'edit_delivery_order'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
 
-
                         @if($delivery_data[0]['customer']->customer_status =="pending")
                         <div class="form-group">
                             <label>Customer</label>
@@ -173,7 +172,6 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group ">
-
                                                     <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}">
                                                         @foreach($units as $unit)
                                                         @if($product->unit_id == $unit->id)
@@ -186,7 +184,7 @@
                                             <td class="col-md-2">
                                                 <div class="form-group col-md-6">
                                                     <!--                                                            form for save product value-->
-                                                    <input type="text" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" placeholder="Present Shipping" onblur="change_quantity();">
+                                                    <input type="text" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" placeholder="Present Shipping" onblur="change_quantity({{$key}});">
                                                 </div>
                                                 <div class="form-group col-md-6 difference_form">
                                                     <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->     

@@ -232,7 +232,7 @@ function getunit_name(key) {
  */
 function change_quantity(key) {
 
-    var quantity = $("#pending_qunatity_" + key).val();
+    var quantity = $("#pending_qunatity_value_" + key).val();
     var present_shipping = $("#present_shipping_" + key).val();//ok
     var tot_quty = $("#quantity_" + key).val(); //ok
     var total = parseInt(quantity) + parseInt(present_shipping);
@@ -255,6 +255,7 @@ function change_quantity(key) {
 //        var rem_quantity = parseInt(quantity) - parseInt(present_shipping);
 //        $("#pending_qunatity_" + key).html("<span class='text-center'>" + rem_quantity + "</span");
 //    }
+
     grand_total_delivery_order();
 
 }
@@ -495,9 +496,11 @@ function grand_total_challan() {
         vat_val = (total_price * parseFloat($('#vat_percentage').val())) / 100;
         $("#vat_val").html("" + vat_val + "")
     }
+    
     if (parseFloat($('#vat_percentage').val()) == 0) {
         vat_val = 0;
     }
+    
     grand_total = total_price + parseFloat(vat_val);
     $('#grand_total').val(grand_total);
 }

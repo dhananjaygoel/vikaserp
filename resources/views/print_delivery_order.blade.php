@@ -144,7 +144,7 @@
                 <div class="do-no">
                     DO Number: {{ $delivery_data->serial_no }}
                 </div>
-                
+
                 <div class="date">
                     Date: {{ date('d F, Y')}}
                 </div>
@@ -166,8 +166,7 @@
             <div class="del">
                 Delivery @: {{ $delivery_data['location']->area_name }}
             </div>
-            <div class="divTable">
-                
+            <div class="divTable">                
                 <div class="headRow">
                     <div  class="divCell">Sr.</div>
                     <div  class="divCell">Size</div>
@@ -176,10 +175,10 @@
                     <div  class="divCell">Act pcs</div>
                     <div  class="divCell">Act Qty</div>                
                 </div>
-                
+
                 <?php $i = 1; ?>
                 @foreach($delivery_data['delivery_product'] as $product)
-                
+                @if($product['order_type'] == 'delivery_order')
                 <div class="divRow">
                     <div class="divCell">{{ $i++ }}</div>
                     <div class="divCell">{{ $product['product_category']['product_sub_category']->size }}</div>
@@ -187,7 +186,8 @@
                     <div class="divCell">{{ $product->quantity }}</div>
                     <div class="divCell">{{ $product->actual_pieces }}</div>
                     <div class="divCell">{{ $product->actual_quantity }}</div>                
-                </div>                
+                </div> 
+                @endif
                 @endforeach
             </div>
             <div class="footer">
@@ -195,7 +195,7 @@
                     Remark
                 </div>
                 <div class="content">
-                    {{ $product->remarks }}
+                    {{ $delivery_data->remarks }}
                     <hr>
                 </div>
             </div>

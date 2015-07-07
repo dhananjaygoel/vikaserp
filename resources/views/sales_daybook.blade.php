@@ -1,3 +1,12 @@
+<?php
+
+//echo '<pre>';
+//print_r($allorders->toArray());
+//echo '</pre>';
+//exit;
+
+?>
+
 @extends('layouts.master')
 @section('title','Sales Daybook')
 @section('content')
@@ -84,7 +93,7 @@
                                             <th>Loaded By </th>
                                             <th>Labors </th>
                                             <th>Actual Quantity</th>
-                                            <th>Amount </th>
+                                            <th>Amount</th>
                                             <th>Bill Number</th> 
                                             <th>Remarks </th> 
                                             @if( Auth::user()->role_id == 0)
@@ -125,12 +134,12 @@
                                                 <?php
                                                 $total_qunatity = 0;
                                                 foreach ($challan["all_order_products"] as $products) {
-                                                    $total_qunatity = $total_qunatity + $products["actual_pieces"];
+                                                    $total_qunatity = $total_qunatity + $products["quantity"];
                                                 }
                                                 echo $total_qunatity;
                                                 ?>
                                             </td>
-                                            <td >{{$challan->grand_total}}</td>
+                                            <td >{{$challan->grand_price}}</td>
                                             <td >{{$challan->bill_number}}</td>
                                             <td>                                                
                                                 @if((strlen(trim($challan->remarks))) > 50)                                                
@@ -140,7 +149,8 @@
                                                 @endif
                                             </td>
                                             @if( Auth::user()->role_id == 0)
-                                            <td>                                                <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_{{$challan->id}}" title="delete">
+                                            <td>                                                
+                                                <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_{{$challan->id}}" title="delete">
                                                     <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
                                                         <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>

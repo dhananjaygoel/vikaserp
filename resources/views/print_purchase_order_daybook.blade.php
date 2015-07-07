@@ -89,7 +89,6 @@
 
                 <?php $i = 1; ?>
                 @foreach ($purchase_daybook as $obj)
-
                 <?php
                 $qty = 0;
                 $amount = 0;

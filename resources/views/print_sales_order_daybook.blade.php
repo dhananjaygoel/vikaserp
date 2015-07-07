@@ -50,10 +50,6 @@
                 padding: 0px;
                 overflow: hidden;
             }
-
-
-
-
             .title
             {
                 width: 100%;
@@ -90,7 +86,7 @@
                 <?php
                 $i = 1;
                 ?>
-                @foreach ($allorders as $obj)
+                @foreach($allorders as $obj)
                 <?php
                 $qty = 0;
                 $amount = 0;
@@ -101,7 +97,6 @@
                 $amount += $total_qty->present_shipping * $total_qty->price;
                 ?>
                 @endforeach
-
                 <div class="divRow">
                     <div class="divCell center">{{$i++ }}</div>
                     <div class="divCell">{{ $obj->serial_number }}</div>

@@ -11,7 +11,7 @@
                 </ol>
             </div>
         </div>
-        <div  class="row">
+        <div class="row">
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
@@ -109,8 +109,6 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group ">
-
-
                                                     @foreach($units as $unit)
                                                     @if($unit->id == $product->unit_id)
                                                     <input class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" value="{{$unit->id}}" type="hidden">
@@ -118,7 +116,6 @@
                                                     <input type="hidden" id="unit_name_{{$key}}" value="{{$unit->unit_name}}">
                                                     @endif
                                                     @endforeach
-
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -126,12 +123,10 @@
                                                     <div id="amount_{{$key}}"></div>
                                                 </div>
                                             </td>
-
                                         </tr>
                                         <?php $key++; ?>
                                         @endif
                                         @endforeach
-
                                     </tbody>
                                 </table>
                                 <table>
@@ -148,7 +143,6 @@
                                                                 <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
                                                             </span>
                                                         </a>
-
                                                     </div>
                                                 </div>
                                             </td>
@@ -162,13 +156,10 @@
                                 </table>
                             </div>
                         </div>
-
                         <div class="clearfix"></div>
-
                         <div class="form-group">
                             <label for="total"><b class="challan">Total</b><span class="gtotal"><input type="text" id="total_price" name="total_price" placeholder="" readonly="readonly"></span></label>                           
                         </div>
-
                         <div class="form-group">
                             <label for="driver_contact"><b class="challan">Loading</b></label>
                             <input id="loading_charge" class="form-control" placeholder="loading" name="loading" value="" type="text" onblur="grand_total_challan();">
