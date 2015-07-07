@@ -104,7 +104,7 @@ class ProductsubController extends Controller {
         }
         if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
             ProductSubCategory::destroy($id);
-            return redirect('product_sub_category')->with('flash_message', 'Product sub category details successfully deleted.');
+            return redirect('product_sub_category')->with('success', 'Product sub category details successfully deleted.');
         } else {
             return redirect('product_sub_category')->with('wrong', 'You have entered wrong credentials');
         }

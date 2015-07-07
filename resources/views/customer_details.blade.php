@@ -81,16 +81,16 @@
                                         <td><span>Delivery Location:</span> {{$customer['deliverylocation']->area_name}} <em>({{$customer['deliverylocation']['city']->city_name}}, {{$customer['deliverylocation']['state']->state_name}})</em></td>
                                     </tr>
                                     <tr>
-                                        <td><span>Username:</span> {{$customer->username}}</td>
+                                        <td><span>Username:</span> {{($customer->username != '' )?$customer->username: 'N/A'}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Password:</span> </td>
+                                        <td><span>Password:</span> ********** </td>
                                     </tr>
                                     <tr>
-                                        <td><span>Credit Period(Days):</span> {{$customer->credit_period}}</td>
+                                        <td><span>Credit Period(Days):</span> {{($customer->credit_period != '')?$customer->credit_period:'N/A' }}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Relationship Manager:</span> {{$customer['manager']->first_name}}&nbsp;{{$customer['manager']->last_name}}</td>
+                                        <td><span>Relationship Manager:</span> {{isset($customer['manager']->first_name)?$customer['manager']->first_name: 'N'}}{{isset($customer['manager']->last_name)?'&nbsp;'.$customer['manager']->last_name: '/A'}}</td>
                                     </tr>
                                 </tbody>
                             </table>
