@@ -132,7 +132,7 @@ class OrderController extends Controller {
                     $customers = Customer::find($customer_id);
 
                     Mail::send('emails.order_complete_email', ['key' => $customers->owner_name], function($message) {
-                        $message->to('kshailesh@agstechnologies.com', 'John Smith')->subject('Order details created');
+                        $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Order details created');
                     });
                 }
             } else {
@@ -305,7 +305,7 @@ class OrderController extends Controller {
                     $customers = Customer::find($customer_id);
 
                     Mail::send('emails.order_complete_email', ['key' => $customers->owner_name], function($message) {
-                        $message->to('kshailesh@agstechnologies.com', 'John Smith')->subject('Order details updated');
+                        $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Order details updated');
                     });
                 }
             } else {
