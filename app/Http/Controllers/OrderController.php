@@ -107,7 +107,7 @@ class OrderController extends Controller {
 
         $input_data = Input::all();
 
-
+//        echo $input_data['existing_customer_name'];exit;
         if ($input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
@@ -126,7 +126,7 @@ class OrderController extends Controller {
         } elseif ($input_data['customer_status'] == "existing_customer") {
             $validator = Validator::make($input_data, Customer::$existing_customer_inquiry_rules);
             if ($validator->passes()) {
-                $customer_id = $input_data['autocomplete_customer_id'];
+                $customer_id = $input_data['existing_customer_name'];
                 //send mail
                 if (isset($input_data['send_email'])) {
                     $customers = Customer::find($customer_id);
@@ -298,7 +298,7 @@ class OrderController extends Controller {
             //mail
             $validator = Validator::make($input_data, Customer::$existing_customer_order_rules);
             if ($validator->passes()) {
-                $customer_id = $input_data['existing_customer_id'];
+                $customer_id = $input_data['existing_customer_name'];
 
                 //send mail
                 if (isset($input_data['send_email'])) {

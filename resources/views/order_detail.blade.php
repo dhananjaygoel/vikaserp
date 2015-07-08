@@ -139,14 +139,9 @@
                                             <td><span>Plus VAT: </span>No</td>
                                         </tr>
                                         @endif
-                                        <tr>
-                                            <td><span>Total: </span><?php
-                                                $grand_total = 0;
-                                                $vat = ($total * $order->vat_percentage) / 100;
-                                                $grand_total = $total + $vat;
-                                                echo $grand_total;
-                                                ?> </td>
-                                        </tr>
+<!--                                        <tr>
+                                            <td><span>Total: </span></td>
+                                        </tr>-->
                                         <tr>
                                             <td><span>Expected Delivery Date: </span>{{date("d F, Y", strtotime($order->expected_delivery_date)) }}</td>
                                         </tr>      

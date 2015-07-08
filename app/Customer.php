@@ -40,7 +40,7 @@ class Customer extends Model {
         'credit_period' => 'integer|required',
     );
     public static $existing_customer_inquiry_rules = array(
-        'autocomplete_customer_id' => 'required',
+        'existing_customer_name' => 'required',
     );
     public static $new_supplier_inquiry_rules = array(
         'supplier_name' => 'required|min:2|max:100',
@@ -51,7 +51,7 @@ class Customer extends Model {
         'autocomplete_supplier_id' => 'required',
     );
     public static $existing_customer_order_rules = array(
-        'existing_customer_id' => 'required',
+        'existing_customer_name' => 'required',
     );
     
     

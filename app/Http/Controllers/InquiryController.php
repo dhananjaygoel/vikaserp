@@ -108,7 +108,7 @@ class InquiryController extends Controller {
         } elseif ($input_data['customer_status'] == "existing_customer") {
             $validator = Validator::make($input_data, Customer::$existing_customer_inquiry_rules);
             if ($validator->passes()) {
-                $customer_id = $input_data['autocomplete_customer_id'];
+                $customer_id = $input_data['existing_customer_name'];
             } else {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
@@ -233,7 +233,7 @@ class InquiryController extends Controller {
         } elseif ($input_data['customer_status'] == "existing_customer") {
             $validator = Validator::make($input_data, Customer::$existing_customer_inquiry_rules);
             if ($validator->passes()) {
-                $customer_id = $input_data['autocomplete_customer_id'];
+                $customer_id = $input_data['existing_customer_name'];
             } else {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
