@@ -331,7 +331,7 @@ function product_autocomplete(id) {
         
         location = $('#add_inquiry_location').val();
         
-    } else if(delivery_location == 'other') {
+    } else if(delivery_location == -2) {
         
         location_difference = $('#location_difference').val();
         location = 0;

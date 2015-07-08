@@ -80,14 +80,14 @@
                             <div class="row col-md-4">
                                 <div class="form-group">
                                     <label for="location">Delivery Location:</label>
-                                    <select class="form-control" name="add_inquiry_location" id="add_inquiry_location">
+                                    <select class="form-control" name="add_inquiry_location" id="add_order_location">
                                         <option value="" selected="" disabled="">Delivery Location</option>
                                         @foreach($delivery_locations as $delivery_location)
                                         @if($delivery_location->status=='permanent' && $delivery_location->id!=0)
                                         <option value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
                                         @endif
                                         @endforeach
-                                        <option id="other_location" value="other">Other</option>
+                                        <option id="other_location" value="-2">Other</option>
                                     </select>
                                 </div>
                             </div>
