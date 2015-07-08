@@ -1,3 +1,4 @@
+
 @extends('layouts.master')
 @section('title','Inquiry')
 @section('content')
@@ -24,6 +25,7 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
+                         <div style="display:none;" id="flash_error inquire_msg" class="alert alert-success no_data_msg_container">Inquiry difference price successfully updated</div>
                         <form>
                             <div class="table-responsive">
                                 <table id="table-example" class="table customerview_table">
@@ -106,9 +108,12 @@
 
                                         <tr>
                                             <td><span>Total: </span> <?php
+                                            
                                                 $total = $inquiry['inquiry_products']->sum('price') * $product_data->quantity;
                                                 echo $total;
-                                                ?></td>
+                                                
+                                                ?>
+                                            </td>
 
                                         </tr>
 

@@ -43,8 +43,8 @@
                                 <div class="customer_select" >
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
-                                            <input class="form-control" placeholder="Enter Customer Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
-                                            <input type="hidden" id="existing_customer_id" name="autocomplete_customer_id">
+                                            <input class="form-control" placeholder="Enter Customer Name" type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
+                                            <input type="hidden" id="existing_customer_id" name="existing_customer_name">
                                             <input type="hidden" id="customer_default_location">
                                             <i class="fa fa-search search-icon"></i>
                                         </div>
@@ -59,20 +59,20 @@
                                 <div class="form-group">
                                     <label for="name">Customer Name</label>
                                     <input id="customer_name" class="form-control" placeholder="Name" name="customer_name" value="" type="text">
-                                    <input id="customer_id" class="form-control" name="existing_customer_id" value="" type="hidden">
+<!--                                    <input id="customer_id" class="form-control" name="existing_customer_id" value="" type="hidden">-->
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Contact Person</label>
-                                    <input id="contact_person" class="form-control" placeholder="Contact Person" name="contact_person" value="" type="text">
+                                    <input id="contact_person" class="form-control" placeholder="Contact Person" name="contact_person" value="{{ old('contact_person') }}" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label for="mobile_number">Mobile Number </label>
-                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" type="text">
+                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{ old('mobile_number') }}" type="text">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="period">Credit Period(Days)</label>
-                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="text">
+                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ old('credit_period') }}" type="text">
                                 </div>
                             </div>
 
@@ -80,7 +80,7 @@
                             <div class="row col-md-4">
                                 <div class="form-group">
                                     <label for="location">Delivery Location:</label>
-                                    <select class="form-control" name="add_order_location" id="add_order_location">
+                                    <select class="form-control" name="add_inquiry_location" id="add_order_location">
                                         <option value="" selected="" disabled="">Delivery Location</option>
                                         @foreach($delivery_locations as $delivery_location)
                                         @if($delivery_location->status=='permanent' && $delivery_location->id!=0)

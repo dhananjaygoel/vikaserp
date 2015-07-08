@@ -295,8 +295,10 @@ function save_price_inquiry_view(id) {
             data: {id: id, _token: _token, updated_price: updated_price}
         }).done(function () {
             location.reload();
+            //$('#inquire_msg').css('display', 'block');
         });
     }
+    //$('#inquire_msg').css('display', 'block');
 }
 
 function show_hide_customer(status) {
@@ -326,13 +328,13 @@ function product_autocomplete(id) {
     var delivery_location = $('#add_order_location').val();
     var location = 0;
     var location_difference = 0;
-    
+
     if (delivery_location > 0) {
-        
+
         location = $('#add_order_location').val();
-        
-    } else if(delivery_location == 'other') {
-        
+
+    } else if (delivery_location == 'other') {
+
         location_difference = $('#location_difference').val();
         location = 0;
     }

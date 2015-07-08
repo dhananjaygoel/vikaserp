@@ -69,8 +69,6 @@
 
                                         <?php $qty = 0; ?>
                                         @foreach($inquiry['inquiry_products'] as $prod)
-
-
                                         @if($prod['unit']->unit_name == 'KG')
                                         <?php
                                         $qty += $prod->quantity;
