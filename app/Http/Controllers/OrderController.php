@@ -737,10 +737,10 @@ class OrderController extends Controller {
                 array_push($pending_orders, $temp);
             }
         }
-        echo '<pre>';
-        print_r($pending_orders);
-        echo '</pre>';
-        exit;
+//        echo '<pre>';
+//        print_r($pending_orders);
+//        echo '</pre>';
+//        exit;
         return $pending_orders;
     }
 
