@@ -28,7 +28,7 @@ $(document).ready(function () {
     $('#add_order_location').change(function () {
 
 //        alert('hi');
-        if ($('#add_order_location').val() == '-2') {
+        if ($('#add_order_location').val() == 'other') {
             $('.locationtext').show();
         } else {
             $('.locationtext').hide();

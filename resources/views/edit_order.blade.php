@@ -170,7 +170,7 @@
                         <div class="row col-md-4">
                             <div class="form-group">
                                 <label for="location">Delivery Location:</label>
-                                <select class="form-control" name="add_inquiry_location" id="add_inquiry_location">
+                                <select class="form-control" name="add_inquiry_location" id="add_order_location">
                                     <option value="">Delivery Location</option>
                                     @foreach($delivery_location as $location)
                                     @if($order->delivery_location_id == $location->id)

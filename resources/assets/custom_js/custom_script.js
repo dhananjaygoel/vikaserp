@@ -323,19 +323,18 @@ function product_autocomplete(id) {
         customer_id = 0;
     }
 
-    var delivery_location = $('#add_inquiry_location').val();
+    var delivery_location = $('#add_order_location').val();
     var location = 0;
     var location_difference = 0;
     
     if (delivery_location > 0) {
         
-        location = $('#add_inquiry_location').val();
+        location = $('#add_order_location').val();
         
-    } else if(delivery_location == -2) {
+    } else if(delivery_location == 'other') {
         
         location_difference = $('#location_difference').val();
         location = 0;
-//        alert(location_difference);
     }
 
     $("#add_product_name_" + id).autocomplete({

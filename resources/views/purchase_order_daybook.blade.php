@@ -123,13 +123,13 @@
                                                 <td>{{ $daybook->unloaded_by }} </td>
                                                 <td>{{ $daybook->labours }}</td>    
                                                 <td>{{ $total_qty }}</td>
-                                                <td>{{ $total_amount }}</td>                                        
+                                                <td>{{ $daybook->grand_total }}</td>                                        
                                                 <td>{{ $daybook->bill_number }}</td>
                                                 <td>
                                                     @if((strlen(trim($daybook->remarks))) > 50)                                                
                                                     {{ substr(trim($daybook->remarks),0,50)}} ..
                                                     @else
-                                                    {{$daybook->remarks}}
+                                                    {{trim($daybook->remarks)}}
                                                     @endif
                                                 </td>
                                                 <td>  <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal{{$daybook->id}}" >

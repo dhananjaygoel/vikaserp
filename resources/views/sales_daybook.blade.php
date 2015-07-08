@@ -145,7 +145,7 @@
                                                 @if((strlen(trim($challan->remarks))) > 50)                                                
                                                 {{ substr(trim($challan->remarks),0,50)}} ..
                                                 @else
-                                                {{$challan->remarks}}
+                                                {{trim($challan->remarks)}}
                                                 @endif
                                             </td>
                                             @if( Auth::user()->role_id == 0)

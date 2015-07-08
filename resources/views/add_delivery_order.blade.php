@@ -86,7 +86,7 @@
                                         <option value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
                                         @endif
                                         @endforeach
-                                        <option id="other_location" value="-2">Other</option>
+                                        <option id="other_location" value="other">Other</option>
                                     </select>
                                 </div>
                             </div>
@@ -96,6 +96,10 @@
                                     <div class="form-group col-md-4">
                                         <label for="location">Location </label>
                                         <input id="location" class="form-control" placeholder="Location " name="location" value="" type="text">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="location">Other Location Difference</label>
+                                        <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="" type="text">
                                     </div>
                                 </div>
                             </div>

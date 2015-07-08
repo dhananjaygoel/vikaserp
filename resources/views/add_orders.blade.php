@@ -104,7 +104,7 @@
                                         <option value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
                                         @endif
                                         @endforeach
-                                        <option id="other_location" value="-2">Other</option>                                        
+                                        <option id="other_location" value="other">Other</option>                                        
                                     </select>
                                 </div>
                             </div>
