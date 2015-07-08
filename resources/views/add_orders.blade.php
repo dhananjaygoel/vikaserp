@@ -77,20 +77,20 @@
                             <div class="new_customer_details" style="display: none">
                                 <div class="form-group">
                                     <label for="name">Customer Name</label>
-                                    <input id="name" class="form-control" placeholder="Name" name="customer_name" value="" type="text">
+                                    <input id="name" class="form-control" placeholder="Name" name="customer_name" value="{{old('customer_name')}}" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Contact Person</label>
-                                    <input id="contact_person" class="form-control" placeholder="Contact Person" name="contact_person" value="" type="text">
+                                    <input id="contact_person" class="form-control" placeholder="Contact Person" name="contact_person" value="{{old('contact_person')}}" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label for="mobile_number">Mobile Number </label>
-                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" type="text">
+                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{old('mobile_number')}}" type="text">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="period">Credit Period(Days)</label>
-                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="text">
+                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{old('credit_period')}}" type="text">
                                 </div>
                             </div>
 

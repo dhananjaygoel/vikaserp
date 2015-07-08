@@ -37,7 +37,9 @@
                                         <select class="form-control" id="user_filter3" name="party_filter" onchange="this.form.submit();">
                                             <option value="" selected="">--Select Party--</option>
                                             @foreach($customers as $customer)
+                                            @if($customer->customer_status == 'permanent')
                                             <option <?php if (Input::get('party_filter') == $customer->id) echo 'selected=""'; ?> value="{{$customer->id}}">{{$customer->owner_name}}</option>
+                                            @endif
                                             @endforeach                                        
                                         </select> 
                                     </div>
@@ -176,7 +178,7 @@
                                             @endif
                                         </td>
                                     </tr>
-                                <div class="modal fade" id="delete_orders_modal_{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="delete_orders_modal_{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -205,7 +207,7 @@
                                         </div>
                                     </div>
                                 </div>     
-                                <div class="modal fade" id="cancel_order_modal_{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="cancel_order_modal_{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">

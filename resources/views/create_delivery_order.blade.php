@@ -112,7 +112,16 @@
                                             <td class="col-md-1">
                                                 <div class="form-group">
                                                     {{$product->quantity}}
+                                                    @if(count($pending_orders) > 0)
+                                                    @foreach($pending_orders as $porder)
+                                                    @if($porder['product_id'] == $product->product_category_id)
+                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$porder['total_pending_quantity']}}" type="hidden" > 
+
+                                                    @endif
+                                                    @endforeach
+                                                    @else
                                                     <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="hidden" >
+                                                    @endif
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -133,7 +142,7 @@
                                                     @else
                                                     <?php $present_shipping = $product->quantity; ?>                                                    
                                                     @endif
-                                                    
+
                                                     <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$present_shipping}}" type="text" onblur="change_quantity({{$key}});">
                                                 </div>
                                             </td>
@@ -144,7 +153,7 @@
                                                     <?php $total = $total + $product->price; ?>
                                                 </div>
                                             </td>
-                                            
+
                                             <td class="col-md-2">
                                                 <div class="form-group">
                                                     @if(count($pending_orders) > 0)
