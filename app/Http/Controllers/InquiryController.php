@@ -363,13 +363,13 @@ class InquiryController extends Controller {
             foreach ($products as $product) {
                 if (!empty($product['product_sub_categories'])) {
                     foreach ($product['product_sub_categories'] as $product_sub_cat) {
-
+                        $cust = 0;
                         if ($customer_id > 0) {
                             $customer = CustomerProductDifference::where('customer_id', $customer_id)
                                             ->where('product_category_id', $product->id)->first();
-                            $cust = $customer->difference_amount;
-                        } else {
-                            $cust = 0;
+                            if (count($customer) > 0) {
+                                $cust = $customer->difference_amount;
+                            }
                         }
 
 
@@ -381,14 +381,21 @@ class InquiryController extends Controller {
                             'product_price' => $product->price + $cust + $location_diff + $product_sub->difference
                         ];
                     }
-                }
+                } 
             }
         } else {
             $data_array[] = [
                 'value' => 'No Products',
             ];
         }
-        echo json_encode(array('data_array' => $data_array));
+//        if ($data_array['value'] != 'No Products') {
+            echo json_encode(array('data_array' => $data_array));
+//        } else {
+//            $data_array[] = [
+//                'value' => 'No Products',
+//            ];
+//            echo json_encode(array('data_array' => $data_array));
+//        }
     }
 
     public function store_price() {
