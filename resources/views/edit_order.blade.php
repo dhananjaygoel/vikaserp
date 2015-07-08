@@ -137,7 +137,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group searchproduct">
                                         <input class="form-control" placeholder="Enter Customer Name " type="text" value="{{$order['customer']->owner_name}}" id="existing_customer_name">
-                                        <input id="existing_customer_id" class="form-control" name="existing_customer_id" value="{{$order['customer']->id}}" type="hidden">
+                                        <input id="existing_customer_id" class="form-control" name="existing_customer_name" value="{{$order['customer']->id}}" type="hidden">
                                         <i class="fa fa-search search-icon"></i>
                                     </div>
                                 </div>
