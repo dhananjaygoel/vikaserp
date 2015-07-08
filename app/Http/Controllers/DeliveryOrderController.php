@@ -531,15 +531,20 @@ class DeliveryOrderController extends Controller {
                 $total_quantity = 0;
                 $all_order_products = AllOrderProducts::where('order_id', $del_order->id)->where('order_type', 'delivery_order')->get();
                 foreach ($all_order_products as $products) {
+//                    $p_qty = $products['quantity'] - $products['present_shipping'];
                     $p_qty = $products['quantity'] - $products['present_shipping'];
                     $pending_quantity = $pending_quantity + $p_qty;
                     $kg = Units::first();
-                    $prod_quantity = $products['quantity'];
-                    if ($products['unit_id'] != $kg->id) {
+                    $prod_quantity = $products['present_shipping'];
+                    if ($products['unit_id'] != 1) {
                         $product_subcategory = \App\ProductSubCategory::where('product_category_id', $products['product_category_id'])->first();
 
-
-                        $calculated_quantity = $prod_quantity / $product_subcategory['weight'];
+                        if ($products['unit_id'] == 2) {
+                        $calculated_quantity = $prod_quantity * $product_subcategory['weight'];
+                        }
+                        if ($products['unit_id'] == 3) {
+                        $calculated_quantity = ($prod_quantity / $product_subcategory['size'] )* $product_subcategory['weight'];
+                        }
                         $prod_quantity = $calculated_quantity;
                     }
                     $total_quantity = $total_quantity + $prod_quantity;

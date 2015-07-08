@@ -162,7 +162,13 @@
                 </div>
             </div>
             <div class="del">
-                Delivery @: {{ $delivery_data['location']->area_name }}
+                Delivery @: 
+                @if($delivery_data->delivery_location_id!=0)
+                {{ $delivery_data['location']->area_name }}
+                @else
+                {{ $delivery_data->other_location }}
+                @endif
+
             </div>
             <div class="divTable">                
                 <div class="headRow">

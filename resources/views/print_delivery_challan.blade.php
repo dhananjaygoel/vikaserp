@@ -193,7 +193,12 @@
             </div>
             <div class="delivery-details">
                 <div class="delivery">
-                    Delivery @: {{ $allorder['delivery_order']['location']->area_name }}
+                    
+                    Delivery @: @if($allorder['delivery_order']->delivery_location_id!=0)
+                    {{ $allorder['delivery_order']['location']->area_name }}
+                    @else
+                    {{ $allorder['delivery_order']->other_location }}
+                    @endif
                 </div>
 
                 <div class="estmt-no">

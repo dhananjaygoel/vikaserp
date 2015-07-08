@@ -64,7 +64,9 @@
                                         <td class="text-center"><?php
                                             $total_shipping = 0;
                                             foreach ($challan['all_order_products'] as $products) {
-                                                $total_shipping = $total_shipping + $products['present_shipping'];
+                                                if ($products->order_type == 'delivery_challan') {
+                                                    $total_shipping = $total_shipping + $products['present_shipping'];
+                                                }
 //                                            echo ' '.$products['present_shipping'];
                                             }
                                             echo $total_shipping;
