@@ -264,7 +264,7 @@ class InquiryController extends Controller {
                 'other_location' => $other_location,
                 'other_location_difference' => $other_location_difference
             ]);
-//            echo 'test';exit;
+
         } else {
             $inquiry->update([
                 'other_location' => '',
@@ -456,14 +456,9 @@ class InquiryController extends Controller {
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
         $date = date("Y-m-d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
-//        $date = $input_data['expected_date'];
-//
-//        $datetime = new DateTime($date);
-//        $datetime->format('Y-m-d');
 
         $i = 0;
         $j = count($input_data['product']);
-//        echo $input_data['estimated_date'];exit;
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] == "") {
                 $i++;
@@ -489,10 +484,13 @@ class InquiryController extends Controller {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
             }
+            
         } elseif ($input_data['customer_status'] == "existing_customer") {
+            
             $validator = Validator::make($input_data, Customer::$existing_customer_inquiry_rules);
             if ($validator->passes()) {
-                $customer_id = $input_data['autocomplete_customer_id'];
+                
+                $customer_id = $input_data['existing_customer_name'];
 
                 //send mail
                 if (isset($input_data['send_email'])) {
@@ -522,7 +520,7 @@ class InquiryController extends Controller {
         if ($input_data['vat_status'] == 'exclude_vat') {
             $vat_price = $input_data['vat_percentage'];
         }
-//        echo 'other location '.$input_data['location'];exit;
+
         $order = new Order();
         $order->order_source = $order_status;
         $order->supplier_id = $supplier_id;
@@ -530,7 +528,6 @@ class InquiryController extends Controller {
         $order->created_by = Auth::id();
         $order->delivery_location_id = $input_data['add_inquiry_location'];
         $order->vat_percentage = $vat_price;
-//        $order->estimated_delivery_date = date_format(date_create($input_data['estimated_date']), 'Y-m-d');
         $order->expected_delivery_date = $datetime->format('Y-m-d');
         $order->remarks = $input_data['inquiry_remark'];
         $order->order_status = "Pending";

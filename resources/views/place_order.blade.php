@@ -7,7 +7,7 @@
             <div class="col-lg-12">
                 <ol class="breadcrumb">
                     <li><a href="{{url('inquiry')}}">Inquiry</a></li>
-                    <li class="active"><span>Edit Inquiry</span></li>
+                    <li class="active"><span>Place Order</span></li>
                 </ol>
                 <div class="clearfix">
                     <h1 class="pull-left"></h1>
@@ -107,7 +107,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group searchproduct">
                                         <input class="form-control" placeholder="Enter Customer Name " type="text" value="{{$inquiry['customer']->owner_name}}" id="existing_customer_name">
-                                        <input id="existing_customer_id" class="form-control" name="autocomplete_customer_id" value="{{$inquiry['customer']->id}}" type="hidden">
+                                        <input id="existing_customer_id" class="form-control" name="existing_customer_name" value="{{$inquiry['customer']->id}}" type="hidden">
                                         <i class="fa fa-search search-icon"></i>
                                     </div>
                                 </div>
