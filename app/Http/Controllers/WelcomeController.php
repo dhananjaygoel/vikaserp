@@ -5,6 +5,13 @@ namespace App\Http\Controllers;
 use App\Vendor\Phpoffice\Phpexcel\Classes;
 use Maatwebsite\Excel\Facades\Excel;
 use App\States;
+use App\ProductCategory;
+use App\ProductSubCategory;
+use App\ProductType;
+use App\Http\Requests\ProductCategoryRequest;
+use App\Http\Requests\UserValidation;
+use Input;
+use DB;
 
 class WelcomeController extends Controller {
     /*
@@ -141,6 +148,102 @@ class WelcomeController extends Controller {
         }
 
         exit();
+    }
+
+    public function excel_import() {
+
+        return view('excel_import');
+    }
+
+    public function upload_excel() {
+
+        if (Input::hasFile('excel_file')) {
+            $f = Input::file('excel_file');
+
+            $input = Input::file('excel_file');
+            $filename = $input->getRealPath();
+            var_dump($input);
+
+            Excel::load($filename, function($reader) {
+                $results = $reader->all();
+
+                foreach ($results as $excel) {
+
+                    if ($excel->type == 'Pipe') {
+                        $exits_cat = ProductCategory::where('product_type_id', 1)
+                                        ->where('product_category_name', $excel->category)->first();
+
+                        if (sizeof($exits_cat) > 0) {
+
+                            $exits_cat->id;
+
+
+                            $exits_sub_cat = ProductSubCategory::where('product_category_id', $exits_cat->id)
+                                    ->where('alias_name', $excel->alias)
+                                    ->where('size', $excel->size)
+                                    ->where('weight', $excel->weight)
+                                    ->where('thickness', $excel->thickness)
+                                    ->where('standard_length', $excel->meter)
+                                    ->where('difference', $excel->diff)
+                                    ->first();
+
+                            if (sizeof($exits_sub_cat) == 0) {
+
+                                $product_sub = new ProductSubCategory();
+                                $product_sub->product_category_id = $exits_cat->id;
+                                $product_sub->alias_name = $excel->alias;
+                                $product_sub->size = $excel->size;
+                                $product_sub->weight = $excel->weight;
+                                $product_sub->thickness = $excel->thickness;
+                                $product_sub->standard_length = $excel->meter;
+                                $product_sub->difference = $excel->diff;
+                                $product_sub->save();
+                            }
+                        } else {
+
+
+                            $product_cat = new ProductCategory();
+                            $product_cat->product_type_id = 1;
+                            $product_cat->product_category_name = $excel->category;
+                            $product_cat->save();
+
+                            $product_category_id = DB::getPdo()->lastInsertId();
+
+
+
+                            $exits_sub_cat = ProductSubCategory::where('product_category_id', $product_category_id)
+                                    ->where('alias_name', $excel->alias)
+                                    ->where('size', $excel->size)
+                                    ->where('weight', $excel->weight)
+                                    ->where('thickness', $excel->thickness)
+                                    ->where('standard_length', $excel->meter)
+                                    ->where('difference', $excel->diff)
+                                    ->first();
+
+                            if (sizeof($exits_sub_cat) == 0) {
+
+                                $product_sub = new ProductSubCategory();
+                                $product_sub->product_category_id = $product_category_id;
+                                $product_sub->alias_name = $excel->alias;
+                                $product_sub->size = $excel->size;
+                                $product_sub->weight = $excel->weight;
+                                $product_sub->thickness = $excel->thickness;
+                                $product_sub->standard_length = $excel->meter;
+                                $product_sub->difference = $excel->diff;
+                                $product_sub->save();
+                            }
+                        }
+                    }
+
+                    if ($excel->type == 'Structure') {
+                        
+                    }
+                }
+            });
+            return redirect('excel_import')->with('success', 'Product excel file successfully uploaded.');
+        } else {
+            return redirect('excel_import')->with('wrong', 'Please select file to upload');
+        }
     }
 
 }

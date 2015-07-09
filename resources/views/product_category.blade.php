@@ -12,20 +12,29 @@
 
                 <div class="clearfix">
                     <h1 class="pull-left">Product Category</h1>
+
                     @if(Auth::user()->role_id == 0)
                     <div class="pull-right top-page-ui">
                         <a href="{{URL::action('ProductController@create')}}" class="btn btn-primary pull-right">
                             <i class="fa fa-plus-circle fa-lg"></i> Add Product Category
                         </a>
                     </div>
-                    @endif
+                    @endif              
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
-                    <div class="main-box-body main_contents clearfix">  
+                    <div class="main-box-body main_contents clearfix"> 
+
+                        @if (count($errors) > 0)
+                        <div class="alert alert-warning">                        
+                            @foreach ($errors->all() as $error)
+                            <p>{{ $error }}</p>
+                            @endforeach                       
+                        </div>
+                        @endif 
 
                         @if (Session::has('success'))
                         <div class="alert alert-success alert-success1">

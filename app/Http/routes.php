@@ -67,8 +67,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('users', 'UsersController');
     
     Route::resource('product_category', 'ProductController');
-    Route::post('update_price', 'ProductController@update_price');
-    Route::post('upload_excel', 'ProductController@upload_excel');
+    Route::post('update_price', 'ProductController@update_price'); 
+    
     
     Route::resource('product_sub_category', 'ProductsubController');
     Route::get('get_product_category', 'ProductsubController@get_product_category');
@@ -146,3 +146,6 @@ Route::group(['middleware' => ['auth']], function() {
 
 
 Route::get('export/{type}', 'WelcomeController@exportExcel');
+
+Route::post('upload_excel', 'WelcomeController@upload_excel');
+Route::resource('excel_import', 'WelcomeController@excel_import');

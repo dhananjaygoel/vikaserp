@@ -12,23 +12,25 @@ use Illuminate\Support\Facades\Hash;
 use App\User;
 use Auth;
 use App\ProductCategory;
+use App\ProductSubCategory;
 use App\ProductType;
 use App\Http\Requests\ProductCategoryRequest;
 use App\Http\Requests\UserValidation;
 use Input;
 use DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller {
 
     public function index() {
-        
+
         $product_cat = ProductCategory::Paginate(10);
         $product_cat->setPath('product_category');
         return view('product_category', compact('product_cat'));
     }
 
     public function create() {
-        if (Auth::user()->role_id != 0 ) {
+        if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $product_type = ProductType::all();
@@ -50,12 +52,12 @@ class ProductController extends Controller {
 
     public function show($id) {
         $product_cat = ProductCategory::where('id', $id)->with('product_sub_category', 'product_type')->first();
-        
+
         return view('view_product_category', compact('product_cat'));
     }
 
     public function destroy($id) {
-        if (Auth::user()->role_id != 0 ) {
+        if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
@@ -76,7 +78,7 @@ class ProductController extends Controller {
     }
 
     public function update($id, ProductCategoryRequest $request) {
-        if (Auth::user()->role_id != 0  ) {
+        if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $product_data = array(
@@ -92,7 +94,7 @@ class ProductController extends Controller {
     }
 
     public function update_price() {
-        
+
         ProductCategory::where('id', Input::get('id'))
                 ->update(array('price' => Input::get('price')));
         return redirect('product_category')->with('success', 'Product category price successfully updated.');
