@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','Inquiry')
+@section('title','Edit Inquiry')
 @section('content')
 <div class="row">
     <div class="col-lg-12">
