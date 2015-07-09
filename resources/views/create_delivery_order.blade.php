@@ -100,6 +100,7 @@
                                         <?php $total = 0; ?>
                                         @foreach($order['all_order_products'] as $key=>$product)
                                         @if($product->order_type =='order')
+                                        
                                         <tr id="add_row_{{$key}}" class="add_product_row">
 
                                             <td class="col-md-3">
@@ -107,6 +108,7 @@
                                                     {{$product['product_category']['product_sub_category']->alias_name }}
                                                     <input class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['product_category']->product_category_name}}" readonly="readonly" >
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}"  value="{{$product->product_category_id}}" readonly="readonly">
+                                                    <input type="hidden" name="product[{{$key}}][order]" value="order">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -114,7 +116,7 @@
                                                     {{$product->quantity}}
                                                     @if(count($pending_orders) > 0)
                                                     @foreach($pending_orders as $porder)
-                                                    @if($porder['product_id'] == $product->product_category_id)
+                                                    @if($porder['product_id'] == $product->product_category_id && $porder['unit']==$product->unit_id )
                                                     <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$porder['total_pending_quantity']}}" type="hidden" > 
 
                                                     @endif
@@ -158,7 +160,7 @@
                                                 <div class="form-group">
                                                     @if(count($pending_orders) > 0)
                                                     @foreach($pending_orders as $porder)
-                                                    @if($porder['product_id'] == $product->product_category_id)
+                                                    @if($porder['product_id'] == $product->product_category_id && $porder['unit']==$product->unit_id )
                                                     <input type="hidden" value="{{$porder['total_pending_quantity']}}" id="pending_qunatity_value_{{$key}}">
                                                     <div id="pending_qunatity_{{$key}}"><span class="text-center">{{$porder['total_pending_quantity']}}</span>
                                                     </div>

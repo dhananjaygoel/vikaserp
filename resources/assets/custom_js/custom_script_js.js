@@ -149,6 +149,7 @@ $(document).ready(function () {
         });
         var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row">' +
                 '<td class="col-md-2">' +
+                '<input type="hidden" name="product[' + current_row_count + '][order]" value="">'+
                 '<div class="form-group searchproduct">' +
                 '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +
                 '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
