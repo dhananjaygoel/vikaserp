@@ -207,7 +207,7 @@
                                         </div>
                                     </div>
                                 </div>     
-                                <div class="modal fade" id="cancel_order_modal_{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                                <div class="modal fade" id="cancel_order_modal_{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -219,16 +219,16 @@
                                             <div class="modal-body">
                                                 <p> Are you sure to complete the Order?</p>
                                                 <div class="radio">
-                                                    <input  id="overprice" value="overprice" name="reason_type" type="radio">
-                                                    <label for="overprice">Over Pricing</label>
+                                                    <input  id="overprice_{{$order->id}}" value="overprice" name="reason_type" type="radio">
+                                                    <label for="overprice_{{$order->id}}">Over Pricing</label>
                                                 </div>
                                                 <div class="radio">
-                                                    <input  id="delivery" value="delivery" name="reason_type" type="radio">
-                                                    <label for="delivery">Late Delivery</label>
+                                                    <input  id="delivery_{{$order->id}}" value="delivery" name="reason_type" type="radio">
+                                                    <label for="delivery_{{$order->id}}">Late Delivery</label>
                                                 </div>
                                                 <div class="radio">
-                                                    <input  id="quality" value="quality" name="reason_type" type="radio">
-                                                    <label for="quality">Undesired Quality</label>
+                                                    <input  id="quality_{{$order->id}}" value="quality" name="reason_type" type="radio">
+                                                    <label for="quality_{{$order->id}}">Undesired Quality</label>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="reason"><b>Reason</b></label>
