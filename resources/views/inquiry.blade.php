@@ -22,8 +22,6 @@
                                         <option value="" selected="">Status</option>
                                         <option <?php if (Input::get('inquiry_filter') == 'Pending') echo 'selected=""'; ?> value="Pending">Pending</option>
                                         <option <?php if (Input::get('inquiry_filter') == 'Completed') echo 'selected=""'; ?> value="Completed">Completed</option>
-
-                                        <!--<option value="Canceled">Canceled</option>-->
                                     </select>
                                 </form>
                             </div>
@@ -83,7 +81,7 @@
 
                                         @if($prod['unit']->unit_name == 'Meter')
                                         <?php
-                                        $qty += ($prod->quantity/$prod['product_category']['product_sub_category']->size) * $prod['product_category']['product_sub_category']->weight;
+                                        $qty += ($prod->quantity / $prod['product_category']['product_sub_category']->size) * $prod['product_category']['product_sub_category']->weight;
                                         ?>
                                         @endif                                      
                                         @endforeach
@@ -171,13 +169,13 @@
                                         </div>
                                     </div>
                                 </div>
-<?php // $i++;  ?>
+                                <?php // $i++;  ?>
                                 @endforeach
                                 </tbody>
                             </table>
 
                             <span class="pull-right">
-<?php echo $inquiries->render(); ?>
+                                <?php echo $inquiries->render(); ?>
                             </span>
 
                         </div>

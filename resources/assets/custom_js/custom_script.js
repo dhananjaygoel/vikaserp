@@ -294,11 +294,12 @@ function save_price_inquiry_view(id) {
             url: baseurl + '/store_price',
             data: {id: id, _token: _token, updated_price: updated_price}
         }).done(function () {
-            location.reload();
-            //$('#inquire_msg').css('display', 'block');
+//            location.reload();
+//            $("#difference_" + id).val(updated_price);
+            $('#inquire_msg').css('display', 'block');
         });
     }
-    //$('#inquire_msg').css('display', 'block');
+    $('#inquire_msg').css('display', 'block');
 }
 
 function show_hide_customer(status) {

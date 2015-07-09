@@ -1,4 +1,3 @@
-
 @extends('layouts.master')
 @section('title','Inquiry')
 @section('content')
@@ -25,7 +24,7 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
-                         <div style="display:none;" id="flash_error inquire_msg" class="alert alert-success no_data_msg_container">Inquiry difference price successfully updated</div>
+                         <div style="display:none;" id="inquire_msg" class="alert alert-success no_data_msg_container">Inquiry difference price successfully updated</div>
                         <form>
                             <div class="table-responsive">
                                 <table id="table-example" class="table customerview_table">
@@ -106,16 +105,16 @@
                                         <tr><td><span>VAT Percentage: </span>{{$inquiry->vat_percentage."%"}}</td></tr>
                                         @endif
 
-                                        <tr>
+<!--                                        <tr>
                                             <td><span>Total: </span> <?php
                                             
-                                                $total = $inquiry['inquiry_products']->sum('price') * $product_data->quantity;
-                                                echo $total;
+//                                                $total = $inquiry['inquiry_products']->sum('price') * $product_data->quantity;
+//                                                echo $total;
                                                 
                                                 ?>
                                             </td>
 
-                                        </tr>
+                                        </tr>-->
 
                                         <tr>
                                             <td><span>Expected Delivery Date: </span>{{date('d F,Y',strtotime($inquiry->expected_delivery_date))}}</td>

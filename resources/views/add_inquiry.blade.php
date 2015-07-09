@@ -48,17 +48,17 @@
                                             <input type="hidden" id="customer_default_location">
                                             <i class="fa fa-search search-icon"></i>
                                         </div>
-                                        
-                                        <!--<p style>Please select the Customer name</p>-->
+
+<!--<p style>Please select the Customer name</p>-->
                                     </div>
-                                    
+
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="exist_field " style="display: none">
                                 <div class="form-group">
                                     <label for="name">Customer Name</label>
-                                    <input id="customer_name" class="form-control" placeholder="Name" name="customer_name" value="" type="text">
+                                    <input id="customer_name" class="form-control" placeholder="Name" name="customer_name" value="{{ old('customer_name') }}" type="text">
 <!--                                    <input id="customer_id" class="form-control" name="existing_customer_id" value="" type="hidden">-->
                                 </div>
                                 <div class="form-group">
@@ -67,7 +67,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="mobile_number">Mobile Number </label>
-                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{ old('mobile_number') }}" type="text">
+                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number" name="mobile_number" value="{{ old('mobile_number') }}" type="text">
                                 </div>
 
                                 <div class="form-group">
@@ -75,8 +75,6 @@
                                     <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ old('credit_period') }}" type="text">
                                 </div>
                             </div>
-
-
                             <div class="row col-md-4">
                                 <div class="form-group">
                                     <label for="location">Delivery Location:</label>
