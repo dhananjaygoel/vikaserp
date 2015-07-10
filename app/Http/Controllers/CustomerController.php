@@ -46,8 +46,7 @@ class CustomerController extends Controller {
      * @return Response
      */
     public function index() {
-//        $user_id=[1,2,3];
-//        $this->url_access($user_id);
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders');
         }
@@ -177,10 +176,13 @@ class CustomerController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $customer = Customer::with('deliverylocation', 'manager')->find($id);
+        $customer = Customer::with('deliverylocation', 'customerproduct','manager')->find($id);
         $states = States::all();
         $cities = City::all();
-        return View::make('customer_details', array('customer' => $customer, 'states' => $states, 'cities' => $cities));
+        
+        $product_category = ProductCategory::all();
+        
+        return View::make('customer_details', array('customer' => $customer, 'states' => $states, 'cities' => $cities, 'product_category' => $product_category));
     }
 
     /**
@@ -192,9 +194,11 @@ class CustomerController extends Controller {
     public function edit($id) {
         $states = States::all();
         $cities = City::all();
+        
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+        
         $customer = Customer::where('id', '=', $id)->with('customerproduct')->first();
         if (count($customer) < 1) {
             return redirect('customers/')->with('error', 'Trying to access an invalid customer');

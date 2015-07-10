@@ -50,8 +50,6 @@
                                 @endif
                                 @endforeach
                                 @endif
-
-
                             </select>
                         </div>
                         <br/>
@@ -76,6 +74,7 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="exist_field">
+                            <input type="hidden" id='pending_user_id' name="pending_user_id" value='{{$inquiry['customer']->id}}'/>
                             <div class="form-group">
                                 <label for="name">Customer Name</label>
                                 <input id="name" class="form-control" placeholder="Name" name="customer_name" value="{{$inquiry['customer']->owner_name}}" type="text">
@@ -113,10 +112,10 @@
                                 </div>
                             </div>
                             <div class="clearfix"></div>
-
                         </div>
                         <div class="exist_field " style="display: none">
                             <div class="form-group">
+                                <input type="hidden" id='pending_user_id' name="pending_user_id" value=''/>
                                 <label for="name">Customer Name</label>
                                 <input id="name" class="form-control" placeholder="Name" name="customer_name" value="" type="text">
                             </div>
@@ -163,7 +162,7 @@
                                             <td class="col-md-2">
                                                 <div class="form-group ">
                                                     <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}">
-                                                       @foreach($units as $unit)
+                                                        @foreach($units as $unit)
                                                         @if($product->unit_id == $unit->id)
                                                         <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
                                                         @else
@@ -222,25 +221,25 @@
                                 <select class="form-control" name="add_inquiry_location" id="add_inquiry_location">
                                     <option value="">Delivery Location</option>
                                     @if($inquiry->delivery_location_id != 0)
-                                    
+
                                     @foreach($delivery_location as $location)                                       
-                                    
+
                                     @if($inquiry->delivery_location_id == $location->id)
                                     <option value="{{$location->id}}" selected="">{{$location->area_name}}</option>
                                     @else
                                     <option value="{{$location->id}}">{{$location->area_name}}</option>
                                     @endif
-                                    
+
                                     @endforeach
                                     <option id="other_location" value="other">Other</option>
-                                    
+
                                     @else
-                                    
+
                                     @if($inquiry->delivery_location_id == 0)
                                     <option id="other_location" value="other" selected="">Other</option>
-                                    
+
                                     @else
-                                    
+
                                     @endif
                                     @endif
                                 </select>
@@ -256,8 +255,8 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="location">Other Location Difference</label>
-                                        <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="{{$inquiry->other_location_difference}}" type="text">
-                                    </div>
+                                    <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="{{$inquiry->other_location_difference}}" type="text">
+                                </div>
                             </div>
                         </div>
                         @else                 
@@ -268,9 +267,9 @@
                                     <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="" type="text">
                                 </div>
                                 <div class="col-md-4">
-                                        <label for="location">Other Location Difference</label>
-                                        <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="" type="text">
-                                    </div>
+                                    <label for="location">Other Location Difference</label>
+                                    <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="" type="text">
+                                </div>
                             </div>
                         </div>                      
                         @endif

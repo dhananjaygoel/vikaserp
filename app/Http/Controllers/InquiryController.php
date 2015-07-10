@@ -264,7 +264,6 @@ class InquiryController extends Controller {
                 'other_location' => $other_location,
                 'other_location_difference' => $other_location_difference
             ]);
-
         } else {
             $inquiry->update([
                 'other_location' => '',
@@ -381,7 +380,7 @@ class InquiryController extends Controller {
                             'product_price' => $product->price + $cust + $location_diff + $product_sub->difference
                         ];
                     }
-                } 
+                }
             }
         } else {
             $data_array[] = [
@@ -389,7 +388,7 @@ class InquiryController extends Controller {
             ];
         }
 //        if ($data_array['value'] != 'No Products') {
-            echo json_encode(array('data_array' => $data_array));
+        echo json_encode(array('data_array' => $data_array));
 //        } else {
 //            $data_array[] = [
 //                'value' => 'No Products',
@@ -445,14 +444,18 @@ class InquiryController extends Controller {
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         $customers = Customer::all();
+
         return view('place_order', compact('inquiry', 'customers', 'delivery_location', 'units'));
     }
 
     function store_place_order($id, InquiryRequest $request) {
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+
         $input_data = Input::all();
+
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
         $date = date("Y-m-d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
@@ -470,26 +473,45 @@ class InquiryController extends Controller {
         }
 
         if ($input_data['customer_status'] == "new_customer") {
+
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
-                $customers = new Customer();
-                $customers->owner_name = $input_data['customer_name'];
-                $customers->contact_person = $input_data['contact_person'];
-                $customers->phone_number1 = $input_data['mobile_number'];
-                $customers->credit_period = $input_data['credit_period'];
-                $customers->customer_status = 'pending';
-                $customers->save();
-                $customer_id = $customers->id;
+
+                if ($input_data['pending_user_id'] != "") {
+
+                    $pending_cust = array(
+                        'owner_name' => $input_data['customer_name'],
+                        'contact_person' => $input_data['contact_person'],
+                        'phone_number1' => $input_data['mobile_number'],
+                        'credit_period' => $input_data['credit_period']
+                    );
+
+                    Customer::where('id', $id)
+                            ->update($pending_cust);
+
+                    $customer_id = $input_data['pending_user_id'];
+                    
+                } else {
+                    
+                    $customers = new Customer();
+                    $customers->owner_name = $input_data['customer_name'];
+                    $customers->contact_person = $input_data['contact_person'];
+                    $customers->phone_number1 = $input_data['mobile_number'];
+                    $customers->credit_period = $input_data['credit_period'];
+                    $customers->customer_status = 'pending';
+                    $customers->save();
+
+                    $customer_id = $customers->id;
+                }
             } else {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
             }
-            
         } elseif ($input_data['customer_status'] == "existing_customer") {
-            
+
             $validator = Validator::make($input_data, Customer::$existing_customer_inquiry_rules);
             if ($validator->passes()) {
-                
+
                 $customer_id = $input_data['existing_customer_name'];
 
                 //send mail

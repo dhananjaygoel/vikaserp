@@ -99,7 +99,7 @@
                                 <label for="tally_name">Tally Name<span class="mandatory">*</span></label>
                                 <input id="tally_name" class="form-control" placeholder="Tally Name " name="tally_name" value="{{ $customer->tally_name}}" type="text">
                             </div> 
-                            
+
                             <div class="form-group">
                                 <label for="phone_number1">Phone number 1<span class="mandatory">*</span></label>
                                 <input id="phone_number1" class="form-control" placeholder="Phone number " name="phone_number1" value="{{$customer->phone_number1}}" type="text">
@@ -108,7 +108,7 @@
                                 <label for="phone_number2">Phone Number 2</label>
                                 <input id="phone_number2" class="form-control" placeholder="Phone Number 2" name="phone_number2" value="{{$customer->phone_number2}}" type="text">
                             </div>
-                            
+
                             <div class="form-group col-md-4 del_loc ">
                                 <label for="delivery_location">Delivery Location:<span class="mandatory">*</span></label>
                                 <select class="form-control" id="delivery_location" name="delivery_location">
@@ -157,19 +157,19 @@
                                 <label>Set Prices</label>
                                 <br>
                                 <div class="checkbox-nice">
-                                    <input id="checkbox-inl-1" type="checkbox">
+                                    <input id="checkbox-inl-1" type="checkbox" <?php if(sizeof($customer['customerproduct']) > 0) echo 'checked=""';?>>
                                     <label for="checkbox-inl-1"> </label>
                                 </div>
                                 <br>
+
                                 @if(count($product_category) > 0)
-                                <div class="category_div col-md-12">
+                                <div class="category_div col-md-12" <?php if(sizeof($customer['customerproduct']) > 0) echo 'style="display:block;"';?>>
                                     <div class="table-responsive">
                                         <table id="table-example" class="table table-hover  ">
                                             <thead>
                                                 <tr>
                                                     <th>Category</th>
                                                     <th>Difference</th>
-
                                                 </tr>
                                             </thead>
                                             <tbody>     

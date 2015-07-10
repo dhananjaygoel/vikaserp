@@ -69,14 +69,14 @@
                                     <tr>
                                         <td><span>Tally Name:</span> {{$customer->tally_name}}</td>
                                     </tr>
-                                    
+
                                     <tr>
                                         <td><span>Phone Number1:</span> {{$customer->phone_number1}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Phone Number2:</span> {{$customer->phone_number2}}</td>
                                     </tr>
-                                    
+
                                     <tr>
                                         <td><span>Delivery Location:</span> {{$customer['deliverylocation']->area_name}} <em>({{$customer['deliverylocation']['city']->city_name}}, {{$customer['deliverylocation']['state']->state_name}})</em></td>
                                     </tr>
@@ -92,6 +92,24 @@
                                     <tr>
                                         <td><span>Relationship Manager:</span> {{isset($customer['manager']->first_name)?$customer['manager']->first_name: 'N'}}{{isset($customer['manager']->last_name)?'&nbsp;'.$customer['manager']->last_name: '/A'}}</td>
                                     </tr>
+                                    <tr>
+                                        <td><span>Set price(Category & difference)</span></td>
+                                    </tr>
+
+                                    @foreach($product_category as $pc)
+                                    <?php
+                                    $price = '';
+                                    foreach ($customer['customerproduct'] as $key => $value) {
+                                        if ($pc->id == $value->product_category_id) {
+                                            ?>
+                                            <tr>
+                                                <td><span>{{$pc->product_category_name}}:</span> {{$price = $value->difference_amount}}</td>
+                                            </tr>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

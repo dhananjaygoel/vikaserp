@@ -26,8 +26,9 @@ class PendingCustomerController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+        
         $customers = Customer::where('customer_status', '=', 'pending')->paginate(10);
-
+        $customers->setPath('pending_customers');
         return View::make('pending_customers', array('customers' => $customers));
     }
 

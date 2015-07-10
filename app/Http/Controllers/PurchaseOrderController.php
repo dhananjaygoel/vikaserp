@@ -62,6 +62,7 @@ class PurchaseOrderController extends Controller {
                 ->Paginate(10);
         $all_customers = Customer::all();
         $purchase_orders->setPath('purchase_orders');
+        
         return view('purchase_order', compact('purchase_orders', 'all_customers'));
     }
 

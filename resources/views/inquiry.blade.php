@@ -81,7 +81,7 @@
 
                                         @if($prod['unit']->unit_name == 'Meter')
                                         <?php
-                                        $qty += ($prod->quantity / $prod['product_category']['product_sub_category']->size) * $prod['product_category']['product_sub_category']->weight;
+                                        $qty += ($prod->quantity / $prod['product_category']['product_sub_category']->standard_length) * $prod['product_category']['product_sub_category']->weight;
                                         ?>
                                         @endif                                      
                                         @endforeach
