@@ -58,18 +58,18 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('delivery_difference', 'DeliveryLocationController@delivery_difference');
     Route::resource('customers', 'CustomerController');
     Route::get('get_city', 'CustomerController@get_city');
-    
-    
+
+
     Route::resource('pending_customers', 'PendingCustomerController');
     Route::resource('customer_manager', 'CustomerManagerController');
     Route::post('add_pending_customers/{id}', 'PendingCustomerController@add_pending_customers');
 
     Route::resource('users', 'UsersController');
-    
+
     Route::resource('product_category', 'ProductController');
-    Route::post('update_price', 'ProductController@update_price'); 
-    
-    
+    Route::post('update_price', 'ProductController@update_price');
+
+
     Route::resource('product_sub_category', 'ProductsubController');
     Route::get('get_product_category', 'ProductsubController@get_product_category');
     Route::post('update_difference', 'ProductsubController@update_difference');
@@ -87,21 +87,21 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('inquiry', 'InquiryController');
     Route::get('fetch_existing_customer', 'InquiryController@fetch_existing_customer');
     Route::get('fetch_products', 'InquiryController@fetch_products');
-    Route::post('store_price', 'InquiryController@store_price');    
+    Route::post('store_price', 'InquiryController@store_price');
     Route::get('get_product_sub_category', 'InquiryController@get_product_sub_category');
-    
+
     Route::get('get_units', 'UnitController@get_units');
     Route::resource('purchase_orders', 'PurchaseOrderController');
-    
+
     Route::resource('purchaseorder_advise', 'PurchaseAdviseController');
     Route::post('print_purchase_advise', 'PurchaseAdviseController@print_purchase_advise');
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     Route::get('pending_purchase_advice', 'PurchaseAdviseController@pending_purchase_advice');
     Route::resource('orders', 'OrderController');
     Route::post('manual_complete_order', 'OrderController@manual_complete_order');
@@ -120,32 +120,29 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('create_delivery_challan/{id}', 'DeliveryOrderController@create_delivery_challan');
     Route::post('create_delivery_challan/{id}', 'DeliveryOrderController@store_delivery_challan');
 
-    Route::get('sales_daybook','SalesDaybookController@index');
-    Route::post('delete_sales_daybook/{id}','SalesDaybookController@delete_challan');
-    Route::post('delete_multiple_challan','SalesDaybookController@delete_multiple_challan');
-    Route::post('sales_daybook_date','SalesDaybookController@challan_date');   
-    
-    Route::post('print_purchase_challan/{id}','PurchaseChallanController@print_purchase_challan');
-    
-    Route::post('print_delivery_order/{id}','DeliveryOrderController@print_delivery_order');
-    Route::post('print_delivery_challan/{id}','DeliveryChallanController@print_delivery_challan');
-    Route::get('place_order/{id}','InquiryController@place_order');
-    Route::post('store_order/{id}','InquiryController@store_place_order');
-    
-    Route::resource('export_sales_daybook', 'SalesDaybookController@export_sales_daybook'); 
-    Route::resource('print_sales_order_daybook', 'SalesDaybookController@print_sales_order_daybook'); 
-    
-    Route::post('get_product_weight','ProductsubController@get_product_weight');
-    Route::get('fetch_product_price','DeliveryOrderController@product_price');
-    
+    Route::get('sales_daybook', 'SalesDaybookController@index');
+    Route::post('delete_sales_daybook/{id}', 'SalesDaybookController@delete_challan');
+    Route::post('delete_multiple_challan', 'SalesDaybookController@delete_multiple_challan');
+    Route::post('sales_daybook_date', 'SalesDaybookController@challan_date');
+
+    Route::post('print_purchase_challan/{id}', 'PurchaseChallanController@print_purchase_challan');
+
+    Route::post('print_delivery_order/{id}', 'DeliveryOrderController@print_delivery_order');
+    Route::post('print_delivery_challan/{id}', 'DeliveryChallanController@print_delivery_challan');
+    Route::get('place_order/{id}', 'InquiryController@place_order');
+    Route::post('store_order/{id}', 'InquiryController@store_place_order');
+
+    Route::resource('export_sales_daybook', 'SalesDaybookController@export_sales_daybook');
+    Route::resource('print_sales_order_daybook', 'SalesDaybookController@print_sales_order_daybook');
+
+    Route::post('get_product_weight', 'ProductsubController@get_product_weight');
+    Route::get('fetch_product_price', 'DeliveryOrderController@product_price');
+
+    Route::post('upload_excel', 'WelcomeController@upload_excel');
+    Route::resource('excel_import', 'WelcomeController@excel_import');
 });
-
-
-
 
 
 
 Route::get('export/{type}', 'WelcomeController@exportExcel');
 
-Route::post('upload_excel', 'WelcomeController@upload_excel');
-Route::resource('excel_import', 'WelcomeController@excel_import');

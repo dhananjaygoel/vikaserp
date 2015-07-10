@@ -26,7 +26,7 @@
                         </div>
                         @endif  
 
-                        <form action="{{URL::action('WelcomeController@upload_excel')}}" method="post" class="form-inline" role="form" enctype="multipart/form-data">
+                        <form action="{{URL::action('WelcomeController@upload_excel')}}" method="post" role="form" enctype="multipart/form-data">
 
                             <div class="form-group">
                                 <label for="exampleInputFile">File input</label>
@@ -37,8 +37,6 @@
                                                             <input type="file" id="excel_file" name="excel_file">
                             -->
                             <!--</div>-->
-                            <br/>
-                            <br/>
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <button type="submit" class="btn btn-primary">Upload</button>
                         </form>
