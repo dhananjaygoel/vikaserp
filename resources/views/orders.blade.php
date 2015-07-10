@@ -129,17 +129,11 @@
                                             }
                                         }
                                         ?></td>-->
-                                        @if(count($pending_orders) > 0)
-                                        @foreach($pending_orders as $porder)
-                                        @if($porder['id'] == $order->id)                                       
-                                        <td>{{$porder['total_pending_quantity']}}</td>
-                                        @endif
-                                        @endforeach
-                                        @else
+                                       
+                                        
                                         <td></td>
                                         <td></td>
-                                        @endif
-                                        <td class="text-center">
+                                                                                <td class="text-center">
                                             <a href="{{url('create_delivery_order/'.$order->id)}}" class="table-link" title="Create Delivery order">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -265,15 +259,9 @@
                                 <tr>
                                     <td>{{$k++}}</td>
                                     <td>{{$order['customer']->owner_name}}</td>
-                                    @if(count($pending_orders) > 0)
-                                    @foreach($pending_orders as $porder)
-                                    @if($porder['id'] == $order->id)
-                                    <td>{{$porder['total_quantity']}}</td>                                   
-                                    @endif
-                                    @endforeach
-                                    @else
+                                    
                                     <td></td>
-                                    @endif
+                                    
                                     <td>{{$order['customer']['phone_number1']}}</td>
                                     @if($order['delivery_location']['area_name'] !="")
                                     <td class="text">{{$order['delivery_location']['area_name']}}</td>
