@@ -77,11 +77,11 @@ class OrderController extends Controller {
         $product_size = ProductSubCategory::all();
 
         $users = User::all();
-//        $pending_orders = $this->checkpending_quantity($allorders);
+        $pending_orders = $this->checkpending_quantity($allorders);
 
         $allorders->setPath('orders');
-//        return View::make('orders', compact('delivery_location', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size'));
-        return View::make('orders', compact('delivery_location', 'customers', 'allorders', 'users', 'cancelledorders', 'product_size'));
+        return View::make('orders', compact('delivery_location', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size'));
+//        return View::make('orders', compact('delivery_location', 'customers', 'allorders', 'users', 'cancelledorders', 'product_size'));
     }
 
     /**
