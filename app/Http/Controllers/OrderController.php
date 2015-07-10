@@ -722,12 +722,16 @@ class OrderController extends Controller {
                 $total_pending;
                 foreach ($all_del_orders as $key => $dos) {
                     $len = count($dos);
-                    $tot_qty = $dos[$len - 1]['total_quantity'];
+                    $index = 0;
+                    if($len>0){
+                        $index = $len - 1;
+                    }
+                    $tot_qty = $dos[$index]['total_quantity'];
                     foreach ($all_del_orders as $array2) {
-                        if ($array2[$len - 1]['order_id'] == $dos[$len - 1]['order_id'] && $array2[$len - 1]['product_id'] == $dos[$len - 1]['product_id'] && $array2[$len - 1]['unit'] == $dos[$len - 1]['unit']) {
+                        if ($array2[$index]['order_id'] == $dos[$index]['order_id'] && $array2[$index]['product_id'] == $dos[$index]['product_id'] && $array2[$index]['unit'] == $dos[$index]['unit']) {
 
-                            if ($array2[$len - 1]['total_quantity'] > $tot_qty) {
-                                $tot_qty = $array2[$len - 1]['total_quantity'];
+                            if ($array2[$index]['total_quantity'] > $tot_qty) {
+                                $tot_qty = $array2[$index]['total_quantity'];
 //                                echo 'test'.$tot_qty;exit;
                             }
                         }
@@ -736,7 +740,7 @@ class OrderController extends Controller {
 //                        $tot_qty = $dos[$len - 1]['total_quantity'];
 //                    }
 
-                    $pend_qty = $pend_qty + $dos[$len - 1]['total_pending_quantity'];
+                    $pend_qty = $pend_qty + $dos[$index]['total_pending_quantity'];
                 }
 //                echo 'test' . $tot_qty;
 //                exit;
