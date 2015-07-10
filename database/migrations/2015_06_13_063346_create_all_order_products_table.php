@@ -22,8 +22,7 @@ class CreateAllOrderProductsTable extends Migration {
                         $table->integer('actual_quantity')->comment('Actual Quantity for product');
                         $table->integer('quantity')->comment('Quantity for product');
                         $table->integer('actual_pieces')->comment('Actual pieces of product');
-                        $table->integer('price')->comment('Price for product');
-                        $table->string('from')->comment('order from which module');
+                        $table->integer('price')->comment('Price for product');      
                         $table->integer('present_shipping')->comment('Present shipping');
                         $table->text('remarks')->comment('Individual Remarks for product');
                         $table->softDeletes();
