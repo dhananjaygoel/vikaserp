@@ -591,13 +591,14 @@ function product_autocomplete_purchase(id) {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
                     response(arr1);
+                     $("#add_purchase_product_name_" + id).removeClass('loadinggif');
                 },
             });
         },
         select: function (event, ui) {
             $("#add_product_id_" + id).val(ui.item.id);
 //            $("#product_price_" + id).val(ui.item.product_price); 
-            $("#add_purchase_product_name_" + id).removeClass('loadinggif');
+           
 //            $(".search-icon").show();
         }
     });

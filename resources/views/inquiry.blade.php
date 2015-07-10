@@ -34,6 +34,7 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
+                        
                         @if(sizeof($inquiries) ==0)
                         <div class="alert alert-info no_data_msg_container">
                             Currently no inquiries have been added.

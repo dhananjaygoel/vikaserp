@@ -32,11 +32,7 @@
                                     <tr>
                                         <td>
                                             <span>Product Category Type:</span> 
-                                            @if($product_cat->product_type_id == 1)
                                             {{$product_cat['product_type']->name}}
-                                            @else
-                                            {{$product_cat['product_type']->name}}
-                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -52,6 +48,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <a href="{{url()}}/product_category" class="btn btn-default form_button_footer">Back</a>
                         </div>
                     </div>
                 </div>

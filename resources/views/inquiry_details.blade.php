@@ -24,7 +24,7 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
-                         <div style="display:none;" id="inquire_msg" class="alert alert-success no_data_msg_container">Inquiry difference price successfully updated</div>
+                        <div style="display:none;" id="inquire_msg" class="alert alert-success no_data_msg_container">Inquiry difference price successfully updated</div>
                         <form>
                             <div class="table-responsive">
                                 <table id="table-example" class="table customerview_table">
@@ -107,11 +107,9 @@
 
 <!--                                        <tr>
                                             <td><span>Total: </span> <?php
-                                            
 //                                                $total = $inquiry['inquiry_products']->sum('price') * $product_data->quantity;
 //                                                echo $total;
-                                                
-                                                ?>
+                                        ?>
                                             </td>
 
                                         </tr>-->
@@ -124,18 +122,13 @@
                                             <td><span>Remark: </span>{{$inquiry->remarks}}</td>
 
                                         </tr>
-
                                     </tbody>
                                 </table>
-
-
-
                             </div>
-
                             <hr>
                             <div>
+                                <a href="{{URL::to('inquiry')}}" class="btn btn-default form_button_footer">Back</a>
                                 <button title="SMS would be sent to Party and Relationship Manager" type="button" class="btn btn-primary smstooltip" >Send SMS</button><span title="SMS has been sent 5 times" class="badge enquirybadge smstooltip">0</span>
-
                             </div>
                         </form>
 
