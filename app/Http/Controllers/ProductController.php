@@ -41,33 +41,32 @@ class ProductController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-//        $product_category = new ProductCategory();
-//        $product_category->product_type_id = $request->input('product_type');
-//        $product_category->product_category_name = $request->input('product_category_name');
-//        $product_category->price = $request->input('price');
-//        $product_category->save();
+        $product_category = new ProductCategory();
+        $product_category->product_type_id = $request->input('product_type');
+        $product_category->product_category_name = $request->input('product_category_name');
+        $product_category->price = $request->input('price');
+        $product_category->save();
 
 
-        $input = Input::all();
-        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-            $admins = User::where('role_id', '=', 1)->get();
-            if (count($admins) > 0) {
-                foreach ($admins as $key => $admin) {
-                    $product_type = ProductType::find($request->input('product_type'));
-                    $str = "Dear ".$admin->first_name.", <br/> ".Auth::user()->first_name." has created a new product catagory as ".$request->input('product_category_name')." under ".$product_type->name." kindly chk. <br />Vikas associates";
+//        $input = Input::all();
+//        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+//            $admins = User::where('role_id', '=', 1)->get();
+//            if (count($admins) > 0) {
+//                foreach ($admins as $key => $admin) {
+//                    $product_type = ProductType::find($request->input('product_type'));
+//                    $str = "Dear ".$admin->first_name.", <br/> ".Auth::user()->first_name." has created a new product catagory as ".$request->input('product_category_name')." under ".$product_type->name." kindly chk. <br />Vikas associates";
+//
+//                    $msg = urlencode($str);
+//                    $url = "http://bulksmspune.mobi/sendurlcomma.aspx?user=20064486&pwd=its1782&senderid=VikasPipes&mobileno=9999999999&msgtext=" . $msg . "&smstype=4";
+//                    $ch = curl_init($url);
+//                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//                    $curl_scraped_page = curl_exec($ch);
+//                    curl_close($ch);
+//                    echo $curl_scraped_page;
+//                }
+//            }
+//        }
 
-                    $msg = urlencode($str);
-                    $url = "http://bulksmspune.mobi/sendurlcomma.aspx?user=20064486&pwd=its1782&senderid=VikasPipes&mobileno=8276803247&msgtext=" . $msg . "&smstype=0";
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
-                    echo $curl_scraped_page;
-                }
-            }
-        }
-
-        exit();
         return redirect('product_category')->with('success', 'Product category successfully added.');
     }
 
