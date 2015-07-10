@@ -57,7 +57,7 @@ class ProductController extends Controller {
                     $str = "Dear ".$admin->first_name.", <br/> ".Auth::user()->first_name." has created a new product catagory as ".$request->input('product_category_name')." under ".$product_type->name." kindly chk. <br />Vikas associates";
 
                     $msg = urlencode($str);
-                    $url = "http://bulksmspune.mobi/sendurlcomma.aspx?user=20064486&pwd=its1782&senderid=Hvikas&mobileno=+918276803247&msgtext=" . $msg;
+                    $url = "http://bulksmspune.mobi/sendurlcomma.aspx?user=20064486&pwd=its1782&senderid=VikasPipes&mobileno=8276803247&msgtext=" . $msg . "&smstype=0";
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
