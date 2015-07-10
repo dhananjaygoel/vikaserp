@@ -47,7 +47,7 @@
                                 <input id="price" class="form-control" placeholder="Price" name="price" value="{{ old('price') }}" type="text">
                             </div>
                             <div>
-                                <button type="button" class="btn btn-primary " >Send SMS</button>
+                                <button type="button" class="btn btn-primary" id="sendSMS" >Send SMS</button>
                             </div>
                             <hr>
                             <div>

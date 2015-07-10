@@ -91,3 +91,9 @@ $(document).ready(function () {
 $('#purchaseaAdviseFilter').on('change', function () {
     $('#purchaseaAdviseFilterForm').submit();
 });
+
+$('#sendSMS').click(function () {
+    var action = $(this).parents('form').attr('action');
+    $(this).parents('form').attr('action', action+ '?sendsms=true');
+    $(this).parents('form').submit();
+})
