@@ -176,12 +176,12 @@ class CustomerController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $customer = Customer::with('deliverylocation', 'customerproduct','manager')->find($id);
+        $customer = Customer::with('deliverylocation', 'customerproduct', 'manager')->find($id);
         $states = States::all();
         $cities = City::all();
-        
+
         $product_category = ProductCategory::all();
-        
+
         return View::make('customer_details', array('customer' => $customer, 'states' => $states, 'cities' => $cities, 'product_category' => $product_category));
     }
 
@@ -194,11 +194,11 @@ class CustomerController extends Controller {
     public function edit($id) {
         $states = States::all();
         $cities = City::all();
-        
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        
+
         $customer = Customer::where('id', '=', $id)->with('customerproduct')->first();
         if (count($customer) < 1) {
             return redirect('customers/')->with('error', 'Trying to access an invalid customer');
@@ -350,6 +350,88 @@ class CustomerController extends Controller {
         }
         echo json_encode(array('city' => $city));
         exit;
+    }
+
+    public function set_price($id) {
+        $customer_id = array('id' => $id);
+        $cutomer_difference = CustomerProductDifference::where('customer_id', $id)->get();
+        $product_category = ProductCategory::all();
+        return view('set_price', compact('cutomer_difference', 'product_category', 'customer_id'));
+    }
+
+    public function update_set_price() {
+
+        $customer_id = Input::get('customer_id');
+
+        $product_differrence = Input::get('product_differrence');
+
+        if (Input::get('product_differrence') != '') {
+
+
+
+            $product_difference1 = CustomerProductDifference::where('customer_id', $customer_id)
+                    ->delete();
+
+            $product_category_id = Input::get('product_category_id');
+            if (isset($product_category_id)) {
+
+                foreach ($product_category_id as $key => $value) {
+                    if (Input::get('product_differrence')[$key] != '') {
+                        $product_difference = new CustomerProductDifference();
+                        $product_difference->product_category_id = $value;
+                        $product_difference->customer_id = $customer_id;
+                        $product_difference->difference_amount = Input::get('product_differrence')[$key];
+                        $product_difference->save();
+                    }
+                }
+            }
+
+            return redirect('set_price/' . $customer_id)->with('success', 'Customer Set price successfully updated');
+        } else {
+            return redirect('set_price/' . $customer_id)->with('error', 'Please enter the customer set price please');
+        }
+
+
+
+
+
+
+//        $customer_id = Input::get('customer_id');
+//
+//        $product_category_id = Input::get('product_category_id');
+//        if (isset($product_category_id)) {
+//            
+//            foreach ($product_category_id as $key => $value) {
+//                if (Input::get('product_differrence')[$key] != '') {
+//
+//
+//                    $product_difference->product_category_id = $value;
+//                    $product_difference->customer_id = $customer_id;
+//                    $product_difference->difference_amount = Input::get('product_differrence')[$key];
+//                    $product_difference->save();
+//                    $product_difference = CustomerProductDifference::where('product_category_id', '=', $value)->first();
+//                    if (count($product_difference) > 0) {
+//                        $product_difference = $product_difference;
+//                    } else {
+//                        $product_difference = new CustomerProductDifference();
+//                    }
+//
+//                    $product_difference->product_category_id = $value;
+//                    $product_difference->customer_id = $customer_id;
+//                    $product_difference->difference_amount = Input::get('product_differrence')[$key];
+//                    $product_difference->save();
+//                } else {
+//                    $product_difference1 = CustomerProductDifference::where('product_category_id', '=', $value)
+//                            ->where('customer_id', $customer_id)
+//                            ->first();
+//                    if (count($product_difference1) > 0) {
+//                        $product_difference1->delete();
+//                    }
+//                }
+//            }
+//
+//            return redirect('set_price/' . $customer_id)->with('success', 'Customer Set price successfully updated');
+//        }
     }
 
 }

@@ -217,7 +217,7 @@ class PurchaseAdviseController extends Controller {
                         'remarks' => $product_data['remark'],
                         'present_shipping' => $product_data['present_shipping']
                     ];
-                    
+
                     $add_purchase_advise_products = PurchaseProducts::create($purchase_advise_products);
                 }
             }
@@ -284,32 +284,73 @@ class PurchaseAdviseController extends Controller {
             $purchase_advice_id = DB::getPdo()->lastInsertId();
             $purchase_advice_products = array();
 
-            foreach ($input_data['product'] as $product_data) {
-                if (isset($product_data['name']) || ($product_data['id'] != "")) {
-                    if ($product_data['present_shipping'] != "") {
-                        $purchase_advice_products = [
-                            'purchase_order_id' => $purchase_advice_id,
-                            'product_category_id' => $product_data['id'],
-                            'unit_id' => $product_data['units'],
-                            'actual_pieces' => $product_data['actual_pieces'],
-                            'quantity' => $product_data['quantity'],
-                            'price' => $product_data['price'],
-                            'remarks' => $product_data['remark'],
-                            'order_type' => 'purchase_advice',
-                            'present_shipping' => $product_data['present_shipping']
-                        ];
-                    } elseif ($product_data['present_shipping'] == "") {
 
-                        $purchase_advice_products = [
-                            'purchase_order_id' => $purchase_advice_id,
-                            'product_category_id' => $product_data['id'],
-                            'unit_id' => $product_data['units'],
-                            'actual_pieces' => $product_data['actual_pieces'],
-                            'quantity' => $product_data['quantity'],
-                            'price' => $product_data['price'],
-                            'remarks' => $product_data['remark'],
-                            'order_type' => 'purchase_advice',
-                        ];
+
+
+
+
+            foreach ($input_data['product'] as $product_data) {
+                if (($product_data['id'] != "")) {
+
+//                if (isset($product_data['name']) || ($product_data['id'] != "")) {
+                    if (isset($product_data['purchase']) && $product_data['purchase'] != "") {
+
+                        if ($product_data['present_shipping'] != "") {
+                            
+                            $purchase_advice_products = [
+                                'purchase_order_id' => $purchase_advice_id,
+                                'product_category_id' => $product_data['id'],
+                                'unit_id' => $product_data['units'],
+                                'actual_pieces' => $product_data['actual_pieces'],
+                                'quantity' => $product_data['quantity'],
+                                'price' => $product_data['price'],
+                                'remarks' => $product_data['remark'],
+                                'order_type' => 'purchase_advice',
+                                'from' => $product_data['purchase'],
+                                'present_shipping' => $product_data['present_shipping']
+                            ];
+                            
+                        } elseif ($product_data['present_shipping'] == "") {
+
+                            $purchase_advice_products = [
+                                'purchase_order_id' => $purchase_advice_id,
+                                'product_category_id' => $product_data['id'],
+                                'unit_id' => $product_data['units'],
+                                'actual_pieces' => $product_data['actual_pieces'],
+                                'quantity' => $product_data['quantity'],
+                                'price' => $product_data['price'],
+                                'remarks' => $product_data['remark'],
+                                'order_type' => 'purchase_advice',
+                                'from' => $product_data['purchase']
+                            ];
+                            
+                        }
+                    } else {
+                        if ($product_data['present_shipping'] != "") {
+                            $purchase_advice_products = [
+                                'purchase_order_id' => $purchase_advice_id,
+                                'product_category_id' => $product_data['id'],
+                                'unit_id' => $product_data['units'],
+                                'actual_pieces' => $product_data['actual_pieces'],
+                                'quantity' => $product_data['quantity'],
+                                'price' => $product_data['price'],
+                                'remarks' => $product_data['remark'],
+                                'order_type' => 'purchase_advice',
+                                'present_shipping' => $product_data['present_shipping']
+                            ];
+                        } elseif ($product_data['present_shipping'] == "") {
+
+                            $purchase_advice_products = [
+                                'purchase_order_id' => $purchase_advice_id,
+                                'product_category_id' => $product_data['id'],
+                                'unit_id' => $product_data['units'],
+                                'actual_pieces' => $product_data['actual_pieces'],
+                                'quantity' => $product_data['quantity'],
+                                'price' => $product_data['price'],
+                                'remarks' => $product_data['remark'],
+                                'order_type' => 'purchase_advice'
+                            ];
+                        }
                     }
 
                     $add_purchase_advice_products = PurchaseProducts::create($purchase_advice_products);

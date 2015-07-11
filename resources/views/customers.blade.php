@@ -76,11 +76,18 @@
                                             </a>
                                             <a href="{{url('customers/'.$c->id.'/edit')}}" class="table-link" title="edit">
                                                 <span class="fa-stack">
-
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @if(Auth::user()->role_id == 0)
+                                            <a href="{{URL::to('set_price/'.$c->id)}}" class="table-link" title="Set Price">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-money fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                            @endif
                                             @if(Auth::user()->role_id == 0)
                                             <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal{{$c->id}}" title="delete">
                                                 <span class="fa-stack">

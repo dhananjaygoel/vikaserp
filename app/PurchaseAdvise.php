@@ -18,7 +18,7 @@ class PurchaseAdvise extends Model {
      *
      * @var array
      */
-    protected $fillable = ['supplier_id', 'created_by', 'purchase_advice_date', 'serial_number', 'delivery_location_id', 'order_by', 'vat_percentage', 'expected_delivery_date', 'total_price', 'remarks', 'advice_status', 'vehicle_number','other_location','other_location_difference'];
+    protected $fillable = ['purchase_order_id','supplier_id', 'created_by', 'purchase_advice_date', 'serial_number', 'delivery_location_id', 'order_by', 'vat_percentage', 'expected_delivery_date', 'total_price', 'remarks', 'advice_status', 'vehicle_number','other_location','other_location_difference'];
 
     public function supplier() {
         return $this->hasOne('App\Customer', 'id', 'supplier_id');

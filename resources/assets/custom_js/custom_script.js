@@ -185,6 +185,7 @@ $(document).ready(function () {
                 '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
                 '<i class="fa fa-search search-icon"></i>' +
                 '</div>' +
+                '<input type="hidden" name="product[' + current_row_count + '][purchase]" value="">'+
                 '</td>' +
                 '<td class="col-md-1">' +
                 '<div class="form-group">' +

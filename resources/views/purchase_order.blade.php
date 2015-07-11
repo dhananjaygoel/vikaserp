@@ -15,8 +15,6 @@
                         <a href="{{URL::action('PurchaseOrderController@create')}}"  class="btn btn-primary pull-right">
                             <i class="fa fa-plus-circle fa-lg"></i> Place Purchase Order
                         </a>
-
-
                         <div class="filter-block pull-right">
                             <div class="form-group pull-left">
                                 <div class="col-md-12">
@@ -64,13 +62,7 @@
                                     </form>
                                 </div>
                             </div>
-
-
                         </div>
-
-
-
-
                     </div>
                 </div>
             </div>
@@ -111,8 +103,38 @@
                                         <td>{{$purchase_order['customer']->phone_number1}}</td>
                                         <td></td>
                                         <td>{{$purchase_order['user']->first_name}}</td>
-                                        <td>{{$purchase_order['purchase_products']->sum('quantity')}}</td>
-                                        <td></td>
+                                        <td>
+                                            <?php $total = 0; ?>
+
+                                            @foreach($purchase_order['purchase_products'] as $total_qty)
+                                            @if($total_qty->unit_id == 1)
+                                            <?php $total += $total_qty->quantity; ?>
+                                            @endif
+
+                                            @if($total_qty->unit_id == 2)
+                                            <?php $total += $total_qty->quantity * $total_qty['product_category']['product_sub_category']->weight;
+                                            ?>
+                                            @endif
+
+                                            @if($total_qty->unit_id == 3)
+                                            <?php $total += ($total_qty->quantity / $total_qty['product_category']['product_sub_category']->standard_length) * $total_qty['product_category']['product_sub_category']->weight;
+                                            ?>
+                                            @endif
+
+                                            @endforeach
+
+
+                                            {{$total}}
+                                        </td>
+                                        <td>                                        
+                                            @if(count($pending_orders) > 0)
+                                            @foreach($pending_orders as $porder)
+                                            @if($porder['id'] == $purchase_order->id)                                       
+                                            {{$porder['total_pending_quantity']}}
+                                            @endif
+                                            @endforeach
+                                            @endif
+                                        </td>
                                         <td class="text-center">
                                             <a href="{{ url('create_purchase_advice'.'/'.$purchase_order->id)}}" class="table-link" title="Create Purchase Advice">
                                                 <span class="fa-stack">
@@ -140,7 +162,7 @@
                                                     <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            
+
                                             <a class="table-link danger" data-toggle="modal" data-target="#delete_purchase_order_{{$purchase_order->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>

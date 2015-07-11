@@ -83,6 +83,7 @@
 
                                                 <td class="col-md-1">
                                                     <input type="text" class="form-control" name="product[{{$key}}][actual_pieces]" value="">
+                                                    
                                                 </td>
 
                                                 <td>
@@ -101,9 +102,11 @@
                                                 <td class="col-md-1">{{$product_data->price}}</td>
                                                 <td>
                                                     {{$product_data->remarks}}
+                                                    
                                                     <input type="hidden" name="product[{{$key}}][remark]" value="{{$product_data->remarks}}">
                                                     <input type="hidden" name="product[{{$key}}][price]" value="{{$product_data->price}}">
                                                     <input type="hidden" name="product[{{$key}}][quantity]" value="{{$product_data->quantity}}">
+                                                    <input type="hidden" class="form-control" name="product[{{$key}}][purchase]" value="purchase_order">
                                                 </td>
                                             </tr>
                                             @endif
