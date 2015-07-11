@@ -403,7 +403,6 @@ class PurchaseOrderController extends Controller {
 //                $orders['pending'] = $a->quantity - $a->present_shipping;
 //            }
 //        }
-
 //        echo $orders;
 //        exit;
 
@@ -460,50 +459,25 @@ class PurchaseOrderController extends Controller {
         $pending_orders = array();
         foreach ($purchase_orders as $order) {
 
-//            echo '<pre>';
-//            print_r($order->toArray());
-//            echo '</pre>'; exit;
-
-
             $purchase_orders = PurchaseAdvise::where('purchase_order_id', $order->id)->with('purchase_products')->get();
 
             $all_del_orders = array();
             $pending_quantity = 0;
             $total_quantity = 0;
 
-
-//            echo '<pre>';
-//            print_r($purchase_orders->toArray());
-//            echo '</pre>';
-//            exit;
-
-
             if (count($purchase_orders) > 0) {
-//    
+
                 foreach ($purchase_orders as $del_order) {
-
-//                    echo '<pre>';
-//                    print_r($del_order->toArray());
-//                    echo '</pre>';
-//                    exit;
-
 
                     $del_all_order_products = PurchaseProducts::where('purchase_order_id', $del_order->id)
                                     ->where('from', 'purchase_order')->where('order_type', 'purchase_advice')->get();
-
-
-
 
                     $order_all_order_products = PurchaseProducts::where('purchase_order_id', $order->id)->where('order_type', 'purchase_order')->get();
                     $del_products = array();
                     $pending_quantity_del = 0;
                     $total_quantity_del = 0;
 
-
-
                     foreach ($del_all_order_products as $products) {
-
-
 
                         $p_qty = $products['present_shipping'];
                         if ($products['unit_id'] != 1) {
@@ -547,15 +521,10 @@ class PurchaseOrderController extends Controller {
                         $temp_products['total_quantity'] = (int) $total_quantity_del;
                         array_push($del_products, $temp_products);
                     }
-//                        
 
                     array_push($all_del_orders, $del_products);
                 }
 
-//                echo '<pre>';
-//                print_r($all_del_orders);
-//                echo '</pre>';
-//                exit;
                 if (count($del_all_order_products) > 0) {
                     $calculated_pendings = array();
                     $pend_qty = 0;
@@ -593,10 +562,7 @@ class PurchaseOrderController extends Controller {
                     $temp['total_pending_quantity'] = (int) ($total_pending);
                     $temp['total_quantity'] = (int) $total_qty;
                     array_push($pending_orders, $temp);
-//                    echo '<pre>';
-//                    print_r($pending_orders);
-//                    echo '</pre>'; 
-//                    exit;
+
                 }
             } else {
 

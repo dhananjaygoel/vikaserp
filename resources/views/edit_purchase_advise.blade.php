@@ -68,49 +68,52 @@
                                                 <td><span>Remark</span></td>
                                             </tr>
                                             @foreach($purchase_advise['purchase_products'] as $key=>$product)
-                                            <tr id="add_row_{{$key}}" class="add_product_row">
-                                                <td class="col-md-3">
-                                                    <div class="form-group searchproduct">
-                                                        {{$product['product_category']['product_sub_category']->alias_name}}
-                                                        <input class="form-control" type="hidden" name="product[{{$key}}][name]" value="{{$product['product_sub_category']->alias_name}}">
-                                                        <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}">
-                                                        <input type="hidden" name="product[{{$key}}][purchase_product_id]" value="{{$product->id}}">
-                                                    </div>
-                                                </td>
-                                                <td class="col-md-1">
-                                                    <div class="form-group ">
-                                                        {{$product['unit']->unit_name}}
-                                                    </div>
-                                                </td>
-                                                <td class="col-md-1">
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" value="{{$product->actual_pieces}}" name="product[{{$key}}][actual_pieces]">
-                                                    </div>
-                                                </td>
 
-                                                <td class="col-md-1">
-                                                    <div class="form-group">
-                                                        <?php $pending_quantity = $product->quantity - $product->present_shipping; ?>
-                                                        <input type="text" class="form-control" value="{{ $pending_quantity}}" id="pending_order_{{$key}}" name="pending_order_{{$key}}"/>
-                                                    </div>
-                                                </td>
-                                                <td class="col-md-1">
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" value="{{$product->present_shipping}}" id='present_shipping_{{$key}}' onblur="calutate_pending_order(<?php echo $product->quantity . ',' . $key; ?>)"  name="product[{{$key}}][present_shipping]">
-                                                    </div>
-                                                </td> 
-                                                <td class="col-md-1">
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
-                                                    </div>
-                                                </td>
-                                                <td class="col-md-3">
-                                                    <div class="form-group">
-                                                        <input id="remark" class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text">
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            @endforeach
+                                        <input type="hidden" value="{{$product->from}}" name="product[{{$key}}][purchase]">
+
+                                        <tr id="add_row_{{$key}}" class="add_product_row">
+                                            <td class="col-md-3">
+                                                <div class="form-group searchproduct">
+                                                    {{$product['product_category']['product_sub_category']->alias_name}}
+                                                    <input class="form-control" type="hidden" name="product[{{$key}}][name]" value="{{$product['product_sub_category']->alias_name}}">
+                                                    <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}">
+                                                    <input type="hidden" name="product[{{$key}}][purchase_product_id]" value="{{$product->id}}">
+                                                </div>
+                                            </td>
+                                            <td class="col-md-1">
+                                                <div class="form-group ">
+                                                    {{$product['unit']->unit_name}}
+                                                </div>
+                                            </td>
+                                            <td class="col-md-1">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" value="{{$product->actual_pieces}}" name="product[{{$key}}][actual_pieces]">
+                                                </div>
+                                            </td>
+
+                                            <td class="col-md-1">
+                                                <div class="form-group">
+                                                    <?php $pending_quantity = $product->quantity - $product->present_shipping; ?>
+                                                    <input type="text" class="form-control" readonly="" value="{{ $pending_quantity}}" id="pending_order_{{$key}}" name="pending_order_{{$key}}"/>
+                                                </div>
+                                            </td>
+                                            <td class="col-md-1">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" value="{{$product->present_shipping}}" id='present_shipping_{{$key}}' onblur="calutate_pending_order(<?php echo $product->quantity . ',' . $key; ?>)"  name="product[{{$key}}][present_shipping]">
+                                                </div>
+                                            </td> 
+                                            <td class="col-md-1">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
+                                                </div>
+                                            </td>
+                                            <td class="col-md-3">
+                                                <div class="form-group">
+                                                    <input id="remark" class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforeach
                                         </tbody>
                                     </table>
                                     <table>

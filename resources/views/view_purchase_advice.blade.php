@@ -117,6 +117,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                             <a href="{{url('purchaseorder_advise')}}" class="btn btn-default form_button_footer">Back</a>
                         </div>
                     </div>
                 </div>

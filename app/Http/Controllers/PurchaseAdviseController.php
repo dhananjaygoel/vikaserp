@@ -37,9 +37,10 @@ class PurchaseAdviseController extends Controller {
         }
 
         $purchase_advise = $q->paginate(10);
+        $pending_orders = $this->checkpending_quantity($purchase_advise);
         $purchase_advise->setPath('purchaseorder_advise');
 
-        return View::make('purchase_advise', array('purchase_advise' => $purchase_advise));
+        return View::make('purchase_advise', array('purchase_advise' => $purchase_advise, 'pending_orders' => $pending_orders));
     }
 
     /**
@@ -139,7 +140,8 @@ class PurchaseAdviseController extends Controller {
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
                     'remarks' => $product_data['remark'],
-                    'present_shipping' => $product_data['quantity']
+                    'present_shipping' => $product_data['quantity'],
+                    'from' => $product_data['purchase']
                 ];
                 $add_purchase_advise_products = PurchaseProducts::create($purchase_advise_products);
             }
@@ -215,7 +217,8 @@ class PurchaseAdviseController extends Controller {
                         'actual_pieces' => $product_data['actual_pieces'],
                         'price' => $product_data['price'],
                         'remarks' => $product_data['remark'],
-                        'present_shipping' => $product_data['present_shipping']
+                        'present_shipping' => $product_data['present_shipping'],
+                        'from' => $product_data['purchase']
                     ];
 
                     $add_purchase_advise_products = PurchaseProducts::create($purchase_advise_products);
@@ -296,20 +299,19 @@ class PurchaseAdviseController extends Controller {
                     if (isset($product_data['purchase']) && $product_data['purchase'] != "") {
 
                         if ($product_data['present_shipping'] != "") {
-                            
+
                             $purchase_advice_products = [
                                 'purchase_order_id' => $purchase_advice_id,
                                 'product_category_id' => $product_data['id'],
                                 'unit_id' => $product_data['units'],
                                 'actual_pieces' => $product_data['actual_pieces'],
-                                'quantity' => $product_data['quantity'],
+                                'quantity' => $product_data['present_shipping'],
                                 'price' => $product_data['price'],
                                 'remarks' => $product_data['remark'],
                                 'order_type' => 'purchase_advice',
                                 'from' => $product_data['purchase'],
                                 'present_shipping' => $product_data['present_shipping']
                             ];
-                            
                         } elseif ($product_data['present_shipping'] == "") {
 
                             $purchase_advice_products = [
@@ -317,13 +319,12 @@ class PurchaseAdviseController extends Controller {
                                 'product_category_id' => $product_data['id'],
                                 'unit_id' => $product_data['units'],
                                 'actual_pieces' => $product_data['actual_pieces'],
-                                'quantity' => $product_data['quantity'],
+//                                'quantity' => $product_data['quantity'],
                                 'price' => $product_data['price'],
                                 'remarks' => $product_data['remark'],
                                 'order_type' => 'purchase_advice',
                                 'from' => $product_data['purchase']
                             ];
-                            
                         }
                     } else {
                         if ($product_data['present_shipping'] != "") {
@@ -332,7 +333,7 @@ class PurchaseAdviseController extends Controller {
                                 'product_category_id' => $product_data['id'],
                                 'unit_id' => $product_data['units'],
                                 'actual_pieces' => $product_data['actual_pieces'],
-                                'quantity' => $product_data['quantity'],
+                                'quantity' => $product_data['present_shipping'],
                                 'price' => $product_data['price'],
                                 'remarks' => $product_data['remark'],
                                 'order_type' => 'purchase_advice',
@@ -345,7 +346,7 @@ class PurchaseAdviseController extends Controller {
                                 'product_category_id' => $product_data['id'],
                                 'unit_id' => $product_data['units'],
                                 'actual_pieces' => $product_data['actual_pieces'],
-                                'quantity' => $product_data['quantity'],
+//                                'quantity' => $product_data['quantity'],
                                 'price' => $product_data['price'],
                                 'remarks' => $product_data['remark'],
                                 'order_type' => 'purchase_advice'
@@ -396,6 +397,49 @@ class PurchaseAdviseController extends Controller {
         ));
 
         return view('print_purchase_advise', compact('purchase_advise'));
+    }
+
+    function checkpending_quantity($purchase_advise) {
+        $pending_orders = array();
+
+        if (count($purchase_advise) > 0) {
+
+            foreach ($purchase_advise as $del_order) {
+
+                $pending_quantity = 0;
+                $total_quantity = 0;
+                $all_order_products = PurchaseProducts::where('purchase_order_id', $del_order->id)->where('order_type', 'purchase_advice')->get();
+
+                foreach ($all_order_products as $products) {
+
+                    $p_qty = $products['present_shipping'];
+                    $pending_quantity = $pending_quantity + $p_qty;
+                    $kg = Units::first();
+                    $prod_quantity = $products['quantity'];
+                    if ($products['unit_id'] != 1) {
+                        $product_subcategory = \App\ProductSubCategory::where('product_category_id', $products['product_category_id'])->first();
+
+                        if ($products['unit_id'] == 2) {
+                            $calculated_quantity = $prod_quantity * $product_subcategory['weight'];
+                        }
+                        if ($products['unit_id'] == 3) {
+                            $calculated_quantity = ($prod_quantity / $product_subcategory['size'] ) * $product_subcategory['weight'];
+                        }
+                        $prod_quantity = $calculated_quantity;
+                    }
+
+                    $total_quantity = $total_quantity + $prod_quantity;
+                }
+
+                $temp = array();
+                $temp['id'] = $del_order->id;
+                $temp['total_pending_quantity'] = (int) $pending_quantity;
+                $temp['total_quantity'] = (int) $total_quantity;
+                array_push($pending_orders, $temp);
+            }
+        }
+
+        return $pending_orders;
     }
 
 }
