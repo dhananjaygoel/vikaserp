@@ -179,7 +179,6 @@ class InquiryController extends Controller {
 //                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 //                $curl_scraped_page = curl_exec($ch);
 //                curl_close($ch);
-//                echo $curl_scraped_page;
 //
 //                if (count($customer['manager']) > 0) {
 //                    $str = "Dear " . $customer['manager']->first_name . ",  " . Auth::user()->first_name . " has logged an enquiry for " . $customer['manager']->first_name . ", " . $total_quantity . ". Kindly check and quote Vikas Associates, 9673000068";
@@ -190,7 +189,6 @@ class InquiryController extends Controller {
 //                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 //                    $curl_scraped_page = curl_exec($ch);
 //                    curl_close($ch);
-//                    echo $curl_scraped_page;
 //                }
 //            }
 //        }
@@ -232,7 +230,6 @@ class InquiryController extends Controller {
 //                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 //                $curl_scraped_page = curl_exec($ch);
 //                curl_close($ch);
-//                echo $curl_scraped_page;
 //            }
 //        }
         return view('inquiry_details', compact('inquiry', 'delivery_location'));
@@ -382,7 +379,6 @@ class InquiryController extends Controller {
 //                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 //                $curl_scraped_page = curl_exec($ch);
 //                curl_close($ch);
-//                echo $curl_scraped_page;
 //
 //                if (count($customer['manager']) > 0) {
 //                    $str = "Dear " . $customer['manager']->first_name . ",  " . Auth::user()->first_name . " has logged an enquiry for " . $customer['manager']->first_name . ", " . $total_quantity . ". Kindly check and quote Vikas Associates, 9673000068";
@@ -393,7 +389,6 @@ class InquiryController extends Controller {
 //                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 //                    $curl_scraped_page = curl_exec($ch);
 //                    curl_close($ch);
-//                    echo $curl_scraped_page;
 //                }
 //            }
 //        }
@@ -694,7 +689,6 @@ class InquiryController extends Controller {
 //                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 //                $curl_scraped_page = curl_exec($ch);
 //                curl_close($ch);
-//                echo $curl_scraped_page;
 //            }
 //        }
 
