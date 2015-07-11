@@ -115,7 +115,7 @@
                                     @endif
                                     <tr>
                                         <td>{{$k++}}</td>
-                                        <td>{{$order['customer']->owner_name}}</td>
+                                        <td>{{isset($order['customer'])?$order['customer']->owner_name:''}}</td>
                                         <td>{{$order['customer']['phone_number1']}}</td>
                                         @if($order->delivery_location_id !=0)
                                         <td class="text">{{$order['delivery_location']['area_name']}}</td>
