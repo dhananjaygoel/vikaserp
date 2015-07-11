@@ -57,7 +57,7 @@
                     @endif
 
                     <li class="<?php
-                    if (Request::is('*orders*') || Request::is('*delivery_order*') || Request::is('*delivery_challan*') || Request::is('*pending_delivery_order*') || Request::is('*pending_order_report*')|| Request::is('*sales_daybook*')) {
+                    if (Request::is('orders*') || Request::is('*delivery_order*') || Request::is('*delivery_challan*') || Request::is('*pending_delivery_order*') || Request::is('*pending_order_report*')|| Request::is('*sales_daybook*')) {
                         echo 'active';
                     }
                     ?>">
