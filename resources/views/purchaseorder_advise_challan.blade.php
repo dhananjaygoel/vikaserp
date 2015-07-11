@@ -179,9 +179,7 @@
                     @endif
                     <div class="form-group">
                         <label for="inquiry_remark"><span class="checksms">Remark</span></label>
-                        <textarea class="form-control" id="inquiry_remark" name="remark"  rows="3">
-                            {{$purchase_advise->remarks}}
-                        </textarea>
+                        <textarea class="form-control" id="inquiry_remark" name="remark"  rows="3">{{$purchase_advise->remarks}}</textarea>
                     </div>
                     <!--   <button title="SMS would be sent to Relationship Manager" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> -->
                     <hr>
