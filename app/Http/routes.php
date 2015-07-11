@@ -129,8 +129,8 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::post('print_purchase_challan/{id}', 'PurchaseChallanController@print_purchase_challan');
 
-    Route::post('print_delivery_order/{id}', 'DeliveryOrderController@print_delivery_order');
-    Route::post('print_delivery_challan/{id}', 'DeliveryChallanController@print_delivery_challan');
+    Route::get('print_delivery_order/{id}', 'DeliveryOrderController@print_delivery_order');
+    Route::get('print_delivery_challan/{id}', 'DeliveryChallanController@print_delivery_challan');
     Route::get('place_order/{id}', 'InquiryController@place_order');
     Route::post('store_order/{id}', 'InquiryController@store_place_order');
 
