@@ -15,6 +15,8 @@
                         <a href="{{URL::action('PurchaseOrderController@create')}}"  class="btn btn-primary pull-right">
                             <i class="fa fa-plus-circle fa-lg"></i> Place Purchase Order
                         </a>
+
+
                         <div class="filter-block pull-right">
                             <div class="form-group pull-left">
                                 <div class="col-md-12">
@@ -101,7 +103,7 @@
                                         <td>{{$i++}}</td>
                                         <td>{{$purchase_order['customer']->owner_name}}</td>
                                         <td>{{$purchase_order['customer']->phone_number1}}</td>
-                                        <td></td>
+                                        <td>{{$purchase_order['delivery_location']['area_name']}}</td>
                                         <td>{{$purchase_order['user']->first_name}}</td>
                                         <td>
                                             <?php $total = 0; ?>
