@@ -62,11 +62,11 @@ class PurchaseOrderController extends Controller {
                 ->Paginate(10);
 
         $pending_orders = $this->quantity_calculation($purchase_orders);
-               
+
         $all_customers = Customer::all();
         $purchase_orders->setPath('purchase_orders');
 
-        return view('purchase_order', compact('purchase_orders', 'all_customers','pending_orders'));
+        return view('purchase_order', compact('purchase_orders', 'all_customers', 'pending_orders'));
     }
 
     /**
@@ -391,12 +391,22 @@ class PurchaseOrderController extends Controller {
 
         $purchase_orders = PurchaseOrder::where('id', '=', $order_id)->with('purchase_products.unit', 'purchase_products.product_category.product_sub_category', 'customer', 'purchase_advice.purchase_products')->first();
 
-        foreach ($purchase_orders as $orders) {
-            $check_if_advice_exists = PurchaseAdvise::where('purchase_order_id', '=', $order_id)->with('purchase_products')->get();
-            foreach ($check_if_advice_exists as $a) {
-                $orders['pending'] = $a->quantity - $a->present_shipping;
-            }
-        }
+//        foreach ($purchase_orders as $orders) {
+//            $check_if_advice_exists = PurchaseAdvise::where('purchase_order_id', '=', $order_id)->with('purchase_products')->get();
+//
+////            echo '<pre>';
+////            print_r($check_if_advice_exists->toArray());
+////            echo '</pre>';
+//
+//
+//            foreach ($check_if_advice_exists as $a) {
+//                $orders['pending'] = $a->quantity - $a->present_shipping;
+//            }
+//        }
+
+//        echo $orders;
+//        exit;
+
 
         return view('create_purchase_advice', compact('purchase_orders'));
     }
@@ -538,7 +548,7 @@ class PurchaseOrderController extends Controller {
                         array_push($del_products, $temp_products);
                     }
 //                        
-                   
+
                     array_push($all_del_orders, $del_products);
                 }
 
