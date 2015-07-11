@@ -13,9 +13,17 @@ use Input;
 use App\User;
 use Auth;
 use Hash;
+use Config;
 use Redirect;
 
 class PendingCustomerController extends Controller {
+
+    public function __construct() {
+        define('PROFILE_ID', Config::get('smsdata.profile_id'));
+        define('PASS', Config::get('smsdata.password'));
+        define('SENDER_ID', Config::get('smsdata.sender_id'));
+        define('SMS_URL', Config::get('smsdata.url'));
+    }
 
     /**
      * Display a listing of the resource.
@@ -26,7 +34,7 @@ class PendingCustomerController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        
+
         $customers = Customer::where('customer_status', '=', 'pending')->paginate(10);
         $customers->setPath('pending_customers');
         return View::make('pending_customers', array('customers' => $customers));
@@ -212,8 +220,25 @@ class PendingCustomerController extends Controller {
 
         $customer->customer_status = 'permanent';
 
-
         if ($customer->save()) {
+            /*
+             * ------SEND SMS TO ALL ADMINS -----------------
+             */
+            $input = Input::all();
+            $admins = User::where('role_id', '=', 4)->get();
+            if (count($admins) > 0) {
+                foreach ($admins as $key => $admin) {
+                    $str = "Dear " . $admin->first_name . " " . Auth::user()->first_name . " has converted a new customer from " . Input::get('owner_name') . " to new account as " . Input::get('owner_name') . " kindly chk. Vikas associates";
+                    $phone_number = $admin->mobile_number;
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                    echo $curl_scraped_page;
+                }
+            }
             return redirect('customers')->with('success', 'Customer successfully upgraded as permanent customer');
         } else {
             return Redirect::back()->with('error', 'Some error occoured while saving customer');

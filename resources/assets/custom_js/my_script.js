@@ -94,6 +94,34 @@ $('#purchaseaAdviseFilter').on('change', function () {
 
 $('#sendSMS').click(function () {
     var action = $(this).parents('form').attr('action');
-    $(this).parents('form').attr('action', action+ '?sendsms=true');
+    $(this).parents('form').attr('action', action + '?sendsms=true');
     $(this).parents('form').submit();
 })
+
+$('.print_delivery_order').click(function () {
+    var base_url = $('#baseurl').attr('name');
+    $.ajax({
+        type: "GET",
+        url:  base_url+ '/print_delivery_order/' + $(this).attr('id'),
+        success: function (data) {
+            var printWindow = window.open('', '');
+            printWindow.document.write(data);
+            printWindow.print();
+            printWindow.close();
+        }
+    });
+});
+$('.print_delivery_challan').click(function () {
+    var base_url = $('#baseurl').attr('name');
+    $.ajax({
+        type: "GET",
+        url:  base_url+ '/print_delivery_challan/' + $(this).attr('id'),
+        success: function (data) {
+            var printWindow = window.open('', '');
+            printWindow.document.write(data);
+            printWindow.print();
+            printWindow.close();
+            $(this).parents('.modal').hide();
+        }
+    });
+});

@@ -61,12 +61,12 @@
                                 <input id="address2" class="form-control" placeholder="Address 2" name="address2" value="{{ $customer->address2}}" type="text">
                             </div>
                             <div class="form-group">
-                                <label for="city">City<span class="mandatory">*</span></label>
-                                <input id="city" class="form-control" placeholder="City" name="city" value="{{ $customer->city}}" type="text">
-                            </div>
-                            <div class="form-group">
                                 <label for="state">State<span class="mandatory">*</span></label>
                                 <input id="state" class="form-control" placeholder="State" name="state" value="{{$customer->state}}" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City<span class="mandatory">*</span></label>
+                                <input id="city" class="form-control" placeholder="City" name="city" value="{{ $customer->city}}" type="text">
                             </div>
                             <div class="form-group">
                                 <label for="zip">Zip</label>

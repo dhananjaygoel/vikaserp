@@ -130,7 +130,7 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @if($delivery->serial_no == "")
+                                            @if($delivery->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1 )
                                             <a href="{{URL::action('DeliveryOrderController@edit', ['id'=> $delivery->id])}}" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -146,7 +146,7 @@
                                             </span>
                                             @endif
 
-                                            @if($delivery->serial_no == "")
+                                            @if($delivery->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                             <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan_{{$delivery->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -215,24 +215,21 @@
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
-                                            {!! Form::open(array('url'=>url('print_delivery_order/'.$delivery->id), 'method' => 'post')) !!}
                                             <div class="modal-body">
-                                                <form method="POST" action="" accept-charset="UTF-8" >
-                                                    <div class="row print_time "> 
-                                                        <div class="col-md-12"> Print By <br> 05:00 PM</div> 
-                                                    </div>
-                                                    <div class="checkbox">
-                                                        <label><input type="checkbox" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                    <hr>
-                                                    <div >
-                                                        <button type="submit" class="btn btn-primary form_button_footer">Print</button>
+                                                <div class="row print_time "> 
+                                                    <div class="col-md-12"> Print By <br> 05:00 PM</div> 
+                                                </div>
+                                                <div class="checkbox">
+                                                    <label><input type="checkbox" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <hr>
+                                                <div >
+                                                    <button type="submit" class="btn btn-primary form_button_footer print_delivery_order" id="{{$delivery->id}}}">Print</button>
 
-                                                        <a href="{{url('delivery_order')}}" class="btn btn-default form_button_footer">Cancel</a>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                </form>{!! Form::close() !!}
+                                                    <a href="{{url('delivery_order')}}" class="btn btn-default form_button_footer">Cancel</a>
+                                                </div>
+                                                <div class="clearfix"></div>
                                             </div>           
                                         </div>
                                     </div>

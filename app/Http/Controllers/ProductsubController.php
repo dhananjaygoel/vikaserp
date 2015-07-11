@@ -18,9 +18,17 @@ use App\Http\Requests\ProductSubCategoryRequest;
 use App\Http\Requests\UserValidation;
 use Input;
 use DB;
+use Config;
 use App\Units;
 
 class ProductsubController extends Controller {
+
+    public function __construct() {
+        define('PROFILE_ID', Config::get('smsdata.profile_id'));
+        define('PASS', Config::get('smsdata.password'));
+        define('SENDER_ID', Config::get('smsdata.sender_id'));
+        define('SMS_URL', Config::get('smsdata.url'));
+    }
 
     public function index() {
 
@@ -90,6 +98,37 @@ class ProductsubController extends Controller {
         $ProductSubCategory->standard_length = $request->input('standard_length');
         $ProductSubCategory->difference = $request->input('difference');
         $ProductSubCategory->save();
+
+
+//        $input = Input::all();
+//        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+//            $admins = User::where('role_id', '=', 1)->get();
+//            if (count($admins) > 0) {
+//                foreach ($admins as $key => $admin) {
+//                    $product_category = ProductCategory::where('id', '=', $request->input('select_product_categroy'))->with('product_type')->first();
+//                    $str = "Dear " . $admin->first_name
+//                            . ",  " . Auth::user()->first_name
+//                            . " has created a new size catagory as "
+//                            . $request->input('size')
+//                            . ", " . $request->input('thickness')
+//                            . ", " . $request->input('weight')
+//                            . ", " . $request->input('alias_name')
+//                            . ", " . $request->input('difference')
+//                            . " under " . $product_category->product_category_name
+//                            . " & " . $product_category['product_type']->name
+//                            . " kindly chk. Vikas associates";
+//                    
+//                    $phone_number = $admin->mobile_number;
+//                    $msg = urlencode($str);
+//                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+//                    $ch = curl_init($url);
+//                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//                    $curl_scraped_page = curl_exec($ch);
+//                    curl_close($ch);
+//                    echo $curl_scraped_page;
+//                }
+//            }
+//        }
 
         return redirect('product_sub_category')->with('success', 'Product sub category successfully added.');
     }

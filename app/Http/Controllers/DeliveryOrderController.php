@@ -283,7 +283,23 @@ class DeliveryOrderController extends Controller {
 
             $order_products = array();
             foreach ($input_data['product'] as $product_data) {
-                if ($product_data['name'] != "") {
+
+                if ($product_data['name'] != "" && $product_data['order'] != '') {
+                    $order_products = [
+                        'order_id' => $id,
+                        'order_type' => 'delivery_order',
+                        'product_category_id' => $product_data['id'],
+                        'unit_id' => $product_data['units'],
+                        'quantity' => $product_data['present_shipping'],
+                        'present_shipping' => $product_data['present_shipping'],
+                        'price' => $product_data['price'],
+                        'from' => $product_data['order'],
+                        'remarks' => $product_data['remark'],
+                    ];
+
+                    $add_order_products = AllOrderProducts::create($order_products);
+                }
+                if ($product_data['name'] != "" && $product_data['order'] == '') {
                     $order_products = [
                         'order_id' => $id,
                         'order_type' => 'delivery_order',
@@ -397,7 +413,7 @@ class DeliveryOrderController extends Controller {
             if ($j != 0) {
                 $order_products = array();
                 foreach ($input_data['product'] as $product_data) {
-                    if ($product_data['name'] != "") {
+                    if ($product_data['name'] != "" && $product_data['order'] != "") {
                         $order_products = [
                             'order_id' => $delivery_challan_id,
                             'order_type' => 'delivery_challan',
@@ -406,7 +422,22 @@ class DeliveryOrderController extends Controller {
                             'actual_pieces' => $product_data['actual_pieces'],
                             'quantity' => $product_data['quantity'],
                             'present_shipping' => $product_data['present_shipping'],
-                            'price' => $product_data['price']
+                            'price' => $product_data['price'],
+                            'from' => 'delivery_order'
+                        ];
+                        $add_order_products = AllOrderProducts::create($order_products);
+                    }
+                    if ($product_data['name'] != "" && $product_data['order'] == "") {
+                        $order_products = [
+                            'order_id' => $delivery_challan_id,
+                            'order_type' => 'delivery_challan',
+                            'product_category_id' => $product_data['id'],
+                            'unit_id' => $product_data['units'],
+                            'actual_pieces' => $product_data['actual_pieces'],
+                            'quantity' => $product_data['quantity'],
+                            'present_shipping' => $product_data['present_shipping'],
+                            'price' => $product_data['price'],
+                            'from' => ''
                         ];
                         $add_order_products = AllOrderProducts::create($order_products);
                     }
@@ -532,18 +563,18 @@ class DeliveryOrderController extends Controller {
                 $all_order_products = AllOrderProducts::where('order_id', $del_order->id)->where('order_type', 'delivery_order')->get();
                 foreach ($all_order_products as $products) {
 //                    $p_qty = $products['quantity'] - $products['present_shipping'];
-                    $p_qty = $products['quantity'] - $products['present_shipping'];
+                    $p_qty = $products['present_shipping'];
                     $pending_quantity = $pending_quantity + $p_qty;
                     $kg = Units::first();
-                    $prod_quantity = $products['present_shipping'];
+                    $prod_quantity = $products['quantity'];
                     if ($products['unit_id'] != 1) {
                         $product_subcategory = \App\ProductSubCategory::where('product_category_id', $products['product_category_id'])->first();
 
                         if ($products['unit_id'] == 2) {
-                        $calculated_quantity = $prod_quantity * $product_subcategory['weight'];
+                            $calculated_quantity = $prod_quantity * $product_subcategory['weight'];
                         }
                         if ($products['unit_id'] == 3) {
-                        $calculated_quantity = ($prod_quantity / $product_subcategory['size'] )* $product_subcategory['weight'];
+                            $calculated_quantity = ($prod_quantity / $product_subcategory['size'] ) * $product_subcategory['weight'];
                         }
                         $prod_quantity = $calculated_quantity;
                     }

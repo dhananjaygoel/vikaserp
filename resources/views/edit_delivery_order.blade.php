@@ -165,8 +165,10 @@
                                                 <div class="form-group searchproduct">
                                                     <input value="{{ $product['product_category']->product_category_name}}" class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});">
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['product_category']->id}}">
+                                                    <input type="hidden" name="product[{{$key}}][order]" value="{{ $product->from}}">
 <!--                                                    <i class="fa fa-search search-icon"></i>-->
                                                 </div>{{ $product['product_category']['product_sub_category']->alias_name}}
+                                                <input type="hidden" name="prod_id" value="{{$key}}">
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
