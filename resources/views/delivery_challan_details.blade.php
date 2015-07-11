@@ -152,18 +152,20 @@
                         </div>
                         <hr>
                         @endif
-
-
+                        
+ 
                         <div class="form-group">
                             <label for="total"><b class="challan">Grand Total</b><span class="gtotal">{{$allorder->grand_price}}</span></label>
 
                         </div>
                         <hr>
+                        @if($allorder->bill_number != "")
                         <div class="form-group">
                             <label for="billno"><b class="challan">Bill Number</b></label>
                             {{$allorder->bill_number}}
                         </div>
                         <hr>
+                        @endif
                         <div class="form-group">
                             <label for="challan_remark"><b class="challan">Remark</b></label>
                             <textarea class="form-control" id="challan_remark" name="challan_remark"  rows="3" readonly="readonly"> {{$allorder->remarks}}</textarea>

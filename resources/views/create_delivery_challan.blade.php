@@ -72,6 +72,7 @@
                                                     <input type="hidden" name="product[{{$key}}][name]" id="name_{{$key}}" value="{{$product['product_category']->product_category_name}}">
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['product_category']->id}}">
                                                     <!--<i class="fa fa-search search-icon"></i>-->
+                                                    <input type="hidden" name="product[{{$key}}][order]" value="delivery_order">
                                                 </div>
                                             </td>
                                             <td class="col-md-1 sfdsf">
