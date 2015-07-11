@@ -128,7 +128,7 @@
                             <hr>
                             <div>
                                 <a href="{{URL::to('inquiry')}}" class="btn btn-default form_button_footer">Back</a>
-                                <button title="SMS would be sent to Party and Relationship Manager" type="button" class="btn btn-primary smstooltip" >Send SMS</button><span title="SMS has been sent 5 times" class="badge enquirybadge smstooltip">0</span>
+                                <a href="{{url('inquiry/'.$inquiry->id.'?sendsms=true' )}}" title="SMS would be sent to Party and Relationship Manager" type="button" class="btn btn-primary smstooltip" >Send SMS</a><span title="SMS has been sent 5 times" class="badge enquirybadge smstooltip">0</span>
                             </div>
                         </form>
 

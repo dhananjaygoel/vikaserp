@@ -331,7 +331,7 @@
                             <label for="inquiry_remark">Remark</label>
                             <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3">{{$inquiry->remarks}}</textarea>
                         </div>
-                        <button type="button" class="btn btn-primary" >Save and Send SMS</button>
+                        <button type="button" class="btn btn-primary" id="sendSMS" >Save and Send SMS</button>
                         <div class="checkbox">
                             <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email</span></label>
                         </div>

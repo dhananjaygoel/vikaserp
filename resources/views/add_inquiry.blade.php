@@ -220,7 +220,7 @@
                                 <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3"></textarea>
                             </div>
 
-                            <button type="button" class="btn btn-primary" >Save and Send SMS</button>
+                            <button type="button" class="btn btn-primary" id="sendSMS" >Save and Send SMS</button>
 
 
                             <hr>

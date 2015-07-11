@@ -81,13 +81,13 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            
-<!--                                            <a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>-->
+
+                                            <!--                                            <a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
+                                                                                            <span class="fa-stack">
+                                                                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                                                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                                                            </span>
+                                                                                        </a>-->
 
                                             <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan_{{$challan->id}}">
                                                 <span class="fa-stack">
@@ -143,31 +143,24 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
-                                                <form method="POST" action="print_delivery_challan/{{$challan->id}}" accept-charset="UTF-8" >
-                                                    <input type="hidden" name="_token"value="{{csrf_token()}}">
-                                                    <input type="hidden" name="serial_number" value="{{$challan['delivery_order']->serial_no}}">
-                                                    <input type="hidden" name="delivery_order_id" value="{{$challan['delivery_order']->id}}">
-                                                    <div class="row print_time"> 
-                                                        <div class="col-md-12"> Print By <br> 05:00 PM</div> 
-                                                    </div>
-                                                    <div class="checkbox">
-                                                        <label><input type="checkbox" value="" checked=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                    <hr>
-                                                    <div >
-                                                        <button type="submit" class="btn btn-primary form_button_footer" >Generate Challan</button>
-                                                        <!--<button type="button" class="btn btn-primary form_button_footer" >Send Message</button>-->
-                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                    {!! Form::close() !!}
-                                            </div>           
-                                            <!--    <div class="modal-footer">
-                                                
-                                                <button type="button" class="btn btn-primary">No</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
-                                                </div>-->
+                                                <input type="hidden" name="_token"value="{{csrf_token()}}">
+                                                <input type="hidden" name="serial_number" value="{{$challan['delivery_order']->serial_no}}">
+                                                <input type="hidden" name="delivery_order_id" value="{{$challan['delivery_order']->id}}">
+                                                <div class="row print_time"> 
+                                                    <div class="col-md-12"> Print By <br> 05:00 PM</div> 
+                                                </div>
+                                                <div class="checkbox">
+                                                    <label><input type="checkbox" value="" checked=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <hr>
+                                                <div >
+                                                    <button type="submit" class="btn btn-primary form_button_footer print_delivery_challan" id="{{$challan->id}}">Generate Challan</button>
+                                                    <!--<button type="button" class="btn btn-primary form_button_footer" >Send Message</button>-->
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div> 
@@ -266,39 +259,27 @@
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
-
-
-
                                             <div class="modal-body">
-                                                <form method="POST" action="print_delivery_challan/{{$challan->id}}" accept-charset="UTF-8" >
-                                                    <input type="hidden" name="_token"value="{{csrf_token()}}">
+                                                <input type="hidden" name="_token"value="{{csrf_token()}}">
 
-                                                    <input type="hidden" name="serial_number" value="{{$challan['delivery_order']->serial_no}}">
-                                                    <input type="hidden" name="delivery_order_id" value="{{$challan['delivery_order']->id}}">
-                                                    <div class="row print_time"> 
-                                                        <div class="col-md-12"> Print By <br> 05:00 PM</div> 
-                                                    </div>
-                                                    <div class="checkbox">
-                                                        <label><input type="checkbox" value="" checked=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                    <hr>
-                                                    <div >
-                                                        <button type="submit" class="btn btn-primary form_button_footer" >Generate Challan</button>
-                                                        <!--<button type="button" class="btn btn-primary form_button_footer" >Send Message</button>-->
-                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                                                    </div>
+                                                <input type="hidden" name="serial_number" value="{{$challan['delivery_order']->serial_no}}">
+                                                <input type="hidden" name="delivery_order_id" value="{{$challan['delivery_order']->id}}">
+                                                <div class="row print_time"> 
+                                                    <div class="col-md-12"> Print By <br> 05:00 PM</div> 
+                                                </div>
+                                                <div class="checkbox">
+                                                    <label><input type="checkbox" value="" checked=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <hr>
+                                                <div >
+                                                    <button type="submit" class="btn btn-primary form_button_footer print_delivery_challan" id="{{$challan->id}}">Generate Challan</button>
+                                                    <!--<button type="button" class="btn btn-primary form_button_footer" >Send Message</button>-->
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                                </div>
 
-                                                    <div class="clearfix"></div>
-                                                    {!! Form::close() !!}
-
-
-                                            </div>           
-                                            <!--    <div class="modal-footer">
-                                                
-                                                <button type="button" class="btn btn-primary">No</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
-                                                </div>-->
+                                                <div class="clearfix"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div> 

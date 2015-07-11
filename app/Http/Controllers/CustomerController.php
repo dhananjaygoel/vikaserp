@@ -19,10 +19,16 @@ use Input;
 use App\URLAccess;
 use App\States;
 use App\City;
+use Config;
+use App\ProductType;
 
 class CustomerController extends Controller {
 
     public function __construct() {
+        define('PROFILE_ID', Config::get('smsdata.profile_id'));
+        define('PASS', Config::get('smsdata.password'));
+        define('SENDER_ID', Config::get('smsdata.sender_id'));
+        define('SMS_URL', Config::get('smsdata.url'));
 //
 //        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
 ////            echo 'test 1';exit;
@@ -159,6 +165,25 @@ class CustomerController extends Controller {
                     }
                 }
             }
+            /*
+             * ------SEND SMS TO ALL ADMINS -----------------
+             */
+//            $input = Input::all();
+//            $admins = User::where('role_id', '=', 4)->get();
+//            if (count($admins) > 0) {
+//                foreach ($admins as $key => $admin) {
+//                    $product_type = ProductType::find($request->input('product_type'));
+//                    $str = "Dear " . $admin->first_name . ", <br/> " . Auth::user()->first_name . " has created a new customer as " . Input::get('owner_name') . " kindly chk. <br />Vikas associates";
+//                    $phone_number = $admin->mobile_number;
+//                    $msg = urlencode($str);
+//                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+//                    $ch = curl_init($url);
+//                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//                    $curl_scraped_page = curl_exec($ch);
+//                    curl_close($ch);
+//                    echo $curl_scraped_page;
+//                }
+//            }
 
             return redirect('customers')->with('success', 'Customer Succesfully added');
         } else {

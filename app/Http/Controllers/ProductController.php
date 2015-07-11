@@ -18,9 +18,17 @@ use App\Http\Requests\ProductCategoryRequest;
 use App\Http\Requests\UserValidation;
 use Input;
 use DB;
+use Config;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller {
+
+    public function __construct() {
+        define('PROFILE_ID', Config::get('smsdata.profile_id'));
+        define('PASS', Config::get('smsdata.password'));
+        define('SENDER_ID', Config::get('smsdata.sender_id'));
+        define('SMS_URL', Config::get('smsdata.url'));
+    }
 
     public function index() {
 
@@ -48,31 +56,31 @@ class ProductController extends Controller {
         $product_category->save();
 
 
-//        $input = Input::all();
-//        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-//            $admins = User::where('role_id', '=', 1)->get();
-//            if (count($admins) > 0) {
-//                foreach ($admins as $key => $admin) {
-//                    $product_type = ProductType::find($request->input('product_type'));
-//                    $str = "Dear ".$admin->first_name.", <br/> ".Auth::user()->first_name." has created a new product catagory as ".$request->input('product_category_name')." under ".$product_type->name." kindly chk. <br />Vikas associates";
-//
-//                    $msg = urlencode($str);
-//                    $url = "http://bulksmspune.mobi/sendurlcomma.aspx?user=20064486&pwd=its1782&senderid=VikasPipes&mobileno=9999999999&msgtext=" . $msg . "&smstype=4";
-//                    $ch = curl_init($url);
-//                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//                    $curl_scraped_page = curl_exec($ch);
-//                    curl_close($ch);
-//                    echo $curl_scraped_page;
-//                }
-//            }
-//        }
+        $input = Input::all();
+        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+            $admins = User::where('role_id', '=', 1)->get();
+            if (count($admins) > 0) {
+                foreach ($admins as $key => $admin) {
+                    $product_type = ProductType::find($request->input('product_type'));
+                    $str = "Dear " . $admin->first_name . "  " . Auth::user()->first_name . " has created a new product catagory as " . $request->input('product_category_name') . " under " . $product_type->name . " kindly chk. Vikas associates";
+                    $phone_number = $admin->mobile_number;
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                    echo $curl_scraped_page;
+                }
+            }
+        }
 
         return redirect('product_category')->with('success', 'Product category successfully added.');
     }
 
     public function show($id) {
-        $product_cat = ProductCategory::where('id', $id)->with('product_sub_category','product_type')->first();
-     
+        $product_cat = ProductCategory::where('id', $id)->with('product_sub_category', 'product_type')->first();
+
         return view('view_product_category', compact('product_cat'));
     }
 
