@@ -689,6 +689,16 @@ class InquiryController extends Controller {
 //                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 //                $curl_scraped_page = curl_exec($ch);
 //                curl_close($ch);
+//                if (count($customer['manager']) > 0) {
+//                    $str = "Dear " . $customer['manager']->first_name . ",  " . Auth::user()->first_name . " has logged an enquiry for " . $customer['manager']->first_name . ", " . $total_quantity . ". Kindly check and quote Vikas Associates, 9673000068";
+//                    $phone_number = $customer['manager']->mobile_number;
+//                    $msg = urlencode($str);
+//                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+//                    $ch = curl_init($url);
+//                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//                    $curl_scraped_page = curl_exec($ch);
+//                    curl_close($ch);
+//                }
 //            }
 //        }
 

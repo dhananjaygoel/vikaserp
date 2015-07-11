@@ -174,7 +174,6 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
-                                                {!! Form::open(array('url'=>url('print_purchase_advise/'), 'method' => 'post')) !!}
                                                 <div class="row print_time "> 
                                                     <div class="col-md-12"> Print By <br> 05:00 PM</div> 
                                                 </div>
@@ -186,11 +185,10 @@
                                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                                                 <input type="hidden" name="pa_id" value="{{$pa->id}}"/>
                                                 <div >
-                                                    <button type="submit" class="btn btn-primary form_button_footer" >Print</button>
+                                                    <button type="button" class="btn btn-primary form_button_footer print_purchase_advise" id="{{$pa->id}}" >Print</button>
                                                     <button class="btn btn-default form_button_footer" data-dismiss="modal">Cancel</button>
                                                 </div>
                                                 <div class="clearfix"></div>
-                                                {!! Form::close() !!}
                                             </div>
                                         </div>
                                     </div>

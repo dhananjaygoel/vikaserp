@@ -367,7 +367,7 @@
                             <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email</span></label>
 
                         </div>
-                        <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
+                        <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" id="sendSMS" >Save and Send SMS</button> 
                         <hr>
                         <div >
                             <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>

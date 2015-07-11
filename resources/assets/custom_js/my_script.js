@@ -102,8 +102,9 @@ $('.print_delivery_order').click(function () {
     var base_url = $('#baseurl').attr('name');
     $.ajax({
         type: "GET",
-        url:  base_url+ '/print_delivery_order/' + $(this).attr('id'),
+        url: base_url + '/print_delivery_order/' + $(this).attr('id'),
         success: function (data) {
+            location.reload();
             var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
@@ -115,13 +116,75 @@ $('.print_delivery_challan').click(function () {
     var base_url = $('#baseurl').attr('name');
     $.ajax({
         type: "GET",
-        url:  base_url+ '/print_delivery_challan/' + $(this).attr('id'),
+        url: base_url + '/print_delivery_challan/' + $(this).attr('id'),
         success: function (data) {
+            location.reload();
             var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
             $(this).parents('.modal').hide();
+        }
+    });
+});
+$('.print_sales_order_daybook').click(function () {
+    var base_url = $('#baseurl').attr('name');
+    $.ajax({
+        type: "GET",
+        url: base_url + '/print_sales_order_daybook',
+        success: function (data) {
+            location.reload();
+            var printWindow = window.open('', '');
+            printWindow.document.write(data);
+            printWindow.print();
+            printWindow.close();
+        }
+    });
+});
+
+$('.print_purchase_challan').click(function () {
+    var base_url = $('#baseurl').attr('name');
+    $.ajax({
+        type: "GET",
+        url: base_url + '/print_purchase_challan/' + $(this).attr('id'),
+        success: function (data) {
+            location.reload();
+            var printWindow = window.open('', '');
+            printWindow.document.write(data);
+            printWindow.print();
+            printWindow.close();
+            $(this).parents('.modal').hide();
+        }
+    });
+});
+
+$('.print_purchase_advise').click(function () {
+    var base_url = $('#baseurl').attr('name');
+    $.ajax({
+        type: "GET",
+        url: base_url + '/print_purchase_advise/' + $(this).attr('id'),
+        success: function (data) {
+            location.reload();
+//            var printWindow = window.open('', '');
+//            printWindow.document.write(data);
+//            printWindow.print();
+//            printWindow.close();
+//            $(this).parents('.modal').hide();
+        }
+    });
+});
+
+$('.print_purchase_daybook').click(function () {
+    var base_url = $('#baseurl').attr('name');
+    $.ajax({
+        type: "GET",
+        url: base_url + '/print_purchase_daybook',
+        success: function (data) {
+            location.reload();
+            var printWindow = window.open('', '');
+            printWindow.document.write(data);
+            printWindow.print();
+            printWindow.close();
         }
     });
 });

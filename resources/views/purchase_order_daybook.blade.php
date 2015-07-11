@@ -40,7 +40,7 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <a href="{{url('print_purchase_daybook')}}" class="btn btn-primary form_button_footer" > Print </a>
+                            <a class="btn btn-primary form_button_footer print_purchase_daybook" > Print </a>
                             <a href="{{url('expert_purchase_daybook')}}" class="btn btn-primary form_button_footer" > Export </a>                         
                         </div>
                         <div class="clearfix"></div>

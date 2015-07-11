@@ -120,7 +120,6 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body print_delivery_order">
-                                                {!! Form::open(array('url'=>url('print_purchase_challan/'.$challan->id), 'method' => 'post')) !!}
                                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                                                 <input type="hidden" name="challan_id" value="{{$challan->id}}"/>
                                                 <div class="row print_time">
@@ -132,11 +131,10 @@
                                                 <div class="clearfix"></div>
                                                 <hr>
                                                 <div >
-                                                    <button type="submit" class="btn btn-primary form_button_footer" >Generate Challan</button>
+                                                    <button type="submit" class="btn btn-primary form_button_footer print_purchase_challan" id="{{$challan->id}}" >Generate Challan</button>
                                                     <a href="#" class="btn btn-default form_button_footer">Cancel</a>
                                                 </div>
                                                 <div class="clearfix"></div>
-                                                {!! Form::close() !!}
                                             </div>
                                         </div>
                                     </div>

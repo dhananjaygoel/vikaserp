@@ -81,7 +81,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('purchase_order_daybook/{id}', 'PurchaseDaybookController@destroy');
     Route::post('delete_all_daybook', 'PurchaseDaybookController@delete_all_daybook');
     Route::resource('expert_purchase_daybook', 'PurchaseDaybookController@expert_purchase_daybook');
-    Route::resource('print_purchase_daybook', 'PurchaseDaybookController@print_purchase_daybook');
+    Route::get('print_purchase_daybook', 'PurchaseDaybookController@print_purchase_daybook');
 
     Route::get('change_password', 'PasswordController@getPassword');
     Route::post('change_password', 'PasswordController@postPassword');
@@ -96,7 +96,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('purchase_orders', 'PurchaseOrderController');
 
     Route::resource('purchaseorder_advise', 'PurchaseAdviseController');
-    Route::post('print_purchase_advise', 'PurchaseAdviseController@print_purchase_advise');
+    Route::get('print_purchase_advise/{id}', 'PurchaseAdviseController@print_purchase_advise');
 
 
 
@@ -127,7 +127,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('delete_multiple_challan', 'SalesDaybookController@delete_multiple_challan');
     Route::post('sales_daybook_date', 'SalesDaybookController@challan_date');
 
-    Route::post('print_purchase_challan/{id}', 'PurchaseChallanController@print_purchase_challan');
+    Route::get('print_purchase_challan/{id}', 'PurchaseChallanController@print_purchase_challan');
 
     Route::get('print_delivery_order/{id}', 'DeliveryOrderController@print_delivery_order');
     Route::get('print_delivery_challan/{id}', 'DeliveryChallanController@print_delivery_challan');
@@ -135,7 +135,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('store_order/{id}', 'InquiryController@store_place_order');
 
     Route::resource('export_sales_daybook', 'SalesDaybookController@export_sales_daybook');
-    Route::resource('print_sales_order_daybook', 'SalesDaybookController@print_sales_order_daybook');
+    Route::get('print_sales_order_daybook', 'SalesDaybookController@print_sales_order_daybook');
 
     Route::post('get_product_weight', 'ProductsubController@get_product_weight');
     Route::get('fetch_product_price', 'DeliveryOrderController@product_price');

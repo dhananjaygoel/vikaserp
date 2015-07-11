@@ -253,7 +253,7 @@
 
                             </div>
                             <div >
-                                <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>
+                                <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" id="sendSMS" >Save and Send SMS</button>
                             </div>
                             <hr>
                             <div >

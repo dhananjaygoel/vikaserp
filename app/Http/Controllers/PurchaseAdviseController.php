@@ -382,7 +382,7 @@ class PurchaseAdviseController extends Controller {
         return view('purchaseorder_advise_challan', compact('purchase_advise', 'locations', 'units'));
     }
 
-    public function print_purchase_advise() {
+    public function print_purchase_advise($id) {
 
         $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.product_sub_category')->find(Input::get('pa_id'));
 
@@ -390,7 +390,7 @@ class PurchaseAdviseController extends Controller {
         $current_date = date("M/y/m/");
 
         $date_letter = 'PO/' . $current_date . "" . Input::get('pa_id');
-        PurchaseAdvise::where('id', Input::get('pa_id'))->update(array(
+        PurchaseAdvise::where('id', '=', $id)->update(array(
             'serial_number' => $date_letter
 //            'advice_status' => "delivered"
         ));

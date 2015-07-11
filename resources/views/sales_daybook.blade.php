@@ -1,12 +1,3 @@
-<?php
-
-//echo '<pre>';
-//print_r($allorders->toArray());
-//echo '</pre>';
-//exit;
-
-?>
-
 @extends('layouts.master')
 @section('title','Sales Daybook')
 @section('content')
@@ -40,7 +31,7 @@
                         </div>
                         @if(sizeof($allorders) > 0)
                         <div class="pull-right col-md-4">
-                            <a href="{{url('print_sales_order_daybook')}}" class="btn btn-primary form_button_footer" >Print</a> 
+                            <a class="btn btn-primary form_button_footer print_sales_order_daybook" >Print</a> 
                             <a href="{{url('export_sales_daybook')}}" class="btn btn-primary form_button_footer" >Export</a> 
                         </div>
                         @endif
@@ -79,7 +70,8 @@
                                     <thead>
                                         <tr>
                                             @if( Auth::user()->role_id == 0 )
-                                            <th class="text-left"><input type="checkbox" class="table-link" id ="select_all_button" onclick="select_all_checkbox();" all_checked="allunchecked" >Select All To Delete</th>
+                                            <th><input type="checkbox" class="table-link" id ="select_all_button" onclick="select_all_checkbox();" all_checked="allunchecked" ></th>
+                                            <th>#</th>
                                             @endif
                                             @if( Auth::user()->role_id == 1 )
                                             <th>#</th>
@@ -106,10 +98,8 @@
                                         @foreach($allorders as $challan)                                       
                                         <tr class="add_product_row">
                                             @if( Auth::user()->role_id == 0 )
-                                            <td class="text-center">
-                                                <input type="checkbox" id ="checkbox_{{$k}}" name="challan_id[{{$k}}][checkbox]" value="{{$challan->id}}" > 
-                                                &nbsp; {{$k++}}
-                                            </td>
+                                            <td><input type="checkbox" id ="checkbox_{{$k}}" name="challan_id[{{$k}}][checkbox]" value="{{$challan->id}}" > </td>
+                                            <td>{{$k++}}</td>
                                             @endif
                                             @if( Auth::user()->role_id == 1)
                                             <th>{{$k}}</th>
