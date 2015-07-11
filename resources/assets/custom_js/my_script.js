@@ -133,8 +133,8 @@ $('.print_sales_order_daybook').click(function () {
         type: "GET",
         url: base_url + '/print_sales_order_daybook',
         success: function (data) {
-            location.reload();
             var printWindow = window.open('', '');
+            location.reload();
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
