@@ -100,9 +100,14 @@ $('#sendSMS').click(function () {
 
 $('.print_delivery_order').click(function () {
     var base_url = $('#baseurl').attr('name');
+    var send_sms = '';
+    if ($("#checksms").is(':checked'))
+        send_sms = true;  // checked
+    else
+        send_sms = false;  // unchecked
     $.ajax({
         type: "GET",
-        url: base_url + '/print_delivery_order/' + $(this).attr('id'),
+        url: base_url + '/print_delivery_order/' + $(this).attr('id') + '?send_sms=' + send_sms,
         success: function (data) {
             location.reload();
             var printWindow = window.open('', '');
@@ -114,9 +119,14 @@ $('.print_delivery_order').click(function () {
 });
 $('.print_delivery_challan').click(function () {
     var base_url = $('#baseurl').attr('name');
+    var send_sms = '';
+    if ($("#checksms").is(':checked'))
+        send_sms = true;  // checked
+    else
+        send_sms = false;  // unchecked
     $.ajax({
         type: "GET",
-        url: base_url + '/print_delivery_challan/' + $(this).attr('id'),
+        url: base_url + '/print_delivery_challan/' + $(this).attr('id') + '?send_sms=' + send_sms,
         success: function (data) {
             location.reload();
             var printWindow = window.open('', '');

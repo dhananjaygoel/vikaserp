@@ -19,10 +19,19 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Hash;
 use Auth;
+use Config;
+use App\ProductSubCategory;
 use App\DeliveryChallan;
 use App\CustomerProductDifference;
 
 class DeliveryOrderController extends Controller {
+
+    public function __construct() {
+        define('PROFILE_ID', Config::get('smsdata.profile_id'));
+        define('PASS', Config::get('smsdata.password'));
+        define('SENDER_ID', Config::get('smsdata.sender_id'));
+        define('SMS_URL', Config::get('smsdata.url'));
+    }
 
     /**
      * Display a listing of the resource.
@@ -469,8 +478,35 @@ class DeliveryOrderController extends Controller {
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
 
+//        $input_data = $delivery_data['delivery_product'];
+//        $send_sms = Input::get('send_sms');
+//        if ($send_sms == 'true') {
+//            /*
+//             * ------------------- -----------------------
+//             * SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
+//             * -------------------------------------------
+//             */
+//            $customer_id = $delivery_data->customer_id;
+//            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+//            if (count($customer) > 0) {
+//                $total_quantity = '';
+//                $str = "Dear " . $customer->owner_name . ", your Delivery order has been created as follows:";
+//                foreach ($input_data as $product_data) {
+//                    $product = ProductSubCategory::where('product_category_id', '=', $product_data->product_category_id)->first();
+//                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+//                    $total_quantity = $total_quantity + $product_data->quantity;
+//                }
+//                $str .= " Truck Number: " . $delivery_data->vehicle_number . ", Driver number: " . $delivery_data->driver_contact_no . ". Vikas Associates, 9673000068";
+//                $phone_number = $customer->phone_number1;
+//                $msg = urlencode($str);
+//                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+//                $ch = curl_init($url);
+//                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//                $curl_scraped_page = curl_exec($ch);
+//                curl_close($ch);
+//            }
+//        }
         return view('print_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
-//        return redirect('delivery_order')->with('validation_message', 'Delivery order is successfuly printed.');
     }
 
     public function pending_quantity_order($id) {
@@ -564,7 +600,7 @@ class DeliveryOrderController extends Controller {
             $delivery_challan = DeliveryChallan::where('order_id', $del_order->id)->get();
             if (count($delivery_challan) > 0) {
                 $total_pending = 0;
-                $total_qty=0;
+                $total_qty = 0;
                 foreach ($delivery_challan as $challan) {
                     $challan_products = AllOrderProducts::where('order_id', $challan->id)
                                     ->where('from', 'delivery_order')
@@ -628,7 +664,7 @@ class DeliveryOrderController extends Controller {
                                     $query->where('order_type', '=', 'delivery_order')
                                     ;
                                 }])->first();
-                                
+
                     $tot_qty = 0;
                     foreach ($or['delivery_product'] as $or_prd) {
 //                    echo $or_prd->quantity;
@@ -661,8 +697,7 @@ class DeliveryOrderController extends Controller {
 
                     $temp['total_quantity'] = $total_qty;
                     array_push($pending_orders, $temp);
-                }                
-                    
+                }
             } else {
                 $pending_quantity = 0;
                 $total_quantity = 0;
@@ -694,8 +729,6 @@ class DeliveryOrderController extends Controller {
 //                echo '<pre>';
 //                print_r($pending_orders);
 //                echo '</pre>';
-                
-                
             }
         }
 //        echo '<pre>';

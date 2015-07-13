@@ -236,7 +236,69 @@ class WelcomeController extends Controller {
                     }
 
                     if ($excel->type == 'Structure') {
-                        
+                        $exits_cat = ProductCategory::where('product_type_id', 2)
+                                        ->where('product_category_name', $excel->category)->first();
+
+                        if (sizeof($exits_cat) > 0) {
+
+                            $exits_cat->id;
+
+
+                            $exits_sub_cat = ProductSubCategory::where('product_category_id', $exits_cat->id)
+                                    ->where('alias_name', $excel->alias)
+                                    ->where('size', $excel->size)
+                                    ->where('weight', $excel->weight)
+                                    ->where('thickness', $excel->thickness)
+                                    ->where('standard_length', $excel->meter)
+//                                    ->where('difference', $excel->diff)
+                                    ->first();
+
+                            if (sizeof($exits_sub_cat) == 0) {
+
+                                $product_sub = new ProductSubCategory();
+                                $product_sub->product_category_id = $exits_cat->id;
+                                $product_sub->alias_name = $excel->alias;
+                                $product_sub->size = $excel->size;
+                                $product_sub->weight = $excel->weight;
+                                $product_sub->thickness = $excel->thickness;
+                                $product_sub->standard_length = $excel->meter;
+//                                $product_sub->difference = $excel->diff;
+                                $product_sub->save();
+                            }
+                        } else {
+
+
+                            $product_cat = new ProductCategory();
+                            $product_cat->product_type_id = 2;
+                            $product_cat->product_category_name = $excel->category;
+                            $product_cat->save();
+
+                            $product_category_id = DB::getPdo()->lastInsertId();
+
+
+
+                            $exits_sub_cat = ProductSubCategory::where('product_category_id', $product_category_id)
+                                    ->where('alias_name', $excel->alias)
+                                    ->where('size', $excel->size)
+                                    ->where('weight', $excel->weight)
+                                    ->where('thickness', $excel->thickness)
+                                    ->where('standard_length', $excel->meter)
+//                                    ->where('difference', $excel->diff)
+                                    ->first();
+
+                            if (sizeof($exits_sub_cat) == 0) {
+
+                                $product_sub = new ProductSubCategory();
+                                $product_sub->product_category_id = $product_category_id;
+                                $product_sub->alias_name = $excel->alias;
+                                $product_sub->size = $excel->size;
+                                $product_sub->weight = $excel->weight;
+                                $product_sub->thickness = $excel->thickness;
+                                $product_sub->standard_length = $excel->meter;
+//                                $product_sub->difference = $excel->diff;
+                                $product_sub->save();
+                            }
+                        }
                     }
                 }
             });

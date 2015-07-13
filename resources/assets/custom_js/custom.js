@@ -111,14 +111,77 @@ $(document).ready(function () {
 
 
 
+    $('#add_more_product').on("click", function () {
+        alert('hi');
+        var current_row_count = $(".add_product_row").length + 1;
+        $.ajax({
+            type: "GET",
+            url: baseurl + '/get_units'
+        }).done(function (data) {
+            var main_array = JSON.parse(data);
+            var arr1 = main_array['units'];
+            var html = '';
+            for (var key in arr1) {
+                html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
+            }
+            $("#units_" + current_row_count).html(html);
+        });
+
+        var str = ' <tr id="add_row_' + current_row_count + '" class="add_product_row">' +
+                '    <td>' +
+                '<div class="form-group searchproduct">' +
+                '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_purchase_product_name_' + current_row_count + '" onfocus="product_autocomplete_purchase(' + current_row_count + ');">' +
+                '<input type="hidden" name="product[' + current_row_count + '][product_category_id]" id="add_product_id_' + current_row_count + '">' +
+                '<i class="fa fa-search search-icon"></i>' +
+                '</div>' +
+                '    </td>' +
+                '    <td>' +
+                '        <div class="form-group">' +
+                '            <input id="actual_quantity_' + current_row_count + '" class="form-control" placeholder="Actual Quantity" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="purchase_challan_calculation();">' +
+                '        </div>' +
+                '    </td>' +
+                '    <td>' +
+                '        <div class="form-group">' +
+                '           <select class="form-control" name="product[' + current_row_count + '][unit_id]" id="units_' + current_row_count + '">' +
+                '               ' +
+                '           </select>' +
+                '        </div>' +
+                '    </td>  ' +
+                '    <td>  ' +
+                '        <div class="form-group">' +
+                '            <input id="shipping" class="form-control" placeholder="Present Shipping" name="product[' + current_row_count + '][present_shipping]" value="" type="text">' +
+                '        </div>' +
+                '    </td>' +
+                '    <td class="shippingcolumn">' +
+                '        <div class="row ">' +
+                '            <div class="form-group col-md-12">' +
+                '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]" onblur="purchase_challan_calculation();">' +
+                '            </div>' +
+                '        </div>' +
+                '    </td>' +
+                '    <td>   ' +
+                '        <div class="form-group">' +
+                '            <div id="amount_' + current_row_count + '"></div>' +
+                '        </div>' +
+                '    </td>' +
+                '</tr>';
+
+        $("#table-example").children("tbody").append(str);
+
+    });
+
+
 });
 
 $(function () {
     $('.smstooltip').tooltip();
 });
 
-$('#add_more_product').click(function () {
 
+/**
+ * Comment
+ */
+function create_purchase_challan_function() {
     var current_row_count = $(".add_product_row").length + 1;
     $.ajax({
         type: "GET",
@@ -174,8 +237,7 @@ $('#add_more_product').click(function () {
 
     $("#table-example").children("tbody").append(str);
 
-});
-
+}
 function calulate_price(counter) {
 
     var unit_id = $('#units_' + counter).val();

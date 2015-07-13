@@ -49,7 +49,7 @@ class DeliveryOrder extends Model implements AuthenticatableContract, CanResetPa
     
 
     public function delivery_product() {
-        return $this->hasMany('App\AllOrderProducts', 'order_id', 'id');
+        return $this->hasMany('App\AllOrderProducts', 'order_id', 'id')->where('order_type' , '=', 'delivery_order');
     }
 
     public function customer() {

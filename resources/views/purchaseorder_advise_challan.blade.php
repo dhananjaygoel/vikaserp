@@ -46,7 +46,7 @@
                         </label>
                     </div>
                     <div class="table-responsive">
-                        <table id="table-example" class="table table_deliverchallan serial purchaseorder_advide_table">
+                        <table id="table-example" class="table table_deliverchallan serial purchaseorder_advide_table ">
                             <tbody>
                                 <tr>
                                     <td class="col-md-2"><span>Product Name(Alias)</span></td>
@@ -105,10 +105,10 @@
                         <table >
                             <tr class="row5">
                                 <td>
-                                    <div class="add_button1">
+                                    <div class="add_button">
                                         <div class="form-group pull-left">
                                             <label for="addmore"></label>
-                                            <a href="#" class="table-link" title="add more" id="add_more_product">
+                                            <a href="#" class="table-link" title="add more" id="add_more_product" onclick="create_purchase_challan_function();">
                                                 <span class="fa-stack more_button" >
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
@@ -143,7 +143,7 @@
                     <div class="form-group">
                         <label for="total"><b class="challan">Total :</b> <div id="total_price"></div></label>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="loadedby"><b class="challan">Unloaded By</b></label>
                         <input id="loadedby" class="form-control" placeholder="Unloaded By" name="unloaded_by" value="" type="text">
@@ -160,7 +160,7 @@
                     <div class="form-group">
                         <label for="driver_contact"><b class="challan">VAT Percentage</b> {{$purchase_advise->vat_percentage}}</label>
                         <input id="vat_percentage" type="hidden" value="{{$purchase_advise->vat_percentage}}" name="vat_percentage"/>
-                        
+
                     </div>
                     <div class="form-group">
                         <label for="driver_contact"><b class="challan">VAT Value :</b> <div id="vat_value"></div></label>
