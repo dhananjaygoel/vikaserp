@@ -36,7 +36,7 @@
                             <div class="form-group  col-md-3">
                                 <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search">
                                     <input class="form-control" placeholder="Enter Product Name" value="{{Input::get('search_text')}}" name="search_text" type="text">
-                                    <a  onclick="this.form.submit()">
+                                    <a onclick="this.form.submit()">
                                         <i class="fa fa-search search-icon" id="search_icon"></i>
                                     </a>
                                     <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">

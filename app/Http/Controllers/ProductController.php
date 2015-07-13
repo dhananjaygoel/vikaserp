@@ -130,4 +130,18 @@ class ProductController extends Controller {
         return redirect('product_category')->with('success', 'Product category price successfully updated.');
     }
 
+    public function update_all_price() {
+
+        $price = Input::get('price');
+        foreach ($price as $key => $value) {
+            foreach ($value as $val) {
+
+                ProductCategory::where('id', $key)
+                        ->update(array('price' => $val));
+//                echo '<br>' . $key . "val" . $val;
+            }
+        }
+        return redirect('product_category')->with('success', 'Product category price successfully updated.');
+    }
+
 }

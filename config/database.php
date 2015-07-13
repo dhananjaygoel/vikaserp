@@ -52,29 +52,29 @@ return [
 			'prefix'   => '',
 		],
 
-//		'mysql' => [
-//			'driver'    => 'mysql',
-//			'host'      => 'localhost',
-//			'database'  => 'steel-trading-automation',
-//			'username'  => 'root',
-//			'password'  => 'root123',
-//			'charset'   => 'utf8',
-//			'collation' => 'utf8_unicode_ci',
-//			'prefix'    => '',
-//			'strict'    => false,
-//		],
-            
 		'mysql' => [
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'agstechn_vaoas',
-			'username'  => 'agstechn_vauser',
-			'password'  => 'vikasuser23210',
+			'database'  => 'steel-trading-automation',
+			'username'  => 'root',
+			'password'  => 'root123',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
 			'strict'    => false,
 		],
+            
+//		'mysql' => [
+//			'driver'    => 'mysql',
+//			'host'      => 'localhost',
+//			'database'  => 'agstechn_vaoas',
+//			'username'  => 'agstechn_vauser',
+//			'password'  => 'vikasuser23210',
+//			'charset'   => 'utf8',
+//			'collation' => 'utf8_unicode_ci',
+//			'prefix'    => '',
+//			'strict'    => false,
+//		],
 
 		'pgsql' => [
 			'driver'   => 'pgsql',
