@@ -150,13 +150,12 @@
                                                     <div class="col-md-12"> Print By <br> 05:00 PM</div> 
                                                 </div>
                                                 <div class="checkbox">
-                                                    <label><input type="checkbox" value="" checked=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
+                                                    <label><input type="checkbox" value="" id="checksms"><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
                                                 </div>
                                                 <div class="clearfix"></div>
                                                 <hr>
                                                 <div >
                                                     <button type="submit" class="btn btn-primary form_button_footer print_delivery_challan" id="{{$challan->id}}">Generate Challan</button>
-                                                    <!--<button type="button" class="btn btn-primary form_button_footer" >Send Message</button>-->
                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                                                 </div>
                                                 <div class="clearfix"></div>

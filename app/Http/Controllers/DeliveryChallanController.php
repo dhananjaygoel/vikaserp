@@ -16,11 +16,21 @@ use Redirect;
 use App\User;
 use Auth;
 use Hash;
+use Config;
 use App\CustomerProductDifference;
 use App\Units;
 use App\DeliveryLocation;
+use App\Customer;
+use App\ProductSubCategory;
 
 class DeliveryChallanController extends Controller {
+
+    public function __construct() {
+        define('PROFILE_ID', Config::get('smsdata.profile_id'));
+        define('PASS', Config::get('smsdata.password'));
+        define('SENDER_ID', Config::get('smsdata.sender_id'));
+        define('SMS_URL', Config::get('smsdata.url'));
+    }
 
     /**
      * Display a listing of the resource.
@@ -195,8 +205,42 @@ class DeliveryChallanController extends Controller {
 
         $allorder = DeliveryChallan::where('id', '=', $id)
                         ->where('challan_status', '=', 'completed')
-                        ->with('all_order_products.unit', 'all_order_products.product_category.product_sub_category', 'customer', 'delivery_order.location')->first();
+                        ->with('delivery_challan_products.unit', 'delivery_challan_products.product_category.product_sub_category', 'customer', 'delivery_order.location')->first();
 
+//        $input_data = $allorder['delivery_challan_products'];
+//        $send_sms = Input::get('send_sms');
+//        if ($send_sms == 'true') {
+//            /*
+//             * ------------------- -----------------------
+//             * SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
+//             * -------------------------------------------
+//             */
+//            $customer_id = $allorder->customer_id;
+//            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+//            if (count($customer) > 0) {
+//                $total_quantity = '';
+//                $str = "Dear " . $customer->owner_name . ", your meterial has been despatched as follows:";
+//                foreach ($input_data as $product_data) {
+//                    $product = ProductSubCategory::where('product_category_id', '=', $product_data->product_category_id)->first();
+//                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+//                    $total_quantity = $total_quantity + $product_data->quantity;
+//                }
+//                $str .= " Truck Number: " .
+//                        $allorder['delivery_order']->vehicle_number .
+//                        ", Driver number: " . $allorder['delivery_order']->driver_contact_no .
+//                        ", Quantity: " . $allorder['delivery_challan_products']->sum('present_shipping') .
+//                        ", Amount: " . $allorder->grand_price .
+//                        ", Due By: " . date("jS F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
+//                        ", . Vikas Associates, 9673000068";
+//                $phone_number = $customer->phone_number1;
+//                $msg = urlencode($str);
+//                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+//                $ch = curl_init($url);
+//                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//                $curl_scraped_page = curl_exec($ch);
+//                curl_close($ch);
+//            }
+//        }
         return view('print_delivery_challan', compact('allorder'));
 //        return redirect('delivery_challan')->with('validation_message', 'Delivery order is successfuly printed.');
     }

@@ -215,25 +215,22 @@
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
-                                            {!! Form::open(array('url' => array('print_delivery_order/'.$delivery->id), 'method' => 'get')) !!}
-
                                             <div class="modal-body">
                                                 <div class="row print_time "> 
                                                     <div class="col-md-12"> Print By <br> 05:00 PM</div> 
                                                 </div>
                                                 <div class="checkbox">
-                                                    <label><input type="checkbox" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
+                                                    <label><input type="checkbox" id="checksms" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
                                                 </div>
                                                 <div class="clearfix"></div>
                                                 <hr>
                                                 <div >
-                                                    <button type="submit" class="btn btn-primary form_button_footer print_delivery_order" id="{{$delivery->id}}">Print</button>
+                                                    <button type="button" class="btn btn-primary form_button_footer print_delivery_order" id="{{$delivery->id}}">Print</button>
 
                                                     <a href="{{url('delivery_order')}}" class="btn btn-default form_button_footer">Cancel</a>
                                                 </div>
                                                 <div class="clearfix"></div>
                                             </div>
-                                            {!! Form::close() !!}
                                         </div>
                                     </div>
                                 </div> 
