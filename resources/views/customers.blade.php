@@ -141,6 +141,13 @@
                                 }
                                 ?>
                             </span>
+                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                <b class="clearfix">                                    
+                                    Showing  {{($customers->currentPage() - 1 ) * $customers->perPage() + 1 }} to 
+                                    {{ ($customers->currentPage() - 1 ) * $customers->perPage() + $customers->count()}} of
+                                    {{ $customers->total()}}
+                                </b>      
+                            </span> 
                         </div>
                         @else
                         <div class="clearfix"> &nbsp;</div>

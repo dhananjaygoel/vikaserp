@@ -165,7 +165,16 @@
                                 <ul class="pagination pull-right">
                                     <?php echo $product_cat->render(); ?>
                                 </ul>
+
                             </span>
+                            <div class="clearfix"></div>                            
+                            <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                <b class="clearfix">
+                                    Showing  {{$product_cat->firstItem()}} to 
+                                    {{ ($product_cat->currentPage() - 1 ) * $product_cat->perPage() + $product_cat->count()}} of
+                                    {{ $product_cat->total()}}
+                                </b>      
+                            </span> 
                         </div>
                         @else
                         <div class="alert alert-info no_data_msg_container">

@@ -200,6 +200,13 @@
                             <span class="pull-right">
                                 <?php echo $purchase_advise->render() ?>
                             </span>
+                            <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                <b class="clearfix">
+                                    Showing  {{($purchase_advise->currentPage() - 1 ) * $purchase_advise->perPage() + 1 }} to 
+                                    {{ ($purchase_advise->currentPage() - 1 ) * $purchase_advise->perPage() + $purchase_advise->count()}} of
+                                    {{ $purchase_advise->total()}}
+                                </b>      
+                            </span> 
                         </div>
                         @else
                         <div class="clearfix"> &nbsp;</div>

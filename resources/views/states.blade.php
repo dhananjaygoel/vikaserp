@@ -118,6 +118,14 @@
                             <span class="pull-right">
                                 <?php echo $states->render(); ?>
                             </span>
+                            <div class="clearfix"></div>                            
+                            <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                <b class="clearfix">
+                                    Showing  {{($states->currentPage() - 1 ) * $states->perPage() + 1 }} to 
+                                    {{ ($states->currentPage() - 1 ) * $states->perPage() + $states->count()}} of
+                                    {{ $states->total()}}
+                                </b>      
+                            </span> 
 
                         </div>
                         @endif

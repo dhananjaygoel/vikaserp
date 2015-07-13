@@ -136,6 +136,13 @@
                             <span class="pull-right">
                                 <?php echo $delivery_location->render(); ?>
                             </span>
+                            <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                <b class="clearfix">
+                                    Showing  {{$delivery_location->firstItem()}} to 
+                                    {{ ($delivery_location->currentPage() - 1 ) * $delivery_location->perPage() + $delivery_location->count()}} of
+                                    {{ $delivery_location->total()}}
+                                </b>      
+                            </span>
 
                         </div>
                         @endif

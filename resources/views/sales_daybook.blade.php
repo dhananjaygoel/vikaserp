@@ -223,9 +223,16 @@
                             </form>
                             <div class="clearfix"></div>
                             <span class="pull-right">
-<?php echo $allorders->render(); ?>
+                            <?php echo $allorders->render(); ?>
                             </span>
-
+                            <div class="clearfix"></div>                            
+                            <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                <b class="clearfix">
+                                    Showing  {{($allorders->currentPage() - 1 ) * $allorders->perPage() + 1 }} to 
+                                    {{ ($allorders->currentPage() - 1 ) * $allorders->perPage() + $allorders->count()}} of
+                                    {{ $allorders->total()}}
+                                </b>      
+                            </span> 
                         </div>    
                     </div>
                     @endif

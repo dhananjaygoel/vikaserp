@@ -1,9 +1,3 @@
-<?php
-//echo '<pre>';
-//print_r($purchase_daybook->toArray());
-//echo '</pre>';
-//exit;
-?>
 @extends('layouts.master')
 @section('title','Purchase Order Daybook')
 @section('content')
@@ -211,6 +205,14 @@
                                         <?php echo $purchase_daybook->render(); ?>
                                     </ul>
                                 </span>
+                                <div class="clearfix"></div>                            
+                                <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                    <b class="clearfix">
+                                        Showing  {{($purchase_daybook->currentPage() - 1 ) * $purchase_daybook->perPage() + 1 }} to 
+                                        {{ ($purchase_daybook->currentPage() - 1 ) * $purchase_daybook->perPage() + $purchase_daybook->count()}} of
+                                        {{ $purchase_daybook->total()}}
+                                    </b>      
+                                </span> 
                             </div>
                             @else
                             <div class="clearfix"> &nbsp;</div>

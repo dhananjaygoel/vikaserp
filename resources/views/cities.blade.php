@@ -118,6 +118,14 @@
                             <span class="pull-right">
                                 <?php echo $cities->render(); ?>
                             </span>
+                            <div class="clearfix"></div>                            
+                            <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                <b class="clearfix">
+                                    Showing  {{$cities->firstItem()}} to 
+                                    {{ ($cities->currentPage() - 1 ) * $cities->perPage() + $cities->count()}} of
+                                    {{ $cities->total()}}
+                                </b>      
+                            </span>
 
                         </div>
                         @endif

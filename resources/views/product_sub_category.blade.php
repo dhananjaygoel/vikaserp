@@ -201,6 +201,14 @@
                                     <?php echo $product_sub_cat->render(); ?>
                                 </ul>
                             </span>
+                            <div class="clearfix"></div>                            
+                            <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                <b class="clearfix">
+                                    Showing  {{($product_sub_cat->currentPage() - 1 ) * $product_sub_cat->perPage() + 1 }} to 
+                                    {{ ($product_sub_cat->currentPage() - 1 ) * $product_sub_cat->perPage() + $product_sub_cat->count()}} of
+                                    {{ $product_sub_cat->total()}}
+                                </b>      
+                            </span> 
                         </div>
                         @else
                         <div class="alert alert-info no_data_msg_container">

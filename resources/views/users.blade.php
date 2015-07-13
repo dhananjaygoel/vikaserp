@@ -138,6 +138,14 @@
                                     <?php echo $users_data->render(); ?>
                                 </ul>
                             </span>
+                            <div class="clearfix"></div>                            
+                            <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                <b class="clearfix">
+                                    Showing  {{($users_data->currentPage() - 1 ) * $users_data->perPage() + 1 }} to 
+                                    {{ ($users_data->currentPage() - 1 ) * $users_data->perPage() + $users_data->count()}} of
+                                    {{ $users_data->total()}}
+                                </b>      
+                            </span> 
                         </div>
                         @else
                         <div class="alert alert-info no_data_msg_container">

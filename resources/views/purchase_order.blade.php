@@ -236,6 +236,13 @@
                             <span class="pull-right">
                                 <?php echo $purchase_orders->render(); ?>
                             </span>
+                            <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                <b class="clearfix">
+                                    Showing  {{($purchase_orders->currentPage() - 1 ) * $purchase_orders->perPage() + 1 }} to 
+                                    {{ ($purchase_orders->currentPage() - 1 ) * $purchase_orders->perPage() + $purchase_orders->count()}} of
+                                    {{ $purchase_orders->total()}}
+                                </b>      
+                            </span> 
                         </div>
                         @endif
                     </div>
