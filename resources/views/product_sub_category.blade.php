@@ -10,9 +10,19 @@
                     <li class="active"><span>Product Size</span></li>
                 </ol>
                 <div class="clearfix">                    
-                    <div class=" row col-md-8 pull-right top-page-ui">
-                        <div class="filter-block col-md-8 productsub_filter">       
-                            <div class="form-group  col-md-5">
+                    <div class=" row col-md-12 pull-right top-page-ui">
+                        <div class="filter-block col-md-12 productsub_filter pull-right">  
+                            <div class="form-group  col-md-3">
+                                <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search">
+                                    <input class="form-control" placeholder="Product Size" value="{{Input::get('product_size')}}" name="product_size" type="text">
+                                    <a  onclick="this.form.submit()">
+                                        <i class="fa fa-search search-icon" id="search_icon"></i>
+                                    </a>
+                                    <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                                </form>
+                            </div>
+
+                            <div class="form-group  col-md-3">
                                 <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_form">
                                     <select class="form-control" name="product_filter" onchange="this.form.submit()">
                                         <option value="" selected="">--Product category--</option>
@@ -23,7 +33,7 @@
                                     <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                                 </form>
                             </div> 
-                            <div class="form-group  col-md-6">
+                            <div class="form-group  col-md-3">
                                 <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search">
                                     <input class="form-control" placeholder="Enter Product Name" value="{{Input::get('search_text')}}" name="search_text" type="text">
                                     <a  onclick="this.form.submit()">
@@ -34,11 +44,12 @@
                             </div>	
                         </div>
                         @if( Auth::user()->role_id == 0 )
-                        <div class="col-md-4">
+                        <div class="col-md-3 pull-right">
                             <a href="{{URL::action('ProductsubController@create')}}" class="btn btn-primary pull-right">
                                 <i class="fa fa-plus-circle fa-lg" style="cursor: pointer;"></i> Add Product Size
                             </a>
                         </div>
+                        <br/>
                         @endif
                     </div>
                 </div>

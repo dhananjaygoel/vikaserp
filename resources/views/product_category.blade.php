@@ -62,9 +62,9 @@
                                     <tr>
                                         <th class="col-md-1">#</th>
                                         <th class="col-md-2">Name</th>
-                                        <th class="col-md-1">Type</th>
-                                        <th class="col-md-2">Price</th>
-                                        <th class="col-md-2">Created</th>
+                                        <th class="col-md-2">Type</th>
+                                        <th class="col-md-3">Price</th>
+                                        <!--<th class="col-md-2">Created</th>-->
                                         <th class="col-md-2">Updated</th>
                                         <th>Actions</th>
                                     </tr>
@@ -97,7 +97,7 @@
                                                 </div>
                                             </form>
                                         </td> 
-                                        <td>{{date("d F, Y", strtotime($product->created_at))}}</td>
+                                        <!--<td>{{date("d F, Y", strtotime($product->created_at))}}</td>-->
                                         <td>{{date("d F, Y", strtotime($product->updated_at))}}</td>
                                         <td>
                                             <a href="{{URL::action('ProductController@show',['id'=> $product->id])}}" class="table-link" title="view">

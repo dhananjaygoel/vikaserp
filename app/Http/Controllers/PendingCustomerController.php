@@ -187,11 +187,22 @@ class PendingCustomerController extends Controller {
         if (Input::has('address1')) {
             $customer->address1 = Input::get('address1');
         }
+        
         if (Input::has('address2')) {
             $customer->address2 = Input::get('address2');
         }
-        $customer->city = Input::get('city');
-        $customer->state = Input::get('state');
+        
+        if (Input::has('city')) {
+            $customer->city = Input::get('city');
+        }
+        
+        if (Input::has('state')) {
+             $customer->state = Input::get('state');   
+        }
+        
+       
+        
+        
         if (Input::has('zip')) {
             $customer->zip = Input::get('zip');
         }
