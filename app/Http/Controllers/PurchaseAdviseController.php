@@ -288,10 +288,6 @@ class PurchaseAdviseController extends Controller {
             $purchase_advice_products = array();
 
 
-
-
-
-
             foreach ($input_data['product'] as $product_data) {
                 if (($product_data['id'] != "")) {
 

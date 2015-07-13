@@ -83,7 +83,7 @@
 
                                                 <td class="col-md-1">
                                                     <input type="text" class="form-control" name="product[{{$key}}][actual_pieces]" value="">
-                                                    
+
                                                 </td>
 
                                                 <td>
@@ -102,7 +102,7 @@
                                                 <td class="col-md-1">{{$product_data->price}}</td>
                                                 <td>
                                                     {{$product_data->remarks}}
-                                                    
+
                                                     <input type="hidden" name="product[{{$key}}][remark]" value="{{$product_data->remarks}}">
                                                     <input type="hidden" name="product[{{$key}}][price]" value="{{$product_data->price}}">
                                                     <input type="hidden" name="product[{{$key}}][quantity]" value="{{$product_data->quantity}}">
@@ -194,6 +194,7 @@
                             <hr>
                             <div>
                                 <input type="submit" class="btn btn-primary" value="Submit">
+                                <a href="{{url('purchase_orders')}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
                         </form>
                         <div class="clearfix"></div>
