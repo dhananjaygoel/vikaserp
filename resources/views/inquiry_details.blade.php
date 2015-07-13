@@ -9,7 +9,6 @@
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Inquiry</span></li>
                 </ol>
-
                 <div class="filter-block">
                     <h1 class="pull-left">View Inquiry</h1>
                     <div class="pull-right top-page-ui">
@@ -41,7 +40,6 @@
                                             <td><span>Credit Period(Days): </span>{{$inquiry['customer']->credit_period}}</td>
                                         </tr>
                                         @endif
-
                                         @if($inquiry->delivery_location_id != 0)
                                         @foreach($delivery_location as $location)
                                         @if($inquiry->delivery_location_id == $location->id)
@@ -58,7 +56,6 @@
                                             <td><span class="underline">Other Location Difference: </span> {{$inquiry->other_location_difference}} </td>
                                         </tr>
                                         @endif
-
                                         <tr>
                                             <td><span class="underline">Product Details </span></td>
                                         </tr>
@@ -76,7 +73,7 @@
                                         </tr>
                                         @foreach($inquiry['inquiry_products'] as $product_data)
                                         <tr>
-                                            <td>{{$product_data['product_category']['product_sub_category']->alias_name}}</td>
+                                            <td>{{$product_data['inquiry_product_details']->alias_name}}</td>
                                             <td>{{$product_data->quantity}}</td>
                                             <td>{{$product_data['unit']->unit_name}}</td>
                                             <td>{{$product_data->price}}</td>
@@ -104,23 +101,11 @@
                                         <tr><td><span>Plus VAT: </span>Yes</td></tr>
                                         <tr><td><span>VAT Percentage: </span>{{$inquiry->vat_percentage."%"}}</td></tr>
                                         @endif
-
-<!--                                        <tr>
-                                            <td><span>Total: </span> <?php
-//                                                $total = $inquiry['inquiry_products']->sum('price') * $product_data->quantity;
-//                                                echo $total;
-                                        ?>
-                                            </td>
-
-                                        </tr>-->
-
                                         <tr>
                                             <td><span>Expected Delivery Date: </span>{{date('d F,Y',strtotime($inquiry->expected_delivery_date))}}</td>
-
                                         </tr>
                                         <tr>
                                             <td><span>Remark: </span>{{$inquiry->remarks}}</td>
-
                                         </tr>
                                     </tbody>
                                 </table>
@@ -131,7 +116,6 @@
                                 <a href="{{url('inquiry/'.$inquiry->id.'?sendsms=true' )}}" title="SMS would be sent to Party and Relationship Manager" type="button" class="btn btn-primary smstooltip" >Send SMS</a><span title="SMS has been sent 5 times" class="badge enquirybadge smstooltip">0</span>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>

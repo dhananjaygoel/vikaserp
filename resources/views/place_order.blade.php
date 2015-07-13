@@ -149,7 +149,7 @@
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
-                                                    <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['product_category']['product_sub_category']->alias_name}}">
+                                                    <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['inquiry_product_details']->alias_name}}">
                                                     <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}">
                                                     <i class="fa fa-search search-icon"></i>
                                                 </div>

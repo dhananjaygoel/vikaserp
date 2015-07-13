@@ -49,17 +49,17 @@ class InquiryController extends Controller {
         if ((isset($_GET['inquiry_filter'])) && $_GET['inquiry_filter'] != '') {
 
             $inquiries = Inquiry::where('inquiry_status', '=', $_GET['inquiry_filter'])
-                            ->with('customer', 'delivery_location', 'inquiry_products')
+                            ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')
                             ->orderBy('created_at', 'desc')->Paginate(10);
         } else {
 
-            $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.product_category.product_sub_category', 'inquiry_products.unit')
+            $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')
                             ->where('inquiry_status', 'pending')
                             ->orderBy('created_at', 'desc')->Paginate(10);
         }
 
         $inquiries->setPath('inquiry');
-
+        
         return view('inquiry', compact('inquiries'));
     }
 
@@ -157,6 +157,11 @@ class InquiryController extends Controller {
             }
         }
 
+        /*
+          |--------------------------------------------------
+          | SEND SMS TO THE CUSTOMER AND RELATIONSHIP MANAGER
+          |--------------------------------------------------
+         */
 //        $input = Input::all();
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
 //            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
@@ -206,9 +211,14 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category.product_sub_category', 'customer')->first();
+        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
         $delivery_location = DeliveryLocation::all();
 
+        /*
+          |------------------------------------------------
+          | SEND SMS TO THE CUSTOMER WITH LATEST QUOTATIONS
+          |------------------------------------------------
+         */
 //        $input_data = $inquiry['inquiry_products'];
 //        $input = Input::all();
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
@@ -231,7 +241,7 @@ class InquiryController extends Controller {
 //                $curl_scraped_page = curl_exec($ch);
 //                curl_close($ch);
 //            }
-//        }
+//        }        
         return view('inquiry_details', compact('inquiry', 'delivery_location'));
     }
 
@@ -245,7 +255,7 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category.product_sub_category', 'customer')->first();
+        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category', 'customer')->first();
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         return view('edit_inquiry', compact('inquiry', 'delivery_location', 'units'));
@@ -357,6 +367,11 @@ class InquiryController extends Controller {
             }
         }
 
+        /*
+          |------------------------------------------------
+          | SEND SMS TO THE CUSTOMER WITH UPDATED QUOTATIONS
+          |------------------------------------------------
+         */
 //        $input = Input::all();
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
 //            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
@@ -448,88 +463,35 @@ class InquiryController extends Controller {
             $location_diff = Input::get('location_difference');
         }
 
-
-//        if (Input::get('location_difference') > 0) {
-//
-//            $location_diff = Input::get('location_difference');
-//        } else {
-//            $location = DeliveryLocation::where('id', $delivery_location)->first();
-//            $location_diff = $location->difference;
-//        }
-
-        $term = '%' . Input::get('term') . '%';
-        $products = ProductCategory::with(array('product_sub_categories' => function($query) use ($term) {
-                        $query->where('alias_name', 'like', $term)->get();
-                    })
-                )->get();
-
-
+        $term = Input::get('term');
+        $products = ProductSubCategory::where('alias_name', 'like', '%' . $term . '%')->with('product_category')->get();
         if (count($products) > 0) {
             foreach ($products as $product) {
-                if (!empty($product['product_sub_categories'])) {
-                    foreach ($product['product_sub_categories'] as $product_sub_cat) {
-                        $cust = 0;
-                        if ($customer_id > 0) {
-                            $customer = CustomerProductDifference::where('customer_id', $customer_id)
-                                            ->where('product_category_id', $product->id)->first();
-                            if (count($customer) > 0) {
-                                $cust = $customer->difference_amount;
-                            }
-                        }
-
-
-                        $product_sub = ProductSubCategory::where('product_category_id', $product->id)->first();
-
-                        $data_array[] = [
-                            'value' => $product_sub_cat->alias_name,
-                            'id' => $product->id,
-                            'product_price' => $product->price + $cust + $location_diff + $product_sub->difference
-                        ];
+                $cust = 0;
+                if ($customer_id > 0) {
+                    $customer = CustomerProductDifference::where('customer_id', $customer_id)
+                                    ->where('product_category_id', $product['product_category']->id)->first();
+                    if (count($customer) > 0) {
+                        $cust = $customer->difference_amount;
                     }
                 }
+                $data_array[] = [
+                    'value' => $product->alias_name,
+                    'id' => $product->id,
+                    'product_price' => $product['product_category']->price + $cust + $location_diff + $product->difference
+                ];
             }
         } else {
             $data_array[] = [
                 'value' => 'No Products',
             ];
         }
-//        if ($data_array['value'] != 'No Products') {
         echo json_encode(array('data_array' => $data_array));
-//        } else {
-//            $data_array[] = [
-//                'value' => 'No Products',
-//            ];
-//            echo json_encode(array('data_array' => $data_array));
-//        }
     }
 
     public function store_price() {
         $input_data = Input::all();
         $update_price = InquiryProducts::where('id', '=', $input_data['id'])->update(['price' => $input_data['updated_price']]);
-    }
-
-    public function get_product_sub_category() {
-
-        $product = ProductCategory::with('product_sub_categories')->where('id', Input::get('added_product_id'))->first();
-        $units = Units::all();
-
-        $unit = array();
-        $i = 0;
-        foreach ($units as $u) {
-            $unit[$i]['id'] = $u->id;
-            $unit[$i]['unit_name'] = $u->unit_name;
-            $i++;
-        }
-
-        $prod = array();
-        $i = 0;
-        $prod[$i]['id'] = $product->id;
-        $prod[$i]['unit_id'] = $product['product_sub_categories'][0]->unit_id;
-        $prod[$i]['price'] = $product->price;
-
-
-        echo json_encode(array('prod' => $prod, 'unit' => $unit));
-        exit;
     }
 
     /*
@@ -546,11 +508,10 @@ class InquiryController extends Controller {
             return redirect('inquiry')->with('flash_message', 'Please select other inquiry, order is generated for this inquiry.');
         }
 
-        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category.product_sub_category', 'customer')->first();
+        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         $customers = Customer::all();
-
         return view('place_order', compact('inquiry', 'customers', 'delivery_location', 'units'));
     }
 
@@ -723,16 +684,4 @@ class InquiryController extends Controller {
         Inquiry::where('id', '=', $id)->update(['inquiry_status' => 'Completed']);
         return redirect('inquiry')->with('flash_success_message', 'One Order successfully generated for Inquiry.');
     }
-
-    /*
-     * Price calculation
-     */
-
-    function calculate_price($data) {
-        echo '<pre>';
-        print_r($data);
-        echo '</pre>';
-        exit;
-    }
-
 }

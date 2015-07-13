@@ -76,13 +76,13 @@
 
                                         @if($prod['unit']->unit_name == 'Pieces')
                                         <?php
-                                        $qty += $prod->quantity * $prod['product_category']['product_sub_category']->weight;
+                                        $qty += $prod->quantity * $prod['inquiry_product_details']->weight;
                                         ?>
                                         @endif
 
                                         @if($prod['unit']->unit_name == 'Meter')
                                         <?php
-                                        $qty += ($prod->quantity / $prod['product_category']['product_sub_category']->standard_length) * $prod['product_category']['product_sub_category']->weight;
+                                        $qty += ($prod->quantity / $prod['inquiry_product_details']->standard_length) * $prod['inquiry_product_details']->weight;
                                         ?>
                                         @endif                                      
                                         @endforeach
