@@ -330,7 +330,7 @@
                     </div>
                     <hr>
                     <div>
-                        <input type="submit" title="SMS would be sent to Party" class="btn btn-primary smstooltip" value="Save and Send SMS">
+                        <input type="button" title="SMS would be sent to Party" class="btn btn-primary smstooltip" id="sendSMS" value="Save and Send SMS">
                         <a href="{{URL::to('purchase_orders')}}" class="btn btn-default form_button_footer">Back</a>
                     </div>
                     <div class="clearfix"></div>

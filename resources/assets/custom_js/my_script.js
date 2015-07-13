@@ -154,9 +154,14 @@ $('.print_sales_order_daybook').click(function () {
 
 $('.print_purchase_challan').click(function () {
     var base_url = $('#baseurl').attr('name');
+    var send_sms = '';
+    if ($("#checksms").is(':checked'))
+        send_sms = true;  // checked
+    else
+        send_sms = false;  // unchecked
     $.ajax({
         type: "GET",
-        url: base_url + '/print_purchase_challan/' + $(this).attr('id'),
+        url: base_url + '/print_purchase_challan/' + $(this).attr('id') + '?send_sms=' + send_sms,
         success: function (data) {
             location.reload();
             var printWindow = window.open('', '');
@@ -170,16 +175,21 @@ $('.print_purchase_challan').click(function () {
 
 $('.print_purchase_advise').click(function () {
     var base_url = $('#baseurl').attr('name');
+    var send_sms = '';
+    if ($("#checksms").is(':checked'))
+        send_sms = true;  // checked
+    else
+        send_sms = false;  // unchecked
     $.ajax({
         type: "GET",
-        url: base_url + '/print_purchase_advise/' + $(this).attr('id'),
+        url: base_url + '/print_purchase_advise/' + $(this).attr('id') + '?send_sms=' + send_sms,
         success: function (data) {
             location.reload();
-//            var printWindow = window.open('', '');
-//            printWindow.document.write(data);
-//            printWindow.print();
-//            printWindow.close();
-//            $(this).parents('.modal').hide();
+            var printWindow = window.open('', '');
+            printWindow.document.write(data);
+            printWindow.print();
+            printWindow.close();
+            $(this).parents('.modal').hide();
         }
     });
 });
