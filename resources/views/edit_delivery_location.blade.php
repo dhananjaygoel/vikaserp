@@ -39,7 +39,7 @@
                         @endif
 
                         <div class="form-group">
-                            <label for="state">State Name</label>
+                            <label for="state">State Name<span class="mandatory">*</span></label>
                             <select name="state" class="form-control">
                                 <option value="">Select State</option>
                                 @foreach($states as $state)
@@ -52,7 +52,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="city">City Name</label>
+                            <label for="city">City Name<span class="mandatory">*</span></label>
                             <select name="city" class="form-control">
                                 <option value="">Select City</option>
                                 @foreach($cities as $city)
@@ -65,7 +65,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="area_name">Area Name</label>
+                            <label for="area_name">Area Name<span class="mandatory">*</span></label>
                             <input id="location_name" class="form-control" placeholder="Area Name" name="area_name" value="{{$delivery_location->area_name}}" type="text">
                         </div>
                         <div class="form-group">

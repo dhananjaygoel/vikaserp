@@ -38,7 +38,7 @@
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="id" value="{{$city->id}}">
                         <div class="form-group">
-                            <label for="state">State</label>
+                            <label for="state">State<span class="mandatory">*</span></label>
                             <select name="state" class="form-control">
                                 @foreach($states as $state)
                                 <option value="{{$state->id}}">{{$state->state_name}}</option>
@@ -46,7 +46,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="city_name">City</label>
+                            <label for="city_name">City<span class="mandatory">*</span></label>
                             <input id="city_name" class="form-control" placeholder="City" name="city_name" value="{{$city->city_name}}" type="text">
                         </div>
                         <hr>

@@ -28,7 +28,7 @@
                         <form method="POST" action="{{URL::action('ProductController@store')}}"accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <div class="form-group">
-                                <label>Product Category Type</label>                                
+                                <label>Product Category Type<span class="mandatory">*</span></label>                                
                                 <div class="radio">
 
                                     @foreach($product_type as $prod_type)
@@ -39,11 +39,11 @@
                                 </div>                               
                             </div>
                             <div class="form-group">
-                                <label for="cat_name">Sub Product Category Name</label>
+                                <label for="cat_name">Sub Product Category Name<span class="mandatory">*</span></label>
                                 <input id="cat_name" class="form-control" placeholder="Sub Product Category Name" name="product_category_name" value="{{ old('product_category_name') }}" type="text">
                             </div>                            
                             <div class="form-group">
-                                <label for="price">Price</label>
+                                <label for="price">Price<span class="mandatory">*</span></label>
                                 <input id="price" class="form-control" placeholder="Price" name="price" value="{{ old('price') }}" type="text">
                             </div>
                             <div>

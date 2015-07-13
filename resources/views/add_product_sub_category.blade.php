@@ -32,7 +32,7 @@
                             <div class="form-group productcategory col-md-3">
                                 <input type="hidden" name="baseurl" id="baseurl2" value="{{url()}}" />
                                 <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
-                                <label for="status">Select Product Category</label>
+                                <label for="status">Select Product Category<span class="mandatory">*</span></label>
                                 <select class="form-control" name="product_type" id="product_sub_category_select">
                                     <option disabled="" selected="" value="">--Select Product Category--</option>
                                     @foreach($product_type as $prod_type)
@@ -42,19 +42,19 @@
                             </div>
                             <div class="clearfix"></div>
                             <div class="form-group productcategory col-md-3">
-                                <label for="status">Sub Product Name</label>
+                                <label for="status">Sub Product Name<span class="mandatory">*</span></label>
                                 <select class="form-control" name="select_product_categroy" id="select_product_categroy">
                                     <option disabled="" selected="" value="">--Sub Product Name--</option>
                                 </select>
                             </div>
                             <div class="clearfix"></div>
                             <div class="form-group">
-                                <label for="alias_name">Alias Name</label>
+                                <label for="alias_name">Alias Name<span class="mandatory">*</span></label>
                                 <input id="alias_name" class="form-control" placeholder="Alias Name" name="alias_name" value="{{ old('alias_name') }}" type="text">
                             </div>
                             <div class="clearfix"></div>
                             <div class="form-group">
-                                <label for="size">Product Size</label>
+                                <label for="size">Product Size<span class="mandatory">*</span></label>
                                 <input id="size" class="form-control" placeholder="Product Size" name="size" value="{{ old('size') }}" type="text">
                             </div>
                             <div class="thick12" style="display: none;">   
@@ -76,7 +76,7 @@
                                 <input id="standard_length" class="form-control" placeholder=" Standard Length" name="standard_length" value="{{ old('standard_length') }}" type="text">
                             </div>
                             <div class="form-group">
-                                <label for="difference">Difference</label>
+                                <label for="difference">Difference<span class="mandatory">*</span></label>
                                 <input id="difference" class="form-control" placeholder=" Difference" name="difference" value="{{ old('difference') }}" type="text">
                             </div>
                             <div>

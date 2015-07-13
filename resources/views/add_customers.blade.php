@@ -92,7 +92,7 @@
                                 <input id="zip" class="form-control" placeholder="Zip" name="zip" value="{{ Input::old('zip')}}" type="text">
                             </div>
                             <div class="form-group">
-                                <label for="email">Email</label>
+                                <label for="email">Email<span class="mandatory">*</span></label>
                                 <input id="email" class="form-control" placeholder="Email" name="email" value="{{ Input::old('email')}}" type="text">
                             </div>
                             <div class="form-group">

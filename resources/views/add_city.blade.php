@@ -34,7 +34,7 @@
                             </div>
                             @endif
                             <div class="form-group">
-                                <label for="state_name">State Name</label>
+                                <label for="state_name">State Name<span class="mandatory">*</span></label>
                                 <select name="state" class="form-control">
                                     <option value="" selected="">Select State</option>
                                     @foreach($states as $state)
@@ -44,7 +44,7 @@
 
                             </div>
                             <div class="form-group">
-                                <label for="city_name">City Name</label>
+                                <label for="city_name">City Name<span class="mandatory">*</span></label>
                                 <input id="city_name" class="form-control" placeholder="City" name="city_name" value="{{Input::old('city_name')}}" type="text">
                             </div>
                             <hr>

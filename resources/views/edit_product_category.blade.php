@@ -32,7 +32,7 @@
                 {!!Form::open(array('method'=>'PUT','url'=>url('product_category/'.$product_cat[0]['id']),'id'=>'updateUserForm'))!!}
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <div class="form-group">
-                    <label>Product Category Type</label>
+                    <label>Product Category Type<span class="mandatory">*</span></label>
                     <div class="radio">
                         @foreach($product_type as $prod_type)
                         <input <?php if ($product_cat[0]['product_type_id'] == $prod_type->id) echo 'checked="checked"'; ?> value="{{$prod_type->id}}" id="optionsRadios{{$prod_type->id}}" name="product_type" type="radio">
@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="cat_name">Sub Product Category Name</label>
+                    <label for="cat_name">Sub Product Category Name<span class="mandatory">*</span></label>
                     <input id="cat_name" class="form-control" placeholder="Product Category Name" name="product_category_name" value="{{ $product_cat[0]['product_category_name'] }}" type="text">
                 </div>
 <!--                <div class="form-group">
@@ -49,7 +49,7 @@
                     <input id="alias_name" class="form-control" placeholder="Product Name" name="alias_name" value="{{ $product_cat[0]['alias_name'] }}" type="text">
                 </div>-->
                 <div class="form-group">
-                    <label for="price">Price</label>
+                    <label for="price">Price<span class="mandatory">*</span></label>
                     <input id="price" class="form-control" placeholder="Price" name="price" value="{{ $product_cat[0]['price'] }}" type="text">
                 </div>
                 <hr>

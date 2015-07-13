@@ -43,11 +43,11 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="first_name">First Name*</label>
+                            <label for="first_name">First Name<span class="mandatory">*</span></label>
                             <input id="first_name" class="form-control" placeholder="First Name" name="first_name" value="{{$user_data[0]['first_name']}}" type="text">
                         </div>
                         <div class="form-group">
-                            <label for="last_name">Last Name*</label>
+                            <label for="last_name">Last Name<span class="mandatory">*</span></label>
                             <input id="last_name" class="form-control" placeholder="Last Name" name="last_name" value="{{$user_data[0]['last_name']}}" type="text">
                         </div>                                               
                         <div class="form-group">
@@ -56,20 +56,20 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="mobile_number">Mobile Number*</label>
+                            <label for="mobile_number">Mobile Number<span class="mandatory">*</span></label>
                             <input id="mobile_number" class="form-control" placeholder="Mobile Number" name="mobile_number" value="{{$user_data[0]['mobile_number']}}" type="text">
                         </div>
 
                         <div class="form-group">
-                            <label for="email">Email</label>
+                            <label for="email">Email<span class="mandatory">*</span></label>
                             <input id="email" class="form-control" placeholder="Email Id" name="email" value="{{$user_data[0]['email']}}" type="email">
                         </div>
                         <div class="form-group">
-                            <label for="password">Password*</label>
+                            <label for="password">Password<span class="mandatory">*</span></label>
                             <input id="password" class="form-control" placeholder="Password" name="password" value="" type="password">
                         </div>
                         <div class="form-group">
-                            <label for="password_confirmation">Confirm Password*</label>
+                            <label for="password_confirmation">Confirm Password<span class="mandatory">*</span></label>
 
                             <input id="password_confirmation" class="form-control" placeholder="Confirm Password" name="password_confirmation" value="" type="password">
                         </div>  
