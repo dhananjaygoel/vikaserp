@@ -126,12 +126,12 @@
                                                     <div class="col-md-12"> Print By <br> 05:00 PM</div>
                                                 </div>
                                                 <div class="checkbox">
-                                                    <label><input type="checkbox" value=""  ><span title="SMS would be sent to Relationship Manager" class="checksms smstooltip">Send SMS</span></label>
+                                                    <label><input type="checkbox" value=""  id="checksms" ><span title="SMS would be sent to Relationship Manager" class="checksms smstooltip">Send SMS</span></label>
                                                 </div>
                                                 <div class="clearfix"></div>
                                                 <hr>
                                                 <div >
-                                                    <button type="submit" class="btn btn-primary form_button_footer print_purchase_challan" id="{{$challan->id}}" >Generate Challan</button>
+                                                    <button type="button" class="btn btn-primary form_button_footer print_purchase_challan" id="{{$challan->id}}" >Generate Challan</button>
                                                     <a href="#" class="btn btn-default form_button_footer">Cancel</a>
                                                 </div>
                                                 <div class="clearfix"></div>

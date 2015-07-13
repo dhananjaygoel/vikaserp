@@ -18,11 +18,20 @@ use Auth;
 use DB;
 use Hash;
 use Mail;
+use Config;
 use App\PurchaseOrderCanceled;
 use App\PurchaseAdvise;
 use DateTime;
+use App\ProductSubCategory;
 
 class PurchaseOrderController extends Controller {
+
+    public function __construct() {
+        define('PROFILE_ID', Config::get('smsdata.profile_id'));
+        define('PASS', Config::get('smsdata.password'));
+        define('SENDER_ID', Config::get('smsdata.sender_id'));
+        define('SMS_URL', Config::get('smsdata.url'));
+    }
 
     public function index() {
 
@@ -146,21 +155,6 @@ class PurchaseOrderController extends Controller {
             }
         }
 
-//        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
-//            $add_delivery_location = DeliveryLocation::create([
-//                        'area_name' => $input_data['other_location_name'],
-//                        'status' => 'pending'
-//            ]);
-//            $location_id = DB::getPdo()->lastInsertId();
-//        } else {
-//
-//            $location_id = $input_data['purchase_order_location'];
-//        }
-//        $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_delivery_date']);
-//        $date = date("Y-m-d", strtotime(str_replace('-', '/', $date_string)));
-//        $datetime = new DateTime($date);
-
-
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_delivery_date']);
         $date = date("Y/m/d", strtotime($date_string));
         $datetime = new DateTime($date);
@@ -176,6 +170,35 @@ class PurchaseOrderController extends Controller {
             'order_status' => "pending",
         ];
 
+        /*
+         * ------------------- -----------------------
+         * SEND SMS TO CUSTOMER FOR NEW PURCHASE ORDER
+         * -------------------------------------------
+         */
+//        $input = Input::all();
+//        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+//            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+//            if (count($customer) > 0) {
+//                $total_quantity = '';
+//                $str = "Dear " . $customer->owner_name . ", your order has been logged for following:";
+//                foreach ($input_data['product'] as $product_data) {
+//                    if ($product_data['name'] != "") {
+//                        $product = ProductSubCategory::where('product_category_id', '=', $product_data['id'])->first();
+//                        $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
+//                        $total_quantity = $total_quantity + $product_data['quantity'];
+//                    }
+//                }
+//
+//                $str .= " meterial will be despached by " . date("jS F, Y", strtotime($datetime->format('Y-m-d'))) . ". Vikas Associates, 9673000068";
+//                $phone_number = $customer->phone_number1;
+//                $msg = urlencode($str);
+//                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+//                $ch = curl_init($url);
+//                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//                $curl_scraped_page = curl_exec($ch);
+//                curl_close($ch);
+//            }
+//        }
         $add_purchase_order = PurchaseOrder::create($add_purchase_order_array);
         $purchase_order_id = DB::getPdo()->lastInsertId();
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
@@ -334,6 +357,38 @@ class PurchaseOrderController extends Controller {
         ];
 //        }
 
+        /*
+         * ------------------- --------------
+         * SEND SMS TO CUSTOMER FOR NEW ORDER
+         * ----------------------------------
+         */
+//        $input = Input::all();
+//        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+//            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+//            if (count($customer) > 0) {
+//                $total_quantity = '';
+//                $str = "Dear " . $customer->owner_name . ", your order has been edited and changed as following:";
+//                foreach ($input_data['product'] as $product_data) {
+//                    if ($product_data['name'] != "") {
+//                        $product = ProductSubCategory::where('product_category_id', '=', $product_data['id'])->first();
+//                        $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
+//                        $total_quantity = $total_quantity + $product_data['quantity'];
+//                    }
+//                }
+//                $str .= " meterial will be despached by " . date("jS F, Y", strtotime($datetime->format('Y-m-d'))) . ". Vikas Associates, 9673000068";
+//                $phone_number = $customer->phone_number1;
+//                $msg = urlencode($str);
+//                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+//                echo '<pre>';
+//                print_r($str);
+//                echo '</pre>';
+//                exit();
+//                $ch = curl_init($url);
+//                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//                $curl_scraped_page = curl_exec($ch);
+//                curl_close($ch);
+//            }
+//        }
         $update_purchase_order = $purchase_order->update($add_purchase_order_array);
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
             $purchase_order->update([
@@ -562,7 +617,6 @@ class PurchaseOrderController extends Controller {
                     $temp['total_pending_quantity'] = (int) ($total_pending);
                     $temp['total_quantity'] = (int) $total_qty;
                     array_push($pending_orders, $temp);
-
                 }
             } else {
 
