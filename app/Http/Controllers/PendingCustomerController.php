@@ -11,6 +11,10 @@ use App\DeliveryLocation;
 use App\Http\Requests\StoreCustomer;
 use Input;
 use App\User;
+use App\City;
+use App\States;
+use App\ProductCategory;
+use App\CustomerProductDifference;
 use Auth;
 use Hash;
 use Config;
@@ -76,8 +80,12 @@ class PendingCustomerController extends Controller {
         $managers = User::where('role_id', '=', 1)->get();
 
         $locations = DeliveryLocation::all();
+        $states = States::all();
+        $cities = City::all();
 
-        return View::make('add_pendingcustomers', array('customer' => $customer, 'locations' => $locations, 'managers' => $managers));
+        $product_category = ProductCategory::all();
+
+        return View::make('add_pendingcustomers', array('customer' => $customer, 'locations' => $locations, 'managers' => $managers, 'states' => $states, 'cities' => $cities, 'product_category' => $product_category));
     }
 
     /**
@@ -221,6 +229,21 @@ class PendingCustomerController extends Controller {
         $customer->customer_status = 'permanent';
 
         if ($customer->save()) {
+
+            //set price difference of the category
+            $product_category_id = Input::get('product_category_id');
+            if (isset($product_category_id)) {
+                foreach ($product_category_id as $key => $value) {
+                    if (Input::get('product_differrence')[$key] != '') {
+                        $product_difference = new CustomerProductDifference();
+                        $product_difference->product_category_id = $value;
+                        $product_difference->customer_id = $id;
+                        $product_difference->difference_amount = Input::get('product_differrence')[$key];
+                        $product_difference->save();
+                    }
+                }
+            }
+
             /*
              * ------SEND SMS TO ALL ADMINS -----------------
              */

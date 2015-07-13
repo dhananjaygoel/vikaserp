@@ -159,7 +159,7 @@
                                 </select>
                             </div>
                             <div class="clearfix"></div>
-                            <div class="form-group">
+<!--                            <div class="form-group">
                                 <label>Set Prices</label>
                                 <br>
                                 <div class="checkbox-nice">
@@ -190,10 +190,10 @@
                                         </table>
                                     </div>
                                 </div>
-                                @else
+                               @else
                                 <p class="text-info">No product category found</p>
                                 @endif
-                            </div>
+                            </div>-->
                             <div class="clearfix"></div>
                             <hr>
                             <div>
