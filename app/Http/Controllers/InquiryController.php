@@ -59,7 +59,7 @@ class InquiryController extends Controller {
         }
 
         $inquiries->setPath('inquiry');
-        
+
         return view('inquiry', compact('inquiries'));
     }
 
@@ -170,12 +170,11 @@ class InquiryController extends Controller {
 //                $str = "Dear " . $customer->owner_name . ", your enquiry has been logged for following:";
 //                foreach ($input_data['product'] as $product_data) {
 //                    if ($product_data['name'] != "") {
-//                        $product = ProductSubCategory::where('product_category_id', '=', $product_data['id'])->first();
-//                        $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ', ';
+//                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
 //                        $total_quantity = $total_quantity + $product_data['quantity'];
 //                    }
 //                }
-////
+//
 //                $str .= " prices and availability will be quoted shortly. Vikas Associates, 9673000068";
 //                $phone_number = $customer->phone_number1;
 //                $msg = urlencode($str);
@@ -228,20 +227,24 @@ class InquiryController extends Controller {
 //                $total_quantity = '';
 //                $str = "Dear " . $customer->owner_name . ", prices for your enquiry are as follows:";
 //                foreach ($input_data as $product_data) {
-//                    $product = ProductSubCategory::where('product_category_id', '=', $product_data['product_category_id'])->first();
-//                    $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ', ';
+////                    $product = ProductSubCategory::where('product_category_id', '=', $product_data['product_category_id'])->first();
+//                    $str .= $product_data['inquiry_product_details']->alias_name . ' - ' . $product_data['quantity'] . ', ';
 //                    $total_quantity = $total_quantity + $product_data['quantity'];
 //                }
 //                $str .= " meterials will be despached by ".date('jS F, Y', strtotime($inquiry['expected_delivery_date'])).". Vikas Associates, 9673000068";
 //                $phone_number = $customer->phone_number1;
 //                $msg = urlencode($str);
 //                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+//                echo '<pre>';
+//                print_r($str);
+//                echo '</pre>';
 //                $ch = curl_init($url);
 //                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 //                $curl_scraped_page = curl_exec($ch);
 //                curl_close($ch);
 //            }
-//        }        
+//        }
+
         return view('inquiry_details', compact('inquiry', 'delivery_location'));
     }
 
@@ -380,8 +383,7 @@ class InquiryController extends Controller {
 //                $str = "Dear " . $customer->owner_name . ", your enquiry has been logged for following:";
 //                foreach ($input_data['product'] as $product_data) {
 //                    if ($product_data['name'] != "") {
-//                        $product = ProductSubCategory::where('product_category_id', '=', $product_data['id'])->first();
-//                        $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ', ';
+//                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
 //                        $total_quantity = $total_quantity + $product_data['quantity'];
 //                    }
 //                }
@@ -684,4 +686,5 @@ class InquiryController extends Controller {
         Inquiry::where('id', '=', $id)->update(['inquiry_status' => 'Completed']);
         return redirect('inquiry')->with('flash_success_message', 'One Order successfully generated for Inquiry.');
     }
+
 }
