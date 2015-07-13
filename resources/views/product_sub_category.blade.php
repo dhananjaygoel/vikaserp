@@ -87,6 +87,7 @@
                                         @endif
                                         <th>Weight(KG)</th>                                        
                                         <th>Standard Length</th>                                        
+                                        <th>Todays Price</th>                                        
                                         <th class="col-md-2">Difference</th>  
                                         @if( Auth::user()->role_id == 0 )
                                         <th >Actions</th>
@@ -116,6 +117,18 @@
                                         @endif
                                         <td>{{ $produ_sub->weight }} KG</td>
                                         <td>{{ $produ_sub->standard_length }}</td>
+
+                                        <td>
+                                            <?php
+                                            $sign = substr($produ_sub->difference, 0, 1);
+                                            ?>
+                                            @if($sign == '-')
+                                            {{ $produ_sub['product_category']->price - substr($produ_sub->difference,1) }}
+                                            @else
+                                            {{ $produ_sub['product_category']->price + $produ_sub->difference }}
+                                            @endif
+
+                                        </td>
 <!--                                        <td>
                                             @foreach($units as $unit)
                                             @if($unit->id ==  $produ_sub->unit_id)

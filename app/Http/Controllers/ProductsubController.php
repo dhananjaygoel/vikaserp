@@ -38,24 +38,13 @@ class ProductsubController extends Controller {
 
         if (Input::get('product_filter') != "") {
 
-//            $product_sub_cat = ProductSubCategory::with(['product_category' =>
-//                        function($query) {
-//                            $query->where('product_type_id', Input::get('product_filter'));
-//                        }])
-//                    ->Paginate(20);
             $product_sub_cat = ProductSubCategory::with('product_category')
                     ->whereHas('product_category', function($query) {
                         $query->where('product_type_id', Input::get('product_filter'));
                     })
                     ->Paginate(20);
         } elseif (Input::get('search_text') != "") {
-
-//            $product_sub_cat = ProductSubCategory::with(['product_category' =>
-//                        function($query) {
-//                            $query->where('product_category_name', 'like', '%' . Input::get('search_text') . '%');
-//                        }])
-//                    ->Paginate(20);
-//                    
+                 
             $product_sub_cat = ProductSubCategory::with('product_category')
                     ->whereHas('product_category', function($query) {
                         $query->where('product_category_name', 'like', '%' . Input::get('search_text') . '%');
@@ -72,12 +61,6 @@ class ProductsubController extends Controller {
 
             $product_sub_cat = ProductSubCategory::with('product_category')->Paginate(20);
         }
-
-//
-//        echo '<pre>';
-//        print_r($product_sub_cat->toArray());
-//        echo '</pre>';
-//        exit;
 
         $product_sub_cat->setPath('product_sub_category');
         return view('product_sub_category', compact('product_sub_cat', 'product_type', 'units'));
