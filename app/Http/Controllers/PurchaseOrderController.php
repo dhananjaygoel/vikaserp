@@ -67,7 +67,7 @@ class PurchaseOrderController extends Controller {
         }
 
         $purchase_orders = $q->orderBy('created_at', 'desc')
-                ->with('customer', 'delivery_location', 'user', 'purchase_products.product_category.product_sub_category')
+                ->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')
                 ->Paginate(10);
 
         $pending_orders = $this->quantity_calculation($purchase_orders);
@@ -183,8 +183,7 @@ class PurchaseOrderController extends Controller {
 //                $str = "Dear " . $customer->owner_name . ", your order has been logged for following:";
 //                foreach ($input_data['product'] as $product_data) {
 //                    if ($product_data['name'] != "") {
-//                        $product = ProductSubCategory::where('product_category_id', '=', $product_data['id'])->first();
-//                        $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
+//                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
 //                        $total_quantity = $total_quantity + $product_data['quantity'];
 //                    }
 //                }
@@ -247,7 +246,7 @@ class PurchaseOrderController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
-        $purchase_orders = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'purchase_products.product_category.product_sub_category', 'customer')->first();
+        $purchase_orders = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')->first();
         return view('purchase_order_details', compact('purchase_orders'));
     }
 
@@ -263,7 +262,7 @@ class PurchaseOrderController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
-        $purchase_order = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'purchase_products.product_category.product_sub_category', 'customer')->first();
+        $purchase_order = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')->first();
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::where('customer_status', '=', 'permanent')->get();
@@ -370,8 +369,7 @@ class PurchaseOrderController extends Controller {
 //                $str = "Dear " . $customer->owner_name . ", your order has been edited and changed as following:";
 //                foreach ($input_data['product'] as $product_data) {
 //                    if ($product_data['name'] != "") {
-//                        $product = ProductSubCategory::where('product_category_id', '=', $product_data['id'])->first();
-//                        $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
+//                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
 //                        $total_quantity = $total_quantity + $product_data['quantity'];
 //                    }
 //                }
@@ -379,10 +377,6 @@ class PurchaseOrderController extends Controller {
 //                $phone_number = $customer->phone_number1;
 //                $msg = urlencode($str);
 //                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
-//                echo '<pre>';
-//                print_r($str);
-//                echo '</pre>';
-//                exit();
 //                $ch = curl_init($url);
 //                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 //                $curl_scraped_page = curl_exec($ch);
@@ -444,7 +438,7 @@ class PurchaseOrderController extends Controller {
 
     public function create_purchase_advice($order_id) {
 
-        $purchase_orders = PurchaseOrder::where('id', '=', $order_id)->with('purchase_products.unit', 'purchase_products.product_category.product_sub_category', 'customer', 'purchase_advice.purchase_products')->first();
+        $purchase_orders = PurchaseOrder::where('id', '=', $order_id)->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer', 'purchase_advice.purchase_products')->first();
 
 //        foreach ($purchase_orders as $orders) {
 //            $check_if_advice_exists = PurchaseAdvise::where('purchase_order_id', '=', $order_id)->with('purchase_products')->get();
@@ -536,7 +530,7 @@ class PurchaseOrderController extends Controller {
 
                         $p_qty = $products['present_shipping'];
                         if ($products['unit_id'] != 1) {
-                            $product_subcategory = \App\ProductSubCategory::where('product_category_id', $products['product_category_id'])->first();
+                            $product_subcategory = ProductSubCategory::find($products['product_category_id']);
 
                             if ($products['unit_id'] == 2) {
                                 $p_qtycalculated_quantity = $p_qty * $product_subcategory['weight'];
@@ -550,7 +544,7 @@ class PurchaseOrderController extends Controller {
                         $pending_quantity_del = $pending_quantity_del + $p_qty;
                         $prod_quantity = $products['quantity'];
                         if ($products['unit_id'] != 1) {
-                            $product_subcategory = \App\ProductSubCategory::where('product_category_id', $products['product_category_id'])->first();
+                            $product_subcategory = ProductSubCategory::find($products['product_category_id']);
 
                             if ($products['unit_id'] == 2) {
                                 $calculated_quantity = $prod_quantity * $product_subcategory['weight'];
@@ -628,12 +622,12 @@ class PurchaseOrderController extends Controller {
 
                     $kg = Units::first();
                     $prod_quantity = $products['quantity'];
-                    if ($products['unit_id'] != 1) {
-                        $product_subcategory = \App\ProductSubCategory::where('product_category_id', $products['product_category_id'])->first();
-                        if ($products['unit_id'] == 2) {
+                    if ($products->unit_id != 1) {
+                        $product_subcategory = ProductSubCategory::find($products['product_category_id']);
+                        if ($products->unit_id == 2) {
                             $calculated_quantity = $prod_quantity * $product_subcategory['weight'];
                         }
-                        if ($products['unit_id'] == 3) {
+                        if ($products->unit_id == 3) {
                             $calculated_quantity = ($prod_quantity / $product_subcategory['standard_length'] ) * $product_subcategory['weight'];
                         }
 //                        $calculated_quantity = $prod_quantity / $product_subcategory['weight'];

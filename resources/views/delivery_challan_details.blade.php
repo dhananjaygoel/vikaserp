@@ -11,11 +11,11 @@
                 </ol>
                 <div class="clearfix">
 
-                    <div class="pull-right top-page-ui">
+<!--                    <div class="pull-right top-page-ui">
                         <a href="{{url('delivery_challan/'.$allorder->id.'/edit')}}" class="btn btn-primary pull-right">
                             Edit Delivery Challan
                         </a>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>
@@ -55,7 +55,7 @@
                                         <td class="col-md-2">
                                             <div class="form-group searchproduct">
 
-                                                {{$product['product_category']['product_category_name']}}
+                                                {{$product['order_product_details']->alias_name}}
 
                                             </div>
                                         </td>

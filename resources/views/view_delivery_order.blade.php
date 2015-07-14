@@ -85,7 +85,7 @@
                                     @foreach($delivery_data[0]['delivery_product'] as $product)
                                     @if($product->order_type =='delivery_order')
                                     <tr>
-                                        <td> {{ $product['product_category']['product_sub_category']->alias_name}}</td>
+                                        <td> {{ $product['order_product_details']->alias_name}}</td>
                                         <td>{{$product->present_shipping}}</td>
                                         <td>
                                             @foreach($units as $unit)

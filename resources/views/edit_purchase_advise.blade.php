@@ -73,8 +73,8 @@
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
-                                                    {{$product['product_category']['product_sub_category']->alias_name}}
-                                                    <input class="form-control" type="hidden" name="product[{{$key}}][name]" value="{{$product['product_sub_category']->alias_name}}">
+                                                    {{$product['purchase_product_details']->alias_name}}
+                                                    <input class="form-control" type="hidden" name="product[{{$key}}][name]" value="{{$product['purchase_product_details']->alias_name}}">
                                                     <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}">
                                                     <input type="hidden" name="product[{{$key}}][purchase_product_id]" value="{{$product->id}}">
                                                 </div>

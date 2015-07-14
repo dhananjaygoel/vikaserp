@@ -185,7 +185,7 @@
                 @if($product['order_type'] == 'delivery_order')
                 <div class="divRow">
                     <div class="divCell">{{ $i++ }}</div>
-                    <div class="divCell">{{ $product['product_category']['product_sub_category']->size }}</div>
+                    <div class="divCell">{{ $product['order_product_details']->size }}</div>
                     <div class="divCell">xxx</div>
                     <div class="divCell">{{ $product->quantity }}</div>
                     <div class="divCell">{{ $product->actual_pieces }}</div>

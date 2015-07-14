@@ -215,9 +215,9 @@ class PurchaseChallanController extends Controller {
             'order_status' => "Completed"
         ));
 
-        $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'purchase_product.product_sub_category', 'purchase_product.unit')->where('id', $id)->first();
+        $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'purchase_product.purchase_product_details', 'purchase_product.unit')->where('id', $id)->first();
 
-        /*
+        /*  
          * ------------------- -----------------------
          * SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
          * -------------------------------------------

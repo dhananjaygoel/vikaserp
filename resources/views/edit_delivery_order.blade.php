@@ -163,11 +163,11 @@
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
-                                                    <input value="{{ $product['product_category']->product_category_name}}" class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});">
-                                                    <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['product_category']->id}}">
+                                                    <input value="{{ $product['order_product_details']['product_category']->product_category_name}}" class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});">
+                                                    <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']->id}}">
                                                     <input type="hidden" name="product[{{$key}}][order]" value="{{ $product->from}}">
 <!--                                                    <i class="fa fa-search search-icon"></i>-->
-                                                </div>{{ $product['product_category']['product_sub_category']->alias_name}}
+                                                </div>{{ $product['order_product_details']->alias_name}}
                                                 <input type="hidden" name="prod_id" value="{{$key}}">
                                             </td>
                                             <td class="col-md-1">
@@ -292,12 +292,10 @@
 
                         <div class="form-group">
                             <label for="inquiry_remark">Remark</label>
-                            <textarea class="form-control" id="order_remark" name="order_remark"  rows="3">
-{{ $delivery_data[0]->remarks }}
-                            </textarea>
+                            <textarea class="form-control" id="order_remark" name="order_remark"  rows="3">{{ $delivery_data[0]->remarks }}</textarea>
                         </div>
                         <div >
-                            <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
+                            <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>--> 
                         </div>
                         <hr>
                         <div >

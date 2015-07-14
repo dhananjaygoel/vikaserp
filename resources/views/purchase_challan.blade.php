@@ -26,7 +26,7 @@
                             {{Session::get('success')}}                            
                         </div>
                         @endif                        
-
+                        @if(count($purchase_challan) > 0)
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
                                 <thead>
@@ -119,7 +119,7 @@
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
-                                            <div class="modal-body print_delivery_order">
+                                            <div class="modal-body">
                                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                                                 <input type="hidden" name="challan_id" value="{{$challan->id}}"/>
                                                 <div class="row print_time">
@@ -153,6 +153,12 @@
                                 </b>      
                             </span> 
                         </div>
+                        @else
+                        <div class="clearfix"> &nbsp;</div>
+                        <div class="alert alert-info alert-dismissible" role="alert">
+                            <strong> No purchase challan found</strong>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>

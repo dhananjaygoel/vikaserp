@@ -282,7 +282,7 @@ class OrderController extends Controller {
      * @return Response
      */
     public function show($id) {
-        $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.product_category.product_sub_category', 'customer')->first();
+        $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->first();
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         $customers = Customer::all();
@@ -300,7 +300,7 @@ class OrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.product_category.product_sub_category', 'customer')->first();
+        $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->first();
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         $customers = Customer::all();
@@ -317,10 +317,6 @@ class OrderController extends Controller {
     public function update($id, PlaceOrderRequest $request) {
 
         $input_data = Input::all();
-//        echo '<pre>';
-//        print_r(Input::get());
-//        echo '</pre>';
-//        exit;
         $i = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
@@ -460,8 +456,7 @@ class OrderController extends Controller {
 //                $str = "Dear " . $customer->owner_name . ", your order has been edited and changed as following:";
 //                foreach ($input_data['product'] as $product_data) {
 //                    if ($product_data['name'] != "") {
-//                        $product = ProductSubCategory::where('product_category_id', '=', $product_data['id'])->first();
-//                        $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
+//                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
 //                        $total_quantity = $total_quantity + $product_data['quantity'];
 //                    }
 //                }
@@ -474,7 +469,7 @@ class OrderController extends Controller {
 //                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 //                $curl_scraped_page = curl_exec($ch);
 //                curl_close($ch);
-//                
+//
 //                if (count($customer['manager']) > 0) {
 //                    $str = "Dear " . $customer['manager']->first_name . ",  " . Auth::user()->first_name . " has logged an enquiry for " . $customer['manager']->first_name . ", " . $total_quantity . ". Kindly check and quote Vikas Associates, 9673000068";
 //                    $phone_number = $customer['manager']->mobile_number;
@@ -572,15 +567,12 @@ class OrderController extends Controller {
 
     public function create_delivery_order($id) {
 
-        $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.product_category', 'customer')->first();
+        $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->first();
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         $customers = Customer::all();
         $pending_orders = $this->pending_quantity_order($id);
-//        echo '<pre>';
-//        print_r($pending_orders);
-//        echo '</pre>';
-//        exit;
+
         return View::make('create_delivery_order', compact('order', 'delivery_location', 'units', 'customers', 'pending_orders'));
     }
 
@@ -626,7 +618,6 @@ class OrderController extends Controller {
                 if ($add_pendings == 0) {
                     array_push($temp_array, $temp);
                 }
-
             }
         }
         $order_all_order_products = AllOrderProducts::where('order_id', $id)->where('order_type', 'order')->get();
@@ -718,12 +709,6 @@ class OrderController extends Controller {
             foreach ($pending_orders as $pendings) {
                 $pending_qty = $pending_qty + $pendings['total_pending_quantity'];
             }
-//            if ($pending_qty == 0) {
-//                $order = Order::find($id);
-//                $order->update([
-//                    'order_status' => 'completed'
-//                ]);
-//            }
 
             return redirect('orders')->with('flash_message', 'One order converted to Delivery order.');
         } else {
@@ -785,7 +770,6 @@ class OrderController extends Controller {
                             array_push($temp_array, $temp);
                         }
                     }
-
                 }
 
                 $order_all_order_products = AllOrderProducts::where('order_id', $order->id)->where('order_type', 'order')->get();
@@ -796,7 +780,7 @@ class OrderController extends Controller {
                     $list_id = $ordes_products->id;
                     $quantity = $ordes_products->quantity;
                     if ($ordes_products->unit_id != 1) {
-                        $product_subcategory = \App\ProductSubCategory::where('product_category_id', $products['product_category_id'])->first();
+                        $product_subcategory = ProductSubCategory::find($products['product_category_id']);
                         if ($ordes_products->unit_id == 2) {
                             $c_quantity = $quantity * $product_subcategory['weight'];
                         }
@@ -810,13 +794,13 @@ class OrderController extends Controller {
 //                    $quantity = ;
                     $total_quantity_order = $quantity;
                     foreach ($temp_array as $array1) {
-                        
+
                         if ($array1['from'] == $list_id) {
 
 
                             $ar_qty = $array1['total_quantity'];
                             if ($array1['unit'] != 1) {
-                                $product_subcategory = \App\ProductSubCategory::where('product_category_id', $array1['unit'])->first();
+                                $product_subcategory = ProductSubCategory::find($products['product_category_id']);
                                 if ($ordes_products->unit_id == 2) {
                                     $c_quantity = $ar_qty * $product_subcategory['weight'];
                                 }
@@ -830,7 +814,7 @@ class OrderController extends Controller {
                             $temp = array();
                             $temp['id'] = $order->id;
                             $temp['product_id'] = $array1['product_id'];
-                            $temp['total_pending_quantity'] = $total_quantity_order -$ar_qty;
+                            $temp['total_pending_quantity'] = $total_quantity_order - $ar_qty;
                             $temp['unit'] = $array1['unit'];
                             $temp['order_quantity'] = $total_quantity_order;
                             $temp['total_quantity'] = $total_quantity_order;
@@ -838,8 +822,8 @@ class OrderController extends Controller {
                             if (count($pending_orders) > 0) {
                                 foreach ($pending_orders as $key => $pending) {
                                     if ($pending['id'] == $order->id) {
-                                         $tot_pend_qty = $pending['total_pending_quantity'] + $temp['total_pending_quantity'];
-                                         $total_qty_ord=$pending['total_quantity'] + $temp['total_quantity'];
+                                        $tot_pend_qty = $pending['total_pending_quantity'] + $temp['total_pending_quantity'];
+                                        $total_qty_ord = $pending['total_quantity'] + $temp['total_quantity'];
                                         $pending_orders[$key]['total_pending_quantity'] = $tot_pend_qty;
                                         $pending_orders[$key]['total_quantity'] = $total_qty_ord;
                                         $add_pendings = 1;
@@ -861,7 +845,7 @@ class OrderController extends Controller {
                     $kg = Units::first();
                     $prod_quantity = $products['quantity'];
                     if ($products['unit_id'] != 1) {
-                        $product_subcategory = \App\ProductSubCategory::where('product_category_id', $products['product_category_id'])->first();
+                        $product_subcategory = ProductSubCategory::find($products['product_category_id']);
                         if ($products['unit_id'] == 2) {
                             $calculated_quantity = $prod_quantity * $product_subcategory['weight'];
                         }

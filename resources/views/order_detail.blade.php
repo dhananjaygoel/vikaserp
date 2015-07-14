@@ -95,7 +95,7 @@
 
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
-                                                    {{$product['product_category']['product_sub_category']->alias_name}}
+                                                    {{$product['order_product_details']->alias_name}}
 
                                                 </div>
                                             </td>

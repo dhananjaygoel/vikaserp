@@ -63,8 +63,8 @@
                             <input type="hidden" name="product[{{$key}}][order_type]" value="purchase_advice"/>
                             <td>
                                 <div class="form-group">
-                                    {{$products['product_category']['product_sub_category']->alias_name}}
-                                    <input type="hidden" name="product[{{$key}}][product_category_id]" id="add_product_id_{{$key}}" value="{{$products['product_category']['product_sub_category']->id}}">
+                                    {{$products['purchase_product_details']->alias_name}}
+                                    <input type="hidden" name="product[{{$key}}][product_category_id]" id="add_product_id_{{$key}}" value="{{$products['purchase_product_details']->id}}">
                                 </div>
                             </td>
                             <td>

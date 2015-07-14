@@ -54,7 +54,7 @@
                                         @if($product_data->order_type == 'purchase_order')
 
                                         <tr>
-                                            <td>{{$product_data['product_category']['product_sub_category']->alias_name}}</td>
+                                            <td>{{$product_data['purchase_product_details']->alias_name}}</td>
                                             <td>{{$product_data->quantity}}</td>
                                             <td>{{$product_data['unit']->unit_name}}</td>
                                             <td>{{$product_data->price}}</td>

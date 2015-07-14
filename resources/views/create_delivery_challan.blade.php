@@ -69,8 +69,8 @@
                                                 <div class="form-group searchproduct">
                                                     {{ $product['product_category']['product_sub_category']['alias_name']}}
 
-                                                    <input type="hidden" name="product[{{$key}}][name]" id="name_{{$key}}" value="{{$product['product_category']['product_sub_category']['alias_name']}}">
-                                                    <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['product_category']->id}}">
+                                                    <input type="hidden" name="product[{{$key}}][name]" id="name_{{$key}}" value="{{$product['order_product_details']->alias_name}}">
+                                                    <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']['product_category']->id}}">
                                                     <!--<i class="fa fa-search search-icon"></i>-->
                                                     <input type="hidden" name="product[{{$key}}][order]" value="delivery_order">
                                                 </div>
@@ -100,7 +100,7 @@
                                             <td class="col-md-2">
                                                 <div class="form-group">     
                                                     @foreach($price_delivery_order as $rate)
-                                                    @if($rate['product_id'] == $product['product_category']->id)
+                                                    @if($rate['product_id'] == $product['order_product_details']['product_category']->id)
                                                     <?php $product_price = $rate['total_rate']; ?>                                                    
                                                     @endif
                                                     @endforeach

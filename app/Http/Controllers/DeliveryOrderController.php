@@ -23,6 +23,7 @@ use Config;
 use App\ProductSubCategory;
 use App\DeliveryChallan;
 use App\CustomerProductDifference;
+use App\ProductCategory;
 
 class DeliveryOrderController extends Controller {
 
@@ -185,7 +186,7 @@ class DeliveryOrderController extends Controller {
      * @return Response
      */
     public function show($id) {
-        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.product_category.product_sub_category')->where('id', $id)->get();
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->where('id', $id)->get();
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
@@ -202,7 +203,7 @@ class DeliveryOrderController extends Controller {
     public function edit($id) {
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
-        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.product_category.product_sub_category')->where('id', $id)->get();
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->where('id', $id)->get();
         $customers = Customer::all();
         $pending_orders = $this->pending_quantity_order($id);
 
@@ -218,10 +219,6 @@ class DeliveryOrderController extends Controller {
     public function update($id) {
 
         $input_data = Input::all();
-//        echo '<pre>';
-//        print_r(Input::get());
-//        echo '</pre>';
-//        exit;
         $i = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
@@ -369,15 +366,12 @@ class DeliveryOrderController extends Controller {
     }
 
     public function create_delivery_challan($id) {
-        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.product_category.product_sub_category')->where('id', $id)->first();
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->where('id', $id)->first();
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $price_delivery_order = $this->calculate_price($delivery_data);
         $customers = Customer::all();
-//        echo '<pre>';
-//        print_r($delivery_data['delivery_product']->toArray());
-//        echo '</pre>';
-//        exit;
+        
         return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'price_delivery_order'));
     }
 
@@ -476,27 +470,26 @@ class DeliveryOrderController extends Controller {
             'order_status' => "Completed"
         ));
 
-        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.product_category.product_sub_category', 'location')->where('id', $id)->first();
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'location')->where('id', $id)->first();
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
 
+        /*
+          |------------------- -----------------------
+          | SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
+          | -------------------------------------------
+         */
 //        $input_data = $delivery_data['delivery_product'];
 //        $send_sms = Input::get('send_sms');
 //        if ($send_sms == 'true') {
-//            /*
-//             * ------------------- -----------------------
-//             * SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
-//             * -------------------------------------------
-//             */
 //            $customer_id = $delivery_data->customer_id;
 //            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
 //            if (count($customer) > 0) {
 //                $total_quantity = '';
 //                $str = "Dear " . $customer->owner_name . ", your Delivery order has been created as follows:";
 //                foreach ($input_data as $product_data) {
-//                    $product = ProductSubCategory::where('product_category_id', '=', $product_data->product_category_id)->first();
-//                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+//                    $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
 //                    $total_quantity = $total_quantity + $product_data->quantity;
 //                }
 //                $str .= " Truck Number: " . $delivery_data->vehicle_number . ", Driver number: " . $delivery_data->driver_contact_no . ". Vikas Associates, 9673000068";
@@ -538,9 +531,9 @@ class DeliveryOrderController extends Controller {
 
         $product_rates = array();
         foreach ($delivery_data->delivery_product as $product) {
-
-            $sub_product = \App\ProductSubCategory::where('product_category_id', $product->product_category_id)->first();
-            $product_category = \App\ProductCategory::where('id', $product->product_category_id)->first();
+            
+            $sub_product = ProductSubCategory::find($product->product_category_id);
+            $product_category = ProductCategory::where('id', $sub_product->product_category_id)->first();
             $user_id = $delivery_data['customer']->id;
             $users_set_price_product = CustomerProductDifference::where('product_category_id', $product->product_category_id)
                             ->where('customer_id', $user_id)->first();
@@ -562,10 +555,6 @@ class DeliveryOrderController extends Controller {
             $product_rate["total_rate"] = $total_rate;
             array_push($product_rates, $product_rate);
         }
-//        echo '<pre>';
-//        print_r($product_rates);
-//        echo '</pre>';
-//        exit;
         return $product_rates;
     }
 
@@ -616,7 +605,7 @@ class DeliveryOrderController extends Controller {
 
                         $p_qty = $products['quantity'];
                         if ($products['unit_id'] != 1) {
-                            $product_subcategory = \App\ProductSubCategory::where('product_category_id', $products['product_category_id'])->first();
+                            $product_subcategory = ProductSubCategory::find($products['product_category_id']);
 
                             if ($products['unit_id'] == 2) {
                                 $p_qtycalculated_quantity = $p_qty * $product_subcategory['weight'];
@@ -673,7 +662,7 @@ class DeliveryOrderController extends Controller {
 //                    echo $or_prd->quantity;
                         $ord_qty = $or_prd->quantity;
                         if ($or_prd->unit_id != 1) {
-                            $product_subcategory = \App\ProductSubCategory::where('product_category_id', $or_prd->product_category_id)->first();
+                            $product_subcategory = ProductSubCategory::find($products['product_category_id']);
 
                             if ($or_prd->unit_id == 2) {
                                 $order_quantity = $ord_qty * $product_subcategory['weight'];
@@ -712,7 +701,7 @@ class DeliveryOrderController extends Controller {
                     $kg = Units::first();
                     $prod_quantity = $products['quantity'];
                     if ($products['unit_id'] != 1) {
-                        $product_subcategory = \App\ProductSubCategory::where('product_category_id', $products['product_category_id'])->first();
+                        $product_subcategory = ProductSubCategory::find($products['product_category_id']);
 
                         if ($products['unit_id'] == 2) {
                             $calculated_quantity = $prod_quantity * $product_subcategory['weight'];

@@ -72,8 +72,8 @@
                                             @if($product_data->order_type == 'purchase_order')
                                             <tr id="add_row_{{++$key}}" class="add_product_row">
                                                 <td>
-                                                    {{$product_data['product_category']['product_sub_category']->alias_name}}
-                                                    <input type="hidden" name="product[{{$key}}][id]" value="{{$product_data['product_category']->id}}">
+                                                    {{$product_data['purchase_product_details']->alias_name}}
+                                                    <input type="hidden" name="product[{{$key}}][id]" value="{{$product_data['purchase_product_details']->id}}">
                                                 </td>
 
                                                 <td class="col-md-1">

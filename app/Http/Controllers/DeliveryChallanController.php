@@ -59,8 +59,7 @@ class DeliveryChallanController extends Controller {
 
         $allorder = DeliveryChallan::where('id', '=', $id)
                         ->where('challan_status', '=', 'pending')
-                        ->with('all_order_products.unit', 'all_order_products.product_category', 'customer', 'delivery_order')->first();
-
+                        ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order')->first();
         return View::make('delivery_challan_details', compact('allorder'));
     }
 
@@ -205,16 +204,16 @@ class DeliveryChallanController extends Controller {
 
         $allorder = DeliveryChallan::where('id', '=', $id)
                         ->where('challan_status', '=', 'completed')
-                        ->with('delivery_challan_products.unit', 'delivery_challan_products.product_category.product_sub_category', 'customer', 'delivery_order.location')->first();
+                        ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'delivery_order.location')->first();
 
+        /*
+          | ------------------- -----------------------
+          | SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
+          | -------------------------------------------
+         */
 //        $input_data = $allorder['delivery_challan_products'];
 //        $send_sms = Input::get('send_sms');
 //        if ($send_sms == 'true') {
-//            /*
-//             * ------------------- -----------------------
-//             * SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
-//             * -------------------------------------------
-//             */
 //            $customer_id = $allorder->customer_id;
 //            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
 //            if (count($customer) > 0) {
@@ -235,6 +234,9 @@ class DeliveryChallanController extends Controller {
 //                $phone_number = $customer->phone_number1;
 //                $msg = urlencode($str);
 //                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+//                echo '<pre>';
+//                print_r($str);
+//                echo '</pre>';
 //                $ch = curl_init($url);
 //                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 //                $curl_scraped_page = curl_exec($ch);
@@ -242,7 +244,6 @@ class DeliveryChallanController extends Controller {
 //            }
 //        }
         return view('print_delivery_challan', compact('allorder'));
-//        return redirect('delivery_challan')->with('validation_message', 'Delivery order is successfuly printed.');
     }
 
     function checkpending_quantity() {
