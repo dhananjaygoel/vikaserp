@@ -69,7 +69,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('users', 'UsersController');
 
     Route::resource('product_category', 'ProductController');
-    Route::post('update_price', 'ProductController@update_price');
+    Route::get('update_price', 'ProductController@update_price');
     Route::post('update_all_price', 'ProductController@update_all_price');
 
 

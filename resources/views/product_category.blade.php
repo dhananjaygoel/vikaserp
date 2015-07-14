@@ -27,6 +27,10 @@
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix"> 
 
+                        <div class="alert alert-success alert-success1" style="display:none;">
+                            Product category price successfully updated                          
+                        </div>
+
                         @if (count($errors) > 0)
                         <div class="alert alert-warning">                        
                             @foreach ($errors->all() as $error)
@@ -86,12 +90,12 @@
                                                 <!--<form method="post" action="{{URL::action('ProductController@update_price')}}">-->
                                                 <div class="row product-price">
                                                     <div class="form-group col-md-6">
-                                                        <input type="text" class="form-control" name="price[{{$product->id}}][price]" value="{{ $product->price }}">
-                                                        <input type="hidden" class="form-control" name="id[]" value="{{ $product->id}}">
-                                                        <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                                        <input type="text" class="form-control" id="price_{{$product->id}}" name="price[{{$product->id}}][price]" value="{{ $product->price }}">
+                                                        <input type="hidden" class="form-control" name="id[]" value="{{$product->id}}">
+                                                        <input type="hidden" id="token" name="_token" value="{{csrf_token()}}">
                                                     </div>
                                                     <div class="form-group col-md-2 difference_form">
-                                                        <input class="btn btn-primary" type="button" class="form-control" value="save" >     
+                                                        <input class="btn btn-primary" type="button" class="form-control" value="save" onclick="update_price({{$product->id}})">     
                                                     </div>
                                                 </div>
                                                 <!--</form>-->

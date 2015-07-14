@@ -124,10 +124,12 @@ class ProductController extends Controller {
     }
 
     public function update_price() {
+        echo Input::get('price');
+        echo Input::get('product_id');
 
-        ProductCategory::where('id', Input::get('id'))
-                ->update(array('price' => Input::get('price')));
-        return redirect('product_category')->with('success', 'Product category price successfully updated.');
+        ProductCategory::where('id', Input::get('product_id'))
+                ->update(array('price' => Input::get('product_id')));
+//        return redirect('product_category')->with('success', 'Product category price successfully updated.');
     }
 
     public function update_all_price() {

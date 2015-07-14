@@ -109,10 +109,7 @@ $(document).ready(function () {
 
     });
 
-
-
     $('#add_more_product').on("click", function () {
-        alert('hi');
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
             type: "GET",
@@ -285,7 +282,20 @@ $('#expected_delivery_date').datepicker().on('changeDate', function (e) {
     $('#expected_delivery_date').datepicker('hide');
 });
 
-//$('#expected_delivery_date').datepicker().on('changeDate', function (ev)
-//{
-//    $('.datepicker').hide();
-//});
+/**
+ * Comment
+ */
+function update_price(product_id) {
+
+    var price = $('#price_' + product_id).val();
+    var url = $('#site_url').val();
+    var token = $('#token').val();
+
+    $.ajax({
+        type: "GET",
+        url: url + '/update_price',
+        data: {price: price, product_id: product_id, _token: token},
+    }).done(function (data) {
+        $('.alert-success1').show();
+    });
+}
