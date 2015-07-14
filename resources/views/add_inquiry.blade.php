@@ -18,7 +18,7 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
-                        <form method="POST" action="{{URL::action('InquiryController@store')}}">
+                        <form id="onenter_prevent" name="add_inquiry_form" method="POST" action="{{URL::action('InquiryController@store')}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             @if (count($errors) > 0)
                             <div role="alert" class="alert alert-warning">
@@ -149,7 +149,6 @@
                                                     </td>
                                                 </tr>
                                             <?php } ?>
-
                                         </tbody>
                                     </table>
                                     <table>
@@ -180,7 +179,6 @@
                                     </table>
                                 </div>
                             </div>                            
-
                             <div class="clearfix"></div>
                             <div class="form-group">
 
@@ -216,16 +214,12 @@
                                 <label for="inquiry_remark">Remark</label>
                                 <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3"></textarea>
                             </div>
-
                             <button type="button" class="btn btn-primary" id="sendSMS" >Save and Send SMS</button>
-
-
                             <hr>
                             <div>
                                 <input type="submit" class="btn btn-primary form_button_footer" value="Submit">
                                 <a href="{{URL::to('inquiry')}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
-
                             <div class="clearfix"></div>
                         </form>
                         <div class="clearfix"></div>
@@ -233,7 +227,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 @stop

@@ -22,7 +22,7 @@
                     </header>
                     <div class="main-box-body clearfix">
                         <hr>
-                        <form method="POST" action="{{URL::action('CityController@store')}}">
+                        <form id="onenter_prevent" method="POST" action="{{URL::action('CityController@store')}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             @if (count($errors) > 0)
                             <div role="alert" class="alert alert-warning">

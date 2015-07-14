@@ -22,7 +22,7 @@
                     </header>             
                     <div class="main-box-body clearfix">
                         <hr>
-                        <form method="POST" action="{{URL::action('UsersController@store')}}" accept-charset="UTF-8" >
+                        <form id="onenter_prevent" method="POST" action="{{URL::action('UsersController@store')}}" accept-charset="UTF-8" >
 
                             @if (count($errors) > 0)
                             <div class="alert alert-warning">

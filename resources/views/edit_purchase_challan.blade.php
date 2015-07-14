@@ -27,10 +27,10 @@
                         </div>
                         @endif 
 
-                        {!!Form::open(array('method'=>'PUT','url'=>url('purchase_challan/'.$purchase_challan['id']),'id'=>'updateUserForm'))!!}
+                        {!!Form::open(array('method'=>'PUT','url'=>url('purchase_challan/'.$purchase_challan['id']),'id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <div class="form-group">
-                            <label><b>Bill Date:</b> {{$purchase_challan['purchase_advice']->purchase_advice_date}} </label>
+                            <label><b>Bill Date:</b> {{$purchase_challan['purchase_advice']->purchase_advice_date}} </label>  
                         </div>
                         @if($purchase_challan->bill_number!='')
                         <div class="form-group">

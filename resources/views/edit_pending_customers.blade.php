@@ -16,7 +16,7 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
-                        <form method="POST" action="{{url('pending_customers/'.$customer->id)}}" accept-charset="UTF-8" >
+                        <form id="onenter_prevent" method="POST" action="{{url('pending_customers/'.$customer->id)}}" accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input name="_method" type="hidden" value="PUT">
                             @if (count($errors) > 0)

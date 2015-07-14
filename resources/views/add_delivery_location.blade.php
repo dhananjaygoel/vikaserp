@@ -22,7 +22,7 @@
                     </header>
                     <div class="main-box-body clearfix">
                         <hr>
-                        <form method="POST" action="{{URL::action('DeliveryLocationController@store')}}">
+                        <form id="onenter_prevent" method="POST" action="{{URL::action('DeliveryLocationController@store')}}">
 
                             @if (count($errors) > 0)
                             <div role="alert" class="alert alert-warning">

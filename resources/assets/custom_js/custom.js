@@ -75,14 +75,14 @@ $(document).ready(function () {
 });
 $('#datepickerDate').datepicker({
     format: 'mm-dd-yyyy',
-    startDate: today,
+//    startDate: today,
     autoclose: true
 
 });
 $('#datepickerDateComponent').datepicker();
 $('#datepickerDate1').datepicker({
     format: 'mm-dd-yyyy',
-    startDate: today,
+//    startDate: today,
     autoclose: true
 });
 $('#datepickerDateComponent1').datepicker();
@@ -166,8 +166,6 @@ $(document).ready(function () {
         $("#table-example").children("tbody").append(str);
 
     });
-
-
 });
 
 $(function () {
@@ -299,3 +297,98 @@ function update_price(product_id) {
         $('.alert-success1').show();
     });
 }
+
+
+$('#onenter_prevent input').keypress(function (e) {
+    if (e.which == 13) {
+        return false;
+    }
+});
+
+$('#create_delivery_challan_form input').keypress(function (e) {
+    if (e.which == 13) {
+        return false;
+    }
+});
+
+$('#create_delivery_order_form input').keypress(function (e) {
+    if (e.which == 13) {
+        return false;
+    }
+});
+$('#edit_location_form input').keypress(function (e) {
+    if (e.which == 13) {
+        return false;
+    }
+});
+$('#edit_delivery_order input').keypress(function (e) {
+    if (e.which == 13) {
+        return false;
+    }
+});
+
+$('#edit_inquiry_form input').keypress(function (e) {
+    if (e.which == 13) {
+        return false;
+    }
+});
+$('#edit_order_form input').keypress(function (e) {
+    if (e.which == 13) {
+        return false;
+    }
+});
+$('#updateUserForm input').keypress(function (e) {
+    if (e.which == 13) {
+        return false;
+    }
+});
+$('#edit_purchase_order_form input').keypress(function (e) {
+    if (e.which == 13) {
+        return false;
+    }
+});
+$('#edit_state_form input').keypress(function (e) {
+    if (e.which == 13) {
+        return false;
+    }
+});
+
+
+
+
+
+
+
+
+//$(document).ready(function () {
+//    var site_url = $('#site_url').val();
+//    
+//    alert(site_url);
+
+//    $("#product_size1").autocomplete({
+//        minLength: 1,
+//        dataType: 'json',
+//        type: 'GET',
+//        source: function (request, response) {
+//
+//            $.ajax({
+//                url: baseurl + '/fetch_existing_customer',
+//                data: {"term": request.term},
+//                success: function (data) {
+//                    var main_array = JSON.parse(data);
+//                    var arr1 = main_array['data_array'];
+//                    response(arr1);
+//                },
+//            });
+//        },
+//        select: function (event, ui) {
+//
+//            $("#existing_customer_id").val(ui.item.id);
+////            alert(ui.item.id);
+//            $("#customer_default_location").val(ui.item.delivery_location_id);
+//            default_delivery_location();
+//        }
+//        
+//    });
+
+//});

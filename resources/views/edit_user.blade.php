@@ -16,7 +16,7 @@
                 <div class="main-box">
                     <span id="validation_error"></span>
                     <div class="main-box-body clearfix">
-                        {!!Form::open(array('method'=>'PUT','url'=>url('users/'.$user_data[0]['id']),'id'=>'updateUserForm'))!!}
+                        {!!Form::open(array('method'=>'PUT','url'=>url('users/'.$user_data[0]['id']),'id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
 
                         @if (count($errors) > 0)
