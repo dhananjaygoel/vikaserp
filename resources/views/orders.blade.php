@@ -1,11 +1,3 @@
-<?php
-//echo '<pre>';
-//print_r($allorders->toArray());
-//echo '</pre>'; 
-//exit;
-
-?>
-
 @extends('layouts.master')
 @section('title','Orders')
 @section('content')
@@ -264,7 +256,7 @@
                                 @endif
                                 <tr>
                                     <td>{{$k++}}</td>
-                                    
+
                                     <td>{{isset($order['customer'])?$order['customer']->owner_name:''}}</td>
                                     @if(count($pending_orders) > 0)
                                     @foreach($pending_orders as $porder)
@@ -434,6 +426,21 @@
                             <span class="pull-right">
                                 <?php echo $allorders->render(); ?>
                             </span>
+                            <div class="clearfix"></div>
+                            @if($allorders->lastPage() > 1)
+                            <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                <form class="form-inline" method="GET" action="{{url('orders')}}" id="filter_search">
+                                    <div class="form-group">
+                                        <label for="exampleInputName2"><b>Go To</b></label>
+                                        &nbsp;
+                                        <input style="width: 50px;" type="text" class="form-control" placeholder="" value="{{Input::get('page')}}" name="page" type="text">
+                                        &nbsp;
+                                        <label for="exampleInputName2"><b>of {{ $allorders->lastPage()}} </b></label>
+                                        <a onclick="this.form.submit()"></a>
+                                    </div>
+                                </form>
+                            </span> 
+                            @endif 
                         </div>
                         @endif
                     </div>

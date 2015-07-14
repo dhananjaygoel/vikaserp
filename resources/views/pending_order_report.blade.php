@@ -1,9 +1,3 @@
-<?php
-//echo'<pre>';
-//print_r($delivery_location->toArray());
-//echo '</pre>';
-//exit;
-?>
 @extends('layouts.master')
 @section('title','Pending Order Report')
 @section('content')
@@ -18,14 +12,14 @@
                 <div class="filter-block">
                     <h1 class="pull-left">Orders</h1>                                 
                     <div class="pull-right top-page-ui">
-                        
+
                         <div class="form-group pull-right">
                             <div class="col-md-4">
                                 <form action="{{url('pending_order_report')}}" method="GET">
                                     <select class="form-control" id="user_filter3" name="party_filter" onchange="this.form.submit();">
-                                         <option value="" selected="">Select Party</option>
+                                        <option value="" selected="">Select Party</option>
                                         @foreach($customers as $customer)
-                                            <option value="{{$customer->id}}">{{$customer->owner_name}}</option>
+                                        <option value="{{$customer->id}}">{{$customer->owner_name}}</option>
                                         @endforeach                                        
                                     </select>                                    
                                 </form>
@@ -37,7 +31,7 @@
                                         <option value="0" >Warehouse</option>
                                         <option value="all" >Direct</option>
                                         @foreach($customers as $customer)
-                                            <option value="{{$customer->id}}">{{$customer->owner_name}}</option>
+                                        <option value="{{$customer->id}}">{{$customer->owner_name}}</option>
                                         @endforeach
                                     </select>                                    
                                 </form>
@@ -45,26 +39,26 @@
                             <div class="col-md-4">
                                 <form action="{{url('pending_order_report')}}" method="GET">
                                     <select class="form-control" id="user_filter3" name="location_filter" onchange="this.form.submit();">
-                                         <option value="" selected="">Select Location</option>
+                                        <option value="" selected="">Select Location</option>
                                         @foreach($delivery_location as $location)                                        
-                                            <option value="{{$location->id}}">{{$location->area_name}}</option>
+                                        <option value="{{$location->id}}">{{$location->area_name}}</option>
                                         @endforeach 
-                                                                                
+
                                     </select>                                    
                                 </form>
                             </div>
-<!--                            <div class="col-md-3">
-                                <form action="{{url('pending_order_report')}}" method="GET">
-                                    <select class="form-control" id="user_filter3" name="size_filter" onchange="this.form.submit();">
-                                         <option value="" selected="">Select Size</option>
-                                        @foreach($customers as $customer)
-                                            <option value="{{$customer->id}}">{{$customer->owner_name}}</option>
-                                        @endforeach                                        
-                                    </select>                                    
-                                </form>
-                            </div>-->
+                            <!--                            <div class="col-md-3">
+                                                            <form action="{{url('pending_order_report')}}" method="GET">
+                                                                <select class="form-control" id="user_filter3" name="size_filter" onchange="this.form.submit();">
+                                                                     <option value="" selected="">Select Size</option>
+                                                                    @foreach($customers as $customer)
+                                                                        <option value="{{$customer->id}}">{{$customer->owner_name}}</option>
+                                                                    @endforeach                                        
+                                                                </select>                                    
+                                                            </form>
+                                                        </div>-->
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -85,7 +79,7 @@
                             <table id="table-example" class="table table-hover">
                                 <?php $k = 1; ?>
                                 @foreach($allorders as $order)
-                                
+
                                 @if($k==1)
                                 <thead>
                                     <tr>
@@ -96,60 +90,75 @@
                                         <th>Remarks</th>
                                         <th>Delivery Location</th>
                                         <th>Order By</th>
-                                        
-                                        
-                                        
+
+
+
                                     </tr>
                                 </thead><tbody>
                                     @endif
 
 
                                     <tr>
-                                        
+
                                         <td>{{$k++}}</td>
-                                        
-                                        <th><?php $order_date = strtotime($order['created_at']);
-                                            echo date('d F Y',$order_date);
-                                        ?></th>
+
+                                        <th><?php
+                                            $order_date = strtotime($order['created_at']);
+                                            echo date('d F Y', $order_date);
+                                            ?></th>
                                         <td>{{$order['customer']->owner_name}}</td>
                                         <td><?php
-                                        $total_quantity = 0;
-                                        foreach ($order['all_order_products'] as $key => $product) {
-                                            $total_quantity = $total_quantity + $product['quantity'];
-                                        }
-                                        echo $total_quantity;
-                                        ?></td>
+                                            $total_quantity = 0;
+                                            foreach ($order['all_order_products'] as $key => $product) {
+                                                $total_quantity = $total_quantity + $product['quantity'];
+                                            }
+                                            echo $total_quantity;
+                                            ?></td>
                                         <td>{{$order['remarks']}}</td>
                                         @if($order['delivery_location']['area_name'] !="")
-                                        
+
                                         <td class="text">{{$order['delivery_location']['area_name']}}</td>
                                         @elseif($order['delivery_location']['area_name'] =="")
                                         <td class="text">{{$order['other_location']}}</td>
                                         @endif
-                                        <td class="text"><?php 
-                                            foreach($users as $u)
-                                            {
-                                                if($u['id'] == $order['created_by']){
+                                        <td class="text"><?php
+                                            foreach ($users as $u) {
+                                                if ($u['id'] == $order['created_by']) {
                                                     echo $u['first_name'];
                                                 }
                                             }
-                                        ?></td>
-                                        
-                                        
+                                            ?></td>
+
+
                                     </tr>
-                                     
-                                
 
 
 
-                                
-                                
-                                @endforeach
+
+
+
+
+                                    @endforeach
                                 </tbody>
                             </table>
                             <span class="pull-right">
                                 <?php echo $allorders->render(); ?>
                             </span>
+                            <div class="clearfix"></div>
+                            @if($allorders->lastPage() > 1)
+                            <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                <form class="form-inline" method="GET" action="{{url('pending_order_report')}}" id="filter_search">
+                                    <div class="form-group">
+                                        <label for="exampleInputName2"><b>Go To</b></label>
+                                        &nbsp;
+                                        <input style="width: 50px;" type="text" class="form-control" placeholder="" value="{{Input::get('page')}}" name="page" type="text">
+                                        &nbsp;
+                                        <label for="exampleInputName2"><b>of {{ $allorders->lastPage()}} </b></label>
+                                        <a onclick="this.form.submit()"></a>
+                                    </div>
+                                </form>
+                            </span> 
+                            @endif  
                         </div>
                         @endif
                     </div>

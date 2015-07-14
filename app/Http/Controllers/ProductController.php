@@ -31,6 +31,7 @@ class ProductController extends Controller {
         define('PASS', Config::get('smsdata.password'));
         define('SENDER_ID', Config::get('smsdata.sender_id'));
         define('SMS_URL', Config::get('smsdata.url'));
+        $this->middleware('validIP');
     }
 
     public function index() {

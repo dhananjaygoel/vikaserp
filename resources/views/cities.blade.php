@@ -118,14 +118,22 @@
                             <span class="pull-right">
                                 <?php echo $cities->render(); ?>
                             </span>
-                            <div class="clearfix"></div>                            
+                             <span class="clearfix"></span>
+                            
+                            @if($cities->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
-                                <b class="clearfix">
-                                    Showing  {{$cities->firstItem()}} to 
-                                    {{ ($cities->currentPage() - 1 ) * $cities->perPage() + $cities->count()}} of
-                                    {{ $cities->total()}}
-                                </b>      
-                            </span>
+                                <form class="form-inline" method="GET" action="{{url('city')}}" id="filter_search">
+                                    <div class="form-group">
+                                        <label for="exampleInputName2"><b>Go To</b></label>
+                                        &nbsp;
+                                        <input style="width: 50px;" type="text" class="form-control" placeholder="" value="{{Input::get('page')}}" name="page" type="text">
+                                        &nbsp;
+                                        <label for="exampleInputName2"><b>of {{ $cities->lastPage()}} </b></label>
+                                        <a onclick="this.form.submit()"></a>
+                                    </div>
+                                </form>
+                            </span> 
+                            @endif 
 
                         </div>
                         @endif

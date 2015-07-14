@@ -34,7 +34,7 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
-                        
+
                         @if(sizeof($inquiries) ==0)
                         <div class="alert alert-info no_data_msg_container">
                             Currently no inquiries have been added.
@@ -170,7 +170,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <?php // $i++;  ?>
                                 @endforeach
                                 </tbody>
                             </table>
@@ -178,6 +177,21 @@
                             <span class="pull-right">
                                 <?php echo $inquiries->render(); ?>
                             </span>
+                            <div class="clearfix"></div>
+                            @if($inquiries->lastPage() > 1)
+                            <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                <form class="form-inline" method="GET" action="{{url('inquiry')}}" id="filter_search">
+                                    <div class="form-group">
+                                        <label for="exampleInputName2"><b>Go To</b></label>
+                                        &nbsp;
+                                        <input style="width: 50px;" type="text" class="form-control" placeholder="" value="{{Input::get('page')}}" name="page" type="text">
+                                        &nbsp;
+                                        <label for="exampleInputName2"><b>of {{ $inquiries->lastPage()}} </b></label>
+                                        <a onclick="this.form.submit()"></a>
+                                    </div>
+                                </form>
+                            </span> 
+                            @endif 
 
                         </div>
                         @endif

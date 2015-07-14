@@ -11,25 +11,25 @@
                 </ol>
                 <div class="clearfix">
                     <h1 class="pull-left">Pending Purchase Advice Report</h1>
-<!--                    <div class="form-group pull-right">
-                        <form method="GET" id="purchaseaAdviseFilterForm">
-                            <div class="col-md-12">
-                                <select class="form-control" id="purchaseaAdviseFilter" name="purchaseaAdviseFilter">
-                                    <option value="" selected="">Status</option>
-                                    <option value="delivered" <?php
-                                    if (Request::get('purchaseaAdviseFilter') == "delivered") {
-                                        echo "selected=selected";
-                                    }
-                                    ?>>Delivered</option>
-                                    <option value="in_process" <?php
-                                    if (Request::get('purchaseaAdviseFilter') == "in_process") {
-                                        echo "selected=selected";
-                                    }
-                                    ?>>Inprocess</option>
-                                </select>
-                            </div>
-                        </form>
-                    </div>-->
+                    <!--                    <div class="form-group pull-right">
+                                            <form method="GET" id="purchaseaAdviseFilterForm">
+                                                <div class="col-md-12">
+                                                    <select class="form-control" id="purchaseaAdviseFilter" name="purchaseaAdviseFilter">
+                                                        <option value="" selected="">Status</option>
+                                                        <option value="delivered" <?php
+                    if (Request::get('purchaseaAdviseFilter') == "delivered") {
+                        echo "selected=selected";
+                    }
+                    ?>>Delivered</option>
+                                                        <option value="in_process" <?php
+                    if (Request::get('purchaseaAdviseFilter') == "in_process") {
+                        echo "selected=selected";
+                    }
+                    ?>>Inprocess</option>
+                                                    </select>
+                                                </div>
+                                            </form>
+                                        </div>-->
                 </div>
             </div>
         </div>
@@ -74,6 +74,20 @@
                             <span class="pull-right">
                                 <?php echo $pending_advise->render(); ?>
                             </span>
+                            @if($pending_advise->lastPage() > 1)
+                            <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                <form class="form-inline" method="GET" action="{{url('pending_purchase_advice')}}" id="filter_search">
+                                    <div class="form-group">
+                                        <label for="exampleInputName2"><b>Go To</b></label>
+                                        &nbsp;
+                                        <input style="width: 50px;" type="text" class="form-control" placeholder="" value="{{Input::get('page')}}" name="page" type="text">
+                                        &nbsp;
+                                        <label for="exampleInputName2"><b>of {{ $pending_advise->lastPage()}} </b></label>
+                                        <a onclick="this.form.submit()"></a>
+                                    </div>
+                                </form>
+                            </span> 
+                            @endif  
                         </div>
                         @else
                         <div class="clearfix"> &nbsp;</div>

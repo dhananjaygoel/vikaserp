@@ -34,8 +34,7 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
-                        <?php
-                        $i = ($delivery_data->currentPage() - 1 ) * $delivery_data->perPage() + 1; ?>
+                        <?php $i = ($delivery_data->currentPage() - 1 ) * $delivery_data->perPage() + 1; ?>
                         @if(sizeof($delivery_data) != 0)
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
@@ -75,6 +74,21 @@
                                     <?php echo $delivery_data->render(); ?>
                                 </ul>
                             </span>
+                            <div class="clearfix"></div>
+                            @if($delivery_data->lastPage() > 1)
+                            <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                <form class="form-inline" method="GET" action="{{url('pending_delivery_order')}}" id="filter_search">
+                                    <div class="form-group">
+                                        <label for="exampleInputName2"><b>Go To</b></label>
+                                        &nbsp;
+                                        <input style="width: 50px;" type="text" class="form-control" placeholder="" value="{{Input::get('page')}}" name="page" type="text">
+                                        &nbsp;
+                                        <label for="exampleInputName2"><b>of {{ $delivery_data->lastPage()}} </b></label>
+                                        <a onclick="this.form.submit()"></a>
+                                    </div>
+                                </form>
+                            </span> 
+                            @endif 
                         </div>                       
                         @else
                         <div class="alert alert-info no_data_msg_container">

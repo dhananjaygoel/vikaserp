@@ -138,14 +138,21 @@
                                     <?php echo $users_data->render(); ?>
                                 </ul>
                             </span>
-                            <div class="clearfix"></div>                            
+                            <div class="clearfix"></div>  
+                            @if($users_data->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
-                                <b class="clearfix">
-                                    Showing  {{($users_data->currentPage() - 1 ) * $users_data->perPage() + 1 }} to 
-                                    {{ ($users_data->currentPage() - 1 ) * $users_data->perPage() + $users_data->count()}} of
-                                    {{ $users_data->total()}}
-                                </b>      
+                                <form class="form-inline" method="GET" action="{{url('users')}}" id="filter_search">
+                                    <div class="form-group">
+                                        <label for="exampleInputName2"><b>Go To</b></label>
+                                        &nbsp;
+                                        <input style="width: 50px;" type="text" class="form-control" placeholder="" value="{{Input::get('page')}}" name="page" type="text">
+                                        &nbsp;
+                                        <label for="exampleInputName2"><b>of {{ $users_data->lastPage()}} </b></label>
+                                        <a onclick="this.form.submit()"></a>
+                                    </div>
+                                </form>
                             </span> 
+                            @endif
                         </div>
                         @else
                         <div class="alert alert-info no_data_msg_container">

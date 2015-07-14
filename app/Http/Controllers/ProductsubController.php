@@ -28,6 +28,7 @@ class ProductsubController extends Controller {
         define('PASS', Config::get('smsdata.password'));
         define('SENDER_ID', Config::get('smsdata.sender_id'));
         define('SMS_URL', Config::get('smsdata.url'));
+        $this->middleware('validIP');
     }
 
     public function index() {
@@ -44,7 +45,7 @@ class ProductsubController extends Controller {
                     })
                     ->Paginate(20);
         } elseif (Input::get('search_text') != "") {
-                 
+
             $product_sub_cat = ProductSubCategory::with('product_category')
                     ->whereHas('product_category', function($query) {
                         $query->where('product_category_name', 'like', '%' . Input::get('search_text') . '%');
