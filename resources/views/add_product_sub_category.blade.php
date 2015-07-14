@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url()}}/product_sub_category">Home</a></li>
+                    <li><a href="{{url('product_sub_category')}}">Product Sizes</a></li>
                     <li class="active"><span>Add Product Size</span></li>
                 </ol>
                 <div class="clearfix">
