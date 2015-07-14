@@ -28,6 +28,7 @@ class PurchaseChallanController extends Controller {
         define('PASS', Config::get('smsdata.password'));
         define('SENDER_ID', Config::get('smsdata.sender_id'));
         define('SMS_URL', Config::get('smsdata.url'));
+        $this->middleware('validIP');
     }
 
     /**
@@ -74,6 +75,7 @@ class PurchaseChallanController extends Controller {
         $add_challan->vehicle_number = $request->input('vehicle_number');
         $add_challan->discount = $request->input('discount');
         $add_challan->unloaded_by = $request->input('unloaded_by');
+        $add_challan->round_off = $request->input('round_off');
         $add_challan->labours = $request->input('labour');
         $add_challan->remarks = $request->input('remark');
         $add_challan->grand_total = $request->input('grand_total');

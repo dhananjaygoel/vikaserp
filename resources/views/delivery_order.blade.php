@@ -70,7 +70,9 @@
                                         <th>Delivery Location</th>
                                         <th>Quantity</th>
                                         <th>Vehicle Number</th>
+                                        @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
                                         <th class="text-center">Create Delivery Challan</th>
+                                        @endif
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -106,6 +108,7 @@
                                         <td>
                                             {{$delivery->vehicle_number}}
                                         </td> 
+                                        @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
                                         <td class="text-center">
                                             @if($delivery->order_status == 'completed')
                                             <a href="{{url('create_delivery_challan/'.$delivery->id)}}" class="table-link" title="Delivery challan">
@@ -123,6 +126,7 @@
                                             </span>
                                             @endif
                                         </td>
+                                        @endif
                                         <td class="text-center">
                                             <a href="{{URL::action('DeliveryOrderController@show',['id'=> $delivery->id])}}" class="table-link" title="view">
                                                 <span class="fa-stack">

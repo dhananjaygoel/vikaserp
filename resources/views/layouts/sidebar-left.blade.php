@@ -78,19 +78,23 @@
                                     Delivery Order
                                 </a>
                             </li>
+                            @endif
+                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4) 
+                            
                             <li class="{{ (Request::is('*delivery_challan*') ? 'active' : '') }}">
                                 <a href="{{url('delivery_challan')}}">
                                     Delivery Challan
                                 </a>
                             </li>
-
+                            @endif
+                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3) 
                             <li class="{{ (Request::is('*pending_delivery_order*') ? 'active' : '') }}">
                                 <a href="{{'pending_delivery_order'}}">
                                     Pending Delivery Order Report
                                 </a>
                             </li>
                             @endif
-                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
+                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
                             <li class="{{ (Request::is('*sales_daybook*') ? 'active' : '') }}">
                                 <a href="{{url('sales_daybook')}}">
                                     Sales Daybook
@@ -130,17 +134,22 @@
                                     Purchase Advice
                                 </a>
                             </li>
+                            
+                            @endif
+                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4) 
                             <li class="{{ (Request::is('*purchase_challan*') ? 'active' : '') }}">
                                 <a href="{{url("purchase_challan")}}">
                                     Purchase Challan
                                 </a>
                             </li>
+                            @endif
 
                             <!--                            <li class="{{ (Request::is('*purchase_order_report*') ? 'active' : '') }}">
                                                             <a href="{{url('purchase_order_report')}}" >
                                                                 Purchase Order Report
                                                             </a>
                                                         </li>-->
+                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3) 
                             <li class="{{ (Request::is('*pending_purchase_advice*') ? 'active' : '') }}">
                                 <a href="{{url('pending_purchase_advice')}}">
                                     Pending Purchase Advise Report
@@ -156,7 +165,7 @@
                             @endif
                         </ul>
                     </li>
-                    @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3) 
+                    @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4) 
                     <li class="<?php
                     if (Request::is('*product_category*') || Request::is('*product_sub_category*')) {
                         echo 'active';
@@ -181,7 +190,8 @@
 
                         </ul>
                     </li>
-
+                    @endif
+                    @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3) 
                     <li class="<?php
                     if (Request::is('*states*') || Request::is('*city*') || Request::is('*unit*') || Request::is('*location*')) {
                         echo 'active';

@@ -11,11 +11,11 @@
                 </ol>
                 <div class="clearfix">
 
-<!--                    <div class="pull-right top-page-ui">
-                        <a href="{{url('delivery_challan/'.$allorder->id.'/edit')}}" class="btn btn-primary pull-right">
-                            Edit Delivery Challan
-                        </a>
-                    </div>-->
+                    <!--                    <div class="pull-right top-page-ui">
+                                            <a href="{{url('delivery_challan/'.$allorder->id.'/edit')}}" class="btn btn-primary pull-right">
+                                                Edit Delivery Challan
+                                            </a>
+                                        </div>-->
                 </div>
             </div>
         </div>
@@ -24,7 +24,7 @@
                 <div class="main-box"> 
                     <div class="main-box-body clearfix">
                         <div class="form-group">
-                            <label><b>Party Name:</b> {{$allorder['customer']->owner_name}}</label>
+                            <label><b>Party Name:</b> {{$allorder['customer']->owner_name}}{{'-'.$allorder['customer']->tally_name}}</label>
                         </div>
                         <hr>
                         <div class="form-group">
@@ -133,7 +133,7 @@
                             {{$allorder->labours}}
                         </div>
                         <hr>
-                        
+
 
                         @if($allorder->vat_percentage != "" || $allorder->vat_percentage != 0)
                         <div class="form-group">
@@ -152,8 +152,11 @@
                         </div>
                         <hr>
                         @endif
-                        
- 
+
+                        <div class="form-group">
+                            <label for="total"><b class="challan">Round Off</b><span class="gtotal">{{$allorder->round_off}}</span></label>
+                        </div>
+
                         <div class="form-group">
                             <label for="total"><b class="challan">Grand Total</b><span class="gtotal">{{$allorder->grand_price}}</span></label>
 

@@ -29,6 +29,7 @@ class PurchaseAdviseController extends Controller {
         define('PASS', Config::get('smsdata.password'));
         define('SENDER_ID', Config::get('smsdata.sender_id'));
         define('SMS_URL', Config::get('smsdata.url'));
+        $this->middleware('validIP');
     }
 
     /**
@@ -106,9 +107,14 @@ class PurchaseAdviseController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
-
+        
+        $date_string_bill_date = preg_replace('~\x{00a0}~u', ' ', $input_data['bill_date']);
+        $date_bill_date = date("Y/m/d", strtotime($date_string_bill_date));
+        $datetime_bill_date = new DateTime($date_bill_date);
+        
         $purchase_advise_array = array();
-        $purchase_advise_array['purchase_advice_date'] = date('Y-m-d', strtotime($input_data['bill_date']));
+//        $purchase_advise_array['purchase_advice_date'] = date('Y-m-d', strtotime($input_data['bill_date']));
+        $purchase_advise_array['purchase_advice_date'] = $datetime_bill_date->format('Y-m-d');
         $purchase_advise_array['supplier_id'] = $customer_id;
         $purchase_advise_array['created_by'] = Auth::id();
         $purchase_advise_array['expected_delivery_date'] = $input_data['expected_delivery_date'];

@@ -286,7 +286,7 @@ $(document).ready(function () {
 });
 
 function save_price_inquiry_view(id, inq_id) {
-//    alert(" inq id"+inq_id);
+
     var id = $("#hidden_inquiry_product_id_" + id).val();
     var updated_price = $("#difference_" + id).val();
     if (updated_price == "") {
@@ -300,23 +300,25 @@ function save_price_inquiry_view(id, inq_id) {
         }).done(function () {
 //            location.reload();
 //            $("#difference_" + id).val(updated_price);
-
-//            $("#save_price_inquiry_view_" + id).removeClass('btn-primary');
+            var html_svbtn = '<span type="button" class="btn btn-default" >Save</span>';
+            $("#save_btn_"+id).html(html_svbtn);
+            $("#save_price_inquiry_view_" + id).removeClass('btn-primary');
             var price_val = '' + updated_price;
             $("#price_" + id).html(price_val);
-//            $("#save_price_inquiry_view_" + id).addClass('btn-default');
+            $("#save_price_inquiry_view_" + id).addClass('btn-default');
             var html_btn = '<span type="button" class="btn btn-default" >Save</span>';
             $("#product_save_btn_"+id).html(html_btn);
             $('#inquire_msg').css('display', 'block');
-            var length_btns = $("#inquiry_details_table").find('.btn-primary').length;
-            
-            if ( length_btns> 0) {
+           var length_btns = $(".customerview_table .btn-primary").length;
+//            alert("lengths "+length_btns);
+            if ( length_btns > 0) {
 //                alert('button found');
                 var html = '<span title="You can not click unless you save all prices" type="button" class="btn btn-default smstooltip" >Send SMS</span>';
                 $("#send_sms_button").html(html);
             }
             else {
-            var html = '<a href="" title="SMS would be sent to Party and Relationship Manager" type="button" class="btn btn-primary smstooltip" >Send SMS</a>';
+                var url_send_sms = baseurl+'/inquiry/'+inq_id+'?sendsms=true';
+            var html = '<a href="'+url_send_sms+'" title="SMS would be sent to Party and Relationship Manager" type="button" class="btn btn-primary smstooltip" >Send SMS</a>';
             $("#send_sms_button").html(html);
             }
 

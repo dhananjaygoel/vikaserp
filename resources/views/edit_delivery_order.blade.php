@@ -88,7 +88,7 @@
                             <div class="customer_select">
                                 <div class="col-md-4">
                                     <div class="form-group searchproduct">
-                                        <input value="{{ $delivery_data[0]['customer']->owner_name }}" class="form-control" placeholder="Enter Customer Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
+                                        <input value="{{ $delivery_data[0]['customer']->owner_name }}-{{ $delivery_data[0]['customer']->tally_name }}" class="form-control" placeholder="Enter Customer Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
                                         <input type="hidden" value="{{ $delivery_data[0]['customer']->id }}" id="existing_customer_id" name="autocomplete_customer_id">
                                         <i class="fa fa-search search-icon"></i>
                                     </div>

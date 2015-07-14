@@ -104,7 +104,7 @@
                                                     <?php $product_price = $rate['total_rate']; ?>                                                    
                                                     @endif
                                                     @endforeach
-                                                    <input type="text" class="form-control" id="product_price_{{$key}}" value="{{$product_price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="change_amount({{$key}})">
+                                                    <input type="text" class="form-control" id="product_price_{{$key}}" value="{{$product_price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="fetch_price();">
                                                 </div>
 
                                             </td>
@@ -208,6 +208,18 @@
                         @endif
 
 
+                        <div class="form-group">
+                            <label for="vatp"><b class="challan">Total : </b>
+                                <span class="gtotal">
+                                    <input type="text" class="form-group" name="vat_total" id="vat_tot_val" readonly="readonly">
+                                </span>
+
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="labour"><b class="challan">Round Off</b></label>
+                            <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="" type="text" onblur="grand_total_challan();">
+                        </div>
                         <div class="form-group">
                             <label for="total"><b class="challan">Grand Total : </b>
                                 <span class="gtotal">

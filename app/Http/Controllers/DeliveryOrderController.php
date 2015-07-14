@@ -32,6 +32,7 @@ class DeliveryOrderController extends Controller {
         define('PASS', Config::get('smsdata.password'));
         define('SENDER_ID', Config::get('smsdata.sender_id'));
         define('SMS_URL', Config::get('smsdata.url'));
+        $this->middleware('validIP');
     }
 
     /**
@@ -371,7 +372,7 @@ class DeliveryOrderController extends Controller {
         $delivery_locations = DeliveryLocation::all();
         $price_delivery_order = $this->calculate_price($delivery_data);
         $customers = Customer::all();
-        
+
         return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'price_delivery_order'));
     }
 
@@ -406,6 +407,7 @@ class DeliveryOrderController extends Controller {
             $delivery_challan->discount = $input_data['discount'];
             $delivery_challan->freight = $input_data['freight'];
             $delivery_challan->loading_charge = $input_data['loading'];
+            $delivery_challan->round_off = $input_data['round_off'];
             $delivery_challan->loaded_by = $input_data['loadedby'];
             $delivery_challan->labours = $input_data['labour'];
 
@@ -531,7 +533,7 @@ class DeliveryOrderController extends Controller {
 
         $product_rates = array();
         foreach ($delivery_data->delivery_product as $product) {
-            
+
             $sub_product = ProductSubCategory::find($product->product_category_id);
             $product_category = ProductCategory::where('id', $sub_product->product_category_id)->first();
             $user_id = $delivery_data['customer']->id;

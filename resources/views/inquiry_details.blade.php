@@ -76,7 +76,7 @@
                                             <td>{{$product_data['inquiry_product_details']->alias_name}}</td>
                                             <td>{{$product_data->quantity}}</td>
                                             <td>{{$product_data['unit']->unit_name}}</td>
-                                            <td>{{$product_data->price}}</td>
+                                            <td><div id='price_{{$product_data->id}}'>{{$product_data->price}}</div></td>
                                             <td>
                                                 <div class="row product-price">
                                                     <div class="form-group col-md-6">
@@ -84,7 +84,9 @@
                                                         <input type="hidden"name="product_id" value='{{$product_data->id}}' id='hidden_inquiry_product_id_{{$product_data->id}}'>
                                                     </div>
                                                     <div class="form-group col-md-2 difference_form">
-                                                        <input type="button" name="save_price" value="Save" class="btn btn-primary" id="save_price_inquiry_view_{{$product_data->id}}" onclick="save_price_inquiry_view({{$product_data->id}});">
+                                                        <div id="save_btn_{{$product_data->id}}">
+                                                        <input type="button" name="save_price" value="Save" class="btn btn-primary" id="save_price_inquiry_view_{{$product_data->id}}" onclick="save_price_inquiry_view({{$product_data->id}},{{$inquiry->id}});">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </td>
@@ -113,7 +115,11 @@
                             <hr>
                             <div>
                                 <a href="{{URL::to('inquiry')}}" class="btn btn-default form_button_footer">Back</a>
-                                <a href="{{url('inquiry/'.$inquiry->id.'?sendsms=true' )}}" title="SMS would be sent to Party and Relationship Manager" type="button" class="btn btn-primary smstooltip" >Send SMS</a><span title="SMS has been sent 5 times" class="badge enquirybadge smstooltip">0</span>
+                                <!--<a href="{{url('inquiry/'.$inquiry->id.'?sendsms=true' )}}" title="SMS would be sent to Party and Relationship Manager" type="button" class="btn btn-primary smstooltip" >Send SMS</a><span title="SMS has been sent 5 times" class="badge enquirybadge smstooltip">0</span>-->
+                                <span id="send_sms_button">
+                                    <span title="You can not click unless you save all prices" type="button" class="btn btn-default smstooltip" >Send SMS</span>
+                                </span>
+                                <span title="SMS has been sent 5 times" class="badge enquirybadge smstooltip">0</span>
                             </div>
                         </form>
                     </div>

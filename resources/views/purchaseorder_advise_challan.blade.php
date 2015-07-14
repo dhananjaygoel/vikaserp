@@ -49,9 +49,9 @@
                         <table id="table-example" class="table table_deliverchallan serial purchaseorder_advide_table ">
                             <tbody>
                                 <tr>
-                                    <td class="col-md-2"><span>Product Name(Alias)</span></td>
+                                    <td class="col-md-2"><span>Product Name(Alias)<span class="mandatory">*</span> </span></td>
                                     <td class="col-md-2"><span>Actual Quantity</span></td>
-                                    <td class="col-md-1"><span>Unit</span></td>
+                                    <td class="col-md-1"><span>Unit</span><span class="mandatory">*</span></td>
                                     <td class="col-md-2 text-center"><span>Present Shipping</span></td>
                                     <td class="col-md-2"><span>Rate</span></td>
                                     <td class="col-md-2"><span>Amount</span></td>
@@ -133,11 +133,11 @@
                         <input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{$purchase_advise->vehicle_number}}" type="text">
                     </div>
                     <div class="form-group">
-                        <label for="vehicle_name"><b class="challan">Discount (In Percentage)</b></label>
-                        <input id="discount" class="form-control" placeholder="Discount, example : 10" name="discount" value="" type="text" onblur="purchase_challan_calculation();">
+                        <label for="vehicle_name"><b class="challan">Discount</b></label>
+                        <input id="discount" class="form-control" placeholder="Discount" name="discount" value="" type="text" onblur="purchase_challan_calculation();">
                     </div>
                     <div class="form-group">
-                        <label for="driver_name"><b class="challan">Freight</b></label>
+                        <label for="driver_name"><b class="challan">Freight</b><span class="mandatory">*</span></label>
                         <input id="freight" class="form-control" placeholder="Freight " name="Freight" value="" type="text" onblur="purchase_challan_calculation();">
                     </div>
                     <div class="form-group">
@@ -145,11 +145,11 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="loadedby"><b class="challan">Unloaded By</b></label>
+                        <label for="loadedby"><b class="challan">Unloaded By</b><span class="mandatory">*</span></label>
                         <input id="loadedby" class="form-control" placeholder="Unloaded By" name="unloaded_by" value="" type="text">
                     </div>
                     <div class="form-group">
-                        <label for="labour"><b class="challan">Labour </b></label>
+                        <label for="labour"><b class="challan">Labour </b><span class="mandatory">*</span></label>
                         <input id="labour" class="form-control" placeholder="Labour" name="labour" value="" type="text">
                     </div>
                     @if($purchase_advise->vat_percentage==0 || $purchase_advise->vat_percentage== '')
@@ -166,6 +166,19 @@
                         <label for="driver_contact"><b class="challan">VAT Value :</b> <div id="vat_value"></div></label>
                     </div>
                     @endif
+                    <div class="form-group">
+                        <label for="vatp"><b class="challan">Total : </b>
+                            <span class="gtotal">
+                                <input type="text" class="form-group" name="vat_total" id="vat_tot_val" readonly="readonly">
+                            </span>
+
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="labour"><b class="challan">Round Off</b></label>
+                        <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="" type="text" onblur="purchase_challan_calculation();">
+                    </div>
+
                     <div class="form-group">
                         <label for="total"><b class="challan">Grand Total :</b> <div id="grand_total"></div>
                         </label>

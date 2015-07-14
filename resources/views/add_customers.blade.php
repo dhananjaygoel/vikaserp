@@ -70,20 +70,29 @@
                                                             <input id="state" class="form-control" placeholder="State" name="state" value="{{ Input::old('state')}}" type="text">
                                                         </div>-->
                             <div class="form-group">
+                                
                                 <label for="state">State<span class="mandatory">*</span></label>
-                                <select class="form-control" id="state" name="state" onchange="state_option()">
-                                    <option value="" selected="">Select State</option>
+                                <select class="form-control" id="state" name="state" onchange="state_option()" >
+                                    <option value="" >Select State</option>
                                     @foreach($states as $state)
+                                    @if(Input::old('state')!='' && Input::old('state')==$state->id)
+                                    <option  selected="" value="{{$state->id}}">{{$state->state_name}}</option>
+                                    @else
                                     <option value="{{$state->id}}">{{$state->state_name}}</option>                                    
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="city">City<span class="mandatory">*</span></label>
                                 <select class="form-control" id="city"  name="city">
-                                    <option value="" selected="">--Select City--</option>
+                                    <option value="">--Select City--</option>
                                     @foreach($cities as $city)
+                                    @if(Input::old('city')!='' && Input::old('city')==$city->id)
+                                    <option selected="" value="{{$city->id}}">{{$city->city_name}}</option> 
+                                    @else
                                     <option value="{{$city->id}}">{{$city->city_name}}</option>                                    
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -128,7 +137,11 @@
                                 <select class="form-control" id="delivery_location" name="delivery_location">
                                     <option value="" selected="">Select Delivery Location</option>
                                     @foreach($locations as $l)
+                                    @if(Input::old('delivery_location')!='' && Input::old('delivery_location')==$l->id)
+                                    <option selected="" value="{{$l->id}}">{{$l->area_name}}</option> 
+                                    @else
                                     <option value="{{$l->id}}">{{$l->area_name}}</option>                                    
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -152,9 +165,13 @@
                             <div class="form-group col-md-4 del_loc ">
                                 <label for="relationship_manager">Relationship Manager:</label>
                                 <select class="form-control" id="relationship_manager" name="relationship_manager">
-                                    <option value="" selected="">Select Relation Manager</option>
+                                    <option value="" >Select Relation Manager</option>
                                     @foreach($managers as $m)
+                                    @if(Input::old('relationship_manager')!='' && Input::old('relationship_manager')==$m->id)
+                                    <option selected="" value="{{$m->id}}">{{$m->first_name}} {{$m->last_name}}</option>
+                                    @else
                                     <option value="{{$m->id}}">{{$m->first_name}} {{$m->last_name}}</option>
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>
