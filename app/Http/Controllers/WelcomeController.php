@@ -307,5 +307,11 @@ class WelcomeController extends Controller {
             return redirect('excel_import')->with('wrong', 'Please select file to upload');
         }
     }
+    
+    public function get_server_data() {
+        echo '<pre>';
+        print_r($_SERVER);
+        echo '</pre>';
+    }
 
 }

@@ -149,3 +149,4 @@ Route::group(['middleware' => ['auth']], function() {
 
 Route::get('export/{type}', 'WelcomeController@exportExcel');
 
+Route::get('get_server_data', 'WelcomeController@get_server_data');
