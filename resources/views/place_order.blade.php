@@ -55,7 +55,7 @@
                         <br/>
                         @if($inquiry['customer']->customer_status =="pending")
                         <div class="form-group">
-                            <label>Customer</label>
+                            <label>Customer<span class="mandatory">*</span></label>
                             <div class="radio">
                                 <input value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
                                 <label for ="optionsRadios1">Existing</label>
@@ -76,7 +76,7 @@
                         <div class="exist_field">
                             <input type="hidden" id='pending_user_id' name="pending_user_id" value='{{$inquiry['customer']->id}}'/>
                             <div class="form-group">
-                                <label for="name">Customer Name</label>
+                                <label for="name">Customer Name<span class="mandatory">*</span></label>
                                 <input id="name" class="form-control" placeholder="Name" name="customer_name" value="{{$inquiry['customer']->owner_name}}" type="text">
                             </div>
                             <div class="form-group">
@@ -95,7 +95,7 @@
                         </div>
                         @elseif($inquiry['customer']->customer_status == "permanent")
                         <div class="form-group">
-                            <label>Customer</label>
+                            <label>Customer<span class="mandatory">*</span></label>
                             <div class="radio">
                                 <input checked="" value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
                                 <label for="optionsRadios1">Existing</label>
@@ -116,7 +116,7 @@
                         <div class="exist_field " style="display: none">
                             <div class="form-group">
                                 <input type="hidden" id='pending_user_id' name="pending_user_id" value=''/>
-                                <label for="name">Customer Name</label>
+                                <label for="name">Customer Name<span class="mandatory">*</span></label>
                                 <input id="name" class="form-control" placeholder="Name" name="customer_name" value="" type="text">
                             </div>
                             <div class="form-group">
@@ -217,7 +217,7 @@
                         </div>
                         <div class="row col-md-4">
                             <div class="form-group">
-                                <label for="location">Delivery Location:</label>
+                                <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                                 <select class="form-control" name="add_inquiry_location" id="add_inquiry_location">
                                     <option value="">Delivery Location</option>
                                     @if($inquiry->delivery_location_id != 0)

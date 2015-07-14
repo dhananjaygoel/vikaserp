@@ -3,7 +3,6 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">
-
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
@@ -59,8 +58,8 @@
                                     <table id="create_purchase_advise_table" class="table table-hover">
                                         <tbody>
                                             <tr class="headingunderline">
-                                                <td><span>Select Product(Alias)</span></td>
-                                                <td><span>Unit</span></td>
+                                                <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
+                                                <td><span>Unit</span><span class="mandatory">*</span></td>
                                                 <td><span>Actual Pieces</span></td>
                                                 <td><span>Pending Order</span></td>
                                                 <td><span>Present Shipping</span></td>
@@ -162,7 +161,7 @@
                                         </tr>
                                     <?php } ?>
                                     <tr class="cdtable">
-                                        <td class="cdfirst">Vehicle Number:</td>
+                                        <td class="cdfirst">Vehicle Number:<span class="mandatory">*</span></td>
                                         <td><input id="price" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{$purchase_advise->vehicle_number}}" type="text"></td>
                                     </tr>
                                     <tr class="">

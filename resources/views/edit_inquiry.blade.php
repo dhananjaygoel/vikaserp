@@ -36,7 +36,7 @@
                         <input type="hidden" name="customer_id" value="{{$inquiry['customer']->id}}" id="hidden_cutomer_id">
                         @if($inquiry['customer']->customer_status =="pending")
                         <div class="form-group">
-                            <label>Customer</label>
+                            <label>Customer<span class="mandatory">*</span></label>
                             <div class="radio">
                                 <input value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
                                 <label for ="optionsRadios1">Existing</label>
@@ -56,26 +56,26 @@
                         </div>
                         <div class="exist_field">
                             <div class="form-group">
-                                <label for="name">Customer Name</label>
+                                <label for="name">Customer Name<span class="mandatory">*</span></label>
                                 <input id="name" class="form-control" placeholder="Name" name="customer_name" value="{{$inquiry['customer']->owner_name}}" type="text">
                             </div>
                             <div class="form-group">
-                                <label for="name">Contact Person</label>
+                                <label for="name">Contact Person<span class="mandatory">*</span></label>
                                 <input id="contact_person" class="form-control" placeholder="Contact Person" name="contact_person" value="{{$inquiry['customer']->contact_person}}" type="text">
                             </div>
                             <div class="form-group">
-                                <label for="mobile_number">Phone Number </label>
+                                <label for="mobile_number">Phone Number <span class="mandatory">*</span></label>
                                 <input id="mobile_number" class="form-control" placeholder="Phone Number " name="mobile_number" value="{{$inquiry['customer']->phone_number1}}" type="text">
                             </div>
 
                             <div class="form-group">
-                                <label for="period">Credit Period(Days)</label>
+                                <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
                                 <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$inquiry['customer']->credit_period}}" type="text">
                             </div>
                         </div>
                         @elseif($inquiry['customer']->customer_status == "permanent")
                         <div class="form-group">
-                            <label>Customer</label>
+                            <label>Customer<span class="mandatory">*</span></label>
                             <div class="radio">
                                 <input checked="" value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
                                 <label for="optionsRadios1">Existing</label>
@@ -96,20 +96,20 @@
                         </div>
                         <div class="exist_field " style="display: none">
                             <div class="form-group">
-                                <label for="name">Customer Name</label>
+                                <label for="name">Customer Name<span class="mandatory">*</span></label>
                                 <input id="name" class="form-control" placeholder="Name" name="customer_name" value="" type="text">
                             </div>
                             <div class="form-group">
-                                <label for="name">Contact Person</label>
+                                <label for="name">Contact Person<span class="mandatory">*</span></label>
                                 <input id="contact_person" class="form-control" placeholder="Contact Person" name="contact_person" value="" type="text">
                             </div>
                             <div class="form-group">
-                                <label for="mobile_number">Mobile Number </label>
+                                <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
                                 <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" type="text">
                             </div>
 
                             <div class="form-group">
-                                <label for="period">Credit Period(Days)</label>
+                                <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
                                 <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="text">
                             </div>
                         </div>
@@ -117,7 +117,7 @@
 
                         <div class="row col-md-4">
                             <div class="form-group">
-                                <label for="location">Delivery Location:</label>
+                                <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                                 <select class="form-control" name="add_inquiry_location" id="add_order_location">
                                     <option value="" disabled="">Delivery Location</option>
                                     @foreach($delivery_location as $location)
@@ -171,9 +171,9 @@
                                 <table id="add_product_table" class="table table-hover  ">
                                     <tbody>
                                         <tr class="headingunderline">
-                                            <td><span>Select Product(Alias)</span></td>
+                                            <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
                                             <td><span>Quantity</span></td>
-                                            <td><span>Unit</span></td>
+                                            <td><span>Unit</span><span class="mandatory">*</span></td>
                                             <td><span>Price</span></td>
                                             <td><span>Remark</span></td>
                                         </tr>
@@ -295,7 +295,7 @@
                         </div>
                         @endif
                         <div class="form-group col-md-4 targetdate">
-                            <label for="date">Expected Delivery Date: </label>
+                            <label for="date">Expected Delivery Date:</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                 <input type="text" name="expected_date" class="form-control" id="expected_delivery_date" value="{{date('m-d-Y', strtotime($inquiry->expected_delivery_date))}}" >

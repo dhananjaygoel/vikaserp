@@ -49,10 +49,8 @@
                                 <select class="form-control" name="supplier_id" id="add_status_type">
                                     <option value="" selected="">Select supplier</option>
                                     @if(count($customers)>0)
-                                    @foreach($customers as $customer)   
-
+                                    @foreach($customers as $customer)  
                                     <option value="{{$customer->id}}" >{{$customer->owner_name}}</option>                                       
-
                                     @endforeach
                                     @endif
                                 </select>
@@ -87,7 +85,7 @@
                         </div>
                         @if($order['customer']->customer_status =="pending")
                         <div class="form-group">
-                            <label>Customer</label>
+                            <label>Customer<span class="mandatory">*</span></label>
                             <div class="radio">
                                 <input value="existing_customer" id="existing_customer" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
                                 <label for ="existing_customer">Existing</label>
@@ -107,7 +105,7 @@
                         </div>
                         <div class="exist_field">
                             <div class="form-group">
-                                <label for="name">Customer Name</label>
+                                <label for="name">Customer Name<span class="mandatory">*</span></label>
                                 <input id="name" class="form-control" placeholder="Name" name="customer_name" value="{{$order['customer']->owner_name}}" type="text">
                             </div>
                             <div class="form-group">
@@ -126,7 +124,7 @@
                         </div>
                         @elseif($order['customer']->customer_status == "permanent")
                         <div class="form-group">
-                            <label>Customer</label>
+                            <label>Customer<span class="mandatory">*</span></label>
                             <div class="radio">
                                 <input checked="" value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
                                 <label for="optionsRadios1">Existing</label>
@@ -147,7 +145,7 @@
                         </div>
                         <div class="exist_field " style="display: none">
                             <div class="form-group">
-                                <label for="name">Customer Name</label>
+                                <label for="name">Customer Name<span class="mandatory">*</span></label>
                                 <input id="name" class="form-control" placeholder="Name" name="customer_name" value="" type="text">
                             </div>
                             <div class="form-group">
@@ -165,11 +163,9 @@
                             </div>
                         </div>
                         @endif
-
-
                         <div class="row col-md-4">
                             <div class="form-group">
-                                <label for="location">Delivery Location:</label>
+                                <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                                 <select class="form-control" name="add_inquiry_location" id="add_order_location">
                                     <option value="">Delivery Location</option>
                                     @foreach($delivery_location as $location)
@@ -215,16 +211,15 @@
                             </div>
                         </div>
                         @endif
-
                         <div class="inquiry_table col-md-12">
                             <div class="table-responsive">
                                 <table id="add_product_table" class="table table-hover  ">
                                     <tbody>
                                         <tr class="headingunderline">
-                                            <td><span>Select Product(Alias)</span></td>
+                                            <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
                                             <td><span>Quantity</span></td>
-                                            <td><span>Unit</span></td>
-                                            <td><span>Price</span></td>
+                                            <td><span>Unit</span><span class="mandatory">*</span></td>
+                                            <td><span>Price</span><span class="mandatory">*</span></td>
                                             <td><span>Remark</span></td>
                                         </tr>
                                         @foreach($order['all_order_products'] as $key=>$product)

@@ -38,7 +38,7 @@
                         <form method="POST" action="{{URL::action('DeliveryOrderController@store')}}" accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <div class="form-group">
-                                <label>Customer</label>
+                                <label>Customer<span class="mandatory">*</span></label>
                                 <div class="radio">
                                     <input  value="exist_customer" id="exist_customer" name="customer_status" checked="" type="radio">
                                     <label for="exist_customer">Existing</label>
@@ -59,27 +59,27 @@
                             </div>
                             <div class="exist_field" style="display: none">
                                 <div class="form-group">
-                                    <label for="name">Customer Name</label>
+                                    <label for="name">Customer Name<span class="mandatory">*</span></label>
                                     <input id="name" class="form-control" placeholder="Name" name="customer_name" value="{{ old('customer_name') }}" type="text">
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Contact Person</label>
+                                    <label for="name">Contact Person<span class="mandatory">*</span></label>
                                     <input id="contact_person" class="form-control" placeholder="Contact Person" name="contact_person" value="{{ old('contact_person') }}" type="text">
                                 </div>
                                 <div class="form-group">
-                                    <label for="mobile_number">Mobile Number </label>
+                                    <label for="mobile_number">Mobile Number<span class="mandatory">*</span> </label>
                                     <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{ old('mobile_number') }}" type="text">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="period">Credit Period(Days)</label>
+                                    <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
                                     <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ old('mobile_number') }}" type="text">
                                 </div>
                             </div>
 
                             <div class="row col-md-4">
                                 <div class="form-group">
-                                    <label for="location">Delivery Location:</label>
+                                    <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                                     <select class="form-control" name="add_order_location" id="add_order_location">
                                         <option value="" selected="">Delivery Location</option>
                                         @foreach($delivery_locations as $delivery_location)
@@ -110,10 +110,10 @@
                                     <table id="add_product_table" class="table table-hover">
                                         <tbody> 
                                             <tr class="headingunderline">
-                                                <td><span>Select Product(Alias)</span></td>
+                                                <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
                                                 <td><span>Quantity</span></td>
-                                                <td><span>Unit</span></td>
-                                                <td><span>Price</span></td>
+                                                <td><span>Unit</span><span class="mandatory">*</span></td>
+                                                <td><span>Price</span><span class="mandatory">*</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
                                             <?php for ($i = 1; $i <= 10; $i++) { ?>

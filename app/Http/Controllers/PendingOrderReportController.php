@@ -66,15 +66,6 @@ class PendingOrderReportController extends Controller {
             }
         } elseif ((isset($_GET['size_filter'])) && $_GET['size_filter'] != '') {
 
-//            if($_GET['location_filter'] != '0') { 
-            //'all_order_products.quantity',$_GET['size_filter'])
-//                        ->all_order_products()
-//                            ->where('all_order_products','=',$_GET['size_filter'])
-            /*
-             * ->where(function($q) use($size) {
-                                $q->where($size, '<=', 'sum(quantity)');
-                            })
-             */
             $size = $_GET['size_filter'];
 
             $allorders = Order::where('order_status', '=', 'pending')

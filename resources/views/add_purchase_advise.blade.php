@@ -9,13 +9,12 @@
                     <li><a href="{{url('purchaseorder_advise')}}">Purchase Advise</a></li>
                     <li class="active"><span>Create Purchase Advice</span></li>
                 </ol>
-
                 <div class="clearfix">
                     <h1 class="pull-left"></h1>
                 </div>
             </div>
         </div>
-        <div  class="row">
+        <div class="row">
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
@@ -47,7 +46,7 @@
                             <table id="table-example" class="table ">
                                 <tbody>
                                     <tr class="cdtable">
-                                        <td class="cdfirst">Bill Date:</td>
+                                        <td class="cdfirst">Bill Date:<span class="mandatory">*</span></td>
                                         <td>
                                             <div class="targetdate">
                                                 <div class="input-group">
@@ -82,16 +81,16 @@
                             </div>
                             <div class="exist_field"  style="display:none">
                                 <div class="form-group">
-                                    <label for="supplier_name"> Supplier Name</label>
+                                    <label for="supplier_name"> Supplier Name<span class="mandatory">*</span></label>
                                     <input id="name" class="form-control" placeholder="Supplier Name" name="supplier_name" value="" type="text">
                                 </div>
                                 <div class="form-group">
-                                    <label for="mobile_number">Mobile Number </label>
+                                    <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
                                     <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" type="text">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="credit_period">Credit Period(Days)</label>
+                                    <label for="credit_period">Credit Period(Days)<span class="mandatory">*</span></label>
                                     <input id="credit_period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="text">
                                 </div>
                             </div>
@@ -100,9 +99,9 @@
                                     <table id="add_product_table" class="table table-hover  ">
                                         <tbody>
                                             <tr class="headingunderline">
-                                                <td><span>Select Product(Alias)</span></td>
+                                                <td><span>Select Product(Alias)<span class="mandatory">*</span></span></td>
                                                 <td><span>Quantity</span></td>
-                                                <td><span>Unit</span></td>
+                                                <td><span>Unit</span><span class="mandatory">*</span></td>
                                                 <td><span>Price</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
@@ -249,13 +248,13 @@
 
                             <!--</div>-->
                             <div class="form-group">
-                                <label for="cp">Vehicle Number </label>
+                                <label for="cp">Vehicle Number <span class="mandatory">*</span></label>
                                 <input id="cp" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="" type="text">
 
                             </div>
                             <div class="form-group col-md-4 targetdate">
 
-                                <label for="date">Expected Delivery Date</label>
+                                <label for="date">Expected Delivery Date<span class="mandatory">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                     <input type="text" name="expected_delivery_date" class="form-control" id="datepickerDate1" value="{{Input::old('expected_delivery_date')!=''?Input::old('expected_delivery_date'):date('m-d-Y')}}">

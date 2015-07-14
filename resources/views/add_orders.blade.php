@@ -9,7 +9,6 @@
                     <li><a href="{{url('orders')}}">Orders</a></li>
                     <li class="active"><span>Place Order</span></li>
                 </ol>
-
                 <div class="clearfix">
                     <h1 class="pull-left"></h1>
                 </div>
@@ -50,12 +49,10 @@
                                         @endif
                                         @endforeach
                                         @endif
-
-
                                     </select>
                                 </div>
                                 <br/>
-                                <label>Customer</label>
+                                <label>Customer<span class="mandatory">*</span></label>
                                 <div class="radio">
                                     <input checked="" value="existing_customer" id="existing_customer" name="customer_status" type="radio">
                                     <label for="existing_customer">Existing</label>
@@ -76,7 +73,7 @@
                             </div>
                             <div class="new_customer_details" style="display: none">
                                 <div class="form-group">
-                                    <label for="name">Customer Name</label>
+                                    <label for="name">Customer Name<span class="mandatory">*</span></label>
                                     <input id="name" class="form-control" placeholder="Name" name="customer_name" value="{{old('customer_name')}}" type="text">
                                 </div>
                                 <div class="form-group">
@@ -96,7 +93,7 @@
 
                             <div class="row col-md-4">
                                 <div class="form-group">
-                                    <label for="location">Delivery Location:</label>
+                                    <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                                     <select class="form-control" name="add_order_location" id="add_order_location">
                                         <option value="" selected="">Delivery Location</option>
                                         @foreach($delivery_locations as $delivery_location)
@@ -112,7 +109,7 @@
                             <div class="locationtext">
                                 <div class="row">
                                     <div class="form-group col-md-4">
-                                        <label for="location">Location </label>
+                                        <label for="location">Location</label>
                                         <input id="location" class="form-control" placeholder="Location " name="location" value="" type="text">
                                     </div>
                                     <div class="col-md-4">
@@ -131,10 +128,10 @@
                                     <table id="add_product_table" class="table table-hover  ">
                                         <tbody> 
                                             <tr class="headingunderline">
-                                                <td><span>Select Product(Alias)</span></td>
+                                                <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
                                                 <td><span>Quantity</span></td>
-                                                <td><span>Unit</span></td>
-                                                <td><span>Price</span></td>
+                                                <td><span>Unit</span><span class="mandatory">*</span></td>
+                                                <td><span>Price</span><span class="mandatory">*</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
 
@@ -237,7 +234,7 @@
 
                             <div class="clearfix"></div>
                             <div class="form-group col-md-4 targetdate">
-                                <label for="time">Expected Delivery Date: </label>
+                                <label for="time">Expected Delivery Date:<span class="mandatory">*</span> </label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                     <input type="text" name="expected_date" value="{{Input::old('expected_date')!=''?Input::old('expected_date'):date('m-d-Y')}}" class="form-control" id="expected_delivery_date_order">

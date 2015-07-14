@@ -69,15 +69,15 @@
                         </div>
                         <div class="exist_field">
                             <div class="form-group">
-                                <label for="name"> Supplier Name</label>
+                                <label for="name"> Supplier Name<span class="mandatory">*</span></label>
                                 <input id="name" class="form-control" placeholder="Supplier Name" name="supplier_name" value="{{$purchase_order['customer']->owner_name}}" type="text">
                             </div>
                             <div class="form-group">
-                                <label for="mobile_number">Mobile Number </label>
+                                <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
                                 <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{$purchase_order['customer']->mobile_number}}" type="text">
                             </div>
                             <div class="form-group">
-                                <label for="period">Credit Period(Days)</label>
+                                <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
                                 <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$purchase_order['customer']->credit_period}}" type="text">
                             </div>
                         </div>
@@ -100,15 +100,15 @@
                     </div>
                     <div class="exist_field"  style="display:none">
                         <div class="form-group">
-                            <label for="name"> Supplier Name</label>
+                            <label for="name"> Supplier Name<span class="mandatory">*</span></label>
                             <input id="name" class="form-control" placeholder="Supplier Name" name="supplier_name" value="{{$purchase_order['customer']->owner_name}}" type="text">
                         </div>
                         <div class="form-group">
-                            <label for="mobile_number">Mobile Number </label>
+                            <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
                             <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{$purchase_order['customer']->mobile_number}}" type="text">
                         </div>
                         <div class="form-group">
-                            <label for="period">Credit Period(Days)</label>
+                            <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
                             <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$purchase_order['customer']->credit_period}}" type="text">
                         </div>
                     </div>
@@ -118,9 +118,9 @@
                             <table id="add_product_table_purchase" class="table table-hover">
                                 <tbody>
                                     <tr class="headingunderline">
-                                        <td><span>Select Product(Alias)</span></td>
+                                        <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
                                         <td><span>Quantity</span></td>
-                                        <td><span>Unit</span></td>
+                                        <td><span>Unit</span><span class="mandatory">*</span></td>
                                         <td><span>Price</span></td>
                                         <td><span>Remark</span></td>
                                     </tr>
@@ -197,7 +197,7 @@
                     </div>
                     <div class="row col-md-4">
                         <div class="form-group">
-                            <label for="location">Delivery Location:</label>
+                            <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                             <select class="form-control" name="purchase_order_location" id="add_inquiry_location">
                                 <option value="" selected="">Delivery Location</option>
                                 
@@ -313,7 +313,7 @@
                     @endif
 
                     <div class="form-group col-md-4 targetdate">
-                        <label for="date">Expected Delivery Date: </label>
+                        <label for="date">Expected Delivery Date: <span class="mandatory">*</span></label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             <input type="text" name="expected_delivery_date" class="form-control" id="expected_delivery_date" value="{{date('m-d-Y', strtotime($purchase_order->expected_delivery_date))}}" >
