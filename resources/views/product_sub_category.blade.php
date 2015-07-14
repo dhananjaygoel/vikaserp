@@ -214,11 +214,16 @@
                             </span>
                             <div class="clearfix"></div>                            
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
-                                <b class="clearfix">
-                                    Showing  {{($product_sub_cat->currentPage() - 1 ) * $product_sub_cat->perPage() + 1 }} to 
-                                    {{ ($product_sub_cat->currentPage() - 1 ) * $product_sub_cat->perPage() + $product_sub_cat->count()}} of
-                                    {{ $product_sub_cat->total()}}
-                                </b>      
+                                <form class="form-inline" method="GET" action="{{url('product_sub_category')}}" id="filter_search">
+                                    <div class="form-group">
+                                        <label for="exampleInputName2"><b>Go To</b></label>
+                                        &nbsp;
+                                        <input style="width: 50px;" type="text" class="form-control" placeholder="" value="{{Input::get('page')}}" name="page" type="text">
+                                        &nbsp;
+                                        <label for="exampleInputName2"><b>of {{ $product_sub_cat->lastPage()}} </b></label>
+                                        <a onclick="this.form.submit()"></a>
+                                    </div>
+                                </form>
                             </span> 
                         </div>
                         @else
