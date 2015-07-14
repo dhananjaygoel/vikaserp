@@ -28,7 +28,7 @@ class CustomerController extends Controller {
         define('PROFILE_ID', Config::get('smsdata.profile_id'));
         define('PASS', Config::get('smsdata.password'));
         define('SENDER_ID', Config::get('smsdata.sender_id'));
-        define('SMS_URL', Config::get('smsdata.url'));
+        $this->middleware('validIP');
 //
 //        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
 ////            echo 'test 1';exit;

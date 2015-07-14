@@ -26,6 +26,9 @@ use App\DeliveryOrder;
 
 class PendingOrderReportController extends Controller {
 
+    public function __construct() {
+        $this->middleware('validIP');
+    }
     /**
      * Display a listing of the resource.
      * 
@@ -69,11 +72,11 @@ class PendingOrderReportController extends Controller {
             $size = $_GET['size_filter'];
 
             $allorders = Order::where('order_status', '=', 'pending')
-                            ->with(array('customer', 'delivery_location', 'all_order_products'=>
-                                    function($q) use($size){                                        
-                                        $q->where('quantity','=',$size)->where('order_type','order');                                        
-                                    }))->Paginate(10);
-                     
+                            ->with(array('customer', 'delivery_location', 'all_order_products' =>
+                                function($q) use($size) {
+                                    $q->where('quantity', '=', $size)->where('order_type', 'order');
+                                }))->Paginate(10);
+
 //            }
         } else {
 

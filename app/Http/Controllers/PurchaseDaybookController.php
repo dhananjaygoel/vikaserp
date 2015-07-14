@@ -18,6 +18,10 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class PurchaseDaybookController extends Controller {
 
+    public function __construct() {
+        $this->middleware('validIP');
+    }
+
     public function index() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -33,12 +37,12 @@ class PurchaseDaybookController extends Controller {
                             })->Paginate(10);
         } else {
 
-            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier','all_purchase_products')
+            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products')
                     ->where('order_status', 'completed')
                     ->Paginate(10);
             $purchase_daybook->setPath('purchase_order_daybook');
         }
-        
+
         return view('purchase_order_daybook', compact('purchase_daybook'));
     }
 

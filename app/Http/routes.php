@@ -145,8 +145,4 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('excel_import', 'WelcomeController@excel_import');
 });
 
-
-
 Route::get('export/{type}', 'WelcomeController@exportExcel');
-
-Route::get('get_server_data', 'WelcomeController@get_server_data');

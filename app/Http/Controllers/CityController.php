@@ -17,6 +17,10 @@ use Auth;
 
 class CityController extends Controller {
 
+    public function __construct() {
+        $this->middleware('validIP');
+    }
+
     /**
      * Display a listing of the resource.
      *

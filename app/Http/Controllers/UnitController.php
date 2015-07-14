@@ -15,13 +15,16 @@ use Redirect;
 
 class UnitController extends Controller {
 
+    public function __construct() {
+        $this->middleware('validIP');
+    }
     /**
      * Display a listing of the resource.
      *
      * @return Response
      */
     public function index() {
-        
+
         $units = Units::orderBy('created_at', 'desc')->Paginate(10);
         $units->setPath('unit');
         return view('units', compact('units'));

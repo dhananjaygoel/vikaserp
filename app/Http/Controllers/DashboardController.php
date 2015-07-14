@@ -27,7 +27,6 @@ class DashboardController extends Controller {
         $inquiry = Inquiry::all()->count();
         $pending_inquiry = Inquiry::where('inquiry_status', 'pending')->count();
 
-
         $delivery_order = DeliveryOrder::with('delivery_product')->get();
 
         $deliver_sum = 0;
@@ -43,20 +42,6 @@ class DashboardController extends Controller {
                 }
             }
         }
-
-//       $a = $product_sub_cat = DeliveryOrder::with(['delivery_product' =>
-//                    function($query) {
-//                        $query->sum('quantity');
-//                    }])
-//                ->get();
-//        echo '<pre>';
-//        print_r($a->toArray());
-//        echo '</pre>';
-//
-//        exit;
-
-
-
         $deliver_sum = $deliver_sum / 100;
         $deliver_pending_sum = $deliver_pending_sum / 100;
 

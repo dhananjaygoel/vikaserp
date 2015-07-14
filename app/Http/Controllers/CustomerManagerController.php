@@ -17,7 +17,7 @@ use App\Http\Requests\StoreCustomerManager;
 class CustomerManagerController extends Controller {
 
     public function __construct() {
-        
+        $this->middleware('validIP');
     }
     
     /**

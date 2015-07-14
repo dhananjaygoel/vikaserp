@@ -310,28 +310,20 @@ class WelcomeController extends Controller {
 
     public function get_server_data() {
         $ipaddress = '';
-        if (getenv('HTTP_CLIENT_IP')) {
-            echo '1';
+        if (getenv('HTTP_CLIENT_IP'))
             $ipaddress = getenv('HTTP_CLIENT_IP');
-        } else if (getenv('HTTP_X_FORWARDED_FOR')) {
-            echo '2';
+        else if (getenv('HTTP_X_FORWARDED_FOR'))
             $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
-        } else if (getenv('HTTP_X_FORWARDED')) {
-            echo '3';
+        else if (getenv('HTTP_X_FORWARDED'))
             $ipaddress = getenv('HTTP_X_FORWARDED');
-        } else if (getenv('HTTP_FORWARDED_FOR')) {
-            echo '4';
+        else if (getenv('HTTP_FORWARDED_FOR'))
             $ipaddress = getenv('HTTP_FORWARDED_FOR');
-        } else if (getenv('HTTP_FORWARDED')) {
-            echo '5';
+        else if (getenv('HTTP_FORWARDED'))
             $ipaddress = getenv('HTTP_FORWARDED');
-        } else if (getenv('REMOTE_ADDR')) {
-            echo '6';
+        else if (getenv('REMOTE_ADDR'))
             $ipaddress = getenv('REMOTE_ADDR');
-        } else {
-            echo '7';
+        else
             $ipaddress = 'UNKNOWN';
-        }
         echo '<pre>';
         print_r($ipaddress);
         echo '</pre>';

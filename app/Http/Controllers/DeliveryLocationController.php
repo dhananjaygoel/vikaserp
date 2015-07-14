@@ -17,7 +17,10 @@ use Illuminate\Support\Facades\Auth;
 use Redirect;
 
 class DeliveryLocationController extends Controller {
-
+    
+    public function __construct() {
+        $this->middleware('validIP');
+    }
     /**
      * Display a listing of the resource.
      *

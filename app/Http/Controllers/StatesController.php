@@ -17,9 +17,11 @@ use Hash;
 use Illuminate\Support\Facades\Auth;
 use Redirect;
 
-
 class StatesController extends Controller {
 
+    public function __construct() {
+        $this->middleware('validIP');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -49,7 +51,7 @@ class StatesController extends Controller {
      * @return Response
      */
     public function store(StatesRequest $staterequest) {
-        if (Auth::user()->role_id != 0 ) {
+        if (Auth::user()->role_id != 0) {
             return Redirect::to('states')->with('error', 'You do not have permission.');
         }
         $add_states = States::create([
@@ -108,7 +110,7 @@ class StatesController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        if (Auth::user()->role_id != 0 ) {
+        if (Auth::user()->role_id != 0) {
             return Redirect::to('states')->with('error', 'You do not have permission.');
         }
         $state_association = City::where('state_id', '=', $id)->count();
