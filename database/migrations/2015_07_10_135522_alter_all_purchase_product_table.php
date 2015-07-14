@@ -11,8 +11,11 @@ class AlterAllPurchaseProductTable extends Migration {
      * @return void
      */
     public function up() {
+           
         Schema::table('all_purchase_products', function(Blueprint $table) {
             $table->string('from')->comment('purchase from which module');
+             $table->float('quantity');
+             $table->float('price');
         });
     }
 
@@ -24,6 +27,8 @@ class AlterAllPurchaseProductTable extends Migration {
     public function down() {
         Schema::table('all_purchase_products', function($table) {
             $table->dropColumn('from');
+            $table->dropColumn('quantity');
+            $table->dropColumn('price');
         });
     }
 
