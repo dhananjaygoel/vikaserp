@@ -186,7 +186,7 @@ class CustomerController extends Controller {
 
             return redirect('customers')->with('success', 'Customer Succesfully added');
         } else {
-            return Redirect::back()->with('error', 'Some error occoured while saving customer');
+            return Redirect::back()->withInput()->with('error', 'Some error occoured while saving customer');
         }
     }
 

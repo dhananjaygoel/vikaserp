@@ -32,7 +32,8 @@
                         @endif
 
                         <div class="form-group">
-                            Date: 29 April, 2015
+                            Date: {{date('d F, Y')}}
+                            
                         </div>   
                         <form method="POST" action="{{URL::action('DeliveryOrderController@store')}}" accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
@@ -122,7 +123,7 @@
                                                             <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});">
                                                             <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
                                                             <i class="fa fa-search search-icon"></i>
-                                                            <input type="hidden" name="product[{{$key}}][order]" value="">
+                                                            <input type="hidden" name="product[{{$i}}][order]" value="">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-1">

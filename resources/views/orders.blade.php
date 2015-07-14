@@ -264,7 +264,8 @@
                                 @endif
                                 <tr>
                                     <td>{{$k++}}</td>
-                                    <td>{{$order['customer']->owner_name}}</td>
+                                    
+                                    <td>{{isset($order['customer'])?$order['customer']->owner_name:''}}</td>
                                     @if(count($pending_orders) > 0)
                                     @foreach($pending_orders as $porder)
                                     @if($porder['id'] == $order->id)

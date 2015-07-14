@@ -466,7 +466,7 @@ function grand_total_challan() {
 
 
 //    alert(vat_val);
-    var total_price = parseFloat(total_price_products);
+    var total_price = total_price_products;
 
 
     if ($("#loading_charge").length > 0) {
@@ -478,16 +478,8 @@ function grand_total_challan() {
     }
 //    total_l_d_f
     $("#total_price").val(total_price_products);
-    var discount_value = 0;
-    if ($("#discount_value").length > 0) {
-        if (parseInt($("#discount_value").val())) {
-
-            discount_value = (parseFloat($("#discount_value").val()) * total_price) / 100;
-//            alert(discount_value );
-//            total_price = total_price - discount_value;
-        }
-
-    }
+    
+    
     var freight_value = 0;
     if ($("#freight_value").length > 0) {
         if (parseInt($("#freight_value").val())) {
@@ -496,7 +488,20 @@ function grand_total_challan() {
         }
 
     }
-    total_price = (total_price - discount_value) + freight_value;
+    total_price = total_price + freight_value;
+    
+    var discount_value = 0;
+    if ($("#discount_value").length > 0) {
+        if (parseInt($("#discount_value").val())) {
+
+            discount_value = parseFloat($("#discount_value").val());
+//            alert(discount_value );
+//            total_price = total_price - discount_value;
+        }
+
+    }
+    total_price = total_price - discount_value ;
+    
 
 
     $("#total_l_d_f").html("<span class='text-center'>" + total_price + "</span>");

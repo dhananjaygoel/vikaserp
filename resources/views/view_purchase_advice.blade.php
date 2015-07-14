@@ -28,10 +28,10 @@
                             <table id="table-example" class="table customerview_table">
                                 <tbody>                    
                                     <tr>
-                                        <td><span>Bill Date:</span> {{$purchase_advise->purchase_advice_date}}</td>
+                                        <td><span>Bill Date:</span> {{date('m F,Y', strtotime($purchase_advise->purchase_advice_date))}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Supplier Name:</span> {{$purchase_advise['supplier']->owner_name}}</td>
+                                        <td><span>Supplier Name:</span> {{$purchase_advise['supplier']->owner_name.'-'.$purchase_advise['supplier']->tally_name}}</td>
                                     </tr>
                                     <tr><td><span>Contact Person: </span> {{$purchase_advise['supplier']->contact_person}}</td></tr>
 

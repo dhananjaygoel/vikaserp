@@ -44,7 +44,7 @@
                         </div>
                         <hr>
                         <div class="form-group">
-                            <td><span>Party:</span> {{ $delivery_data['customer']->owner_name }}</td>
+                            <td><span>Party:</span> {{ $delivery_data['customer']->owner_name}}-{{$delivery_data['customer']->tally_name}}</td>
                         </div>
                         <hr>
                         <div class="form-group underline">Product Details</div>
@@ -67,9 +67,9 @@
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-2">
                                                 <div class="form-group searchproduct">
-                                                    {{ $product['product_category']->product_category_name}}
+                                                    {{ $product['product_category']['product_sub_category']['alias_name']}}
 
-                                                    <input type="hidden" name="product[{{$key}}][name]" id="name_{{$key}}" value="{{$product['product_category']->product_category_name}}">
+                                                    <input type="hidden" name="product[{{$key}}][name]" id="name_{{$key}}" value="{{$product['product_category']['product_sub_category']['alias_name']}}">
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['product_category']->id}}">
                                                     <!--<i class="fa fa-search search-icon"></i>-->
                                                     <input type="hidden" name="product[{{$key}}][order]" value="delivery_order">
@@ -166,8 +166,8 @@
                             <input id="loading_charge" class="form-control" placeholder="loading" name="loading" value="" type="text" onblur="grand_total_challan();">
                         </div>
                         <div class="form-group">
-                            <label for="vehicle_name"><b class="challan">Discount(In percentage)</b></label>
-                            <input id="discount_value" class="form-control" placeholder="Discount, example :10" name="discount" value="" type="text" onblur="grand_total_challan();">
+                            <label for="vehicle_name"><b class="challan">Discount</b></label>
+                            <input id="discount_value" class="form-control" placeholder="Discount" name="discount" value="" type="text" onblur="grand_total_challan();">
                         </div>
                         <div class="form-group">
                             <label for="driver_name"><b class="challan">Freight</b></label>

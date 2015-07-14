@@ -233,7 +233,7 @@
                 @if($prod->order_type == 'delivery_challan')
                 <div class="divRow">
                     <div class="divCell">{{ $i++ }}</div>
-                    <div class="divCell">{{ $prod['product_category']['product_sub_category']->size }}</div>
+                    <div class="divCell">{{ $prod['product_category']['product_sub_category']->alias_name }}</div>
                     <div class="divCell">xxx</div>
                     <div class="divCell">{{ $prod->quantity }}</div>
                     <div class="divCell">xxx</div>

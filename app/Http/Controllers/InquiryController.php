@@ -434,11 +434,13 @@ class InquiryController extends Controller {
 
     public function fetch_existing_customer() {
         $term = '%' . Input::get('term') . '%';
-        $customers = Customer::where('owner_name', 'like', $term)->where('customer_status', '=', 'permanent')->get();
+        $customers = Customer::where('owner_name', 'like', $term)->where('customer_status', '=', 'permanent')
+                ->orWhere('tally_name', 'like', $term)
+                ->where('customer_status', '=', 'permanent')->get();
         if (count($customers) > 0) {
             foreach ($customers as $customer) {
                 $data_array[] = [
-                    'value' => $customer->owner_name,
+                    'value' => $customer->owner_name.'-'.$customer->tally_name,
                     'id' => $customer->id,
                     'delivery_location_id' => $customer->delivery_location_id
                 ];

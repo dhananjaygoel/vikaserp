@@ -27,7 +27,7 @@
                             <table id="table-example" class="table customerview_table">
                                 <tbody>                    
                                     <tr>
-                                        <td><span>Customer Name:</span> {{ $delivery_data[0]['customer']->owner_name }}</td>
+                                        <td><span>Customer Name:</span> {{ $delivery_data[0]['customer']->owner_name }}-{{$delivery_data[0]['customer']->tally_name}}</td>
                                     </tr>
                                     <tr><td><span>Contact Person: </span>{{ $delivery_data[0]['customer']->contact_person }}</td></tr>
                                     <tr>

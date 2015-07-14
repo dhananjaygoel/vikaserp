@@ -35,13 +35,13 @@
                                         @elseif($order->order_source == 'supplier')
                                         @foreach($customers as $customer)
                                         @if($customer->id == $order->supplier_id)
-                                        <tr><td><span><b>Supplier Name:</b></span>  {{$customer->owner_name}} </td></tr>
+                                        <tr><td><span><b>Supplier Name:</b></span>  {{$customer->owner_name}}-{{$customer->tally_name}} </td></tr>
                                         @endif
                                         @endforeach
                                         @endif
                                         @foreach($customers as $customer)
                                         @if($customer->id == $order->customer_id)
-                                        <tr><td><span><b>Customer Name:</b></span> {{$customer->owner_name}} </td></tr>
+                                        <tr><td><span><b>Customer Name:</b></span> {{$customer->owner_name}}-{{$customer->tally_name}}</td></tr>
                                         <tr><td><span><b>Contact Person: </b></span> {{$customer->contact_person}}</td></tr>
                                         <tr><td><span><b>Mobile Number: </b></span>{{$customer->phone_number1}}</td></tr>
                                         @if($customer->credit_period != "" || $customer->credit_period>0)

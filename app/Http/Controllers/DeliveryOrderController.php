@@ -369,12 +369,15 @@ class DeliveryOrderController extends Controller {
     }
 
     public function create_delivery_challan($id) {
-        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.product_category')->where('id', $id)->first();
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.product_category.product_sub_category')->where('id', $id)->first();
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $price_delivery_order = $this->calculate_price($delivery_data);
         $customers = Customer::all();
-
+//        echo '<pre>';
+//        print_r($delivery_data['delivery_product']->toArray());
+//        echo '</pre>';
+//        exit;
         return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'price_delivery_order'));
     }
 

@@ -11,11 +11,11 @@
                 </ol>
                 <div class="filter-block">
                     <h1 class="pull-left">View Purchase Challan </h1>                                 
-                    <div class="pull-right top-page-ui">
+<!--                    <div class="pull-right top-page-ui">
                         <a href="{{URL::action('PurchaseChallanController@edit',['id'=> $purchase_challan->id])}}" class="btn btn-primary pull-right">
                             Edit Purchase Challan
                         </a>
-                    </div>                
+                    </div>                -->
                 </div>
             </div>
         </div>
@@ -36,7 +36,7 @@
                                         <td><span>Serial Number: </span> {{ $purchase_challan->serial_number }}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Party Name: </span>{{  $purchase_challan['supplier']->owner_name }}</td>
+                                        <td><span>Party Name: </span>{{  $purchase_challan['supplier']->owner_name.'-'.$purchase_challan['supplier']->tally_name }}</td>
                                     </tr>
                                     <tr>
                                         <td><span class="underline"> Product Details </span></td>

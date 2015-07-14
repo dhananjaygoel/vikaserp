@@ -52,7 +52,7 @@
                                             <div class="targetdate">
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                    <input type="text" name="bill_date" class="form-control" id="bill_date" value="{{Input::old('bill_date')}}">
+                                                    <input type="text" name="bill_date" class="form-control" id="bill_date" value="{{Input::old('bill_date')!=''?Input::old('bill_date'):date('m-d-Y')}}">
                                                 </div>
                                             </div>
                                         </td>
@@ -72,7 +72,7 @@
                                         <option value="" selected="">Select supplier</option>
                                         @if(count($customers))
                                         @foreach($customers as $c)
-                                        <option value="{{$c->id}}" default_location="{{$c->delivery_location_id}}">{{$c->owner_name}}</option>
+                                        <option value="{{$c->id}}" default_location="{{$c->delivery_location_id}}">{{$c->owner_name.'-'.$c->tally_name}}</option>
                                         
                                         @endforeach
                                         @endif
@@ -112,6 +112,7 @@
                                                         <div class="form-group searchproduct">
                                                             <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});">
                                                             <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
+                                                            <input type="hidden" name="product[{{$i}}][purchase]" value="">
                                                             <i class="fa fa-search search-icon"></i>
                                                         </div>
                                                     </td>
@@ -257,7 +258,7 @@
                                 <label for="date">Expected Delivery Date</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input type="text" name="expected_delivery_date" class="form-control" id="datepickerDate1">
+                                    <input type="text" name="expected_delivery_date" class="form-control" id="datepickerDate1" value="{{Input::old('expected_delivery_date')!=''?Input::old('expected_delivery_date'):date('m-d-Y')}}">
                                 </div>
 
                             </div>

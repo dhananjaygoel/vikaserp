@@ -1,3 +1,9 @@
+<?php
+//echo '<pre>';
+//print_r($order->toArray());
+//echo '</pre>';
+//exit;
+?>
 @extends('layouts.master')
 @section('title','Create Delivery Order')
 @section('content')
@@ -44,13 +50,13 @@
                                 <!--<tr><td><span><b>Warehouse: </b></span> no</td></tr>-->
                                 @foreach($customers as $customer)
                                 @if($customer->id == $order->supplier_id)
-                                <tr><td><span><b>Supplier Name:</b></span>  {{$customer->owner_name}} </td></tr>
+                                <tr><td><span><b>Supplier Name:</b></span>  {{$customer->owner_name.'-'.$customer->tally_name}} </td></tr>
                                 @endif
                                 @endforeach
                                 @endif
                                 @foreach($customers as $customer)
                                 @if($customer->id == $order->customer_id)
-                                <tr><td><span><b>Customer Name :</b></span> {{$customer->owner_name}} </td></tr>
+                                <tr><td><span><b>Customer Name :</b></span> {{$customer->owner_name.'-'.$customer->tally_name}} </td></tr>
                                 <tr><td><span><b>Contact Person : </b></span> {{$customer->contact_person}}</td></tr>
                                 <tr><td><span><b>Mobile Number : </b></span>{{$customer->phone_number1}}</td></tr>
 
@@ -100,7 +106,7 @@
                                         <?php $total = 0; ?>
                                         @foreach($order['all_order_products'] as $key=>$product)
                                         @if($product->order_type =='order')
-                                        
+
                                         <tr id="add_row_{{$key}}" class="add_product_row">
 
                                             <td class="col-md-3">
@@ -108,7 +114,7 @@
                                                     {{$product['product_category']['product_sub_category']->alias_name }}
                                                     <input class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['product_category']->product_category_name}}" readonly="readonly" >
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}"  value="{{$product->product_category_id}}" readonly="readonly">
-                                                    <input type="hidden" name="product[{{$key}}][order]" value="order">
+                                                    <input type="hidden" name="product[{{$key}}][order]" value="{{$product->id}}">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -139,13 +145,19 @@
                                             <td class="col-md-1">
                                                 <div class="form-group">
                                                     <?php $present_shipping = 0; ?>
-                                                    @if($order->order_source == 'warehouse')
-                                                    <?php $present_shipping = 0; ?>
-                                                    @else
+
                                                     <?php $present_shipping = $product->quantity; ?>                                                    
+
+                                                    @if(count($pending_orders) > 0)
+                                                    @foreach($pending_orders as $porder)
+                                                    @if($porder['product_id'] == $product->product_category_id && $porder['unit']==$product->unit_id && $porder['from'] == $product->id)
+                                                    <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$porder['total_pending_quantity']}}" type="text" onblur="change_quantity({{$key}});">
+                                                    @endif
+                                                    @endforeach
+                                                    @else
+                                                    <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$present_shipping}}" type="text" onblur="change_quantity({{$key}});">
                                                     @endif
 
-                                                    <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$present_shipping}}" type="text" onblur="change_quantity({{$key}});">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -158,19 +170,11 @@
 
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    @if(count($pending_orders) > 0)
-                                                    @foreach($pending_orders as $porder)
-                                                    @if($porder['product_id'] == $product->product_category_id && $porder['unit']==$product->unit_id )
-                                                    <input type="hidden" value="{{$porder['total_pending_quantity']}}" id="pending_qunatity_value_{{$key}}">
-                                                    <div id="pending_qunatity_{{$key}}"><span class="text-center">{{$porder['total_pending_quantity']}}</span>
+                                                    
+                                                    <input type="hidden" value="0" id="pending_qunatity_value_{{$key}}">
+                                                    <div id="pending_qunatity_{{$key}}"><span class="text-center">0</span>
                                                     </div>
-                                                    @endif
-                                                    @endforeach
-                                                    @else
-                                                    <input type="hidden" value="{{$product->quantity}}" id="pending_qunatity_value_{{$key}}">
-                                                    <div id="pending_qunatity_{{$key}}"><span class="text-center">{{$product->quantity}}</span>
-                                                    </div>
-                                                    @endif
+                                                    
                                                 </div>
                                             </td>
 

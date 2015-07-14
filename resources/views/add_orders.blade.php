@@ -240,7 +240,7 @@
                                 <label for="time">Expected Delivery Date: </label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input type="text" name="expected_date" class="form-control" id="expected_delivery_date_order">
+                                    <input type="text" name="expected_date" value="{{Input::old('expected_date')!=''?Input::old('expected_date'):date('m-d-Y')}}" class="form-control" id="expected_delivery_date_order">
                                 </div>
                             </div>
                             <div class="clearfix"></div>

@@ -129,6 +129,7 @@ $(document).ready(function () {
                 '<input id="remark" class="form-control" placeholder="Remark" name="product[' + current_row_count + '][remark]" value="" type="text">' +
                 '</div>' +
                 '</td>' +
+                '<input type="hidden" name="product[' + current_row_count + '][order]" value="">' +
                 '</tr>';
         $("#add_product_table").children("tbody").append(html);
         var purchase_html = '<tr id="add_row_' + current_row_count + '" class="add_product_row">' +
@@ -185,7 +186,7 @@ $(document).ready(function () {
                 '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
                 '<i class="fa fa-search search-icon"></i>' +
                 '</div>' +
-                '<input type="hidden" name="product[' + current_row_count + '][purchase]" value="">'+
+                '<input type="hidden" name="product[' + current_row_count + '][purchase]" value="">' +
                 '</td>' +
                 '<td class="col-md-1">' +
                 '<div class="form-group">' +
@@ -284,11 +285,13 @@ $(document).ready(function () {
 //    });
 });
 
-function save_price_inquiry_view(id) {
+function save_price_inquiry_view(id, inq_id) {
+//    alert(" inq id"+inq_id);
     var id = $("#hidden_inquiry_product_id_" + id).val();
     var updated_price = $("#difference_" + id).val();
     if (updated_price == "") {
         event.preventDefault();
+
     } else {
         $.ajax({
             type: 'POST',
@@ -297,7 +300,26 @@ function save_price_inquiry_view(id) {
         }).done(function () {
 //            location.reload();
 //            $("#difference_" + id).val(updated_price);
+
+//            $("#save_price_inquiry_view_" + id).removeClass('btn-primary');
+            var price_val = '' + updated_price;
+            $("#price_" + id).html(price_val);
+//            $("#save_price_inquiry_view_" + id).addClass('btn-default');
+            var html_btn = '<span type="button" class="btn btn-default" >Save</span>';
+            $("#product_save_btn_"+id).html(html_btn);
             $('#inquire_msg').css('display', 'block');
+            var length_btns = $("#inquiry_details_table").find('.btn-primary').length;
+            
+            if ( length_btns> 0) {
+//                alert('button found');
+                var html = '<span title="You can not click unless you save all prices" type="button" class="btn btn-default smstooltip" >Send SMS</span>';
+                $("#send_sms_button").html(html);
+            }
+            else {
+            var html = '<a href="" title="SMS would be sent to Party and Relationship Manager" type="button" class="btn btn-primary smstooltip" >Send SMS</a>';
+            $("#send_sms_button").html(html);
+            }
+
         });
     }
     $('#inquire_msg').css('display', 'block');
