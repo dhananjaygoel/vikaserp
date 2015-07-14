@@ -18,7 +18,7 @@
             <div class="col-lg-12">
                 <div class="main-box"> 
                     <div class="main-box-body clearfix">
-                        <form method="POST" action="{{url('delivery_challan/'.$allorder->id)}}" accept-charset="UTF-8" >
+                        <form id="onenter_prevent" method="POST" action="{{url('delivery_challan/'.$allorder->id)}}" accept-charset="UTF-8" >
                             @if (Session::has('validation_message'))
                             <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('validation_message') }}</div>
                             @endif

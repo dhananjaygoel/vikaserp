@@ -27,10 +27,10 @@
                         </div>
                         @endif 
 
-                        {!!Form::open(array('method'=>'PUT','url'=>url('product_sub_category/'.$prod_sub_cat->id),'id'=>'updateUserForm'))!!}
+                        {!!Form::open(array('method'=>'PUT','url'=>url('product_sub_category/'.$prod_sub_cat->id),'id'=>'onenter_prevent'))!!}
 
                         <div class="form-group productcategory col-md-3">
-                            <input type="hidden" name="baseurl" id="baseurl2" value="{{url()}}" />
+                            <input type="hidden" name="baseurl" id="baseurl2" value="{{url()}}" /> 
                             <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="units" id="units" value="{{$units->id}}">
                             <label for="status">Select Product Category<span class="mandatory">*</span></label>

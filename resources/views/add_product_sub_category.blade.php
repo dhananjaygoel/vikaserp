@@ -27,7 +27,7 @@
                         </div>
                         @endif 
 
-                        <form method="POST" action="{{URL::action('ProductsubController@store')}}" accept-charset="UTF-8" >
+                        <form id="onenter_prevent" method="POST" action="{{URL::action('ProductsubController@store')}}" accept-charset="UTF-8" >
                             <input type="hidden" name="units" id="units" value="{{$units->id}}">
                             <div class="form-group productcategory col-md-3">
                                 <input type="hidden" name="baseurl" id="baseurl2" value="{{url()}}" />

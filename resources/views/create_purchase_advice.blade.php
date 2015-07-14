@@ -18,7 +18,7 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
-                        <form method="POST" action="{{URL::action('PurchaseAdviseController@store_advise')}}">
+                        <form id="onenter_prevent" method="POST" action="{{URL::action('PurchaseAdviseController@store_advise')}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="id" value="{{$purchase_orders->id}}">
                             @if (count($errors) > 0)
