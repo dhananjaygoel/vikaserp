@@ -6,8 +6,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
-                    <li class="active"><span>Place Order</span></li>
+                    <li><a href="{{url('purchase_orders')}}">Purchase Order</a></li>
+                    <li class="active"><span>Add Purchase Order</span></li>
                 </ol>
             </div>
         </div>

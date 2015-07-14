@@ -203,7 +203,7 @@
                             <hr>
                             <div>
                                 <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
-                                <a href="{{url('customers')}}" class="btn btn-default form_button_footer">Back</a>
+                                <a href="{{url('pending_customers')}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>
                         </form>

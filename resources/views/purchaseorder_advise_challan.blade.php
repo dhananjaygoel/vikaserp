@@ -4,8 +4,8 @@
 <div class="row">
     <div class="col-lg-12">
         <ol class="breadcrumb">
-            <li><a href="{{url('dashboard')}}">Home</a></li>
-            <li class="active"><span>Purchase Challan</span></li>
+            <li><a href="{{url('purchase_orders')}}">Purchase Order</a></li>
+            <li class="active"><span>Create Purchase Challan</span></li>
         </ol>
         <div class="clearfix">
             <h1 class="pull-left"></h1>

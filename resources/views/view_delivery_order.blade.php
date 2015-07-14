@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{'delivery_order'}}">Delivery Order</a></li>
+                    <li><a href="{{url('delivery_order')}}">Delivery Order</a></li>
                     <li class="active"><span>View Delivery Order</span></li>
                 </ol>
                 <div class="filter-block">

@@ -74,7 +74,7 @@
                                     @foreach($purchase_challan['purchase_product'] as $product_data)
                                     @if($product_data->order_type == 'purchase_challan')
                                     <tr>
-                                        <td> {{$product_data['product_sub_category']->alias_name}} </td>
+                                        <td> {{$product_data['purchase_product_details']->alias_name}} </td>
                                         <td> {{$product_data->quantity}}</td>
                                         <td> {{$product_data['unit']->unit_name}} </td>
                                         <td> {{$product_data->present_shipping}}</td> 
