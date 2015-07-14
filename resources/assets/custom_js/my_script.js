@@ -228,6 +228,9 @@ function setup() {
         GLOBAL_NAMESPACE.value_changed = true;
     });
 }
+$(document).ajaxStart(function() {  
+    GLOBAL_NAMESPACE.value_changed = false;
+});
 /*
  | RESTRICT REDIRECT ON HALF FILLED FORM ENDS
  */
