@@ -382,3 +382,25 @@ $("#product_size").autocomplete({
     }
 
 });
+
+$("#search_text").autocomplete({
+    minLength: 1,
+    dataType: 'json',
+    type: 'GET',
+    source: function (request, response) {
+        $.ajax({
+            url: baseurl + '/fetch_product_name',
+            data: {"term": request.term},
+            success: function (data) {
+                var main_array = JSON.parse(data);
+                var arr1 = main_array['data_array'];
+                response(arr1);
+            },
+        });
+    },
+    select: function (event, ui) {
+        $("#search_text").val(ui.item.id);
+
+    }
+
+});

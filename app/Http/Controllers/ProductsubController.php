@@ -221,4 +221,21 @@ class ProductsubController extends Controller {
         echo json_encode(array('data_array' => $data_array));
     }
 
+    public function fetch_product_name() {
+        $term = '%' . Input::get('term') . '%';
+        $product = ProductCategory::where('product_category_name', 'like', $term)->get();
+        if (count($product) > 0) {
+            foreach ($product as $prod) {
+                $data_array[] = [
+                    'value' => $prod->product_category_name
+                ];
+            }
+        } else {
+            $data_array[] = [
+                'value' => 'No Product found',
+            ];
+        }
+        echo json_encode(array('data_array' => $data_array));
+    }
+
 }

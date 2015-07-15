@@ -76,6 +76,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('get_product_category', 'ProductsubController@get_product_category');
     Route::post('update_difference', 'ProductsubController@update_difference');
     Route::get('fetch_product_size', 'ProductsubController@fetch_product_size');
+    Route::get('fetch_product_name', 'ProductsubController@fetch_product_name');
 
     Route::resource('delivery_order', 'DeliveryOrderController');
     Route::resource('pending_delivery_order', 'DeliveryOrderController@pending_delivery_order');
