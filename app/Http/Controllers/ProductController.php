@@ -128,13 +128,6 @@ class ProductController extends Controller {
         $val = Input::get('price');
         $key = Input::get('product_id');
 
-//        $data = array(
-//            'price' => Input::get('product_id')
-//        );
-//
-//        $suc = ProductCategory::where('id', Input::get('product_id'))
-//                ->update($data);
-
         ProductCategory::where('id', $key)
                 ->update(array('price' => $val));
     }
