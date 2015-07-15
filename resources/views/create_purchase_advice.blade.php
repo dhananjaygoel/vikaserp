@@ -51,7 +51,7 @@
                                             <tr class="cdtable">
                                                 <td><b>Supplier Name:</b></td>
                                                 <td>
-                                                    {{$purchase_orders['customer']->owner_name}}
+                                                    {{$purchase_orders['customer']->owner_name}}{{'-'.$purchase_orders['customer']->tally_name}}
                                                     <input type="hidden" name="supplier_id" value="{{$purchase_orders['customer']->id}}">
                                                 </td>
                                             </tr>

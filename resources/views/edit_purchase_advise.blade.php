@@ -51,7 +51,7 @@
                                 <label for="cn"><b>Serial Number:</b> {{$purchase_advise->serial_number}}</label>
                             </div>
                             <div class="form-group">
-                                <label for="cn"><b>Supplier Name:</b> {{$purchase_advise['supplier']->owner_name}}</label>
+                                <label for="cn"><b>Supplier Name:</b> {{$purchase_advise['supplier']->owner_name}}{{'-'.$purchase_advise['supplier']->tally_name}}</label>
                             </div>
                             <div class="inquiry_table col-md-12" >
                                 <div class="table-responsive">

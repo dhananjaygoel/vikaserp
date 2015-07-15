@@ -28,7 +28,7 @@
                             <div class="table-responsive">
                                 <table id="table-example" class="table table-hover customerview_table  ">
                                     <tbody>
-                                        <tr><td><span>Supplier Name:</span> {{$purchase_orders['customer']->owner_name}}</td></tr>
+                                        <tr><td><span>Supplier Name:</span> {{$purchase_orders['customer']->owner_name}}{{'-'.$purchase_orders['customer']->tally_name}}</td></tr>
                                         <tr><td><span>Contact Person:</span>{{$purchase_orders['customer']->contact_person}}</td></tr>
                                         <tr><td><span>Mobile Number: </span>{{$purchase_orders['customer']->phone_number1}}</td></tr>
 
