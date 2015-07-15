@@ -145,21 +145,4 @@ class ProductController extends Controller {
         return redirect('product_category')->with('success', 'Product category price successfully updated.');
     }
 
-    public function fetch_product_size() {
-        $term = '%' . Input::get('term') . '%';
-        $product = ProductSubCategory::where('size', 'like', $term)->get();
-        if (count($product) > 0) {
-            foreach ($product as $prod) {
-                $data_array[] = [
-                    'value' => $prod->size
-                ];
-            }
-        } else {
-            $data_array[] = [
-                'value' => 'No size found',
-            ];
-        }
-        echo json_encode(array('data_array' => $data_array));
-    }
-
 }

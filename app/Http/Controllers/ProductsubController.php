@@ -53,9 +53,12 @@ class ProductsubController extends Controller {
                     ->Paginate(20);
         } elseif (Input::get('product_size') != "") {
 
+            $size_ar = explode("-", Input::get('product_size'));
+            $size = $size_ar[0];
+
             $product_sub_cat = ProductSubCategory::with('product_category')
-                    ->whereHas('product_category', function($query) {
-                        $query->where('size', 'like', '%' . Input::get('product_size') . '%');
+                    ->whereHas('product_category', function($query) use ($size) {
+                        $query->where('size', 'like', '%' . trim($size) . '%');
                     })
                     ->Paginate(20);
         } else {
@@ -199,6 +202,23 @@ class ProductsubController extends Controller {
         $product_cat = ProductSubCategory::where('product_category_id', $product_id)->first();
         $product_weight = $product_cat['weight'];
         return $product_weight;
+    }
+
+    public function fetch_product_size() {
+        $term = '%' . Input::get('term') . '%';
+        $product = ProductSubCategory::where('size', 'like', $term)->get();
+        if (count($product) > 0) {
+            foreach ($product as $prod) {
+                $data_array[] = [
+                    'value' => $prod->size . " - " . $prod->alias_name
+                ];
+            }
+        } else {
+            $data_array[] = [
+                'value' => 'No size found',
+            ];
+        }
+        echo json_encode(array('data_array' => $data_array));
     }
 
 }
