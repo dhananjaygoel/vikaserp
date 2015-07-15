@@ -126,15 +126,8 @@
     }
 </style>
 <div class="invoice">
-    <?php
-    
-    echo '<pre>';
-    print_r($order);
-    echo '</pre>';
-    
-    ?>
-    <p>Dear {{$order->customer_name}}, </p>
-    <p>New order has been generated for your enquiry on {{$order->created_date}}</p>
+    <p>Dear {{$order['customer_name']}}, </p>
+    <p>New order has been generated for your enquiry on {{$order['created_date']}}</p>
     <p>Here are the details for your order,</p>
     <div class="divTable">                
         <div class="headRow">
@@ -144,7 +137,7 @@
             <div  class="divCell">Quantity</div>
             <div  class="divCell">Rate</div>                
         </div>
-        <?php $i = 1; ?>
+<?php $i = 1; ?>
         @foreach($order['order_product'] as $product)
         <div class="divRow">
             <div class="divCell">{{ $i++ }}</div>
@@ -157,7 +150,7 @@
     </div>
     <div class="footer">
         <div class="remark"> Remark </div>
-        <div class="content"> {{ $order->remarks }} </div>
+        <div class="content"> {{ $order[->]'remarks'] }} </div>
     </div>
-    <p>You order will be delivered By: {{$order->expected_delivery_date}}</p>
+    <p>You order will be delivered By: {{$order['expected_delivery_date']}}</p>
 </div>
