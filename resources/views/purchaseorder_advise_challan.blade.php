@@ -23,7 +23,7 @@
                     @endforeach                       
                 </div>
                 @endif 
-                <form method="POST" action="{{URL::action('PurchaseChallanController@store')}}" accept-charset="UTF-8" >
+                <form method="POST" action="{{URL::action('PurchaseChallanController@store')}}" accept-charset="UTF-8" id="onenter_prevent">
                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                     <input type="hidden" name="purchase_advice_id" value="{{$purchase_advise->id}}"/>
                     <input type="hidden" name="purchase_order_id" value="{{$purchase_advise->purchase_order_id}}"/>
