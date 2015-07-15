@@ -15,6 +15,7 @@ use App\ProductCategory;
 use DB;
 use Config;
 use Auth;
+use Mail;
 use App\Http\Requests\InquiryRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
@@ -436,12 +437,12 @@ class InquiryController extends Controller {
     public function fetch_existing_customer() {
         $term = '%' . Input::get('term') . '%';
         $customers = Customer::where('owner_name', 'like', $term)->where('customer_status', '=', 'permanent')
-                ->orWhere('tally_name', 'like', $term)
-                ->where('customer_status', '=', 'permanent')->get();
+                        ->orWhere('tally_name', 'like', $term)
+                        ->where('customer_status', '=', 'permanent')->get();
         if (count($customers) > 0) {
             foreach ($customers as $customer) {
                 $data_array[] = [
-                    'value' => $customer->owner_name.'-'.$customer->tally_name,
+                    'value' => $customer->owner_name . '-' . $customer->tally_name,
                     'id' => $customer->id,
                     'delivery_location_id' => $customer->delivery_location_id
                 ];
@@ -582,17 +583,7 @@ class InquiryController extends Controller {
 
             $validator = Validator::make($input_data, Customer::$existing_customer_inquiry_rules);
             if ($validator->passes()) {
-
                 $customer_id = $input_data['existing_customer_name'];
-
-                //send mail
-                if (isset($input_data['send_email'])) {
-                    $customers = Customer::find($customer_id);
-
-                    Mail::send('emails.order_complete_email', ['key' => $customers->owner_name], function($message) {
-                        $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Order details created from Inquiry');
-                    });
-                }
             } else {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
@@ -684,6 +675,28 @@ class InquiryController extends Controller {
                     'remarks' => $product_data['remark'],
                 ];
                 $add_order_products = AllOrderProducts::create($order_products);
+            }
+        }
+
+
+        //send mail
+        if (isset($input_data['send_email'])) {
+            $customers = Customer::find($customer_id);
+
+            $order = Order::where('id', '=', $order_id)->with('all_order_products.order_product_details')->first();
+            echo '<pre>';
+            print_r($order->toArray());
+            echo '</pre>';
+            if (count($order) > 0) {
+                $mail_array = array(
+                    'customer_name' => $customers->owner_name,
+                    'expected_delivery_date' => $order->expected_delivery_date,
+                    'created_date' => $order->created_at,
+                    'order_product' => $order['all_order_products']
+                );
+                Mail::send('emails.new_order_mail', ['order' => $mail_array ], function($message) {
+                    $message->to('amana@agstechnologies.com', 'Aman Agarwal')->subject('Order details created from Inquiry');
+                });
             }
         }
         Inquiry::where('id', '=', $id)->update(['inquiry_status' => 'Completed']);
