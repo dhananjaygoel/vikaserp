@@ -354,18 +354,12 @@ $('#edit_state_form input').keypress(function (e) {
 });
 
 
-
-
-
-
-
-
-
 $("#product_size").autocomplete({
     minLength: 1,
     dataType: 'json',
     type: 'GET',
     source: function (request, response) {
+        $("#product_size").addClass('loadinggif');
         $.ajax({
             url: baseurl + '/fetch_product_size',
             data: {"term": request.term},
@@ -373,6 +367,7 @@ $("#product_size").autocomplete({
                 var main_array = JSON.parse(data);
                 var arr1 = main_array['data_array'];
                 response(arr1);
+                $("#product_size").removeClass('loadinggif');
             },
         });
     },
@@ -388,6 +383,7 @@ $("#search_text").autocomplete({
     dataType: 'json',
     type: 'GET',
     source: function (request, response) {
+        $("#search_text").addClass('loadinggif');
         $.ajax({
             url: baseurl + '/fetch_product_name',
             data: {"term": request.term},
@@ -395,6 +391,7 @@ $("#search_text").autocomplete({
                 var main_array = JSON.parse(data);
                 var arr1 = main_array['data_array'];
                 response(arr1);
+                $("#search_text").removeClass('loadinggif');
             },
         });
     },
