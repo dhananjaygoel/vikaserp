@@ -39,6 +39,7 @@ $(document).ready(function () {
         dataType: 'json',
         type: 'GET',
         source: function (request, response) {
+            $("#existing_customer_name").addClass('loadinggif');
             $.ajax({
                 url: baseurl + '/fetch_existing_customer',
                 data: {"term": request.term},
@@ -46,6 +47,7 @@ $(document).ready(function () {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
                     response(arr1);
+                    $("#existing_customer_name").removeClass('loadinggif');
                 },
             });
         },
@@ -61,6 +63,7 @@ $(document).ready(function () {
         dataType: 'json',
         type: 'GET',
         source: function (request, response) {
+            $("#existing_supplier_name").addClass('loadinggif');
             $.ajax({
                 url: baseurl + '/fetch_existing_customer',
                 data: {"term": request.term},
@@ -68,6 +71,7 @@ $(document).ready(function () {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
                     response(arr1);
+                    $("#existing_supplier_name").removeClass('loadinggif');
                 },
             });
         },
@@ -276,13 +280,6 @@ $(document).ready(function () {
         else
             $("#other_location_input_wrapper").hide();
     });
-//
-//    $('#loc1').change(function() {
-//        if ($('#loc1').val() == '3') {
-//            $('.locationtext').toggle();
-//        }
-//
-//    });
 });
 
 function save_price_inquiry_view(id, inq_id) {
@@ -301,25 +298,25 @@ function save_price_inquiry_view(id, inq_id) {
 //            location.reload();
 //            $("#difference_" + id).val(updated_price);
             var html_svbtn = '<span type="button" class="btn btn-default" >Save</span>';
-            $("#save_btn_"+id).html(html_svbtn);
+            $("#save_btn_" + id).html(html_svbtn);
             $("#save_price_inquiry_view_" + id).removeClass('btn-primary');
             var price_val = '' + updated_price;
             $("#price_" + id).html(price_val);
             $("#save_price_inquiry_view_" + id).addClass('btn-default');
             var html_btn = '<span type="button" class="btn btn-default" >Save</span>';
-            $("#product_save_btn_"+id).html(html_btn);
+            $("#product_save_btn_" + id).html(html_btn);
             $('#inquire_msg').css('display', 'block');
-           var length_btns = $(".customerview_table .btn-primary").length;
+            var length_btns = $(".customerview_table .btn-primary").length;
 //            alert("lengths "+length_btns);
-            if ( length_btns > 0) {
+            if (length_btns > 0) {
 //                alert('button found');
                 var html = '<span title="You can not click unless you save all prices" type="button" class="btn btn-default smstooltip" >Send SMS</span>';
                 $("#send_sms_button").html(html);
             }
             else {
-                var url_send_sms = baseurl+'/inquiry/'+inq_id+'?sendsms=true';
-            var html = '<a href="'+url_send_sms+'" title="SMS would be sent to Party and Relationship Manager" type="button" class="btn btn-primary smstooltip" >Send SMS</a>';
-            $("#send_sms_button").html(html);
+                var url_send_sms = baseurl + '/inquiry/' + inq_id + '?sendsms=true';
+                var html = '<a href="' + url_send_sms + '" title="SMS would be sent to Party and Relationship Manager" type="button" class="btn btn-primary smstooltip" >Send SMS</a>';
+                $("#send_sms_button").html(html);
             }
 
         });
@@ -379,19 +376,13 @@ function product_autocomplete(id) {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
                     response(arr1);
+                    $("#add_product_name_" + id).removeClass('loadinggif');
                 },
             });
         },
         select: function (event, ui) {
-//            alert(ui.item.id);
-//            alert(ui.item.product_price);
             $("#product_price_" + id).val(ui.item.product_price);
             $("#add_product_id_" + id).val(ui.item.id);
-//            var next_row = $("#product_price_" + id).parent().parent().parent().next().attr("id");
-//            $("#" + next_row).children().each(function() {
-//                alert($(this).attr("class"));
-//            });
-            $("#add_product_name_" + id).removeClass('loadinggif');
         }
     });
 }
