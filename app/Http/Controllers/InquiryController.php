@@ -678,15 +678,11 @@ class InquiryController extends Controller {
             }
         }
 
-
         //send mail
         if (isset($input_data['send_email'])) {
             $customers = Customer::find($customer_id);
 
             $order = Order::where('id', '=', $order_id)->with('all_order_products.order_product_details')->first();
-            echo '<pre>';
-            print_r($order->toArray());
-            echo '</pre>';
             if (count($order) > 0) {
                 $mail_array = array(
                     'customer_name' => $customers->owner_name,
@@ -694,8 +690,8 @@ class InquiryController extends Controller {
                     'created_date' => $order->created_at,
                     'order_product' => $order['all_order_products']
                 );
-                Mail::send('emails.new_order_mail', ['order' => $mail_array ], function($message) {
-                    $message->to('amana@agstechnologies.com', 'Aman Agarwal')->subject('New Order Created');
+                Mail::send('emails.new_order_mail', ['order' => $mail_array ], function($message) use($customers) {
+                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: New Order');
                 });
             }
         }
