@@ -118,7 +118,7 @@
                                                 </span>
                                             </a>
                                             @elseif($delivery->order_status != 'completed')
-                                            <span class="table-link" title="Delivery challan">
+                                            <span class="table-link normal_cursor" title="Delivery challan">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-book fa-stack-1x fa-inverse"></i>
@@ -141,8 +141,8 @@
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @elseif($delivery->serial_no != "")
-                                            <span class="table-link" title="edit" >
+                                            @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0  || Auth::user()->role_id == 1 )
+                                            <span class="table-link normal_cursor" title="edit" >
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -157,8 +157,8 @@
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @elseif($delivery->serial_no != "")
-                                            <span class="table-link" title="print">
+                                            @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+                                            <span class="table-link normal_cursor" title="print">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>

@@ -48,7 +48,7 @@
                                         <td class="text-center">{{$challan['supplier']->owner_name}}</td>
                                         <td class="text-center">{{$challan->serial_number}}</td>
                                         <td class="text-center">{{$challan->bill_number}}</td>
-                                        <td class="text-center">{{$challan['purchase_advice']->purchase_advice_date}}</td>
+                                        <td class="text-center">{{date('d F, Y',strtotime($challan['purchase_advice']->purchase_advice_date))}}</td>
                                         <td class="text-center">250</td>
                                         <td class="text-center">
                                             <a href="{{URL::action('PurchaseChallanController@show',['id'=> $challan->id]) }}" class="table-link" title="view">
@@ -66,13 +66,14 @@
                                                 </span>
                                             </span>-->
                                             <!--</a>-->
-
+                                            @if($challan->order_status != 'completed' || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                             <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_model_{{$challan->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @endif
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                             <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_purchase_challan_{{$challan->id}}" title="delete">
                                                 <span class="fa-stack">

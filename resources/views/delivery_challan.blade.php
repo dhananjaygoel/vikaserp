@@ -88,7 +88,7 @@
                                                                                                 <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                                                             </span>
                                                                                         </a>-->
-
+                                            
                                             <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan_{{$challan->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -188,21 +188,21 @@
                                                 <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                             </span>
                                         </a>
-
-                                        <a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
+                                        @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+<!--                                        <a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                             </span>
                                         </a>
-
+                                       -->
                                         <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan_{{$challan->id}}">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                             </span>
                                         </a>
-                                        @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+
                                         <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_{{$challan->id}}" title="delete">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
@@ -292,7 +292,7 @@
                                 <?php echo $allorders->render(); ?>
                             </span>
                             <span class="clearfix"></span>
-                            
+
                             @if($allorders->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
                                 <form class="form-inline" method="GET" action="{{url('delivery_challan')}}" id="filter_search">
