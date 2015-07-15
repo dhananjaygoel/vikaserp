@@ -67,7 +67,7 @@
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-2">
                                                 <div class="form-group searchproduct">
-                                                    {{ $product['product_category']['product_sub_category']['alias_name']}}
+                                                    {{ $product['order_product_details']->alias_name}}
 
                                                     <input type="hidden" name="product[{{$key}}][name]" id="name_{{$key}}" value="{{$product['order_product_details']->alias_name}}">
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']['product_category']->id}}">
