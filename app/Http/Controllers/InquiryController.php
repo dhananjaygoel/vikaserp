@@ -695,7 +695,7 @@ class InquiryController extends Controller {
                     'order_product' => $order['all_order_products']
                 );
                 Mail::send('emails.new_order_mail', ['order' => $mail_array ], function($message) {
-                    $message->to('amana@agstechnologies.com', 'Aman Agarwal')->subject('Order details created from Inquiry');
+                    $message->to('amana@agstechnologies.com', 'Aman Agarwal')->subject('New Order Created');
                 });
             }
         }
