@@ -125,11 +125,18 @@ class ProductController extends Controller {
     }
 
     public function update_price() {
-        echo Input::get('price');
-        echo Input::get('product_id');
+        $val = Input::get('price');
+        $key = Input::get('product_id');
 
-        ProductCategory::where('id', Input::get('product_id'))
-                ->update(array('price' => Input::get('product_id')));
+//        $data = array(
+//            'price' => Input::get('product_id')
+//        );
+//
+//        $suc = ProductCategory::where('id', Input::get('product_id'))
+//                ->update($data);
+
+        ProductCategory::where('id', $key)
+                ->update(array('price' => $val));
     }
 
     public function update_all_price() {
