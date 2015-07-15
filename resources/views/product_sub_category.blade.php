@@ -21,7 +21,7 @@
                             @endif
                             <div class="form-group col-md-2  pull-right">
                                 <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search">
-                                    <input class="form-control ui-autocomplete-input" placeholder="Product Size" value="{{Input::get('product_size')}}" id="product_size1" autocomplete="off" name="product_size" type="text">
+                                    <input class="form-control ui-autocomplete-input" placeholder="Product Size" value="{{Input::get('product_size')}}" id="product_size" autocomplete="off" name="product_size" type="text">
                                     <a  onclick="this.form.submit()">
                                         <i class="fa fa-search search-icon" id="search_icon"></i>
                                     </a>

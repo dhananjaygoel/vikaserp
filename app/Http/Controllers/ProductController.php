@@ -130,7 +130,6 @@ class ProductController extends Controller {
 
         ProductCategory::where('id', Input::get('product_id'))
                 ->update(array('price' => Input::get('product_id')));
-//        return redirect('product_category')->with('success', 'Product category price successfully updated.');
     }
 
     public function update_all_price() {
@@ -141,10 +140,26 @@ class ProductController extends Controller {
 
                 ProductCategory::where('id', $key)
                         ->update(array('price' => $val));
-//                echo '<br>' . $key . "val" . $val;
             }
         }
         return redirect('product_category')->with('success', 'Product category price successfully updated.');
+    }
+
+    public function fetch_product_size() {
+        $term = '%' . Input::get('term') . '%';
+        $product = ProductSubCategory::where('size', 'like', $term)->get();
+        if (count($product) > 0) {
+            foreach ($product as $prod) {
+                $data_array[] = [
+                    'value' => $prod->size
+                ];
+            }
+        } else {
+            $data_array[] = [
+                'value' => 'No size found',
+            ];
+        }
+        echo json_encode(array('data_array' => $data_array));
     }
 
 }

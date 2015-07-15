@@ -71,11 +71,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('product_category', 'ProductController');
     Route::get('update_price', 'ProductController@update_price');
     Route::post('update_all_price', 'ProductController@update_all_price');
+    Route::get('fetch_product_size', 'ProductController@fetch_product_size');
 
 
     Route::resource('product_sub_category', 'ProductsubController');
     Route::get('get_product_category', 'ProductsubController@get_product_category');
     Route::post('update_difference', 'ProductsubController@update_difference');
+    
     Route::resource('delivery_order', 'DeliveryOrderController');
     Route::resource('pending_delivery_order', 'DeliveryOrderController@pending_delivery_order');
     Route::resource('purchase_order_daybook', 'PurchaseDaybookController');
@@ -88,7 +90,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('change_password', 'PasswordController@postPassword');
 
     Route::resource('inquiry', 'InquiryController');
-    Route::get('fetch_existing_customer', 'InquiryController@fetch_existing_customer');
+    Route::get('fetch_existing_customer', 'InquiryController@fetch_existing_customer');    
     Route::get('fetch_products', 'InquiryController@fetch_products');
     Route::post('store_price', 'InquiryController@store_price');
     Route::get('get_product_sub_category', 'InquiryController@get_product_sub_category');

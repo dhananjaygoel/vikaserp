@@ -360,35 +360,25 @@ $('#edit_state_form input').keypress(function (e) {
 
 
 
-//$(document).ready(function () {
-//    var site_url = $('#site_url').val();
-//    
-//    alert(site_url);
 
-//    $("#product_size1").autocomplete({
-//        minLength: 1,
-//        dataType: 'json',
-//        type: 'GET',
-//        source: function (request, response) {
-//
-//            $.ajax({
-//                url: baseurl + '/fetch_existing_customer',
-//                data: {"term": request.term},
-//                success: function (data) {
-//                    var main_array = JSON.parse(data);
-//                    var arr1 = main_array['data_array'];
-//                    response(arr1);
-//                },
-//            });
-//        },
-//        select: function (event, ui) {
-//
-//            $("#existing_customer_id").val(ui.item.id);
-////            alert(ui.item.id);
-//            $("#customer_default_location").val(ui.item.delivery_location_id);
-//            default_delivery_location();
-//        }
-//        
-//    });
+$("#product_size").autocomplete({
+    minLength: 1,
+    dataType: 'json',
+    type: 'GET',
+    source: function (request, response) {
+        $.ajax({
+            url: baseurl + '/fetch_product_size',
+            data: {"term": request.term},
+            success: function (data) {
+                var main_array = JSON.parse(data);
+                var arr1 = main_array['data_array'];
+                response(arr1);
+            },
+        });
+    },
+    select: function (event, ui) {
+        $("#product_size").val(ui.item.id);
 
-//});
+    }
+
+});
