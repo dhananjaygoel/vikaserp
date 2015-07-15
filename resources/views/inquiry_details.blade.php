@@ -29,7 +29,7 @@
                                 <table id="table-example" class="table customerview_table">
                                     <tbody>
                                         <tr>
-                                            <td><span>Customer Name:</span> {{$inquiry['customer']->owner_name}}</td>
+                                            <td><span>Customer Name:</span> {{$inquiry['customer']->owner_name}}{{'-'.$inquiry['customer']->tally_name}}</td>
                                         </tr>
                                         <tr><td><span>Contact Person: </span>{{$inquiry['customer']->contact_person}}</td></tr>
                                         <tr>

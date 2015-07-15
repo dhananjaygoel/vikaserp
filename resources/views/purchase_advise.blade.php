@@ -67,7 +67,9 @@
                                         <th>Vechile Number</th>
                                         <th>Quantity</th>
                                         <th>Serial Number</th>
+                                        @if(Input::get('purchaseaAdviseFilter') == 'in_process' || Input::get('purchaseaAdviseFilter') == '')
                                         <th class="text-center">Create Purchase Challan</th>
+                                        @endif
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -88,12 +90,18 @@
                                         <td>{{$pa->vehicle_number}}</td>
                                         <td>{{$qty_sum}}</td>
                                         <td>{{$pa->serial_number}}</td>
-                                        <td class="text-center"><a href="{{ url('purchaseorder_advise_challan/'.$pa->id)}}" class="table-link" title="purchase challan" >
+                                        @if(Input::get('purchaseaAdviseFilter') == 'in_process' || Input::get('purchaseaAdviseFilter') == '')
+
+                                        <td class="text-center">
+                                            <a href="{{ url('purchaseorder_advise_challan/'.$pa->id)}}" class="table-link" title="purchase challan" >
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-book fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a></td>
+                                            </a>
+                                        </td>
+
+                                        @endif    
                                         <td class="text-center">
                                             <a href="{{url('purchaseorder_advise/'.$pa->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -101,16 +109,23 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @if($pa->serial_number == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                             <a href="{{url('purchaseorder_advise/'.$pa->id.'/edit')}}" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @elseif($pa->serial_number != "")
+                                            <a href="{{url('purchaseorder_advise/'.$pa->id.'/edit')}}" class="table-link" title="edit">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                            @endif
 
-
-
-                                            @if($pa->serial_number == "")
+                                            @if($pa->serial_number == ""  || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                             <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#printModal{{$pa->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
