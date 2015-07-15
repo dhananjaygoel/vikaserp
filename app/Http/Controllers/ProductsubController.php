@@ -54,11 +54,19 @@ class ProductsubController extends Controller {
         } elseif (Input::get('product_size') != "") {
 
             $size_ar = explode("-", Input::get('product_size'));
+            
+            
+//            echo '<pre>';
+//            print_r($size_ar);
+//            echo '</pre>';
+//            exit;
             $size = $size_ar[0];
+            $size2 = $size_ar[1];
 
             $product_sub_cat = ProductSubCategory::with('product_category')
-                    ->whereHas('product_category', function($query) use ($size) {
-                        $query->where('size', 'like', '%' . trim($size) . '%');
+                    ->whereHas('product_category', function($query) use ($size,$size2) {
+                        $query->where('size', 'like', '%' . trim($size) . '%')
+                        ->orWhere('alias_name', 'like', '%' . trim($size2) . '%');
                     })
                     ->Paginate(20);
         } else {
@@ -206,7 +214,10 @@ class ProductsubController extends Controller {
 
     public function fetch_product_size() {
         $term = '%' . Input::get('term') . '%';
-        $product = ProductSubCategory::where('size', 'like', $term)->get();
+        $product = ProductSubCategory::where('size', 'like', $term)
+                ->orWhere('alias_name', 'like', $term)->orderBy('size', 'desc')->orderBy('alias_name', 'desc')
+                ->get();
+
         if (count($product) > 0) {
             foreach ($product as $prod) {
                 $data_array[] = [

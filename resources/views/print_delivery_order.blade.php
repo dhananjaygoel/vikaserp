@@ -61,8 +61,8 @@
             }
             .invoice
             {
-                width:60%;
-                margin-left: 20%;
+                width:90%;
+                margin-left: 5%;
                 border: 1px solid #ccc;
                 float: left;
                 padding: 0px;
@@ -155,7 +155,7 @@
             </div>
             <div class="trk-mobile">
                 <div class="trk-no">
-                    Trk No: {{ $delivery_data->vehicle_number }}
+                    Vehicle No: {{ $delivery_data->vehicle_number }}
                 </div>
                 <div class="mob-no">
                     Driver Mob: {{ $delivery_data->driver_contact_no }}
@@ -174,22 +174,32 @@
                 <div class="headRow">
                     <div  class="divCell">Sr.</div>
                     <div  class="divCell">Size</div>
-                    <div  class="divCell">Pcs</div>
                     <div  class="divCell">Qty</div>
+                    <div  class="divCell">Unit</div>                    
                     <div  class="divCell">Act pcs</div>
                     <div  class="divCell">Act Qty</div>                
                 </div>
 
-                <?php $i = 1; ?>
+                <?php
+                $i = 1;
+                ?>
                 @foreach($delivery_data['delivery_product'] as $product)
                 @if($product['order_type'] == 'delivery_order')
                 <div class="divRow">
                     <div class="divCell">{{ $i++ }}</div>
                     <div class="divCell">{{ $product['order_product_details']->size }}</div>
-                    <div class="divCell">xxx</div>
                     <div class="divCell">{{ $product->quantity }}</div>
-                    <div class="divCell">{{ $product->actual_pieces }}</div>
-                    <div class="divCell">{{ $product->actual_quantity }}</div>                
+                    <div class="divCell">
+                        @foreach($units as $u)
+                        @if($product->unit_id == $u->id)
+                        {{$u->unit_name}}
+                        @endif
+                        @endforeach
+                    </div>                    
+                    <div class="divCell"> &nbsp; </div>
+                    <div class="divCell"> &nbsp; </div>                
+                    <!--                    <div class="divCell">{{ $product->actual_pieces }}</div>
+                                        <div class="divCell">{{ $product->actual_quantity }}</div>                -->
                 </div> 
                 @endif
                 @endforeach

@@ -63,5 +63,9 @@ class DeliveryOrder extends Model implements AuthenticatableContract, CanResetPa
     public function location() {
         return $this->hasOne('App\DeliveryLocation', 'id', 'delivery_location_id');
     }
+    
+    public function unit() {
+        return $this->hasOne('App\Units', 'id', 'unit_id');
+    }
 
 }

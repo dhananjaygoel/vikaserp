@@ -472,10 +472,12 @@ class DeliveryOrderController extends Controller {
             'order_status' => "Completed"
         ));
 
-        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'location')->where('id', $id)->first();
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details','unit','location')->where('id', $id)->first();
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
+        
+        
 
         /*
           |------------------- -----------------------
