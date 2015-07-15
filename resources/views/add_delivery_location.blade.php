@@ -37,18 +37,26 @@
                             <div class="form-group">
                                 <label for="state_name">State Name<span class="mandatory">*</span></label>
                                 <select name="state" class="form-control" onchange="fetch_city();" id="select_state">
-                                    <option value="" selected="">Select State</option>
+                                    <option value="" >Select State</option>
                                     @foreach($states as $state)
+                                    @if(Input::old('state')!='' && Input::old('state')==$state->id)
+                                    <option selected="" value="{{$state->id}}">{{$state->state_name}}</option>
+                                     @else
                                     <option value="{{$state->id}}">{{$state->state_name}}</option>
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="city_name">City Name<span class="mandatory">*</span></label>
                                 <select name="city" class="form-control" id="select_city">
-                                    <option value="" selected="">Select City</option>
+                                    <option value="" >Select City</option>
                                     @foreach($cities as $city)
+                                    @if(Input::old('city')!='' && Input::old('city')==$city->id)
+                                    <option selected="" value="{{$city->id}}">{{$city->city_name}}</option>
+                                    @else
                                     <option value="{{$city->id}}">{{$city->city_name}}</option>
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>
