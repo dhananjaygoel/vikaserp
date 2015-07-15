@@ -148,9 +148,9 @@
         </div>
         @endforeach
     </div>
-    <div class="footer">
+<!--    <div class="footer">
         <div class="remark"> Remark </div>
         <div class="content"> {{ $order['remarks'] }} </div>
-    </div>
+    </div>-->
     <p>You order will be delivered By: {{$order['expected_delivery_date']}}</p>
 </div>
