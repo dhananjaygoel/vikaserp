@@ -63,8 +63,8 @@
             }
             .invoice
             {
-                width:60%;
-                margin-left: 20%;
+                width:90%;
+                margin-left: 5%;
                 border: 1px solid #ccc;
                 float: left;
                 padding: 0px;
@@ -178,7 +178,7 @@
         </style>
         <div class="invoice">
             <div class="title">
-                Delivery Challan
+                Estimate
             </div>
             <div class="name-date">
                 <div class="">
@@ -192,8 +192,7 @@
 
             </div>
             <div class="delivery-details">
-                <div class="delivery">
-                    
+                <div class="delivery">                    
                     Delivery @: @if($allorder['delivery_order']->delivery_location_id!=0)
                     {{ $allorder['delivery_order']['location']->area_name }}
                     @else
@@ -202,16 +201,16 @@
                 </div>
 
                 <div class="estmt-no">
-                    Estmt No: xxx
+                    Challan Serial: {{ $allorder->serial_number }}
                 </div>
             </div>
 
             <div class="time">
                 <div class="time-gen">
-                    Time Gen: {{ date("h:i:sa") }}
+                    Time Created: {{ date("h:i:sa", strtotime($allorder->created_at))}}
                 </div>
                 <div class="time-prnt">
-                    Time Prnt: {{ date("h:i:sa") }}
+                    Time Print: {{ date("h:i:sa") }}
                 </div>
             </div>
 
@@ -219,8 +218,8 @@
                 <div class="headRow">
                     <div  class="divCell">Sr.</div>
                     <div  class="divCell">Size</div>
-                    <div  class="divCell">Pcs</div>
-                    <div  class="divCell">Qty</div>
+                    <div  class="divCell">Actual Pcs</div>
+                    <div  class="divCell">Actual Qty</div>
                     <div  class="divCell">Rate</div>
                     <div  class="divCell">Amount</div>                
                 </div>
@@ -234,14 +233,30 @@
                 <div class="divRow">
                     <div class="divCell">{{ $i++ }}</div>
                     <div class="divCell">{{ $prod['product_category']['product_sub_category']->alias_name }}</div>
-                    <div class="divCell">xxx</div>
+                    <div class="divCell">{{ $prod->actual_pieces }}</div>
                     <div class="divCell">{{ $prod->quantity }}</div>
-                    <div class="divCell">xxx</div>
-                    <div class="divCell">{{ $prod->price}}</div>                
+                    <div class="divCell">{{ $prod->price}}</div>
+                    <div class="divCell">{{ $prod->quantity * $prod->price }}</div>                
                 </div>
                 <?php
                 $total_price += $prod->quantity * $prod->price;
                 $total_qty += $prod->quantity;
+
+                $total = 0;
+                foreach ($allorder['delivery_challan_products'] as $del_product) {
+
+                    if ($del_product['unit']->unit_name == 'KG') {
+                        $total += $del_product->quantity;
+                    }
+
+                    if ($del_product['unit']->unit_name == 'Pieces') {
+                        $total += $del_product->quantity * $del_product['order_product_details']->weight;
+                    }
+
+                    if ($del_product['unit']->unit_name == 'Meter') {
+                        $total += ($del_product->quantity / $del_product['order_product_details']->standard_length) * $del_product['order_product_details']->weight;
+                    }
+                }
                 ?>
                 @endif
                 @endforeach
@@ -250,12 +265,11 @@
             <div class="footer">
                 <div class="total-desc">
                     <div class="quantity">
-                        Total Quantity: {{$total_qty}}
+                        Total Quantity: {{$total}}
                     </div>
                     <div class="ruppes">
-                        Rs. Eighteen Hundred Fifty Only
+                        Rs. <?php echo convert_number_to_words($total + $allorder->loaded_by + $allorder->freight - $allorder->discount + $allorder->vat_percentage * $allorder->vat_percentage/100); ?> Only
                     </div>
-
                 </div>
                 <div class="total">                 
                     <div class="">
@@ -286,7 +300,9 @@
                             @endif 
                         </div>
                         <div class="label">Total</div>
-                        <div class="value">{{ $total_price + $allorder->loaded_by + $allorder->freight -$allorder->discount }}</div>
+                        <div class="value">
+                            {{ $total + $allorder->loaded_by + $allorder->freight - $allorder->discount }}
+                        </div>
                         <div class="label">Vat</div>
                         <div class="value">
                             @if($allorder->vat_percentage != "")
@@ -296,13 +312,129 @@
                             @endif 
                         </div>
                         <div class="label">GT</div>
-                        <div class="value">{{ $total_price + $allorder->loaded_by + $allorder->freight -$allorder->discount + $allorder->vat_percentage * $allorder->vat_percentage/100 }}</div>
+<!--                        <div class="value">
+                            {{$allorder->grand_price}}
+                        </div>-->
+                        <div class="value">
+                            {{ $total + $allorder->loaded_by + $allorder->freight - $allorder->discount + $allorder->vat_percentage * $allorder->vat_percentage/100 }}
+                        </div>
 
                     </div>
                 </div>
             </div>
         </div>
+        <?php
 
+        function convert_number_to_words($number) {
 
+            $hyphen = '-';
+            $conjunction = ' and ';
+            $separator = ', ';
+            $negative = 'negative ';
+            $decimal = ' point ';
+            $dictionary = array(
+                0 => 'zero',
+                1 => 'one',
+                2 => 'two',
+                3 => 'three',
+                4 => 'four',
+                5 => 'five',
+                6 => 'six',
+                7 => 'seven',
+                8 => 'eight',
+                9 => 'nine',
+                10 => 'ten',
+                11 => 'eleven',
+                12 => 'twelve',
+                13 => 'thirteen',
+                14 => 'fourteen',
+                15 => 'fifteen',
+                16 => 'sixteen',
+                17 => 'seventeen',
+                18 => 'eighteen',
+                19 => 'nineteen',
+                20 => 'twenty',
+                30 => 'thirty',
+                40 => 'fourty',
+                50 => 'fifty',
+                60 => 'sixty',
+                70 => 'seventy',
+                80 => 'eighty',
+                90 => 'ninety',
+                100 => 'hundred',
+                1000 => 'thousand',
+                1000000 => 'million',
+                1000000000 => 'billion',
+                1000000000000 => 'trillion',
+                1000000000000000 => 'quadrillion',
+                1000000000000000000 => 'quintillion'
+            );
+
+            if (!is_numeric($number)) {
+                return false;
+            }
+
+            if (($number >= 0 && (int) $number < 0) || (int) $number < 0 - PHP_INT_MAX) {
+                // overflow
+                trigger_error(
+                        'convert_number_to_words only accepts numbers between -' . PHP_INT_MAX . ' and ' . PHP_INT_MAX, E_USER_WARNING
+                );
+                return false;
+            }
+
+            if ($number < 0) {
+                return $negative . convert_number_to_words(abs($number));
+            }
+
+            $string = $fraction = null;
+
+            if (strpos($number, '.') !== false) {
+                list($number, $fraction) = explode('.', $number);
+            }
+
+            switch (true) {
+                case $number < 21:
+                    $string = $dictionary[$number];
+                    break;
+                case $number < 100:
+                    $tens = ((int) ($number / 10)) * 10;
+                    $units = $number % 10;
+                    $string = $dictionary[$tens];
+                    if ($units) {
+                        $string .= $hyphen . $dictionary[$units];
+                    }
+                    break;
+                case $number < 1000:
+                    $hundreds = $number / 100;
+                    $remainder = $number % 100;
+                    $string = $dictionary[$hundreds] . ' ' . $dictionary[100];
+                    if ($remainder) {
+                        $string .= $conjunction . convert_number_to_words($remainder);
+                    }
+                    break;
+                default:
+                    $baseUnit = pow(1000, floor(log($number, 1000)));
+                    $numBaseUnits = (int) ($number / $baseUnit);
+                    $remainder = $number % $baseUnit;
+                    $string = convert_number_to_words($numBaseUnits) . ' ' . $dictionary[$baseUnit];
+                    if ($remainder) {
+                        $string .= $remainder < 100 ? $conjunction : $separator;
+                        $string .= convert_number_to_words($remainder);
+                    }
+                    break;
+            }
+
+            if (null !== $fraction && is_numeric($fraction)) {
+                $string .= $decimal;
+                $words = array();
+                foreach (str_split((string) $fraction) as $number) {
+                    $words[] = $dictionary[$number];
+                }
+                $string .= implode(' ', $words);
+            }
+
+            return $string;
+        }
+        ?>
     </body>
 </html>

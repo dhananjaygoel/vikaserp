@@ -194,8 +194,10 @@ class DeliveryChallanController extends Controller {
 
     //Generate Serial number and print Delivery Challan
     public function print_delivery_challan($id) {
+        
         $serial_number_delivery_order = Input::get('serial_number');
         $date_letter = $serial_number_delivery_order . "/" . $id;
+
         DeliveryChallan::where('id', $id)->update(array(
             'serial_number' => $date_letter,
             'challan_status' => "completed"

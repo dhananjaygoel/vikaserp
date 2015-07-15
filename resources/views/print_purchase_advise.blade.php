@@ -62,8 +62,8 @@
             }
             .invoice
             {
-                width:60%;
-                margin-left: 20%;
+                width:90%;
+                margin-left: 5%;
                 border: 1px solid #ccc;
                 float: left;
                 padding: 0px;
@@ -159,7 +159,7 @@
                     Trk No: {{ $purchase_advise->vehicle_number}}
                 </div>
                 <div class="mob-no">
-                    Driver Mob: xxx
+                    Driver Mob: 
                 </div>
             </div>
             <div class="del">
@@ -176,16 +176,15 @@
                 </div>
                 <?php
                 $i = 1;
-               
                 ?>
                 @foreach($purchase_advise['purchase_products'] as $prod)
                 @if($prod->order_type == 'purchase_advice')
                 <div class="divRow">
                     <div class="divCell">{{ $i++ }}</div>
                     <div class="divCell">{{ $prod['purchase_product_details']->size }}</div>
-                    <div class="divCell">xxx</div>
+                    <div class="divCell"> &nbsp; </div>
                     <div class="divCell">{{ $prod->quantity }}</div>
-                    <div class="divCell">xxx</div>
+                    <div class="divCell"> &nbsp; </div>
                     <div class="divCell">{{ $prod->present_shipping }}</div>                
                 </div>
                 @endif
