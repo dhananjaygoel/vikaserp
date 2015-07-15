@@ -126,6 +126,13 @@
     }
 </style>
 <div class="invoice">
+    <?php
+    
+    echo '<pre>';
+    print_r($order);
+    echo '</pre>';
+    
+    ?>
     <p>Dear {{$order->customer_name}}, </p>
     <p>New order has been generated for your enquiry on {{$order->created_date}}</p>
     <p>Here are the details for your order,</p>
