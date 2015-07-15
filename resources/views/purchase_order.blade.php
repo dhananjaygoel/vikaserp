@@ -80,6 +80,9 @@
                             Currently no purchase orders have been added.
                         </div>
                         @else
+                        @if (Session::has('error'))
+                        <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('error') }}</div>
+                        @endif
                         @if (Session::has('flash_message'))
                         <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
                         @endif
