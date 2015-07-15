@@ -36,9 +36,13 @@
                             <div class="form-group">
                                 <label for="state_name">State Name<span class="mandatory">*</span></label>
                                 <select name="state" class="form-control">
-                                    <option value="" selected="">Select State</option>
+                                    <option value="">Select State</option>
                                     @foreach($states as $state)
+                                    @if(Input::old('state')!='' && Input::old('state')==$state->id)
+                                    <option selected="" value="{{$state->id}}">{{$state->state_name}}</option>
+                                    @else
                                     <option value="{{$state->id}}">{{$state->state_name}}</option>
+                                    @endif
                                     @endforeach
                                 </select>
 
