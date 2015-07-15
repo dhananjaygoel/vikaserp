@@ -481,26 +481,16 @@ function grand_total_challan() {
 
 
     var freight_value = 0;
-    if ($("#freight_value").length > 0) {
-        if (parseInt($("#freight_value").val())) {
-            var freight_value = parseInt($("#freight_value").val());
-//            total_price = total_price + parseInt(freight_value);
-        }
-
+    if ($("#freight").val() != '') {
+        freight_value = $("#freight").val();
     }
-    total_price = total_price + freight_value;
+    total_price = total_price + parseFloat(freight_value);
 
     var discount_value = 0;
     if ($("#discount_value").length > 0) {
-        if (parseInt($("#discount_value").val())) {
-
             discount_value = parseFloat($("#discount_value").val());
-//            alert(discount_value );
-//            total_price = total_price - discount_value;
-        }
-
     }
-    total_price = total_price - discount_value;
+    total_price = total_price + discount_value;
 
 
     var vat_val = 0;
