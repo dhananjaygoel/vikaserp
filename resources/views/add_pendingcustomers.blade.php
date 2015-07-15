@@ -133,9 +133,9 @@
                             <div class="form-group col-md-4 del_loc ">
                                 <label for="delivery_location">Delivery Location:<span class="mandatory">*</span></label>
                                 <select class="form-control" id="delivery_location" name="delivery_location">
-                                    <option value="" selected="">Select Delivery Location</option>
+                                    <option value="">Select Delivery Location</option>
                                     @foreach($locations as $l)
-                                    @if($l->id == $customer->delivery_location_id)
+                                    @if($l->id == $customer->delivery_location_id || Input::old('delivery_location')!='' && Input::old('delivery_location')==$l->id)
                                     <option value="{{$l->id}}" selected="selected">{{$l->area_name}}</option>                                    
                                     @else
                                     <option value="{{$l->id}}">{{$l->area_name}}</option>                                    
@@ -163,9 +163,9 @@
                             <div class="form-group col-md-4 del_loc ">
                                 <label for="relationship_manager">Relationship Manager:</label>
                                 <select class="form-control" id="relationship_manager" name="relationship_manager">
-                                    <option value="" selected="">Select Relation Manager</option>
+                                    <option value="" >Select Relation Manager</option>
                                     @foreach($managers as $m)
-                                    @if($m->id == $customer->relationship_manager)
+                                    @if($m->id == $customer->relationship_manager || Input::old('relationship_manager')!='' && Input::old('relationship_manager')==$m->id)
                                     <option value="{{$m->id}}" selected="selected">{{$m->first_name}} {{$m->last_name}}</option>
                                     @else
                                     <option value="{{$m->id}}">{{$m->first_name}} {{$m->last_name}}</option>
