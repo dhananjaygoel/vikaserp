@@ -297,7 +297,7 @@ function save_price_inquiry_view(id, inq_id) {
         }).done(function () {
 //            location.reload();
 //            $("#difference_" + id).val(updated_price);
-            var html_svbtn = '<span type="button" class="btn btn-default" >Save</span>';
+            var html_svbtn = '<span type="button" class="btn btn-default normal_cursor" >Save</span>';
             $("#save_btn_" + id).html(html_svbtn);
             $("#save_price_inquiry_view_" + id).removeClass('btn-primary');
             var price_val = '' + updated_price;
@@ -310,7 +310,7 @@ function save_price_inquiry_view(id, inq_id) {
 //            alert("lengths "+length_btns);
             if (length_btns > 0) {
 //                alert('button found');
-                var html = '<span title="You can not click unless you save all prices" type="button" class="btn btn-default smstooltip" >Send SMS</span>';
+                var html = '<span title="You can not click unless you save all prices" type="button" class="btn btn-default smstooltip normal_cursor" >Send SMS</span>';
                 $("#send_sms_button").html(html);
             }
             else {

@@ -24,7 +24,9 @@
                                         <select class="form-control" id="user_filter" name="pending_purchase_order" onchange="this.form.submit();">
                                             <option value="" selected="">Select Party</option>
                                             @foreach($all_customers as $customer)
+                                            @if($customer->status == 'permanent')
                                             <option value="{{$customer->id}}" <?php if ((isset($_GET['pending_purchase_order'])) && $_GET['pending_purchase_order'] == $customer->id) echo "selected=''"; ?>>{{$customer->owner_name}}</option>
+                                            @endif
                                             @endforeach
                                         </select>
                                     </form>
@@ -156,6 +158,7 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @if($purchase_order->order_status!='completed' || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                             <a href="{{ Url::action('PurchaseOrderController@edit', ['id' => $purchase_order->id]) }}" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -168,13 +171,15 @@
                                                     <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-
+                                            
                                             <a class="table-link danger" data-toggle="modal" data-target="#delete_purchase_order_{{$purchase_order->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            
+                                            @endif
                                         </td>
                                     </tr>
                                 <div class="modal fade" id="delete_purchase_order_{{$purchase_order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

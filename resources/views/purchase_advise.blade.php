@@ -125,8 +125,8 @@
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @elseif($pa->serial_number != "")
-                                            <span class="table-link" title="edit">
+                                            @elseif($pa->serial_number != "" && Auth::user()->role_id == 0  || Auth::user()->role_id == 1 )
+                                            <span class="table-link normal_cursor" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -141,8 +141,8 @@
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @elseif($pa->serial_number != "")
-                                            <span class="table-link" title="print">
+                                            @elseif($pa->serial_number != "" && Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+                                            <span class="table-link normal_cursor" title="print">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
