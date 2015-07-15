@@ -93,12 +93,21 @@
                                         @if(Input::get('purchaseaAdviseFilter') == 'in_process' || Input::get('purchaseaAdviseFilter') == '')
 
                                         <td class="text-center">
+                                            @if($pa->serial_number != ""|| Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                             <a href="{{ url('purchaseorder_advise_challan/'.$pa->id)}}" class="table-link" title="purchase challan" >
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-book fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @elseif($pa->serial_number == "")
+                                            <span class="table-link" title="purchase challan" >
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-book fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </span>
+                                            @endif
                                         </td>
 
                                         @endif    
@@ -117,12 +126,12 @@
                                                 </span>
                                             </a>
                                             @elseif($pa->serial_number != "")
-                                            <a href="{{url('purchaseorder_advise/'.$pa->id.'/edit')}}" class="table-link" title="edit">
+                                            <span class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a>
+                                            </span>
                                             @endif
 
                                             @if($pa->serial_number == ""  || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)

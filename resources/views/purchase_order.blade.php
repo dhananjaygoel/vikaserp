@@ -92,7 +92,9 @@
                                         <th>Order By</th>
                                         <th>Total Quantity</th>
                                         <th>Pending Quantity</th>
+                                        @if(Input::get('purchase_order_filter') == 'pending'  || Input::get('purchase_order_filter') == '')
                                         <th class="text-center">Create Purchase Advice</th>
+                                        @endif
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -137,6 +139,7 @@
                                             @endforeach
                                             @endif
                                         </td>
+                                        @if(Input::get('purchase_order_filter') == 'pending'  || Input::get('purchase_order_filter') == '')
                                         <td class="text-center">
                                             <a href="{{ url('create_purchase_advice'.'/'.$purchase_order->id)}}" class="table-link" title="Create Purchase Advice">
                                                 <span class="fa-stack">
@@ -145,6 +148,7 @@
                                                 </span>
                                             </a>
                                         </td>
+                                        @endif
                                         <td class="text-center">
                                             <a href="{{ Url::action('PurchaseOrderController@show', ['id' => $purchase_order->id]) }}" class="table-link" title="view">
                                                 <span class="fa-stack">
