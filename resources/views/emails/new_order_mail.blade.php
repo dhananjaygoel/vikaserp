@@ -1,6 +1,6 @@
 <div class="invoice">
     <p>Dear <em>{{$order['customer_name']}}</em>, </p>
-    <p>New order has been generated for your enquiry on <strong>{{$order['created_date']}}</strong></p>
+    <p>New order has been generated for your enquiry on <strong>{{date("jS F, Y", strtotime($order['created_date']))}}</strong></p>
     <p>Here are the details for your order,</p>
     <table border='1'>
         <tr>
@@ -21,5 +21,5 @@
         </tr>
         @endforeach
     </table>
-    <p>You order will be delivered By: <strong>{{$order['expected_delivery_date']}}</strong></p>
+    <p>You order will be delivered By: <strong>{{date("jS F, Y", $order['expected_delivery_date'])}}</strong></p>
 </div>
