@@ -211,7 +211,9 @@
                                     <?php echo $product_sub_cat->render(); ?>
                                 </ul>
                             </span>
-                            <div class="clearfix"></div>                            
+                            <div class="clearfix"></div>  
+
+                            @if($product_sub_cat->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
                                 <form class="form-inline" method="GET" action="{{url('product_sub_category')}}" id="filter_search">
                                     <div class="form-group">
@@ -223,7 +225,9 @@
                                         <a onclick="this.form.submit()"></a>
                                     </div>
                                 </form>
-                            </span> 
+                            </span>
+                            @endif
+
                         </div>
                         @else
                         <div class="alert alert-info no_data_msg_container">
