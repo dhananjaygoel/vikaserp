@@ -17,6 +17,8 @@ use Auth;
 use App\ProductCategory;
 use App\ProductSubCategory;
 use App\ProductType;
+use App\AllOrderProducts;
+use App\PurchaseProducts;
 use App\Http\Requests\ProductCategoryRequest;
 use App\Http\Requests\UserValidation;
 use Input;
@@ -88,14 +90,26 @@ class ProductController extends Controller {
     }
 
     public function destroy($id) {
+
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+
         if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
-            ProductCategory::destroy($id);
-            return redirect('product_category')->with('success', 'Product details successfully deleted.');
+
+
+            $order_count = AllOrderProducts::where('product_category_id', $id)->count();
+            $purchase_count = PurchaseProducts::where('product_category_id', $id)->count();
+
+            if ($purchase_count == 0 && $order_count == 0) {
+
+                ProductCategory::destroy($id);
+                return redirect('product_category')->with('success', 'Product details successfully deleted.');
+            } else {
+                return redirect('product_category')->with('wrong', 'Product has already added by user, you can not delete this record.');
+            }
         } else {
-            return redirect('product_category')->with('wrong', 'You have entered wrong credentials');
+            return redirect('product_category')->with('wrong', 'Please enter the valid credential to delete the records.');
         }
     }
 

@@ -20,6 +20,8 @@ use Input;
 use DB;
 use Config;
 use App\Units;
+use App\AllOrderProducts;
+use App\PurchaseProducts;
 
 class ProductsubController extends Controller {
 
@@ -54,17 +56,12 @@ class ProductsubController extends Controller {
         } elseif (Input::get('product_size') != "") {
 
             $size_ar = explode("-", Input::get('product_size'));
-            
-            
-//            echo '<pre>';
-//            print_r($size_ar);
-//            echo '</pre>';
-//            exit;
+
             $size = $size_ar[0];
             $size2 = $size_ar[1];
 
             $product_sub_cat = ProductSubCategory::with('product_category')
-                    ->whereHas('product_category', function($query) use ($size,$size2) {
+                    ->whereHas('product_category', function($query) use ($size, $size2) {
                         $query->where('size', 'like', '%' . trim($size) . '%')
                         ->orWhere('alias_name', 'like', '%' . trim($size2) . '%');
                     })
@@ -160,8 +157,20 @@ class ProductsubController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
-            ProductSubCategory::destroy($id);
-            return redirect('product_sub_category')->with('success', 'Product sub category details successfully deleted.');
+
+            $product_cat = ProductSubCategory::where('id', $id)->first();
+
+
+
+            $order_count = AllOrderProducts::where('product_category_id', $product_cat->product_category_id)->count();
+            $purchase_count = PurchaseProducts::where('product_category_id', $product_cat->product_category_id)->count();
+
+            if ($purchase_count == 0 && $order_count == 0) {
+                ProductSubCategory::destroy($id);
+                return redirect('product_sub_category')->with('success', 'Product sub category details successfully deleted.');
+            } else {
+                return redirect('product_sub_category')->with('wrong', 'Product size has already added by user, you can not delete this record.');
+            }
         } else {
             return redirect('product_sub_category')->with('wrong', 'You have entered wrong credentials');
         }
