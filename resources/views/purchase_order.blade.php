@@ -126,7 +126,7 @@
                                             @endif
 
                                             @if($total_qty->unit_id == 3)
-                                            <?php $total += ($total_qty->quantity / $total_qty['purchase_product_details']->standard_length) * $total_qty['product_category']['product_sub_category']->weight;
+                                            <?php $total += ($total_qty->quantity / $total_qty['purchase_product_details']->standard_length) * $total_qty['purchase_product_details']->weight;
                                             ?>
                                             @endif
 

@@ -239,7 +239,7 @@ class PurchaseChallanController extends Controller {
                 $total_quantity = '';
                 $str = "Dear " . $customer->owner_name . ", your meterial has been despatched as follows:";
                 foreach ($input_data as $product_data) {
-                    $product = ProductSubCategory::where('product_category_id', '=', $product_data->product_category_id)->first();
+                    $product = ProductSubCategory::find($product_data->product_category_id);
                     $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }

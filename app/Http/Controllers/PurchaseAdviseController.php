@@ -21,6 +21,7 @@ use App\Http\Requests\StorePurchaseAdvise;
 use Redirect;
 use Validator;
 use DateTime;
+use App\ProductSubCategory;
 
 class PurchaseAdviseController extends Controller {
 
@@ -460,13 +461,13 @@ class PurchaseAdviseController extends Controller {
                     $pending_quantity = $pending_quantity + $p_qty;
                     $kg = Units::first();
                     $prod_quantity = $products['quantity'];
-                    if ($products['unit_id'] != 1) {
-                        $product_subcategory = \App\ProductSubCategory::where('product_category_id', $products['product_category_id'])->first();
+                    if ($products->unit_id != 1) {
+                        $product_subcategory = ProductSubCategory::find($products['product_category_id']);
 
-                        if ($products['unit_id'] == 2) {
+                        if ($products->unit_id == 2) {
                             $calculated_quantity = $prod_quantity * $product_subcategory['weight'];
                         }
-                        if ($products['unit_id'] == 3) {
+                        if ($products->unit_id == 3) {
                             $calculated_quantity = ($prod_quantity / $product_subcategory['size'] ) * $product_subcategory['weight'];
                         }
                         $prod_quantity = $calculated_quantity;
