@@ -1,3 +1,10 @@
+<?php
+//echo '<pre>';
+//print_r($allorders->toArray());
+//echo '</pre>';
+//exit;
+?>
+
 @extends('layouts.master')
 @section('title','Sales Daybook')
 @section('content')
@@ -94,7 +101,13 @@
                                         </tr>
                                     </thead>
                                     <tbody id="challan_data" >    
-                                        <?php $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1; ?> 
+                                        <?php
+                                        $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
+                                        echo '<pre>';
+                                        print_r($allorders->toArray());
+                                        echo '</pre>';
+                                        exit;
+                                        ?> 
                                         @foreach($allorders as $challan)                                       
                                         <tr class="add_product_row">
                                             @if( Auth::user()->role_id == 0 )
@@ -124,7 +137,7 @@
                                                 <?php
                                                 $total_qunatity = 0;
                                                 foreach ($challan["all_order_products"] as $products) {
-                                                    $total_qunatity = $total_qunatity + $products["quantity"];
+                                                    $total_qunatity = $total_qunatity + $products["present_shipping"];
                                                 }
                                                 echo $total_qunatity;
                                                 ?>
@@ -223,7 +236,7 @@
                             </form>
                             <div class="clearfix"></div>
                             <span class="pull-right">
-                            <?php echo $allorders->render(); ?>
+                                <?php echo $allorders->render(); ?>
                             </span>
                             <div class="clearfix"></div>                            
                             @if($allorders->lastPage() > 1)

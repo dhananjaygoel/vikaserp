@@ -13,6 +13,7 @@ use Input;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use App\User;
+use App\DeliveryLocation;
 use Hash;
 use App\AllOrderProducts;
 use App\Vendor\Phpoffice\Phpexcel\Classes;
@@ -34,9 +35,10 @@ class SalesDaybookController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
-        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products', 'delivery_order', 'user')->orderBy('created_at', 'desc')->Paginate(10);
+        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products.unit.product_category.product_sub_category', 'delivery_order.location', 'user')->orderBy('created_at', 'desc')->Paginate(10);
         $challan_date = '';
         $allorders->setPath('sales_daybook');
+              
         return view('sales_daybook', compact('allorders', 'challan_date'));
     }
 
@@ -161,7 +163,8 @@ class SalesDaybookController extends Controller {
 
     public function print_sales_order_daybook() {
 
-        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products', 'delivery_order', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
+        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products', 'delivery_order.location', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
+        
         return view('print_sales_order_daybook', compact('allorders'));
     }
 
