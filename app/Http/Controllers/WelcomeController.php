@@ -329,4 +329,20 @@ class WelcomeController extends Controller {
         echo '</pre>';
     }
 
+//    public function upload_customer_excel() {
+//        if (Input::hasFile('excel_file')) {
+//            $f = Input::file('excel_file');
+//
+//            $input = Input::file('excel_file');
+//            $filename = $input->getRealPath();
+//            var_dump($input);
+//
+//            Excel::load($filename, function($reader) {
+//            $results = $reader->all();
+//
+//            foreach ($results as $excel) {
+//
+//            }
+//            }
+//        }
 }
