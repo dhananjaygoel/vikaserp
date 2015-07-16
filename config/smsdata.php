@@ -5,4 +5,5 @@ return [
     'password' => 'its1782',
     'sender_id' => 'VikasPipes',
     'url' => 'http://bulksmspune.mobi/sendurlcomma.aspx',
+    'send' => false,
 ];
