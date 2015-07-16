@@ -229,7 +229,7 @@
                                 <textarea class="form-control" id="order_remark" name="order_remark"  rows="3"></textarea>
                             </div>
                             <div >
-                                <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> 
+                                <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>--> 
                             </div>
                             <hr>
                             <div >

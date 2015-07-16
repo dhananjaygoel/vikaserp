@@ -1,9 +1,3 @@
-<?php
-//echo '<pre>';
-//print_r($order->toArray());
-//echo '</pre>';
-//exit;
-?>
 @extends('layouts.master')
 @section('title','Create Delivery Order')
 @section('content')

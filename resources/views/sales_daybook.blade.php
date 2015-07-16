@@ -1,10 +1,3 @@
-<?php
-//echo '<pre>';
-//print_r($allorders->toArray());
-//echo '</pre>';
-//exit;
-?>
-
 @extends('layouts.master')
 @section('title','Sales Daybook')
 @section('content')
@@ -103,10 +96,6 @@
                                     <tbody id="challan_data" >    
                                         <?php
                                         $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
-                                        echo '<pre>';
-                                        print_r($allorders->toArray());
-                                        echo '</pre>';
-                                        exit;
                                         ?> 
                                         @foreach($allorders as $challan)                                       
                                         <tr class="add_product_row">
