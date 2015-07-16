@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="cat_name">Sub Product Category Name<span class="mandatory">*</span></label>
+                    <label for="cat_name">Product Category Name<span class="mandatory">*</span></label>
                     <input id="cat_name" class="form-control" placeholder="Product Category Name" name="product_category_name" value="{{ $product_cat[0]['product_category_name'] }}" type="text">
                 </div>
 <!--                <div class="form-group">
