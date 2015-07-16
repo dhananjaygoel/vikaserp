@@ -166,7 +166,7 @@ class ProductController extends Controller {
                         ->update(array('price' => $val));
             }
         }
-        return redirect('product_category')->with('success', 'Product category price successfully updated.');
+//        return redirect('product_category')->with('success', 'Product category price successfully updated.');
     }
 
 }
