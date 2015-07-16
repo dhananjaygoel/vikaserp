@@ -17,7 +17,7 @@ class ProductSubCategoryRequest extends Request {
 
     /**
      * Get the validation rules that apply to the request.
-     *
+     *not deployed
      * @return array
      */
     public function rules() {
