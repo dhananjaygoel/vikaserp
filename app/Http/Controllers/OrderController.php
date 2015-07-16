@@ -288,6 +288,11 @@ class OrderController extends Controller {
      */
     public function show($id) {
         $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->first();
+        echo '<pre>';
+        print_r($order);
+        echo '</pre>';
+        
+        exit();
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         $customers = Customer::all();
