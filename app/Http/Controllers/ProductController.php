@@ -106,9 +106,9 @@ class ProductController extends Controller {
         if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
 
 
-            $order_count = AllOrderProducts::where('product_category_id', $id)->count();
-            $purchase_count = PurchaseProducts::where('product_category_id', $id)->count();
-
+            echo $order_count = AllOrderProducts::where('product_category_id', $id)->count();
+            echo $purchase_count = PurchaseProducts::where('product_category_id', $id)->count();
+            exit;
             if ($purchase_count == 0 && $order_count == 0) {
 
                 ProductCategory::destroy($id);
