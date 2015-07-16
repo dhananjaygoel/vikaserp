@@ -208,7 +208,11 @@
                             </table>
                             <span class="pull-right">
                                 <ul class="pagination pull-right">
+                                    @if(sizeof($_GET) < 2)
                                     <?php echo $product_sub_cat->render(); ?>
+                                    @else
+                                    <?php echo $product_sub_cat->appends(array('product_size' => $filter[0], 'search_text' => $filter[1], 'product_filter' => $filter[2]))->render(); ?>
+                                    @endif                                    
                                 </ul>
                             </span>
                             <div class="clearfix"></div>  

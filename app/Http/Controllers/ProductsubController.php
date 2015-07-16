@@ -81,8 +81,9 @@ class ProductsubController extends Controller {
             $product_sub_cat = ProductSubCategory::with('product_category')->Paginate(20);
         }
 
+        $filter = array(Input::get('product_size'), Input::get('search_text'), Input::get('product_filter'));
         $product_sub_cat->setPath('product_sub_category');
-        return view('product_sub_category', compact('product_sub_cat', 'product_type', 'units'));
+        return view('product_sub_category', compact('product_sub_cat', 'product_type', 'units', 'filter'));
     }
 
     public function create() {
