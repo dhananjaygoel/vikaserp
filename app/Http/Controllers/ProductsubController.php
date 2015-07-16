@@ -34,7 +34,7 @@ class ProductsubController extends Controller {
         $this->middleware('validIP');
     }
 
-    public function index() {
+    public function index() {//index
 
         $product_type = ProductType::all();
         $units = Units::all();
