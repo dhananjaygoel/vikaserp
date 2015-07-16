@@ -34,6 +34,7 @@ class InquiryController extends Controller {
         define('PASS', Config::get('smsdata.password'));
         define('SENDER_ID', Config::get('smsdata.sender_id'));
         define('SMS_URL', Config::get('smsdata.url'));
+        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP', ['except' => ['create', 'store']]);
     }
 
@@ -164,40 +165,47 @@ class InquiryController extends Controller {
           | SEND SMS TO THE CUSTOMER AND RELATIONSHIP MANAGER
           |--------------------------------------------------
          */
-//        $input = Input::all();
-//        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-//            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
-//            if (count($customer) > 0) {
-//                $total_quantity = '';
-//                $str = "Dear " . $customer->owner_name . ", your enquiry has been logged for following:";
-//                foreach ($input_data['product'] as $product_data) {
-//                    if ($product_data['name'] != "") {
-//                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
-//                        $total_quantity = $total_quantity + $product_data['quantity'];
-//                    }
-//                }
-//
-//                $str .= " prices and availability will be quoted shortly. Vikas Associates, 9673000068";
-//                $phone_number = $customer->phone_number1;
-//                $msg = urlencode($str);
-//                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
-//                $ch = curl_init($url);
-//                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//                $curl_scraped_page = curl_exec($ch);
-//                curl_close($ch);
-//
-//                if (count($customer['manager']) > 0) {
-//                    $str = "Dear " . $customer['manager']->first_name . ",  " . Auth::user()->first_name . " has logged an enquiry for " . $customer['manager']->first_name . ", " . $total_quantity . ". Kindly check and quote Vikas Associates, 9673000068";
-//                    $phone_number = $customer['manager']->mobile_number;
-//                    $msg = urlencode($str);
-//                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
-//                    $ch = curl_init($url);
-//                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//                    $curl_scraped_page = curl_exec($ch);
-//                    curl_close($ch);
-//                }
-//            }
-//        }
+        $input = Input::all();
+        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer->owner_name . ", your enquiry has been logged for following:";
+                foreach ($input_data['product'] as $product_data) {
+                    if ($product_data['name'] != "") {
+                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
+                        $total_quantity = $total_quantity + $product_data['quantity'];
+                    }
+                }
+
+                $str .= " prices and availability will be quoted shortly. Vikas Associates, 9673000068";
+                $phone_number = $customer->phone_number1;
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+
+            if (count($customer['manager']) > 0) {
+                $str = "Dear " . $customer['manager']->first_name . ",  " . Auth::user()->first_name . " has logged an enquiry for " . $customer['manager']->first_name . ", " . $total_quantity . ". Kindly check and quote Vikas Associates, 9673000068";
+                $phone_number = $customer['manager']->mobile_number;
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+        }
+
+
+        exit();
 
         return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully added.');
     }
@@ -213,12 +221,7 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
-        
-//        echo '<pre>';
-//        print_r($inquiry->toArray());
-//        echo '</pre>';
-//        
-//        exit();
+
         $delivery_location = DeliveryLocation::all();
 
         /*
@@ -226,32 +229,30 @@ class InquiryController extends Controller {
           | SEND SMS TO THE CUSTOMER WITH LATEST QUOTATIONS
           |------------------------------------------------
          */
-//        $input_data = $inquiry['inquiry_products'];
-//        $input = Input::all();
-//        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-//            $customer_id = $inquiry->customer_id;
-//            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
-//            if (count($customer) > 0) {
-//                $total_quantity = '';
-//                $str = "Dear " . $customer->owner_name . ", prices for your enquiry are as follows:";
-//                foreach ($input_data as $product_data) {
-////                    $product = ProductSubCategory::where('product_category_id', '=', $product_data['product_category_id'])->first();
-//                    $str .= $product_data['inquiry_product_details']->alias_name . ' - ' . $product_data['quantity'] . ', ';
-//                    $total_quantity = $total_quantity + $product_data['quantity'];
-//                }
-//                $str .= " meterials will be despached by ".date('jS F, Y', strtotime($inquiry['expected_delivery_date'])).". Vikas Associates, 9673000068";
-//                $phone_number = $customer->phone_number1;
-//                $msg = urlencode($str);
-//                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
-//                echo '<pre>';
-//                print_r($str);
-//                echo '</pre>';
-//                $ch = curl_init($url);
-//                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//                $curl_scraped_page = curl_exec($ch);
-//                curl_close($ch);
-//            }
-//        }
+        $input_data = $inquiry['inquiry_products'];
+        $input = Input::all();
+        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+            $customer_id = $inquiry->customer_id;
+            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer->owner_name . ", prices for your enquiry are as follows:";
+                foreach ($input_data as $product_data) {
+                    $str .= $product_data['inquiry_product_details']->alias_name . ' - ' . $product_data['quantity'] . ', ';
+                    $total_quantity = $total_quantity + $product_data['quantity'];
+                }
+                $str .= " meterials will be despached by " . date('jS F, Y', strtotime($inquiry['expected_delivery_date'])) . ". Vikas Associates, 9673000068";
+                $phone_number = $customer->phone_number1;
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+        }
 
         return view('inquiry_details', compact('inquiry', 'delivery_location'));
     }
@@ -383,40 +384,44 @@ class InquiryController extends Controller {
           | SEND SMS TO THE CUSTOMER WITH UPDATED QUOTATIONS
           |------------------------------------------------
          */
-//        $input = Input::all();
-//        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-//            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
-//            if (count($customer) > 0) {
-//                $total_quantity = '';
-//                $str = "Dear " . $customer->owner_name . ", your enquiry has been logged for following:";
-//                foreach ($input_data['product'] as $product_data) {
-//                    if ($product_data['name'] != "") {
-//                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
-//                        $total_quantity = $total_quantity + $product_data['quantity'];
-//                    }
-//                }
-//
-//                $str .= " prices and availability will be quoted shortly. Vikas Associates, 9673000068";
-//                $phone_number = $customer->phone_number1;
-//                $msg = urlencode($str);
-//                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
-//                $ch = curl_init($url);
-//                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//                $curl_scraped_page = curl_exec($ch);
-//                curl_close($ch);
-//
-//                if (count($customer['manager']) > 0) {
-//                    $str = "Dear " . $customer['manager']->first_name . ",  " . Auth::user()->first_name . " has logged an enquiry for " . $customer['manager']->first_name . ", " . $total_quantity . ". Kindly check and quote Vikas Associates, 9673000068";
-//                    $phone_number = $customer['manager']->mobile_number;
-//                    $msg = urlencode($str);
-//                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
-//                    $ch = curl_init($url);
-//                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//                    $curl_scraped_page = curl_exec($ch);
-//                    curl_close($ch);
-//                }
-//            }
-//        }
+        $input = Input::all();
+        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer->owner_name . ", your enquiry has been logged for following:";
+                foreach ($input_data['product'] as $product_data) {
+                    if ($product_data['name'] != "") {
+                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
+                        $total_quantity = $total_quantity + $product_data['quantity'];
+                    }
+                }
+
+                $str .= " prices and availability will be quoted shortly. Vikas Associates, 9673000068";
+                $phone_number = $customer->phone_number1;
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+
+                if (count($customer['manager']) > 0) {
+                    $str = "Dear " . $customer['manager']->first_name . ",  " . Auth::user()->first_name . " has logged an enquiry for " . $customer['manager']->first_name . ", " . $total_quantity . ". Kindly check and quote Vikas Associates, 9673000068";
+                    $phone_number = $customer['manager']->mobile_number;
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+            }
+        }
 
         return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully modified.');
     }
@@ -630,40 +635,43 @@ class InquiryController extends Controller {
          * SEND SMS TO CUSTOMER FOR NEW ORDER
          * ----------------------------------
          */
-//        $input = Input::all();
-//        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-//            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
-//            if (count($customer) > 0) {
-//                $total_quantity = '';
-//                $str = "Dear " . $customer->owner_name . ", your order has been logged for following:";
-//                foreach ($input_data['product'] as $product_data) {
-//                    if ($product_data['name'] != "") {
-//                        $product = ProductSubCategory::where('product_category_id', '=', $product_data['id'])->first();
-//                        $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
-//                        $total_quantity = $total_quantity + $product_data['quantity'];
-//                    }
-//                }
-////
-//                $str .= " meterial will be despached by " . date("jS F, Y", strtotime($datetime->format('Y-m-d'))) . ". Vikas Associates, 9673000068";
-//                $phone_number = $customer->phone_number1;
-//                $msg = urlencode($str);
-//                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
-//                $ch = curl_init($url);
-//                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//                $curl_scraped_page = curl_exec($ch);
-//                curl_close($ch);
-//                if (count($customer['manager']) > 0) {
-//                    $str = "Dear " . $customer['manager']->first_name . ",  " . Auth::user()->first_name . " has logged an enquiry for " . $customer['manager']->first_name . ", " . $total_quantity . ". Kindly check and quote Vikas Associates, 9673000068";
-//                    $phone_number = $customer['manager']->mobile_number;
-//                    $msg = urlencode($str);
-//                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
-//                    $ch = curl_init($url);
-//                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//                    $curl_scraped_page = curl_exec($ch);
-//                    curl_close($ch);
-//                }
-//            }
-//        }
+        $input = Input::all();
+        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer->owner_name . ", your order has been logged for following:";
+                foreach ($input_data['product'] as $product_data) {
+                    if ($product_data['name'] != "") {
+                        $product = ProductSubCategory::where('product_category_id', '=', $product_data['id'])->first();
+                        $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
+                        $total_quantity = $total_quantity + $product_data['quantity'];
+                    }
+                }
+                $str .= " meterial will be despached by " . date("jS F, Y", strtotime($datetime->format('Y-m-d'))) . ". Vikas Associates, 9673000068";
+                $phone_number = $customer->phone_number1;
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+                if (count($customer['manager']) > 0) {
+                    $str = "Dear " . $customer['manager']->first_name . ",  " . Auth::user()->first_name . " has logged an enquiry for " . $customer['manager']->first_name . ", " . $total_quantity . ". Kindly check and quote Vikas Associates, 9673000068";
+                    $phone_number = $customer['manager']->mobile_number;
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+            }
+        }
 
         $order->save();
 
