@@ -289,7 +289,7 @@ class OrderController extends Controller {
     public function show($id) {
         $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->first();
         echo '<pre>';
-        print_r($order);
+        print_r(count($order));
         echo '</pre>';
         
         exit();
