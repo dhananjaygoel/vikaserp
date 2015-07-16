@@ -159,11 +159,12 @@
                                         </tr>
 
                                         @foreach($delivery_data['delivery_product'] as $key=>$product)
+
                                         @if($product->order_type =='delivery_order')
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
-                                                    <input value="{{ $product['order_product_details']['product_category']->product_category_name}}" class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});">
+                                                    <input value="{{ $product['order_product_details']->product_category_name}}" class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});">
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']->id}}">
                                                     <input type="hidden" name="product[{{$key}}][order]" value="{{ $product->from}}">
 <!--                                                    <i class="fa fa-search search-icon"></i>-->
@@ -226,7 +227,7 @@
                                         </tr>
                                         @endif
                                         @endforeach
-                                        <?php //} ?>
+<?php //}  ?>
                                     </tbody>
                                 </table>
                                 <table>
