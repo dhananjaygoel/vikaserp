@@ -22,6 +22,7 @@ use Config;
 use App\Units;
 use App\AllOrderProducts;
 use App\PurchaseProducts;
+use App\InquiryProducts;
 
 class ProductsubController extends Controller {
 
@@ -35,7 +36,6 @@ class ProductsubController extends Controller {
     }
 
     public function index() {//index
-
         $product_type = ProductType::all();
         $units = Units::all();
         $product_sub_cat = "";
@@ -166,12 +166,11 @@ class ProductsubController extends Controller {
 
             $product_cat = ProductSubCategory::where('id', $id)->first();
 
-
-
-           echo $order_count = AllOrderProducts::where('product_category_id', $product_cat->product_category_id)->count();
-            echo $purchase_count = PurchaseProducts::where('product_category_id', $product_cat->product_category_id)->count();
-            exit;
-            if ($purchase_count == 0 && $order_count == 0) {
+            $order_count = AllOrderProducts::where('product_category_id', $product_cat->product_category_id)->count();
+            $purchase_count = PurchaseProducts::where('product_category_id', $product_cat->product_category_id)->count();
+            $inquery_count = InquiryProducts::where('product_category_id', $product_cat->product_category_id)->count();
+            
+            if ($purchase_count == 0 && $order_count == 0 && $inquery_count == 0) {
                 ProductSubCategory::destroy($id);
                 return redirect('product_sub_category')->with('success', 'Product sub category details successfully deleted.');
             } else {

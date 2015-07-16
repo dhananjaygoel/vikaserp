@@ -25,6 +25,7 @@ use Input;
 use DB;
 use Config;
 use Maatwebsite\Excel\Facades\Excel;
+use App\InquiryProducts;
 
 class ProductController extends Controller {
 
@@ -108,8 +109,9 @@ class ProductController extends Controller {
 
             $order_count = AllOrderProducts::where('product_category_id', $id)->count();
             $purchase_count = PurchaseProducts::where('product_category_id', $id)->count();
-         
-            if ($purchase_count == 0 && $order_count == 0) {
+            $inquery_count = InquiryProducts::where('product_category_id', $id)->count();
+
+            if ($purchase_count == 0 && $order_count == 0 && $inquery_count == 0) {
 
                 ProductCategory::destroy($id);
                 return redirect('product_category')->with('success', 'Product details successfully deleted.');
