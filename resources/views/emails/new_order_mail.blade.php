@@ -21,7 +21,7 @@
         </tr>
         @endforeach
     </table>
-    <p>You order is expected to be delivered By: <strong>{{$order['expected_delivery_date']}}</strong> at: {{$order['delivery_location']}}</p>
+    <p>You order is expected to be delivered By: <strong>{{$order['expected_delivery_date']}}</strong> at: <strong>{{$order['delivery_location']}}</strong></p>
 </div>
 <div style="color: #DDD; font-size: 12px;">
     <br>

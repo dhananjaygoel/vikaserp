@@ -213,6 +213,12 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
+        
+        echo '<pre>';
+        print_r($inquiry->toArray());
+        echo '</pre>';
+        
+        exit();
         $delivery_location = DeliveryLocation::all();
 
         /*
