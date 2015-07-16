@@ -109,11 +109,11 @@ $('.print_delivery_order').click(function () {
         type: "GET",
         url: base_url + '/print_delivery_order/' + $(this).attr('id') + '?send_sms=' + send_sms,
         success: function (data) {
-            location.reload();
-            var printWindow = window.open('', '_blank');
+            var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
+            window.setTimeout(function(){location.reload()},5000)
         }
     });
 });
@@ -128,12 +128,11 @@ $('.print_delivery_challan').click(function () {
         type: "GET",
         url: base_url + '/print_delivery_challan/' + $(this).attr('id') + '?send_sms=' + send_sms,
         success: function (data) {
-            location.reload();
             var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            $(this).parents('.modal').hide();
+            window.setTimeout(function(){location.reload()},5000)
         }
     });
 });
@@ -144,10 +143,10 @@ $('.print_sales_order_daybook').click(function () {
         url: base_url + '/print_sales_order_daybook',
         success: function (data) {
             var printWindow = window.open('', '');
-            location.reload();
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
+            window.setTimeout(function(){location.reload()},5000)
         }
     });
 });
@@ -163,12 +162,11 @@ $('.print_purchase_challan').click(function () {
         type: "GET",
         url: base_url + '/print_purchase_challan/' + $(this).attr('id') + '?send_sms=' + send_sms,
         success: function (data) {
-            location.reload();
             var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            $(this).parents('.modal').hide();
+            window.setTimeout(function(){location.reload()},5000)
         }
     });
 });
@@ -184,12 +182,11 @@ $('.print_purchase_advise').click(function () {
         type: "GET",
         url: base_url + '/print_purchase_advise/' + $(this).attr('id') + '?send_sms=' + send_sms,
         success: function (data) {
-            location.reload();
             var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            $(this).parents('.modal').hide();
+            window.setTimeout(function(){location.reload()},5000)
         }
     });
 });
@@ -200,11 +197,11 @@ $('.print_purchase_daybook').click(function () {
         type: "GET",
         url: base_url + '/print_purchase_daybook',
         success: function (data) {
-            location.reload();
             var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
+            window.setTimeout(function(){location.reload()},5000)
         }
     });
 });
