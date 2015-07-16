@@ -203,10 +203,7 @@ class InquiryController extends Controller {
                 }
             }
         }
-
-
-        exit();
-
+        
         return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully added.');
     }
 
