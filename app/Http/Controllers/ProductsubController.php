@@ -168,9 +168,9 @@ class ProductsubController extends Controller {
 
 
 
-            $order_count = AllOrderProducts::where('product_category_id', $product_cat->product_category_id)->count();
-            $purchase_count = PurchaseProducts::where('product_category_id', $product_cat->product_category_id)->count();
-
+           echo $order_count = AllOrderProducts::where('product_category_id', $product_cat->product_category_id)->count();
+            echo $purchase_count = PurchaseProducts::where('product_category_id', $product_cat->product_category_id)->count();
+            exit;
             if ($purchase_count == 0 && $order_count == 0) {
                 ProductSubCategory::destroy($id);
                 return redirect('product_sub_category')->with('success', 'Product sub category details successfully deleted.');
