@@ -60,7 +60,7 @@
 
                         @if(sizeof($product_cat) != 0)
                         <div class="table-responsive">
-                            <form method="post" id="save_all_price" action="{{URL::action('ProductController@update_all_price')}}">
+                            <form method="post" id="save_all_price">
                                 <table id="table-example" class=" table table-hover">
                                     <thead>
                                         <tr>
@@ -129,7 +129,7 @@
                                     <div class="clearfix"></div>
                                     </tbody>
                                 </table>
-                                <button type="submit" class="btn btn-primary" name="submit">Save All Price</button>
+                                <button type="button" id="save_all_price_btn" class="btn btn-primary" name="submit">Save All Price</button>
                             </form>
 
 
