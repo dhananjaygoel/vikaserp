@@ -113,7 +113,9 @@ $('.print_delivery_order').click(function () {
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            window.setTimeout(function(){location.reload()},5000)
+            printWindow.onunload = function () {
+                location.reload();
+            };
         }
     });
 });
@@ -132,7 +134,9 @@ $('.print_delivery_challan').click(function () {
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            window.setTimeout(function(){location.reload()},5000)
+            window.setTimeout(function () {
+                location.reload()
+            }, 5000)
         }
     });
 });
@@ -146,7 +150,9 @@ $('.print_sales_order_daybook').click(function () {
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            window.setTimeout(function(){location.reload()},5000)
+            window.setTimeout(function () {
+                location.reload()
+            }, 5000)
         }
     });
 });
@@ -166,7 +172,9 @@ $('.print_purchase_challan').click(function () {
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            window.setTimeout(function(){location.reload()},5000)
+            window.setTimeout(function () {
+                location.reload()
+            }, 5000)
         }
     });
 });
@@ -186,7 +194,9 @@ $('.print_purchase_advise').click(function () {
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            window.setTimeout(function(){location.reload()},5000)
+            window.setTimeout(function () {
+                location.reload()
+            }, 5000)
         }
     });
 });
@@ -201,7 +211,9 @@ $('.print_purchase_daybook').click(function () {
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            window.setTimeout(function(){location.reload()},5000)
+            window.setTimeout(function () {
+                location.reload()
+            }, 5000)
         }
     });
 });
@@ -225,7 +237,7 @@ function setup() {
         GLOBAL_NAMESPACE.value_changed = true;
     });
 }
-$(document).ajaxStart(function() {  
+$(document).ajaxStart(function () {
     GLOBAL_NAMESPACE.value_changed = false;
 });
 /*
