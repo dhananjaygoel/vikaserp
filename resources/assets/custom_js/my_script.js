@@ -110,7 +110,7 @@ $('.print_delivery_order').click(function () {
         url: base_url + '/print_delivery_order/' + $(this).attr('id') + '?send_sms=' + send_sms,
         success: function (data) {
             location.reload();
-            var printWindow = window.open('', '');
+            var printWindow = window.open('', '_blank');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
