@@ -12,7 +12,7 @@
                 <div class="filter-block">
                     <h1 class="pull-left">View Delivery Order</h1>                                 
                     <div class="pull-right top-page-ui">
-                        <a href="{{URL::action('DeliveryOrderController@edit',['id'=>$delivery_data[0]->id])}}" class="btn btn-primary pull-right">
+                        <a href="{{URL::action('DeliveryOrderController@edit',['id'=>$delivery_data->id])}}" class="btn btn-primary pull-right">
                             Edit Delivery Order
                         </a>
                     </div>
@@ -27,29 +27,29 @@
                             <table id="table-example" class="table customerview_table">
                                 <tbody>                    
                                     <tr>
-                                        <td><span>Customer Name:</span> {{ $delivery_data[0]['customer']->owner_name }}-{{$delivery_data[0]['customer']->tally_name}}</td>
+                                        <td><span>Customer Name:</span> {{ $delivery_data['customer']->owner_name }}-{{$delivery_data['customer']->tally_name}}</td>
                                     </tr>
-                                    <tr><td><span>Contact Person: </span>{{ $delivery_data[0]['customer']->contact_person }}</td></tr>
+                                    <tr><td><span>Contact Person: </span>{{ $delivery_data['customer']->contact_person }}</td></tr>
                                     <tr>
-                                        <td><span>Date:</span> {{ substr($delivery_data[0]->created_at, 0,10) }}</td>
+                                        <td><span>Date:</span> {{ substr($delivery_data->created_at, 0,10) }}</td>
                                     </tr>
                                     <tr><td><span>Serial Number: </span> 
-                                            @if($delivery_data[0]->serial_no != "")
-                                            {{$delivery_data[0]->serial_no}} 
+                                            @if($delivery_data->serial_no != "")
+                                            {{$delivery_data->serial_no}} 
                                             @else 
                                             {{'--'}}
                                             @endif
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><span>Mobile Number: </span>{{$delivery_data[0]['customer']->phone_number1}}</td>
+                                        <td><span>Mobile Number: </span>{{$delivery_data['customer']->phone_number1}}</td>
                                     </tr>
 
                                     <tr>
                                         <td><span>Delivery Location: </span>
 
                                             @foreach($delivery_locations as $location)
-                                            @if($location->id == $delivery_data[0]->delivery_location_id)
+                                            @if($location->id == $delivery_data->delivery_location_id)
 
                                             {{$location->area_name}}
                                             @endif
@@ -82,7 +82,7 @@
                                         <td><span>Remark</span></td>
                                     </tr>
                                     <?php $grand = 0; ?>
-                                    @foreach($delivery_data[0]['delivery_product'] as $product)
+                                    @foreach($delivery_data['delivery_product'] as $product)
                                     @if($product->order_type =='delivery_order')
                                     <tr>
                                         <td> {{ $product['order_product_details']->alias_name}}</td>
@@ -98,7 +98,7 @@
 
                                     <?php
                                     $grand = $grand + $product->present_shipping * $product->price;
-                                    $grand = $grand - $grand * $delivery_data[0]->vat_percentage / 100;
+                                    $grand = $grand - $grand * $delivery_data->vat_percentage / 100;
                                     ?>
                                     @endif
                                     @endforeach
@@ -107,14 +107,14 @@
                             </table>
                             <table id="table-example" class="table table-hover customerview_table  ">
                                 <tbody>
-                                    @if($delivery_data[0]->vat_percentage != "" || $delivery_data[0]->vat_percentage > 0)  
+                                    @if($delivery_data->vat_percentage != "" || $delivery_data->vat_percentage > 0)  
                                     <tr>
                                         <td><span>Plus VAT: </span>    
                                             Yes                                            
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><span>VAT Percentage: </span>{{ $delivery_data[0]->vat_percentage }}</td>
+                                        <td><span>VAT Percentage: </span>{{ $delivery_data->vat_percentage }}</td>
                                     </tr>
                                     @else
                                     <tr>
@@ -125,12 +125,12 @@
                                     @endif                                    
 
 
-                                    <tr><td><b>Vehicle Name:</b> {{ $delivery_data[0]->vehicle_number }} </td> </tr>
+                                    <tr><td><b>Vehicle Name:</b> {{ $delivery_data->vehicle_number }} </td> </tr>
 
-                                    <tr><td><b>Driver Contact:</b> {{ $delivery_data[0]->driver_contact_no }} </td> </tr>
+                                    <tr><td><b>Driver Contact:</b> {{ $delivery_data->driver_contact_no }} </td> </tr>
 
                                     <tr>
-                                        <td><span>Remark: </span>{{ $delivery_data[0]->remarks }}</td>
+                                        <td><span>Remark: </span>{{ $delivery_data->remarks }}</td>
                                     </tr>
                                 </tbody>
                             </table>

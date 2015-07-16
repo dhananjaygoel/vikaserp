@@ -34,16 +34,16 @@
                         <div class="form-group">
                             Date : {{date('d F, Y')}}
                         </div> 
-                        {!!Form::open(array('method'=>'PUT','url'=>url('delivery_order/'.$delivery_data[0]['id']),'id'=>'edit_delivery_order'))!!}
+                        {!!Form::open(array('method'=>'PUT','url'=>url('delivery_order/'.$delivery_data['id']),'id'=>'edit_delivery_order'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
 
-                        @if($delivery_data[0]['customer']->customer_status =="pending")
+                        @if($delivery_data['customer']->customer_status =="pending")
                         <div class="form-group">
                             <label>Customer<span class="mandatory">*</span></label>
                             <div class="radio">
-                                <input <?php if ($delivery_data[0]['customer']->customer_status == 'permanent') echo 'checked=""'; ?> value="existing_customer" id="exist_customer" name="customer_status"  type="radio">
+                                <input <?php if ($delivery_data['customer']->customer_status == 'permanent') echo 'checked=""'; ?> value="existing_customer" id="exist_customer" name="customer_status"  type="radio">
                                 <label for="exist_customer">Existing</label>
-                                <input <?php if ($delivery_data[0]['customer']->customer_status == 'pending') echo 'checked=""'; ?>  value="new_customer" id="new_customer" name="customer_status" type="radio">
+                                <input <?php if ($delivery_data['customer']->customer_status == 'pending') echo 'checked=""'; ?>  value="new_customer" id="new_customer" name="customer_status" type="radio">
                                 <label for="new_customer">New</label>
                             </div>
                             <div class="customer_select" style="display: none">
@@ -60,36 +60,36 @@
                         <div class="exist_field">
                             <div class="form-group">
                                 <label for="name">Customer Name<span class="mandatory">*</span></label>
-                                <input id="name" class="form-control" placeholder="Name" name="customer_name" value="{{ $delivery_data[0]['customer']->owner_name }}" type="text">
+                                <input id="name" class="form-control" placeholder="Name" name="customer_name" value="{{ $delivery_data['customer']->owner_name }}" type="text">
                             </div>
                             <div class="form-group">
                                 <label for="name">Contact Person<span class="mandatory">*</span></label>
-                                <input id="contact_person" class="form-control" placeholder="Contact Person" name="contact_person" value="{{ $delivery_data[0]['customer']->contact_person }}" type="text">
+                                <input id="contact_person" class="form-control" placeholder="Contact Person" name="contact_person" value="{{ $delivery_data['customer']->contact_person }}" type="text">
                             </div>
                             <div class="form-group">
                                 <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
-                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{ $delivery_data[0]['customer']->phone_number1 }}" type="text">
+                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{ $delivery_data['customer']->phone_number1 }}" type="text">
                             </div>
 
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
-                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ $delivery_data[0]['customer']->credit_period }}" type="text">
+                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ $delivery_data['customer']->credit_period }}" type="text">
                             </div>
                         </div>
-                        @elseif($delivery_data[0]['customer']->customer_status == "permanent")
+                        @elseif($delivery_data['customer']->customer_status == "permanent")
                         <div class="form-group">
                             <label>Customer<span class="mandatory">*</span></label>
                             <div class="radio">
-                                <input <?php if ($delivery_data[0]['customer']->customer_status == 'permanent') echo 'checked=""'; ?> value="existing_customer" id="exist_customer" name="customer_status"  type="radio">
+                                <input <?php if ($delivery_data['customer']->customer_status == 'permanent') echo 'checked=""'; ?> value="existing_customer" id="exist_customer" name="customer_status"  type="radio">
                                 <label for="exist_customer">Existing</label>
-                                <input <?php if ($delivery_data[0]['customer']->customer_status == 'pending') echo 'checked=""'; ?>  value="new_customer" id="new_customer" name="customer_status" type="radio">
+                                <input <?php if ($delivery_data['customer']->customer_status == 'pending') echo 'checked=""'; ?>  value="new_customer" id="new_customer" name="customer_status" type="radio">
                                 <label for="new_customer">New</label>
                             </div>
                             <div class="customer_select">
                                 <div class="col-md-4">
                                     <div class="form-group searchproduct">
-                                        <input value="{{ $delivery_data[0]['customer']->owner_name }}-{{ $delivery_data[0]['customer']->tally_name }}" class="form-control" placeholder="Enter Customer Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
-                                        <input type="hidden" value="{{ $delivery_data[0]['customer']->id }}" id="existing_customer_id" name="autocomplete_customer_id">
+                                        <input value="{{ $delivery_data['customer']->owner_name }}-{{ $delivery_data['customer']->tally_name }}" class="form-control" placeholder="Enter Customer Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
+                                        <input type="hidden" value="{{ $delivery_data['customer']->id }}" id="existing_customer_id" name="autocomplete_customer_id">
                                         <i class="fa fa-search search-icon"></i>
                                     </div>
                                 </div>
@@ -123,7 +123,7 @@
                                     <option value="" selected="">Delivery Location</option>
                                     @foreach($delivery_locations as $delivery_location)
                                     @if($delivery_location->status=='permanent' && $delivery_location->id!=0)
-                                    <option <?php if ($delivery_location->id == $delivery_data[0]->delivery_location_id) echo 'selected=""'; ?>  value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
+                                    <option <?php if ($delivery_location->id == $delivery_data->delivery_location_id) echo 'selected=""'; ?>  value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
                                     @endif
                                     @endforeach
                                     <option id="other_location" value="-2">Other</option>
@@ -158,7 +158,7 @@
                                             <td><span>Remark</span></td>
                                         </tr>
 
-                                        @foreach($delivery_data[0]['delivery_product'] as $key=>$product)
+                                        @foreach($delivery_data['delivery_product'] as $key=>$product)
                                         @if($product->order_type =='delivery_order')
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-3">
@@ -259,12 +259,12 @@
                         </div>
                         <div class="form-group">
                             <label for="vehicle_name">Vehicle Number</label>
-                            <input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{ $delivery_data[0]->vehicle_number }}" type="text">
+                            <input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{ $delivery_data->vehicle_number }}" type="text">
                         </div>
 
                         <div class="form-group">
                             <label for="driver_contact">Driver Contact</label>
-                            <input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="{{ $delivery_data[0]->driver_contact_no }}" type="text">
+                            <input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="{{ $delivery_data->driver_contact_no }}" type="text">
                         </div>
 
                         <div class="clearfix"></div>
@@ -282,7 +282,7 @@
                                     <tbody>
                                         <tr class="cdtable">
                                             <td class="cdfirst">VAT Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ $delivery_data[0]->vat_percentage }}" type="text" onblur="grand_total_delivery_order({{$key}});"></td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ $delivery_data->vat_percentage }}" type="text" onblur="grand_total_delivery_order({{$key}});"></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -292,7 +292,7 @@
 
                         <div class="form-group">
                             <label for="inquiry_remark">Remark</label>
-                            <textarea class="form-control" id="order_remark" name="order_remark"  rows="3">{{ $delivery_data[0]->remarks }}</textarea>
+                            <textarea class="form-control" id="order_remark" name="order_remark"  rows="3">{{ $delivery_data->remarks }}</textarea>
                         </div>
                         <div >
                             <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>--> 

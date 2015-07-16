@@ -30,6 +30,7 @@ class DeliveryChallanController extends Controller {
         define('PASS', Config::get('smsdata.password'));
         define('SENDER_ID', Config::get('smsdata.sender_id'));
         define('SMS_URL', Config::get('smsdata.url'));
+        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
 
@@ -61,6 +62,9 @@ class DeliveryChallanController extends Controller {
         $allorder = DeliveryChallan::where('id', '=', $id)
                         ->where('challan_status', '=', 'pending')
                         ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order')->first();
+        if (count($allorder) < 1) {
+            return redirect('delivery_challan')->with('success', 'Invalid challan or challan not found');
+        }
         return View::make('delivery_challan_details', compact('allorder'));
     }
 
@@ -194,7 +198,7 @@ class DeliveryChallanController extends Controller {
 
     //Generate Serial number and print Delivery Challan
     public function print_delivery_challan($id) {
-        
+
         $serial_number_delivery_order = Input::get('serial_number');
         $date_letter = $serial_number_delivery_order . "/" . $id;
 
@@ -214,38 +218,37 @@ class DeliveryChallanController extends Controller {
           | SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
           | -------------------------------------------
          */
-//        $input_data = $allorder['delivery_challan_products'];
-//        $send_sms = Input::get('send_sms');
-//        if ($send_sms == 'true') {
-//            $customer_id = $allorder->customer_id;
-//            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
-//            if (count($customer) > 0) {
-//                $total_quantity = '';
-//                $str = "Dear " . $customer->owner_name . ", your meterial has been despatched as follows:";
-//                foreach ($input_data as $product_data) {
-//                    $product = ProductSubCategory::where('product_category_id', '=', $product_data->product_category_id)->first();
-//                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-//                    $total_quantity = $total_quantity + $product_data->quantity;
-//                }
-//                $str .= " Truck Number: " .
-//                        $allorder['delivery_order']->vehicle_number .
-//                        ", Driver number: " . $allorder['delivery_order']->driver_contact_no .
-//                        ", Quantity: " . $allorder['delivery_challan_products']->sum('present_shipping') .
-//                        ", Amount: " . $allorder->grand_price .
-//                        ", Due By: " . date("jS F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
-//                        ", . Vikas Associates, 9673000068";
-//                $phone_number = $customer->phone_number1;
-//                $msg = urlencode($str);
-//                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
-//                echo '<pre>';
-//                print_r($str);
-//                echo '</pre>';
-//                $ch = curl_init($url);
-//                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//                $curl_scraped_page = curl_exec($ch);
-//                curl_close($ch);
-//            }
-//        }
+        $input_data = $allorder['delivery_challan_products'];
+        $send_sms = Input::get('send_sms');
+        if ($send_sms == 'true') {
+            $customer_id = $allorder->customer_id;
+            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer->owner_name . ", your meterial has been despatched as follows:";
+                foreach ($input_data as $product_data) {
+                    $product = ProductSubCategory::where('product_category_id', '=', $product_data->product_category_id)->first();
+                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
+                $str .= " Truck Number: " .
+                        $allorder['delivery_order']->vehicle_number .
+                        ", Driver number: " . $allorder['delivery_order']->driver_contact_no .
+                        ", Quantity: " . $allorder['delivery_challan_products']->sum('present_shipping') .
+                        ", Amount: " . $allorder->grand_price .
+                        ", Due By: " . date("jS F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
+                        ", . Vikas Associates, 9673000068";
+                $phone_number = $customer->phone_number1;
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+        }
         return view('print_delivery_challan', compact('allorder'));
     }
 

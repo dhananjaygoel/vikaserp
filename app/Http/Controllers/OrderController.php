@@ -287,9 +287,10 @@ class OrderController extends Controller {
                 $mail_array = array(
                     'customer_name' => $customers->owner_name,
                     'expected_delivery_date' => $order->expected_delivery_date,
-                    'created_date' => $order->created_at,
+                    'created_date' => $order->updated_at,
                     'delivery_location' => $delivery_location,
-                    'order_product' => $order['all_order_products']
+                    'order_product' => $order['all_order_products'],
+                    'source' => 'create_order'
                 );
                 
                 Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($customers) {
@@ -526,7 +527,8 @@ class OrderController extends Controller {
                     'expected_delivery_date' => $order->expected_delivery_date,
                     'created_date' => $order->created_at,
                     'delivery_location' => $delivery_location,
-                    'order_product' => $order['all_order_products']
+                    'order_product' => $order['all_order_products'],
+                    'source' => 'update_order'
                 );
                 
                 Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($customers) {

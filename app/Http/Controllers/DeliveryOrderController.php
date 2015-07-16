@@ -32,6 +32,7 @@ class DeliveryOrderController extends Controller {
         define('PASS', Config::get('smsdata.password'));
         define('SENDER_ID', Config::get('smsdata.sender_id'));
         define('SMS_URL', Config::get('smsdata.url'));
+        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
 
@@ -187,7 +188,10 @@ class DeliveryOrderController extends Controller {
      * @return Response
      */
     public function show($id) {
-        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->where('id', $id)->get();
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->where('id', $id)->first();
+        if (count($delivery_data) < 1) {
+            return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
+        }
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
@@ -204,7 +208,10 @@ class DeliveryOrderController extends Controller {
     public function edit($id) {
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
-        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->where('id', $id)->get();
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->where('id', $id)->first();
+        if (count($delivery_data) < 1) {
+            return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
+        }
         $customers = Customer::all();
         $pending_orders = $this->pending_quantity_order($id);
 
@@ -368,6 +375,9 @@ class DeliveryOrderController extends Controller {
 
     public function create_delivery_challan($id) {
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->where('id', $id)->first();
+        if (count($delivery_data) < 1) {
+            return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
+        }
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $price_delivery_order = $this->calculate_price($delivery_data);
@@ -472,40 +482,42 @@ class DeliveryOrderController extends Controller {
             'order_status' => "Completed"
         ));
 
-        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details','unit','location')->where('id', $id)->first();
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'unit', 'location')->where('id', $id)->first();
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
-        
-        
+
+
 
         /*
           |------------------- -----------------------
           | SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
           | -------------------------------------------
          */
-//        $input_data = $delivery_data['delivery_product'];
-//        $send_sms = Input::get('send_sms');
-//        if ($send_sms == 'true') {
-//            $customer_id = $delivery_data->customer_id;
-//            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
-//            if (count($customer) > 0) {
-//                $total_quantity = '';
-//                $str = "Dear " . $customer->owner_name . ", your Delivery order has been created as follows:";
-//                foreach ($input_data as $product_data) {
-//                    $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-//                    $total_quantity = $total_quantity + $product_data->quantity;
-//                }
-//                $str .= " Truck Number: " . $delivery_data->vehicle_number . ", Driver number: " . $delivery_data->driver_contact_no . ". Vikas Associates, 9673000068";
-//                $phone_number = $customer->phone_number1;
-//                $msg = urlencode($str);
-//                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
-//                $ch = curl_init($url);
-//                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//                $curl_scraped_page = curl_exec($ch);
-//                curl_close($ch);
-//            }
-//        }
+        $input_data = $delivery_data['delivery_product'];
+        $send_sms = Input::get('send_sms');
+        if ($send_sms == 'true') {
+            $customer_id = $delivery_data->customer_id;
+            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer->owner_name . ", your Delivery order has been created as follows:";
+                foreach ($input_data as $product_data) {
+                    $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
+                $str .= " Truck Number: " . $delivery_data->vehicle_number . ", Driver number: " . $delivery_data->driver_contact_no . ". Vikas Associates, 9673000068";
+                $phone_number = $customer->phone_number1;
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+        }
         return view('print_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
     }
 

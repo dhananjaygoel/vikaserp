@@ -29,6 +29,7 @@ class PurchaseAdviseController extends Controller {
         define('PASS', Config::get('smsdata.password'));
         define('SENDER_ID', Config::get('smsdata.sender_id'));
         define('SMS_URL', Config::get('smsdata.url'));
+        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
 
@@ -107,11 +108,11 @@ class PurchaseAdviseController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
-        
+
         $date_string_bill_date = preg_replace('~\x{00a0}~u', ' ', $input_data['bill_date']);
         $date_bill_date = date("Y/m/d", strtotime($date_string_bill_date));
         $datetime_bill_date = new DateTime($date_bill_date);
-        
+
         $purchase_advise_array = array();
 //        $purchase_advise_array['purchase_advice_date'] = date('Y-m-d', strtotime($input_data['bill_date']));
         $purchase_advise_array['purchase_advice_date'] = $datetime_bill_date->format('Y-m-d');
@@ -171,7 +172,9 @@ class PurchaseAdviseController extends Controller {
      */
     public function show($id) {
         $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details')->find($id);
-
+        if (count($purchase_advise) < 1) {
+            return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advise not found');
+        }
         return View::make('view_purchase_advice', array('purchase_advise' => $purchase_advise));
     }
 
@@ -183,7 +186,9 @@ class PurchaseAdviseController extends Controller {
      */
     public function edit($id) {
         $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details')->find($id);
-
+        if (count($purchase_advise) < 1) {
+            return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advise not found');
+        }
         $locations = DeliveryLocation::all();
         $units = Units::all();
 
@@ -386,7 +391,9 @@ class PurchaseAdviseController extends Controller {
     public function purchaseorder_advise_challan($id) {
 
         $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details')->find($id);
-
+        if (count($purchase_advise) < 1) {
+            return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advise not found');
+        }
         $locations = DeliveryLocation::all();
         $units = Units::all();
 
@@ -408,28 +415,30 @@ class PurchaseAdviseController extends Controller {
          * SEND SMS TO CUSTOMER FOR NEW PURCHASE ADVISE
          * --------------------------------------------
          */
-//        $input_data = $purchase_advise['purchase_products'];
-//        $send_sms = Input::get('send_sms');
-//        if ($send_sms == 'true') {
-//            $customer_id = $purchase_advise->supplier_id;
-//            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
-//            if (count($customer) > 0) {
-//                $total_quantity = '';
-//                $str = "Dear " . $customer->owner_name . ", your meterial has been despatched as follows:";
-//                foreach ($input_data as $product_data) {
-//                    $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-//                    $total_quantity = $total_quantity + $product_data->quantity;
-//                }
-//                $str .= " Truck Number: " . $purchase_advise->vehicle_number . ". Vikas Associates, 9673000068";
-//                $phone_number = $customer->phone_number1;
-//                $msg = urlencode($str);
-//                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
-//                $ch = curl_init($url);
-//                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//                $curl_scraped_page = curl_exec($ch);
-//                curl_close($ch);
-//            }
-//        }
+        $input_data = $purchase_advise['purchase_products'];
+        $send_sms = Input::get('send_sms');
+        if ($send_sms == 'true') {
+            $customer_id = $purchase_advise->supplier_id;
+            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer->owner_name . ", your meterial has been despatched as follows:";
+                foreach ($input_data as $product_data) {
+                    $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
+                $str .= " Truck Number: " . $purchase_advise->vehicle_number . ". Vikas Associates, 9673000068";
+                $phone_number = $customer->phone_number1;
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+        }
 
         return view('print_purchase_advise', compact('purchase_advise'));
     }

@@ -142,15 +142,6 @@ class PurchaseOrderController extends Controller {
 
             if ($validate->passes()) {
                 $customer_id = $input_data['autocomplete_supplier_id'];
-
-                //send mail
-                if (isset($input_data['send_email'])) {
-                    $customers = Customer::find($input_data['autocomplete_supplier_id']);
-
-                    Mail::send('emails.purchase_order_add_email', ['key' => $customers->owner_name], function($message) {
-                        $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Purchase details updated!');
-                    });
-                }
             } else {
                 $error_msg = $validate->messages();
                 return Redirect::back()->withInput()->withErrors($validate);
@@ -234,7 +225,35 @@ class PurchaseOrderController extends Controller {
                 $add_purchase_order_products = PurchaseProducts::create($purchase_order_products);
             }
         }
-
+        
+        /*
+         | ------------------------------------------------------
+         | SEND EMAIL TO SUPPLIER ON CREATE OF NEW PURCHASE ORDER
+         | ------------------------------------------------------
+         */
+        if (isset($input_data['send_email'])) {
+            $customers = Customer::find($customer_id);
+            $purchase_order = PurchaseOrder::where('id', '=', $purchase_order_id)->with('purchase_products.purchase_product_details', 'delivery_location')->first();
+            if (count($purchase_order) > 0) {
+                if (count($purchase_order['delivery_location']) > 0) {
+                    $delivery_location = $purchase_order['delivery_location']->area_name;
+                } else {
+                    $delivery_location = $purchase_order->other_location;
+                }
+                $mail_array = array(
+                    'customer_name' => $customers->owner_name,
+                    'expected_delivery_date' => $purchase_order->expected_delivery_date,
+                    'created_date' => $purchase_order->updated_at,
+                    'delivery_location' => $delivery_location,
+                    'order_product' => $purchase_order['purchase_products'],
+                    'source' => 'create_order'
+                );
+                
+                Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($customers) {
+                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: New Purchase Order');
+                });
+            }
+        }
         return redirect('purchase_orders')->with('flash_message', 'Purchase order details successfully added.');
     }
 
@@ -251,6 +270,9 @@ class PurchaseOrderController extends Controller {
         }
 
         $purchase_orders = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')->first();
+        if(count($purchase_orders) < 1){
+            return redirect('purchase_orders')->with('flash_message', 'Purchase order not found');
+        }
         return view('purchase_order_details', compact('purchase_orders'));
     }
 
@@ -267,6 +289,9 @@ class PurchaseOrderController extends Controller {
         }
 
         $purchase_order = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')->first();
+        if(count($purchase_order) < 1){
+            return redirect('purchase_orders')->with('flash_message', 'Purchase order not found');
+        }
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::where('customer_status', '=', 'permanent')->get();
@@ -420,6 +445,34 @@ class PurchaseOrderController extends Controller {
                 $add_purchase_order_products = PurchaseProducts::create($purchase_order_products);
             }
         }
+        /*
+         | ------------------------------------------------------
+         | SEND EMAIL TO SUPPLIER ON UPDATE OF NEW PURCHASE ORDER
+         | ------------------------------------------------------
+         */
+        if (isset($input_data['send_email'])) {
+            $customers = Customer::find($customer_id);
+            $purchase_order = PurchaseOrder::where('id', '=', $id)->with('purchase_products.purchase_product_details', 'delivery_location')->first();
+            if (count($purchase_order) > 0) {
+                if (count($purchase_order['delivery_location']) > 0) {
+                    $delivery_location = $purchase_order['delivery_location']->area_name;
+                } else {
+                    $delivery_location = $purchase_order->other_location;
+                }
+                $mail_array = array(
+                    'customer_name' => $customers->owner_name,
+                    'expected_delivery_date' => $purchase_order->expected_delivery_date,
+                    'created_date' => $purchase_order->updated_at,
+                    'delivery_location' => $delivery_location,
+                    'order_product' => $purchase_order['purchase_products'],
+                    'source' => 'update_order'
+                );
+                
+                Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($customers) {
+                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: Purchase Order Updated');
+                });
+            }
+        }
         return redirect('purchase_orders')->with('flash_message', 'Purchase order details successfully updated.');
     }
 
@@ -445,23 +498,9 @@ class PurchaseOrderController extends Controller {
     public function create_purchase_advice($order_id) {
 
         $purchase_orders = PurchaseOrder::where('id', '=', $order_id)->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer', 'purchase_advice.purchase_products')->first();
-
-//        foreach ($purchase_orders as $orders) {
-//            $check_if_advice_exists = PurchaseAdvise::where('purchase_order_id', '=', $order_id)->with('purchase_products')->get();
-//
-////            echo '<pre>';
-////            print_r($check_if_advice_exists->toArray());
-////            echo '</pre>';
-//
-//
-//            foreach ($check_if_advice_exists as $a) {
-//                $orders['pending'] = $a->quantity - $a->present_shipping;
-//            }
-//        }
-//        echo $orders;
-//        exit;
-
-
+        if(count($purchase_orders) < 1){
+            return redirect('purchase_orders')->with('flash_message', 'Purchase order not found');
+        }
         return view('create_purchase_advice', compact('purchase_orders'));
     }
 

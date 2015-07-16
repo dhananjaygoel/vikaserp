@@ -28,6 +28,7 @@ class PurchaseChallanController extends Controller {
         define('PASS', Config::get('smsdata.password'));
         define('SENDER_ID', Config::get('smsdata.sender_id'));
         define('SMS_URL', Config::get('smsdata.url'));
+        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
 
@@ -127,7 +128,9 @@ class PurchaseChallanController extends Controller {
     public function show($id) {
 
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'purchase_product.purchase_product_details', 'purchase_product.unit')->where('id', $id)->first();
-
+        if (count($purchase_challan) < 1) {
+            return redirect('purchase_challan')->with('flash_message', 'Challan not found');
+        }
         return view('view_purchase_challan', compact('purchase_challan'));
     }
 
@@ -140,6 +143,9 @@ class PurchaseChallanController extends Controller {
     public function edit($id) {
 
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'purchase_product.product_sub_category', 'purchase_product.unit')->where('id', $id)->first();
+        if (count($purchase_challan) < 1) {
+            return redirect('purchase_challan')->with('flash_message', 'Challan not found');
+        }
         return view('edit_purchase_challan', compact('purchase_challan'));
     }
 
@@ -219,40 +225,42 @@ class PurchaseChallanController extends Controller {
 
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'purchase_product.purchase_product_details', 'purchase_product.unit')->where('id', $id)->first();
 
-        /*  
+        /*
          * ------------------- -----------------------
          * SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
          * -------------------------------------------
          */
-//        $input_data = $purchase_challan['purchase_product'];
-//        $send_sms = Input::get('send_sms');
-//        if ($send_sms == 'true') {
-//            $customer_id = $purchase_challan->supplier_id;
-//            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
-//            if (count($customer) > 0) {
-//                $total_quantity = '';
-//                $str = "Dear " . $customer->owner_name . ", your meterial has been despatched as follows:";
-//                foreach ($input_data as $product_data) {
-//                    $product = ProductSubCategory::where('product_category_id', '=', $product_data->product_category_id)->first();
-//                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-//                    $total_quantity = $total_quantity + $product_data->quantity;
-//                }
-//                $str .= " Truck Number: " .
-//                        $purchase_challan['purchase_advice']->vehicle_number .
-//                        ", Driver number: " . $purchase_challan['purchase_advice']->driver_contact_no .
-//                        ", Quantity: " . $purchase_challan['purchase_product']->sum('present_shipping') .
-//                        ", Amount: " . $purchase_challan->grand_price .
-//                        ", Due By: " . date("jS F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date)) .
-//                        ", . Vikas Associates, 9673000068";
-//                $phone_number = $customer->phone_number1;
-//                $msg = urlencode($str);
-//                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
-//                $ch = curl_init($url);
-//                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//                $curl_scraped_page = curl_exec($ch);
-//                curl_close($ch);
-//            }
-//        }
+        $input_data = $purchase_challan['purchase_product'];
+        $send_sms = Input::get('send_sms');
+        if ($send_sms == 'true') {
+            $customer_id = $purchase_challan->supplier_id;
+            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer->owner_name . ", your meterial has been despatched as follows:";
+                foreach ($input_data as $product_data) {
+                    $product = ProductSubCategory::where('product_category_id', '=', $product_data->product_category_id)->first();
+                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
+                $str .= " Truck Number: " .
+                        $purchase_challan['purchase_advice']->vehicle_number .
+                        ", Driver number: " . $purchase_challan['purchase_advice']->driver_contact_no .
+                        ", Quantity: " . $purchase_challan['purchase_product']->sum('present_shipping') .
+                        ", Amount: " . $purchase_challan->grand_price .
+                        ", Due By: " . date("jS F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date)) .
+                        ", . Vikas Associates, 9673000068";
+                $phone_number = $customer->phone_number1;
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+        }
         return view('print_purchase_challan', compact('purchase_challan'));
     }
 

@@ -221,7 +221,9 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
-
+        if (count($inquiry) < 1) {
+            return redirect('inquiry')->with('flash_message', 'Enquiry does not exist.');
+        }
         $delivery_location = DeliveryLocation::all();
 
         /*
@@ -268,6 +270,9 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.product_category', 'customer')->first();
+        if (count($inquiry) < 1) {
+            return redirect('inquiry')->with('flash_message', 'Enquiry does not exist.');
+        }
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         return view('edit_inquiry', compact('inquiry', 'delivery_location', 'units'));
@@ -521,11 +526,10 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $inquiry = Inquiry::where('id', '=', $id)->where(['inquiry_status' => 'Completed'])->get();
+        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
         if (count($inquiry) > 0) {
             return redirect('inquiry')->with('flash_message', 'Please select other inquiry, order is generated for this inquiry.');
         }
-
-        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         $customers = Customer::all();
@@ -708,7 +712,8 @@ class InquiryController extends Controller {
                     'expected_delivery_date' => $order->expected_delivery_date,
                     'created_date' => $order->created_at,
                     'delivery_location' => $delivery_location,
-                    'order_product' => $order['all_order_products']
+                    'order_product' => $order['all_order_products'],
+                    'source' => 'inquiry'
                 );
                 Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($customers) {
                     $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: New Order');
