@@ -7,7 +7,7 @@ class AlterAllOrderProductsTable extends Migration {
 
     /**
      * Run the migrations.
-     *sdsd
+     *
      * @return void
      */
     public function up() {

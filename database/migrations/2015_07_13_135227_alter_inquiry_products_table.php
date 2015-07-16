@@ -7,7 +7,7 @@ class AlterInquiryProductsTable extends Migration {
 
 	/**
      * Run the migrations.
-     *sdsdsd
+     *
      * @return void
      */
     public function up() {

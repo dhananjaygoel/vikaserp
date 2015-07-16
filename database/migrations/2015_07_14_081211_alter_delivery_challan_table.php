@@ -7,7 +7,7 @@ class AlterDeliveryChallanTable extends Migration {
 
     /**
      * Run the migrations.
-     *dsds
+     *
      * @return void
      */
     public function up() {

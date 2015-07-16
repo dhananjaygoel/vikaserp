@@ -7,7 +7,7 @@ class AlterAllPurchaseProductTable extends Migration {
 
     /**
      * Run the migrations.
-     *sdsds
+     *
      * @return void
      */
     public function up() {
