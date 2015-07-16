@@ -83,7 +83,7 @@
                             <input id="difference" class="form-control" placeholder=" Difference" name="difference" value="{{$prod_sub_cat->difference}}" type="text">
                         </div>
                         <div>
-                            <button type="button" class="btn btn-primary " >Send SMS</button>
+                            <button type="button" class="btn btn-primary " id="sendSMS" >Send SMS</button>
                         </div>
                         <hr>
                         <div>

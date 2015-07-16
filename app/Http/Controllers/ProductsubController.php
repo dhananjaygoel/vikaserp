@@ -169,7 +169,7 @@ class ProductsubController extends Controller {
             $order_count = AllOrderProducts::where('product_category_id', $product_cat->product_category_id)->count();
             $purchase_count = PurchaseProducts::where('product_category_id', $product_cat->product_category_id)->count();
             $inquery_count = InquiryProducts::where('product_category_id', $product_cat->product_category_id)->count();
-            
+
             if ($purchase_count == 0 && $order_count == 0 && $inquery_count == 0) {
                 ProductSubCategory::destroy($id);
                 return redirect('product_sub_category')->with('success', 'Product sub category details successfully deleted.');
@@ -209,6 +209,40 @@ class ProductsubController extends Controller {
         ProductSubCategory::where('id', $id)
                 ->update($pro_sub_cat);
 
+        /*
+         * ------------------- -------------------------
+         * SEND SMS TO ALL ADMINS ON UPDATE PRODUCT SIZE
+         * ---------------------------------------------
+         */
+        $input = Input::all();
+        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+            $admins = User::where('role_id', '=', 1)->get();
+            if (count($admins) > 0) {
+                foreach ($admins as $key => $admin) {
+                    $product_category = ProductCategory::where('id', '=', $request->input('select_product_categroy'))->with('product_type')->first();
+                    $str = "Dear " . $admin->first_name
+                            . ",  " . Auth::user()->first_name
+                            . " has updated a size catagory as "
+                            . $request->input('size')
+                            . ", " . $request->input('thickness')
+                            . ", " . $request->input('weight')
+                            . ", " . $request->input('alias_name')
+                            . ", " . $request->input('difference')
+                            . " under " . $product_category->product_category_name
+                            . " & " . $product_category['product_type']->name
+                            . " kindly chk. Vikas associates";
+                    $phone_number = $admin->mobile_number;
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+            }
+        }
         return redirect('product_sub_category')->with('success', 'Product sub category successfully updated.');
     }
 
