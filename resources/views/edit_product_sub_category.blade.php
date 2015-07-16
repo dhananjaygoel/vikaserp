@@ -20,12 +20,20 @@
                 <div class="main-box">                     
                     <div class="main-box-body clearfix">
                         @if (count($errors) > 0)
-                        <div class="alert alert-warning">                            
+                        <div class="alert alert-warning"> 
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             @foreach ($errors->all() as $error)
                             <p>{{ $error }}</p>
                             @endforeach
                         </div>
                         @endif 
+
+                        @if (Session::has('alias'))
+                        <div class="alert alert-warning">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            {{Session::get('alias')}}                            
+                        </div>
+                        @endif
 
                         {!!Form::open(array('method'=>'PUT','url'=>url('product_sub_category/'.$prod_sub_cat->id),'id'=>'onenter_prevent'))!!}
 

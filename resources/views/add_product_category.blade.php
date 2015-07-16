@@ -39,7 +39,7 @@
                                 </div>                               
                             </div>
                             <div class="form-group">
-                                <label for="cat_name">Sub Product Category Name<span class="mandatory">*</span></label>
+                                <label for="cat_name">Product Category Name<span class="mandatory">*</span></label>
                                 <input id="cat_name" class="form-control" placeholder="Sub Product Category Name" name="product_category_name" value="{{ old('product_category_name') }}" type="text">
                             </div>                            
                             <div class="form-group">

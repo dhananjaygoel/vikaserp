@@ -28,11 +28,13 @@
                     <div class="main-box-body main_contents clearfix"> 
 
                         <div class="alert alert-success alert-success1" style="display:none;">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             Product category price successfully updated                          
                         </div>
 
                         @if (count($errors) > 0)
-                        <div class="alert alert-warning">                        
+                        <div class="alert alert-warning">  
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             @foreach ($errors->all() as $error)
                             <p>{{ $error }}</p>
                             @endforeach                       
@@ -41,12 +43,14 @@
 
                         @if (Session::has('success'))
                         <div class="alert alert-success alert-success1">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             {{Session::get('success')}}                            
                         </div>
                         @endif
 
                         @if (Session::has('flash_message'))
                         <div class="alert alert-success alert-success1">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             <i class="fa fa-check-circle fa-fw fa-lg"></i>
                             <strong>Well done!</strong> User details successfully added.
                         </div> <br/>
@@ -54,6 +58,7 @@
 
                         @if (Session::has('wrong'))
                         <div class="alert alert-danger alert-success1">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             {{Session::get('wrong')}}                            
                         </div>
                         @endif

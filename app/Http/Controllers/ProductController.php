@@ -93,6 +93,13 @@ class ProductController extends Controller {
     }
 
     public function show($id) {
+
+        $product_cat = ProductCategory::where('id', $id)->with('product_sub_category', 'product_type')->first();
+        if (count($product_cat) < 1) {
+            return redirect('product_category')->with('success', 'Product category does not exist.');
+        }
+
+
         $product_cat = ProductCategory::where('id', $id)->with('product_sub_category', 'product_type')->first();
 
         return view('view_product_category', compact('product_cat'));
@@ -106,17 +113,23 @@ class ProductController extends Controller {
 
         if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
 
-
-            $order_count = AllOrderProducts::where('product_category_id', $id)->count();
-            $purchase_count = PurchaseProducts::where('product_category_id', $id)->count();
-            $inquery_count = InquiryProducts::where('product_category_id', $id)->count();
-
-            if ($purchase_count == 0 && $order_count == 0 && $inquery_count == 0) {
+            $cat = ProductSubCategory::where('product_category_id', $id)->count();
+//            $order_count = 0;
+//            $purchase_count = 0;
+//            $inquery_count = 0;
+//            foreach ($cat as $prod_cat) {
+//
+//                $order_count += AllOrderProducts::where('product_category_id', $prod_cat->id)->count();
+//                $purchase_count += PurchaseProducts::where('product_category_id', $prod_cat->id)->count();
+//                $inquery_count += InquiryProducts::where('product_category_id', $prod_cat->id)->count();
+//            }
+//            if ($purchase_count == 0 && $order_count == 0 && $inquery_count == 0) {
+            if ($cat == 0) {
 
                 ProductCategory::destroy($id);
                 return redirect('product_category')->with('success', 'Product details successfully deleted.');
             } else {
-                return redirect('product_category')->with('wrong', 'Product has already added by user, you can not delete this record.');
+                return redirect('product_category')->with('wrong', 'Product has already child category, you can not delete this record.');
             }
         } else {
             return redirect('product_category')->with('wrong', 'Please enter the valid credential to delete the records.');
@@ -127,8 +140,14 @@ class ProductController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $product_type = ProductType::all();
+
         $product_cat = ProductCategory::where('id', $id)->get();
+        if (count($product_cat) < 1) {
+            return redirect('product_category')->with('success', 'Product category does not exist.');
+        }
+
+        $product_type = ProductType::all();
+
         return view('edit_product_category', compact('product_cat', 'product_type'));
     }
 

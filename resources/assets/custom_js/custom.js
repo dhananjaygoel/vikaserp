@@ -265,7 +265,7 @@ function update_price(product_id) {
         url: url + '/update_price',
         data: {price: price, product_id: product_id, _token: token},
     }).done(function (data) {
-        $('.alert-success1').show().hide(5000);
+        $('.alert-success1').show();
     });
 }
 
@@ -371,7 +371,7 @@ $('#save_all_price_btn').click(function () {
         type: 'post', url: baseurl + '/update_all_price', 
         data: $('#save_all_price').serialize(),
         success: function (data) {
-            $('.alert-success1').show().hide(5000);
+            $('.alert-success1').show();
         }
     });
 });
