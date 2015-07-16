@@ -138,14 +138,6 @@ class OrderController extends Controller {
             $validator = Validator::make($input_data, Customer::$existing_customer_inquiry_rules);
             if ($validator->passes()) {
                 $customer_id = $input_data['existing_customer_name'];
-                //send mail
-                if (isset($input_data['send_email'])) {
-                    $customers = Customer::find($customer_id);
-
-                    Mail::send('emails.order_complete_email', ['key' => $customers->owner_name], function($message) {
-                        $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Order details created');
-                    });
-                }
             } else {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
@@ -277,6 +269,34 @@ class OrderController extends Controller {
                 $add_order_products = AllOrderProducts::create($order_products);
             }
         }
+        
+        /*
+         | ---------------------------------------------
+         | SEND EMAIL TO CUSTOMER ON CREATE OF NEW ORDER
+         | ---------------------------------------------
+         */
+        if (isset($input_data['send_email'])) {
+            $customers = Customer::find($customer_id);
+            $order = Order::where('id', '=', $order_id)->with('all_order_products.order_product_details', 'delivery_location')->first();
+            if (count($order) > 0) {
+                if (count($order['delivery_location']) > 0) {
+                    $delivery_location = $order['delivery_location']->area_name;
+                } else {
+                    $delivery_location = $order->other_location;
+                }
+                $mail_array = array(
+                    'customer_name' => $customers->owner_name,
+                    'expected_delivery_date' => $order->expected_delivery_date,
+                    'created_date' => $order->created_at,
+                    'delivery_location' => $delivery_location,
+                    'order_product' => $order['all_order_products']
+                );
+                
+                Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($customers) {
+                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: New Order');
+                });
+            }
+        }
         return redirect('orders')->with('flash_message', 'Order details successfully added.');
     }
 
@@ -288,11 +308,9 @@ class OrderController extends Controller {
      */
     public function show($id) {
         $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->first();
-        echo '<pre>';
-        print_r(count($order));
-        echo '</pre>';
-        
-        exit();
+        if (count($order) < 1) {
+            return redirect('orders')->with('flash_message', 'Order does not exist.');
+        }
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         $customers = Customer::all();
@@ -311,6 +329,9 @@ class OrderController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->first();
+        if (count($order) < 1) {
+            return redirect('orders')->with('flash_message', 'Order does not exist.');
+        }
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         $customers = Customer::all();
@@ -359,15 +380,6 @@ class OrderController extends Controller {
             $validator = Validator::make($input_data, Customer::$existing_customer_order_rules);
             if ($validator->passes()) {
                 $customer_id = $input_data['existing_customer_name'];
-
-                //send mail
-                if (isset($input_data['send_email'])) {
-                    $customers = Customer::find($customer_id);
-
-                    Mail::send('emails.order_complete_email', ['key' => $customers->owner_name], function($message) {
-                        $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Order details updated');
-                    });
-                }
             } else {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
@@ -494,7 +506,34 @@ class OrderController extends Controller {
                 }
             }
         }
-
+        
+        /*
+         | ---------------------------------------------
+         | SEND EMAIL TO CUSTOMER ON UPDATE OF NEW ORDER
+         | ---------------------------------------------
+         */
+        if (isset($input_data['send_email'])) {
+            $customers = Customer::find($customer_id);
+            $order = Order::where('id', '=', $id)->with('all_order_products.order_product_details', 'delivery_location')->first();
+            if (count($order) > 0) {
+                if (count($order['delivery_location']) > 0) {
+                    $delivery_location = $order['delivery_location']->area_name;
+                } else {
+                    $delivery_location = $order->other_location;
+                }
+                $mail_array = array(
+                    'customer_name' => $customers->owner_name,
+                    'expected_delivery_date' => $order->expected_delivery_date,
+                    'created_date' => $order->created_at,
+                    'delivery_location' => $delivery_location,
+                    'order_product' => $order['all_order_products']
+                );
+                
+                Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($customers) {
+                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: Order Updated');
+                });
+            }
+        }
         return redirect('orders')->with('flash_message', 'Order details successfully modified.');
     }
 
@@ -580,6 +619,9 @@ class OrderController extends Controller {
     public function create_delivery_order($id) {
 
         $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->first();
+        if (count($order) < 1) {
+            return redirect('orders')->with('flash_message', 'Order does not exist.');
+        }
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         $customers = Customer::all();
