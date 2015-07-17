@@ -19,7 +19,7 @@
                             <form method="GET" action="{{URL::action('DeliveryOrderController@index')}}" id="filter_form">
                                 <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                                 <select class="form-control" id="order_status" name="order_status" onchange="this.form.submit()">
-                                    <option value="" selected="" disabled="">--Status--</option>
+                                    <option value="" selected="">--Status--</option>
                                     <option <?php if (Input::get('order_status') == 'Delivered') echo 'selected=""'; ?> value="Delivered">Delivered</option>
                                     <option <?php if (Input::get('order_status') == 'Inprocess') echo 'selected=""'; ?> value="Inprocess">Inprocess</option>
                                 </select>
@@ -110,14 +110,14 @@
                                         </td> 
                                         @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
                                         <td class="text-center">
-                                            @if($delivery->order_status == 'completed')
+                                            @if($delivery->serial_no != "")
                                             <a href="{{url('create_delivery_challan/'.$delivery->id)}}" class="table-link" title="Delivery challan">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-book fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @elseif($delivery->order_status != 'completed')
+                                            @else
                                             <span class="table-link normal_cursor" title="Delivery challan">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>

@@ -1,3 +1,10 @@
+<?php
+//
+//echo '<pre>';
+//print_r($delivery_data->toArray());
+//echo '</pre>';
+//exit;
+?>
 @extends('layouts.master')
 @section('title','Delivery Challan')
 @section('content')
@@ -98,9 +105,14 @@
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
-                                                <div class="form-group">     
+                                                <div class="form-group">
+
+                                                    <?php                                              
+                                                    $product_price = 0;
+                                                    ?>
                                                     @foreach($price_delivery_order as $rate)
-                                                    @if($rate['product_id'] == $product['order_product_details']['product_category']->id)
+                                                    <!--if($rate['product_id'] == $product['order_product_details']['product_category']->id)-->
+                                                    @if($rate['product_id'] == $product->product_category_id)
                                                     <?php $product_price = $rate['total_rate']; ?>                                                    
                                                     @endif
                                                     @endforeach
@@ -159,7 +171,7 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="form-group">
-                            <label for="total"><b class="challan">Total</b><span class="gtotal"><input type="text" id="total_price" name="total_price" placeholder="" readonly="readonly"></span></label>                           
+                            <label for="total"><b class="challan">Total</b><span class="gtotal"><input type="text" class="form-control" id="total_price" name="total_price" placeholder="" readonly="readonly"></span></label>                           
                         </div>
                         <div class="form-group">
                             <label for="driver_contact"><b class="challan">Loading</b></label>
@@ -211,7 +223,7 @@
                         <div class="form-group">
                             <label for="vatp"><b class="challan">Total : </b>
                                 <span class="gtotal">
-                                    <input type="text" class="form-group" name="vat_total" id="vat_tot_val" readonly="readonly">
+                                    <input type="text" class="form-control" name="vat_total" id="vat_tot_val" readonly="readonly">
                                 </span>
 
                             </label>
@@ -223,7 +235,7 @@
                         <div class="form-group">
                             <label for="total"><b class="challan">Grand Total : </b>
                                 <span class="gtotal">
-                                    <input type="text" class="form-group" name="grand_total" id="grand_total" readonly="readonly">
+                                    <input type="text" class="form-control" name="grand_total" id="grand_total" readonly="readonly">
                                 </span>
                             </label>
                         </div>

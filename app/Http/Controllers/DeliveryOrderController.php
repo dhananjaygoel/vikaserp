@@ -374,21 +374,33 @@ class DeliveryOrderController extends Controller {
     }
 
     public function create_delivery_challan($id) {
+
+
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->where('id', $id)->first();
         if (count($delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
         }
+
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $price_delivery_order = $this->calculate_price($delivery_data);
         $customers = Customer::all();
-
+//        echo '<pre>';
+//        print_r($price_delivery_order);
+//        echo '</pre>';
+//        exit;
         return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'price_delivery_order'));
     }
 
     public function store_delivery_challan($id) {
 
         $input_data = Input::all();
+
+
+//        echo '<pre>';
+//        print_r($input_data);
+//        echo '</pre>';
+//        exit;
         $validator = Validator::make($input_data, DeliveryOrder::$order_to_delivery_challan_rules);
         if ($validator->passes()) {
             $i = 0;
@@ -476,10 +488,10 @@ class DeliveryOrderController extends Controller {
 
         $current_date = date("M/y/m/");
 
-        $date_letter = $current_date . "" . $id;
+        $date_letter = 'DO/' . $current_date . "" . $id;
         DeliveryOrder::where('id', $id)->update(array(
             'serial_no' => $date_letter,
-            'order_status' => "Completed"
+//            'order_status' => "Completed"
         ));
 
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'unit', 'location')->where('id', $id)->first();
@@ -571,6 +583,10 @@ class DeliveryOrderController extends Controller {
             $product_rate["total_rate"] = $total_rate;
             array_push($product_rates, $product_rate);
         }
+//        echo '<pre>';
+//        print_r($product_rates);
+//        echo '</pre>';
+//        exit;
         return $product_rates;
     }
 
