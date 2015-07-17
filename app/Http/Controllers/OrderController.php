@@ -968,4 +968,22 @@ class OrderController extends Controller {
         return $pending_orders;
     }
 
+    public function fetch_order_size() {
+        $term = '%' . Input::get('term') . '%';
+        $product = ProductSubCategory::where('size', 'like', $term)->get();
+
+        if (count($product) > 0) {
+            foreach ($product as $prod) {
+                $data_array[] = [
+                    'value' => $prod->size
+                ];
+            }
+        } else {
+            $data_array[] = [
+                'value' => 'No size found',
+            ];
+        }
+        echo json_encode(array('data_array' => $data_array));
+    }
+
 }

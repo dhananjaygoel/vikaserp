@@ -342,6 +342,30 @@ $("#product_size").autocomplete({
     }
 
 });
+
+$("#order_size").autocomplete({
+    minLength: 1,
+    dataType: 'json',
+    type: 'GET',
+    source: function (request, response) {
+        $("#order_size").addClass('loadinggif');
+        $.ajax({
+            url: baseurl + '/fetch_product_size',
+            data: {"term": request.term},
+            success: function (data) {
+                var main_array = JSON.parse(data);
+                var arr1 = main_array['data_array'];
+                response(arr1);
+                $("#order_size").removeClass('loadinggif');
+            },
+        });
+    },
+    select: function (event, ui) {
+        $("#order_size").val(ui.item.id);
+    }
+
+});
+
 $("#search_text").autocomplete({
     minLength: 1,
     dataType: 'json',

@@ -53,12 +53,18 @@
                                         </select> 
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="form-control" id="user_filter3" name="size_filter" onchange="this.form.submit();">
+<!--                                        <select class="form-control" id="user_filter3" name="size_filter" onchange="this.form.submit();">
                                             <option value="" selected="">--Select Size--</option>
                                             @foreach($product_size as $product)                                            
                                             <option <?php if (Input::get('size_filter') == $product->size) echo 'selected=""'; ?> value="{{$product->size}}">{{$product->size}}</option>
                                             @endforeach                                        
-                                        </select>
+                                        </select>-->
+
+                                        <input class="form-control ui-autocomplete-input" placeholder="Size" value="{{Input::get('size_filter')}}" id="order_size" autocomplete="off" name="size_filter" type="text">
+                                        <a onclick="this.form.submit()">
+                                            <i class="fa fa-search search-icon" id="search_icon"></i>
+                                        </a>
+
                                     </div>
                                     <div class="col-md-2  pull-right">
                                         @if( Auth::user()->role_id != 3 )
@@ -449,4 +455,10 @@
         </div>
     </div>
 </div>
+<style>
+    .ui-autocomplete{
+        height: 500px;
+        overflow-y: scroll;
+    }
+</style>
 @stop

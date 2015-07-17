@@ -76,6 +76,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('get_product_category', 'ProductsubController@get_product_category');
     Route::post('update_difference', 'ProductsubController@update_difference');
     Route::get('fetch_product_size', 'ProductsubController@fetch_product_size');
+
+
+
     Route::get('fetch_product_name', 'ProductsubController@fetch_product_name');
 
     Route::resource('delivery_order', 'DeliveryOrderController');
@@ -110,6 +113,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('pending_purchase_advice', 'PurchaseAdviseController@pending_purchase_advice');
     Route::resource('orders', 'OrderController');
     Route::post('manual_complete_order', 'OrderController@manual_complete_order');
+    
+    Route::get('fetch_order_size', 'ProductsubController@fetch_order_size');
+
+
     Route::resource('create_purchase_advice', 'PurchaseOrderController@create_purchase_advice');
     Route::post('store_advise', 'PurchaseAdviseController@store_advise');
     Route::resource('purchaseorder_advise_challan', 'PurchaseAdviseController@purchaseorder_advise_challan');
@@ -145,10 +152,10 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::post('upload_excel', 'WelcomeController@upload_excel');
     Route::resource('excel_import', 'WelcomeController@excel_import');
-    
+
     Route::resource('excel_import_customer', 'WelcomeController@excel_import_customer');
     Route::post('upload_customer_excel', 'WelcomeController@upload_customer_excel');
-    
+
     Route::resource('import_delivery_location', 'WelcomeController@import_delivery_location');
     Route::post('process_import_delivery_location', 'WelcomeController@process_import_delivery_location');
 });
