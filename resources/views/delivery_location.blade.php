@@ -136,7 +136,8 @@
                             <span class="pull-right">
                                 <?php echo $delivery_location->render(); ?>
                             </span>
-                             @if($delivery_location->lastPage() > 1)
+                            <div class="clearfix"></div>
+                            @if($delivery_location->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
                                 <form class="form-inline" method="GET" action="{{url('location')}}" id="filter_search">
                                     <div class="form-group">
