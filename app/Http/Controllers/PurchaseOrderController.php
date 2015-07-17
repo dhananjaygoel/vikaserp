@@ -72,12 +72,12 @@ class PurchaseOrderController extends Controller {
                 ->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')
                 ->Paginate(10);
 
-        $pending_orders = $this->quantity_calculation($purchase_orders);
+        $purchase_orders = $this->quantity_calculation($purchase_orders);
 
-        $all_customers = Customer::all();
+        $all_customers = Customer::where('customer_status', '=', 'permanent')->get();
         $purchase_orders->setPath('purchase_orders');
 
-        return view('purchase_order', compact('purchase_orders', 'all_customers', 'pending_orders'));
+        return view('purchase_order', compact('purchase_orders', 'all_customers'));
     }
 
     /**
@@ -225,11 +225,11 @@ class PurchaseOrderController extends Controller {
                 $add_purchase_order_products = PurchaseProducts::create($purchase_order_products);
             }
         }
-        
+
         /*
-         | ------------------------------------------------------
-         | SEND EMAIL TO SUPPLIER ON CREATE OF NEW PURCHASE ORDER
-         | ------------------------------------------------------
+          | ------------------------------------------------------
+          | SEND EMAIL TO SUPPLIER ON CREATE OF NEW PURCHASE ORDER
+          | ------------------------------------------------------
          */
         if (isset($input_data['send_email'])) {
             $customers = Customer::find($customer_id);
@@ -248,9 +248,9 @@ class PurchaseOrderController extends Controller {
                     'order_product' => $purchase_order['purchase_products'],
                     'source' => 'create_order'
                 );
-                
+
                 Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($customers) {
-                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: New Purchase Order');
+                    $message->to('amana@agstechnologies.com', $customers->owner_name)->subject('Vikash Associates: New Purchase Order');
                 });
             }
         }
@@ -270,7 +270,7 @@ class PurchaseOrderController extends Controller {
         }
 
         $purchase_orders = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')->first();
-        if(count($purchase_orders) < 1){
+        if (count($purchase_orders) < 1) {
             return redirect('purchase_orders')->with('flash_message', 'Purchase order not found');
         }
         return view('purchase_order_details', compact('purchase_orders'));
@@ -289,7 +289,7 @@ class PurchaseOrderController extends Controller {
         }
 
         $purchase_order = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')->first();
-        if(count($purchase_order) < 1){
+        if (count($purchase_order) < 1) {
             return redirect('purchase_orders')->with('flash_message', 'Purchase order not found');
         }
         $units = Units::all();
@@ -337,15 +337,6 @@ class PurchaseOrderController extends Controller {
             }
         } elseif ($input_data['supplier_status'] == "existing_supplier") {
 
-            //send mail
-            if (isset($input_data['send_email'])) {
-                $customers = Customer::find($input_data['autocomplete_supplier_id']);
-
-                Mail::send('emails.purchase_order_email', ['key' => $customers->owner_name], function($message) {
-                    $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Purchase details updated');
-                });
-            }
-
             $validator = Validator::make($input_data, Customer::$existing_supplier_inquiry_rules);
             if ($validator->passes()) {
 
@@ -377,6 +368,7 @@ class PurchaseOrderController extends Controller {
         $add_purchase_order_array = [
             'is_view_all' => $input_data['viewable_by'],
             'supplier_id' => $customer_id,
+            'order_for' => $input_data['order_for'],
             'created_by' => Auth::id(),
             'vat_percentage' => $input_data['vat_percentage'],
             'expected_delivery_date' => $datetime->format('Y-m-d'),
@@ -446,9 +438,9 @@ class PurchaseOrderController extends Controller {
             }
         }
         /*
-         | ------------------------------------------------------
-         | SEND EMAIL TO SUPPLIER ON UPDATE OF NEW PURCHASE ORDER
-         | ------------------------------------------------------
+          | ------------------------------------------------------
+          | SEND EMAIL TO SUPPLIER ON UPDATE OF NEW PURCHASE ORDER
+          | ------------------------------------------------------
          */
         if (isset($input_data['send_email'])) {
             $customers = Customer::find($customer_id);
@@ -467,9 +459,9 @@ class PurchaseOrderController extends Controller {
                     'order_product' => $purchase_order['purchase_products'],
                     'source' => 'update_order'
                 );
-                
+
                 Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($customers) {
-                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: Purchase Order Updated');
+                    $message->to('amana@agstechnologies.com', $customers->owner_name)->subject('Vikash Associates: Purchase Order Updated');
                 });
             }
         }
@@ -498,7 +490,12 @@ class PurchaseOrderController extends Controller {
     public function create_purchase_advice($order_id) {
 
         $purchase_orders = PurchaseOrder::where('id', '=', $order_id)->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer', 'purchase_advice.purchase_products')->first();
-        if(count($purchase_orders) < 1){
+        foreach ($purchase_orders['purchase_products'] as $key => $value) {
+            $purchase_advise_products = PurchaseProducts::where('parent', '=', $value->id)->get();
+            $total_advise_product_quantity = $purchase_advise_products->sum('quantity');
+            $purchase_orders['purchase_products'][$key]['pending_quantity'] = ($value->quantity - $total_advise_product_quantity);
+        }
+        if (count($purchase_orders) < 1) {
             return redirect('purchase_orders')->with('flash_message', 'Purchase order not found');
         }
         return view('create_purchase_advice', compact('purchase_orders'));
@@ -506,12 +503,74 @@ class PurchaseOrderController extends Controller {
 
     public function manual_complete() {
         $input_data = Input::all();
+        $purchase_order_id = $input_data['purchase_order_id'];
+        $purchase_order = PurchaseOrder::where('id', '=', $purchase_order_id)->with('purchase_products.purchase_product_details', 'purchase_products.unit', 'customer')->first();
+
+        /*
+          | ------------------- -----------------------------------------
+          | SEND SMS TO CUSTOMER FOR MANUALLY COMPLETING A PURCHASE ORDER
+          | -------------------------------------------------------------
+         */
+        $input = Input::all();
+        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+            $customer = Customer::where('id', '=', $purchase_order['customer']->id)->with('manager')->first();
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer->owner_name . ", your order has been completed.  for following:";
+                foreach ($purchase_order['purchase_products'] as $product_data) {
+                    $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
+                }
+                $str .= ", Vikas Associates, 9673000068";
+                $phone_number = $customer->phone_number1;
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+        }
+
+        /*
+          | ----------------------------------------------------------------
+          | SEND EMAIL TO CUSTOMER WHEN PURCHASE ORDER IS COMPLETED MANUALLY
+          | ----------------------------------------------------------------
+         */
+        if (isset($input_data['send_email']) && $input_data['send_email'] == 'true' && $purchase_order['customer']->email != "") {
+            $customers = $purchase_order['customer'];
+            $purchase_order = PurchaseOrder::where('id', '=', $purchase_order_id)->with('purchase_products.purchase_product_details', 'purchase_products.unit', 'customer')->first();
+            if (count($purchase_order) > 0) {
+                if (count($purchase_order['delivery_location']) > 0) {
+                    $delivery_location = $purchase_order['delivery_location']->area_name;
+                } else {
+                    $delivery_location = $purchase_order->other_location;
+                }
+                $mail_array = array(
+                    'customer_name' => $customers->owner_name,
+                    'expected_delivery_date' => $purchase_order->expected_delivery_date,
+                    'created_date' => $purchase_order->updated_at,
+                    'delivery_location' => $delivery_location,
+                    'order_product' => $purchase_order['purchase_products']
+                );
+
+                Mail::send('emails.complete_purchase_order_mail', ['order' => $mail_array], function($message) use($customers) {
+                    $message->to('amana@agstechnologies.com', $customers->owner_name)->subject('Vikash Associates: Order Completed');
+                });
+            }
+        }
+
         $purchase_order_canceled = PurchaseOrderCanceled::create([
                     'purchase_order_id' => $input_data['purchase_order_id'],
                     'purchase_type' => $input_data['module_name'],
                     'reason' => $input_data['reason']
         ]);
-        $change_status = PurchaseOrder::where('id', '=', $input_data['purchase_order_id'])->update(array('order_status' => 'canceled'));
+        $change_status = PurchaseOrder::where('id', '=', $input_data['purchase_order_id'])
+                ->update(array(
+            'order_status' => 'canceled'
+        ));
+        
         return redirect('purchase_orders')->with('flash_message', 'Successfully completed purchase order');
     }
 
@@ -550,151 +609,45 @@ class PurchaseOrderController extends Controller {
 
     function quantity_calculation($purchase_orders) {
 
-        $pending_orders = array();
-        foreach ($purchase_orders as $order) {
+        foreach ($purchase_orders as $key => $order) {
+            $purchase_order_quantity = 0;
+            $purchase_order_advise_quantity = 0;
+            $purchase_order_advise_products = PurchaseProducts::where('from', '=', $order->id)->get();
 
-            $purchase_orders = PurchaseAdvise::where('purchase_order_id', $order->id)->with('purchase_products')->get();
-
-            $all_del_orders = array();
-            $pending_quantity = 0;
-            $total_quantity = 0;
-
-            if (count($purchase_orders) > 0) {
-
-                foreach ($purchase_orders as $del_order) {
-
-                    $del_all_order_products = PurchaseProducts::where('purchase_order_id', $del_order->id)
-                                    ->where('from', 'purchase_order')->where('order_type', 'purchase_advice')->get();
-
-                    $order_all_order_products = PurchaseProducts::where('purchase_order_id', $order->id)->where('order_type', 'purchase_order')->get();
-                    $del_products = array();
-                    $pending_quantity_del = 0;
-                    $total_quantity_del = 0;
-
-                    foreach ($del_all_order_products as $products) {
-
-                        $p_qty = $products['present_shipping'];
-                        if ($products['unit_id'] != 1) {
-                            $product_subcategory = ProductSubCategory::find($products['product_category_id']);
-
-                            if ($products['unit_id'] == 2) {
-                                $p_qtycalculated_quantity = $p_qty * $product_subcategory['weight'];
-                            }
-                            if ($products['unit_id'] == 3) {
-                                $p_qtycalculated_quantity = ($p_qty / $product_subcategory['standard_length'] ) * $product_subcategory['weight'];
-                            }
-//                            $p_qtycalculated_quantity = $prod_quantity / $product_subcategory['weight'];
-                            $p_qty = $p_qtycalculated_quantity;
-                        }
-                        $pending_quantity_del = $pending_quantity_del + $p_qty;
-                        $prod_quantity = $products['quantity'];
-                        if ($products['unit_id'] != 1) {
-                            $product_subcategory = ProductSubCategory::find($products['product_category_id']);
-
-                            if ($products['unit_id'] == 2) {
-                                $calculated_quantity = $prod_quantity * $product_subcategory['weight'];
-                            }
-                            if ($products['unit_id'] == 3) {
-                                $calculated_quantity = ($prod_quantity / $product_subcategory['standard_length'] ) * $product_subcategory['weight'];
-                            }
-//                                    $calculated_quantity = $prod_quantity / $product_subcategory['weight'];
-                            $prod_quantity = $calculated_quantity;
-                        }
-
-
-
-
-                        $total_quantity_del = $total_quantity_del + $prod_quantity;
-
-                        $temp_products = array();
-                        $temp_products['id'] = $del_order->id;
-                        $temp_products['order_id'] = $order->id;
-                        $temp_products['product_id'] = $products['product_category_id'];
-                        $temp_products['unit'] = $products['unit_id'];
-                        $temp_products['total_pending_quantity'] = (int) ($pending_quantity_del);
-                        $temp_products['total_quantity'] = (int) $total_quantity_del;
-                        array_push($del_products, $temp_products);
+            if (count($purchase_order_advise_products) > 0) {
+                foreach ($purchase_order_advise_products as $poapk => $poapv) {
+                    $product_size = ProductSubCategory::find($poapv->product_category_id);
+                    if ($poapv->unit_id == 1) {
+                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity;
                     }
-
-                    array_push($all_del_orders, $del_products);
-                }
-
-                if (count($del_all_order_products) > 0) {
-                    $calculated_pendings = array();
-                    $pend_qty = 0;
-                    $total_qty = 0;
-                    $total_pending;
-                    foreach ($all_del_orders as $key => $dos) {
-                        $len = count($dos);
-                        $index = 0;
-                        if ($len > 0) {
-                            $index = $len - 1;
-                        }
-                        $tot_qty = $dos[$index]['total_quantity'];
-                        foreach ($all_del_orders as $array2) {
-                            if ($array2[$index]['order_id'] == $dos[$index]['order_id'] && $array2[$index]['product_id'] == $dos[$index]['product_id'] && $array2[$index]['unit'] == $dos[$index]['unit']) {
-
-                                if ($array2[$index]['total_quantity'] > $tot_qty) {
-                                    $tot_qty = $array2[$index]['total_quantity'];
-//                                echo 'test'.$tot_qty;exit;
-                                }
-                            }
-                        }
-//                    if($dos['unit'] != $all_del_orders[$key+1]['unit']){    
-//                        $tot_qty = $dos[$len - 1]['total_quantity'];
-//                    }
-
-                        $pend_qty = $pend_qty + $dos[$index]['total_pending_quantity'];
+                    if ($poapv->unit_id == 2) {
+                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity * $product_size->weight;
                     }
-//                echo 'test' . $tot_qty;
-//                exit;
-                    $total_qty = $tot_qty;
-                    $total_pending = $tot_qty - $pend_qty;
-                    $temp = array();
-                    $temp['id'] = $order->id;
-
-                    $temp['total_pending_quantity'] = (int) ($total_pending);
-                    $temp['total_quantity'] = (int) $total_qty;
-                    array_push($pending_orders, $temp);
-                }
-            } else {
-
-
-
-                $all_purchase_products = PurchaseProducts::where('purchase_order_id', $order->id)->where('order_type', 'purchase_order')->get();
-
-                foreach ($all_purchase_products as $products) {
-
-                    $kg = Units::first();
-                    $prod_quantity = $products['quantity'];
-                    if ($products->unit_id != 1) {
-                        $product_subcategory = ProductSubCategory::find($products['product_category_id']);
-                        if ($products->unit_id == 2) {
-                            $calculated_quantity = $prod_quantity * $product_subcategory['weight'];
-                        }
-                        if ($products->unit_id == 3) {
-                            $calculated_quantity = ($prod_quantity / $product_subcategory['standard_length'] ) * $product_subcategory['weight'];
-                        }
-//                        $calculated_quantity = $prod_quantity / $product_subcategory['weight'];
-                        $prod_quantity = $calculated_quantity;
+                    if ($poapv->unit_id == 3) {
+                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity / $product_size->standard_length ) * $product_size->weight;
                     }
-
-                    $total_quantity = $total_quantity + $prod_quantity;
                 }
-
-                $temp = array();
-                $temp['id'] = $order->id;
-                $temp['total_pending_quantity'] = (int) $total_quantity;
-                $temp['total_quantity'] = (int) $total_quantity;
-
-                array_push($pending_orders, $temp);
             }
+
+            if (count($order['purchase_products']) > 0) {
+                foreach ($order['purchase_products'] as $popk => $popv) {
+                    $product_size = ProductSubCategory::find($popv->product_category_id);
+                    if ($popv->unit_id == 1) {
+                        $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
+                    }
+                    if ($popv->unit_id == 2) {
+                        $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight);
+                    }
+                    if ($popv->unit_id == 3) {
+                        $purchase_order_quantity = $purchase_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+                    }
+                }
+            }
+
+            $purchase_orders[$key]['pending_quantity'] = ($purchase_order_quantity - $purchase_order_advise_quantity);
+            $purchase_orders[$key]['total_quantity'] = $purchase_order_quantity;
         }
-//        echo '<pre>';
-//        print_r($pending_orders);
-//        echo '</pre>';
-//        exit;
-        return $pending_orders;
+        return $purchase_orders;
     }
 
 }

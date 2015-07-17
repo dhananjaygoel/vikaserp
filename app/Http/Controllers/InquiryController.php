@@ -36,7 +36,7 @@ class InquiryController extends Controller {
         define('SENDER_ID', Config::get('smsdata.sender_id'));
         define('SMS_URL', Config::get('smsdata.url'));
         define('SEND_SMS', Config::get('smsdata.send'));
-        $this->middleware('validIP', ['except' => ['create', 'store']]);
+        $this->middleware('validIP', ['except' => ['create', 'store', 'fetch_existing_customer', 'fetch_products']]);
     }
 
     /**
@@ -716,7 +716,7 @@ class InquiryController extends Controller {
                     'source' => 'inquiry'
                 );
                 Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($customers) {
-                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: New Order');
+                    $message->to('amana@agstechnologies.com', $customers->owner_name)->subject('Vikash Associates: New Order');
                 });
             }
         }

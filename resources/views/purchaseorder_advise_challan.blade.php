@@ -60,6 +60,7 @@
                                 @foreach($purchase_advise['purchase_products'] as $key=>$products)
                                 <tr id="add_row_{{$key}}" class="add_product_row">
                             <input type="hidden" name="product[{{$key}}][purchase_advice_id]" value="{{$purchase_advise->id}}"/>
+                            <input type="hidden" name="product[{{$key}}][id]" value="{{$products->id}}"/>
                             <input type="hidden" name="product[{{$key}}][order_type]" value="purchase_advice"/>
                             <td>
                                 <div class="form-group">

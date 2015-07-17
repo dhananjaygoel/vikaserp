@@ -24,9 +24,7 @@
                                         <select class="form-control" id="user_filter" name="pending_purchase_order" onchange="this.form.submit();">
                                             <option value="" selected="">Select Party</option>
                                             @foreach($all_customers as $customer)
-                                            @if($customer->status == 'permanent')
                                             <option value="{{$customer->id}}" <?php if ((isset($_GET['pending_purchase_order'])) && $_GET['pending_purchase_order'] == $customer->id) echo "selected=''"; ?>>{{$customer->owner_name}}</option>
-                                            @endif
                                             @endforeach
                                         </select>
                                     </form>
@@ -113,36 +111,10 @@
                                         <td>{{$purchase_order['delivery_location']['area_name']}}</td>
                                         <td>{{$purchase_order['user']->first_name}}</td>
                                         <td>
-                                            <?php $total = 0; ?>
-
-                                            @foreach($purchase_order['purchase_products'] as $total_qty)
-                                            @if($total_qty->unit_id == 1)
-                                            <?php $total += $total_qty->quantity; ?>
-                                            @endif
-
-                                            @if($total_qty->unit_id == 2)
-                                            <?php $total += $total_qty->quantity * $total_qty['purchase_product_details']->weight;
-                                            ?>
-                                            @endif
-
-                                            @if($total_qty->unit_id == 3)
-                                            <?php $total += ($total_qty->quantity / $total_qty['purchase_product_details']->standard_length) * $total_qty['purchase_product_details']->weight;
-                                            ?>
-                                            @endif
-
-                                            @endforeach
-
-
-                                            {{$total}}
+                                            {{$purchase_order->total_quantity}}
                                         </td>
                                         <td>                                        
-                                            @if(count($pending_orders) > 0)
-                                            @foreach($pending_orders as $porder)
-                                            @if($porder['id'] == $purchase_order->id)                                       
-                                            {{$porder['total_pending_quantity']}}
-                                            @endif
-                                            @endforeach
-                                            @endif
+                                            {{$purchase_order->pending_quantity}}
                                         </td>
                                         @if(Input::get('purchase_order_filter') == 'pending'  || Input::get('purchase_order_filter') == '')
                                         <td class="text-center">
@@ -174,14 +146,14 @@
                                                     <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            
+
                                             <a class="table-link danger" data-toggle="modal" data-target="#delete_purchase_order_{{$purchase_order->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            
+
                                             @endif
                                         </td>
                                     </tr>
@@ -230,8 +202,8 @@
                                                         <textarea class="form-control" id="inquiry_remark" name="reason"  rows="2" placeholder="Reason" required=""></textarea>
                                                     </div>
                                                     <div class="checkbox">
-                                                        <label class="marginsms"><input type="checkbox" value=""><span class="checksms">Email</span></label>
-                                                        <label><input type="checkbox" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
+                                                        <label class="marginsms"><input type="checkbox" name="send_email" value="true"><span class="checksms">Send Email to Party</span></label>
+                                                        <label><input type="checkbox" value="true" name="sendsms"><span title="SMS would be sent to Party" class="checksms smstooltip">SMS</span></label>
                                                     </div>
                                             </div>
                                             <div class="modal-footer">

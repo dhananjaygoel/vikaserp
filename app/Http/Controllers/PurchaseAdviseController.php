@@ -22,6 +22,7 @@ use Redirect;
 use Validator;
 use DateTime;
 use App\ProductSubCategory;
+use App\PurchaseOrder;
 
 class PurchaseAdviseController extends Controller {
 
@@ -45,6 +46,8 @@ class PurchaseAdviseController extends Controller {
 
         if (Input::has('purchaseaAdviseFilter') && Input::get('purchaseaAdviseFilter') != '') {
             $q->where('advice_status', '=', Input::get('purchaseaAdviseFilter'));
+        } else {
+            $q->where('advice_status', '=', 'in_process');
         }
 
         $purchase_advise = $q->paginate(10);
@@ -267,7 +270,7 @@ class PurchaseAdviseController extends Controller {
         }
 
         $current_user = User::find(Auth::id());
-
+        
         if (Hash::check($password, $current_user->password)) {
             $purchase_advise = PurchaseAdvise::find($id);
             $purchase_advise->delete();
@@ -307,11 +310,10 @@ class PurchaseAdviseController extends Controller {
             $purchase_advice_id = DB::getPdo()->lastInsertId();
             $purchase_advice_products = array();
 
-
+            $total_quantity = '';
+            $total_present_shipping = '';
             foreach ($input_data['product'] as $product_data) {
                 if (($product_data['id'] != "")) {
-
-//                if (isset($product_data['name']) || ($product_data['id'] != "")) {
                     if (isset($product_data['purchase']) && $product_data['purchase'] != "") {
 
                         if ($product_data['present_shipping'] != "") {
@@ -325,8 +327,9 @@ class PurchaseAdviseController extends Controller {
                                 'price' => $product_data['price'],
                                 'remarks' => $product_data['remark'],
                                 'order_type' => 'purchase_advice',
-                                'from' => $product_data['purchase'],
-                                'present_shipping' => $product_data['present_shipping']
+                                'from' => $input_data['id'],
+                                'present_shipping' => $product_data['present_shipping'],
+                                'parent' => $product_data['key']
                             ];
                         } elseif ($product_data['present_shipping'] == "") {
 
@@ -335,11 +338,12 @@ class PurchaseAdviseController extends Controller {
                                 'product_category_id' => $product_data['id'],
                                 'unit_id' => $product_data['units'],
                                 'actual_pieces' => $product_data['actual_pieces'],
-//                                'quantity' => $product_data['quantity'],
+                                //                                'quantity' => $product_data['quantity'],
                                 'price' => $product_data['price'],
                                 'remarks' => $product_data['remark'],
                                 'order_type' => 'purchase_advice',
-                                'from' => $product_data['purchase']
+                                'from' => $input_data['id'],
+                                'parent' => $product_data['key']
                             ];
                         }
                     } else {
@@ -362,7 +366,7 @@ class PurchaseAdviseController extends Controller {
                                 'product_category_id' => $product_data['id'],
                                 'unit_id' => $product_data['units'],
                                 'actual_pieces' => $product_data['actual_pieces'],
-//                                'quantity' => $product_data['quantity'],
+                                //                                'quantity' => $product_data['quantity'],
                                 'price' => $product_data['price'],
                                 'remarks' => $product_data['remark'],
                                 'order_type' => 'purchase_advice'
@@ -370,9 +374,20 @@ class PurchaseAdviseController extends Controller {
                         }
                     }
 
+                    if (isset($product_data['purchase']) && $product_data['purchase'] == 'purchase_order') {
+                        $total_quantity = $total_quantity + $product_data['quantity'];
+                        $total_present_shipping = $total_present_shipping + $product_data['present_shipping'];
+                    }
+
                     $add_purchase_advice_products = PurchaseProducts::create($purchase_advice_products);
                 }
             }
+            if ($total_present_shipping == $total_quantity) {
+                PurchaseOrder::where('id', '=', $input_data['id'])->update(array(
+                    'order_status' => 'completed'
+                ));
+            }
+
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advice details successfully added.');
         } else {
 
@@ -449,38 +464,25 @@ class PurchaseAdviseController extends Controller {
 
         if (count($purchase_advise) > 0) {
 
-            foreach ($purchase_advise as $del_order) {
+            foreach ($purchase_advise as $key => $del_order) {
+                $purchase_order_quantity = 0;
+                if (count($del_order['purchase_products']) > 0) {
 
-                $pending_quantity = 0;
-                $total_quantity = 0;
-                $all_order_products = PurchaseProducts::where('purchase_order_id', $del_order->id)->where('order_type', 'purchase_advice')->get();
-
-                foreach ($all_order_products as $products) {
-
-                    $p_qty = $products['present_shipping'];
-                    $pending_quantity = $pending_quantity + $p_qty;
-                    $kg = Units::first();
-                    $prod_quantity = $products['quantity'];
-                    if ($products->unit_id != 1) {
-                        $product_subcategory = ProductSubCategory::find($products['product_category_id']);
-
-                        if ($products->unit_id == 2) {
-                            $calculated_quantity = $prod_quantity * $product_subcategory['weight'];
+                    foreach ($del_order['purchase_products'] as $popk => $popv) {
+                        $product_size = ProductSubCategory::find($popv->product_category_id);
+                        if ($popv->unit_id == 1) {
+                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
                         }
-                        if ($products->unit_id == 3) {
-                            $calculated_quantity = ($prod_quantity / $product_subcategory['size'] ) * $product_subcategory['weight'];
+                        if ($popv->unit_id == 2) {
+                            $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight);
                         }
-                        $prod_quantity = $calculated_quantity;
+                        if ($popv->unit_id == 3) {
+                            $purchase_order_quantity = $purchase_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+                        }
                     }
-
-                    $total_quantity = $total_quantity + $prod_quantity;
                 }
 
-                $temp = array();
-                $temp['id'] = $del_order->id;
-                $temp['total_pending_quantity'] = (int) $pending_quantity;
-                $temp['total_quantity'] = (int) $total_quantity;
-                array_push($pending_orders, $temp);
+                $purchase_advise[$key]['total_quantity'] = $purchase_order_quantity;
             }
         }
 

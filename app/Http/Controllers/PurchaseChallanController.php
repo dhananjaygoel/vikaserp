@@ -20,6 +20,7 @@ use App\Quotation;
 use App\DeliveryLocation;
 use App\Customer;
 use App\ProductSubCategory;
+use App\PurchaseAdvise;
 
 class PurchaseChallanController extends Controller {
 
@@ -86,7 +87,9 @@ class PurchaseChallanController extends Controller {
 
         $challan_id = DB::getPdo()->lastInsertId();
         $challan = PurchaseChallan::find($challan_id);
-
+        PurchaseAdvise::where('id', '=', $request->input('purchase_advice_id'))->update(array(
+            'advice_status' => 'delivered'
+        ));
         if (isset($input_data['billno']) && $input_data['billno'] != '') {
             $challan->update([
                 'bill_number' => $request->input('billno')
@@ -110,6 +113,7 @@ class PurchaseChallanController extends Controller {
                 'quantity' => $product_data['quantity'],
                 'present_shipping' => $product_data['present_shipping'],
                 'price' => $product_data['price'],
+                'parent' => $product_data['id'],
             ];
 
             $add_order_products = PurchaseProducts::create($order_products);

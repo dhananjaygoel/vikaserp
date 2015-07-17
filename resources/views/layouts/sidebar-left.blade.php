@@ -2,6 +2,32 @@
     <section id="col-left" class="col-left-nano">
         <div id="col-left-inner" class="col-left-nano-content">
 
+            <?php
+            $ipaddress = '';
+            if (getenv('HTTP_CLIENT_IP'))
+                $ipaddress = getenv('HTTP_CLIENT_IP');
+            else if (getenv('HTTP_X_FORWARDED_FOR'))
+                $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+            else if (getenv('HTTP_X_FORWARDED'))
+                $ipaddress = getenv('HTTP_X_FORWARDED');
+            else if (getenv('HTTP_FORWARDED_FOR'))
+                $ipaddress = getenv('HTTP_FORWARDED_FOR');
+            else if (getenv('HTTP_FORWARDED'))
+                $ipaddress = getenv('HTTP_FORWARDED');
+            else if (getenv('REMOTE_ADDR'))
+                $ipaddress = getenv('REMOTE_ADDR');
+            else
+                $ipaddress = 'UNKNOWN';
+
+            $ip = App\Security::all();
+            if (count($ip) > 0) {
+                foreach ($ip as $key => $value) {
+                    $ip_array[$key] = $value->ip_address;
+                }
+            } else {
+                $ip_array = array($ipaddress);
+            }
+            ?>
             <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
                 <ul class="nav nav-pills nav-stacked">
                     <?php
@@ -19,7 +45,8 @@
                         </a>
                     </li>
                     @endif
-                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 )
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)))
                     <li class="{{ (Request::is('*users*') ? 'active' : '') }}">
                         <a href="{{url()}}/users">
                             <i class="fa fa-user"></i>
@@ -28,7 +55,9 @@
                         </a>
                     </li>
                     @endif
+                    @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 4 )
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)))
                     <li class="{{ (Request::is('customers*') ? 'active' : '') }}">
                         <a href="{{url('customers')}}">
                             <i class="fa fa-male"></i>
@@ -37,7 +66,9 @@
                         </a>
                     </li>
                     @endif
+                    @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 )
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)))
                     <li class="{{ (Request::is('pending_customers*') ? 'active' : '') }}">
                         <a href="{{url('pending_customers')}}">
                             <i class="fa fa-book"></i>
@@ -46,7 +77,9 @@
                         </a>
                     </li>
                     @endif
+                    @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)))
                     <li class="{{ (Request::is('*inquiry*') ? 'active' : '') }}">
                         <a href="{{url("inquiry")}}">
                             <i class="fa fa-info"></i>
@@ -55,9 +88,10 @@
                         </a>
                     </li>
                     @endif
-
+                    @endif
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)))
                     <li class="<?php
-                    if (Request::is('orders*') || Request::is('*delivery_order*') || Request::is('*delivery_challan*') || Request::is('*pending_delivery_order*') || Request::is('*pending_order_report*')|| Request::is('*sales_daybook*')) {
+                    if (Request::is('orders*') || Request::is('*delivery_order*') || Request::is('*delivery_challan*') || Request::is('*pending_delivery_order*') || Request::is('*pending_order_report*') || Request::is('*sales_daybook*')) {
                         echo 'active';
                     }
                     ?>">
@@ -80,7 +114,7 @@
                             </li>
                             @endif
                             @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4) 
-                            
+
                             <li class="{{ (Request::is('*delivery_challan*') ? 'active' : '') }}">
                                 <a href="{{url('delivery_challan')}}">
                                     Delivery Challan
@@ -109,7 +143,8 @@
                                                         </li>-->
                         </ul>
                     </li>
-
+                    @endif
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)))
                     <li class="<?php
                     if (Request::is('*purchase_orders*') || Request::is('*purchaseorder_advise*') || Request::is('*purchase_challan*') || Request::is('*purchase_order_report*') || Request::is('*purchase_order_daybook*') || Request::is('*pending_purchase_advice*')) {
                         echo 'active';
@@ -134,7 +169,7 @@
                                     Purchase Advice
                                 </a>
                             </li>
-                            
+
                             @endif
                             @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4) 
                             <li class="{{ (Request::is('*purchase_challan*') ? 'active' : '') }}">
@@ -165,7 +200,9 @@
                             @endif
                         </ul>
                     </li>
+                    @endif
                     @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4) 
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)))
                     <li class="<?php
                     if (Request::is('*product_category*') || Request::is('*product_sub_category*')) {
                         echo 'active';
@@ -191,7 +228,9 @@
                         </ul>
                     </li>
                     @endif
+                    @endif
                     @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3) 
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)))
                     <li class="<?php
                     if (Request::is('*states*') || Request::is('*city*') || Request::is('*unit*') || Request::is('*location*')) {
                         echo 'active';
@@ -226,7 +265,9 @@
                         </ul>
                     </li>
                     @endif
+                    @endif
                     @if(Auth::user()->role_id == 0)
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)))
                     <div style="display:none">
                         <!--                        Do not display customer Module-->
                         <li class="{{ (Request::is('*customer_manager*') ? 'active' : '') }}">
@@ -237,6 +278,7 @@
                             </a>
                         </li>
                     </div>
+                    @endif
                     @endif
                     @if(Auth::user()->role_id == 0)
                     <li class="{{ (Request::is('*security*') ? 'active' : '') }}">

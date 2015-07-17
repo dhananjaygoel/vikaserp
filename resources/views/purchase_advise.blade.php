@@ -88,12 +88,12 @@
                                         <td>{{$pa->purchase_advice_date}}</td>
                                         <td>{{$pa['supplier']->owner_name}}</td>
                                         <td>{{$pa->vehicle_number}}</td>
-                                        <td>{{$qty_sum}}</td>
+                                        <td>{{$pa->total_quantity}}</td>
                                         <td>{{$pa->serial_number}}</td>
                                         @if(Input::get('purchaseaAdviseFilter') == 'in_process' || Input::get('purchaseaAdviseFilter') == '')
 
                                         <td class="text-center">
-                                            @if($pa->serial_number != ""|| Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+                                            @if($pa->serial_number != "")
                                             <a href="{{ url('purchaseorder_advise_challan/'.$pa->id)}}" class="table-link" title="purchase challan" >
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>

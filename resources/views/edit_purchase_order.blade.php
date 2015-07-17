@@ -200,7 +200,7 @@
                             <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                             <select class="form-control" name="purchase_order_location" id="add_inquiry_location">
                                 <option value="" selected="">Delivery Location</option>
-                                
+
                                 @foreach($delivery_locations as $delivery_location)
 
                                 @if($delivery_location->status == 'permanent')
@@ -218,7 +218,7 @@
                                 @else
                                 <option id="other_location_db" value="other">Other </option>
                                 @endif 
-                                
+
 
                             </select>
                         </div>
@@ -232,11 +232,11 @@
                                 <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="{{$purchase_order->other_location}}" type="text">
                             </div>
                             <div class="col-md-4">
-                            <label for="location">Other Location Difference</label>
-                            <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="{{$purchase_order->other_location_difference}}" type="text">
+                                <label for="location">Other Location Difference</label>
+                                <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="{{$purchase_order->other_location_difference}}" type="text">
+                            </div>
                         </div>
-                        </div>
-                        
+
                     </div>
                     @else
                     <div class="locationtext" id="other_location_input_wrapper">
@@ -257,10 +257,13 @@
                         <div class="form-group">
                             <label for="orderfor">Order For:</label>
                             <select class="form-control" id="orderfor" name="order_for">
-                                <option value="0">Warehouse</option>
+                                <option value="0" selected="">Warehouse</option>
                                 @foreach($customers as $supplier)
-
-                                <option value="{{$supplier->id}}">{{$supplier->owner_name}}</option>
+                                <option value="{{$supplier->id}}" <?php
+                                if ($purchase_order->order_for == $supplier->id) {
+                                    echo 'selected=selected';
+                                }
+                                ?>>{{$supplier->owner_name}}</option>
                                 @endforeach
                             </select>
                         </div>
