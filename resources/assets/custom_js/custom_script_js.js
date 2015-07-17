@@ -240,31 +240,13 @@ function change_quantity(key) {
     var tot_quty = $("#quantity_" + key).val(); //ok
     var total = parseInt(quantity) + parseInt(present_shipping);
 
-//    alert(quantity)
-//    alert(tot_quty)
-//    alert(present_shipping)
-
     if (parseInt(present_shipping) > parseInt(tot_quty)) {
         alert('present Shipping is greater than the quantity');
-        $("#present_shipping_" + key).val(0);
+        $("#present_shipping_" + key).val(tot_quty);
     } else {
         $("#pending_qunatity_" + key).html("<span>" + (parseInt(tot_quty) - parseInt(present_shipping)) + "</span");
     }
-
-
-//    if (total > parseInt(tot_quty)) {
-//        alert("Present Shipping should not greater than quantity.");
-//        $("#present_shipping_" + key).val(0);
-//        $("#pending_qunatity_" + key).html("<span>" + quantity + "</span");
-//    } else {
-//
-//        $("#flash_error_present_shipping").html('');
-//        var rem_quantity = parseInt(quantity) - parseInt(present_shipping);
-//        $("#pending_qunatity_" + key).html("<span class='text-center'>" + rem_quantity + "</span");
-//    }
-
     grand_total_delivery_order();
-
 }
 
 
@@ -553,7 +535,7 @@ function purchase_challan_calculation() {
 //        total_price = total_amount_product + parseFloat(discount_value);
 //    } else {
 
-        total_price = total_amount_product + parseFloat(discount_value);
+    total_price = total_amount_product + parseFloat(discount_value);
 //    }
 
 
