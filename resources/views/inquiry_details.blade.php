@@ -24,6 +24,13 @@
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
                         <div style="display:none;" id="inquire_msg" class="alert alert-success no_data_msg_container">Inquiry difference price successfully updated</div>
+                        @if(isset($message) && $message != '')
+                        <div class="clearfix"> &nbsp;</div>
+                        <div class="alert alert-success alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <strong> {{ $message }} </strong>
+                        </div>
+                        @endif
                         <form>
                             <div class="table-responsive">
                                 <table id="table-example" class="table customerview_table">
@@ -85,7 +92,7 @@
                                                     </div>
                                                     <div class="form-group col-md-2 difference_form">
                                                         <div id="save_btn_{{$product_data->id}}">
-                                                        <input type="button" name="save_price" value="Save" class="btn btn-primary" id="save_price_inquiry_view_{{$product_data->id}}" onclick="save_price_inquiry_view({{$product_data->id}},{{$inquiry->id}});">
+                                                            <input type="button" name="save_price" value="Save" class="btn btn-primary" id="save_price_inquiry_view_{{$product_data->id}}" onclick="save_price_inquiry_view({{$product_data->id}},{{$inquiry->id}});">
                                                         </div>
                                                     </div>
                                                 </div>

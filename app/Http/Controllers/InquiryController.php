@@ -16,6 +16,7 @@ use DB;
 use Config;
 use Auth;
 use Mail;
+use View;
 use App\Http\Requests\InquiryRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
@@ -203,7 +204,7 @@ class InquiryController extends Controller {
                 }
             }
         }
-        
+
         return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully added.');
     }
 
@@ -221,6 +222,7 @@ class InquiryController extends Controller {
         if (count($inquiry) < 1) {
             return redirect('inquiry')->with('flash_message', 'Enquiry does not exist.');
         }
+        $flash_message = '';
         $delivery_location = DeliveryLocation::all();
 
         /*
@@ -251,9 +253,10 @@ class InquiryController extends Controller {
                     curl_close($ch);
                 }
             }
+            $flash_message = "Message sent successfully";
         }
 
-        return view('inquiry_details', compact('inquiry', 'delivery_location'));
+        return View::make('inquiry_details', array('inquiry' => $inquiry, 'delivery_location' => $delivery_location, 'message' => $flash_message));
     }
 
     /**
@@ -522,9 +525,9 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $inquiry = Inquiry::where('id', '=', $id)->where(['inquiry_status' => 'Completed'])->get();
-        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
-        if (count($inquiry) > 0) {
+        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->where('inquiry_status' , '<>', 'Completed')->first();
+        
+        if (count($inquiry) < 1) {
             return redirect('inquiry')->with('flash_message', 'Please select other inquiry, order is generated for this inquiry.');
         }
         $units = Units::all();

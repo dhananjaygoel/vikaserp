@@ -269,11 +269,11 @@ class OrderController extends Controller {
                 $add_order_products = AllOrderProducts::create($order_products);
             }
         }
-        
+
         /*
-         | ---------------------------------------------
-         | SEND EMAIL TO CUSTOMER ON CREATE OF NEW ORDER
-         | ---------------------------------------------
+          | ---------------------------------------------
+          | SEND EMAIL TO CUSTOMER ON CREATE OF NEW ORDER
+          | ---------------------------------------------
          */
         if (isset($input_data['send_email'])) {
             $customers = Customer::find($customer_id);
@@ -292,7 +292,7 @@ class OrderController extends Controller {
                     'order_product' => $order['all_order_products'],
                     'source' => 'create_order'
                 );
-                
+
                 Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($customers) {
                     $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: New Order');
                 });
@@ -408,7 +408,6 @@ class OrderController extends Controller {
         $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
 
-//        $order->expected_delivery_date = $datetime->format('Y-m-d');
         $order = Order::find($id);
         $update_order = $order->update([
             'order_source' => $order_status,
@@ -417,11 +416,8 @@ class OrderController extends Controller {
             'created_by' => Auth::id(),
             'delivery_location_id' => $input_data['add_inquiry_location'],
             'vat_percentage' => $input_data['vat_percentage'],
-//            'estimated_delivery_date' => date_format(date_create($input_data['estimated_date']), 'Y-m-d'),
             'expected_delivery_date' => $datetime->format('Y-m-d'),
-//            'expected_delivery_date' => date_format(date_create($input_data['expected_date']), 'Y-m-d'),
-            'remarks' => $input_data['order_remark'],
-            'order_status' => "Pending"
+            'remarks' => $input_data['order_remark']
         ]);
         if ($input_data['add_inquiry_location'] == 0) {
             $update_order = $order->update([
@@ -507,11 +503,11 @@ class OrderController extends Controller {
                 }
             }
         }
-        
+
         /*
-         | ---------------------------------------------
-         | SEND EMAIL TO CUSTOMER ON UPDATE OF NEW ORDER
-         | ---------------------------------------------
+          | ---------------------------------------------
+          | SEND EMAIL TO CUSTOMER ON UPDATE OF NEW ORDER
+          | ---------------------------------------------
          */
         if (isset($input_data['send_email'])) {
             $customers = Customer::find($customer_id);
@@ -530,7 +526,7 @@ class OrderController extends Controller {
                     'order_product' => $order['all_order_products'],
                     'source' => 'update_order'
                 );
-                
+
                 Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($customers) {
                     $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: Order Updated');
                 });
@@ -587,6 +583,67 @@ class OrderController extends Controller {
         $reason_type = $input_data['reason_type'];
         $reason = $input_data['reason'];
 
+        $order = Order::where('id', '=', $order_id)->with('all_order_products.order_product_details', 'all_order_products.unit', 'customer')->first();
+
+        /*
+          | ------------------- ---------------------------------
+          | SEND SMS TO CUSTOMER FOR MANUALLY COMPLETING AN ORDER
+          | -----------------------------------------------------
+         */
+        $input = Input::all();
+        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+            $customer = Customer::where('id', '=', $order['customer']->id)->with('manager')->first();
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer->owner_name . ", your order has been completed.  for following:";
+                foreach ($order['all_order_products'] as $product_data) {
+                    $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
+                }
+                $str .= ", Vikas Associates, 9673000068";
+                $phone_number = $customer->phone_number1;
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+        }
+
+        /*
+          | -------------------------------------------------------
+          | SEND EMAIL TO CUSTOMER WHEN ORDER IS COMPLETED MANUALLY
+          | -------------------------------------------------------
+         */
+        if (isset($input_data['send_email']) && $input_data['send_email'] == 'true' && $order['customer']->email != "") {
+            $customers = $order['customer'];
+            $order = Order::where('id', '=', $order_id)->with('all_order_products.order_product_details', 'delivery_location')->first();
+            if (count($order) > 0) {
+                if (count($order['delivery_location']) > 0) {
+                    $delivery_location = $order['delivery_location']->area_name;
+                } else {
+                    $delivery_location = $order->other_location;
+                }
+                $mail_array = array(
+                    'customer_name' => $customers->owner_name,
+                    'expected_delivery_date' => $order->expected_delivery_date,
+                    'created_date' => $order->updated_at,
+                    'delivery_location' => $delivery_location,
+                    'order_product' => $order['all_order_products']
+                );
+
+                Mail::send('emails.complete_order_mail', ['order' => $mail_array], function($message) use($customers) {
+                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: Order Completed');
+                });
+            }
+        }
+
+        $update_order = $order->update([
+            'order_status' => "Cancelled"
+        ]);
+
         $cancel_order = OrderCancelled::create([
                     'order_id' => $order_id,
                     'order_type' => 'Order',
@@ -594,26 +651,6 @@ class OrderController extends Controller {
                     'reason' => $reason,
                     'cancelled_by' => Auth::id()
         ]);
-        $order = Order::find($order_id);
-        $update_order = $order->update([
-            'order_status' => "Cancelled"
-        ]);
-
-        //send mail
-        $orders = Order::where('id', '=', $input_data['order_id'])
-                        ->with('customer')->first();
-
-        if (isset($input_data['send_email']) && $orders['customer']->email != "") {
-
-            $customers = Customer::find($input_data['autocomplete_supplier_id']);
-
-            Mail::send('emails.order_complete_email', ['key' => $orders['customer']->owner_name], function($message) {
-//                $message->to($orders['customer']->email, 'John Smith')->subject('Order Complete!');
-                $message->to('deepakw@agstechnologies.com', 'John Smith')->subject('Order Complete!');
-            });
-        }
-
-
 
         return redirect('orders')->with('flash_message', 'One order is cancelled.');
     }
@@ -764,6 +801,11 @@ class OrderController extends Controller {
             $pending_qty = 0;
             foreach ($pending_orders as $pendings) {
                 $pending_qty = $pending_qty + $pendings['total_pending_quantity'];
+            }
+
+            //If pending quantity is Zero complete the order
+            if ($pending_qty == 0) {
+                Order::where('id', '=', $id)->update(array('order_status' => 'completed'));
             }
 
             return redirect('orders')->with('flash_message', 'One order converted to Delivery order.');

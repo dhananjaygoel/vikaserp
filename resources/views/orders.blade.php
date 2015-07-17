@@ -227,8 +227,8 @@
                                                     <textarea class="form-control" id="inquiry_remark" name="reason"  rows="2" placeholder="Reason"></textarea>
                                                 </div>
                                                 <div class="checkbox">
-                                                    <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email to Party</span></label>
-                                                    <label><input type="checkbox" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">SMS</span></label>
+                                                    <label class="marginsms"><input type="checkbox" name="send_email" value="true"><span class="checksms">Send Email to Party</span></label>
+                                                    <label><input type="checkbox" value="true" name="sendsms"><span title="SMS would be sent to Party" class="checksms smstooltip">SMS</span></label>
                                                 </div>
                                             </div>           
                                             <div class="modal-footer">
