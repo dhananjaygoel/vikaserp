@@ -51,7 +51,7 @@ class DeliveryOrderController extends Controller {
                 $delivery_data = DeliveryOrder::where('order_status', 'completed')->with('customer')->paginate(10);
             }
         } else {
-            $delivery_data = DeliveryOrder::with('customer')->paginate(10);
+            $delivery_data = DeliveryOrder::where('order_status', 'pending')->with('customer')->paginate(10);
         }
 
         $pending_orders = $this->checkpending_quantity($delivery_data);
