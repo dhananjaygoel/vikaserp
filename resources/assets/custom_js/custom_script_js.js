@@ -236,7 +236,7 @@ function getunit_name(key) {
 function change_quantity(key) {
 
     var quantity = $("#pending_qunatity_value_" + key).val();
-    var present_shipping = $("#present_shipping_" + key).val();//ok
+    var present_shipping = $("#present_shipping_" + key).val();
     var tot_quty = $("#quantity_" + key).val(); //ok
     var total = parseInt(quantity) + parseInt(present_shipping);
 
