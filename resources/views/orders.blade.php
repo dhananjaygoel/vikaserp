@@ -60,7 +60,7 @@
                                             @endforeach                                        
                                         </select>-->
 
-                                        <input class="form-control ui-autocomplete-input" placeholder="Size" value="{{Input::get('size_filter')}}" id="order_size" autocomplete="off" name="size_filter" type="text">
+                                        <input class="form-control order_filter ui-autocomplete-input" placeholder="Size" value="{{Input::get('size_filter')}}" id="order_size" autocomplete="off" name="size_filter" type="text">
                                         <a onclick="this.form.submit()">
                                             <i class="fa fa-search search-icon" id="search_icon"></i>
                                         </a>
@@ -455,10 +455,4 @@
         </div>
     </div>
 </div>
-<style>
-    .ui-autocomplete{
-        height: 500px;
-        overflow-y: scroll;
-    }
-</style>
 @stop

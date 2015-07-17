@@ -1,10 +1,3 @@
-<?php
-//
-//echo '<pre>';
-//print_r($delivery_data->toArray());
-//echo '</pre>';
-//exit;
-?>
 @extends('layouts.master')
 @section('title','Delivery Challan')
 @section('content')

@@ -46,13 +46,6 @@ class DeliveryChallanController extends Controller {
         } else {
             $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(10);
         }
-        
-//        
-//        echo '<pre>';
-//        print_r($allorders->toArray());
-//        echo '</pre>';
-//        exit;
-//        
 
         $allorders->setPath('delivery_challan');
         return view('delivery_challan', compact('allorders'));

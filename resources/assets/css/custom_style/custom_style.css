@@ -23,3 +23,8 @@
 .normal_cursor{
     cursor: default !important;
 }
+
+.ui-autocomplete{
+    height: 500px !important;
+    overflow-y: scroll !important;
+}

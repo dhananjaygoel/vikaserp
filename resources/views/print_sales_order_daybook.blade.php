@@ -1,10 +1,3 @@
-<?php
-//echo '<pre>';
-//print_r($allorders[0]['delivery_order']->area_name);
-//echo '</pre>';
-//exit;
-?>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -88,9 +81,9 @@
                     <div  class="divCell">Amount</div>  
                     <div  class="divCell">Bill No.</div>
                     <div  class="divCell">Truck No</div>
-                    <!--                    <div  class="divCell">Loaded By</div>
-                                        <div  class="divCell">Labour</div>
-                                        <div  class="divCell">Remarks</div>-->
+                    <div  class="divCell">Loaded By</div>
+                    <div  class="divCell">Labour</div>
+                    <div  class="divCell">Remarks</div>
                 </div>
 
                 <?php
@@ -117,9 +110,9 @@
                     <div class="divCell">{{ $amount }}</div>
                     <div class="divCell">{{ $obj->bill_number }}</div>
                     <div class="divCell">{{ $obj->vehicle_number }}</div>
-                    <!--                    <div class="divCell">{{ $obj->unloaded_by }}</div>
-                                        <div class="divCell">{{ $obj->labours }}</div> 
-                                        <div class="divCell">{{ $obj->remarks }}</div> -->
+                    <div class="divCell">{{ $obj->unloaded_by }}</div>
+                    <div class="divCell">{{ $obj->labours }}</div> 
+                    <div class="divCell">{{ $obj->remarks }}</div> 
                 </div>
                 @endforeach
             </div>

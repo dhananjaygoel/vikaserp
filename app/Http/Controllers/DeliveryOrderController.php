@@ -385,10 +385,6 @@ class DeliveryOrderController extends Controller {
         $delivery_locations = DeliveryLocation::all();
         $price_delivery_order = $this->calculate_price($delivery_data);
         $customers = Customer::all();
-//        echo '<pre>';
-//        print_r($price_delivery_order);
-//        echo '</pre>';
-//        exit;
         return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'price_delivery_order'));
     }
 
@@ -396,11 +392,7 @@ class DeliveryOrderController extends Controller {
 
         $input_data = Input::all();
 
-
-//        echo '<pre>';
-//        print_r($input_data);
-//        echo '</pre>';
-//        exit;
+        
         $validator = Validator::make($input_data, DeliveryOrder::$order_to_delivery_challan_rules);
         if ($validator->passes()) {
             $i = 0;
