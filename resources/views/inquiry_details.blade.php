@@ -126,7 +126,7 @@
                                 <span id="send_sms_button">
                                     <span title="You can not click unless you save all prices" type="button" class="btn btn-default smstooltip normal_cursor" >Send SMS</span>
                                 </span>
-                                <span title="SMS has been sent 5 times" class="badge enquirybadge smstooltip">0</span>
+                                <span title="SMS has been sent {{$inquiry->sms_count}} times" class="badge enquirybadge smstooltip">{{$inquiry->sms_count}}</span>
                             </div>
                         </form>
                     </div>

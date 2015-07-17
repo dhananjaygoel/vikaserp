@@ -253,9 +253,13 @@ class InquiryController extends Controller {
                     curl_close($ch);
                 }
             }
+            Inquiry::where('id', '=', $id)->update(array(
+                'sms_count' => ($inquiry->sms_count + 1),
+            ));
             $flash_message = "Message sent successfully";
         }
 
+        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
         return View::make('inquiry_details', array('inquiry' => $inquiry, 'delivery_location' => $delivery_location, 'message' => $flash_message));
     }
 
@@ -525,8 +529,8 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->where('inquiry_status' , '<>', 'Completed')->first();
-        
+        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->where('inquiry_status', '<>', 'Completed')->first();
+
         if (count($inquiry) < 1) {
             return redirect('inquiry')->with('flash_message', 'Please select other inquiry, order is generated for this inquiry.');
         }
