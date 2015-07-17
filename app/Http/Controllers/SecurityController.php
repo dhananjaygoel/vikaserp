@@ -17,7 +17,7 @@ use App\Http\Requests\EditSecurityRequest;
 class SecurityController extends Controller {
 
     public function __construct() {
-        $this->middleware('validIP');
+//        $this->middleware('validIP');
     }
     /**
      * Display a listing of the resource.
