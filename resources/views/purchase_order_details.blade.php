@@ -78,7 +78,7 @@
                                         @endif
 
                                         <!--<tr><td><span>Grand Total: </span> {{$total}}</td></tr>-->
-                                        <tr><td><span>Expected Delivery Date: </span>{{$purchase_orders['expected_delivery_date']}}</td></tr>
+                                        <tr><td><span>Expected Delivery Date: </span>{{date("jS F, Y", strtotime($purchase_orders['expected_delivery_date']))}}</td></tr>
                                         <tr><td><span>Delivery Location: </span>{{$purchase_orders['delivery_location']->area_name}}</td></tr>
                                         <tr><td><span>Remark: </span>{{$purchase_orders['remarks']}}</td></tr>
                                     </tbody>

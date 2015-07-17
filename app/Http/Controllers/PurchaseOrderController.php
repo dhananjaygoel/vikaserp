@@ -147,10 +147,10 @@ class PurchaseOrderController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validate);
             }
         }
-
-        $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_delivery_date']);
-        $date = date("Y/m/d", strtotime($date_string));
-        $datetime = new DateTime($date);
+        
+        $expected_delivery_date = explode('-', $input_data['expected_delivery_date']);
+        $expected_delivery_date = $expected_delivery_date[2] . '-' . $expected_delivery_date[0] . '-' . $expected_delivery_date[1];
+        $expected_delivery_date = date("Y-m-d", strtotime($expected_delivery_date));
 
         $add_purchase_order_array = [
             'supplier_id' => $customer_id,
@@ -158,7 +158,7 @@ class PurchaseOrderController extends Controller {
 //            'delivery_location_id' => $location_id,
             'order_for' => $input_data['order_for'],
             'vat_percentage' => $input_data['vat_percentage'],
-            'expected_delivery_date' => $datetime->format('Y-m-d'),
+            'expected_delivery_date' => $expected_delivery_date,
             'remarks' => $input_data['purchase_order_remark'],
             'order_status' => "pending",
         ];
@@ -181,7 +181,7 @@ class PurchaseOrderController extends Controller {
                     }
                 }
 
-                $str .= " meterial will be despached by " . date("jS F, Y", strtotime($datetime->format('Y-m-d'))) . ". Vikas Associates, 9673000068";
+                $str .= " meterial will be despached by " . date("jS F, Y", strtotime($expected_delivery_date)) . ". Vikas Associates, 9673000068";
                 $phone_number = $customer->phone_number1;
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
@@ -570,7 +570,7 @@ class PurchaseOrderController extends Controller {
                 ->update(array(
             'order_status' => 'canceled'
         ));
-        
+
         return redirect('purchase_orders')->with('flash_message', 'Successfully completed purchase order');
     }
 

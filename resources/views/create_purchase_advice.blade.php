@@ -175,7 +175,7 @@
                                             <tr>
                                                 <td>
                                                     <span><b>Expected Delivery Date:</b> </span>
-                                                    {{$purchase_orders['expected_delivery_date']}}
+                                                    {{date("jS F, Y", strtotime($purchase_orders['expected_delivery_date']))}}
                                                     <input type="hidden" name="expected_delivery_date" value="{{$purchase_orders['expected_delivery_date']}}">
                                                 </td>
                                             </tr>
