@@ -12,6 +12,9 @@ use App\Http\Requests\ProductCategoryRequest;
 use App\Http\Requests\UserValidation;
 use Input;
 use DB;
+use App\City;
+use App\DeliveryLocation;
+use App\Customer;
 
 class WelcomeController extends Controller {
     /*
@@ -329,20 +332,94 @@ class WelcomeController extends Controller {
         echo '</pre>';
     }
 
-//    public function upload_customer_excel() {
-//        if (Input::hasFile('excel_file')) {
-//            $f = Input::file('excel_file');
-//
-//            $input = Input::file('excel_file');
-//            $filename = $input->getRealPath();
-//            var_dump($input);
-//
-//            Excel::load($filename, function($reader) {
-//            $results = $reader->all();
-//
-//            foreach ($results as $excel) {
-//
-//            }
-//            }
-//        }
+    public function import_delivery_location() {
+        return view('import_delivery_location');
+    }
+
+    public function process_import_delivery_location() {
+
+        $States = new States();
+        $States->state_name = 'Maharashtra';
+        $States->save();
+
+        $States_id = DB::getPdo()->lastInsertId();
+        $City = new City();
+        $City->state_id = $States_id;
+        $City->city_name = 'Pune';
+        $City->save();
+
+        if (Input::hasFile('excel_file')) {
+            $f = Input::file('excel_file');
+
+            $input = Input::file('excel_file');
+            $filename = $input->getRealPath();
+            var_dump($input);
+
+            Excel::load($filename, function($reader) {
+
+                $results = $reader->all();
+                foreach ($results as $excel) {
+                    $delivery = new DeliveryLocation();
+                    $delivery->state_id = 1;
+                    $delivery->city_id = 1;
+                    $delivery->difference = $excel->diff;
+                    $delivery->area_name = $excel->area_name;
+                    $delivery->status = 'permanent';
+                    $delivery->save();
+                }
+            });
+
+            return redirect('import_delivery_location')->with('success', 'Delivery location excel file successfully uploaded.');
+        } else {
+            return redirect('import_delivery_location')->with('wrong', 'Please select file to upload');
+        }
+    }
+
+    public function excel_import_customer() {
+        return view('excel_import_customer');
+    }
+
+    public function upload_customer_excel() {
+
+        if (Input::hasFile('excel_file')) {
+            $f = Input::file('excel_file');
+
+            $input = Input::file('excel_file');
+            $filename = $input->getRealPath();
+            var_dump($input);
+
+            Excel::load($filename, function($reader) {
+                $results = $reader->all();
+
+                foreach ($results as $excel) {
+                    $customer = new Customer();
+                    $customer->owner_name = $excel->owner_name;
+                    $customer->contact_person = $excel->contact_person;
+                    $customer->company_name = $excel->company_name;
+                    $customer->address1 = $excel->address1;
+                    $customer->address2 = $excel->address1;
+                    $customer->city = 1;
+                    $customer->state = 1;
+                    $customer->zip = $excel->zip;
+                    $customer->email = $excel->email;
+                    $customer->tally_name = $excel->email;
+                    $customer->phone_number1 = $excel->phone_number_1;
+                    $customer->phone_number2 = $excel->phone_number_2;
+                    $customer->excise_number = $excel->excise_number;
+                    $customer->delivery_location_id = 32;
+//                    $customer->username = $excel->user_name;
+//                    $customer->password = $excel->password;
+                    $customer->credit_period = $excel->credit_period;
+                    $customer->customer_status = 'permanent';
+                    $customer->relationship_manager = 2;
+                    $customer->save();
+                }
+            });
+
+            return redirect('excel_import_customer')->with('success', 'Customer details excel file successfully uploaded.');
+        } else {
+            return redirect('excel_import_customer')->with('wrong', 'Please select file to upload');
+        }
+    }
+
 }
