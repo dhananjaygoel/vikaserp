@@ -419,7 +419,7 @@ class OrderController extends Controller {
             'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['order_remark']
         ]);
-        if ($input_data['add_inquiry_location'] == 0) {
+        if ($input_data['add_inquiry_location'] == 'other') {
             $update_order = $order->update([
                 'other_location' => $input_data['other_location_name'],
                 'other_location_difference' => $input_data['other_location_difference']

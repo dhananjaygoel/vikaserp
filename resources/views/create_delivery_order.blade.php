@@ -58,27 +58,32 @@
                                 <tr> <td><span><b>Credit Period(Days) : </b></span>{{$customer->credit_period}}</td></tr>   
                                 @endif
                                 @endif
-                                @endforeach 
-
+                                @endforeach
+                                
                                 @if($order->delivery_location_id !=0)
                                 @foreach($delivery_location as $location)
                                 @if($order->delivery_location_id == $location->id)
-                                <tr><td><span><b>Delivery Location : </b></span>
+                                <tr>
+                                    <td>
+                                        <span><b>Delivery Location : </b></span>
                                         {{$location->area_name}}
                                     </td>
                                 </tr>
                                 @endif
                                 @endforeach
                                 @else
-                                <tr><td><span><b>Delivery Location : </b></span></td></tr>
                                 <tr>
-                                    <td><span><b>Delivery Location</b>: </span>{{$order->other_location}}</td>
+                                    <td>
+                                        <span><b>Delivery Location</b>: </span>
+                                        {{$order->other_location}}
+                                    </td>
                                 </tr><tr>
-                                    <td><span><b>Delivery Location Difference</b>: </span>{{$order->other_location_difference}}</td>
+                                    <td>
+                                        <span><b>Delivery Location Difference</b>: </span>
+                                        {{$order->other_location_difference}}
+                                    </td>
                                 </tr>
                                 @endif
-
-
                                 </tr>
                             </tbody>
                         </table>
@@ -164,11 +169,11 @@
 
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    
+
                                                     <input type="hidden" value="0" id="pending_qunatity_value_{{$key}}">
                                                     <div id="pending_qunatity_{{$key}}"><span class="text-center">0</span>
                                                     </div>
-                                                    
+
                                                 </div>
                                             </td>
 
