@@ -10,11 +10,11 @@
                     <li class="active"><span>Orders</span></li>
                 </ol>
                 <div class="filter-block">
-                    <h1 class="pull-left">Orders</h1>                                 
-                    <div class="pull-right top-page-ui">
-
-                        <div class="form-group pull-right">
-                            <div class="col-md-12">
+                    <h1>Orders</h1>  
+                    <div class="clearfix"></div>
+                    <div class="top-page-ui pull-right">
+                        <!--<div class="form-group pull-right">-->
+                            <!--<div class="col-md-12">-->
                                 <form action="{{url('orders')}}" method="GET">
                                     <div class="col-md-1" style="padding: 0;"> 
                                         <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
@@ -73,8 +73,8 @@
                                         @endif
                                     </div>
                                 </form>
-                            </div>
-                        </div>
+                            <!--</div>-->
+                        <!--</div>-->
                     </div>
                 </div>
             </div>
