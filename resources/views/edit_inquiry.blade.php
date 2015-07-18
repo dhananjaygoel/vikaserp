@@ -178,11 +178,11 @@
                                             <td><span>Remark</span></td>
                                         </tr>
                                         @foreach($inquiry['inquiry_products'] as $key=>$product)
-                                        <tr id="add_row_{{$key}}" class="add_product_row">
+                                        <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
                                                     <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{isset($product['inquiry_product_details'])?$product['inquiry_product_details']->alias_name: ''}}">
-                                                    <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}">
+                                                    <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}" id="add_product_id_{{$key}}">
                                                     <i class="fa fa-search search-icon"></i>
                                                 </div>
                                             </td>

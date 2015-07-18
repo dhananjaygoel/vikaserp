@@ -39,47 +39,47 @@ class ProductsubController extends Controller {
         $product_type = ProductType::all();
         $units = Units::all();
         $product_sub_cat = "";
+        $input_data = Input::all();
 
+        $q = ProductSubCategory::query();
+        $q->with('product_category');
         if (Input::get('product_filter') != "") {
+            $q->whereHas('product_category', function($query) {
+                $query->where('product_type_id', Input::get('product_filter'));
+            });
+        }
+        if (Input::get('search_text') != "") {
 
-            $product_sub_cat = ProductSubCategory::with('product_category')
-                    ->whereHas('product_category', function($query) {
-                        $query->where('product_type_id', Input::get('product_filter'));
-                    })
-                    ->Paginate(20);
-        } elseif (Input::get('search_text') != "") {
-
-            $product_sub_cat = ProductSubCategory::with('product_category')
-                    ->whereHas('product_category', function($query) {
-                        $query->where('product_category_name', 'like', '%' . Input::get('search_text') . '%');
-                    })
-                    ->Paginate(20);
-        } elseif (Input::get('product_size') != "") {
-
+            $q->whereHas('product_category', function($query) {
+                $query->where('product_category_name', 'like', '%' . Input::get('search_text') . '%');
+            });
+        }
+        if (Input::get('product_size') != "") {
             if (strpos(Input::get('product_size'), '-') !== false) {
-
                 $size_ar = explode("-", Input::get('product_size'));
                 $size = $size_ar[0];
                 $size2 = $size_ar[1];
-                $product_sub_cat = ProductSubCategory::with('product_category')
-                        ->whereHas('product_category', function($query) use ($size, $size2) {
-                            $query->where('size', 'like', '%' . trim($size) . '%')
+                $q->whereHas('product_category', function($query) use ($size, $size2) {
+                    $query->where('size', 'like', '%' . trim($size) . '%')
                             ->orWhere('alias_name', 'like', '%' . trim($size2) . '%');
-                        })
-                        ->Paginate(20);
+                });
             } else {
                 $blanck = Input::get('product_size');
-                $product_sub_cat = ProductSubCategory::with('product_category')
-                        ->whereHas('product_category', function($query) use ($blanck) {
-                            $query->where('size', 'like', '%' . $blanck . '%')
+                $q->whereHas('product_category', function($query) use ($blanck) {
+                    $query->where('size', 'like', '%' . $blanck . '%')
                             ->orWhere('alias_name', 'like', '%' . $blanck . '%');
-                        })
-                        ->Paginate(20);
+                });
             }
-        } else {
-
-            $product_sub_cat = ProductSubCategory::with('product_category')->Paginate(20);
         }
+
+        $product_sub_cat = $q->paginate(20);
+
+
+
+//        echo '<pre>';
+//        print_r($product_sub_cat->toArray());
+//        echo '</pre>';
+//        exit();
 
         $filter = array(Input::get('product_size'), Input::get('search_text'), Input::get('product_filter'));
         $product_sub_cat->setPath('product_sub_category');

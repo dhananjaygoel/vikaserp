@@ -104,7 +104,7 @@ $(document).ready(function () {
             }
             $("#units_" + current_row_count).html(html);
         });
-        var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row">' +
+        var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
                 '<td class="col-md-3">' +
                 '<div class="form-group searchproduct">' +
                 '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +
@@ -136,7 +136,7 @@ $(document).ready(function () {
                 '<input type="hidden" name="product[' + current_row_count + '][order]" value="">' +
                 '</tr>';
         $("#add_product_table").children("tbody").append(html);
-        var purchase_html = '<tr id="add_row_' + current_row_count + '" class="add_product_row">' +
+        var purchase_html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
                 '<td class="col-md-3">' +
                 '<div class="form-group searchproduct">' +
                 '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_purchase_product_name_' + current_row_count + '" onfocus="product_autocomplete_purchase(' + current_row_count + ');">' +
@@ -183,7 +183,7 @@ $(document).ready(function () {
             }
             $("#units_" + current_row_count).html(html);
         });
-        var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row">' +
+        var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
                 '<td class="col-md-3">' +
                 '<div class="form-group searchproduct">' +
                 '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +
@@ -241,7 +241,7 @@ $(document).ready(function () {
             }
             $("#units_" + current_row_count).html(html);
         });
-        var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row">' +
+        var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
                 '<td class="col-md-3">' +
                 '<div class="form-group searchproduct">' +
                 '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +
@@ -386,6 +386,45 @@ function product_autocomplete(id) {
         }
     });
 }
+
+$('#location_difference').on('keyup', function () {
+    $(".add_product_row").each(function (index) {
+        var customer_id = $('#existing_customer_id').val();
+
+        if (customer_id == "") {
+            customer_id = 0;
+        }
+
+        var delivery_location = $('#add_order_location').val();
+        var location = 0;
+        var location_difference = 0;
+
+        if (delivery_location > 0) {
+
+            location = $('#add_order_location').val();
+
+        } else if (delivery_location == 'other') {
+
+            location_difference = $('#location_difference').val();
+            location = 0;
+        }
+        var rowId = $(this).attr('data-row-id');
+        console.log(rowId);
+        var product = $(this).find('#add_product_name_' + rowId).val();
+        if (product != '') {
+            var product_id = $(this).find('#add_product_id_' + rowId).val();
+            $.ajax({
+                url: baseurl + '/recalculate_product_price',
+                data: {"product_id": product_id, 'customer_id': customer_id, 'delivery_location': location, 'location_difference': location_difference},
+                success: function (data) {
+                    var main_array = JSON.parse(data);
+                    var arr1 = main_array['data_array'];
+                    $('#product_price_' + rowId).val(arr1[0]['product_price']);
+                },
+            });
+        }
+    });
+});
 
 /**
  * Comment
