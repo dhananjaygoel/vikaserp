@@ -126,7 +126,15 @@
                                                 <?php
                                                 $total_qunatity = 0;
                                                 foreach ($challan["all_order_products"] as $products) {
-                                                    $total_qunatity = $total_qunatity + $products["present_shipping"];
+                                                    if ($products['unit']->id == 1) {
+                                                        $total_qunatity += $products->present_shipping;
+                                                    }
+                                                    if ($products['unit']->id == 2) {
+                                                        $total_qunatity += ($products->present_shipping * $products['order_product_details']->weight);
+                                                    }
+                                                    if ($products['unit']->id == 3) {
+                                                        $total_qunatity += (($products->present_shipping / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
+                                                    }
                                                 }
                                                 echo $total_qunatity;
                                                 ?>
