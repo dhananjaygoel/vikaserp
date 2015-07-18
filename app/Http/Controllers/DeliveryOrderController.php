@@ -46,18 +46,18 @@ class DeliveryOrderController extends Controller {
         if (Input::get('order_status')) {
 
             if (Input::get('order_status') == 'Inprocess') {
-                $delivery_data = DeliveryOrder::where('order_status', 'pending')->with('customer')->paginate(10);
+                $delivery_data = DeliveryOrder::where('order_status', 'pending')->with('delivery_product', 'customer')->paginate(10);
             } elseif (Input::get('order_status') == 'Delivered') {
-                $delivery_data = DeliveryOrder::where('order_status', 'completed')->with('customer')->paginate(10);
+                $delivery_data = DeliveryOrder::where('order_status', 'completed')->with('delivery_product', 'customer')->paginate(10);
             }
         } else {
-            $delivery_data = DeliveryOrder::where('order_status', 'pending')->with('customer')->paginate(10);
+            $delivery_data = DeliveryOrder::where('order_status', 'pending')->with('delivery_product', 'customer')->paginate(10);
         }
 
-        $pending_orders = $this->checkpending_quantity($delivery_data);
+        $delivery_data = $this->checkpending_quantity($delivery_data);
         $delivery_locations = DeliveryLocation::all();
         $delivery_data->setPath('delivery_order');
-        return view('delivery_order', compact('delivery_data', 'pending_orders', 'delivery_locations'));
+        return view('delivery_order', compact('delivery_data', 'delivery_locations'));
     }
 
     /**
@@ -227,16 +227,6 @@ class DeliveryOrderController extends Controller {
     public function update($id) {
 
         $input_data = Input::all();
-        $i = 0;
-        $j = count($input_data['product']);
-        foreach ($input_data['product'] as $product_data) {
-            if ($product_data['name'] == "") {
-                $i++;
-            }
-        }
-        if ($i == $j) {
-            return Redirect::back()->with('validation_message', 'Please enter at least one product details');
-        }
 
         $customer_id = 0;
         if (isset($input_data['customer_status']) && $input_data['customer_status'] == "new_customer") {
@@ -276,8 +266,6 @@ class DeliveryOrderController extends Controller {
         }
 
         DeliveryOrder::where('id', $id)->update(array(
-            'order_id' => 0,
-            'order_source' => 'warehouse',
             'customer_id' => $customer_id,
             'created_by' => Auth::id(),
             'delivery_location_id' => $input_data['add_order_location'],
@@ -287,49 +275,40 @@ class DeliveryOrderController extends Controller {
             'expected_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
             'remarks' => $input_data['order_remark'],
             'vehicle_number' => $input_data['vehicle_number'],
-//            'driver_name' => $input_data['driver_name'],
             'driver_contact_no' => $input_data['driver_contact'],
             'order_status' => "Pending"
         ));
 
+        $order_products = array();
+        foreach ($input_data['product'] as $product_data) {
 
-        if ($j != 0) { //if (product list is not empty) 
-            $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)
-                    ->where('order_type', '=', 'delivery_order')
-                    ->delete();
+            if ($product_data['name'] != "" && $product_data['order'] != '') {
+                $order_products = [
+                    'order_id' => $id,
+                    'order_type' => 'delivery_order',
+                    'product_category_id' => $product_data['id'],
+                    'unit_id' => $product_data['units'],
+                    'quantity' => $product_data['quantity'],
+                    'present_shipping' => $product_data['present_shipping'],
+                    'price' => $product_data['price'],
+                    'from' => $product_data['order'],
+                    'remarks' => $product_data['remark'],
+                ];
 
-            $order_products = array();
-            foreach ($input_data['product'] as $product_data) {
+                $add_order_products = AllOrderProducts::where('id', '=', $product_data['order'])->update($order_products);
+            } else if ($product_data['name'] != "" && $product_data['order'] == '') {
+                $order_products = [
+                    'order_id' => $id,
+                    'order_type' => 'delivery_order',
+                    'product_category_id' => $product_data['id'],
+                    'unit_id' => $product_data['units'],
+                    'quantity' => $product_data['present_shipping'],
+                    'present_shipping' => $product_data['present_shipping'],
+                    'price' => $product_data['price'],
+                    'remarks' => $product_data['remark'],
+                ];
 
-                if ($product_data['name'] != "" && $product_data['order'] != '') {
-                    $order_products = [
-                        'order_id' => $id,
-                        'order_type' => 'delivery_order',
-                        'product_category_id' => $product_data['id'],
-                        'unit_id' => $product_data['units'],
-                        'quantity' => $product_data['quantity'],
-                        'present_shipping' => $product_data['present_shipping'],
-                        'price' => $product_data['price'],
-                        'from' => $product_data['order'],
-                        'remarks' => $product_data['remark'],
-                    ];
-
-                    $add_order_products = AllOrderProducts::create($order_products);
-                }
-                if ($product_data['name'] != "" && $product_data['order'] == '') {
-                    $order_products = [
-                        'order_id' => $id,
-                        'order_type' => 'delivery_order',
-                        'product_category_id' => $product_data['id'],
-                        'unit_id' => $product_data['units'],
-                        'quantity' => $product_data['present_shipping'],
-                        'present_shipping' => $product_data['present_shipping'],
-                        'price' => $product_data['price'],
-                        'remarks' => $product_data['remark'],
-                    ];
-
-                    $add_order_products = AllOrderProducts::create($order_products);
-                }
+                $add_order_products = AllOrderProducts::create($order_products);
             }
         }
 
@@ -392,22 +371,9 @@ class DeliveryOrderController extends Controller {
 
         $input_data = Input::all();
 
-        
+
         $validator = Validator::make($input_data, DeliveryOrder::$order_to_delivery_challan_rules);
         if ($validator->passes()) {
-            $i = 0;
-            $j = count($input_data['product']);
-
-            foreach ($input_data['product'] as $product_data) {
-                if ($product_data['name'] == "") {
-                    $i++;
-                }
-            }
-
-            if ($i == $j) {
-                return Redirect::back()->with('validation_message', 'Please enter at least one product details');
-            }
-
             $delivery_challan = new DeliveryChallan();
             $delivery_challan->order_id = $input_data['order_id'];
             $delivery_challan->delivery_order_id = $id;
@@ -435,39 +401,41 @@ class DeliveryOrderController extends Controller {
             $delivery_challan->save();
 
             $delivery_challan_id = DB::getPdo()->lastInsertId();
-            if ($j != 0) {
-                $order_products = array();
-                foreach ($input_data['product'] as $product_data) {
-                    if ($product_data['name'] != "" && $product_data['order'] != "") {
-                        $order_products = [
-                            'order_id' => $delivery_challan_id,
-                            'order_type' => 'delivery_challan',
-                            'product_category_id' => $product_data['id'],
-                            'unit_id' => $product_data['units'],
-                            'actual_pieces' => $product_data['actual_pieces'],
-                            'quantity' => $product_data['quantity'],
-                            'present_shipping' => $product_data['present_shipping'],
-                            'price' => $product_data['price'],
-                            'from' => 'delivery_order'
-                        ];
-                        $add_order_products = AllOrderProducts::create($order_products);
-                    }
-                    if ($product_data['name'] != "" && $product_data['order'] == "") {
-                        $order_products = [
-                            'order_id' => $delivery_challan_id,
-                            'order_type' => 'delivery_challan',
-                            'product_category_id' => $product_data['id'],
-                            'unit_id' => $product_data['units'],
-                            'actual_pieces' => $product_data['actual_pieces'],
-                            'quantity' => $product_data['quantity'],
-                            'present_shipping' => $product_data['present_shipping'],
-                            'price' => $product_data['price'],
-                            'from' => ''
-                        ];
-                        $add_order_products = AllOrderProducts::create($order_products);
-                    }
+            $order_products = array();
+            foreach ($input_data['product'] as $product_data) {
+                if ($product_data['name'] != "" && $product_data['order'] != "") {
+                    $order_products = [
+                        'order_id' => $delivery_challan_id,
+                        'order_type' => 'delivery_challan',
+                        'product_category_id' => $product_data['id'],
+                        'unit_id' => $product_data['units'],
+                        'actual_pieces' => $product_data['actual_pieces'],
+                        'quantity' => $product_data['quantity'],
+                        'present_shipping' => $product_data['present_shipping'],
+                        'price' => $product_data['price'],
+                        'from' => $input_data['order_id'],
+                        'parent' => $product_data['order'],
+                    ];
+                    $add_order_products = AllOrderProducts::create($order_products);
+                } else if ($product_data['name'] != "" && $product_data['order'] == "") {
+                    echo '2';
+                    $order_products = [
+                        'order_id' => $delivery_challan_id,
+                        'order_type' => 'delivery_challan',
+                        'product_category_id' => $product_data['id'],
+                        'unit_id' => $product_data['units'],
+                        'actual_pieces' => $product_data['actual_pieces'],
+                        'quantity' => $product_data['quantity'],
+                        'present_shipping' => $product_data['present_shipping'],
+                        'price' => $product_data['price'],
+                        'from' => ''
+                    ];
+                    $add_order_products = AllOrderProducts::create($order_products);
                 }
             }
+            DeliveryOrder::where('id', '=', $input_data['order_id'])->update(array(
+                'order_status' => 'completed'
+            ));
             return redirect('delivery_order')->with('success', 'One Delivery Challan is successfully created.');
         } else {
             $error_msg = $validator->messages();
@@ -611,186 +579,33 @@ class DeliveryOrderController extends Controller {
         $all_del_orders = array();
         $pending_orders = array();
 
-        foreach ($delivery_orders as $del_order) {
 
-            $delivery_challan = DeliveryChallan::where('order_id', $del_order->id)->get();
-            if (count($delivery_challan) > 0) {
-                $total_pending = 0;
-                $total_qty = 0;
-                foreach ($delivery_challan as $challan) {
-                    $challan_products = AllOrderProducts::where('order_id', $challan->id)
-                                    ->where('from', 'delivery_order')
-                                    ->where('order_type', 'delivery_challan')->get();
-                    $order_all_order_products = AllOrderProducts::where('order_id', $challan->id)->where('order_type', 'order')->get();
-                    $del_products = array();
-                    $pending_quantity_del = 0;
-                    $total_quantity_del = 0;
-                    foreach ($challan_products as $products) {
 
-                        $p_qty = $products['quantity'];
-                        if ($products['unit_id'] != 1) {
-                            $product_subcategory = ProductSubCategory::find($products['product_category_id']);
 
-                            if ($products['unit_id'] == 2) {
-                                $p_qtycalculated_quantity = $p_qty * $product_subcategory['weight'];
-                            }
-                            if ($products['unit_id'] == 3) {
-                                $p_qtycalculated_quantity = ($p_qty / $product_subcategory['standard_length'] ) * $product_subcategory['weight'];
-                            }
-//                            $p_qtycalculated_quantity = $prod_quantity / $product_subcategory['weight'];
-                            $p_qty = $p_qtycalculated_quantity;
+        if (count($delivery_orders) > 0) {
+
+            foreach ($delivery_orders as $key => $del_order) {
+                $delivery_order_quantity = 0;
+                if (count($del_order['delivery_product']) > 0) {
+                    foreach ($del_order['delivery_product'] as $popk => $popv) {
+                        $product_size = ProductSubCategory::find($popv->product_category_id);
+                        if ($popv->unit_id == 1) {
+                            $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
                         }
-                        $pending_quantity_del = $pending_quantity_del + $p_qty;
-                        $prod_quantity = $pending_quantity_del;
-                        $total_quantity_del = $total_quantity_del + $prod_quantity;
-                        $temp_products = array();
-                        $temp_products['id'] = $challan->id;
-                        $temp_products['order_id'] = $del_order->id;
-                        $temp_products['product_id'] = $products['product_category_id'];
-                        $temp_products['unit'] = $products['unit_id'];
-                        $temp_products['total_pending_quantity'] = ($pending_quantity_del);
-                        $temp_products['total_quantity'] = $pending_quantity_del;
-                        array_push($del_products, $temp_products);
+                        if ($popv->unit_id == 2) {
+                            $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight);
+                        }
+                        if ($popv->unit_id == 3) {
+                            $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+                        }
                     }
-                    array_push($all_del_orders, $del_products);
                 }
-//                echo '<pre>';
-//                print_r($all_del_orders);
-//                echo '</pre>';
-//                exit;
 
-                if (count($challan_products) > 0) {
-                    $calculated_pendings = array();
-                    $pend_qty = 0;
-
-                    foreach ($all_del_orders as $key => $dos) {
-//                        echo '<pre>';
-//                        print_r($dos);
-//                        echo '</pre>';
-//                        exit;
-                        $len = count($dos);
-                        $index = 0;
-                        if ($len > 0) {
-                            $index = $len - 1;
-                        }
-                        $pend_qty = $pend_qty + $dos[$index]['total_pending_quantity'];
-                    }
-
-                    $or = DeliveryOrder::where('id', $del_order->id)->with(['delivery_product' => function($query) {
-                                    $query->where('order_type', '=', 'delivery_order')
-                                    ;
-                                }])->first();
-
-                    $tot_qty = 0;
-                    foreach ($or['delivery_product'] as $or_prd) {
-//                    echo $or_prd->quantity;
-                        $ord_qty = $or_prd->quantity;
-                        if ($or_prd->unit_id != 1) {
-                            $product_subcategory = ProductSubCategory::find($products['product_category_id']);
-
-                            if ($or_prd->unit_id == 2) {
-                                $order_quantity = $ord_qty * $product_subcategory['weight'];
-                            }
-                            if ($or_prd->unit_id == 3) {
-                                $order_quantity = ($ord_qty / $product_subcategory['standard_length'] ) * $product_subcategory['weight'];
-                            }
-//                            $p_qtycalculated_quantity = $prod_quantity / $product_subcategory['weight'];
-                            $ord_qty = $order_quantity;
-                        }
-                        $tot_qty = $tot_qty + $ord_qty;
-                    }
-//                echo $pend_qty.' '.$tot_qty.'<br>';
-                    $total_qty = $tot_qty;
-
-                    $total_pending = $tot_qty - $pend_qty;
-                    $temp = array();
-                    $temp['id'] = $del_order->id;
-                    if ($total_pending > 0) {
-                        $temp['total_pending_quantity'] = 0;
-                    } else {
-                        $temp['total_pending_quantity'] = $total_pending;
-                    }
-
-                    $temp['total_quantity'] = $total_qty;
-                    array_push($pending_orders, $temp);
-                }
-            } else {
-                $pending_quantity = 0;
-                $total_quantity = 0;
-                $all_order_products = AllOrderProducts::where('order_id', $del_order->id)->where('order_type', 'delivery_order')->get();
-                foreach ($all_order_products as $products) {
-//                    $p_qty = $products['quantity'] - $products['present_shipping'];
-                    $p_qty = $products['quantity'];
-                    $pending_quantity = $pending_quantity + $p_qty;
-                    $kg = Units::first();
-                    $prod_quantity = $products['quantity'];
-                    if ($products['unit_id'] != 1) {
-                        $product_subcategory = ProductSubCategory::find($products['product_category_id']);
-
-                        if ($products['unit_id'] == 2) {
-                            $calculated_quantity = $prod_quantity * $product_subcategory['weight'];
-                        }
-                        if ($products['unit_id'] == 3) {
-                            $calculated_quantity = ($prod_quantity / $product_subcategory['size'] ) * $product_subcategory['weight'];
-                        }
-                        $prod_quantity = $calculated_quantity;
-                    }
-                    $total_quantity = $total_quantity + $prod_quantity;
-                }
-                $temp = array();
-                $temp['id'] = $del_order->id;
-                $temp['total_pending_quantity'] = $total_quantity;
-                $temp['total_quantity'] = $total_quantity;
-                array_push($pending_orders, $temp);
-//                echo '<pre>';
-//                print_r($pending_orders);
-//                echo '</pre>';
+                $delivery_orders[$key]['total_quantity'] = $delivery_order_quantity;
             }
         }
-//        echo '<pre>';
-//        print_r($pending_orders);
-//        echo '</pre>';
-//        exit;
-        return $pending_orders;
+
+        return $delivery_orders;
     }
 
-//    function checkpending_quantity($delivery_orders) {
-//        $pending_orders = array();
-//
-//        if (count($delivery_orders) > 0) {
-//
-//            foreach ($delivery_orders as $del_order) {
-//                $pending_quantity = 0;
-//                $total_quantity = 0;
-//                $all_order_products = AllOrderProducts::where('order_id', $del_order->id)->where('order_type', 'delivery_order')->get();
-//                foreach ($all_order_products as $products) {
-////                    $p_qty = $products['quantity'] - $products['present_shipping'];
-//                    $p_qty = $products['present_shipping'];
-//                    $pending_quantity = $pending_quantity + $p_qty;
-//                    $kg = Units::first();
-//                    $prod_quantity = $products['quantity'];
-//                    if ($products['unit_id'] != 1) {
-//                        $product_subcategory = \App\ProductSubCategory::where('product_category_id', $products['product_category_id'])->first();
-//
-//                        if ($products['unit_id'] == 2) {
-//                            $calculated_quantity = $prod_quantity * $product_subcategory['weight'];
-//                        }
-//                        if ($products['unit_id'] == 3) {
-//                            $calculated_quantity = ($prod_quantity / $product_subcategory['size'] ) * $product_subcategory['weight'];
-//                        }
-//                        $prod_quantity = $calculated_quantity;
-//                    }
-//                    $total_quantity = $total_quantity + $prod_quantity;
-//                }
-//                $temp = array();
-//                $temp['id'] = $del_order->id;
-//                $temp['total_pending_quantity'] = (int) $pending_quantity;
-//                $temp['total_quantity'] = (int) $total_quantity;
-//                array_push($pending_orders, $temp);
-//            }
-//        }
-//
-//
-//        return $pending_orders;
-//    }
 }

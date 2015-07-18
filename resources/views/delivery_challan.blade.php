@@ -50,45 +50,23 @@
                                     <?php $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1; ?>
                                     @foreach($allorders as $challan)
                                     @if($challan->challan_status == 'pending')
-
                                     <tr>
                                         <td class="text-center">{{$k++}}</td>
                                         <td class="text-center">{{$challan['customer']->owner_name}}</td>
                                         <td class="text-center">
                                             @if($challan->serial_number == '')
-
                                             @elseif($challan->serial_number != '')
                                             {{$challan->serial_number}}
                                             @endif
                                         </td>                                        
-                                        <td class="text-center"><?php
-                                            $total_shipping = 0;
-                                            foreach ($challan['all_order_products'] as $products) {
-                                                if ($products->order_type == 'delivery_challan') {
-                                                    $total_shipping = $total_shipping + $products['present_shipping'];
-                                                }
-//                                            echo ' '.$products['present_shipping'];
-                                            }
-                                            echo $total_shipping;
-                                            ?></td>
-
-
-
+                                        <td class="text-center">{{$challan->total_quantity}}</td>
                                         <td class="text-center">
                                             <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a>
-
-                                            <!--                                            <a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
-                                                                                            <span class="fa-stack">
-                                                                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                                                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                                                            </span>
-                                                                                        </a>-->
-                                            
+                                            </a>                                            
                                             <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan_{{$challan->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -173,14 +151,7 @@
                                         {{$challan->serial_number}}
                                         @endif
                                     </td>                                        
-                                    <td class="text-center"><?php
-                                        $total_shipping = 0;
-                                        foreach ($challan['all_order_products'] as $products) {
-                                            $total_shipping = $total_shipping + $products['present_shipping'];
-//                                            echo ' '.$products['present_shipping'];
-                                        }
-                                        echo $total_shipping;
-                                        ?></td>
+                                    <td class="text-center">{{$challan->total_quantity}}</td>
                                     <td class="text-center">
                                         <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
                                             <span class="fa-stack">

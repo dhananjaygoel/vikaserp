@@ -227,7 +227,7 @@
                                         </tr>
                                         @endif
                                         @endforeach
-<?php //}  ?>
+                                        <?php //}  ?>
                                     </tbody>
                                 </table>
                                 <table>
@@ -273,11 +273,22 @@
                             <div class="radio">
                                 <input checked="" value="include_vat" id="optionsRadios5" name="status1" type="radio" onclick="grand_total_delivery_order();">
                                 <label for="optionsRadios5">All Inclusive</label>
-                                <input value="exclude_vat" id="optionsRadios6" name="status1" type="radio" onclick="grand_total_delivery_order();">
+                                <input value="exclude_vat" id="optionsRadios6" name="status1" type="radio" onclick="grand_total_delivery_order();" <?php
+                                if ($delivery_data->vat_percentage != '') {
+                                    echo 'checked=""';
+                                }
+                                ?>>
                                 <label for="optionsRadios6">Plus VAT</label>
                             </div>
                         </div>
-                        <div class="plusvat " style="display: none">
+                        <?php
+                        if ($delivery_data->vat_percentage != '') {
+                            $style = "display:block";
+                        } else {
+                            $style = '';
+                        }
+                        ?>
+                        <div class="plusvat " style="<?= $style ?>">
                             <div class="form-group">
                                 <table id="table-example" class="table ">
                                     <tbody>

@@ -21,7 +21,7 @@ class AllOrderProducts extends Model {
      *
      * @var array
      */
-    protected $fillable = ['order_id', 'order_type', 'from', 'product_category_id', 'unit_id', 'quantity', 'actual_pieces', 'price', 'present_shipping', 'remarks'];
+    protected $fillable = ['order_id', 'order_type', 'from', 'product_category_id', 'unit_id', 'quantity', 'actual_pieces', 'price', 'present_shipping', 'remarks', 'parent'];
     protected $dates = ['deleted_at'];
 
     public function unit() {

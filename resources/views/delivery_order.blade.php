@@ -98,12 +98,7 @@
 
                                         </td> 
                                         <td>
-                                            @foreach($pending_orders as $pending)
-                                            @if($pending['id'] == $delivery->id)
-                                            {{$pending['total_quantity']}}
-                                            @endif
-                                            @endforeach
-
+                                            {{$delivery->total_quantity}}
                                         </td> 
                                         <td>
                                             {{$delivery->vehicle_number}}

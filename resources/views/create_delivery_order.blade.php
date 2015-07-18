@@ -119,16 +119,7 @@
                                             <td class="col-md-1">
                                                 <div class="form-group">
                                                     {{$product->quantity}}
-                                                    @if(count($pending_orders) > 0)
-                                                    @foreach($pending_orders as $porder)
-                                                    @if($porder['product_id'] == $product->product_category_id && $porder['unit']==$product->unit_id )
-                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$porder['total_pending_quantity']}}" type="hidden" > 
-
-                                                    @endif
-                                                    @endforeach
-                                                    @else
-                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="hidden" >
-                                                    @endif
+                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->pending_quantity}}" type="hidden" > 
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -144,19 +135,9 @@
                                             <td class="col-md-1">
                                                 <div class="form-group">
                                                     <?php $present_shipping = 0; ?>
-
                                                     <?php $present_shipping = $product->quantity; ?>                                                    
-
-                                                    @if(count($pending_orders) > 0)
-                                                    @foreach($pending_orders as $porder)
-                                                    @if($porder['product_id'] == $product->product_category_id && $porder['unit']==$product->unit_id && $porder['from'] == $product->id)
-                                                    <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$porder['total_pending_quantity']}}" type="text" onblur="change_quantity({{$key}});">
-                                                    @endif
-                                                    @endforeach
-                                                    @else
-                                                    <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$present_shipping}}" type="text" onblur="change_quantity({{$key}});">
-                                                    @endif
-
+                                                    <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$product->pending_quantity}}" type="text" onblur="change_quantity({{$key}});">
+                                                    
                                                 </div>
                                             </td>
                                             <td class="col-md-2">

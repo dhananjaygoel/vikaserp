@@ -42,11 +42,34 @@ class DeliveryChallanController extends Controller {
     public function index() {
 
         if ((isset($_GET['status_filter'])) && $_GET['status_filter'] != '') {
-            $allorders = DeliveryChallan::where('challan_status', '=', $_GET['status_filter'])->with('customer', 'all_order_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(10);
+            $allorders = DeliveryChallan::where('challan_status', '=', $_GET['status_filter'])->with('customer', 'delivery_challan_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(10);
         } else {
-            $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(10);
+            $allorders = DeliveryChallan::where('challan_status', '=', 'pending')->with('customer', 'delivery_challan_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(10);
         }
 
+        if (count($allorders) > 0) {
+            foreach ($allorders as $key => $order) {
+                $order_quantity = 0;
+
+                if (count($order['delivery_challan_products']) > 0) {
+                    foreach ($order['delivery_challan_products'] as $opk => $opv) {
+                        $product_size = ProductSubCategory::find($opv->product_category_id);
+                        if ($opv->unit_id == 1) {
+                            $order_quantity = $order_quantity + $opv->quantity;
+                        }
+                        if ($opv->unit_id == 2) {
+                            $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
+                        }
+                        if ($opv->unit_id == 3) {
+                            $order_quantity = $order_quantity + (($opv->quantity / $product_size->standard_length ) * $product_size->weight);
+                        }
+                    }
+                }
+
+                $allorders[$key]['total_quantity'] = $order_quantity;
+            }
+        }
+        
         $allorders->setPath('delivery_challan');
         return view('delivery_challan', compact('allorders'));
     }

@@ -104,6 +104,7 @@
                                         <th>Customer Name</th>
                                         <th>Mobile </th>
                                         <th>Delivery Location</th>
+                                        <th>Total Quantity</th>
                                         <th>Pending Quantity</th>
                                         <th class="text-center">Create Delivery Order</th>
                                         <th class="text-center">Actions</th>
@@ -127,16 +128,8 @@
                                             }
                                         }
                                         ?></td>-->
-                                        @if(count($pending_orders) > 0)
-                                        @foreach($pending_orders as $porder)
-                                        @if($porder['id'] == $order->id)                                       
-                                        <td>{{$porder['total_pending_quantity']}}</td>
-                                        @endif
-                                        @endforeach
-                                        @else
-                                        <td></td>
-                                        <td></td>
-                                        @endif
+                                        <td>{{$order->total_quantity}}</td>
+                                        <td>{{$order->pending_quantity}}</td>
                                         <td class="text-center">
                                             <a href="{{url('create_delivery_order/'.$order->id)}}" class="table-link" title="Create Delivery order">
                                                 <span class="fa-stack">

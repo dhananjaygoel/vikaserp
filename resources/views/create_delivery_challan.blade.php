@@ -32,7 +32,7 @@
                         </div> 
                         <hr>
                         {!!Form::open(array('method'=>'POST','url'=>url('create_delivery_challan/'.$delivery_data['id']),'id'=>'create_delivery_challan_form'))!!}
-                        <input type="hidden" name="order_id" value="{{$delivery_data->order_id}}">
+                        <input type="hidden" name="order_id" value="{{$delivery_data->id}}">
                         <input type="hidden" id="customer_id" name="customer_id" value="{{$delivery_data['customer']->id}}">
                         <div class="form-group">
                             <span>Serial Number: </span> 
@@ -72,7 +72,7 @@
                                                     <input type="hidden" name="product[{{$key}}][name]" id="name_{{$key}}" value="{{$product['order_product_details']->alias_name}}">
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']['product_category']->id}}">
                                                     <!--<i class="fa fa-search search-icon"></i>-->
-                                                    <input type="hidden" name="product[{{$key}}][order]" value="delivery_order">
+                                                    <input type="hidden" name="product[{{$key}}][order]" value="{{$product->id}}">
                                                 </div>
                                             </td>
                                             <td class="col-md-1 sfdsf">
