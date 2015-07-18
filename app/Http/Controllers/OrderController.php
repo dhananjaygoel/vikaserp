@@ -293,7 +293,7 @@ class OrderController extends Controller {
                 );
 
                 Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($customers) {
-                    $message->to('amana@agstechnologies.com', $customers->owner_name)->subject('Vikash Associates: New Order');
+                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: New Order');
                 });
             }
         }
@@ -527,7 +527,7 @@ class OrderController extends Controller {
                 );
 
                 Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($customers) {
-                    $message->to('amana@agstechnologies.com', $customers->owner_name)->subject('Vikash Associates: Order Updated');
+                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: Order Updated');
                 });
             }
         }
@@ -634,7 +634,7 @@ class OrderController extends Controller {
                 );
 
                 Mail::send('emails.complete_order_mail', ['order' => $mail_array], function($message) use($customers) {
-                    $message->to('amana@agstechnologies.com', $customers->owner_name)->subject('Vikash Associates: Order Completed');
+                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: Order Completed');
                 });
             }
         }

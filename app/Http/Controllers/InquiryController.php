@@ -515,7 +515,7 @@ class InquiryController extends Controller {
         echo json_encode(array('data_array' => $data_array));
     }
 
-    public function recalculate_product_price() {       
+    public function recalculate_product_price() {
         $delivery_location = Input::get('delivery_location');
         $customer_id = Input::get('customer_id');
         $product_id = Input::get('product_id');
@@ -752,7 +752,7 @@ class InquiryController extends Controller {
                     'source' => 'inquiry'
                 );
                 Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($customers) {
-                    $message->to('amana@agstechnologies.com', $customers->owner_name)->subject('Vikash Associates: New Order');
+                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: New Order');
                 });
             }
         }
