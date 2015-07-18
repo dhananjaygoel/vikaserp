@@ -35,12 +35,27 @@
                             <div class="form-group">
                                 <label>Customer<span class="mandatory">*</span></label>
                                 <div class="radio">
-                                    <input checked="" value="existing_customer" id="existing_customer" name="customer_status" type="radio">
+                                    <input checked="" value="existing_customer" id="existing_customer" name="customer_status" type="radio" <?php
+                                    if (Input::old('customer_status') == "existing_customer") {
+                                        echo 'checked="checked"';
+                                    }
+                                    ?>>
                                     <label for="existing_customer">Existing</label>
-                                    <input  value="new_customer" id="new_customer" name="customer_status" type="radio">
+                                    <input  value="new_customer" id="new_customer" name="customer_status" type="radio" <?php
+                                    if (Input::old('customer_status') == "new_customer") {
+                                        echo 'checked="checked"';
+                                    }
+                                    ?>>
                                     <label for="new_customer">New</label>
                                 </div>
-                                <div class="customer_select" >
+                                <?php
+                                if (Input::old('customer_status') == "new_customer") {
+                                    $style = 'display:none;';
+                                } else {
+                                    $style = 'display:block;';
+                                }
+                                ?>
+                                <div class="customer_select" style="<?=$style?>" >
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
                                             <input class="form-control" placeholder="Enter Customer Name" type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
@@ -52,7 +67,14 @@
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="exist_field " style="display: none">
+                            <?php
+                            if (Input::old('customer_status') == "new_customer") {
+                                $style = 'display:block;';
+                            } else {
+                                $style = 'display:none;';
+                            }
+                            ?>
+                            <div class="exist_field " style="<?= $style ?>">
                                 <div class="form-group">
                                     <label for="name">Customer Name<span class="mandatory">*</span></label>
                                     <input id="customer_name" class="form-control" placeholder="Name" name="customer_name" value="{{ old('customer_name') }}" type="text">
@@ -114,7 +136,7 @@
                                                 <td><span>Remark</span></td>
                                             </tr>
                                             <?php for ($i = 1; $i <= 3; $i++) { ?>
-                                                <tr id="add_row_{{$i}}" class="add_product_row">
+                                                <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
                                                             <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});">

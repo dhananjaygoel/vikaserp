@@ -11,43 +11,38 @@
                 </ol>
                 <div class="clearfix">                    
                     <div class=" row col-md-12 pull-right top-page-ui">
-                        <div class="filter-block col-md-12 productsub_filter pull-right">  
-                            @if( Auth::user()->role_id == 0 )
-                            <div class="col-md-2 form-group pull-right">
-                                <a href="{{URL::action('ProductsubController@create')}}" class="btn btn-primary pull-right">
-                                    <i class="fa fa-plus-circle fa-lg" style="cursor: pointer;"></i> Add Product Size
-                                </a>
-                            </div>
-                            @endif
-                            <div class="form-group col-md-3  pull-right">
-                                <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search">
-                                    <input class="form-control ui-autocomplete-input" placeholder="Product Size" value="{{Input::get('product_size')}}" id="product_size" autocomplete="off" name="product_size" type="text">
-                                    <a  onclick="this.form.submit()">
-                                        <i class="fa fa-search search-icon" id="search_icon"></i>
-                                    </a>
-                                    <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
-                                </form>
-                            </div>
-                            <div class="form-group  col-md-2  pull-right">
-                                <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_form">
-                                    <select class="form-control" name="product_filter" onchange="this.form.submit()">
-                                        <option value="" selected="">--Product category--</option>
-                                        @foreach($product_type as $prod_type)
-                                        <option <?php if (Input::get('product_filter') == $prod_type->id) echo 'selected="selected"'; ?> value="{{$prod_type->id}}"> {{$prod_type->name}}</option>
-                                        @endforeach
-                                    </select> 
-                                    <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
-                                </form>
-                            </div> 
-                            <div class="form-group col-md-2 pull-right">
-                                <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search">
-                                    <input class="form-control ui-autocomplete-input" placeholder="Product Name" autocomplete="off" value="{{Input::get('search_text')}}" name="search_text" id="search_text" type="text">
-                                    <a onclick="this.form.submit()">
-                                        <i class="fa fa-search search-icon" id="search_icon"></i>
-                                    </a>
-                                    <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
-                                </form>
-                            </div>
+                        <div class="filter-block col-md-12 productsub_filter pull-right">
+                            <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search">
+                                <div class="col-md-12 pull-right">
+                                    @if( Auth::user()->role_id == 0 )
+                                    <div class="col-md-2 form-group pull-right">
+                                        <a href="{{URL::action('ProductsubController@create')}}" class="btn btn-primary pull-right">
+                                            <i class="fa fa-plus-circle fa-lg" style="cursor: pointer;"></i> Add Product Size
+                                        </a>
+                                    </div>
+                                    @endif
+                                    <div class="form-group col-md-3  pull-right">
+                                        <input class="form-control ui-autocomplete-input" placeholder="Product Size" value="{{Input::get('product_size')}}" id="product_size" autocomplete="off" name="product_size" type="text" onblur="this.form.submit();">
+                                        <a  onclick="this.form.submit()">
+                                            <i class="fa fa-search search-icon" id="search_icon"></i>
+                                        </a>
+                                    </div>
+                                    <div class="form-group  col-md-2  pull-right">
+                                        <select class="form-control" name="product_filter" onchange="this.form.submit()">
+                                            <option value="" selected="">--Product category--</option>
+                                            @foreach($product_type as $prod_type)
+                                            <option <?php if (Input::get('product_filter') == $prod_type->id) echo 'selected="selected"'; ?> value="{{$prod_type->id}}"> {{$prod_type->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div> 
+                                    <div class="form-group col-md-2 pull-right">
+                                        <input class="form-control ui-autocomplete-input" placeholder="Product Name" autocomplete="off" value="{{Input::get('search_text')}}" name="search_text" id="search_text" type="text" onblur="this.form.submit();">
+                                        <a onclick="this.form.submit()" style="cursor: pointer;">
+                                            <i class="fa fa-search search-icon" id="search_icon"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
                         </div>                        
                     </div>
                 </div>

@@ -515,6 +515,38 @@ class InquiryController extends Controller {
         echo json_encode(array('data_array' => $data_array));
     }
 
+    public function recalculate_product_price() {
+        $delivery_location = Input::get('delivery_location');
+        $customer_id = Input::get('customer_id');
+        $product_id = Input::get('product_id');
+        $location_diff = 0;
+
+        if ($delivery_location > 0) {
+            $location = DeliveryLocation::where('id', $delivery_location)->first();
+            $location_diff = $location->difference;
+        } else if (Input::get('location_difference') > 0) {
+            $location_diff = Input::get('location_difference');
+        }
+
+        $term = Input::get('term');
+        $product = ProductSubCategory::find($product_id);
+        $cust = 0;
+        if ($customer_id > 0) {
+            $customer = CustomerProductDifference::where('customer_id', $customer_id)
+                            ->where('product_category_id', $product['product_category']->id)->first();
+            if (count($customer) > 0) {
+                $cust = $customer->difference_amount;
+            }
+        }
+        $data_array[] = [
+            'value' => $product->alias_name,
+            'id' => $product->id,
+            'product_price' => $product['product_category']->price + $cust + $location_diff + $product->difference
+        ];
+
+        echo json_encode(array('data_array' => $data_array));
+    }
+
     public function store_price() {
         $input_data = Input::all();
         $update_price = InquiryProducts::where('id', '=', $input_data['id'])->update(['price' => $input_data['updated_price']]);
@@ -720,7 +752,7 @@ class InquiryController extends Controller {
                     'source' => 'inquiry'
                 );
                 Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($customers) {
-                    $message->to('amana@agstechnologies.com', $customers->owner_name)->subject('Vikash Associates: New Order');
+                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: New Order');
                 });
             }
         }

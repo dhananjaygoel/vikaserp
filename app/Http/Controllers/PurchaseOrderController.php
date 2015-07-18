@@ -147,7 +147,7 @@ class PurchaseOrderController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validate);
             }
         }
-        
+
         $expected_delivery_date = explode('-', $input_data['expected_delivery_date']);
         $expected_delivery_date = $expected_delivery_date[2] . '-' . $expected_delivery_date[0] . '-' . $expected_delivery_date[1];
         $expected_delivery_date = date("Y-m-d", strtotime($expected_delivery_date));
@@ -250,7 +250,7 @@ class PurchaseOrderController extends Controller {
                 );
 
                 Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($customers) {
-                    $message->to('amana@agstechnologies.com', $customers->owner_name)->subject('Vikash Associates: New Purchase Order');
+                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: New Purchase Order');
                 });
             }
         }
@@ -461,7 +461,7 @@ class PurchaseOrderController extends Controller {
                 );
 
                 Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($customers) {
-                    $message->to('amana@agstechnologies.com', $customers->owner_name)->subject('Vikash Associates: Purchase Order Updated');
+                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: Purchase Order Updated');
                 });
             }
         }
@@ -556,7 +556,7 @@ class PurchaseOrderController extends Controller {
                 );
 
                 Mail::send('emails.complete_purchase_order_mail', ['order' => $mail_array], function($message) use($customers) {
-                    $message->to('amana@agstechnologies.com', $customers->owner_name)->subject('Vikash Associates: Order Completed');
+                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: Order Completed');
                 });
             }
         }
