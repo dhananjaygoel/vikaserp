@@ -264,7 +264,7 @@
                         Total Quantity: {{$total}}
                     </div>
                     <div class="ruppes">
-                        Rs. <?php echo convert_number_to_words($total_price + $allorder->loaded_by + $allorder->freight - $allorder->discount + $allorder->vat_percentage * $allorder->vat_percentage / 100); ?> Only
+                        Rs. <?php echo convert_number_to_words( $total_price + $allorder->loaded_by + $allorder->freight - $allorder->discount + ($allorder->vat_percentage/100 * 100) ); ?> Only
                     </div>
                 </div>
                 <div class="total">                 
