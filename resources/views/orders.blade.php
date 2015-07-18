@@ -16,8 +16,7 @@
                         <div class="form-group pull-right">
                             <div class="col-md-12">
                                 <form action="{{url('orders')}}" method="GET">
-
-                                    <div class="col-md-2"> 
+                                    <div class="col-md-1" style="padding: 0;"> 
                                         <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
                                             <option value="" selected="">--Status-- </option>
                                             <option <?php if (Input::get('order_filter') == 'pending') echo 'selected=""'; ?> value="pending">Pending</option>
@@ -52,7 +51,7 @@
                                             @endforeach 
                                         </select> 
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 form-group">
 <!--                                        <select class="form-control" id="user_filter3" name="size_filter" onchange="this.form.submit();">
                                             <option value="" selected="">--Select Size--</option>
                                             @foreach($product_size as $product)                                            
@@ -66,9 +65,9 @@
                                         </a>
 
                                     </div>
-                                    <div class="col-md-2  pull-right">
+                                    <div class="col-md-2">
                                         @if( Auth::user()->role_id != 3 )
-                                        <a href="{{url('orders/create')}}" class="btn btn-primary pull-right">
+                                        <a href="{{url('orders/create')}}" class="btn btn-primary">
                                             <i class="fa fa-plus-circle fa-lg"></i> Place Order
                                         </a>
                                         @endif
