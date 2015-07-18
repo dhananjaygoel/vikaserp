@@ -364,6 +364,7 @@ class DeliveryOrderController extends Controller {
         $delivery_locations = DeliveryLocation::all();
         $price_delivery_order = $this->calculate_price($delivery_data);
         $customers = Customer::all();
+
         return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'price_delivery_order'));
     }
 
@@ -518,7 +519,7 @@ class DeliveryOrderController extends Controller {
     function calculate_price($delivery_data) {
 
         $product_rates = array();
-        foreach ($delivery_data->delivery_product as $product) {
+        foreach ($delivery_data['delivery_product'] as $product) {
 
             $sub_product = ProductSubCategory::find($product->product_category_id);
             $product_category = ProductCategory::where('id', $sub_product->product_category_id)->first();

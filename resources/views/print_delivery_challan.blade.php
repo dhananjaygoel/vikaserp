@@ -241,16 +241,16 @@
                 $total = 0;
                 foreach ($allorder['delivery_challan_products'] as $del_product) {
 
-                    if ($del_product['unit']->unit_name == 'KG') {
+                    if ($prod['unit']->unit_name == 'KG') {
                         $total += $del_product->quantity;
                     }
 
-                    if ($del_product['unit']->unit_name == 'Pieces') {
-                        $total += $del_product->quantity * $del_product['order_product_details']->weight;
+                    if ($prod['unit']->unit_name == 'Pieces') {
+                        $total += $del_product->quantity * $prod['order_product_details']->weight;
                     }
 
-                    if ($del_product['unit']->unit_name == 'Meter') {
-                        $total += ($del_product->quantity / $del_product['order_product_details']->standard_length) * $del_product['order_product_details']->weight;
+                    if ($prod['unit']->unit_name == 'Meter') {
+                        $total += ($del_product->quantity / $prod['order_product_details']->standard_length) * $prod['order_product_details']->weight;
                     }
                 }
                 ?>
@@ -263,8 +263,8 @@
                     <div class="quantity">
                         Total Quantity: {{$total}}
                     </div>
-                    <div class="ruppes">
-                        Rs. <?php echo convert_number_to_words( $total_price + $allorder->loaded_by + $allorder->freight - $allorder->discount + ($allorder->vat_percentage/100 * 100) ); ?> Only
+                    <div class="ruppes grand_price">
+                        Rs. <?php echo convert_number_to_words($allorder->grand_price); ?> Only
                     </div>
                 </div>
                 <div class="total">                 
@@ -295,10 +295,10 @@
                             0
                             @endif 
                         </div>
-                        <div class="label">Total</div>
+<!--                        <div class="label">Total</div>
                         <div class="value">
-                            {{ $total_price + $allorder->loaded_by + $allorder->freight - $allorder->discount }}
-                        </div>
+                           {{ $total_price + $allorder->loaded_by + $allorder->freight - $allorder->discount }}
+                        </div>-->
                         <div class="label">Vat</div>
                         <div class="value">
                             @if($allorder->vat_percentage != "")
@@ -309,7 +309,7 @@
                         </div>
                         <div class="label">GT</div>
                         <div class="value">
-                            {{ $total_price + $allorder->loaded_by + $allorder->freight - $allorder->discount + ($allorder->vat_percentage/100 * 100) }}
+                            {{ $allorder->grand_price }}
                         </div>
 
                     </div>
@@ -317,7 +317,6 @@
             </div>
         </div>
         <?php
-
         function convert_number_to_words($number) {
 
             $hyphen = '-';
