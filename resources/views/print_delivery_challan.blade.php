@@ -189,7 +189,6 @@
                         Date: {{date('d F, Y')}}
                     </div>
                 </div>
-
             </div>
             <div class="delivery-details">
                 <div class="delivery">                    
@@ -199,12 +198,10 @@
                     {{ $allorder['delivery_order']->other_location }}
                     @endif
                 </div>
-
                 <div class="estmt-no">
                     Challan Serial: {{ $allorder->serial_number }}
                 </div>
             </div>
-
             <div class="time">
                 <div class="time-gen">
                     Time Created: {{ date("h:i:sa", strtotime($allorder->created_at))}}
@@ -213,7 +210,6 @@
                     Time Print: {{ date("h:i:sa") }}
                 </div>
             </div>
-
             <div class="divTable">
                 <div class="headRow">
                     <div  class="divCell">Sr.</div>
@@ -268,7 +264,7 @@
                         Total Quantity: {{$total}}
                     </div>
                     <div class="ruppes">
-                        Rs. <?php echo convert_number_to_words($total + $allorder->loaded_by + $allorder->freight - $allorder->discount + $allorder->vat_percentage * $allorder->vat_percentage/100); ?> Only
+                        Rs. <?php echo convert_number_to_words($total_price + $allorder->loaded_by + $allorder->freight - $allorder->discount + $allorder->vat_percentage * $allorder->vat_percentage / 100); ?> Only
                     </div>
                 </div>
                 <div class="total">                 
@@ -301,7 +297,7 @@
                         </div>
                         <div class="label">Total</div>
                         <div class="value">
-                            {{ $total + $allorder->loaded_by + $allorder->freight - $allorder->discount }}
+                            {{ $total_price + $allorder->loaded_by + $allorder->freight - $allorder->discount }}
                         </div>
                         <div class="label">Vat</div>
                         <div class="value">
@@ -312,11 +308,8 @@
                             @endif 
                         </div>
                         <div class="label">GT</div>
-<!--                        <div class="value">
-                            {{$allorder->grand_price}}
-                        </div>-->
                         <div class="value">
-                            {{ $total + $allorder->loaded_by + $allorder->freight - $allorder->discount + $allorder->vat_percentage * $allorder->vat_percentage/100 }}
+                            {{ $total_price + $allorder->loaded_by + $allorder->freight - $allorder->discount + ($allorder->vat_percentage/100 * 100) }}
                         </div>
 
                     </div>

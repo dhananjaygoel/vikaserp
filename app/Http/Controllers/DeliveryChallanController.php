@@ -69,7 +69,7 @@ class DeliveryChallanController extends Controller {
                 $allorders[$key]['total_quantity'] = $order_quantity;
             }
         }
-        
+
         $allorders->setPath('delivery_challan');
         return view('delivery_challan', compact('allorders'));
     }
@@ -223,7 +223,8 @@ class DeliveryChallanController extends Controller {
     public function print_delivery_challan($id) {
 
         $serial_number_delivery_order = Input::get('serial_number');
-        $date_letter = $serial_number_delivery_order . "/" . $id;
+        $current_date = date("M/y/m/");
+        $date_letter = 'DC/' . $current_date . "/" . $id;
 
         DeliveryChallan::where('id', $id)->update(array(
             'serial_number' => $date_letter,
