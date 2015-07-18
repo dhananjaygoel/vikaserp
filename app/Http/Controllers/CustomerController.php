@@ -28,6 +28,7 @@ class CustomerController extends Controller {
         define('PROFILE_ID', Config::get('smsdata.profile_id'));
         define('PASS', Config::get('smsdata.password'));
         define('SENDER_ID', Config::get('smsdata.sender_id'));
+        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
 //
 //        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
@@ -166,23 +167,27 @@ class CustomerController extends Controller {
                 }
             }
             /*
-             * ------SEND SMS TO ALL ADMINS -----------------
+              | ----------------------
+              | SEND SMS TO ALL ADMINS
+              | ----------------------
              */
-//            $input = Input::all();
-//            $admins = User::where('role_id', '=', 4)->get();
-//            if (count($admins) > 0) {
-//                foreach ($admins as $key => $admin) {
-//                    $product_type = ProductType::find($request->input('product_type'));
-//                    $str = "Dear " . $admin->first_name . ", <br/> " . Auth::user()->first_name . " has created a new customer as " . Input::get('owner_name') . " kindly chk. <br />Vikas associates";
-//                    $phone_number = $admin->mobile_number;
-//                    $msg = urlencode($str);
-//                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
-//                    $ch = curl_init($url);
-//                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//                    $curl_scraped_page = curl_exec($ch);
-//                    curl_close($ch);
-//                }
-//            }
+            $input = Input::all();
+            $admins = User::where('role_id', '=', 4)->get();
+            if (count($admins) > 0) {
+                foreach ($admins as $key => $admin) {
+                    $product_type = ProductType::find($request->input('product_type'));
+                    $str = "Dear " . $admin->first_name . ", <br/> " . Auth::user()->first_name . " has created a new customer as " . Input::get('owner_name') . " kindly chk. <br />Vikas associates";
+                    $phone_number = $admin->mobile_number;
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+            }
 
             return redirect('customers')->with('success', 'Customer Succesfully added');
         } else {
