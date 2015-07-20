@@ -81,15 +81,9 @@ class PurchaseDaybookController extends Controller {
 
     public function expert_purchase_daybook() {
 
-        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products', 'delivery_location')
+        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.product_category.product_sub_category', 'delivery_location')
                 ->where('order_status', 'completed')
                 ->get();
-
-
-        echo '<pre>';
-        print_r($purchase_daybook->toArray());
-        echo '</pre>';
-        exit;
 
         $sheet_data = array();
         $i = 1;
@@ -99,7 +93,23 @@ class PurchaseDaybookController extends Controller {
             $sheet_data[$key]['Pa no.'] = $value['purchase_advice']->serial_number;
             $sheet_data[$key]['Name'] = $value['supplier']->owner_name;
             $sheet_data[$key]['Delivery Location'] = $value['delivery_location']->area_name;
-            $sheet_data[$key]['Quantity'] = $value['all_purchase_products']->sum('quantity');
+
+            $total_qunatity = 0;
+            foreach ($value["all_purchase_products"] as $products) {
+
+                if ($products->unit_id == 1) {
+                    $total_qunatity += $products->present_shipping;
+                }
+                if ($products->unit_id == 2) {
+                    $total_qunatity += ($products->present_shipping * $products['order_product_details']->weight);
+                }
+                if ($products->unit_id == 3) {
+                    $total_qunatity += (($products->present_shipping / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
+                }
+            }
+
+
+            $sheet_data[$key]['Quantity'] = $total_qunatity;
             $sheet_data[$key]['amount'] = $value->grand_total;
             $sheet_data[$key]['bill_number'] = $value->bill_number;
             $sheet_data[$key]['vehicle_number'] = $value->vehicle_number;
@@ -118,7 +128,7 @@ class PurchaseDaybookController extends Controller {
 
     public function print_purchase_daybook() {
 
-        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products', 'delivery_location')
+        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.product_category.product_sub_category', 'delivery_location')
                 ->where('order_status', 'completed')
                 ->get();
 
