@@ -241,7 +241,7 @@
                             }
                         }
 
-                        echo $rate = $prod['product_category']->price + $prod['product_category']['product_sub_category']->difference + $allorder['delivery_order']['location']->difference + $cust_diff->difference_amount + $difference_amount;
+                        echo $rate = $prod['product_category']->price + $prod['product_category']['product_sub_category']->difference + $allorder['delivery_order']['location']->difference + $difference_amount;
                         ?>
 
 
