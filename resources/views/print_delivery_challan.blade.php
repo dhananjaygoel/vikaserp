@@ -1,11 +1,3 @@
-
-<?php
-//echo '<pre>';
-//print_r($allorder->toArray());
-//echo '</pre>';
-//exit;
-?>
-
 <!DOCTYPE html>
 <html>
     <head>
