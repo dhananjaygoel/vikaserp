@@ -28,6 +28,10 @@ class DeliveryChallan extends Model {
         return $this->hasOne('App\Customer', 'id', 'customer_id');
     }
     
+    public function customer_difference() {
+        return $this->hasMany('App\CustomerProductDifference','customer_id','customer_id');
+    }
+    
     public function delivery_order() {
         return $this->hasOne('App\DeliveryOrder', 'id', 'delivery_order_id');
     }
