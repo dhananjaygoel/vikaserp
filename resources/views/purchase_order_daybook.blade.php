@@ -99,15 +99,30 @@
                                             <?php
                                             $total_qty = 0;
                                             $total_amount = 0;
+                                            $total_qunatity = 0;
                                             ?>
                                             @foreach($daybook['all_purchase_products'] as $total)
                                             <?php
-                                            $total_qty += $total->present_shipping;
-                                            $total_amount += $total->price * $total->present_shipping;
+//                                            $total_qty += $total->present_shipping;
+//                                            $total_amount += $total->price * $total->present_shipping;                                           
+//                                            foreach ($value["all_order_products"] as $products) {
+                                            if ($total->unit_id == 1) {
+                                                $total_qunatity += $total->present_shipping;
+                                            }
+                                            if ($total->unit_id == 2) {
+                                                $total_qunatity += ($total->present_shipping * $total['product_category']['product_sub_category']->weight);
+                                            }
+                                            if ($total->unit_id == 3) {
+                                                $total_qunatity += (($total->present_shipping / $total['product_category']['product_sub_category']->standard_length ) * $products['product_category']['product_sub_category']->weight);
+                                            }
+//                                            }
                                             ?>
                                             @endforeach
                                             <tr>
-                                                <td><input type="checkbox" name="daybook[]" id="daybook[]" value="{{ $daybook->id }}" /><span class="cbt">{{ $i++ }}</span></td>
+                                                <td>
+                                                    <input type="checkbox" name="daybook[]" id="daybook[]" value="{{ $daybook->id }}" />
+                                                    <span class="cbt">{{ $i++ }}</span>
+                                                </td>
                                                 <td>{{ date("d F, Y", strtotime($daybook->updated_at)) }}</td>
                                                 <td>{{ $daybook->serial_number }}</td>
                                                 <td>{{ $daybook['supplier']->owner_name }}</td>
@@ -116,7 +131,7 @@
                                                 <td>{{ $daybook['orderedby']->first_name }} </td>
                                                 <td>{{ $daybook->unloaded_by }} </td>
                                                 <td>{{ $daybook->labours }}</td>    
-                                                <td>{{ $total_qty }}</td>
+                                                <td>{{ $total_qunatity }}</td>
                                                 <td>{{ $daybook->grand_total }}</td>                                        
                                                 <td>{{ $daybook->bill_number }}</td>
                                                 <td>

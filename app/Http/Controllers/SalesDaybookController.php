@@ -137,7 +137,7 @@ class SalesDaybookController extends Controller {
         $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products.unit', 'delivery_order', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
 
         $sheet_data = array();
-        $i = 1;
+        $i = 1;//export;
         foreach ($allorders as $key => $value) {
 
             $sheet_data[$key]['Sr no.'] = $i++;

@@ -27,21 +27,33 @@ class PurchaseChallan extends Model {
     public function purchase_advice() {
         return $this->hasOne('App\PurchaseAdvise', 'id', 'purchase_advice_id');
     }
-    
+
     public function purchase_product() {
         return $this->hasMany('App\PurchaseProducts', 'purchase_order_id', 'id');
     }
-    
+
     public function orderedby() {
         return $this->hasOne('App\User', 'id', 'created_by');
     }
-    
+
     public function all_purchase_products() {
         return $this->hasMany('App\PurchaseProducts', 'purchase_order_id', 'id')->where('order_type', '=', 'purchase_challan');
     }
-    
+
     public function delivery_location() {
         return $this->hasOne('App\DeliveryLocation', 'id', 'delivery_location_id');
+    }
+
+    public function unit() {
+        return $this->hasOne('App\Unit', 'id', 'unit_id');
+    }
+
+    public function product_category() {
+        return $this->hasOne('App\ProductCategory', 'id', 'product_category_id');
+    }
+
+    public function product_sub_category() {
+        return $this->hasOne('App\ProductSubCategory', 'id', 'product_category_id');
     }
 
 }

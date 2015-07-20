@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\PurchaseChallan;
+use App\Units;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\DeliveryLocation;
@@ -24,7 +25,7 @@ class PurchaseDaybookController extends Controller {
 
     public function index() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::to('purchase_order_daybook')->with('error', 'You do not have permission.');
         }
 
         $purchase_daybook = 0;
@@ -37,7 +38,7 @@ class PurchaseDaybookController extends Controller {
                             })->Paginate(10);
         } else {
 
-            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products')
+            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.product_category.product_sub_category')
                     ->where('order_status', 'completed')
                     ->Paginate(10);
             $purchase_daybook->setPath('purchase_order_daybook');
@@ -85,10 +86,16 @@ class PurchaseDaybookController extends Controller {
                 ->get();
 
 
+        echo '<pre>';
+        print_r($purchase_daybook->toArray());
+        echo '</pre>';
+        exit;
+
         $sheet_data = array();
+        $i = 1;
         foreach ($purchase_daybook as $key => $value) {
 
-            $sheet_data[$key]['Sl no.'] = $value->serial_number;
+            $sheet_data[$key]['Sl no.'] = $i++;
             $sheet_data[$key]['Pa no.'] = $value['purchase_advice']->serial_number;
             $sheet_data[$key]['Name'] = $value['supplier']->owner_name;
             $sheet_data[$key]['Delivery Location'] = $value['delivery_location']->area_name;
@@ -114,7 +121,6 @@ class PurchaseDaybookController extends Controller {
         $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products', 'delivery_location')
                 ->where('order_status', 'completed')
                 ->get();
-
 
         return view('print_purchase_order_daybook', compact('purchase_daybook'));
     }
