@@ -372,7 +372,6 @@ class DeliveryOrderController extends Controller {
 
         $input_data = Input::all();
 
-
         $validator = Validator::make($input_data, DeliveryOrder::$order_to_delivery_challan_rules);
         if ($validator->passes()) {
             $delivery_challan = new DeliveryChallan();
@@ -411,7 +410,8 @@ class DeliveryOrderController extends Controller {
                         'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
                         'actual_pieces' => $product_data['actual_pieces'],
-                        'quantity' => $product_data['quantity'],
+                        'quantity' => $product_data['actual_quantity'],
+//                        'quantity' => $product_data['quantity'],
                         'present_shipping' => $product_data['present_shipping'],
                         'price' => $product_data['price'],
                         'from' => $input_data['order_id'],
@@ -419,14 +419,14 @@ class DeliveryOrderController extends Controller {
                     ];
                     $add_order_products = AllOrderProducts::create($order_products);
                 } else if ($product_data['name'] != "" && $product_data['order'] == "") {
-                    echo '2';
                     $order_products = [
                         'order_id' => $delivery_challan_id,
                         'order_type' => 'delivery_challan',
                         'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
                         'actual_pieces' => $product_data['actual_pieces'],
-                        'quantity' => $product_data['quantity'],
+//                        'quantity' => $product_data['quantity'],
+                        'quantity' => $product_data['actual_quantity'],
                         'present_shipping' => $product_data['present_shipping'],
                         'price' => $product_data['price'],
                         'from' => ''
