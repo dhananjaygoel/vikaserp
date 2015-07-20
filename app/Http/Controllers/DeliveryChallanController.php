@@ -83,7 +83,7 @@ class DeliveryChallanController extends Controller {
     public function show($id) {
 
         $allorder = DeliveryChallan::where('id', '=', $id)
-                        ->where('challan_status', '=', 'pending')
+//                        ->where('challan_status', '=', 'pending')
                         ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order')->first();
         if (count($allorder) < 1) {
             return redirect('delivery_challan')->with('success', 'Invalid challan or challan not found');

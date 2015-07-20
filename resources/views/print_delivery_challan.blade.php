@@ -279,7 +279,7 @@
                         Total Quantity: {{ $total_qty }}
                     </div>
                     <div class="ruppes grand_price">
-                        Rs. <?php echo convert_number_to_words($total_price + $allorder->freight + $allorder->loaded_by + $allorder->discount + $allorder->vat_percentage/100 * 100); ?> Only
+                        Rs. <?php echo convert_number_to_words($total_price + $allorder->freight + $allorder->loading_charge + $allorder->discount + $allorder->vat_percentage/100 * 100); ?> Only
                     </div>
                 </div>
                 <div class="total">                 
@@ -288,8 +288,8 @@
                         <div class="value bob"> {{ $total_price }} </div>
                         <div class="label ">Loading</div>
                         <div class="value"> 
-                            @if($allorder->loaded_by != "")
-                            {{$allorder->loaded_by}}
+                            @if($allorder->loading_charge != "")
+                            {{$allorder->loading_charge}}
                             @else
                             0
                             @endif                            
@@ -324,7 +324,7 @@
                         </div>
                         <div class="label">GT</div>
                         <div class="value">
-                            {{ $total_price + $allorder->freight + $allorder->loaded_by + $allorder->discount + $allorder->vat_percentage/100 * 100 }}
+                            {{ $total_price + $allorder->freight + $allorder->loading_charge + $allorder->discount + $allorder->vat_percentage/100 * 100 }}
                         </div>
 
                     </div>
