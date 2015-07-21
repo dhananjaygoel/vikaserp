@@ -227,7 +227,7 @@ class DeliveryOrderController extends Controller {
     public function update($id) {
 
         $input_data = Input::all();
-
+        
         $customer_id = 0;
         if (isset($input_data['customer_status']) && $input_data['customer_status'] == "new_customer") {
 
@@ -296,7 +296,7 @@ class DeliveryOrderController extends Controller {
 
         $order_products = array();
         foreach ($input_data['product'] as $product_data) {
-            if ($product_data['order'] != '') {
+            if ($product_data['order'] != '' || $product_data['id'] != '') {
                 $order_products = [
                     'order_id' => $id,
                     'order_type' => 'delivery_order',
@@ -324,7 +324,7 @@ class DeliveryOrderController extends Controller {
                 $add_order_products = AllOrderProducts::create($order_products);
             }
         }
-
+        
         return redirect('delivery_order')->with('validation_message', 'Delivery order details successfully updated.');
     }
 
@@ -375,10 +375,9 @@ class DeliveryOrderController extends Controller {
 
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
-        $price_delivery_order = $this->calculate_price($delivery_data);
+//        $price_delivery_order = $this->calculate_price($delivery_data);
         $customers = Customer::all();
-
-        return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'price_delivery_order'));
+        return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
     }
 
     public function store_delivery_challan($id) {

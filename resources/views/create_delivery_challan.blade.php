@@ -68,7 +68,6 @@
                                             <td class="col-md-2">
                                                 <div class="form-group searchproduct">
                                                     {{ $product['order_product_details']->alias_name}}
-
                                                     <input type="hidden" name="product[{{$key}}][name]" id="name_{{$key}}" value="{{$product['order_product_details']->alias_name}}">
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']['product_category']->id}}">
                                                     <!--<i class="fa fa-search search-icon"></i>-->
@@ -98,20 +97,7 @@
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
-                                                <div class="form-group">
-
-                                                    <?php                                              
-                                                    $product_price = 0;
-                                                    ?>
-                                                    @foreach($price_delivery_order as $rate)
-                                                    <!--if($rate['product_id'] == $product['order_product_details']['product_category']->id)-->
-                                                    @if($rate['product_id'] == $product->product_category_id)
-                                                    <?php $product_price = $rate['total_rate']; ?>                                                    
-                                                    @endif
-                                                    @endforeach
-                                                    <input type="text" class="form-control" id="product_price_{{$key}}" value="{{$product_price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="fetch_price();">
-                                                </div>
-
+                                                <div class="form-group">{{$product->price}}<input type="hidden" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="fetch_price();"></div>
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group ">
