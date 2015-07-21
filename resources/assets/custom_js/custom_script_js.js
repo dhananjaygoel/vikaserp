@@ -491,13 +491,9 @@ function grand_total_challan() {
         }
         $("#freight_value").val(freight_value.toFixed(2));
 
-//        freight_value = freight_value.toFixed(2);
     }
     total_price = parseFloat(total_price) + parseFloat(freight_value.toFixed(2));
     total_price = total_price.toFixed(2);
-
-
-
 
     var vat_val = 0;
     $("#total_l_d_f").html("<span class='text-center'>" + total_price + "</span>");
@@ -508,7 +504,7 @@ function grand_total_challan() {
 
     var vat_total = parseFloat(total_price) + parseFloat(vat_val.toFixed(2));
     vat_total = vat_total.toFixed(2);
-//    vat_tot_val
+
     $("#vat_tot_val").val(vat_total);
     var round_off = 0;
 
