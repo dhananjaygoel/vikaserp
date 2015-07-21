@@ -442,12 +442,9 @@ function grand_total_challan() {
             total_price_products = total_price_products + (parseFloat($('#product_price_' + i).val()) * quantity);
         }
     }
-//    alert(total_price_products);
+    
     var vat_val = 0;
 
-
-
-//    alert(vat_val)***********************************************************************************;
     var total_price = total_price_products;
 
     //loading
@@ -461,8 +458,6 @@ function grand_total_challan() {
 
 
     }
-
-
 
     //discount
     var discount_value = 0;
