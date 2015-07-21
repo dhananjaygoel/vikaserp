@@ -296,26 +296,24 @@ class DeliveryOrderController extends Controller {
 
         $order_products = array();
         foreach ($input_data['product'] as $product_data) {
-
-            if ($product_data['name'] != "" && $product_data['order'] != '') {
+            if ($product_data['order'] != '') {
                 $order_products = [
                     'order_id' => $id,
                     'order_type' => 'delivery_order',
-                    'product_category_id' => $product_data['id'],
+                    'product_category_id' => $product_data['product_category_id'],
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
                     'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price'],
-                    'from' => $product_data['order'],
                     'remarks' => $product_data['remark'],
                 ];
 
-                $add_order_products = AllOrderProducts::where('id', '=', $product_data['order'])->update($order_products);
+                $add_order_products = AllOrderProducts::where('id', '=', $product_data['id'])->update($order_products);
             } else if ($product_data['name'] != "" && $product_data['order'] == '') {
                 $order_products = [
                     'order_id' => $id,
                     'order_type' => 'delivery_order',
-                    'product_category_id' => $product_data['id'],
+                    'product_category_id' => $product_data['product_category_id'],
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['present_shipping'],
                     'present_shipping' => $product_data['present_shipping'],
@@ -425,8 +423,8 @@ class DeliveryOrderController extends Controller {
                         'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
                         'actual_pieces' => $product_data['actual_pieces'],
+                        'actual_quantity' => $product_data['actual_quantity'],
                         'quantity' => $product_data['actual_quantity'],
-/////                        'quantity' => $product_data['quantity'],
                         'present_shipping' => $product_data['present_shipping'],
                         'price' => $product_data['price'],
                         'from' => $input_data['order_id'],
@@ -440,8 +438,8 @@ class DeliveryOrderController extends Controller {
                         'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
                         'actual_pieces' => $product_data['actual_pieces'],
-//.//                        'quantity' => $product_data['quantity'],
-                        'quantity' => $product_data['actual_quantity'],
+                        'actual_quantity' => $product_data['quantity'],
+                        'quantity' => $product_data['quantity'],
                         'present_shipping' => $product_data['present_shipping'],
                         'price' => $product_data['price'],
                         'from' => ''
@@ -595,29 +593,31 @@ class DeliveryOrderController extends Controller {
         $all_del_orders = array();
         $pending_orders = array();
 
-
-
-
         if (count($delivery_orders) > 0) {
 
             foreach ($delivery_orders as $key => $del_order) {
                 $delivery_order_quantity = 0;
+                $delivery_order_present_shipping = 0;
                 if (count($del_order['delivery_product']) > 0) {
                     foreach ($del_order['delivery_product'] as $popk => $popv) {
                         $product_size = ProductSubCategory::find($popv->product_category_id);
                         if ($popv->unit_id == 1) {
                             $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
+                            $delivery_order_present_shipping = $delivery_order_present_shipping + $popv->present_shipping;
                         }
                         if ($popv->unit_id == 2) {
                             $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight);
+                            $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight);
                         }
                         if ($popv->unit_id == 3) {
                             $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+                            $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
                         }
                     }
                 }
 
                 $delivery_orders[$key]['total_quantity'] = $delivery_order_quantity;
+                $delivery_orders[$key]['present_shipping'] = $delivery_order_present_shipping;
             }
         }
 

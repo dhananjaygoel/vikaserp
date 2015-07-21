@@ -274,8 +274,8 @@ $(document).ready(function () {
         $("#add_product_table").children("tbody").append(html);
     });
 
-    $("#add_inquiry_location").on("change", function () {
-        if ($("#add_inquiry_location").val() == "other")
+    $("#add_order_location").on("change", function () {
+        if ($("#add_order_location").val() == "other")
             $("#other_location_input_wrapper").show();
         else
             $("#other_location_input_wrapper").hide();
@@ -402,6 +402,46 @@ $('#location_difference').on('keyup', function () {
         if (delivery_location > 0) {
 
             location = $('#add_order_location').val();
+
+        } else if (delivery_location == 'other') {
+
+            location_difference = $('#location_difference').val();
+            location = 0;
+        }
+        var rowId = $(this).attr('data-row-id');
+        console.log(rowId);
+        var product = $(this).find('#add_product_name_' + rowId).val();
+        if (product != '') {
+            var product_id = $(this).find('#add_product_id_' + rowId).val();
+            $.ajax({
+                url: baseurl + '/recalculate_product_price',
+                data: {"product_id": product_id, 'customer_id': customer_id, 'delivery_location': location, 'location_difference': location_difference},
+                success: function (data) {
+                    var main_array = JSON.parse(data);
+                    var arr1 = main_array['data_array'];
+                    $('#product_price_' + rowId).val(arr1[0]['product_price']);
+                },
+            });
+        }
+    });
+});
+
+$('#add_order_location').on('change', function () {
+    $(".add_product_row").each(function (index) {
+        var customer_id = $('#existing_customer_id').val();
+
+        if (customer_id == "") {
+            customer_id = 0;
+        }
+
+        var delivery_location = $('#add_order_location').val();
+        var location = 0;
+        var location_difference = 0;
+
+        if (delivery_location > 0) {
+
+            location = $('#add_order_location').val();
+            $('#location_difference').val('');
 
         } else if (delivery_location == 'other') {
 

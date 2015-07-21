@@ -146,11 +146,11 @@
                                             <td><span>Remark</span></td>
                                         </tr>
                                         @foreach($inquiry['inquiry_products'] as $key=>$product)
-                                        <tr id="add_row_{{$key}}" class="add_product_row">
+                                        <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
                                                     <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['inquiry_product_details']->alias_name}}">
-                                                    <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}">
+                                                    <input type="hidden" name="product[{{$key}}][id]"  id="add_product_id_{{$key}}" value="{{$product->product_category_id}}">
                                                     <i class="fa fa-search search-icon"></i>
                                                 </div>
                                             </td>
@@ -218,30 +218,22 @@
                         <div class="row col-md-4">
                             <div class="form-group">
                                 <label for="location">Delivery Location:<span class="mandatory">*</span></label>
-                                <select class="form-control" name="add_inquiry_location" id="add_inquiry_location">
+                                <select class="form-control" name="add_inquiry_location" id="add_order_location">
                                     <option value="">Delivery Location</option>
-                                    @if($inquiry->delivery_location_id != 0)
-
                                     @foreach($delivery_location as $location)                                       
-
-                                    @if($inquiry->delivery_location_id == $location->id)
-                                    <option value="{{$location->id}}" selected="">{{$location->area_name}}</option>
-                                    @else
-                                    <option value="{{$location->id}}">{{$location->area_name}}</option>
-                                    @endif
-
+                                    <option value="{{$location->id}}" <?php
+                                    if ($inquiry->delivery_location_id == $location->id) {
+                                        echo 'selected="selected"';
+                                    }
+                                    ?>>{{$location->area_name}}</option>
                                     @endforeach
-                                    <option id="other_location" value="other">Other</option>
+                                    <option id="other_location" value="other" <?php
+                                    if ($inquiry->delivery_location_id == 0) {
+                                        echo 'selected="selected"';
+                                    }
+                                    ?>>Other</option>
 
-                                    @else
 
-                                    @if($inquiry->delivery_location_id == 0)
-                                    <option id="other_location" value="other" selected="">Other</option>
-
-                                    @else
-
-                                    @endif
-                                    @endif
                                 </select>
                             </div>
                         </div>

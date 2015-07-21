@@ -88,7 +88,7 @@
                                         <td class="col-md-3">
                                             <div class="form-group">
                                                 <?php
-                                                $amount = $product->present_shipping * $product->price;
+                                                $amount = $product->actual_quantity * $product->price;
                                                 $total_amount = $amount + $total_amount;
                                                 echo $amount;
                                                 ?>
@@ -106,11 +106,13 @@
                         <div class="form-group">
                             <label for="vehicle_name"><b class="challan">Discount</b></label>
                             {{$allorder->discount}}
+                            <?php $total_amount = $total_amount + $allorder->discount; ?>
                         </div>
                         <hr>
                         <div class="form-group">
                             <label for="driver_name"><b class="challan">Freight</b></label>
                             {{$allorder->freight}}
+                            <?php $total_amount = $total_amount + $allorder->freight; ?>
                         </div>
                         <hr>
                         <div class="form-group">

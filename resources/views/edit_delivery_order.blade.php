@@ -58,7 +58,7 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="exist_field">
-                             <input type="hidden" id='pending_user_id' name="pending_user_id" value='{{$delivery_data['customer']->id}}'/>
+                            <input type="hidden" id='pending_user_id' name="pending_user_id" value='{{$delivery_data['customer']->id}}'/>
                             <div class="form-group">
                                 <label for="name">Customer Name<span class="mandatory">*</span></label>
                                 <input id="name" class="form-control" placeholder="Name" name="customer_name" value="{{ $delivery_data['customer']->owner_name }}" type="text">
@@ -166,7 +166,8 @@
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
                                                     <input value="{{ $product['order_product_details']->product_category_name}}" class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});">
-                                                    <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']->id}}">
+                                                    <input type="hidden" name="product[{{$key}}][product_category_id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']->id}}">
+                                                    <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product->id}}">
                                                     <input type="hidden" name="product[{{$key}}][order]" value="{{ $product->from}}">
 <!--                                                    <i class="fa fa-search search-icon"></i>-->
                                                 </div>{{ $product['order_product_details']->alias_name}}

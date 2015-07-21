@@ -132,7 +132,7 @@ class InquiryController extends Controller {
         $add_inquiry->customer_id = $customer_id;
         $add_inquiry->created_by = Auth::id();
 
-        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
+        if ('other' == $input_data['add_inquiry_location']) {
             $add_inquiry->delivery_location_id = 0;
             $add_inquiry->other_location = $input_data['other_location_name'];
             $add_inquiry->other_location_difference = $input_data['other_location_difference'];
@@ -666,14 +666,15 @@ class InquiryController extends Controller {
         $order->supplier_id = $supplier_id;
         $order->customer_id = $customer_id;
         $order->created_by = Auth::id();
-        $order->delivery_location_id = $input_data['add_inquiry_location'];
         $order->vat_percentage = $vat_price;
         $order->expected_delivery_date = $datetime->format('Y-m-d');
         $order->remarks = $input_data['inquiry_remark'];
         $order->order_status = "Pending";
-        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
+        if ('other' == $input_data['add_inquiry_location']) {
             $order->other_location = $input_data['other_location_name'];
             $order->other_location_difference = $input_data['other_location_difference'];
+        } else {
+            $order->delivery_location_id = $input_data['add_inquiry_location'];
         }
         /*
          * ------------------- --------------

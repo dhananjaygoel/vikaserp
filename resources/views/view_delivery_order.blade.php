@@ -31,7 +31,7 @@
                                     </tr>
                                     <tr><td><span>Contact Person: </span>{{ $delivery_data['customer']->contact_person }}</td></tr>
                                     <tr>
-                                        <td><span>Date:</span> {{ substr($delivery_data->created_at, 0,10) }}</td>
+                                        <td><span>Date:</span> {{ date('jS F, Y', strtotime ($delivery_data['created_at'])) }}</td>
                                     </tr>
                                     <tr><td><span>Serial Number: </span> 
                                             @if($delivery_data->serial_no != "")
@@ -70,7 +70,7 @@
                                             <span>Product(Alias)</span>
                                         </td>
                                         <td>
-                                            <span>Present shipping Qty</span>
+                                            <span>Present shipping</span>
                                         </td>
                                         <td>
                                             <span>Unit</span>

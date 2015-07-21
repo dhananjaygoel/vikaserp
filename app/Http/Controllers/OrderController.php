@@ -456,14 +456,11 @@ class OrderController extends Controller {
         }
 
         $order_products = array();
-
-//        $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'order')->delete();
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "" && $product_data['order'] != '') {
                 $order_products = [
                     'order_id' => $id,
                     'product_category_id' => $product_data['id'],
-                    'from' => $product_data['order'],
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],

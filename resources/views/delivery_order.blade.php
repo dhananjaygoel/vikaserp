@@ -69,6 +69,7 @@
                                         <th>Party Name</th>
                                         <th>Delivery Location</th>
                                         <th>Quantity</th>
+                                        <th>Present Shipping</th>
                                         <th>Vehicle Number</th>
                                         @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
                                         <th class="text-center">Create Delivery Challan</th>
@@ -99,6 +100,9 @@
                                         </td> 
                                         <td>
                                             {{$delivery->total_quantity}}
+                                        </td> 
+                                        <td>
+                                            {{$delivery->present_shipping}}
                                         </td> 
                                         <td>
                                             {{$delivery->vehicle_number}}
