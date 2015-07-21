@@ -737,7 +737,6 @@ class InquiryController extends Controller {
         if (isset($input_data['send_email'])) {
             $customers = Customer::find($customer_id);
 
-//            if ($customers->email) {
             if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
                 $order = Order::where('id', '=', $order_id)->with('all_order_products.order_product_details', 'delivery_location')->first();
                 if (count($order) > 0) {
