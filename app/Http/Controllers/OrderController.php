@@ -349,6 +349,13 @@ class OrderController extends Controller {
 
         $input_data = Input::all();
         $i = 0;
+
+
+//        echo '<pre>';
+//        print_r($input_data);
+//        echo '</pre>';
+//        exit;
+        $customer_id = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] == "") {
@@ -362,14 +369,31 @@ class OrderController extends Controller {
         if (isset($input_data['customer_status']) && $input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
-                $customers = new Customer();
-                $customers->owner_name = $input_data['customer_name'];
-                $customers->contact_person = $input_data['contact_person'];
-                $customers->phone_number1 = $input_data['mobile_number'];
-                $customers->credit_period = $input_data['credit_period'];
-                $customers->customer_status = 'pending';
-                $customers->save();
-                $customer_id = $customers->id;
+
+                if ($input_data['pending_user_id'] > 0) {
+
+                    $pending_cust = array(
+                        'owner_name' => $input_data['customer_name'],
+                        'contact_person' => $input_data['contact_person'],
+                        'phone_number1' => $input_data['mobile_number'],
+                        'credit_period' => $input_data['credit_period']
+                    );
+
+                    Customer::where('id', $input_data['pending_user_id'])
+                            ->update($pending_cust);
+
+                    $customer_id = $input_data['pending_user_id'];
+                } else {
+
+                    $customers = new Customer();
+                    $customers->owner_name = $input_data['customer_name'];
+                    $customers->contact_person = $input_data['contact_person'];
+                    $customers->phone_number1 = $input_data['mobile_number'];
+                    $customers->credit_period = $input_data['credit_period'];
+                    $customers->customer_status = 'pending';
+                    $customers->save();
+                    $customer_id = $customers->id;
+                }
             } else {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
@@ -831,8 +855,6 @@ class OrderController extends Controller {
      */
 
     function checkpending_quantity($allorders) {
-
-
 
         foreach ($allorders as $key => $order) {
             $order_quantity = 0;

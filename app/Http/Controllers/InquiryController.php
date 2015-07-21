@@ -561,9 +561,11 @@ class InquiryController extends Controller {
      */
 
     function place_order($id) {
+        
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+        
         $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->where('inquiry_status', '<>', 'Completed')->first();
 
         if (count($inquiry) < 1) {
@@ -617,6 +619,7 @@ class InquiryController extends Controller {
                             ->update($pending_cust);
 
                     $customer_id = $input_data['pending_user_id'];
+                    
                 } else {
 
                     $customers = new Customer();

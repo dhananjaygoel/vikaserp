@@ -3,27 +3,22 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">
-
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
                     <li><a href="{{url('orders')}}">Orders</a></li>
                     <li class="active"><span>Edit Order</span></li>
                 </ol>
-
             </div>
         </div>
-
         <div  class="row">
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
                         {!! Form::open(array('method'=>'PUT','url'=>url('orders',$order->id), 'id'=>'edit_order_form'))!!}
-
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="order_id" value="{{$order->id}}">
                         <input type="hidden" name="customer_id" value="{{$order['customer']->id}}" id="hidden_cutomer_id">
-
                         @if (count($errors) > 0)
                         <div role="alert" class="alert alert-warning">
                             <ul>
@@ -36,7 +31,6 @@
                         @if (Session::has('flash_message'))
                         <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('flash_message') }}</div>
                         @endif
-
                         <div class="form-group">
                             @if($order->order_source == 'warehouse')
                             <div class="radio">
@@ -81,7 +75,6 @@
                             @endif
                             <br/>                               
                             <div class="clearfix"></div>
-
                         </div>
                         @if($order['customer']->customer_status =="pending")
                         <div class="form-group">
@@ -104,6 +97,7 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="exist_field">
+                            <input type="hidden" id='pending_user_id' name="pending_user_id" value='{{$order['customer']->id}}'/>
                             <div class="form-group">
                                 <label for="name">Customer Name<span class="mandatory">*</span></label>
                                 <input id="name" class="form-control" placeholder="Name" name="customer_name" value="{{$order['customer']->owner_name}}" type="text">

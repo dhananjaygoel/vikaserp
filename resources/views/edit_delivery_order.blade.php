@@ -58,6 +58,7 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="exist_field">
+                             <input type="hidden" id='pending_user_id' name="pending_user_id" value='{{$delivery_data['customer']->id}}'/>
                             <div class="form-group">
                                 <label for="name">Customer Name<span class="mandatory">*</span></label>
                                 <input id="name" class="form-control" placeholder="Name" name="customer_name" value="{{ $delivery_data['customer']->owner_name }}" type="text">
