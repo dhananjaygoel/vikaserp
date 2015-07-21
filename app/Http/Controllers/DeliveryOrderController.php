@@ -233,14 +233,29 @@ class DeliveryOrderController extends Controller {
 
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
-                $customers = new Customer();
-                $customers->owner_name = $input_data['customer_name'];
-                $customers->contact_person = $input_data['contact_person'];
-                $customers->phone_number1 = $input_data['mobile_number'];
-                $customers->credit_period = $input_data['credit_period'];
-                $customers->customer_status = 'pending';
-                $customers->save();
-                $customer_id = $customers->id;
+
+                if ($input_data['pending_user_id'] > 0) {
+                    $pending_cust = array(
+                        'owner_name' => $input_data['customer_name'],
+                        'contact_person' => $input_data['contact_person'],
+                        'phone_number1' => $input_data['mobile_number'],
+                        'credit_period' => $input_data['credit_period']
+                    );
+
+                    Customer::where('id', $input_data['pending_user_id'])
+                            ->update($pending_cust);
+
+                    $customer_id = $input_data['pending_user_id'];
+                } else {
+                    $customers = new Customer();
+                    $customers->owner_name = $input_data['customer_name'];
+                    $customers->contact_person = $input_data['contact_person'];
+                    $customers->phone_number1 = $input_data['mobile_number'];
+                    $customers->credit_period = $input_data['credit_period'];
+                    $customers->customer_status = 'pending';
+                    $customers->save();
+                    $customer_id = $customers->id;
+                }
             } else {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);

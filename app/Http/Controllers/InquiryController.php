@@ -561,9 +561,11 @@ class InquiryController extends Controller {
      */
 
     function place_order($id) {
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+
         $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->where('inquiry_status', '<>', 'Completed')->first();
 
         if (count($inquiry) < 1) {
@@ -582,7 +584,7 @@ class InquiryController extends Controller {
         }
 
         $input_data = Input::all();
-
+        $customer_id = 0;
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
         $date = date("Y-m-d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
@@ -604,7 +606,7 @@ class InquiryController extends Controller {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
 
-                if ($input_data['pending_user_id'] != "") {
+                if ($input_data['pending_user_id'] > 0) {
 
                     $pending_cust = array(
                         'owner_name' => $input_data['customer_name'],
@@ -613,7 +615,7 @@ class InquiryController extends Controller {
                         'credit_period' => $input_data['credit_period']
                     );
 
-                    Customer::where('id', $id)
+                    Customer::where('id', $input_data['pending_user_id'])
                             ->update($pending_cust);
 
                     $customer_id = $input_data['pending_user_id'];
