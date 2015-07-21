@@ -364,13 +364,13 @@ class DeliveryOrderController extends Controller {
         $delivery_locations = DeliveryLocation::all();
         $price_delivery_order = $this->calculate_price($delivery_data);
         $customers = Customer::all();
+
         return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'price_delivery_order'));
     }
 
     public function store_delivery_challan($id) {
 
         $input_data = Input::all();
-
 
         $validator = Validator::make($input_data, DeliveryOrder::$order_to_delivery_challan_rules);
         if ($validator->passes()) {
@@ -410,7 +410,8 @@ class DeliveryOrderController extends Controller {
                         'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
                         'actual_pieces' => $product_data['actual_pieces'],
-                        'quantity' => $product_data['quantity'],
+                        'quantity' => $product_data['actual_quantity'],
+/////                        'quantity' => $product_data['quantity'],
                         'present_shipping' => $product_data['present_shipping'],
                         'price' => $product_data['price'],
                         'from' => $input_data['order_id'],
@@ -418,14 +419,14 @@ class DeliveryOrderController extends Controller {
                     ];
                     $add_order_products = AllOrderProducts::create($order_products);
                 } else if ($product_data['name'] != "" && $product_data['order'] == "") {
-                    echo '2';
                     $order_products = [
                         'order_id' => $delivery_challan_id,
                         'order_type' => 'delivery_challan',
                         'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
                         'actual_pieces' => $product_data['actual_pieces'],
-                        'quantity' => $product_data['quantity'],
+//.//                        'quantity' => $product_data['quantity'],
+                        'quantity' => $product_data['actual_quantity'],
                         'present_shipping' => $product_data['present_shipping'],
                         'price' => $product_data['price'],
                         'from' => ''
@@ -518,7 +519,7 @@ class DeliveryOrderController extends Controller {
     function calculate_price($delivery_data) {
 
         $product_rates = array();
-        foreach ($delivery_data->delivery_product as $product) {
+        foreach ($delivery_data['delivery_product'] as $product) {
 
             $sub_product = ProductSubCategory::find($product->product_category_id);
             $product_category = ProductCategory::where('id', $sub_product->product_category_id)->first();

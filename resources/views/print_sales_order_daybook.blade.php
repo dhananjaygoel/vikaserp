@@ -74,7 +74,7 @@
                 <div class="headRow">
                     <div  class="divCell">#</div>
                     <div  class="divCell">Challan sr. No</div>
-                    <div  class="divCell">Do. No</div>
+                    <!--<div  class="divCell">Do. No</div>-->
                     <div  class="divCell">Name</div>
                     <div  class="divCell">Del Loc</div>
                     <div  class="divCell">Qty</div>
@@ -94,23 +94,42 @@
                 $qty = 0;
                 $amount = 0;
                 ?>
-                @foreach ($obj['all_order_products'] as $total_qty)
+                <!--                @foreach ($obj['all_order_products'] as $total_qty)
                 <?php
-                $qty += $total_qty->present_shipping;
-                $amount += $total_qty->present_shipping * $total_qty->price;
+//                $qty += $total_qty->present_shipping;
+//                $amount += $total_qty->present_shipping * $total_qty->price;
+                ?>                
+                                @endforeach-->
+
+                <?php
+                $total_qunatity = 0;
+                $total_qty = 0;
+                foreach ($obj["all_order_products"] as $products) {
+                    if ($products['unit']->id == 1) {
+                        $total_qunatity += $products->present_shipping;
+                    }
+                    if ($products['unit']->id == 2) {
+                        $total_qunatity += ($products->present_shipping * $products['order_product_details']->weight);
+                    }
+                    if ($products['unit']->id == 3) {
+                        $total_qunatity += (($products->present_shipping / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
+                    }
+
+                    $total_qty = $products->price;
+                }
                 ?>
-                @endforeach
+
                 <div class="divRow">
                     <div class="divCell center">{{$i++ }}</div>
                     <div class="divCell">{{ $obj->serial_number }}</div>
-                    <div class="divCell">xxx</div>
+                    <!--<div class="divCell">xxx</div>-->
                     <div class="divCell">{{ $obj['customer']->owner_name }}</div>
                     <div class="divCell">{{ $obj['delivery_order']['location']->area_name }}</div>
-                    <div class="divCell">{{ $qty }}</div> 
-                    <div class="divCell">{{ $amount }}</div>
+                    <div class="divCell">{{ $total_qunatity }}</div> 
+                    <div class="divCell">{{ $obj->grand_price }}</div>
                     <div class="divCell">{{ $obj->bill_number }}</div>
                     <div class="divCell">{{ $obj->vehicle_number }}</div>
-                    <div class="divCell">{{ $obj->unloaded_by }}</div>
+                    <div class="divCell">{{ $obj->loaded_by }}</div>
                     <div class="divCell">{{ $obj->labours }}</div> 
                     <div class="divCell">{{ $obj->remarks }}</div> 
                 </div>

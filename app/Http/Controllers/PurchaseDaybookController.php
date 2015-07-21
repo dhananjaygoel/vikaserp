@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\PurchaseChallan;
+use App\Units;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\DeliveryLocation;
@@ -24,7 +25,7 @@ class PurchaseDaybookController extends Controller {
 
     public function index() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::to('purchase_order_daybook')->with('error', 'You do not have permission.');
         }
 
         $purchase_daybook = 0;
@@ -37,7 +38,7 @@ class PurchaseDaybookController extends Controller {
                             })->Paginate(10);
         } else {
 
-            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products')
+            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.product_category.product_sub_category')
                     ->where('order_status', 'completed')
                     ->Paginate(10);
             $purchase_daybook->setPath('purchase_order_daybook');
@@ -80,19 +81,35 @@ class PurchaseDaybookController extends Controller {
 
     public function expert_purchase_daybook() {
 
-        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products', 'delivery_location')
+        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.product_category.product_sub_category', 'delivery_location')
                 ->where('order_status', 'completed')
                 ->get();
 
-
         $sheet_data = array();
+        $i = 1;
         foreach ($purchase_daybook as $key => $value) {
 
-            $sheet_data[$key]['Sl no.'] = $value->serial_number;
+            $sheet_data[$key]['Sl no.'] = $i++;
             $sheet_data[$key]['Pa no.'] = $value['purchase_advice']->serial_number;
             $sheet_data[$key]['Name'] = $value['supplier']->owner_name;
             $sheet_data[$key]['Delivery Location'] = $value['delivery_location']->area_name;
-            $sheet_data[$key]['Quantity'] = $value['all_purchase_products']->sum('quantity');
+
+            $total_qunatity = 0;
+            foreach ($value["all_purchase_products"] as $products) {
+
+                if ($products->unit_id == 1) {
+                    $total_qunatity += $products->present_shipping;
+                }
+                if ($products->unit_id == 2) {
+                    $total_qunatity += ($products->present_shipping * $products['order_product_details']->weight);
+                }
+                if ($products->unit_id == 3) {
+                    $total_qunatity += (($products->present_shipping / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
+                }
+            }
+
+
+            $sheet_data[$key]['Quantity'] = $total_qunatity;
             $sheet_data[$key]['amount'] = $value->grand_total;
             $sheet_data[$key]['bill_number'] = $value->bill_number;
             $sheet_data[$key]['vehicle_number'] = $value->vehicle_number;
@@ -111,10 +128,9 @@ class PurchaseDaybookController extends Controller {
 
     public function print_purchase_daybook() {
 
-        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products', 'delivery_location')
+        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.product_category.product_sub_category', 'delivery_location')
                 ->where('order_status', 'completed')
                 ->get();
-
 
         return view('print_purchase_order_daybook', compact('purchase_daybook'));
     }

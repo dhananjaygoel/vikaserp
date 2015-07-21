@@ -38,7 +38,7 @@ class SalesDaybookController extends Controller {
         $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products.unit', 'all_order_products.order_product_details', 'delivery_order.location', 'user')->orderBy('created_at', 'desc')->Paginate(10);
         $challan_date = '';
         $allorders->setPath('sales_daybook');
-              
+
         return view('sales_daybook', compact('allorders', 'challan_date'));
     }
 
@@ -134,18 +134,33 @@ class SalesDaybookController extends Controller {
 
     public function export_sales_daybook() {
 
-        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products', 'delivery_order', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
-
+        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products.unit', 'delivery_order', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
 
         $sheet_data = array();
+        $i = 1;//export;
         foreach ($allorders as $key => $value) {
 
-            $sheet_data[$key]['Sr no.'] = $value->serial_number;
+            $sheet_data[$key]['Sr no.'] = $i++;
             $sheet_data[$key]['Do No.'] = $value['delivery_order']->serial_no;
             $sheet_data[$key]['Name'] = $value['customer']->owner_name;
             $sheet_data[$key]['Delivery Location'] = $value['delivery_location']->area_name;
-            $sheet_data[$key]['Quantity'] = $value['all_order_products']->sum('quantity');
-            $sheet_data[$key]['Amount'] = $value->grand_price;
+
+            $total_qunatity = 0;
+            foreach ($value["all_order_products"] as $products) {
+                if ($products['unit']->id == 1) {
+                    $total_qunatity += $products->present_shipping;
+                }
+                if ($products['unit']->id == 2) {
+                    $total_qunatity += ($products->present_shipping * $products['order_product_details']->weight);
+                }
+                if ($products['unit']->id == 3) {
+                    $total_qunatity += (($products->present_shipping / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
+                }
+            }
+
+
+            $sheet_data[$key]['Quantity'] = $total_qunatity;
+            $sheet_data[$key]['Grand Total'] = $value->grand_price;
             $sheet_data[$key]['Bill No.'] = $value->bill_number;
             $sheet_data[$key]['Truck No.'] = $value['delivery_order']->vehicle_number;
             $sheet_data[$key]['Loaded By'] = $value->loaded_by;
@@ -164,7 +179,6 @@ class SalesDaybookController extends Controller {
     public function print_sales_order_daybook() {
 
         $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products', 'delivery_order.location', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
-        
         return view('print_sales_order_daybook', compact('allorders'));
     }
 

@@ -83,7 +83,7 @@ class DeliveryChallanController extends Controller {
     public function show($id) {
 
         $allorder = DeliveryChallan::where('id', '=', $id)
-                        ->where('challan_status', '=', 'pending')
+//                        ->where('challan_status', '=', 'pending')
                         ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order')->first();
         if (count($allorder) < 1) {
             return redirect('delivery_challan')->with('success', 'Invalid challan or challan not found');
@@ -235,8 +235,8 @@ class DeliveryChallanController extends Controller {
 
         $allorder = DeliveryChallan::where('id', '=', $id)
                         ->where('challan_status', '=', 'completed')
-                        ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'delivery_order.location')->first();
-
+                        ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer','customer_difference','delivery_order.location')->first();
+        
         /*
           | ------------------- -----------------------
           | SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
