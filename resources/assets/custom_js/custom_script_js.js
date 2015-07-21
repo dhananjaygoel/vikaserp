@@ -528,39 +528,47 @@ function purchase_challan_calculation() {
 
     $("#total_actual_quantity").html('' + total_actual_quantity);
     var discount_value = 0;
+
+    //***************discount
     if ($("#discount").val() != '') {
         discount_value = $("#discount").val();
     }
-//    if (discount_value.charAt(0) == '-') {
-//        total_price = total_amount_product + parseFloat(discount_value);
-//    } else {
 
-    total_price = total_amount_product + parseFloat(discount_value);
-//    }
+    discount_value = parseFloat(discount_value);
+    var discount = discount_value.toFixed(2);
+    $("#discount").val(discount);
 
+    total_price = total_amount_product + parseFloat(discount);
 
-    $("#total_price").html('' + total_price);
+    $("#total_price").html('' + total_price.toFixed(2));
 
+    //**************freight
     var freight_amount = 0;
     if ($("#freight").val() != '') {
         freight_amount = $("#freight").val();
     }
-    tot_frt = total_price + parseFloat(freight_amount);
 
-    $("#total_price").html('' + tot_frt);
+    freight_amount = parseFloat(freight_amount);
+    var fre = freight_amount.toFixed(2);
+    $("#freight").val(fre);
 
+    tot_frt = total_price + parseFloat(fre);
+
+    $("#total_price").html('' + tot_frt.toFixed(2));
+
+    //*********vat
     var vat_val = 0;
     if ($("#vat_percentage").val() > 0 && $("#vat_percentage").val() != '') {
 
         vat_val = (tot_frt * parseFloat($('#vat_percentage').val())) / 100;
-        $("#vat_value").html('' + vat_val);
+        $("#vat_value").html('' + vat_val.toFixed(2));
     }
 
-    var vat_total = tot_frt + parseFloat(vat_val);//    alert(vat_total);
+    var vat_total = tot_frt + parseFloat(vat_val.toFixed(2));//    alert(vat_total);
 
-    $("#vat_tot_val").val(vat_total);
+    $("#vat_tot_val").val(vat_total.toFixed(2));
 
-
+    //round off
     var round_off = 0;
     var grand_total = vat_total;
     if ($('#round_off').val() != '') {
@@ -568,8 +576,15 @@ function purchase_challan_calculation() {
         grand_total += parseFloat(round_off);
     }
 
-    $("#grand_total").html('' + grand_total);
-    $("#grand_total_val").val(grand_total);
+    $("#grand_total").html('' + grand_total.toFixed(2));
+    $("#grand_total_val").val(grand_total.toFixed(2));
+
+
+    //round up value for the textbox
+    round_off = parseFloat(round_off);
+    var r = round_off.toFixed(2);
+    $("#round_off").val(r);
+
 }
 /**
  * for default delivery location for Purchase Advice

@@ -270,7 +270,7 @@ class PurchaseAdviseController extends Controller {
         }
 
         $current_user = User::find(Auth::id());
-        
+
         if (Hash::check($password, $current_user->password)) {
             $purchase_advise = PurchaseAdvise::find($id);
             $purchase_advise->delete();
@@ -287,14 +287,19 @@ class PurchaseAdviseController extends Controller {
         $validator = Validator::make($input_data, PurchaseAdvise::$store_purchase_validation);
         if ($validator->passes()) {
 
-            $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['bill_date']);
-            $date = date("Y/m/d", strtotime($date_string));
+//            $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['bill_date']);
+//            $date = date("Y/m/d", strtotime($date_string));
+//            $datetime = new DateTime($date);
+
+            $date_string = preg_replace('~\x{00a0}~u', '', $input_data['bill_date']);
+            $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
             $datetime = new DateTime($date);
+            $bill_date = $datetime->format('Y-m-d');
 
             $add_purchase_advice_array = [
                 'supplier_id' => $input_data['supplier_id'],
                 'created_by' => Auth::id(),
-                'purchase_advice_date' => $datetime->format('Y-m-d'),
+                'purchase_advice_date' => $bill_date,
                 'delivery_location_id' => $input_data['delivery_location_id'],
                 'other_location' => $input_data['other_location'],
                 'other_location_difference' => $input_data['other_location_difference'],

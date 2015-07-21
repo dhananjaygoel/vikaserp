@@ -402,7 +402,7 @@ class WelcomeController extends Controller {
                     $customer->state = 1;
                     $customer->zip = $excel->zip;
                     $customer->email = $excel->email;
-                    $customer->tally_name = $excel->email;
+                    $customer->tally_name = $excel->tally_name;
                     $customer->phone_number1 = $excel->phone_number_1;
                     $customer->phone_number2 = $excel->phone_number_2;
                     $customer->excise_number = $excel->excise_number;

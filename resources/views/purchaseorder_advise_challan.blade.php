@@ -170,7 +170,7 @@
                     <div class="form-group">
                         <label for="vatp"><b class="challan">Total : </b>
                             <span class="gtotal">
-                                <input type="text" class="form-group" name="vat_total" id="vat_tot_val" readonly="readonly">
+                                <input type="text" class="form-control" name="vat_total" id="vat_tot_val" readonly="readonly">
                             </span>
 
                         </label>
