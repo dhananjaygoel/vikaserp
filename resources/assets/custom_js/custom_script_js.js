@@ -447,42 +447,56 @@ function grand_total_challan() {
 
 
 
-//    alert(vat_val);
+//    alert(vat_val)***********************************************************************************;
     var total_price = total_price_products;
 
-
+    //loading
+    var loading_charge = 0;
     if ($("#loading_charge").length > 0) {
         if (parseInt($("#loading_charge").val())) {
-            var loading_charge = parseInt($("#loading_charge").val());
-            total_price = total_price + loading_charge;
+            loading_charge = parseFloat($("#loading_charge").val());
+            $("#loading_charge").val(loading_charge.toFixed(2));
+            total_price += parseFloat(loading_charge.toFixed(2));
         }
 
+
     }
+
+
+
+    //discount
+    var discount_value = 0;
+    if ($("#discount_value").length > 0) {
+        if (parseInt($("#discount_value").val())) {
+            discount_value = parseFloat($("#discount_value").val());
+//            discount_value = discount_value.toFixed(2);
+            $("#discount_value").val(discount_value.toFixed(2));
+
+
+
+        }
+    }
+    total_price = parseFloat(total_price) + parseFloat(discount_value.toFixed(2));
+    total_price = total_price.toFixed(2);
+
+
+
 //    total_l_d_f
     $("#total_price").val(total_price_products);
-
 
     var freight_value = 0;
     if ($("#freight_value").length > 0) {
         if (parseInt($("#freight_value").val())) {
-            var freight_value = parseFloat($("#freight_value").val());
-//            total_price = total_price + parseInt(freight_value);
+            freight_value = parseFloat($("#freight_value").val());
         }
+        $("#freight_value").val(freight_value.toFixed(2));
 
+//        freight_value = freight_value.toFixed(2);
     }
-    total_price = total_price + freight_value;
+    total_price = parseFloat(total_price) + parseFloat(freight_value.toFixed(2));
+    total_price = total_price.toFixed(2);
 
-    var discount_value = 0;
-    if ($("#discount_value").length > 0) {
-        if (parseInt($("#discount_value").val())) {
 
-            discount_value = parseFloat($("#discount_value").val());
-//            alert(discount_value );
-//            total_price = total_price - discount_value;
-        }
-
-    }
-    total_price = total_price + discount_value;
 
 
     var vat_val = 0;
@@ -491,18 +505,20 @@ function grand_total_challan() {
         vat_val = (total_price * parseFloat($('#vat_percentage').val())) / 100;
         $("#vat_val").html("" + vat_val + "")
     }
-    var vat_total = total_price + parseFloat(vat_val);
+
+    var vat_total = parseFloat(total_price) + parseFloat(vat_val.toFixed(2));
+    vat_total = vat_total.toFixed(2);
+//    vat_tot_val
     $("#vat_tot_val").val(vat_total);
     var round_off = 0;
 
     if ($('#round_off').val() != '') {
         round_off = parseFloat($("#round_off").val());
-//        alert(round_off);
     }
 
-    var grand_total = vat_total + parseFloat(round_off);
+    var grand_total = parseFloat(vat_total) + parseFloat(round_off.toFixed(2));
 
-    $('#grand_total').val(grand_total);
+    $('#grand_total').val(grand_total.toFixed(2));
 }
 
 /**
