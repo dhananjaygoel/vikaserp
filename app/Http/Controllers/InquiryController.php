@@ -257,11 +257,13 @@ class InquiryController extends Controller {
                 'sms_count' => ($inquiry->sms_count + 1),
             ));
             $flash_message = "Message sent successfully";
+
+            return redirect('inquiry')->with('flash_success_message', 'Message sent successfully');
         }
 
 //        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
-//        return View::make('inquiry_details', array('inquiry' => $inquiry, 'delivery_location' => $delivery_location, 'message' => $flash_message));
-        return redirect('inquiry')->with('flash_success_message', 'Message sent successfully');
+        return View::make('inquiry_details', array('inquiry' => $inquiry, 'delivery_location' => $delivery_location, 'message' => $flash_message));
+//        return redirect('inquiry')->with('flash_success_message', 'Message sent successfully');
     }
 
     /**
