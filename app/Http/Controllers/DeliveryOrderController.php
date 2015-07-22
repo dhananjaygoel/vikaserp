@@ -42,6 +42,7 @@ class DeliveryOrderController extends Controller {
      * @return Response
      */
     public function index() {
+       
         $delivery_data = 0;
         if (Input::get('order_status')) {
 
@@ -227,7 +228,7 @@ class DeliveryOrderController extends Controller {
     public function update($id) {
 
         $input_data = Input::all();
-        
+
         $customer_id = 0;
         if (isset($input_data['customer_status']) && $input_data['customer_status'] == "new_customer") {
 
@@ -459,7 +460,7 @@ class DeliveryOrderController extends Controller {
     //Generate Serial number and print Delivery order
     public function print_delivery_order($id) {
 
-        $current_date = date("M/y/m/");
+         echo $current_date = date("m/d/");
 
         $date_letter = 'DO/' . $current_date . "" . $id;
         DeliveryOrder::where('id', $id)->update(array(
