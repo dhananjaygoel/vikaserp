@@ -54,12 +54,27 @@
                                 <br/>
                                 <label>Customer<span class="mandatory">*</span></label>
                                 <div class="radio">
-                                    <input checked="" value="existing_customer" id="existing_customer" name="customer_status" type="radio">
+                                    <input checked="" value="existing_customer" id="existing_customer" name="customer_status" type="radio" <?php
+                                    if (Input::old('customer_status') == "existing_customer") {
+                                        echo 'checked="checked"';
+                                    }
+                                    ?>>
                                     <label for="existing_customer">Existing</label>
-                                    <input  value="new_customer" id="new_customer" name="customer_status" type="radio">
+                                    <input  value="new_customer" id="new_customer" name="customer_status" type="radio" <?php
+                                    if (Input::old('customer_status') == "new_customer") {
+                                        echo 'checked="checked"';
+                                    }
+                                    ?>>
                                     <label for="new_customer">New</label>
                                 </div>
-                                <div class="customer_select_order" >
+                                <?php
+                                if (Input::old('customer_status') == "new_customer") {
+                                    $style = 'display:none;';
+                                } else {
+                                    $style = 'display:block;';
+                                }
+                                ?>
+                                <div class="customer_select_order" style="<?=$style?>" >
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
                                             <input class="form-control" placeholder="Enter Customer Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
@@ -71,7 +86,14 @@
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="new_customer_details" style="display: none">
+                            <?php
+                            if (Input::old('customer_status') == "new_customer") {
+                                $style = 'display:block;';
+                            } else {
+                                $style = 'display:none;';
+                            }
+                            ?>
+                            <div class="new_customer_details" style="<?= $style ?>">
                                 <div class="form-group">
                                     <label for="name">Customer Name<span class="mandatory">*</span></label>
                                     <input id="name" class="form-control" placeholder="Name" name="customer_name" value="{{old('customer_name')}}" type="text">
