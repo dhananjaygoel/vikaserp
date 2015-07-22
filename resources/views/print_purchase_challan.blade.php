@@ -233,7 +233,7 @@
                     <div class="divCell">{{ $prod['purchase_product_details']->alias_name }}</div>
                     <div class="divCell"></div>
                     <div class="divCell">{{ $prod->quantity }}</div>
-                    <div class="divCell">xxx</div>
+                    <div class="divCell">&nbsp;</div>
                     <div class="divCell">{{ $prod->price }}</div>                
                 </div>
                 <?php
@@ -261,7 +261,7 @@
                         Total Quantity: {{ $total_qty }}
                     </div>
                     <div class="ruppes">
-                        Rs. <?php echo convert_number_to_words($total_price + $purchase_challan->loaded_by + $purchase_challan->freight - $purchase_challan->discount + ($purchase_challan->vat_percentage / 100 * 100)); ?>
+                        Rs. <?php echo convert_number_to_words($total_price + $purchase_challan->loaded_by + $purchase_challan->freight + $purchase_challan->round_off + $purchase_challan->discount + ($purchase_challan->vat_percentage / 100 * 100)); ?> Rupees.
                     </div>
                 </div>
                 <div class="total">                 
@@ -302,9 +302,17 @@
                             0
                             @endif 
                         </div>
+                        <div class="label">Round Off</div>
+                        <div class="value">
+                            @if($purchase_challan->round_off != "")
+                            {{$purchase_challan->round_off}}
+                            @else
+                            0
+                            @endif 
+                        </div>
                         <div class="label">GT</div>
                         <div class="value">
-                            {{ $total_price + $purchase_challan->loaded_by + $purchase_challan->freight - $purchase_challan->discount + ($purchase_challan->vat_percentage/100 *100) }}
+                            {{ $total_price + $purchase_challan->loaded_by + $purchase_challan->freight + $purchase_challan->round_off + $purchase_challan->discount + ($purchase_challan->vat_percentage/100 *100) }}
                         </div>
                     </div>
                 </div>
