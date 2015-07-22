@@ -64,7 +64,7 @@ class CustomerController extends Controller {
                     ->orWhere('company_name', 'like', '%' . Input::get('search') . '%');
         }
 
-        $customers = $q->paginate(10);
+        $customers = $q->with('city')->paginate(10);
         $customers->setPath('customers');
         return View::make('customers', array('customers' => $customers));
     }

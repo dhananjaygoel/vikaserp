@@ -10,7 +10,14 @@
                     <li class="active"><span>Customers</span></li>
                 </ol>
                 <div class="filter-block">
-                    <h1 class="pull-left">Customers</h1>                                 
+                    <h1 class="pull-left">Customers</h1> 
+                    <!--*******************************************************************-->
+                    <!--******************do not remove this comments**********************-->
+                    <!--*******************************************************************-->
+<!--                    <a href="{{url('excel_import_customer')}}" class="btn btn-primary pull-right">
+                        <i class="fa fa-plus-circle fa-lg"></i> Import Customer
+                    </a>-->
+                    
                     <a href="{{url('customers/create')}}" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Add Customer
                     </a>
@@ -19,7 +26,7 @@
                             <input class="form-control" name="search" id="search" placeholder="Enter Customer,Comapny Name " value="{{Request::get('search')}}" type="text">
                             <i class="fa fa-search search-icon"></i>
                         </div>
-                    </form>
+                    </form>                    
                 </div>
             </div>
         </div>
@@ -47,11 +54,11 @@
                                 <thead>
                                     <tr>
                                         <th class="col-md-1">#</th>
-                                        <th>Owner Name</th>
+                                        <!--<th>Owner Name</th>-->
                                         <th>Company Name</th>
                                         <th>Email</th>
                                         <th>Mobile </th>                                                            
-                                        <th>City</th>                                                            
+                                        <!--<th>City</th>-->                                                            
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -62,11 +69,11 @@
                                     @foreach($customers as $key=>$c)
                                     <tr>
                                         <td class="col-md-1">{{$i}}</td>
-                                        <td>{{$c->owner_name}}</td>
-                                        <td>{{$c->company_name}}</td>
+                                        <!--<td>{{$c->owner_name}}</td>-->
+                                        <td>{{$c->tally_name}}</td>
                                         <td>{{$c->email}}</td>                                        
                                         <td>{{$c->phone_number1}}</td>
-                                        <td>Pune</td>
+                                        <!--<td>{{$c->city_name }} </td>-->
                                         <td class="text-center">
                                             <a href="{{url('customers/'.$c->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
