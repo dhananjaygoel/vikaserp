@@ -350,11 +350,6 @@ class OrderController extends Controller {
         $input_data = Input::all();
         $i = 0;
 
-
-//        echo '<pre>';
-//        print_r($input_data);
-//        echo '</pre>';
-//        exit;
         $customer_id = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
@@ -754,13 +749,11 @@ class OrderController extends Controller {
                     $temp['unit'] = $array1['unit'];
                     $temp['order_quantity'] = $quantity;
                     $temp['total_quantity'] = $array1['quantity'];
-//                    
                     $add_pendings = 0;
                     array_push($pending_orders, $temp);
                 }
             }
         }
-//       
         return $pending_orders;
     }
 

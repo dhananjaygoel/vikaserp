@@ -55,7 +55,7 @@
                                     $style = 'display:block;';
                                 }
                                 ?>
-                                <div class="customer_select" style="<?=$style?>" >
+                                <div class="customer_select" style="<?= $style ?>" >
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
                                             <input class="form-control" placeholder="Enter Customer Name" type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
@@ -122,8 +122,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
                             <div class="inquiry_table col-md-12">
                                 <div class="table-responsive">
                                     <table id="add_product_table" class="table table-hover  ">
@@ -152,7 +150,6 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group ">
                                                             <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
-                                                                <!--                                                                <option value="" selected="">Unit</option>-->
                                                                 @foreach($units as $unit)
                                                                 <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
                                                                 @endforeach

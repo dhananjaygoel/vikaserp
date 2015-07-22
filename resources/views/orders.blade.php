@@ -14,66 +14,66 @@
                     <div class="clearfix"></div>
                     <div class="top-page-ui pull-right">
                         <!--<div class="form-group pull-right">-->
-                            <!--<div class="col-md-12">-->
-                                <form action="{{url('orders')}}" method="GET">
-                                    <div class="col-md-1" style="padding: 0;"> 
-                                        <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
-                                            <option value="" selected="">--Status-- </option>
-                                            <option <?php if (Input::get('order_filter') == 'pending') echo 'selected=""'; ?> value="pending">Pending</option>
-                                            <option <?php if (Input::get('order_filter') == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
-                                            <option <?php if (Input::get('order_filter') == 'cancelled') echo 'selected=""'; ?> value="cancelled">Canceled</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <select class="form-control" id="user_filter3" name="party_filter" onchange="this.form.submit();">
-                                            <option value="" selected="">--Select Party--</option>
-                                            @foreach($customers as $customer)
-                                            @if($customer->customer_status == 'permanent')
-                                            <option <?php if (Input::get('party_filter') == $customer->id) echo 'selected=""'; ?> value="{{$customer->id}}">{{$customer->owner_name}}</option>
-                                            @endif
-                                            @endforeach                                        
-                                        </select> 
-                                    </div>
-                                    <div class="col-md-2">
-                                        <select class="form-control" id="user_filter3" name="fulfilled_filter" onchange="this.form.submit();">
-                                            <option value="" selected="">--Fulfilled by--</option>
-                                            <option <?php if (Input::get('fulfilled_filter') == '0') echo 'selected=""'; ?>value="0" >Warehouse</option>
-                                            <option <?php if (Input::get('fulfilled_filter') == 'all') echo 'selected=""'; ?>value="all" >Direct</option>
-                                        </select> 
-                                    </div>
-                                    <div class="col-md-2">
-                                        <select class="form-control" id="user_filter3" name="location_filter" onchange="this.form.submit();">
-                                            <option value="" selected="">--Select Location--</option>
-                                            @foreach($delivery_location as $location) 
-                                            @if($location->status=='permanent' && $location->id!=0)
-                                            <option <?php if (Input::get('location_filter') == $location->id) echo 'selected=""'; ?> value="{{$location->id}}">{{$location->area_name}}</option>
-                                            @endif
-                                            @endforeach 
-                                        </select> 
-                                    </div>
-                                    <div class="col-md-2 form-group">
+                        <!--<div class="col-md-12">-->
+                        <form action="{{url('orders')}}" method="GET" class="pull-right">
+                            <div class="col-md-1" style="padding: 0;"> 
+                                <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
+                                    <option value="" selected="">--Status-- </option>
+                                    <option <?php if (Input::get('order_filter') == 'pending') echo 'selected=""'; ?> value="pending">Pending</option>
+                                    <option <?php if (Input::get('order_filter') == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
+                                    <option <?php if (Input::get('order_filter') == 'cancelled') echo 'selected=""'; ?> value="cancelled">Canceled</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-control" id="user_filter3" name="party_filter" onchange="this.form.submit();">
+                                    <option value="" selected="">--Select Party--</option>
+                                    @foreach($customers as $customer)
+                                    @if($customer->customer_status == 'permanent')
+                                    <option <?php if (Input::get('party_filter') == $customer->id) echo 'selected=""'; ?> value="{{$customer->id}}">{{$customer->owner_name}}</option>
+                                    @endif
+                                    @endforeach                                        
+                                </select> 
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-control" id="user_filter3" name="fulfilled_filter" onchange="this.form.submit();">
+                                    <option value="" selected="">--Fulfilled by--</option>
+                                    <option <?php if (Input::get('fulfilled_filter') == '0') echo 'selected=""'; ?>value="0" >Warehouse</option>
+                                    <option <?php if (Input::get('fulfilled_filter') == 'all') echo 'selected=""'; ?>value="all" >Direct</option>
+                                </select> 
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-control" id="user_filter3" name="location_filter" onchange="this.form.submit();">
+                                    <option value="" selected="">--Select Location--</option>
+                                    @foreach($delivery_location as $location) 
+                                    @if($location->status=='permanent' && $location->id!=0)
+                                    <option <?php if (Input::get('location_filter') == $location->id) echo 'selected=""'; ?> value="{{$location->id}}">{{$location->area_name}}</option>
+                                    @endif
+                                    @endforeach 
+                                </select> 
+                            </div>
+                            <div class="col-md-2 form-group">
 <!--                                        <select class="form-control" id="user_filter3" name="size_filter" onchange="this.form.submit();">
-                                            <option value="" selected="">--Select Size--</option>
-                                            @foreach($product_size as $product)                                            
-                                            <option <?php if (Input::get('size_filter') == $product->size) echo 'selected=""'; ?> value="{{$product->size}}">{{$product->size}}</option>
-                                            @endforeach                                        
-                                        </select>-->
+                                    <option value="" selected="">--Select Size--</option>
+                                    @foreach($product_size as $product)                                            
+                                    <option <?php if (Input::get('size_filter') == $product->size) echo 'selected=""'; ?> value="{{$product->size}}">{{$product->size}}</option>
+                                    @endforeach                                        
+                                </select>-->
 
-                                        <input class="form-control order_filter ui-autocomplete-input" placeholder="Size" value="{{Input::get('size_filter')}}" id="order_size" autocomplete="off" name="size_filter" type="text">
-                                        <a onclick="this.form.submit()">
-                                            <i class="fa fa-search search-icon" id="search_icon"></i>
-                                        </a>
+                                <input class="form-control order_filter ui-autocomplete-input" placeholder="Size" value="{{Input::get('size_filter')}}" id="order_size" autocomplete="off" name="size_filter" type="text">
+                                <a onclick="this.form.submit()">
+                                    <i class="fa fa-search search-icon" id="search_icon"></i>
+                                </a>
 
-                                    </div>
-                                    <div class="col-md-2">
-                                        @if( Auth::user()->role_id != 3 )
-                                        <a href="{{url('orders/create')}}" class="btn btn-primary">
-                                            <i class="fa fa-plus-circle fa-lg"></i> Place Order
-                                        </a>
-                                        @endif
-                                    </div>
-                                </form>
-                            <!--</div>-->
+                            </div>
+                            <div class="col-md-2">
+                                @if( Auth::user()->role_id != 3 )
+                                <a href="{{url('orders/create')}}" class="btn btn-primary">
+                                    <i class="fa fa-plus-circle fa-lg"></i> Place Order
+                                </a>
+                                @endif
+                            </div>
+                        </form>
+                        <!--</div>-->
                         <!--</div>-->
                     </div>
                 </div>
@@ -127,8 +127,8 @@
                                             }
                                         }
                                         ?></td>-->
-                                        <td>{{$order->total_quantity}}</td>
-                                        <td>{{$order->pending_quantity}}</td>
+                                        <td>{{ round($order->total_quantity, 2) }}</td>
+                                        <td>{{ round($order->pending_quantity, 2) }}</td>
                                         <td class="text-center">
                                             <a href="{{url('create_delivery_order/'.$order->id)}}" class="table-link" title="Create Delivery order">
                                                 <span class="fa-stack">
@@ -259,7 +259,7 @@
                                     @if(count($pending_orders) > 0)
                                     @foreach($pending_orders as $porder)
                                     @if($porder['id'] == $order->id)
-                                    <td>{{$porder['total_quantity']}}</td>                                   
+                                    <td>{{ round($porder['total_quantity'], 2) }}</td>                                   
                                     @endif
                                     @endforeach
                                     @else
@@ -345,12 +345,14 @@
                                         <td>{{$k++}}</td>
                                         <td>{{$order['customer']->owner_name}}</td>
                                         <td><?php
-                                            $total_quantity = 0;
-                                            foreach ($order['all_order_products'] as $key => $product) {
-                                                $total_quantity = $total_quantity + $product['quantity'];
-                                            }
-                                            echo $total_quantity;
-                                            ?></td>
+//                                            $total_quantity = 0;
+//                                            foreach ($order['all_order_products'] as $key => $product) {
+//                                                $total_quantity = $total_quantity + $product['quantity'];
+//                                            }
+//                                            echo $total_quantity;
+                                            ?>
+                                            {{ round($order['total_quantity'], 2) }}
+                                        </td>
                                         <td>{{$order['customer']['phone_number1']}}</td>
                                         @if($order['delivery_location']['area_name'] !="")
                                         <td class="text-center">{{$order['delivery_location']['area_name']}}</td>

@@ -99,10 +99,10 @@
 
                                         </td> 
                                         <td>
-                                            {{$delivery->total_quantity}}
+                                            {{ round($delivery->total_quantity, 2) }}
                                         </td> 
                                         <td>
-                                            {{$delivery->present_shipping}}
+                                            {{ round($delivery->present_shipping, 2) }}
                                         </td> 
                                         <td>
                                             {{$delivery->vehicle_number}}

@@ -244,27 +244,41 @@ function change_quantity(key) {
 
 //    if (parseInt(present_shipping) > parseInt(tot_quty)) {
 //        alert('present Shipping is greater than the quantity');
-    $("#present_shipping_" + key).val(present_shipping);
+//    $("#present_shipping_" + key).val(present_shipping);
 //    } else {
 
-    if((parseInt(tot_quty) - parseInt(present_shipping) < 0)){
-      $("#pending_qunatity_" + key).html("<span>" + 0 + "</span");  
-    }else{
-        $("#pending_qunatity_" + key).html("<span>" + (parseInt(tot_quty) - parseInt(present_shipping)) + "</span");
-    }
-    
-//    }
-
-//    if (parseInt(present_shipping) > parseInt(tot_quty)) {
-//        alert('present Shipping is greater than the quantity');
-//        $("#present_shipping_" + key).val(tot_quty);
-//    } else {
+//    if((parseInt(tot_quty) - parseInt(present_shipping) < 0)){
+//      $("#pending_qunatity_" + key).html("<span>" + 0 + "</span");  
+//    }else{
 //        $("#pending_qunatity_" + key).html("<span>" + (parseInt(tot_quty) - parseInt(present_shipping)) + "</span");
 //    }
 
+//    }
 
+    if (parseInt(present_shipping) > parseInt(tot_quty)) {
+        alert('present Shipping is greater than the quantity');
+        $("#present_shipping_" + key).val(tot_quty);
+    } else {
+        $("#pending_qunatity_" + key).html("<span>" + (parseInt(tot_quty) - parseInt(present_shipping)) + "</span");
+    }
 
+    grand_total_delivery_order();
+}
 
+function change_quantity2(key) {
+
+    var quantity = $("#pending_qunatity_value_" + key).val();
+    var present_shipping = $("#present_shipping_" + key).val();
+    var tot_quty = $("#quantity_" + key).val(); //ok
+    var total = parseInt(quantity) + parseInt(present_shipping);
+
+    $("#present_shipping_" + key).val(present_shipping);
+
+    if ((parseInt(tot_quty) - parseInt(present_shipping) < 0)) {
+        $("#pending_qunatity_" + key).html("<span>" + 0 + "</span");
+    } else {
+        $("#pending_qunatity_" + key).html("<span>" + (parseInt(tot_quty) - parseInt(present_shipping)) + "</span");
+    }
     grand_total_delivery_order();
 }
 
