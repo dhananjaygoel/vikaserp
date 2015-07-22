@@ -240,12 +240,31 @@ function change_quantity(key) {
     var tot_quty = $("#quantity_" + key).val(); //ok
     var total = parseInt(quantity) + parseInt(present_shipping);
 
-    if (parseInt(present_shipping) > parseInt(tot_quty)) {
-        alert('present Shipping is greater than the quantity');
-        $("#present_shipping_" + key).val(tot_quty);
-    } else {
+
+
+//    if (parseInt(present_shipping) > parseInt(tot_quty)) {
+//        alert('present Shipping is greater than the quantity');
+    $("#present_shipping_" + key).val(present_shipping);
+//    } else {
+
+    if((parseInt(tot_quty) - parseInt(present_shipping) < 0)){
+      $("#pending_qunatity_" + key).html("<span>" + 0 + "</span");  
+    }else{
         $("#pending_qunatity_" + key).html("<span>" + (parseInt(tot_quty) - parseInt(present_shipping)) + "</span");
     }
+    
+//    }
+
+//    if (parseInt(present_shipping) > parseInt(tot_quty)) {
+//        alert('present Shipping is greater than the quantity');
+//        $("#present_shipping_" + key).val(tot_quty);
+//    } else {
+//        $("#pending_qunatity_" + key).html("<span>" + (parseInt(tot_quty) - parseInt(present_shipping)) + "</span");
+//    }
+
+
+
+
     grand_total_delivery_order();
 }
 
@@ -442,7 +461,7 @@ function grand_total_challan() {
             total_price_products = total_price_products + (parseFloat($('#product_price_' + i).val()) * quantity);
         }
     }
-    
+
     var vat_val = 0;
 
     var total_price = total_price_products;
