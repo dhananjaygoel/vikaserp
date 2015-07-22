@@ -92,11 +92,11 @@
                                     <tr>
                                         <td><span>Relationship Manager:</span> {{isset($customer['manager']->first_name)?$customer['manager']->first_name: 'N'}}{{isset($customer['manager']->last_name)?'&nbsp;'.$customer['manager']->last_name: '/A'}}</td>
                                     </tr>
+
+                                    @if(sizeof($customer['customerproduct']) > 0)
                                     <tr>
                                         <td><span>Set price(Category & difference)</span></td>
-                                    </tr>
-
-                                    @foreach($product_category as $pc)
+                                    </tr>                                                                        @foreach($product_category as $pc)
                                     <?php
                                     $price = '';
                                     foreach ($customer['customerproduct'] as $key => $value) {
@@ -110,6 +110,7 @@
                                     }
                                     ?>
                                     @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
