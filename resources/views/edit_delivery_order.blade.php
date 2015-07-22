@@ -127,7 +127,7 @@
                                     <option <?php if ($delivery_location->id == $delivery_data->delivery_location_id) echo 'selected=""'; ?>  value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
                                     @endif
                                     @endforeach
-                                    <option id="other_location" value="-2">Other</option>
+                                    <option id="other_location" value="other">Other</option>
                                 </select>
                             </div>
                         </div>
@@ -162,10 +162,10 @@
                                         @foreach($delivery_data['delivery_product'] as $key=>$product)
 
                                         @if($product->order_type =='delivery_order')
-                                        <tr id="add_row_{{$key}}" class="add_product_row">
+                                        <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
-                                                    <input value="{{ $product['order_product_details']->product_category_name}}" class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});">
+                                                    <input value="{{ $product['order_product_details']->alias_name}}" class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});">
                                                     <input type="hidden" name="product[{{$key}}][product_category_id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']->id}}">
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product->id}}">
                                                     <input type="hidden" name="product[{{$key}}][order]" value="{{ $product->from}}">
