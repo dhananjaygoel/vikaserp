@@ -181,7 +181,7 @@
                 @if($prod->order_type == 'purchase_advice')
                 <div class="divRow">
                     <div class="divCell">{{ $i++ }}</div>
-                    <div class="divCell">{{ $prod['purchase_product_details']->size }}</div>
+                    <div class="divCell">{{ $prod['purchase_product_details']->alias_name }}</div>
                     <div class="divCell"> &nbsp; </div>
                     <div class="divCell">{{ $prod->quantity }}</div>
                     <div class="divCell"> &nbsp; </div>
