@@ -224,7 +224,7 @@ class DeliveryChallanController extends Controller {
 
         $serial_number_delivery_order = Input::get('serial_number');
         $current_date = date("m/d/");
-        $date_letter = 'DC/' . $current_date . "/" . $id;
+        $date_letter = 'DC/' . $current_date . $id;
 
         DeliveryChallan::where('id', $id)->update(array(
             'serial_number' => $date_letter,
@@ -235,8 +235,8 @@ class DeliveryChallanController extends Controller {
 
         $allorder = DeliveryChallan::where('id', '=', $id)
                         ->where('challan_status', '=', 'completed')
-                        ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer','customer_difference','delivery_order.location')->first();
-        
+                        ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
+
         /*
           | ------------------- -----------------------
           | SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
