@@ -32,6 +32,10 @@ class Customer extends Model {
     public function customerproduct() {
         return $this->hasMany('App\CustomerProductDifference', 'customer_id', 'id');
     }
+    
+    public function city() {
+        return $this->hasOne('App\City', 'id', 'city');
+    }
 
     public static $new_customer_inquiry_rules = array(
         'customer_name' => 'required|min:2|max:100',

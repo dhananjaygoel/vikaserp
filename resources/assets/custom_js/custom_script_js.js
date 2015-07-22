@@ -126,7 +126,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-2">' +
                 '<div class="form-group">' +
-                '<div id="amount_' + current_row_count + '"></div>' +
+                '<div id="amount_' + current_row_count + '">0</div>' +
                 '</div>' +
                 '</td>' +
                 '<input type="hidden" name="product[' + current_row_count + '][order]" value="">' +
