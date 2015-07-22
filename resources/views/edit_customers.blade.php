@@ -153,17 +153,17 @@
                                 </select>
                             </div>
                             <div class="clearfix"></div>
-<!--                            <div class="form-group">
+                            <div class="form-group">
                                 <label>Set Prices</label>
                                 <br>
                                 <div class="checkbox-nice">
-                                    <input id="checkbox-inl-1" type="checkbox" <?php if(sizeof($customer['customerproduct']) > 0) echo 'checked=""';?>>
+                                    <input id="checkbox-inl-1" type="checkbox" <?php if (sizeof($customer['customerproduct']) > 0) echo 'checked=""'; ?>>
                                     <label for="checkbox-inl-1"> </label>
                                 </div>
                                 <br>
 
                                 @if(count($product_category) > 0)
-                                <div class="category_div col-md-12" <?php if(sizeof($customer['customerproduct']) > 0) echo 'style="display:block;"';?>>
+                                <div class="category_div col-md-12" <?php if (sizeof($customer['customerproduct']) > 0) echo 'style="display:block;"'; ?>>
                                     <div class="table-responsive">
                                         <table id="table-example" class="table table-hover  ">
                                             <thead>
@@ -198,7 +198,7 @@
                                 @else
                                 <p class="text-info">No product category found</p>
                                 @endif
-                            </div>-->
+                            </div>
                             <div class="clearfix"></div>
                             <hr>
                             <div>
