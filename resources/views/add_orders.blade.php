@@ -136,7 +136,7 @@
                                             </tr>
 
                                             <?php for ($i = 1; $i <= 6; $i++) { ?>
-                                                <tr id="add_row_{{$i}}" class="add_product_row">
+                                                <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
                                                             <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});">

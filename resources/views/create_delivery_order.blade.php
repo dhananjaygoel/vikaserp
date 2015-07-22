@@ -20,6 +20,7 @@
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="order_id" value="{{$order->id}}">
                         <input type="hidden" name="customer_id" value="{{$order['customer']->id}}" id="hidden_cutomer_id">
+                        <input type="hidden" name="existing_customer_id" value="{{$order['customer']->id}}" id="existing_customer_id">
 
                         @if (count($errors) > 0)
                         <div role="alert" class="alert alert-warning">
@@ -59,7 +60,7 @@
                                 @endif
                                 @endif
                                 @endforeach
-                                
+
                                 @if($order->delivery_location_id !=0)
                                 @foreach($delivery_location as $location)
                                 @if($order->delivery_location_id == $location->id)
@@ -67,6 +68,7 @@
                                     <td>
                                         <span><b>Delivery Location : </b></span>
                                         {{$location->area_name}}
+                                        <input type="hidden" name="add_order_location" value="{{$order->delivery_location_id}}" id="add_order_location">
                                     </td>
                                 </tr>
                                 @endif
@@ -81,6 +83,8 @@
                                     <td>
                                         <span><b>Delivery Location Difference</b>: </span>
                                         {{$order->other_location_difference}}
+                                        <input type="hidden" name="add_order_location" value="other" id="add_order_location">
+                                        <input type="hidden" name="location_difference" value="{{$order->other_location_difference}}" id="location_difference">
                                     </td>
                                 </tr>
                                 @endif

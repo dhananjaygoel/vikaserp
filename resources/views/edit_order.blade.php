@@ -218,7 +218,7 @@
                                         </tr>
                                         @foreach($order['all_order_products'] as $key=>$product)
                                         @if($product->order_type =='order')
-                                        <tr id="add_row_{{$key}}" class="add_product_row">
+                                        <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
 
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
