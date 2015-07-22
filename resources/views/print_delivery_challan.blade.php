@@ -279,7 +279,7 @@
                         Total Quantity: {{ $total_qty }}
                     </div>
                     <div class="ruppes grand_price">
-                        Rs. <?php echo convert_number_to_words($total_price + $allorder->freight + $allorder->loading_charge + $allorder->discount + $allorder->vat_percentage/100 * 100); ?> Only
+                        Rs. <?php echo convert_number_to_words($total_price + $allorder->freight + $allorder->loading_charge + $allorder->round_off + $allorder->discount + $allorder->vat_percentage/100 * 100); ?> Rupees
                     </div>
                 </div>
                 <div class="total">                 
@@ -309,7 +309,7 @@
                             @else
                             0
                             @endif 
-                        </div>
+                        </div>                
                         <!--                        <div class="label">Total</div>
                                                 <div class="value">
                                                    {{ $total_price + $allorder->loaded_by + $allorder->freight - $allorder->discount }}
@@ -322,9 +322,17 @@
                             0
                             @endif 
                         </div>
+                        <div class="label">Round Off</div>
+                        <div class="value">
+                            @if($allorder->round_off != "")
+                            {{$allorder->round_off}}
+                            @else
+                            0
+                            @endif 
+                        </div>
                         <div class="label">GT</div>
                         <div class="value">
-                            {{ $total_price + $allorder->freight + $allorder->loading_charge + $allorder->discount + $allorder->vat_percentage/100 * 100 }}
+                            {{ $total_price + $allorder->freight + $allorder->loading_charge + $allorder->round_off + $allorder->discount + $allorder->vat_percentage/100 * 100 }}
                         </div>
 
                     </div>

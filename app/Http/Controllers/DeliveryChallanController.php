@@ -55,13 +55,13 @@ class DeliveryChallanController extends Controller {
                     foreach ($order['delivery_challan_products'] as $opk => $opv) {
                         $product_size = ProductSubCategory::find($opv->product_category_id);
                         if ($opv->unit_id == 1) {
-                            $order_quantity = $order_quantity + $opv->quantity;
+                            $order_quantity = $order_quantity + $opv->actual_quantity;
                         }
                         if ($opv->unit_id == 2) {
-                            $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
+                            $order_quantity = $order_quantity + ($opv->actual_quantity * $product_size->weight);
                         }
                         if ($opv->unit_id == 3) {
-                            $order_quantity = $order_quantity + (($opv->quantity / $product_size->standard_length ) * $product_size->weight);
+                            $order_quantity = $order_quantity + (($opv->actual_quantity / $product_size->standard_length ) * $product_size->weight);
                         }
                     }
                 }
@@ -71,6 +71,11 @@ class DeliveryChallanController extends Controller {
         }
 
         $allorders->setPath('delivery_challan');
+        
+//        echo '<pre>';
+//        print_r($allorders->toArray());
+//        echo '</pre>';
+//        exit;
         return view('delivery_challan', compact('allorders'));
     }
 
