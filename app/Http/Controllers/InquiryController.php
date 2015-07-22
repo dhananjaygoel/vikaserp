@@ -458,10 +458,20 @@ class InquiryController extends Controller {
     }
 
     public function fetch_existing_customer() {
+
         $term = '%' . Input::get('term') . '%';
-        $customers = Customer::where('owner_name', 'like', $term)->where('customer_status', '=', 'permanent')
+
+        $customers = Customer::where('owner_name', 'like', $term)
+                        ->orWhere('company_name', $term)
                         ->orWhere('tally_name', 'like', $term)
-                        ->where('customer_status', '=', 'permanent')->get();
+                        ->where('customer_status', '=', 'permanent')
+                        ->orwhere(function($query) use($term) {
+                            $query->whereHas('city', function($q) use ($term) {
+                                $q->orWhere('city_name', 'like' . $term);
+                            });
+                        })->get();
+
+
         if (count($customers) > 0) {
             foreach ($customers as $customer) {
                 $data_array[] = [
@@ -738,7 +748,7 @@ class InquiryController extends Controller {
             }
         }
 
-        //send mail
+//send mail
         if (isset($input_data['send_email'])) {
             $customers = Customer::find($customer_id);
 
