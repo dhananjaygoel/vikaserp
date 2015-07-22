@@ -177,6 +177,7 @@
                 <?php
                 $i = 1;
                 ?>
+                <!-- purchase advise product details-->
                 @foreach($purchase_advise['purchase_products'] as $prod)
                 @if($prod->order_type == 'purchase_advice')
                 <div class="divRow">
