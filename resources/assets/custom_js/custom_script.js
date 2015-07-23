@@ -381,7 +381,7 @@ function product_autocomplete(id) {
             });
         },
         select: function (event, ui) {
-            $("#product_price_" + id).val(ui.item.product_price);
+//            $("#product_price_" + id).val(ui.item.product_price); // to add price in the textbox
             $("#add_product_id_" + id).val(ui.item.id);
         }
     });
