@@ -98,7 +98,7 @@
                             <div class="exist_field" <?= $style ?>>
                                  <div class="form-group">
                                     <label for="supplier_name"> Supplier Name<span class="mandatory">*</span></label>
-                                    <input id="name" class="form-control" placeholder="Supplier Name" name="supplier_name" value="{{ Input::old('supplier_status') }}" type="text">
+                                    <input id="name" class="form-control" placeholder="Supplier Name" name="supplier_name" value="{{ Input::old('supplier_name') }}" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
