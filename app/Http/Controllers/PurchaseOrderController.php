@@ -172,6 +172,7 @@ class PurchaseOrderController extends Controller {
          * SEND SMS TO CUSTOMER FOR NEW PURCHASE ORDER
          * -------------------------------------------
          */
+
         $input = Input::all();
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
@@ -197,6 +198,7 @@ class PurchaseOrderController extends Controller {
                 }
             }
         }
+
         $add_purchase_order = PurchaseOrder::create($add_purchase_order_array);
         $purchase_order_id = DB::getPdo()->lastInsertId();
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
@@ -235,28 +237,31 @@ class PurchaseOrderController extends Controller {
           | SEND EMAIL TO SUPPLIER ON CREATE OF NEW PURCHASE ORDER
           | ------------------------------------------------------
          */
-        if (isset($input_data['send_email'])) {
-            $customers = Customer::find($customer_id);
-            $purchase_order = PurchaseOrder::where('id', '=', $purchase_order_id)->with('purchase_products.purchase_product_details', 'delivery_location')->first();
+        if ($input_data['supplier_status'] != "new_supplier") {
 
-            if (count($purchase_order) > 0) {
-                if (count($purchase_order['delivery_location']) > 0) {
-                    $delivery_location = $purchase_order['delivery_location']->area_name;
-                } else {
-                    $delivery_location = $purchase_order->other_location;
+            if (isset($input_data['send_email'])) {
+                $customers = Customer::find($customer_id);
+                $purchase_order = PurchaseOrder::where('id', '=', $purchase_order_id)->with('purchase_products.purchase_product_details', 'delivery_location')->first();
+
+                if (count($purchase_order) > 0) {
+                    if (count($purchase_order['delivery_location']) > 0) {
+                        $delivery_location = $purchase_order['delivery_location']->area_name;
+                    } else {
+                        $delivery_location = $purchase_order->other_location;
+                    }
+                    $mail_array = array(
+                        'customer_name' => $customers->owner_name,
+                        'expected_delivery_date' => $purchase_order->expected_delivery_date,
+                        'created_date' => $purchase_order->updated_at,
+                        'delivery_location' => $delivery_location,
+                        'order_product' => $purchase_order['purchase_products'],
+                        'source' => 'create_order'
+                    );
+
+                    Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($customers) {
+                        $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: New Purchase Order');
+                    });
                 }
-                $mail_array = array(
-                    'customer_name' => $customers->owner_name,
-                    'expected_delivery_date' => $purchase_order->expected_delivery_date,
-                    'created_date' => $purchase_order->updated_at,
-                    'delivery_location' => $delivery_location,
-                    'order_product' => $purchase_order['purchase_products'],
-                    'source' => 'create_order'
-                );
-
-                Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($customers) {
-                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: New Purchase Order');
-                });
             }
         }
         return redirect('purchase_orders')->with('flash_message', 'Purchase order details successfully added.');
@@ -274,11 +279,11 @@ class PurchaseOrderController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
-        $purchase_orders = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit','delivery_location','purchase_products.purchase_product_details','customer')->first();
+        $purchase_orders = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'delivery_location', 'purchase_products.purchase_product_details', 'customer')->first();
         if (count($purchase_orders) < 1) {
             return redirect('purchase_orders')->with('flash_message', 'Purchase order not found');
         }
-              
+
         return view('purchase_order_details', compact('purchase_orders'));
     }
 
