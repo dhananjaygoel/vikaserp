@@ -222,7 +222,7 @@ function calutate_pending_order(qty, key) {
         $('#pending_order_' + key).val(qty - shipping);
     } else {
         alert('Present shipping should not be greater than pending order');
-        $('#present_shipping_' + key).val(0);
+        $('#present_shipping_' + key).val("");
     }
 }
 

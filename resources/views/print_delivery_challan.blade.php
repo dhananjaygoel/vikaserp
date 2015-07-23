@@ -232,7 +232,6 @@
                     <div class="divCell">{{ $prod->actual_pieces }}</div>
                     <div class="divCell">{{ $prod->quantity }}</div>
                     <div class="divCell"> 
-
                         <?php
                         $difference_amount = 0;
                         foreach ($allorder['customer_difference'] as $cust_diff) {

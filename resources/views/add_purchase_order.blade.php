@@ -31,15 +31,35 @@
                             @endif
                             <div class="form-group ">
                                 <div class="radio superadmin">
-                                    <input checked="" value="0" id="admin_and_superadmin" name="viewable_by" type="radio">
+                                    <input checked="" value="0" id="admin_and_superadmin" name="viewable_by" type="radio"
+                                    <?php
+                                    if (Input::old('viewable_by') == "0") {
+                                        echo 'checked="checked"';
+                                    }
+                                    ?>>
                                     <label for="admin_and_superadmin">Viewable to Admin and Superadmin</label>
-                                    <input  value="1" id="viewable_by_all" name="viewable_by" type="radio">
+                                    <input  value="1" id="viewable_by_all" name="viewable_by" type="radio"
+                                    <?php
+                                    if (Input::old('viewable_by') == "1") {
+                                        echo 'checked="checked"';
+                                    }
+                                    ?>>
                                     <label for="viewable_by_all">Viewable by all</label>
                                 </div>
                                 <div class="radio">
-                                    <input checked="" value="existing_supplier" id="existing_supplier" name="supplier_status" type="radio">
+                                    <input checked="" value="existing_supplier" id="existing_supplier" name="supplier_status" type="radio"
+                                    <?php
+                                    if (Input::old('supplier_status') == "existing_supplier") {
+                                        echo 'checked="checked"';
+                                    }
+                                    ?>>
                                     <label for="existing_supplier">Existing Supplier</label>
-                                    <input  value="new_supplier" id="new_supplier" name="supplier_status" type="radio">
+                                    <input value="new_supplier" id="new_supplier" name="supplier_status" type="radio"
+                                    <?php
+                                    if (Input::old('supplier_status') == "new_supplier") {
+                                        echo 'checked="checked"';
+                                    }
+                                    ?>>
                                     <label for="new_supplier">New Supplier</label>
                                 </div>
                                 <div class="supplier customer_select">
@@ -53,7 +73,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="exist_field"  style="display:none">
+                            <?php
+                            if (Input::old('supplier_status') == "new_supplier") {
+                                $style = 'style="display: block"';
+                            } else {
+                                $style = 'style="display: none"';
+                            }
+                            ?>
+                            <div class="exist_field" <?= $style ?>>
+                                <div class="clearfix"></div>
                                 <div class="form-group">
                                     <label for="name"> Supplier Name<span class="mandatory">*</span></label>
                                     <input id="name" class="form-control" placeholder="Supplier Name" name="supplier_name" value="{{Input::old('supplier_name')}}" type="text">

@@ -30,7 +30,7 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="form-group pull-left">
+<!--                            <div class="form-group pull-left">
                                 <div class="col-md-12">
                                     <select class="form-control" id="user_filter4" name="user_filter">
                                         <option value="" selected="">Select size</option>
@@ -38,7 +38,7 @@
                                         <option value="2">30 kg</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="form-group pull-left">
                                 <div class="col-md-12">
                                     <form method="GET" action="{{url('purchase_orders')}}">
@@ -50,8 +50,6 @@
                                     </form>
                                 </div>
                             </div>
-
-
                             <div class="form-group pull-left">
                                 <div class="col-md-12">
                                     <form method="GET" action="{{url('purchase_orders')}}">
@@ -111,10 +109,10 @@
                                         <td>{{$purchase_order['delivery_location']['area_name']}}</td>
                                         <td>{{$purchase_order['user']->first_name}}</td>
                                         <td>
-                                            {{$purchase_order->total_quantity}}
+                                            {{round($purchase_order->total_quantity, 2) }}
                                         </td>
                                         <td>                                        
-                                            {{$purchase_order->pending_quantity}}
+                                            {{round($purchase_order->pending_quantity, 2) }}
                                         </td>
                                         @if(Input::get('purchase_order_filter') == 'pending'  || Input::get('purchase_order_filter') == '')
                                         <td class="text-center">

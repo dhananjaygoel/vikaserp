@@ -42,7 +42,7 @@ class DeliveryOrderController extends Controller {
      * @return Response
      */
     public function index() {
-       
+
         $delivery_data = 0;
         if (Input::get('order_status')) {
 
@@ -83,6 +83,7 @@ class DeliveryOrderController extends Controller {
         $input_data = Input::all();
         $i = 0;
         $customer_id = 0;
+        
         $j = count($input_data['product']);
 
         foreach ($input_data['product'] as $product_data) {
@@ -92,7 +93,7 @@ class DeliveryOrderController extends Controller {
         }
 
         if ($i == $j) {
-            return Redirect::back()->with('validation_message', 'Please enter at least one product details');
+            return Redirect::back()->withInput()->with('validation_message', 'Please enter at least one product details');
         }
 
         if ($input_data['customer_status'] == "new_customer") {
@@ -118,7 +119,8 @@ class DeliveryOrderController extends Controller {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
             }
-        }
+        }       
+
 
 //        if ($input_data['status'] == 'warehouse') {
 //            $order_status = 'warehouse';
@@ -325,7 +327,7 @@ class DeliveryOrderController extends Controller {
                 $add_order_products = AllOrderProducts::create($order_products);
             }
         }
-        
+
         return redirect('delivery_order')->with('validation_message', 'Delivery order details successfully updated.');
     }
 
@@ -460,7 +462,7 @@ class DeliveryOrderController extends Controller {
     //Generate Serial number and print Delivery order
     public function print_delivery_order($id) {
 
-         echo $current_date = date("m/d/");
+        echo $current_date = date("m/d/");
 
         $date_letter = 'DO/' . $current_date . "" . $id;
         DeliveryOrder::where('id', $id)->update(array(

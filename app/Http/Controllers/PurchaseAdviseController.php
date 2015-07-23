@@ -282,14 +282,15 @@ class PurchaseAdviseController extends Controller {
 
     public function store_advise() {
 
-        $input_data = Input::all();
+        $input_data = Input::all();        
+        
+//        echo '<pre>';
+//        print_r($input_data);
+//        echo '</pre>';
+//        exit;
 
         $validator = Validator::make($input_data, PurchaseAdvise::$store_purchase_validation);
         if ($validator->passes()) {
-
-//            $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['bill_date']);
-//            $date = date("Y/m/d", strtotime($date_string));
-//            $datetime = new DateTime($date);
 
             $date_string = preg_replace('~\x{00a0}~u', '', $input_data['bill_date']);
             $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
@@ -387,6 +388,7 @@ class PurchaseAdviseController extends Controller {
                     $add_purchase_advice_products = PurchaseProducts::create($purchase_advice_products);
                 }
             }
+            
             if ($total_present_shipping == $total_quantity) {
                 PurchaseOrder::where('id', '=', $input_data['id'])->update(array(
                     'order_status' => 'completed'

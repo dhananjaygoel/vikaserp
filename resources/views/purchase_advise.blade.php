@@ -84,12 +84,12 @@
                                     <?php $qty_sum += $prod->quantity; ?>
                                     @endforeach
                                     <tr>
-                                        <td>{{$i}}</td>
-                                        <td>{{$pa->purchase_advice_date}}</td>
-                                        <td>{{$pa['supplier']->owner_name}}</td>
-                                        <td>{{$pa->vehicle_number}}</td>
-                                        <td>{{$pa->total_quantity}}</td>
-                                        <td>{{$pa->serial_number}}</td>
+                                        <td>{{ $i }}</td>
+                                        <td>{{ $pa->purchase_advice_date }}</td>
+                                        <td>{{ $pa['supplier']->owner_name }}</td>
+                                        <td>{{ $pa->vehicle_number}}</td>
+                                        <td>{{ round($pa->total_quantity, 2) }}</td>
+                                        <td>{{ $pa->serial_number }}</td>
                                         @if(Input::get('purchaseaAdviseFilter') == 'in_process' || Input::get('purchaseaAdviseFilter') == '')
 
                                         <td class="text-center">

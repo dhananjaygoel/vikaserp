@@ -60,11 +60,20 @@
                             </table>
                             <div class="form-group ">
                                 <div class="radio">
-                                    <input checked="" value="existing" id="optionsRadios1" name="supplier_status" type="radio">
+                                    <input checked="" value="existing" id="optionsRadios1" name="supplier_status" type="radio"
+                                    <?php
+                                    if (Input::old('supplier_status') == "existing") {
+                                        echo 'checked="checked"';
+                                    }
+                                    ?>>
                                     <label for="optionsRadios1">Existing Supplier</label>
-                                    <input  value="new" id="optionsRadios3" name="supplier_status" type="radio">
+                                    <input  value="new" id="optionsRadios3" name="supplier_status" type="radio"
+                                    <?php
+                                    if (Input::old('supplier_status') == "new") {
+                                        echo 'checked="checked"';
+                                    }
+                                    ?>>
                                     <label for="optionsRadios3">New Supplier</label>
-
                                 </div>
                                 <div class="supplier">
                                     <select class="form-control" name="supplier_id" id="supplier_select" onchange="get_default_location();">
@@ -72,26 +81,33 @@
                                         @if(count($customers))
                                         @foreach($customers as $c)
                                         <option value="{{$c->id}}" default_location="{{$c->delivery_location_id}}">{{$c->owner_name.'-'.$c->tally_name}}</option>
-                                        
+
                                         @endforeach
                                         @endif
                                         <input type="hidden" id="customer_default_location">
                                     </select>
                                 </div>
                             </div>
-                            <div class="exist_field"  style="display:none">
-                                <div class="form-group">
+                            <?php
+                            if (Input::old('supplier_status') == "new") {
+                                $style = 'style="display: block"';
+                            } else {
+                                $style = 'style="display: none"';
+                            }
+                            ?>
+                            <div class="exist_field" <?= $style ?>>
+                                 <div class="form-group">
                                     <label for="supplier_name"> Supplier Name<span class="mandatory">*</span></label>
-                                    <input id="name" class="form-control" placeholder="Supplier Name" name="supplier_name" value="" type="text">
+                                    <input id="name" class="form-control" placeholder="Supplier Name" name="supplier_name" value="{{ Input::old('supplier_status') }}" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
-                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" type="text">
+                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{ Input::old('mobile_number') }}" type="text">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="credit_period">Credit Period(Days)<span class="mandatory">*</span></label>
-                                    <input id="credit_period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="text">
+                                    <input id="credit_period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ Input::old('credit_period') }}" type="text">
                                 </div>
                             </div>
                             <div class="inquiry_table col-md-12">
@@ -189,7 +205,7 @@
                                 </div>
                             </div>
                             <div class="clearfix"></div>
-                            
+
                             <div class="locationtext" id="other_location_input_wrapper">
                                 <div class="row">
                                     <div class="form-group col-md-4">
@@ -243,8 +259,8 @@
                             </div> 
                             <!--<div class="form-group">-->
 
-                                <!--<label for="price">Total Price</label>-->
-                                <input id="price" class="form-control" placeholder="Total Price" name="total_price" value="" type="hidden">
+                            <!--<label for="price">Total Price</label>-->
+                            <input id="price" class="form-control" placeholder="Total Price" name="total_price" value="" type="hidden">
 
                             <!--</div>-->
                             <div class="form-group">

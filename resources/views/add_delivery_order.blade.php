@@ -33,16 +33,26 @@
 
                         <div class="form-group">
                             Date: {{date('d F, Y')}}
-                            
+
                         </div>   
                         <form id="onenter_prevent" method="POST" action="{{URL::action('DeliveryOrderController@store')}}" accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <div class="form-group">
                                 <label>Customer<span class="mandatory">*</span></label>
                                 <div class="radio">
-                                    <input  value="exist_customer" id="exist_customer" name="customer_status" checked="" type="radio">
+                                    <input value="exist_customer" id="exist_customer" name="customer_status" checked="" type="radio"
+                                    <?php
+                                    if (Input::old('customer_status') == "exist_customer") {
+                                        echo 'checked="checked"';
+                                    }
+                                    ?>>
                                     <label for="exist_customer">Existing</label>
-                                    <input  value="new_customer" id="new_customer" name="customer_status" type="radio">
+                                    <input value="new_customer" id="new_customer" name="customer_status" type="radio"
+                                    <?php
+                                    if (Input::old('customer_status') == "new_customer") {
+                                        echo 'checked="checked"';
+                                    }
+                                    ?>>
                                     <label for="new_customer">New</label>
                                 </div>
                                 <div class="customer_select">
@@ -57,7 +67,15 @@
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="exist_field" style="display: none">
+                            <?php
+                            
+                            if (Input::old('customer_status') == "new_customer") {
+                                $style = 'style="display: block"';
+                            }else{
+                                $style = 'style="display: none"';
+                            }
+                            ?>
+                            <div class="exist_field" <?= $style ?>>
                                 <div class="form-group">
                                     <label for="name">Customer Name<span class="mandatory">*</span></label>
                                     <input id="name" class="form-control" placeholder="Name" name="customer_name" value="{{ old('customer_name') }}" type="text">
@@ -117,7 +135,7 @@
                                                 <td><span>Remark</span></td>
                                             </tr>
                                             <?php for ($i = 1; $i <= 10; $i++) { ?>
-                                            <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
+                                                <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
                                                             <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});">
