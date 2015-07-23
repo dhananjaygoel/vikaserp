@@ -74,7 +74,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
-                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{$purchase_order['customer']->mobile_number}}" type="text">
+                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{$purchase_order['customer']->phone_number1 }}" type="text">
                             </div>
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
@@ -105,7 +105,7 @@
                         </div>
                         <div class="form-group">
                             <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
-                            <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{$purchase_order['customer']->mobile_number}}" type="text">
+                            <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{$purchase_order['customer']->phone_number1}}" type="text">
                         </div>
                         <div class="form-group">
                             <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
