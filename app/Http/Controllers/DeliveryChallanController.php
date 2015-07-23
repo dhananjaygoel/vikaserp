@@ -71,11 +71,7 @@ class DeliveryChallanController extends Controller {
         }
 
         $allorders->setPath('delivery_challan');
-        
-//        echo '<pre>';
-//        print_r($allorders->toArray());
-//        echo '</pre>';
-//        exit;
+
         return view('delivery_challan', compact('allorders'));
     }
 
@@ -241,6 +237,10 @@ class DeliveryChallanController extends Controller {
         $allorder = DeliveryChallan::where('id', '=', $id)
                         ->where('challan_status', '=', 'completed')
                         ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
+//        echo '<pre>';
+//        print_r($allorder->toArray());
+//        echo '</pre>';
+//        exit;
 
         /*
           | ------------------- -----------------------

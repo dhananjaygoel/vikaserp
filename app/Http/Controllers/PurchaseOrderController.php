@@ -234,6 +234,7 @@ class PurchaseOrderController extends Controller {
         if (isset($input_data['send_email'])) {
             $customers = Customer::find($customer_id);
             $purchase_order = PurchaseOrder::where('id', '=', $purchase_order_id)->with('purchase_products.purchase_product_details', 'delivery_location')->first();
+              
             if (count($purchase_order) > 0) {
                 if (count($purchase_order['delivery_location']) > 0) {
                     $delivery_location = $purchase_order['delivery_location']->area_name;
