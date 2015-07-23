@@ -134,6 +134,9 @@ $(document).ready(function () {
         $("#add_product_table_delivery_challan").children("tbody").append(html);
     });
 
+
+
+
     $("#add_product_row_delivery_order").on("click", function () {
         var current_row_count = $(".add_product_row").length + 2;
 //        alert(current_row_count);
@@ -159,7 +162,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-1">' +
                 '<div class="form-group">' +
-                '<input id="quantity_' + current_row_count + '" class="form-control dileep" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="grand_total_delivery_order();">' +
+                '<input id="quantity_' + current_row_count + '" class="form-control dileep" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="create_delivery_order_PS(' + current_row_count + ');">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
@@ -666,3 +669,15 @@ function product_autocomplete_purchase(id) {
     });
 //alert(id+'id is called');
 }
+
+
+/**
+ * Comment
+ */
+function create_delivery_order_PS(row_id) {
+    grand_total_delivery_order();
+    var qty = $('#quantity_' + row_id).val();
+    $('#present_shipping_' + row_id).val(qty);
+    change_quantity(row_id);
+}
+
