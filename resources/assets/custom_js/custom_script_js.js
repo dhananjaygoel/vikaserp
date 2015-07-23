@@ -39,6 +39,17 @@ $(document).ready(function () {
     $('#add_inquiry_location').change(function () {
         if ($('#add_order_location').val() == '-2') {
             $('.locationtext').toggle();
+            $('.other_location_input_wrapper').toggle();
+        }
+    });
+
+    $('#purchase_other_location').change(function () {
+        
+        if ($('#purchase_other_location').val() == '-1') {
+            $('#other_location_input_wrapper').css('display','block');
+            alert($('#purchase_other_location').val());
+        } else {
+            $('#other_location_input_wrapper').css('display','none');
         }
     });
 

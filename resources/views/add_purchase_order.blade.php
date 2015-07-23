@@ -115,7 +115,7 @@
                                                 <td><span>Price</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
-                                            <?php for ($i = 1; $i <= 6; $i++) { ?>
+                                            <?php for ($i = 1; $i <= 4; $i++) { ?>
                                                 <tr id="add_row_{{$i}}" class="add_product_row">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
@@ -181,14 +181,14 @@
                             <div class="row col-md-4">
                                 <div class="form-group">
                                     <label for="location">Delivery Location:<span class="mandatory">*</span></label>
-                                    <select class="form-control" name="purchase_order_location" id="add_inquiry_location">
+                                    <select class="form-control" name="purchase_order_location" id="purchase_other_location">
                                         <option value="" selected="">Delivery Location</option>
                                         @foreach($delivery_locations as $delivery_location)
                                         @if($delivery_location->status == 'permanent')
                                         <option value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
                                         @endif
                                         @endforeach
-                                        <option id="other_location" value="other">Other</option>
+                                        <option value="-1">Other</option>
                                     </select>
                                 </div>
                             </div>

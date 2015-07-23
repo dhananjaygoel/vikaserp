@@ -70,6 +70,7 @@
                                 </table>
                                 <table id="table-example" class="table table-hover customerview_table  ">
                                     <tbody>
+
                                         @if($purchase_orders['vat_percentage'] == 0)
                                         <tr><td><span>Plus VAT: </span>No</td></tr>
                                         @elseif($purchase_orders['vat_percentage'] != 0)
@@ -77,10 +78,16 @@
                                         <tr><td><span>VAT Percentage: </span>{{$purchase_orders['vat_percentage']."%"}}</td></tr>
                                         @endif
 
-                                        <!--<tr><td><span>Grand Total: </span> {{$total}}</td></tr>-->
                                         <tr><td><span>Expected Delivery Date: </span>{{date("jS F, Y", strtotime($purchase_orders['expected_delivery_date']))}}</td></tr>
+                                        
+                                        @if($purchase_orders->delivery_location_id > 0)
                                         <tr><td><span>Delivery Location: </span>{{$purchase_orders['delivery_location']->area_name}}</td></tr>
+                                        @else
+                                        <tr><td><span>Other Delivery Location: </span>{{$purchase_orders->other_location}}</td></tr>
+                                        <tr><td><span>Other Delivery Location Difference: </span>{{$purchase_orders->other_location_difference}}</td></tr>
+                                        @endif
                                         <tr><td><span>Remark: </span>{{$purchase_orders['remarks']}}</td></tr>
+
                                     </tbody>
                                 </table>
                                 <a href="{{url('purchase_orders')}}" class="btn btn-default form_button_footer">Back</a>

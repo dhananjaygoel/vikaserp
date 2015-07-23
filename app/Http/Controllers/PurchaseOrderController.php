@@ -102,13 +102,11 @@ class PurchaseOrderController extends Controller {
      */
     public function store(PurchaseOrderRequest $request) {
 
-
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
         $input_data = Input::all();
-
 
         $i = 0;
         $j = count($input_data['product']);
@@ -155,13 +153,19 @@ class PurchaseOrderController extends Controller {
         $add_purchase_order_array = [
             'supplier_id' => $customer_id,
             'created_by' => Auth::id(),
-//            'delivery_location_id' => $location_id,
             'order_for' => $input_data['order_for'],
             'vat_percentage' => $input_data['vat_percentage'],
             'expected_delivery_date' => $expected_delivery_date,
             'remarks' => $input_data['purchase_order_remark'],
             'order_status' => "pending",
         ];
+
+        if ($input_data['purchase_order_location'] > 0) {
+            $add_purchase_order_array['delivery_location_id'] = $input_data['purchase_order_location'];
+        } else {
+            $add_purchase_order_array['other_location'] = $input_data['other_location_name'];
+            $add_purchase_order_array['other_location_difference'] = $input_data['other_location_difference'];
+        }
 
         /*
          * ------------------- -----------------------
@@ -234,7 +238,7 @@ class PurchaseOrderController extends Controller {
         if (isset($input_data['send_email'])) {
             $customers = Customer::find($customer_id);
             $purchase_order = PurchaseOrder::where('id', '=', $purchase_order_id)->with('purchase_products.purchase_product_details', 'delivery_location')->first();
-              
+
             if (count($purchase_order) > 0) {
                 if (count($purchase_order['delivery_location']) > 0) {
                     $delivery_location = $purchase_order['delivery_location']->area_name;
@@ -270,10 +274,11 @@ class PurchaseOrderController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
-        $purchase_orders = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')->first();
+        $purchase_orders = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit','delivery_location','purchase_products.purchase_product_details','customer')->first();
         if (count($purchase_orders) < 1) {
             return redirect('purchase_orders')->with('flash_message', 'Purchase order not found');
         }
+              
         return view('purchase_order_details', compact('purchase_orders'));
     }
 
