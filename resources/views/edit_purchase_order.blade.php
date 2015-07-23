@@ -198,7 +198,7 @@
                     <div class="row col-md-4">
                         <div class="form-group">
                             <label for="location">Delivery Location:<span class="mandatory">*</span></label>
-                            <select class="form-control" name="purchase_order_location" id="add_inquiry_location">
+                            <select class="form-control" name="purchase_order_location" id="purchase_other_location">
                                 <option value="" selected="">Delivery Location</option>
 
                                 @foreach($delivery_locations as $delivery_location)
@@ -214,9 +214,9 @@
                                 @endif 
                                 @endforeach
                                 @if( $purchase_order->delivery_location_id == 0)
-                                <option id="other_location_db" value="other" selected="">Other </option>
+                                <option value="-1" selected="">Other </option>
                                 @else
-                                <option id="other_location_db" value="other">Other </option>
+                                <option value="-1">Other </option>
                                 @endif 
 
 
