@@ -85,7 +85,7 @@
                                     @endforeach
                                     <tr>
                                         <td>{{ $i }}</td>
-                                        <td>{{ $pa->purchase_advice_date }}</td>
+                                        <td>{{ date("jS F, Y", strtotime($pa->purchase_advice_date)) }}</td>
                                         <td>{{ $pa['supplier']->owner_name }}</td>
                                         <td>{{ $pa->vehicle_number}}</td>
                                         <td>{{ round($pa->total_quantity, 2) }}</td>

@@ -30,7 +30,7 @@
                     <input type="hidden" name="delivery_location_id" value="{{$purchase_advise->delivery_location_id}}"/>
 
                     <div class="form-group">
-                        <label><b>Bill Date:</b>{{$purchase_advise->purchase_advice_date}}
+                        <label><b>Bill Date:</b> {{ date("jS F, Y", strtotime($purchase_advise->purchase_advice_date)) }}
                             <input type='hidden' class="form-control" name="bill_date" value="{{$purchase_advise->purchase_advice_date}}"/> 
                         </label>
                     </div>
