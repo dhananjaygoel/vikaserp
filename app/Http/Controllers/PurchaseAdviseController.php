@@ -282,8 +282,8 @@ class PurchaseAdviseController extends Controller {
 
     public function store_advise() {
 
-        $input_data = Input::all();        
-        
+        $input_data = Input::all();
+
         $validator = Validator::make($input_data, PurchaseAdvise::$store_purchase_validation);
         if ($validator->passes()) {
 
@@ -383,7 +383,7 @@ class PurchaseAdviseController extends Controller {
                     $add_purchase_advice_products = PurchaseProducts::create($purchase_advice_products);
                 }
             }
-            
+
             if ($total_present_shipping == $total_quantity) {
                 PurchaseOrder::where('id', '=', $input_data['id'])->update(array(
                     'order_status' => 'completed'
@@ -419,10 +419,10 @@ class PurchaseAdviseController extends Controller {
     }
 
     public function print_purchase_advise($id) {
-        
-        $current_date = date("m/d/");
 
-        $date_letter = 'PO/' . $current_date . "" . Input::get('pa_id');
+        $current_date = date("/m/d/");
+
+        $date_letter = 'PO' . $current_date . $id;
         PurchaseAdvise::where('id', '=', $id)->update(array(
             'serial_number' => $date_letter
 //            'advice_status' => "delivered"
