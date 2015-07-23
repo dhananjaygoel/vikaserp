@@ -227,7 +227,7 @@
 
 
                                 <div class="pull-right deletebutton">
-                                    <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_selected" ><button type="button" class="btn btn-primary form_button_footer" >Delete</button></a>
+                                    <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_selected" ><button type="button" class="btn btn-primary form_button_footer" >Delete All</button></a>
                                 </div>
                                 @endif
                             </form>

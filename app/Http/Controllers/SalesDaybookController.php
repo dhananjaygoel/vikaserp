@@ -82,7 +82,9 @@ class SalesDaybookController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+
         $input_data = Input::all();
+
         $password = Input::get('password');
         if ($password == '') {
             return Redirect::to('sales_daybook')->with('error', 'Please enter your password');
@@ -92,16 +94,20 @@ class SalesDaybookController extends Controller {
 
         if (Hash::check($password, $current_user->password)) {
 
-            foreach ($input_data['challan_id'] as $product_data) {
-                if ($product_data['checkbox'] != "") {
-                    $id = $product_data['checkbox'];
-                    $challan = DeliveryChallan::find($id);
-                    $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
-                    $challan->delete();
-                }
-            }
+            if (isset($input_data['challan_id'])) {
+                foreach ($input_data['challan_id'] as $product_data) {
+                    if ($product_data['checkbox'] != "") {
+                        $id = $product_data['checkbox'];
+                        $challan = DeliveryChallan::find($id);
+                        $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
+                        $challan->delete();
+                    }
 
-            return Redirect::to('sales_daybook')->with('flash_message', 'Selected Challans are Successfully deleted');
+                    return Redirect::to('sales_daybook')->with('flash_message', 'Selected Challans are Successfully deleted');
+                }
+            } else {
+                return Redirect::to('sales_daybook')->with('error', 'Please select at least on record to delete');
+            }
         } else {
             return Redirect::to('sales_daybook')->with('error', 'Invalid password');
         }
@@ -137,7 +143,7 @@ class SalesDaybookController extends Controller {
         $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products.unit', 'delivery_order', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
 
         $sheet_data = array();
-        $i = 1;//export;
+        $i = 1; //export;
         foreach ($allorders as $key => $value) {
 
             $sheet_data[$key]['Sr no.'] = $i++;
