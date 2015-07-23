@@ -284,11 +284,6 @@ class PurchaseAdviseController extends Controller {
 
         $input_data = Input::all();        
         
-//        echo '<pre>';
-//        print_r($input_data);
-//        echo '</pre>';
-//        exit;
-
         $validator = Validator::make($input_data, PurchaseAdvise::$store_purchase_validation);
         if ($validator->passes()) {
 
@@ -424,7 +419,8 @@ class PurchaseAdviseController extends Controller {
     }
 
     public function print_purchase_advise($id) {
-        $current_date = date("M/y/m/");
+        
+        $current_date = date("m/d/");
 
         $date_letter = 'PO/' . $current_date . "" . Input::get('pa_id');
         PurchaseAdvise::where('id', '=', $id)->update(array(
