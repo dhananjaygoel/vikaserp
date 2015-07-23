@@ -5,7 +5,7 @@
         <meta charset="windows-1252">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
-    <body onload="window.print();">
+    <body>
         <style>
             .divTable{
                 display:table;         
@@ -228,7 +228,7 @@
                 @if($prod->order_type == 'delivery_challan')
                 <div class="divRow">
                     <div class="divCell">{{ $i++ }}</div>
-                    <div class="divCell">{{ $prod['product_category']['product_sub_category']->alias_name }}</div>
+                    <div class="divCell">{{ $prod['order_product_details']->alias_name }}</div>
                     <div class="divCell">{{ $prod->actual_pieces }}</div>
                     <div class="divCell">{{ $prod->quantity }}</div>
                     <div class="divCell"> 
@@ -236,19 +236,16 @@
                         <?php
                         $difference_amount = 0;
                         foreach ($allorder['customer_difference'] as $cust_diff) {
-                            if ($prod['product_category']->id == $cust_diff->product_category_id) {
+                            if ($prod['order_product_details']['product_category']->id == $cust_diff->product_category_id) {
                                 $difference_amount = $cust_diff->difference_amount;
                             }
                         }
-
-                        echo $rate = $prod['product_category']->price + $prod['product_category']['product_sub_category']->difference + $allorder['delivery_order']['location']->difference + $difference_amount;
+                        echo $rate = $prod['order_product_details']['product_category']->price + $prod['order_product_details']->difference + ($allorder['delivery_order']['location'] ? $allorder['delivery_order']['location']->difference : 0) + $difference_amount;
                         ?>
-
-
                     </div>
                     <div class="divCell">
                         <?php $total_price += $rate * $prod->quantity; ?> 
-                        {{ $rate * $prod->quantity }} 
+                        {{ $total_price }} 
                     </div>                
                 </div>
 
@@ -279,7 +276,7 @@
                         Total Quantity: {{ $total_qty }}
                     </div>
                     <div class="ruppes grand_price">
-                        Rs. <?php echo convert_number_to_words($total_price + $allorder->freight + $allorder->loading_charge + $allorder->round_off + $allorder->discount + $allorder->vat_percentage/100 * 100); ?> Rupees
+                        Rs. <?php echo convert_number_to_words($total_price + $allorder->freight + $allorder->loading_charge + $allorder->round_off + $allorder->discount + $allorder->vat_percentage / 100 * 100); ?> Rupees
                     </div>
                 </div>
                 <div class="total">                 
