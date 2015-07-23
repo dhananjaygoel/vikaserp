@@ -44,12 +44,11 @@ $(document).ready(function () {
     });
 
     $('#purchase_other_location').change(function () {
-        
+
         if ($('#purchase_other_location').val() == '-1') {
-            $('#other_location_input_wrapper').css('display','block');
-            alert($('#purchase_other_location').val());
+            $('#other_location_input_wrapper').css('display', 'block');
         } else {
-            $('#other_location_input_wrapper').css('display','none');
+            $('#other_location_input_wrapper').css('display', 'none');
         }
     });
 
