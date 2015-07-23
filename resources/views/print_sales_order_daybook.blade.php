@@ -124,7 +124,7 @@
                     <div class="divCell">{{ $obj->serial_number }}</div>
                     <!--<div class="divCell">xxx</div>-->
                     <div class="divCell">{{ $obj['customer']->owner_name }}</div>
-                    <div class="divCell">{{ $obj['delivery_order']['location']->area_name }}</div>
+                    <div class="divCell">{{ isset($obj['delivery_order']['location'])?$obj['delivery_order']['location']->area_name: '' }}</div>
                     <div class="divCell">{{ $total_qunatity }}</div> 
                     <div class="divCell">{{ $obj->grand_price }}</div>
                     <div class="divCell">{{ $obj->bill_number }}</div>
