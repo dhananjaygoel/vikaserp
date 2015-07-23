@@ -199,7 +199,7 @@
                         <div class="form-group">
                             <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                             <select class="form-control" name="purchase_order_location" id="purchase_other_location">
-                                <option value="" selected="">Delivery Location</option>
+                                <option value="" selected="" disabled="">--Delivery Location--</option>
 
                                 @foreach($delivery_locations as $delivery_location)
 
