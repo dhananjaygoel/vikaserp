@@ -55,7 +55,15 @@
                                     ?>>
                                     <label for="new_customer">New</label>
                                 </div>
-                                <div class="customer_select">
+
+                                <?php
+                                if (Input::old('customer_status') == "new_customer") {
+                                    $style = 'style="display: none"';
+                                } else {
+                                    $style = 'style="display: block"';
+                                }
+                                ?>
+                                <div class="customer_select" <?= $style ?>>
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
                                             <input class="form-control" placeholder="Enter Customer Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
@@ -68,10 +76,9 @@
                                 <div class="clearfix"></div>
                             </div>
                             <?php
-                            
                             if (Input::old('customer_status') == "new_customer") {
                                 $style = 'style="display: block"';
-                            }else{
+                            } else {
                                 $style = 'style="display: none"';
                             }
                             ?>

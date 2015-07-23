@@ -75,13 +75,19 @@
                                     ?>>
                                     <label for="optionsRadios3">New Supplier</label>
                                 </div>
-                                <div class="supplier">
+                                <?php
+                                if (Input::old('supplier_status') == "new") {
+                                    $style = 'style="display: none"';
+                                } else {
+                                    $style = 'style="display: block"';
+                                }
+                                ?>
+                                <div class="supplier" <?= $style ?>>
                                     <select class="form-control" name="supplier_id" id="supplier_select" onchange="get_default_location();">
                                         <option value="" selected="">Select supplier</option>
                                         @if(count($customers))
                                         @foreach($customers as $c)
                                         <option value="{{$c->id}}" default_location="{{$c->delivery_location_id}}">{{$c->owner_name.'-'.$c->tally_name}}</option>
-
                                         @endforeach
                                         @endif
                                         <input type="hidden" id="customer_default_location">
@@ -96,7 +102,7 @@
                             }
                             ?>
                             <div class="exist_field" <?= $style ?>>
-                                 <div class="form-group">
+                                <div class="form-group">
                                     <label for="supplier_name"> Supplier Name<span class="mandatory">*</span></label>
                                     <input id="name" class="form-control" placeholder="Supplier Name" name="supplier_name" value="{{ Input::old('supplier_name') }}" type="text">
                                 </div>
@@ -265,7 +271,7 @@
                             <!--</div>-->
                             <div class="form-group">
                                 <label for="cp">Vehicle Number <span class="mandatory">*</span></label>
-                                <input id="cp" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="" type="text">
+                                <input id="cp" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{ Input::old('vehicle_number') }}" type="text">
 
                             </div>
                             <div class="form-group col-md-4 targetdate">
@@ -275,7 +281,6 @@
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                     <input type="text" name="expected_delivery_date" class="form-control" id="datepickerDate1" value="{{Input::old('expected_delivery_date')!=''?Input::old('expected_delivery_date'):date('m-d-Y')}}">
                                 </div>
-
                             </div>
                             <div class="clearfix"></div>
                             <div class="form-group">
@@ -283,17 +288,12 @@
                                 <textarea class="form-control" id="inquiry_remark" name="remarks"  rows="3"></textarea>
                             </div>
                             <div >
-                                <!--<button title="SMS would be sent to Relationship Manager" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>--> 
-
                             </div>
-
                             <hr>
                             <div >
                                 <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
-
                                 <a href="{{url('purchaseorder_advise')}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
-
                             <div class="clearfix"></div>
                         </form>
                         <div class="clearfix"></div>

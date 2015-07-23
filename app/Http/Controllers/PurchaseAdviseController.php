@@ -87,7 +87,7 @@ class PurchaseAdviseController extends Controller {
             }
         }
         if ($i == $j) {
-            return Redirect::back()->with('error', 'Please insert product details');
+            return Redirect::back()->withInput()->with('error', 'Please insert product details');
         }
         if ($input_data['supplier_status'] == "new") {
             $validator = Validator::make($input_data, Customer::$new_supplier_rules);

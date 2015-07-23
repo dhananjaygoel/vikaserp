@@ -62,7 +62,16 @@
                                     ?>>
                                     <label for="new_supplier">New Supplier</label>
                                 </div>
-                                <div class="supplier customer_select">
+
+                                <?php
+                                if (Input::old('supplier_status') == "new_supplier") {
+                                    $style = 'style="display: none"';
+                                } else {
+                                    $style = 'style="display: block"';
+                                }
+                                ?>
+
+                                <div class="supplier customer_select" <?= $style ?>>
                                     <div class="col-md-12">
                                         <div class="form-group searchproduct">
                                             <input class="form-control" placeholder="Enter Supplier Name " type="text" name="existing_supplier_name" id="existing_supplier_name">

@@ -41,7 +41,7 @@
                                     }
                                     ?>>
                                     <label for="existing_customer">Existing</label>
-                                    <input  value="new_customer" id="new_customer" name="customer_status" type="radio" <?php
+                                    <input value="new_customer" id="new_customer" name="customer_status" type="radio" <?php
                                     if (Input::old('customer_status') == "new_customer") {
                                         echo 'checked="checked"';
                                     }
