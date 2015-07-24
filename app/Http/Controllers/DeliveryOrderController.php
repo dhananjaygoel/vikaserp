@@ -47,12 +47,12 @@ class DeliveryOrderController extends Controller {
         if (Input::get('order_status')) {
 
             if (Input::get('order_status') == 'Inprocess') {
-                $delivery_data = DeliveryOrder::where('order_status', 'pending')->with('delivery_product', 'customer')->paginate(10);
+                $delivery_data = DeliveryOrder::orderBy('created_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer')->paginate(10);
             } elseif (Input::get('order_status') == 'Delivered') {
-                $delivery_data = DeliveryOrder::where('order_status', 'completed')->with('delivery_product', 'customer')->paginate(10);
+                $delivery_data = DeliveryOrder::orderBy('created_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer')->paginate(10);
             }
         } else {
-            $delivery_data = DeliveryOrder::where('order_status', 'pending')->with('delivery_product', 'customer')->paginate(10);
+            $delivery_data = DeliveryOrder::orderBy('created_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer')->paginate(10);
         }
 
         $delivery_data = $this->checkpending_quantity($delivery_data);

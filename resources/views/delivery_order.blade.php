@@ -242,7 +242,13 @@
                             </table>
                             <span class="pull-right">
                                 <ul class="pagination pull-right">
-                                    <?php echo $delivery_data->render(); ?>
+                                    <?php
+                                    if (!isset($_GET)) {
+                                        echo $delivery_data->render();
+                                    } else {
+                                        echo $delivery_data->appends($_GET)->render();
+                                    }
+                                    ?>
                                 </ul>
                             </span>
                             <div class="clearfix"></div>

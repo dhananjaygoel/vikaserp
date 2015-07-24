@@ -69,7 +69,7 @@
                                                 <div class="form-group searchproduct">
                                                     {{ $product['order_product_details']->alias_name}}
                                                     <input type="hidden" name="product[{{$key}}][name]" id="name_{{$key}}" value="{{$product['order_product_details']->alias_name}}">
-                                                    <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']['product_category']->id}}">
+                                                    <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']->id}}">
                                                     <!--<i class="fa fa-search search-icon"></i>-->
                                                     <input type="hidden" name="product[{{$key}}][order]" value="{{$product->id}}">
                                                 </div>
