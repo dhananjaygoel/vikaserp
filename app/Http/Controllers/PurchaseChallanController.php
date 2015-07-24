@@ -41,15 +41,8 @@ class PurchaseChallanController extends Controller {
     public function index() {
 
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'purchase_product.product_category.product_sub_category')
-//        $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'purchase_product.purchase_product_details', 'purchase_product.unit')
                 ->where('order_status', 'pending')
                 ->Paginate(10);
-        
-//        echo '<pre>';
-//        print_r($purchase_challan->toArray());
-//        echo '</pre>';
-//        exit;
-
         $purchase_challan->setPath('purchase_challan');
         return view('purchase_challan', compact('purchase_challan'));
     }
@@ -141,6 +134,12 @@ class PurchaseChallanController extends Controller {
         if (count($purchase_challan) < 1) {
             return redirect('purchase_challan')->with('flash_message', 'Challan not found');
         }
+        
+//        echo '<pre>';
+//        print_r($purchase_challan->toArray());
+//        echo '</pre>';
+//        exit;
+        
         return view('view_purchase_challan', compact('purchase_challan'));
     }
 

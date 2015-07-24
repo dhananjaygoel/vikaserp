@@ -11,11 +11,6 @@
                 </ol>
                 <div class="filter-block">
                     <h1 class="pull-left">View Purchase Challan </h1>                                 
-                    <!--                    <div class="pull-right top-page-ui">
-                                            <a href="{{URL::action('PurchaseChallanController@edit',['id'=> $purchase_challan->id])}}" class="btn btn-primary pull-right">
-                                                Edit Purchase Challan
-                                            </a>
-                                        </div>                -->
                 </div>
             </div>
         </div>
@@ -81,12 +76,14 @@
                                         <td> {{$product_data->present_shipping}}</td> 
                                         <td> {{$product_data->price}}</td>
                                         <td> 
-                                            <?php
+                                            <?php                                        
+                                            
                                             $total_quantity += $product_data->quantity;
                                             $amount = $product_data->quantity * $product_data->price;
                                             echo $amount;
-                                            $total_amount = $total_amount + $amount;
+                                            $total_amount = $total_amount + $amount;                                            
                                             ?>
+                                            
                                         </td>
                                         <td> {{$product_data->remarks}}</td>
                                     </tr>
@@ -106,10 +103,12 @@
                                         <td><span>Freight: </span>{{ $purchase_challan->freight }}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Total: </span><?php
-                                            $total = $total_amount + (($purchase_challan->discount * $total_amount) / 100) + $purchase_challan->freight;
+                                        <td><span>Total: </span>
+                                            <?php
+                                            $total = $total_amount + $purchase_challan->discount + $purchase_challan->freight;
                                             echo $total;
-                                            ?></td>
+                                            ?>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td><span>Unloaded By: </span>{{ $purchase_challan->unloaded_by }}</td>
@@ -132,7 +131,6 @@
                                     <tr>
                                         <td><span>Vehicle Name: </span>{{ $purchase_challan->vehicle_number }}</td>
                                     </tr> 
-
                                     <tr>
                                         <td>
                                             <span>Delivery Location: </span>
