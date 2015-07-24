@@ -80,12 +80,14 @@
                                         <td> {{$product_data['unit']->unit_name}} </td>
                                         <td> {{$product_data->present_shipping}}</td> 
                                         <td> {{$product_data->price}}</td>
-                                        <td> <?php
+                                        <td> 
+                                            <?php
                                             $total_quantity += $product_data->quantity;
                                             $amount = $product_data->quantity * $product_data->price;
                                             echo $amount;
                                             $total_amount = $total_amount + $amount;
-                                            ?></td>
+                                            ?>
+                                        </td>
                                         <td> {{$product_data->remarks}}</td>
                                     </tr>
                                     @endif
