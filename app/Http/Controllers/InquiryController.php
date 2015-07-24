@@ -461,15 +461,16 @@ class InquiryController extends Controller {
 
         $term = '%' . Input::get('term') . '%';
 
-        $customers = Customer::where('owner_name', 'like', $term)
+        $customers = Customer::orderBy('owner_name', 'ASC')
+                ->where(function($query) use($term) {
+                    $query->whereHas('city', function($q) use ($term) {
+                        $q->where('city_name', 'like' . $term)
                         ->orWhere('company_name', $term)
-                        ->orWhere('tally_name', 'like', $term)
-                        ->where('customer_status', '=', 'permanent')
-                        ->orwhere(function($query) use($term) {
-                            $query->whereHas('city', function($q) use ($term) {
-                                $q->orWhere('city_name', 'like' . $term);
-                            });
-                        })->get();
+                        ->orWhere('tally_name', 'like', $term);
+                    });
+                })
+                ->where('customer_status', '=', 'permanent')
+                ->get();
 
 
         if (count($customers) > 0) {
@@ -584,6 +585,7 @@ class InquiryController extends Controller {
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         $customers = Customer::all();
+
         return view('place_order', compact('inquiry', 'customers', 'delivery_location', 'units'));
     }
 
@@ -592,7 +594,7 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-       
+
         $input_data = Input::all();
         $customer_id = 0;
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
@@ -655,7 +657,7 @@ class InquiryController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
-
+        
         if ($input_data['status'] == 'warehouse') {
             $order_status = 'warehouse';
             $supplier_id = 0;
@@ -699,7 +701,7 @@ class InquiryController extends Controller {
                 $str = "Dear " . $customer->owner_name . ", your order has been logged for following:";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
-                        $product = ProductSubCategory::where('product_category_id', '=', $product_data['id'])->first();
+                        $product = ProductSubCategory::find($product_data['id']);
                         $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
                         $total_quantity = $total_quantity + $product_data['quantity'];
                     }
@@ -750,8 +752,8 @@ class InquiryController extends Controller {
 
 //send mail
         if (isset($input_data['send_email'])) {
-            
-            
+
+
             $customers = Customer::find($customer_id);
 
             if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
@@ -762,7 +764,7 @@ class InquiryController extends Controller {
                     } else {
                         $delivery_location = $order->other_location;
                     }
-                              
+
                     $mail_array = array(
                         'customer_name' => $customers->owner_name,
                         'expected_delivery_date' => $order->expected_delivery_date,
@@ -771,15 +773,15 @@ class InquiryController extends Controller {
                         'order_product' => $order['all_order_products'],
                         'source' => 'inquiry'
                     );
-                    
-                    
+
+
                     Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($customers) {
                         $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: New Order');
                     });
                 }
             }
         }
-//        Inquiry::where('id', '=', $id)->update(['inquiry_status' => 'Completed']);
+        Inquiry::where('id', '=', $id)->update(['inquiry_status' => 'Completed']);
         return redirect('inquiry')->with('flash_success_message', 'One Order successfully generated for Inquiry.');
     }
 

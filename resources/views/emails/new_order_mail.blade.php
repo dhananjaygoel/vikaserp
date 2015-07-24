@@ -27,9 +27,9 @@
             <td>
                 @if($product['order_product_details']->unit_id == 1)
                 {{ 'KG' }}
-                @else if($product['order_product_details']->unit_id == 2)
+                @elseif($product['order_product_details']->unit_id == 2)
                 {{ 'Pieces' }}
-                @else if($product['order_product_details']->unit_id == 3)
+                @elseif($product['order_product_details']->unit_id == 3)
                 {{ 'Meter' }}
                 @endif
             </td>
