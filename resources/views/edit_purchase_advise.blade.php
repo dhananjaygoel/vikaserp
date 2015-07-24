@@ -1,3 +1,9 @@
+<?php
+//echo '<pre>';
+//print_r($purchase_advise->toArray());
+//echo '</pre>';
+//exit;
+?>
 @extends('layouts.master')
 @section('title','Edit Purchase Advise')
 @section('content')
@@ -145,7 +151,8 @@
                                 <tbody>
                                     <tr class="cdtable">
                                         <td class="cdfirst">Delivery Location:</td>
-                                        <td>@if($purchase_advise->delivery_location_id !=0)
+                                        <td>
+                                            @if($purchase_advise->delivery_location_id > 0)
                                             {{$purchase_advise['location']->area_name}}
                                             @else
                                             {{$purchase_advise->other_location}}

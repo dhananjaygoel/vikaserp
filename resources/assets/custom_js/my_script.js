@@ -10,8 +10,13 @@ $('.deleteCustomer').click(function () {
     $(this).parents('.modal').find('form').submit();
 });
 
+var nowDate = new Date();
+var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
+
+
 $('#bill_date').datepicker({
-    format: 'dd-mm-yyyy',
+    format: 'mm-dd-yyyy',
+    startDate: today,
     autoclose: true
 });
 

@@ -199,14 +199,14 @@
                             <div class="row col-md-4">  
                                 <div class="form-group">
                                     <label for="loc1">Delivery Location:</label>
-                                    <select class="form-control" name="delivery_location_id" id="add_inquiry_location">
-                                        <option value="" selected="">Delivery Location</option>
+                                    <select class="form-control" name="delivery_location_id" id="purchase_other_location">
+                                        <option value="" selected="" disabled="">--Delivery Location--</option>
                                         @foreach($delivery_locations as $delivery_location)
                                         @if($delivery_location->status == 'permanent')
                                         <option value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
                                         @endif
                                         @endforeach
-                                        <option id="other_location" value="other">Other</option>
+                                        <option value="-1">Other</option>
                                     </select>
                                 </div>
                             </div>

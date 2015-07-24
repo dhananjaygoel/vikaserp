@@ -78,6 +78,7 @@ class PurchaseAdviseController extends Controller {
      * @return Response
      */
     public function store(StorePurchaseAdvise $request) {
+
         $input_data = Input::all();
         $i = 0;
         $j = count($input_data['product']);
@@ -86,9 +87,11 @@ class PurchaseAdviseController extends Controller {
                 $i++;
             }
         }
+
         if ($i == $j) {
             return Redirect::back()->withInput()->with('error', 'Please insert product details');
         }
+
         if ($input_data['supplier_status'] == "new") {
             $validator = Validator::make($input_data, Customer::$new_supplier_rules);
             if ($validator->passes()) {
@@ -117,11 +120,15 @@ class PurchaseAdviseController extends Controller {
         $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
 
+        $date_string2 = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_delivery_date']);
+        $date2 = date("Y/m/d", strtotime(str_replace('-', '/', $date_string2)));
+        $datetime2 = new DateTime($date2);
+
         $purchase_advise_array = array();
         $purchase_advise_array['purchase_advice_date'] = $datetime->format('Y-m-d');
         $purchase_advise_array['supplier_id'] = $customer_id;
         $purchase_advise_array['created_by'] = Auth::id();
-        $purchase_advise_array['expected_delivery_date'] = $input_data['expected_delivery_date'];
+        $purchase_advise_array['expected_delivery_date'] = $datetime2->format('Y-m-d');
         $purchase_advise_array['total_price'] = $input_data['total_price'];
         $purchase_advise_array['remarks'] = $input_data['remarks'];
         $purchase_advise_array['vehicle_number'] = $input_data['vehicle_number'];
@@ -131,7 +138,8 @@ class PurchaseAdviseController extends Controller {
         if (isset($input_data['is_vat']) && $input_data['is_vat'] == "exclude_vat") {
             $purchase_advise_array['vat_percentage'] = $input_data['vat_percentage'];
         }
-        if (isset($input_data['delivery_location_id']) && $input_data['delivery_location_id'] == "other") {
+        
+        if (isset($input_data['delivery_location_id']) && $input_data['delivery_location_id'] == "-1") {
             $purchase_advise_array['delivery_location_id'] = 0;
             $purchase_advise_array['other_location'] = $input_data['other_location_name'];
             $purchase_advise_array['other_location_difference'] = $input_data['other_location_difference'];
