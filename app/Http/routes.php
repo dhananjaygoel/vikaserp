@@ -60,6 +60,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('get_city', 'CustomerController@get_city');
     Route::resource('set_price', 'CustomerController@set_price');
     Route::resource('update_set_price', 'CustomerController@update_set_price');
+    Route::get('bulk_set_price', 'CustomerController@bulk_set_price');
+    Route::post('save_all_set_price', 'CustomerController@save_all_set_price');
 
 
     Route::resource('pending_customers', 'PendingCustomerController');
@@ -114,7 +116,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('pending_purchase_advice', 'PurchaseAdviseController@pending_purchase_advice');
     Route::resource('orders', 'OrderController');
     Route::post('manual_complete_order', 'OrderController@manual_complete_order');
-    
+
     Route::get('fetch_order_size', 'ProductsubController@fetch_order_size');
 
 

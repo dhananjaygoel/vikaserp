@@ -65,8 +65,9 @@ class CustomerController extends Controller {
                     ->orWhere('company_name', 'like', '%' . Input::get('search') . '%');
         }
 
-        $customers = $q->with('city')->paginate(10);
+        $customers = $q->with('city')->paginate(20);
         $customers->setPath('customers');
+
         return View::make('customers', array('customers' => $customers));
     }
 
@@ -462,6 +463,50 @@ class CustomerController extends Controller {
 //
 //            return redirect('set_price/' . $customer_id)->with('success', 'Customer Set price successfully updated');
 //        }
+    }
+
+    public function bulk_set_price() {
+        
+        $product_type = 1;
+        if (Input::get('product_filter') != ""){
+            $product_type = Input::get('product_filter');
+        }
+
+        $customer = Customer::where('customer_status', 'permanent')->paginate(20);
+        $product_category = ProductCategory::where('product_type_id', $product_type)->get();
+        $customer->setPath('bulk_set_price');
+        $product_type = ProductType::all();
+        
+        return view('bulk_set_price', compact('customer', 'product_category','product_type'));
+    }
+
+    public function save_all_set_price() {
+
+        $data = Input::all();
+        foreach ($data['set_diff'] as $key => $value) {
+            foreach ($value as $key => $value) {
+                if ($value['price'] != "" && $value['cust_id'] != "" && $value['product_id'] != "") {
+
+                    $count = CustomerProductDifference::where('product_category_id', $value['product_id'])
+                            ->where('customer_id', $value['cust_id'])
+                            ->count();
+
+                    if ($count == 0) {
+                        $diff = new CustomerProductDifference();
+                        $diff->product_category_id = $value['product_id'];
+                        $diff->difference_amount = $value['price'];
+                        $diff->customer_id = $value['cust_id'];
+                        $diff->save();
+                    } else {
+                        CustomerProductDifference::where('product_category_id', $value['product_id'])
+                                ->where('customer_id', $value['cust_id'])
+                                ->update(array('difference_amount' => $value['price']));
+                    }
+                }
+            }
+        }
+
+        return redirect('bulk_set_price')->with('success', 'Customer Set price successfully updated');
     }
 
 }

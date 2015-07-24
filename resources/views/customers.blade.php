@@ -14,10 +14,10 @@
                     <!--*******************************************************************-->
                     <!--******************do not remove this comments**********************-->
                     <!--*******************************************************************-->
-<!--                    <a href="{{url('excel_import_customer')}}" class="btn btn-primary pull-right">
-                        <i class="fa fa-plus-circle fa-lg"></i> Import Customer
-                    </a>-->
-                    
+                    <!--                    <a href="{{url('excel_import_customer')}}" class="btn btn-primary pull-right">
+                                            <i class="fa fa-plus-circle fa-lg"></i> Import Customer
+                                        </a>-->
+
                     <a href="{{url('customers/create')}}" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Add Customer
                     </a>
@@ -55,7 +55,7 @@
                                     <tr>
                                         <th class="col-md-1">#</th>
                                         <!--<th>Owner Name</th>-->
-                                        <th>Company Name</th>
+                                        <th>Tally Name</th>
                                         <th>Email</th>
                                         <th>Mobile </th>                                                            
                                         <!--<th>City</th>-->                                                            
@@ -66,14 +66,13 @@
                                     <?php
                                     $i = ($customers->currentPage() - 1) * $customers->perPage() + 1;
                                     ?>
-                                    @foreach($customers as $key=>$c)
+                                    @foreach($customers as $c)
                                     <tr>
-                                        <td class="col-md-1">{{$i}}</td>
+                                        <td class="col-md-1">{{$i++}}</td>
                                         <!--<td>{{$c->owner_name}}</td>-->
                                         <td>{{$c->tally_name}}</td>
                                         <td>{{$c->email}}</td>                                        
                                         <td>{{$c->phone_number1}}</td>
-                                        <!--<td>{{$c->city_name }} </td>-->
                                         <td class="text-center">
                                             <a href="{{url('customers/'.$c->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -135,7 +134,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <?php $i++; ?>
                                 @endforeach
                                 </tbody>
                             </table>
