@@ -4,7 +4,7 @@
         <title>Purchase Advice</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
-    <body onload="window.print();">
+    <body>
         <style>
             .divTable{
                 display:table;         
@@ -163,7 +163,14 @@
                 </div>
             </div>
             <div class="del">
-                Del @: {{ $purchase_advise['location']->area_name }}
+                Del @:
+                
+                @if($purchase_advise->delivery_location_id > 0)
+                {{$purchase_advise['location']->area_name}}
+                @else
+                {{$purchase_advise->other_location}}
+                @endif
+
             </div>
             <div class="divTable">
                 <div class="headRow">

@@ -92,11 +92,11 @@
                                         </tr>
                                     <?php } ?>
 <!--                                    <tr>
-                                        <td><span>Grand Total: </span> 5000</td>
-                                    </tr>-->
+                            <td><span>Grand Total: </span> 5000</td>
+                        </tr>-->
 <!--                                    <tr>
-                                        <td><span>Total Price: </span>Lorem</td>
-                                    </tr>   -->
+                            <td><span>Total Price: </span>Lorem</td>
+                        </tr>   -->
                                     <tr>
                                         <td><span>Expected Delivery Date: </span>{{date("jS F, Y", strtotime($purchase_advise->expected_delivery_date))}}</td>
                                     </tr>
@@ -105,11 +105,11 @@
                                     </tr>
                                     <tr>
                                         <td><span>Delivery Location: </span> 
-                                        @if($purchase_advise->delivery_location_id !=0)
+                                            @if($purchase_advise->delivery_location_id > 0)
                                             {{$purchase_advise['location']->area_name}}
-                                        @else
+                                            @else
                                             {{$purchase_advise->other_location}}
-                                        @endif
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -117,7 +117,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                             <a href="{{url('purchaseorder_advise')}}" class="btn btn-default form_button_footer">Back</a>
+                            <a href="{{url('purchaseorder_advise')}}" class="btn btn-default form_button_footer">Back</a>
                         </div>
                     </div>
                 </div>

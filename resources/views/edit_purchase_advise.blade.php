@@ -1,9 +1,3 @@
-<?php
-//echo '<pre>';
-//print_r($purchase_advise->toArray());
-//echo '</pre>';
-//exit;
-?>
 @extends('layouts.master')
 @section('title','Edit Purchase Advise')
 @section('content')
