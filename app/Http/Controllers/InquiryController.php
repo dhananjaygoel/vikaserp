@@ -700,6 +700,9 @@ class InquiryController extends Controller {
                 $total_quantity = '';
                 $str = "Dear " . $customer->owner_name . ", your order has been logged for following:";
                 foreach ($input_data['product'] as $product_data) {
+                    echo '<pre>';
+                    print_r($product_data);
+                    echo '</pre>';
                     if ($product_data['name'] != "") {
                         $product = ProductSubCategory::where('product_category_id', '=', $product_data['id'])->first();
                         $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
