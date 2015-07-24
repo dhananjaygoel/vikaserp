@@ -167,7 +167,7 @@
                                     </tr>
                                     <tr class="">
                                         <td class="cdfirst">Expected Delivery Date:</td>
-                                        <td> {{date("jS F, Y", strtotime($purchase_advise->expected_delivery_date)) }}</td>
+                                        <td> {{ date("jS F, Y", strtotime($purchase_advise->expected_delivery_date)) }} </td>
                                     </tr>
                                     <tr class="cdtable">
                                         <td class="cdfirst">Remark:</td>

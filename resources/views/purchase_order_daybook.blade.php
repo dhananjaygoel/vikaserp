@@ -123,7 +123,7 @@
                                                     <input type="checkbox" name="daybook[]" id="daybook[]" value="{{ $daybook->id }}" />
                                                     <span class="cbt">{{ $i++ }}</span>
                                                 </td>
-                                                <td>{{ date("d F, Y", strtotime($daybook->updated_at)) }}</td>
+                                                <td>{{ date("jS F, Y", strtotime($daybook->updated_at)) }}</td>
                                                 <td>{{ $daybook->serial_number }}</td>
                                                 <td>{{ $daybook['supplier']->owner_name }}</td>
                                                 <td>{{ $daybook->vehicle_number }}</td>                                        

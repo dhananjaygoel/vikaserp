@@ -111,7 +111,7 @@
                                         <tr><td><span>VAT Percentage: </span>{{$inquiry->vat_percentage."%"}}</td></tr>
                                         @endif
                                         <tr>
-                                            <td><span>Expected Delivery Date: </span>{{date('d F,Y',strtotime($inquiry->expected_delivery_date))}}</td>
+                                            <td><span>Expected Delivery Date: </span>{{date('jS F, Y',strtotime($inquiry->expected_delivery_date))}}</td>
                                         </tr>
                                         <tr>
                                             <td><span>Remark: </span>{{$inquiry->remarks}}</td>

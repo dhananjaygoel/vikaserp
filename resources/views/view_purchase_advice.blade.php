@@ -28,7 +28,7 @@
                             <table id="table-example" class="table customerview_table">
                                 <tbody>                    
                                     <tr>
-                                        <td><span>Bill Date:</span> {{date('m F,Y', strtotime($purchase_advise->purchase_advice_date))}}</td>
+                                        <td><span>Bill Date:</span> {{date('jS F, Y', strtotime($purchase_advise->purchase_advice_date))}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Supplier Name:</span> {{$purchase_advise['supplier']->owner_name.'-'.$purchase_advise['supplier']->tally_name}}</td>
@@ -91,12 +91,6 @@
                                             <td><span>VAT Percentage: </span> {{$purchase_advise->vat_percentage.'%'}}</td>
                                         </tr>
                                     <?php } ?>
-<!--                                    <tr>
-                            <td><span>Grand Total: </span> 5000</td>
-                        </tr>-->
-<!--                                    <tr>
-                            <td><span>Total Price: </span>Lorem</td>
-                        </tr>   -->
                                     <tr>
                                         <td><span>Expected Delivery Date: </span>{{date("jS F, Y", strtotime($purchase_advise->expected_delivery_date))}}</td>
                                     </tr>

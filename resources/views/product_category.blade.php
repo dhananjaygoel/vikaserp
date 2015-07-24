@@ -106,7 +106,7 @@
                                                 <!--</form>-->
                                             </td> 
                                             <!--<td>{{date("d F, Y", strtotime($product->created_at))}}</td>-->
-                                            <td>{{date("d F, Y", strtotime($product->updated_at))}}</td>
+                                            <td>{{date("jS F, Y", strtotime($product->updated_at))}}</td>
                                             <td>
                                                 <a href="{{URL::action('ProductController@show',['id'=> $product->id])}}" class="table-link" title="view">
                                                     <span class="fa-stack">

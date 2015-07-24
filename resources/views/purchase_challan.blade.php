@@ -48,7 +48,7 @@
                                         <td class="text-center">{{$challan['supplier']->owner_name}}</td>
                                         <td class="text-center">{{$challan->serial_number}}</td>
                                         <td class="text-center">{{$challan->bill_number}}</td>
-                                        <td class="text-center">{{date('d F, Y',strtotime($challan['purchase_advice']->purchase_advice_date))}}</td>
+                                        <td class="text-center">{{date('jS F, Y',strtotime($challan['purchase_advice']->purchase_advice_date))}}</td>
                                         <td class="text-center">250</td>
                                         <td class="text-center">
                                             <a href="{{URL::action('PurchaseChallanController@show',['id'=> $challan->id]) }}" class="table-link" title="view">

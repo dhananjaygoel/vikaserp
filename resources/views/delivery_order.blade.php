@@ -82,7 +82,7 @@
                                     @foreach($delivery_data as $delivery)
                                     <tr>
                                         <td>{{ $i++ }}</td>
-                                        <td>{{date("d F, Y", strtotime($delivery->created_at)) }}</td>
+                                        <td>{{date("jS F, Y", strtotime($delivery->created_at)) }}</td>
                                         <td>       
                                             {{$delivery['customer']->owner_name}}
                                         </td> 
