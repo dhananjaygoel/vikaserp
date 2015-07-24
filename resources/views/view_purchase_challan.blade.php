@@ -11,11 +11,11 @@
                 </ol>
                 <div class="filter-block">
                     <h1 class="pull-left">View Purchase Challan </h1>                                 
-<!--                    <div class="pull-right top-page-ui">
-                        <a href="{{URL::action('PurchaseChallanController@edit',['id'=> $purchase_challan->id])}}" class="btn btn-primary pull-right">
-                            Edit Purchase Challan
-                        </a>
-                    </div>                -->
+                    <!--                    <div class="pull-right top-page-ui">
+                                            <a href="{{URL::action('PurchaseChallanController@edit',['id'=> $purchase_challan->id])}}" class="btn btn-primary pull-right">
+                                                Edit Purchase Challan
+                                            </a>
+                                        </div>                -->
                 </div>
             </div>
         </div>
@@ -27,7 +27,7 @@
                             <table id="table-example" class="table customerview_table">
                                 <tbody>               
                                     <tr>
-                                        <td><span>Bill Date:</span> {{$purchase_challan['purchase_advice']->purchase_advice_date}}</td>
+                                        <td><span>Bill Date:</span> {{ date('jS F, Y',strtotime($purchase_challan['purchase_advice']->purchase_advice_date)) }}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Bill Number:</span> {{ $purchase_challan->bill_number }}</td>
@@ -68,7 +68,8 @@
                                             <span>Remark</span>
                                         </td>
                                     </tr>
-                                    <?php $total_quantity = 0;
+                                    <?php
+                                    $total_quantity = 0;
                                     $total_amount = 0;
                                     ?>
                                     @foreach($purchase_challan['purchase_product'] as $product_data)
@@ -103,7 +104,8 @@
                                         <td><span>Freight: </span>{{ $purchase_challan->freight }}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Total: </span><?php $total = $total_amount + (($purchase_challan->discount * $total_amount) / 100) + $purchase_challan->freight;
+                                        <td><span>Total: </span><?php
+                                            $total = $total_amount + (($purchase_challan->discount * $total_amount) / 100) + $purchase_challan->freight;
                                             echo $total;
                                             ?></td>
                                     </tr>
@@ -136,7 +138,8 @@
                                             {{$purchase_challan['delivery_location']->area_name}}
                                             @else
                                             {{$purchase_challan->other_location}}
-                                            @endif</td>
+                                            @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td><span>Remark: </span>{{ $purchase_challan->remarks }}</td>
@@ -144,7 +147,7 @@
                                 </tbody>
                             </table>
 
-
+                            <a href="{{url('purchase_challan')}}" class="btn btn-default">Back</a>
 
                         </div>
                     </div>

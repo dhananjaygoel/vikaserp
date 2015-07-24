@@ -49,7 +49,25 @@
                                         <td class="text-center">{{$challan->serial_number}}</td>
                                         <td class="text-center">{{$challan->bill_number}}</td>
                                         <td class="text-center">{{date('jS F, Y',strtotime($challan['purchase_advice']->purchase_advice_date))}}</td>
-                                        <td class="text-center">250</td>
+                                        <td class="text-center">
+                                            <?php
+                                            $total_qty = 0;
+                                            foreach ($challan['purchase_product'] as $pc) {
+                                                if ($pc->order_type == 'purchase_challan') {
+                                                    if ($pc->unit_id == 1) {
+                                                        $total_qty += $pc->quantity;
+                                                    }
+                                                    if ($pc->unit_id == 2) {
+                                                        $total_qty += ($pc->quantity * $pc['product_category']['product_sub_category']->weight);
+                                                    }
+                                                    if ($pc->unit_id == 3) {
+                                                        $total_qty += (($pc->quantity / $pc['product_category']['product_sub_category']->standard_length ) * $pc['product_category']['product_sub_category']->weight);
+                                                    }
+                                                }
+                                            }
+                                            echo round($total_qty, 2);
+                                            ?>
+                                        </td>
                                         <td class="text-center">
                                             <a href="{{URL::action('PurchaseChallanController@show',['id'=> $challan->id]) }}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -140,6 +158,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 @endforeach
                                 </tbody>
                             </table>
