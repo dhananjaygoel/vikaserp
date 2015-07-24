@@ -237,7 +237,7 @@ class DeliveryOrderController extends Controller {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
 
-                if ($input_data['pending_user_id'] > 0) {
+                if (isset($input_data['pending_user_id']) && $input_data['pending_user_id'] > 0) {
                     $pending_cust = array(
                         'owner_name' => $input_data['customer_name'],
                         'contact_person' => $input_data['contact_person'],

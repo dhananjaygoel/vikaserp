@@ -31,7 +31,6 @@
                                 </div>
                                 <div class="form-group pull-left">
                                     <div class="col-md-12">
-
                                         <select class="form-control" id="order_for_filter" name="order_for_filter" onchange="this.form.submit();">
                                             <option value="" selected="">Order For</option>
                                             <option value="warehouse" <?php
@@ -45,19 +44,16 @@
                                             }
                                             ?>>Direct</option>
                                         </select>
-
                                     </div>
                                 </div>
                                 <div class="form-group pull-left">
                                     <div class="col-md-12">
-
                                         <select class="form-control" id="purchase_order_filter" name="purchase_order_filter" onchange="this.form.submit();">
                                             <option value="">Status</option>
                                             <option value="pending" <?php if (isset($_GET['purchase_order_filter']) && ($_GET['purchase_order_filter'] == "pending")) echo "selected=''"; ?>>Pending</option>
                                             <option value="completed" <?php if (isset($_GET['purchase_order_filter']) && ($_GET['purchase_order_filter'] == "completed")) echo "selected=''"; ?>>Completed</option>
                                             <option value="canceled" <?php if (isset($_GET['purchase_order_filter']) && ($_GET['purchase_order_filter'] == "canceled")) echo "selected=''"; ?>>Canceled</option>
                                         </select>
-
                                     </div>
                                 </div>
                             </div>
