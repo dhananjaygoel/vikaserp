@@ -68,6 +68,7 @@
                             </div>
                         </div>
                         <div class="exist_field">
+                            <input type="hidden" id='pending_user_id' name="pending_user_id" value='{{$purchase_order['customer']->id}}'/>
                             <div class="form-group">
                                 <label for="name"> Supplier Name<span class="mandatory">*</span></label>
                                 <input id="name" class="form-control" placeholder="Supplier Name" name="supplier_name" value="{{$purchase_order['customer']->owner_name}}" type="text">
@@ -101,15 +102,15 @@
                     <div class="exist_field"  style="display:none">
                         <div class="form-group">
                             <label for="name"> Supplier Name<span class="mandatory">*</span></label>
-                            <input id="name" class="form-control" placeholder="Supplier Name" name="supplier_name" value="{{$purchase_order['customer']->owner_name}}" type="text">
+                            <input id="name" class="form-control" placeholder="Supplier Name" name="supplier_name" value="" type="text">
                         </div>
                         <div class="form-group">
                             <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
-                            <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{$purchase_order['customer']->phone_number1}}" type="text">
+                            <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" type="text">
                         </div>
                         <div class="form-group">
                             <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
-                            <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$purchase_order['customer']->credit_period}}" type="text">
+                            <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="text">
                         </div>
                     </div>
                     @endif

@@ -337,13 +337,32 @@ class PurchaseOrderController extends Controller {
         if ($input_data['supplier_status'] == "new_supplier") {
             $validator = Validator::make($input_data, Customer::$new_supplier_inquiry_rules);
             if ($validator->passes()) {
-                $customers = new Customer();
-                $customers->owner_name = $input_data['supplier_name'];
-                $customers->phone_number1 = $input_data['mobile_number'];
-                $customers->credit_period = $input_data['credit_period'];
-                $customers->customer_status = 'pending';
-                $customers->save();
-                $customer_id = $customers->id;
+
+
+
+                if (isset($input_data['pending_user_id']) && $input_data['pending_user_id'] > 0) {
+
+                    $pending_cust = array(
+                        'owner_name' => $input_data['supplier_name'],
+                        'phone_number1' => $input_data['mobile_number'],
+                        'credit_period' => $input_data['credit_period'],
+                        'customer_status' => 'pending'
+                    );
+
+                    Customer::where('id', $input_data['pending_user_id'])
+                            ->update($pending_cust);
+
+                    $customer_id = $input_data['pending_user_id'];
+                } else {
+
+                    $customers = new Customer();
+                    $customers->owner_name = $input_data['supplier_name'];
+                    $customers->phone_number1 = $input_data['mobile_number'];
+                    $customers->credit_period = $input_data['credit_period'];
+                    $customers->customer_status = 'pending';
+                    $customers->save();
+                    $customer_id = $customers->id;
+                }
             } else {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
