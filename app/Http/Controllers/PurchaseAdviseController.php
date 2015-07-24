@@ -113,13 +113,12 @@ class PurchaseAdviseController extends Controller {
             }
         }
 
-        $date_string_bill_date = preg_replace('~\x{00a0}~u', ' ', $input_data['bill_date']);
-        $date_bill_date = date("Y/m/d", strtotime($date_string_bill_date));
-        $datetime_bill_date = new DateTime($date_bill_date);
+        $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['bill_date']);
+        $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+        $datetime = new DateTime($date);
 
         $purchase_advise_array = array();
-//        $purchase_advise_array['purchase_advice_date'] = date('Y-m-d', strtotime($input_data['bill_date']));
-        $purchase_advise_array['purchase_advice_date'] = $datetime_bill_date->format('Y-m-d');
+        $purchase_advise_array['purchase_advice_date'] = $datetime->format('Y-m-d');
         $purchase_advise_array['supplier_id'] = $customer_id;
         $purchase_advise_array['created_by'] = Auth::id();
         $purchase_advise_array['expected_delivery_date'] = $input_data['expected_delivery_date'];
@@ -127,13 +126,12 @@ class PurchaseAdviseController extends Controller {
         $purchase_advise_array['remarks'] = $input_data['remarks'];
         $purchase_advise_array['vehicle_number'] = $input_data['vehicle_number'];
         $purchase_advise_array['order_for'] = $input_data['order_for'];
-
+        $purchase_advise_array['advice_status'] = 'in_process';
 
         if (isset($input_data['is_vat']) && $input_data['is_vat'] == "exclude_vat") {
             $purchase_advise_array['vat_percentage'] = $input_data['vat_percentage'];
         }
         if (isset($input_data['delivery_location_id']) && $input_data['delivery_location_id'] == "other") {
-//            $delivery_location = DeliveryLocation::create(array('area_name' => $input_data['new_location'], 'status' => 'pending'));
             $purchase_advise_array['delivery_location_id'] = 0;
             $purchase_advise_array['other_location'] = $input_data['other_location_name'];
             $purchase_advise_array['other_location_difference'] = $input_data['other_location_difference'];
@@ -142,8 +140,6 @@ class PurchaseAdviseController extends Controller {
             $purchase_advise_array['other_location'] = '';
             $purchase_advise_array['other_location_difference'] = '';
         }
-
-
 
         $purchase_advise = PurchaseAdvise::create($purchase_advise_array);
 

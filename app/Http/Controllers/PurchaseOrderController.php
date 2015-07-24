@@ -58,13 +58,15 @@ class PurchaseOrderController extends Controller {
                 $q = $q->where('order_status', '=', $_GET['purchase_order_filter'])
                         ->where('is_view_all', '=', 0);
             } else {
-                $q = $q->where('is_view_all', '=', 0);
+                $q = $q->where('order_status', '=', 'pending')->where('is_view_all', '=', 0);
             }
         }
 
         if (Auth::user()->role_id < 1) {
             if ((isset($_GET['purchase_order_filter'])) && $_GET['purchase_order_filter'] != '') {
                 $q = $q->where('order_status', '=', $_GET['purchase_order_filter']);
+            } else {
+                $q = $q->where('order_status', '=', 'pending');
             }
         }
 
@@ -364,30 +366,21 @@ class PurchaseOrderController extends Controller {
 
 
         $purchase_order = PurchaseOrder::find($id);
-//        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
-//
-//            $add_purchase_order_array = [
-//                'supplier_id' => $customer_id,
-//                'created_by' => Auth::id(),                
-//                'order_for' => $input_data['order_for'],
-//                'vat_percentage' => $input_data['vat_percentage'],
-//                'expected_delivery_date' => $datetime->format('Y-m-d'),
-//                'remarks' => $input_data['purchase_order_remark'],
-//                'order_status' => "pending"                
-//            ];
-//        } else {
+        if ($input_data['vat_status'] == 'include_vat') {
+            $vat_percentage = '';
+        } else {
+            $vat_percentage = $input_data['vat_percentage'];
+        }
         $add_purchase_order_array = [
             'is_view_all' => $input_data['viewable_by'],
             'supplier_id' => $customer_id,
             'order_for' => $input_data['order_for'],
             'created_by' => Auth::id(),
-            'vat_percentage' => $input_data['vat_percentage'],
+            'vat_percentage' => $vat_percentage,
             'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['purchase_order_remark'],
             'order_status' => "pending"
         ];
-//        }
-
         /*
          * ------------------- --------------
          * SEND SMS TO CUSTOMER FOR NEW ORDER
@@ -455,25 +448,27 @@ class PurchaseOrderController extends Controller {
          */
         if (isset($input_data['send_email'])) {
             $customers = Customer::find($customer_id);
-            $purchase_order = PurchaseOrder::where('id', '=', $id)->with('purchase_products.purchase_product_details', 'delivery_location')->first();
-            if (count($purchase_order) > 0) {
-                if (count($purchase_order['delivery_location']) > 0) {
-                    $delivery_location = $purchase_order['delivery_location']->area_name;
-                } else {
-                    $delivery_location = $purchase_order->other_location;
-                }
-                $mail_array = array(
-                    'customer_name' => $customers->owner_name,
-                    'expected_delivery_date' => $purchase_order->expected_delivery_date,
-                    'created_date' => $purchase_order->updated_at,
-                    'delivery_location' => $delivery_location,
-                    'order_product' => $purchase_order['purchase_products'],
-                    'source' => 'update_order'
-                );
+            if ($customer->email != '') {
+                $purchase_order = PurchaseOrder::where('id', '=', $id)->with('purchase_products.purchase_product_details', 'delivery_location')->first();
+                if (count($purchase_order) > 0) {
+                    if (count($purchase_order['delivery_location']) > 0) {
+                        $delivery_location = $purchase_order['delivery_location']->area_name;
+                    } else {
+                        $delivery_location = $purchase_order->other_location;
+                    }
+                    $mail_array = array(
+                        'customer_name' => $customers->owner_name,
+                        'expected_delivery_date' => $purchase_order->expected_delivery_date,
+                        'created_date' => $purchase_order->updated_at,
+                        'delivery_location' => $delivery_location,
+                        'order_product' => $purchase_order['purchase_products'],
+                        'source' => 'update_order'
+                    );
 
-                Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($customers) {
-                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: Purchase Order Updated');
-                });
+                    Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($customers) {
+                        $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: Purchase Order Updated');
+                    });
+                }
             }
         }
         return redirect('purchase_orders')->with('flash_message', 'Purchase order details successfully updated.');

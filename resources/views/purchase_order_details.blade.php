@@ -29,7 +29,9 @@
                                 <table id="table-example" class="table table-hover customerview_table  ">
                                     <tbody>
                                         <tr><td><span>Supplier Name:</span> {{$purchase_orders['customer']->owner_name}}{{'-'.$purchase_orders['customer']->tally_name}}</td></tr>
-                                        <tr><td><span>Contact Person:</span>{{$purchase_orders['customer']->contact_person}}</td></tr>
+                                        <?php if ($purchase_orders['customer']->contact_person != '') { ?>
+                                            <tr><td><span>Contact Person:</span>{{$purchase_orders['customer']->contact_person}}</td></tr>
+                                        <?php } ?>
                                         <tr><td><span>Mobile Number: </span>{{$purchase_orders['customer']->phone_number1}}</td></tr>
 
                                         @if($purchase_orders['customer']->credit_period > 0 || $purchase_orders['customer']->credit_period != "")
@@ -79,7 +81,7 @@
                                         @endif
 
                                         <tr><td><span>Expected Delivery Date: </span>{{date("jS F, Y", strtotime($purchase_orders['expected_delivery_date']))}}</td></tr>
-                                        
+
                                         @if($purchase_orders->delivery_location_id > 0)
                                         <tr><td><span>Delivery Location: </span>{{$purchase_orders['delivery_location']->area_name}}</td></tr>
                                         @else

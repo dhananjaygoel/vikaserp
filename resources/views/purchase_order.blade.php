@@ -12,57 +12,56 @@
                 <div class="filter-block">
                     <h1 class="pull-left">Purchase Orders</h1>
                     <div class="pull-right top-page-ui">
-                        <a href="{{URL::action('PurchaseOrderController@create')}}"  class="btn btn-primary pull-right">
-                            <i class="fa fa-plus-circle fa-lg"></i> Place Purchase Order
-                        </a>
+                        <form method="GET" action="{{url('purchase_orders')}}">
+                            <a href="{{URL::action('PurchaseOrderController@create')}}"  class="btn btn-primary pull-right">
+                                <i class="fa fa-plus-circle fa-lg"></i> Place Purchase Order
+                            </a>
+                            <div class="filter-block pull-right">
+                                <div class="form-group pull-left">
+                                    <div class="col-md-12">
 
-
-                        <div class="filter-block pull-right">
-                            <div class="form-group pull-left">
-                                <div class="col-md-12">
-                                    <form method="GET" action="{{url('purchase_orders')}}">
                                         <select class="form-control" id="user_filter" name="pending_purchase_order" onchange="this.form.submit();">
                                             <option value="" selected="">Select Party</option>
                                             @foreach($all_customers as $customer)
                                             <option value="{{$customer->id}}" <?php if ((isset($_GET['pending_purchase_order'])) && $_GET['pending_purchase_order'] == $customer->id) echo "selected=''"; ?>>{{$customer->owner_name}}</option>
                                             @endforeach
                                         </select>
-                                    </form>
+
+                                    </div>
                                 </div>
-                            </div>
-<!--                            <div class="form-group pull-left">
-                                <div class="col-md-12">
-                                    <select class="form-control" id="user_filter4" name="user_filter">
-                                        <option value="" selected="">Select size</option>
-                                        <option value="2">20 kg</option>
-                                        <option value="2">30 kg</option>
-                                    </select>
-                                </div>
-                            </div>-->
-                            <div class="form-group pull-left">
-                                <div class="col-md-12">
-                                    <form method="GET" action="{{url('purchase_orders')}}">
+                                <div class="form-group pull-left">
+                                    <div class="col-md-12">
+
                                         <select class="form-control" id="order_for_filter" name="order_for_filter" onchange="this.form.submit();">
                                             <option value="" selected="">Order For</option>
-                                            <option value="warehouse">Warehouse</option>
-                                            <option value="direct">Direct</option>
+                                            <option value="warehouse" <?php
+                                            if (isset($_GET['order_for_filter']) && $_GET['order_for_filter'] == 'warehouse') {
+                                                echo 'selected="selected"';
+                                            }
+                                            ?>>Warehouse</option>
+                                            <option value="direct" <?php
+                                            if (isset($_GET['order_for_filter']) && $_GET['order_for_filter'] == 'direct') {
+                                                echo 'selected="selected"';
+                                            }
+                                            ?>>Direct</option>
                                         </select>
-                                    </form>
+
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group pull-left">
-                                <div class="col-md-12">
-                                    <form method="GET" action="{{url('purchase_orders')}}">
+                                <div class="form-group pull-left">
+                                    <div class="col-md-12">
+
                                         <select class="form-control" id="purchase_order_filter" name="purchase_order_filter" onchange="this.form.submit();">
                                             <option value="">Status</option>
                                             <option value="pending" <?php if (isset($_GET['purchase_order_filter']) && ($_GET['purchase_order_filter'] == "pending")) echo "selected=''"; ?>>Pending</option>
                                             <option value="completed" <?php if (isset($_GET['purchase_order_filter']) && ($_GET['purchase_order_filter'] == "completed")) echo "selected=''"; ?>>Completed</option>
                                             <option value="canceled" <?php if (isset($_GET['purchase_order_filter']) && ($_GET['purchase_order_filter'] == "canceled")) echo "selected=''"; ?>>Canceled</option>
                                         </select>
-                                    </form>
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -106,7 +105,7 @@
                                         <td>{{$i++}}</td>
                                         <td>{{$purchase_order['customer']->owner_name}}</td>
                                         <td>{{$purchase_order['customer']->phone_number1}}</td>
-                                        <td>{{$purchase_order['delivery_location']['area_name']}}</td>
+                                        <td>{{isset($purchase_order['delivery_location'])?$purchase_order['delivery_location']['area_name']: $purchase_order->other_location}}</td>
                                         <td>{{$purchase_order['user']->first_name}}</td>
                                         <td>
                                             {{round($purchase_order->total_quantity, 2) }}
@@ -216,7 +215,13 @@
                                 </tbody>
                             </table>
                             <span class="pull-right">
-                                <?php echo $purchase_orders->render(); ?>
+                                <?php
+                                if (!isset($_GET)) {
+                                    echo $purchase_orders->render();
+                                } else {
+                                    echo $purchase_orders->appends($_GET)->render();
+                                }
+                                ?>
                             </span>
                             @if($purchase_orders->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
