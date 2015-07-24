@@ -585,6 +585,9 @@ class InquiryController extends Controller {
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         $customers = Customer::all();
+        echo '<pre>';
+        print_r($inquiry['inquiry_products']);
+        echo '</pre>';
         return view('place_order', compact('inquiry', 'customers', 'delivery_location', 'units'));
     }
 

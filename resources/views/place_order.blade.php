@@ -147,13 +147,6 @@
                                         </tr>
                                         @foreach($inquiry['inquiry_products'] as $key=>$product)
                                         <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
-                                            <?php 
-                                            
-                                            echo '<pre>';
-                                            print_r($product->toArray());
-                                            echo '</pre>';
-                                            
-                                            ?>
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
                                                     <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['inquiry_product_details']->alias_name}}">
