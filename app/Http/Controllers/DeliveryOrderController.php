@@ -83,7 +83,7 @@ class DeliveryOrderController extends Controller {
         $input_data = Input::all();
         $i = 0;
         $customer_id = 0;
-        
+
         $j = count($input_data['product']);
 
         foreach ($input_data['product'] as $product_data) {
@@ -119,7 +119,7 @@ class DeliveryOrderController extends Controller {
                 $error_msg = $validator->messages();
                 return Redirect::back()->withInput()->withErrors($validator);
             }
-        }       
+        }
 
 
 //        if ($input_data['status'] == 'warehouse') {
@@ -299,9 +299,6 @@ class DeliveryOrderController extends Controller {
 
         $order_products = array();
         foreach ($input_data['product'] as $product_data) {
-            echo '<pre>';
-            print_r($product_data);
-            echo '</pre>';
             if ($product_data['order'] != '' || $product_data['id'] != '') {
                 $order_products = [
                     'order_id' => $id,
@@ -330,7 +327,7 @@ class DeliveryOrderController extends Controller {
                 $add_order_products = AllOrderProducts::create($order_products);
             }
         }
-
+        
         return redirect('delivery_order')->with('validation_message', 'Delivery order details successfully updated.');
     }
 
