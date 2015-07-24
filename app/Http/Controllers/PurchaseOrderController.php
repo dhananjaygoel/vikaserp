@@ -320,7 +320,7 @@ class PurchaseOrderController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $input_data = Input::all();
-
+        $customer_id = 0;
         $i = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
