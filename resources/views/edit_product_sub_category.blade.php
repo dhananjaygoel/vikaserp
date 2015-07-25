@@ -79,16 +79,16 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="weight">Product weight</label>
-                            <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="1" type="text">
+                            <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="1" type="number">
                         </div>
                         <div class="clearfix"></div>
                         <div class="form-group">
                             <label for="difference">Standard Length</label>
-                            <input id="standard_length" class="form-control" placeholder=" Standard Length" name="standard_length" value="{{$prod_sub_cat->standard_length}}" type="text">
+                            <input id="standard_length" class="form-control" placeholder=" Standard Length" name="standard_length" value="{{$prod_sub_cat->standard_length}}" type="number">
                         </div>
                         <div class="form-group">
                             <label for="difference">Difference<span class="mandatory">*</span></label>
-                            <input id="difference" class="form-control" placeholder=" Difference" name="difference" value="{{$prod_sub_cat->difference}}" type="text">
+                            <input id="difference" class="form-control" placeholder=" Difference" name="difference" value="{{$prod_sub_cat->difference}}" type="number">
                         </div>
                         <div>
                             <button type="button" class="btn btn-primary " id="sendSMS" >Send SMS</button>

@@ -140,7 +140,7 @@
                                                 <div class="form-group">
                                                     <?php $present_shipping = 0; ?>
                                                     <?php $present_shipping = $product->quantity; ?>                                                    
-                                                    <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$product->pending_quantity}}" type="text" onblur="change_quantity({{$key}});">
+                                                    <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$product->pending_quantity}}" type="number" onblur="change_quantity({{$key}});">
                                                     
                                                 </div>
                                             </td>
@@ -225,24 +225,13 @@
                                     </td>
                                 </tr>
                                 @endif
-<!--                                <tr class="cdtable">
-                                    <td class="cdfirst">Grand Total:</td>
-
-                                    <td>
-                                        <input type="text" name="grand_total" id ="grand_total" class="form-control" value="" readonly="readonly">
-                                    </td>
-                                </tr>-->
                                 <tr class="cdtable">
                                     <td class="cdfirst">Vehicle Number:</td>
                                     <td><input  class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{old('vehicle_number')}}" type="text" onblur="grand_total_delivery_order();"></td>
                                 </tr>
-<!--                                <tr class="cdtable">
-                                    <td class="cdfirst">Driver Name:</td>
-                                    <td><input  class="form-control" placeholder="Driver Name" name="driver_name" value="{{old('driver_name')}}" type="text"></td>
-                                </tr>-->
                                 <tr class="cdtable">
                                     <td class="cdfirst">Driver Contact:</td>
-                                    <td><input  class="form-control" placeholder="Driver Contact" name="driver_contact" value="{{old('driver_contact')}}" type="text"></td>
+                                    <td><input  class="form-control" placeholder="Driver Contact" name="driver_contact" value="{{old('driver_contact')}}" type="tel"></td>
                                 </tr>
                                 <tr class="cdtable">
                                     <td class="cdfirst">Remark:</td>

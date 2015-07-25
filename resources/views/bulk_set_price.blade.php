@@ -69,7 +69,7 @@
                                             }
                                             ?>
                                             <td>
-                                                <input type='text' name="set_diff[{{$key}}][{{$key1}}][price]" value="{{ $price }}" style="width: 40px;">
+                                                <input type='number' name="set_diff[{{$key}}][{{$key1}}][price]" value="{{ $price }}" style="width: 40px;">
                                                 <input type='hidden' name="set_diff[{{$key}}][{{$key1}}][cust_id]" value="{{$c->id}}" style="width: 40px;">
                                                 <input type='hidden' name="set_diff[{{$key}}][{{$key1}}][product_id]" value="{{$prod->id}}" style="width: 40px;">
                                             </td>

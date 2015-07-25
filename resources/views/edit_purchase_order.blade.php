@@ -75,11 +75,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
-                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{$purchase_order['customer']->phone_number1 }}" type="text">
+                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{$purchase_order['customer']->phone_number1 }}" type="tel">
                             </div>
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
-                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$purchase_order['customer']->credit_period}}" type="text">
+                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$purchase_order['customer']->credit_period}}" type="number">
                             </div>
                         </div>
                         @elseif($purchase_order['customer']->customer_status =="permanent")
@@ -106,11 +106,11 @@
                         </div>
                         <div class="form-group">
                             <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
-                            <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" type="text">
+                            <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" type="tel">
                         </div>
                         <div class="form-group">
                             <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
-                            <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="text">
+                            <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="number">
                         </div>
                     </div>
                     @endif
@@ -137,7 +137,7 @@
                                         </td>
                                         <td class="col-md-1">
                                             <div class="form-group">
-                                                <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="text">
+                                                <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="number">
                                             </div>
                                         </td>
                                         <td class="col-md-2">
@@ -234,7 +234,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="location">Other Location Difference</label>
-                                <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="{{$purchase_order->other_location_difference}}" type="text">
+                                <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="{{$purchase_order->other_location_difference}}" type="number">
                             </div>
                         </div>
 
@@ -248,7 +248,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="location">Other Location Difference</label>
-                                <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="" type="text">
+                                <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="" type="number">
                             </div>
                         </div>
                     </div>
@@ -286,7 +286,7 @@
                                 <tbody>
                                     <tr class="cdtable">
                                         <td class="cdfirst">VAT Percentage:</td>
-                                        <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="" type="text"></td>
+                                        <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="" type="number"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -308,7 +308,7 @@
                                 <tbody>
                                     <tr class="cdtable">
                                         <td class="cdfirst">VAT Percentage:</td>
-                                        <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$purchase_order->vat_percentage}}" type="text"></td>
+                                        <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$purchase_order->vat_percentage}}" type="number"></td>
                                     </tr>
                                 </tbody>
                             </table>

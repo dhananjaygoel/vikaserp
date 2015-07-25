@@ -87,7 +87,7 @@
                                             <td>
                                                 <div class="row product-price">
                                                     <div class="form-group col-md-6">
-                                                        <input type="text" class="form-control" id="difference_{{$product_data->id}}" placeholder="Price" value='{{$product_data->price}}' required="">
+                                                        <input type="number" class="form-control" id="difference_{{$product_data->id}}" placeholder="Price" value='{{$product_data->price}}' required="">
                                                         <input type="hidden"name="product_id" value='{{$product_data->id}}' id='hidden_inquiry_product_id_{{$product_data->id}}'>
                                                     </div>
                                                     <div class="form-group col-md-2 difference_form">

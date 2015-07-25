@@ -95,7 +95,7 @@
                                                 <!--<form method="post" action="{{URL::action('ProductController@update_price')}}">-->
                                                 <div class="row product-price">
                                                     <div class="form-group col-md-6">
-                                                        <input type="text" class="form-control" id="price_{{$product->id}}" name="price[{{$product->id}}][price]" value="{{ $product->price }}">
+                                                        <input type="number" class="form-control" id="price_{{$product->id}}" name="price[{{$product->id}}][price]" value="{{ $product->price }}">
                                                         <input type="hidden" class="form-control" name="id[]" value="{{$product->id}}">
                                                         <input type="hidden" id="token" name="_token" value="{{csrf_token()}}">
                                                     </div>

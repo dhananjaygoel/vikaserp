@@ -93,12 +93,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="mobile_number">Mobile Number<span class="mandatory">*</span> </label>
-                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{ old('mobile_number') }}" type="text">
+                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{ old('mobile_number') }}" type="tel">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
-                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ old('mobile_number') }}" type="text">
+                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ old('mobile_number') }}" type="number">
                                 </div>
                             </div>
 
@@ -125,7 +125,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="location">Other Location Difference</label>
-                                        <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="" type="text">
+                                        <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="" type="number">
                                     </div>
                                 </div>
                             </div>
@@ -153,7 +153,7 @@
                                                     </td>
                                                     <td class="col-md-1">
                                                         <div class="form-group">
-                                                            <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" value="" type="text" onblur="calculate_grand_total();">
+                                                            <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" value="" type="number" onblur="calculate_grand_total();">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-2">
@@ -223,7 +223,7 @@
                                                         </div>-->
                             <div class="form-group">
                                 <label for="driver_contact">Driver Contact</label>
-                                <input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="" type="text">
+                                <input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="" type="tel">
                             </div>
 
                             <div class="clearfix"></div>
@@ -241,7 +241,7 @@
                                         <tbody>
                                             <tr class="cdtable">
                                                 <td class="cdfirst">VAT Percentage:</td>
-                                                <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="" type="text" onblur="calculate_grand_total();"></td>
+                                                <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="" type="number" onblur="calculate_grand_total();"></td>
                                             </tr>
                                         </tbody>
                                     </table>

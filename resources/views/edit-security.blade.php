@@ -47,7 +47,7 @@
 
                             <div class="form-group">
                                 <label for="ip">IP Address</label>
-                                <input id="ip_address" class="form-control" placeholder="IP Address" name="ip_address" value="{{$security->ip_address}}" type="text">
+                                <input id="ip_address" class="form-control" placeholder="IP Address" name="ip_address" value="{{$security->ip_address}}" type="number">
                             </div>                                                    
 
 

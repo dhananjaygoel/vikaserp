@@ -67,7 +67,7 @@
                                                             }
                                                         }
                                                         ?>
-                                                        <input class="setprice" type="text" name="product_differrence[]" value="<?= $price ?>">
+                                                        <input class="setprice" type="number" name="product_differrence[]" value="<?= $price ?>">
                                                         <?php ?>
                                                         <input type="hidden" name="product_category_id[]" value="{{$pc->id}}">
                                                     </td>
