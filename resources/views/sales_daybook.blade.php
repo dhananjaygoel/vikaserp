@@ -1,9 +1,3 @@
-<?php 
- echo '<pre>';
-print_r($allorders->toArray());
-echo '</pre>';
-exit;
-?>
 @extends('layouts.master')
 @section('title','Sales Daybook')
 @section('content')
