@@ -434,7 +434,7 @@ class PurchaseOrderController extends Controller {
         }
         $update_purchase_order = $purchase_order->update($add_purchase_order_array);
         
-        if (isset($input_data['purchase_order_location']) && ($input_data['purchase_order_location'] = -1)) {
+        if (isset($input_data['purchase_order_location']) && ($input_data['purchase_order_location'] == -1)) {
 //        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] = -1)) {
             $purchase_order->update([
                 'delivery_location_id' => 0,
