@@ -131,7 +131,7 @@
                                                 <tr id="add_row_{{$i}}" class="add_product_row">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
-                                                            <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});">
+                                                            <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="purchase_order_advise_product_autocomplete({{$i}});">
                                                             <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
                                                             <input type="hidden" name="product[{{$i}}][purchase]" value="">
                                                             <i class="fa fa-search search-icon"></i>
@@ -163,7 +163,6 @@
                                                     </td>
                                                 </tr>
                                             <?php } ?>
-
                                         </tbody>
                                     </table>
                                     <table>
@@ -172,9 +171,8 @@
                                                 <td>
                                                     <div class="add_button1">
                                                         <div class="form-group pull-left">
-
                                                             <label for="addmore"></label>
-                                                            <a class="table-link" title="add more" id="add_product_row">
+                                                            <a class="table-link" title="add more" id="add_purchase_advise_product_row">
                                                                 <span class="fa-stack more_button" >
                                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                                     <i class="fa fa-plus fa-stack-1x fa-inverse"></i>

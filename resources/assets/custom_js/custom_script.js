@@ -90,6 +90,11 @@ $(document).ready(function () {
         autoclose: true
     });
     $('#datepickerDateComponent').datepicker();
+    
+
+    
+    
+    
     $("#add_product_row").on("click", function () {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
@@ -168,6 +173,110 @@ $(document).ready(function () {
                 '</tr>';
         $("#add_product_table_purchase").children("tbody").append(purchase_html);
     });
+    
+    
+    
+    
+    
+    $("#add_purchase_advise_product_row").on("click", function () {
+        var current_row_count = $(".add_product_row").length + 1;
+        $.ajax({
+            type: "GET",
+            url: baseurl + '/get_units'
+        }).done(function (data) {
+            var main_array = JSON.parse(data);
+            var arr1 = main_array['units'];
+            var html = '';
+            for (var key in arr1) {
+                html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
+            }
+            $("#units_" + current_row_count).html(html);
+        });
+        var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
+                '<td class="col-md-3">' +
+                '<div class="form-group searchproduct">' +
+                '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="purchase_order_advise_product_autocomplete(' + current_row_count + ');">' +
+                '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
+                '<i class="fa fa-search search-icon"></i>' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-1">' +
+                '<div class="form-group">' +
+                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="text" onfocus="grand_total_delivery_order();">' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-2">' +
+                '<div class="form-group ">' +
+                '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
+                '</select>' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-2">' +
+                '<div class="form-group">' +
+                '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-4">' +
+                '<div class="form-group">' +
+                '<input id="remark" class="form-control" placeholder="Remark" name="product[' + current_row_count + '][remark]" value="" type="text">' +
+                '</div>' +
+                '</td>' +
+                '<input type="hidden" name="product[' + current_row_count + '][order]" value="">' +
+                '</tr>';
+        $("#add_product_table").children("tbody").append(html);
+        var purchase_html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
+                '<td class="col-md-3">' +
+                '<div class="form-group searchproduct">' +
+                '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_purchase_product_name_' + current_row_count + '" onfocus="product_autocomplete_purchase(' + current_row_count + ');">' +
+                '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
+                '<i class="fa fa-search search-icon"></i>' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-1">' +
+                '<div class="form-group">' +
+                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="text" onfocus="grand_total_delivery_order();">' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-2">' +
+                '<div class="form-group ">' +
+                '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
+                '</select>' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-2">' +
+                '<div class="form-group">' +
+                '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-4">' +
+                '<div class="form-group">' +
+                '<input id="remark" class="form-control" placeholder="Remark" name="product[' + current_row_count + '][remark]" value="" type="text">' +
+                '</div>' +
+                '</td>' +
+                '</tr>';
+        $("#add_product_table_purchase").children("tbody").append(purchase_html);
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     $("#add_purchase_advice_product_row").on("click", function () {
         var current_row_count = $(".add_product_row").length + 1;
@@ -186,7 +295,7 @@ $(document).ready(function () {
         var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
                 '<td class="col-md-3">' +
                 '<div class="form-group searchproduct">' +
-                '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +
+                '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="purchase_order_advise_product_autocomplete(' + current_row_count + ');">' +
                 '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
                 '<i class="fa fa-search search-icon"></i>' +
                 '</div>' +
@@ -341,7 +450,7 @@ function show_hide_customer(status) {
  * product_autocomplete
  */
 function product_autocomplete(id) {
-
+//    alert('hi');
     var customer_id = $('#existing_customer_id').val();
 
     if (customer_id == "") {
@@ -382,6 +491,56 @@ function product_autocomplete(id) {
         },
         select: function (event, ui) {
             $("#product_price_" + id).val(ui.item.product_price); // to add price in the textbox
+            $("#add_product_id_" + id).val(ui.item.id);
+        }
+    });
+}
+
+/**
+ * purchase order advise product auto autocomplete
+ */
+function purchase_order_advise_product_autocomplete(id) {
+//    alert('hi');
+    var customer_id = $('#existing_customer_id').val();
+
+    if (customer_id == "") {
+        customer_id = 0;
+    }
+
+    var delivery_location = $('#add_order_location').val();
+    var location = 0;
+    var location_difference = 0;
+
+    if (delivery_location > 0) {
+
+        location = $('#add_order_location').val();
+
+    } else if (delivery_location == 'other') {
+
+        location_difference = $('#location_difference').val();
+        location = 0;
+    }
+
+    $("#add_product_name_" + id).autocomplete({
+        minLength: 1,
+        dataType: 'json',
+        type: 'GET',
+        source: function (request, response) {
+
+            $("#add_product_name_" + id).addClass('loadinggif');
+            $.ajax({
+                url: baseurl + '/fetch_products',
+                data: {"term": request.term, 'customer_id': customer_id, 'delivery_location': location, 'location_difference': location_difference},
+                success: function (data) {
+                    var main_array = JSON.parse(data);
+                    var arr1 = main_array['data_array'];
+                    response(arr1);
+                    $("#add_product_name_" + id).removeClass('loadinggif');
+                },
+            });
+        },
+        select: function (event, ui) {
+//            $("#product_price_" + id).val(ui.item.product_price); // to add price in the textbox
             $("#add_product_id_" + id).val(ui.item.id);
         }
     });
