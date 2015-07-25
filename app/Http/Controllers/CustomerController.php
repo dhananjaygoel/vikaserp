@@ -58,15 +58,43 @@ class CustomerController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders');
         }
-        $q = Customer::query();
-        $q->where('customer_status', '=', 'permanent');
+        $customers = '';
         if (Input::get('search') != '') {
-            $q->where('owner_name', 'like', '%' . Input::get('search') . '%')
-                    ->orWhere('company_name', 'like', '%' . Input::get('search') . '%');
+
+            $term = '%' . Input::get('search') . '%';
+
+            $customers = Customer::orderBy('owner_name', 'ASC')
+                    ->where(function($query) use($term) {
+                        $query->whereHas('city', function($q) use ($term) {
+                            $q->where('city_name', 'like', $term)
+                            ->orWhere('tally_name', 'like', $term);
+                        });
+                    })
+                    ->orWhere(function($query) use($term) {
+                        $query->whereHas('deliverylocation', function($q) use ($term) {
+                            $q->where('area_name', 'like', $term)
+                            ->orWhere('tally_name', 'like', $term);
+                        });
+                    })
+                    ->orWhere(function($query) use($term) {
+                        $query->whereHas('manager', function($q) use ($term) {
+                            $q->where('first_name', 'like', $term)
+                            ->orWhere('tally_name', 'like', $term);
+                        });
+                    })
+                    ->with('city')
+                    ->where('customer_status', '=', 'permanent')
+                    ->paginate(20);
+        } else {
+            $customers = Customer::orderBy('owner_name', 'ASC')
+                    ->with('city')
+                    ->where('customer_status', '=', 'permanent')
+                    ->paginate(20);
         }
 
-        $customers = $q->with('city')->paginate(20);
+
         $customers->setPath('customers');
+
 
         return View::make('customers', array('customers' => $customers));
     }
@@ -80,6 +108,7 @@ class CustomerController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+
         $managers = User::where('role_id', '=', 1)->get();
 
         $locations = DeliveryLocation::all();
@@ -472,11 +501,42 @@ class CustomerController extends Controller {
             $product_type = Input::get('product_filter');
         }
 
-        $customer = Customer::with('customerproduct')->where('customer_status', 'permanent')->paginate(20);
+        if (Input::get('search') != "") {
+
+            $term = '%' . Input::get('search') . '%';
+
+            $customer = Customer::orderBy('owner_name', 'ASC')
+                    ->where(function($query) use($term) {
+                        $query->whereHas('city', function($q) use ($term) {
+                            $q->where('city_name', 'like', $term)
+                            ->orWhere('tally_name', 'like', $term);
+                        });
+                    })
+                    ->orWhere(function($query) use($term) {
+                        $query->whereHas('deliverylocation', function($q) use ($term) {
+                            $q->where('area_name', 'like', $term)
+                            ->orWhere('tally_name', 'like', $term);
+                        });
+                    })
+                    ->orWhere(function($query) use($term) {
+                        $query->whereHas('manager', function($q) use ($term) {
+                            $q->where('first_name', 'like', $term)
+                            ->orWhere('tally_name', 'like', $term);
+                        });
+                    })
+                    ->with('city')
+                    ->where('customer_status', '=', 'permanent')
+                    ->paginate(20);
+        } else {
+            $customer = Customer::with('customerproduct')->where('customer_status', 'permanent')->paginate(20);
+        }
+
+
+
         $product_category = ProductCategory::where('product_type_id', $product_type)->get();
         $customer->setPath('bulk_set_price');
         $product_type = ProductType::all();
-        $filter = array(Input::get('product_filter'));
+        $filter = array(Input::get('product_filter'), Input::get('search'));
 
         return view('bulk_set_price', compact('customer', 'product_category', 'product_type', 'filter'));
     }

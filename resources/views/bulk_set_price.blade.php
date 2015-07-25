@@ -22,7 +22,18 @@
                                 @endforeach
                             </select>
                         </div>
-                    </form>                    
+
+
+                        <!--                    </form>  
+                        
+                                            <form action="{{URL::action('CustomerController@bulk_set_price')}} id="searchCustomerForm">-->
+                        <div class="form-group pull-right col-md-3">
+                            <input class="form-control" name="search" id="search" placeholder="Enter Customer,Comapny Name " value="{{Request::get('search')}}" type="text">
+                            <i class="fa fa-search search-icon"></i>
+                        </div>
+                    </form>   
+
+
                 </div>
             </div>
         </div>
@@ -81,11 +92,11 @@
                             </div>
                             <hr>
                             <div >
-                                
+
                                 @if(isset($_GET['page']) && Input::get('page') != '')
                                 <input type="hidden" name="page" value="{{$_GET['page']}}">
                                 @endif
-                                
+
                                 @if(isset($_GET['product_filter']) && Input::get('product_filter') != '')
                                 <input type="hidden" name="product_filter" value="{{$_GET['product_filter']}}">
                                 @endif
@@ -100,7 +111,11 @@
 
                             <?php
                             if (isset($_GET['product_filter']) && Request::get('product_filter') != '') {
+
                                 echo $customer->appends(array('product_filter' => Request::get('product_filter')))->render();
+                            } else if (isset($_GET['search']) && Request::get('search') != '') {
+
+                                echo $customer->appends(array('search' => Request::get('search')))->render();
                             } else {
                                 echo $customer->render();
                             }
