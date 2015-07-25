@@ -13,6 +13,12 @@
                 border-top: 1px solid #ccc;
                 border-bottom: 1px solid #ccc;
             }
+            .divRow2{
+
+                width:auto;
+                clear:both; 
+                border-top: 1px solid #ccc;
+            }
             .divRow{
 
                 width:auto;
@@ -43,15 +49,12 @@
                 width: 100%;        
 
                 float: left;
-
             }
             .remark
             {
                 width: 10%;
                 float: left;
-
                 padding: 30px 5px ;
-
             }
             .content
             {
@@ -174,12 +177,12 @@
             </div>
             <div class="divTable">
                 <div class="headRow">
-                    <div  class="divCell">Sr.</div>
-                    <div  class="divCell">Size</div>
-                    <div  class="divCell">Pcs</div>
-                    <div  class="divCell">Qty</div>
-                    <div  class="divCell">Act pcs</div>
-                    <div  class="divCell">Act Qty</div>                
+                    <div class="divRow2">Sr.</div>
+                    <div class="divCell">Size</div>
+                    <div class="divCell">Pcs</div>
+                    <div class="divCell">Qty</div>
+                    <div class="divCell">Act pcs</div>
+                    <div class="divCell">Act Qty</div>                
                 </div>
                 <?php
                 $i = 1;
@@ -188,7 +191,7 @@
                 @foreach($purchase_advise['purchase_products'] as $prod)
                 @if($prod->order_type == 'purchase_advice')
                 <div class="divRow">
-                    <div class="divCell">{{ $i++ }}</div>
+                    <div class="divRow2">{{ $i++ }}</div>
                     <div class="divCell">{{ $prod['purchase_product_details']->alias_name }}</div>
                     <div class="divCell"> &nbsp; </div>
                     <div class="divCell">{{ $prod->quantity }}</div>

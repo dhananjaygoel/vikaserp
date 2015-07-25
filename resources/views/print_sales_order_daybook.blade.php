@@ -5,7 +5,7 @@
         <meta charset="windows-1252">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
-    <body onload="window.print();">
+    <body>
         <style>
             .divTable{
                 display:table;         
@@ -15,7 +15,6 @@
                 border-bottom: 1px solid #ccc;
             }
             .divRow{
-
                 width:auto;
                 clear:both; 
                 border-top: 1px solid #ccc;
@@ -24,6 +23,13 @@
                 float:left;
                 display:table-column;         
                 width:7%;         
+                padding: 5px;
+                border-right: 1px solid #ccc;
+            }
+            .divCell2{
+                float:left;
+                display:table-column;         
+                width:5%;         
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
@@ -40,26 +46,21 @@
                 display:table-row;
                 text-align: center;
             }        
-
-
-            .invoice
-            {
+            .invoice {
                 width:100%;
                 border: 1px solid #ccc;
                 float: left;
                 padding: 0px;
                 overflow: hidden;
             }
-            .title
-            {
+            .title{
                 width: 100%;
                 text-align: center;
                 border-bottom: 1px solid #ccc;
                 padding: 10px 0px 10px 5px;
                 font-weight: 600;
             }
-            .center
-            {
+            .center{
                 text-align: center;
             }
         </style>
@@ -72,7 +73,7 @@
             </div>            
             <div class="divTable">
                 <div class="headRow">
-                    <div  class="divCell">#</div>
+                    <div  class="divCell2">#</div>
                     <div  class="divCell">Challan sr. No</div>
                     <!--<div  class="divCell">Do. No</div>-->
                     <div  class="divCell">Name</div>
@@ -94,12 +95,6 @@
                 $qty = 0;
                 $amount = 0;
                 ?>
-                <!--                @foreach ($obj['all_order_products'] as $total_qty)
-                <?php
-//                $qty += $total_qty->present_shipping;
-//                $amount += $total_qty->present_shipping * $total_qty->price;
-                ?>                
-                                @endforeach-->
 
                 <?php
                 $total_qunatity = 0;
@@ -120,7 +115,7 @@
                 ?>
 
                 <div class="divRow">
-                    <div class="divCell center">{{$i++ }}</div>
+                    <div class="divCell2 center">{{$i++ }}</div>
                     <div class="divCell">{{ $obj->serial_number }}</div>
                     <!--<div class="divCell">xxx</div>-->
                     <div class="divCell">{{ $obj['customer']->owner_name }}</div>

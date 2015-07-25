@@ -15,7 +15,6 @@
                 border-bottom: 1px solid #ccc;
             }
             .divRow{
-
                 width:auto;
                 clear:both; 
                 border-top: 1px solid #ccc;
@@ -27,34 +26,34 @@
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
+            .divCell2{
+                float:left;
+                display:table-column;         
+                width:10%;         
+                padding: 5px;
+                border-right: 1px solid #ccc;
+            }
             .bob
             {
                 border-top: none !important;
             }
-            .divCell:last-child
-            {
+            .divCell:last-child{
                 border: none;
             }
-            .divRow:last-child
-            {
+            .divRow:last-child            {
                 border-top: none;
                 border-bottom:  1px solid #ccc;
             }
             .headRow{
                 display:table-row;
             }        
-            .footer
-            {
+            .footer{
                 width: 100%;
                 float: left;
-
-
-            }
-            .total-desc
-            {
+           }
+            .total-desc{
                 width: 70%;
                 float: left;
-
             }
             .total
             {
@@ -76,7 +75,6 @@
                 width: 100%;
                 float: left;
                 padding: 10px 0px 10px 0px;
-
             }
 
             .time-gen
@@ -212,7 +210,7 @@
 
             <div class="divTable">
                 <div class="headRow">
-                    <div  class="divCell">Sr.</div>
+                    <div  class="divCell2">Sr.</div>
                     <div  class="divCell">Size</div>
                     <div  class="divCell">Pcs</div>
                     <div  class="divCell">Qty</div>
@@ -229,7 +227,7 @@
                 @foreach($purchase_challan['purchase_product'] as $prod)
                 @if($prod->order_type == 'purchase_order')
                 <div class="divRow">
-                    <div class="divCell">{{ $i++ }}</div>
+                    <div class="divCell2">{{ $i++ }}</div>
                     <div class="divCell">{{ $prod['purchase_product_details']->alias_name }}</div>
                     <div class="divCell"></div>
                     <div class="divCell">{{ $prod->quantity }}</div>

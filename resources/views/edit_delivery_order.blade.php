@@ -137,10 +137,10 @@
                                     <label for="location">Location </label>
                                     <input id="location" class="form-control" placeholder="Location " name="location" value="" type="text">
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="location">Other Location Difference</label>
-                                <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="" type="text">
+                                <div class="form-group col-md-4">
+                                    <label for="location">Other Location Difference</label>
+                                    <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="" type="text">
+                                </div>
                             </div>
                         </div>
 
@@ -259,6 +259,7 @@
                                 </table>
                             </div>
                         </div>
+                        <div class="clearfix"></div>
                         <div class="form-group">
                             <label for="vehicle_name">Vehicle Number</label>
                             <input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{ $delivery_data->vehicle_number }}" type="text">

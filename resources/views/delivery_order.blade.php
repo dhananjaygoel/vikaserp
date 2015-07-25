@@ -83,9 +83,7 @@
                                     <tr>
                                         <td>{{ $i++ }}</td>
                                         <td>{{date("jS F, Y", strtotime($delivery->created_at)) }}</td>
-                                        <td>       
-                                            {{$delivery['customer']->owner_name}}
-                                        </td> 
+                                        <td> {{$delivery['customer']->owner_name}}</td> 
                                         <td>
                                             @if($delivery->delivery_location_id!=0)
                                             @foreach($delivery_locations as $location)
@@ -210,7 +208,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="modal fade" id="print_challan_{{$delivery->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">

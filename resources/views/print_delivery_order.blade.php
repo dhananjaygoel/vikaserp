@@ -5,7 +5,7 @@
         <meta charset="windows-1252">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
-    <body onload="window.print();">
+    <body>
         <style>
             .divTable{
                 display:table;         
@@ -27,6 +27,13 @@
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
+            .divCell2{
+                float:left;
+                display:table-column;         
+                width:10%;         
+                padding: 5px;
+                border-right: 1px solid #ccc;
+            }
             .divCell:last-child
             {
                 border: none;
@@ -34,23 +41,20 @@
             .divRow:last-child
             {
                 border-top: none;
-                border-bottom:  1px solid #ccc;
+                border-bottom: 1px solid #ccc;
             }
             .headRow{
                 display:table-row;
             }        
             .footer
             {
-                width: 100%;        
-
+                width: 100%;    
                 float: left;
-
             }
             .remark
             {
                 width: 10%;
                 float: left;
-
                 padding: 30px 5px ;
             }
             .content
@@ -142,7 +146,6 @@
                 <div class="do-no">
                     DO Number: {{ $delivery_data->serial_no }}
                 </div>
-
                 <div class="date">
                     Date: {{ date('d F, Y')}}
                 </div>
@@ -168,11 +171,10 @@
                 @else
                 {{ $delivery_data->other_location }}
                 @endif
-
             </div>
             <div class="divTable">                
                 <div class="headRow">
-                    <div  class="divCell">Sr.</div>
+                    <div  class="divCell2">Sr.</div>
                     <div  class="divCell">Size</div>
                     <div  class="divCell">Qty</div>
                     <div  class="divCell">Unit</div>                    
@@ -186,7 +188,7 @@
                 @foreach($delivery_data['delivery_product'] as $product)
                 @if($product['order_type'] == 'delivery_order')
                 <div class="divRow">
-                    <div class="divCell">{{ $i++ }}</div>
+                    <div class="divCell2">{{ $i++ }}</div>
                     <div class="divCell">{{ $product['order_product_details']->alias_name }}</div>
                     <div class="divCell">{{ $product->quantity }}</div>
                     <div class="divCell">

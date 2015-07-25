@@ -20,6 +20,13 @@
                 clear:both; 
                 border-top: 1px solid #ccc;
             }
+            .divCell2{
+                float:left;
+                display:table-column;         
+                width:10%;         
+                padding: 5px;
+                border-right: 1px solid #ccc;
+            }
             .divCell{
                 float:left;
                 display:table-column;         
@@ -212,7 +219,7 @@
             </div>
             <div class="divTable">
                 <div class="headRow">
-                    <div  class="divCell">Sr.</div>
+                    <div  class="divCell2">Sr.</div>
                     <div  class="divCell">Size</div>
                     <div  class="divCell">Actual Pcs</div>
                     <div  class="divCell">Actual Qty</div>
@@ -227,7 +234,7 @@
                 @foreach($allorder['all_order_products'] as $prod)
                 @if($prod->order_type == 'delivery_challan')
                 <div class="divRow">
-                    <div class="divCell">{{ $i++ }}</div>
+                    <div class="divCell2">{{ $i++ }}</div>
                     <div class="divCell">{{ $prod['order_product_details']->alias_name }}</div>
                     <div class="divCell">{{ $prod->actual_pieces }}</div>
                     <div class="divCell">{{ $prod->quantity }}</div>

@@ -5,7 +5,7 @@
         <meta charset="windows-1252">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
-    <body onload="window.print();">
+    <body>
         <style>
             .divTable{
                 display:table;         
@@ -24,6 +24,13 @@
                 float:left;
                 display:table-column;         
                 width:7%;         
+                padding: 5px;
+                border-right: 1px solid #ccc;
+            }
+            .divCell2{
+                float:left;
+                display:table-column;         
+                width:5%;         
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
@@ -73,7 +80,7 @@
             </div>            
             <div class="divTable">
                 <div class="headRow">
-                    <div  class="divCell">#</div>
+                    <div  class="divCell2">#</div>
                     <div  class="divCell">Challan sr. No</div>
                     <!--<div  class="divCell">Do. No</div>-->
                     <div  class="divCell">Name</div>
@@ -113,7 +120,7 @@
                 ?>
                 @endforeach
                 <div class="divRow">
-                    <div class="divCell center">{{ $i++ }}</div>
+                    <div class="divCell2 center">{{ $i++ }}</div>
                     <div class="divCell">{{ $obj->serial_number }}</div>
                     <!--<div class="divCell">xxx</div>-->
                     <div class="divCell">{{ $obj['supplier']->owner_name }}</div>
