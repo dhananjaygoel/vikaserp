@@ -40,7 +40,7 @@ class ProductController extends Controller {
 
     public function index() {
 
-        $product_cat = ProductCategory::Paginate(10);
+        $product_cat = ProductCategory::Paginate(20);
         $product_cat->setPath('product_category');
         return view('product_category', compact('product_cat'));
     }

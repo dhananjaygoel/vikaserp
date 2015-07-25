@@ -50,7 +50,7 @@ class PurchaseAdviseController extends Controller {
             $q->where('advice_status', '=', 'in_process');
         }
 
-        $purchase_advise = $q->paginate(10);
+        $purchase_advise = $q->paginate(20);
         $pending_orders = $this->checkpending_quantity($purchase_advise);
         $purchase_advise->setPath('purchaseorder_advise');
 
@@ -404,7 +404,7 @@ class PurchaseAdviseController extends Controller {
 
     public function pending_purchase_advice() {
 
-        $pending_advise = PurchaseAdvise::where('advice_status', '=', 'in_process')->with('purchase_products', 'supplier', 'party')->paginate(10);
+        $pending_advise = PurchaseAdvise::where('advice_status', '=', 'in_process')->with('purchase_products', 'supplier', 'party')->paginate(20);
         $pending_advise->setPath('pending_purchase_advice');
 
         return View::make('pending_purchase_advice', array('pending_advise' => $pending_advise));

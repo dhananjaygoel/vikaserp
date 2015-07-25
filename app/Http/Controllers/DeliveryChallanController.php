@@ -42,9 +42,9 @@ class DeliveryChallanController extends Controller {
     public function index() {
 
         if ((isset($_GET['status_filter'])) && $_GET['status_filter'] != '') {
-            $allorders = DeliveryChallan::where('challan_status', '=', $_GET['status_filter'])->with('customer', 'delivery_challan_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(10);
+            $allorders = DeliveryChallan::where('challan_status', '=', $_GET['status_filter'])->with('customer', 'delivery_challan_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(20);
         } else {
-            $allorders = DeliveryChallan::where('challan_status', '=', 'pending')->with('customer', 'delivery_challan_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(10);
+            $allorders = DeliveryChallan::where('challan_status', '=', 'pending')->with('customer', 'delivery_challan_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(20);
         }
 
         if (count($allorders) > 0) {

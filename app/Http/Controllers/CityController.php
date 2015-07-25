@@ -27,7 +27,7 @@ class CityController extends Controller {
      * @return Response
      */
     public function index() {
-        $cities = City::with('states')->orderBy('created_at', 'desc')->Paginate(10);
+        $cities = City::with('states')->orderBy('created_at', 'desc')->Paginate(20);
         $cities->setPath('city');
         return view('cities', compact('cities'));
     }

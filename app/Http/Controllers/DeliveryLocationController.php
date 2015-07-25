@@ -27,7 +27,7 @@ class DeliveryLocationController extends Controller {
      * @return Response
      */
     public function index() {
-        $delivery_location = DeliveryLocation::where('status', '=', 'permanent')->with('city.states')->orderBy('created_at', 'desc')->Paginate(10);
+        $delivery_location = DeliveryLocation::where('status', '=', 'permanent')->with('city.states')->orderBy('created_at', 'desc')->Paginate(20);
          
         $delivery_location->setPath('location');
         return view('delivery_location', compact('delivery_location'));

@@ -35,7 +35,7 @@ class SalesDaybookController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
-        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products.unit', 'all_order_products.order_product_details', 'delivery_order.location', 'user')->orderBy('created_at', 'desc')->Paginate(10);
+        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products.unit', 'all_order_products.order_product_details', 'delivery_order.location', 'user')->orderBy('created_at', 'desc')->Paginate(20);
         $challan_date = '';
         $allorders->setPath('sales_daybook');
 
@@ -63,7 +63,7 @@ class SalesDaybookController extends Controller {
 
             $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
                             ->whereRaw('DATE(created_at) = ?', [$challan_date])
-                            ->with('customer', 'all_order_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(10);
+                            ->with('customer', 'all_order_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(20);
             $challan_date = $input_data['challan_date'];
             $allorders->setPath('sales_daybook_date');
             return view('sales_daybook', compact('allorders', 'challan_date'));

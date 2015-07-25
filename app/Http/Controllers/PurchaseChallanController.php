@@ -42,7 +42,7 @@ class PurchaseChallanController extends Controller {
 
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'purchase_product.product_category.product_sub_category')
                 ->where('order_status', 'pending')
-                ->Paginate(10);
+                ->Paginate(20);
         $purchase_challan->setPath('purchase_challan');
         return view('purchase_challan', compact('purchase_challan'));
     }

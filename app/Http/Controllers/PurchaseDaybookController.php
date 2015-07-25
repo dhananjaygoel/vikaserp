@@ -35,12 +35,12 @@ class PurchaseDaybookController extends Controller {
                             ->where('order_status', 'completed')
                             ->whereHas('purchase_advice', function($query) {
                                 $query->where('purchase_advice_date', '=', date("Y-m-d", strtotime(Input::get('date'))));
-                            })->Paginate(10);
+                            })->Paginate(20);
         } else {
 
             $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.product_category.product_sub_category')
                     ->where('order_status', 'completed')
-                    ->Paginate(10);
+                    ->Paginate(20);
             $purchase_daybook->setPath('purchase_order_daybook');
         }
 

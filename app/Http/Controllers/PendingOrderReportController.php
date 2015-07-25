@@ -39,33 +39,33 @@ class PendingOrderReportController extends Controller {
 
             $allorders = Order::where('customer_id', '=', $_GET['party_filter'])
                             ->where('order_status', '=', 'pending')
-                            ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
+                            ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(20);
         } elseif ((isset($_GET['fulfilled_filter'])) && $_GET['fulfilled_filter'] != '') {
             if ($_GET['fulfilled_filter'] == '0') {
                 $allorders = Order::where('order_status', '=', 'pending')
                                 ->where('order_source', '=', 'warehouse')
-                                ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
+                                ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(20);
             } else {
                 if ($_GET['fulfilled_filter'] == 'all') {
                     $allorders = $allorders = Order::where('order_status', '=', 'pending')
                                     ->where('order_source', '=', 'supplier')
-                                    ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
+                                    ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(20);
                 } else {
                     $allorders = Order::where('order_status', '=', 'pending')
                                     ->where('order_source', '=', 'supplier')
                                     ->where('supplier_id', '=', $_GET['fulfilled_filter'])
-                                    ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
+                                    ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(20);
                 }
             }
         } elseif ((isset($_GET['location_filter'])) && $_GET['location_filter'] != '') {
             if ($_GET['location_filter'] != '0') {
                 $allorders = Order::where('order_status', '=', 'pending')
                                 ->where('delivery_location_id', '=', $_GET['location_filter'])
-                                ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
+                                ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(20);
             } else {
                 $allorders = Order::where('order_status', '=', 'pending')
                                 ->where('other_location', '=', $_GET['location_filter'])
-                                ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
+                                ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(20);
             }
         } elseif ((isset($_GET['size_filter'])) && $_GET['size_filter'] != '') {
 
@@ -75,12 +75,12 @@ class PendingOrderReportController extends Controller {
                             ->with(array('customer', 'delivery_location', 'all_order_products' =>
                                 function($q) use($size) {
                                     $q->where('quantity', '=', $size)->where('order_type', 'order');
-                                }))->Paginate(10);
+                                }))->Paginate(20);
 
 //            }
         } else {
 
-            $allorders = Order::where('order_status', '=', 'pending')->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(10);
+            $allorders = Order::where('order_status', '=', 'pending')->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(20);
         }
 
         $users = User::all();

@@ -78,7 +78,7 @@ class OrderController extends Controller {
         }
 
         $allorders = $q->with('customer', 'delivery_location', 'order_cancelled')
-                        ->orderBy('created_at', 'desc')->paginate(10);
+                        ->orderBy('created_at', 'desc')->paginate(20);
         $users = User::all();
         $customers = Customer::all();
         $delivery_location = DeliveryLocation::all();

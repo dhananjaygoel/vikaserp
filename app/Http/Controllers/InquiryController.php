@@ -54,12 +54,12 @@ class InquiryController extends Controller {
 
             $inquiries = Inquiry::where('inquiry_status', '=', $_GET['inquiry_filter'])
                             ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')
-                            ->orderBy('created_at', 'desc')->Paginate(10);
+                            ->orderBy('created_at', 'desc')->Paginate(20);
         } else {
 
             $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')
                             ->where('inquiry_status', 'pending')
-                            ->orderBy('created_at', 'desc')->Paginate(10);
+                            ->orderBy('created_at', 'desc')->Paginate(20);
         }
 
         $inquiries->setPath('inquiry');

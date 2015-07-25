@@ -29,7 +29,7 @@ class SecurityController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
-        $sec = Security::paginate(10);
+        $sec = Security::Paginate(20);
         $sec->setPath('security');
         return view('security', compact('sec'));
     }

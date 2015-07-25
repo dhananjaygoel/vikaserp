@@ -25,7 +25,7 @@ class UnitController extends Controller {
      */
     public function index() {
 
-        $units = Units::orderBy('created_at', 'desc')->Paginate(10);
+        $units = Units::orderBy('created_at', 'desc')->Paginate(20);
         $units->setPath('unit');
         return view('units', compact('units'));
     }

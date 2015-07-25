@@ -72,7 +72,7 @@ class PurchaseOrderController extends Controller {
 
         $purchase_orders = $q->orderBy('created_at', 'desc')
                 ->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')
-                ->Paginate(10);
+                ->Paginate(20);
 
         $purchase_orders = $this->quantity_calculation($purchase_orders);
 
@@ -615,7 +615,7 @@ class PurchaseOrderController extends Controller {
         if (Auth::user()->role_id > 1) {
             $q->where('is_view_all', '=', 0);
         }
-        $purchase_orders = $q->Paginate(10);
+        $purchase_orders = $q->Paginate(20);
         $purchase_orders->setPath('purchase_order_report');
         $all_customers = Customer::all();
         return view('purchase_order_report', compact('purchase_orders', 'all_customers'));

@@ -28,7 +28,7 @@ class StatesController extends Controller {
      * @return Response
      */
     public function index() {
-        $states = States::orderBy('created_at', 'desc')->Paginate(10);
+        $states = States::orderBy('created_at', 'desc')->Paginate(20);
         $states->setPath('states');
         return view('states', compact('states'));
     }
