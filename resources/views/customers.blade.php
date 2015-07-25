@@ -21,6 +21,9 @@
                     <a href="{{url('customers/create')}}" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Add Customer
                     </a>
+                    <a href="{{url('bulk_set_price')}}" class="btn btn-primary pull-right">
+                        <i class="fa fa-plus-circle fa-lg"></i> Bulk Set Price
+                    </a>
                     <form method="GET" id="searchCustomerForm">
                         <div class="form-group pull-right col-md-3">
                             <input class="form-control" name="search" id="search" placeholder="Enter Customer,Comapny Name " value="{{Request::get('search')}}" type="text">

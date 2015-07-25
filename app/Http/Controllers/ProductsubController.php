@@ -74,13 +74,6 @@ class ProductsubController extends Controller {
 
         $product_sub_cat = $q->paginate(20);
 
-
-
-//        echo '<pre>';
-//        print_r($product_sub_cat->toArray());
-//        echo '</pre>';
-//        exit();
-
         $filter = array(Input::get('product_size'), Input::get('search_text'), Input::get('product_filter'));
         $product_sub_cat->setPath('product_sub_category');
         return view('product_sub_category', compact('product_sub_cat', 'product_type', 'units', 'filter'));

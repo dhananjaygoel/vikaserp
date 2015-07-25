@@ -466,23 +466,35 @@ class CustomerController extends Controller {
     }
 
     public function bulk_set_price() {
-        
+
         $product_type = 1;
-        if (Input::get('product_filter') != ""){
+        if (Input::get('product_filter') != "") {
             $product_type = Input::get('product_filter');
         }
 
-        $customer = Customer::where('customer_status', 'permanent')->paginate(20);
+        $customer = Customer::with('customerproduct')->where('customer_status', 'permanent')->paginate(20);
         $product_category = ProductCategory::where('product_type_id', $product_type)->get();
         $customer->setPath('bulk_set_price');
         $product_type = ProductType::all();
-        
-        return view('bulk_set_price', compact('customer', 'product_category','product_type'));
+        $filter = array(Input::get('product_filter'));
+
+        return view('bulk_set_price', compact('customer', 'product_category', 'product_type', 'filter'));
     }
 
     public function save_all_set_price() {
 
         $data = Input::all();
+
+        $page = "";
+        if (isset($data['page']) && $data['page'] != '') {
+            $page = $data['page'];
+        }
+
+        $product_filter = "";
+        if (isset($data['product_filter']) && $data['product_filter'] != '') {
+            $product_filter = $data['product_filter'];
+        }
+
         foreach ($data['set_diff'] as $key => $value) {
             foreach ($value as $key => $value) {
                 if ($value['price'] != "" && $value['cust_id'] != "" && $value['product_id'] != "") {
@@ -506,7 +518,7 @@ class CustomerController extends Controller {
             }
         }
 
-        return redirect('bulk_set_price')->with('success', 'Customer Set price successfully updated');
+        return redirect('bulk_set_price?page=' . $page . '&product_filter=' . $product_filter)->with('success', 'Customer Set price for the product successfully updated');
     }
 
 }
