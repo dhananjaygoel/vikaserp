@@ -51,7 +51,7 @@
                             </div>                   
                             <div class="form-group">
                                 <label for="Phone_number">Phone number </label>
-                                <input id="Phone_number" class="form-control" placeholder="Phone number " name="telephone_number" value="{{ old('telephone_number') }}" type="text">
+                                <input id="Phone_number" class="form-control" placeholder="Phone number " name="telephone_number" value="{{ old('telephone_number') }}" type="tel">
                             </div>
 
                             <div class="form-group">
