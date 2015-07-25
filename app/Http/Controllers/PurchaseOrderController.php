@@ -319,7 +319,9 @@ class PurchaseOrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+        
         $input_data = Input::all();
+             
         $customer_id = 0;
         $i = 0;
         $j = count($input_data['product']);
@@ -390,6 +392,7 @@ class PurchaseOrderController extends Controller {
         } else {
             $vat_percentage = $input_data['vat_percentage'];
         }
+        
         $add_purchase_order_array = [
             'is_view_all' => $input_data['viewable_by'],
             'supplier_id' => $customer_id,
@@ -430,7 +433,9 @@ class PurchaseOrderController extends Controller {
             }
         }
         $update_purchase_order = $purchase_order->update($add_purchase_order_array);
-        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
+        
+        if (isset($input_data['purchase_order_location']) && ($input_data['purchase_order_location'] = -1)) {
+//        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] = -1)) {
             $purchase_order->update([
                 'delivery_location_id' => 0,
                 'other_location' => $input_data['other_location_name'],
@@ -445,6 +450,8 @@ class PurchaseOrderController extends Controller {
             ]);
 //            $location_id = $input_data['purchase_order_location'];
         }
+        
+        
         $purchase_order_products = array();
         $delete_old_purchase_products = PurchaseProducts::where('purchase_order_id', '=', $id)->delete();
         foreach ($input_data['product'] as $product_data) {
