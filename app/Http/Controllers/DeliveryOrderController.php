@@ -283,10 +283,26 @@ class DeliveryOrderController extends Controller {
             $vat_price = $input_data['vat_price'];
         }
 
+        $delivery_location = 0;
+        $location = "";
+        $other_location_difference = "";
+        
+        if ($input_data['add_order_location'] == 'other') {
+            $delivery_location = 0;
+            $location = $input_data['location'];
+            $other_location_difference = $input_data['other_location_difference'];
+        } else {
+            $delivery_location = $input_data['add_order_location'];
+            $location = '';
+            $other_location_difference = '';
+        }
+
         DeliveryOrder::where('id', $id)->update(array(
             'customer_id' => $customer_id,
             'created_by' => Auth::id(),
-            'delivery_location_id' => $input_data['add_order_location'],
+            'delivery_location_id' => $delivery_location,
+            'other_location' => $location,
+            'other_location_difference' => $other_location_difference,
             'vat_percentage' => $vat_price,
             'estimate_price' => 0,
             'estimated_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
@@ -327,7 +343,7 @@ class DeliveryOrderController extends Controller {
                 $add_order_products = AllOrderProducts::create($order_products);
             }
         }
-        
+
         return redirect('delivery_order')->with('validation_message', 'Delivery order details successfully updated.');
     }
 

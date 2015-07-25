@@ -48,12 +48,15 @@
                                     <tr>
                                         <td><span>Delivery Location: </span>
 
+                                            @if($delivery_data->delivery_location_id == 0)
+                                            {{$delivery_data->other_location}}
+                                            @else
                                             @foreach($delivery_locations as $location)
                                             @if($location->id == $delivery_data->delivery_location_id)
-
                                             {{$location->area_name}}
                                             @endif
                                             @endforeach
+                                            @endif                                            
 
                                         </td>
                                     </tr>
