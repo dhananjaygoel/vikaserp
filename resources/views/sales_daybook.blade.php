@@ -1,3 +1,9 @@
+<?php 
+ echo '<pre>';
+print_r($allorders->toArray());
+echo '</pre>';
+exit;
+?>
 @extends('layouts.master')
 @section('title','Sales Daybook')
 @section('content')
@@ -110,7 +116,7 @@
                                             <td >
                                                 @if($challan->serial_number == '')
                                                 --
-                                                @elseif($challan->serial_number != '')
+                                                @else
                                                 {{$challan->serial_number}}
                                                 @endif
                                             </td> 
