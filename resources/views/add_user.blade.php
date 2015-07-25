@@ -51,12 +51,12 @@
                             </div>                   
                             <div class="form-group">
                                 <label for="Phone_number">Phone number </label>
-                                <input id="Phone_number" class="form-control" placeholder="Phone number " name="telephone_number" value="{{ old('telephone_number') }}" type="text">
+                                <input id="Phone_number" class="form-control" placeholder="Phone number " name="telephone_number" value="{{ old('telephone_number') }}" type="tel">
                             </div>
 
                             <div class="form-group">
                                 <label for="mobile_number">Mobile Number<span class="mandatory">*</span></label>
-                                <input id="mobile_number" class="form-control" placeholder="Mobile Number" name="mobile_number" value="{{ old('mobile_number') }}" type="text">
+                                <input id="mobile_number" class="form-control" placeholder="Mobile Number" name="mobile_number" value="{{ old('mobile_number') }}" type="tel">
                             </div>
                             <div class="form-group">
                                 <label for="email">Email<span class="mandatory">*</span></label>
