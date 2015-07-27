@@ -864,7 +864,8 @@ class OrderController extends Controller {
                     $order_products = [
                         'order_id' => $order_id,
                         'order_type' => 'delivery_order',
-                        'product_category_id' => $product_data['id'],
+                        'product_category_id' => $product_data['product_category_id'],
+//                        'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
                         'quantity' => $product_data['present_shipping'],
                         'present_shipping' => $product_data['present_shipping'],

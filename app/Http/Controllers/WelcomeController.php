@@ -16,6 +16,7 @@ use App;
 use App\City;
 use App\DeliveryLocation;
 use App\Customer;
+use Illuminate\Support\Facades\Hash;
 
 class WelcomeController extends Controller {
     /*
@@ -332,8 +333,8 @@ class WelcomeController extends Controller {
         print_r($ipaddress);
         echo '</pre>';
 //        if (App::environment('development')) {
-            var_dump(getenv('APP_ENV'));
-            dd(\App::environment());
+        var_dump(getenv('APP_ENV'));
+        dd(\App::environment());
 //        }else{
 //            var_dump(getenv('APP_ENV'));
 //        }
@@ -418,8 +419,8 @@ class WelcomeController extends Controller {
                     $location = DeliveryLocation::where('area_name', 'like', '%' . $excel->delivery_location . '%')->first();
                     $customer->delivery_location_id = $location->id;
 
-//                    $customer->username = $excel->user_name;
-//                    $customer->password = $excel->password;
+                    $customer->username = $excel->user_name;
+                    $customer->password = Hash::make($excel->password);
                     $customer->credit_period = $excel->credit_period;
                     $customer->customer_status = 'permanent';
                     $customer->relationship_manager = 2;

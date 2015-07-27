@@ -369,8 +369,8 @@ class InquiryController extends Controller {
             'created_by' => Auth::id(),
             'vat_percentage' => $vat_price,
             'expected_delivery_date' => $datetime->format('Y-m-d'),
-            'remarks' => $input_data['inquiry_remark'],
-            'inquiry_status' => $input_data['inquiry_status']
+            'remarks' => $input_data['inquiry_remark']
+//            'inquiry_status' => $input_data['inquiry_status']
         ]);
 
         if ($location_id == 0) {
