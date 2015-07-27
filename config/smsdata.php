@@ -5,7 +5,7 @@ return [
     'password' => 'its1782',
     'sender_id' => 'VikasPipes',
     'url' => 'http://bulksmspune.mobi/sendurlcomma.aspx',
-    'send' => true,
+    'send' => false,
     'send_sms_to' => '8276803247',
     'emailData' => array(
         'email' => 'amana@agstechnologies.com',

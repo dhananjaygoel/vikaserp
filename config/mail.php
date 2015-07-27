@@ -110,5 +110,5 @@ return [
       | you may inspect the message. This is great for local development.
       |
      */
-    'pretend' => false,
+    'pretend' => true,
 ];
