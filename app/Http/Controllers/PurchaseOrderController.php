@@ -16,6 +16,7 @@ use App\PurchaseOrder;
 use App\PurchaseProducts;
 use Auth;
 use DB;
+use App;
 use Hash;
 use Mail;
 use Config;
@@ -189,7 +190,11 @@ class PurchaseOrderController extends Controller {
                 }
 
                 $str .= " meterial will be despached by " . date("jS F, Y", strtotime($expected_delivery_date)) . ". Vikas Associates, 9673000068";
-                $phone_number = $customer->phone_number1;
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                 if (SEND_SMS === true) {
@@ -432,7 +437,11 @@ class PurchaseOrderController extends Controller {
                     }
                 }
                 $str .= " meterial will be despached by " . date("jS F, Y", strtotime($datetime->format('Y-m-d'))) . ". Vikas Associates, 9673000068";
-                $phone_number = $customer->phone_number1;
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                 if (SEND_SMS === true) {
@@ -574,7 +583,11 @@ class PurchaseOrderController extends Controller {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
                 }
                 $str .= ", Vikas Associates, 9673000068";
-                $phone_number = $customer->phone_number1;
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                 if (SEND_SMS === true) {

@@ -19,6 +19,7 @@ use Auth;
 use App\User;
 use Hash;
 use Mail;
+use App;
 use Config;
 use App\OrderCancelled;
 use Illuminate\Support\Facades\Validator;
@@ -227,7 +228,11 @@ class OrderController extends Controller {
                         }
                     }
                     $str .= " meterial will be despached by " . date("jS F, Y", strtotime($datetime->format('Y-m-d'))) . ". Vikas Associates, 9673000068";
-                    $phone_number = $customer->phone_number1;
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer->phone_number1;
+                    }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                     if (SEND_SMS === true) {
@@ -238,7 +243,11 @@ class OrderController extends Controller {
                     }
                     if (count($customer['manager']) > 0) {
                         $str = "Dear " . $customer['manager']->first_name . ",  " . Auth::user()->first_name . " has logged an enquiry for " . $customer['manager']->first_name . ", " . $total_quantity . ". Kindly check and quote Vikas Associates, 9673000068";
-                        $phone_number = $customer['manager']->mobile_number;
+                        if (App::environment('development')) {
+                            $phone_number = Config::get('smsdata.send_sms_to');
+                        } else {
+                            $phone_number = $customer['manager']->mobile_number;
+                        }
                         $msg = urlencode($str);
                         $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                         if (SEND_SMS === true) {
@@ -510,7 +519,11 @@ class OrderController extends Controller {
                     }
                 }
                 $str .= " meterial will be despached by " . date("jS F, Y", strtotime($datetime->format('Y-m-d'))) . ". Vikas Associates, 9673000068";
-                $phone_number = $customer->phone_number1;
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                 if (SEND_SMS === true) {
@@ -521,7 +534,11 @@ class OrderController extends Controller {
                 }
                 if (count($customer['manager']) > 0) {
                     $str = "Dear " . $customer['manager']->first_name . ",  " . Auth::user()->first_name . " has logged an enquiry for " . $customer['manager']->first_name . ", " . $total_quantity . ". Kindly check and quote Vikas Associates, 9673000068";
-                    $phone_number = $customer['manager']->mobile_number;
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer['manager']->mobile_number;
+                    }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                     if (SEND_SMS === true) {
@@ -641,7 +658,11 @@ class OrderController extends Controller {
                     $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
                 }
                 $str .= ", Vikas Associates, 9673000068";
-                $phone_number = $customer->phone_number1;
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                 if (SEND_SMS === true) {

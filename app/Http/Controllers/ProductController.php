@@ -23,6 +23,7 @@ use App\Http\Requests\ProductCategoryRequest;
 use App\Http\Requests\UserValidation;
 use Input;
 use DB;
+use App;
 use Config;
 use Maatwebsite\Excel\Facades\Excel;
 use App\InquiryProducts;
@@ -76,7 +77,11 @@ class ProductController extends Controller {
                 foreach ($admins as $key => $admin) {
                     $product_type = ProductType::find($request->input('product_type'));
                     $str = "Dear " . $admin->first_name . "  " . Auth::user()->first_name . " has created a new product catagory as " . $request->input('product_category_name') . " under " . $product_type->name . " kindly chk. Vikas associates";
-                    $phone_number = $admin->mobile_number;
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $admin->mobile_number;
+                    }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                     if (SEND_SMS === true) {

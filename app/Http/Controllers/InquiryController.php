@@ -181,7 +181,11 @@ class InquiryController extends Controller {
                 }
 
                 $str .= " prices and availability will be quoted shortly. Vikas Associates, 9673000068";
-                $phone_number = $customer->phone_number1;
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                 if (SEND_SMS === true) {
@@ -194,7 +198,11 @@ class InquiryController extends Controller {
 
             if (count($customer['manager']) > 0) {
                 $str = "Dear " . $customer['manager']->first_name . ",  " . Auth::user()->first_name . " has logged an enquiry for " . $customer['manager']->first_name . ", " . $total_quantity . ". Kindly check and quote Vikas Associates, 9673000068";
-                $phone_number = $customer['manager']->mobile_number;
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer['manager']->mobile_number;
+                }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                 if (SEND_SMS === true) {
@@ -244,7 +252,11 @@ class InquiryController extends Controller {
                     $total_quantity = $total_quantity + $product_data['quantity'];
                 }
                 $str .= " meterials will be despached by " . date('jS F, Y', strtotime($inquiry['expected_delivery_date'])) . ". Vikas Associates, 9673000068";
-                $phone_number = $customer->phone_number1;
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                 if (SEND_SMS === true) {
@@ -411,7 +423,11 @@ class InquiryController extends Controller {
                 }
 
                 $str .= " prices and availability will be quoted shortly. Vikas Associates, 9673000068";
-                $phone_number = $customer->phone_number1;
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                 if (SEND_SMS === true) {
@@ -423,7 +439,11 @@ class InquiryController extends Controller {
 
                 if (count($customer['manager']) > 0) {
                     $str = "Dear " . $customer['manager']->first_name . ",  " . Auth::user()->first_name . " has logged an enquiry for " . $customer['manager']->first_name . ", " . $total_quantity . ". Kindly check and quote Vikas Associates, 9673000068";
-                    $phone_number = $customer['manager']->mobile_number;
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer['manager']->mobile_number;
+                    }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                     if (SEND_SMS === true) {
@@ -708,7 +728,11 @@ class InquiryController extends Controller {
                     }
                 }
                 $str .= " meterial will be despached by " . date("jS F, Y", strtotime($datetime->format('Y-m-d'))) . ". Vikas Associates, 9673000068";
-                $phone_number = $customer->phone_number1;
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                 if (SEND_SMS === true) {
@@ -719,7 +743,11 @@ class InquiryController extends Controller {
                 }
                 if (count($customer['manager']) > 0) {
                     $str = "Dear " . $customer['manager']->first_name . ",  " . Auth::user()->first_name . " has logged an enquiry for " . $customer['manager']->first_name . ", " . $total_quantity . ". Kindly check and quote Vikas Associates, 9673000068";
-                    $phone_number = $customer['manager']->mobile_number;
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer['manager']->mobile_number;
+                    }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                     if (SEND_SMS === true) {
@@ -782,7 +810,7 @@ class InquiryController extends Controller {
                         $receipent['email'] = $customers->email;
                         $receipent['name'] = $customers->owner_name;
                     }
-                    
+
                     Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($receipent) {
                         $message->to($receipent['email'], $receipent['name'])->subject('Vikash Associates: New Order');
                     });

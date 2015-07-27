@@ -16,6 +16,7 @@ use DB;
 use App\User;
 use Hash;
 use Config;
+use App;
 use App\Units;
 use App\Http\Requests\StorePurchaseAdvise;
 use Redirect;
@@ -138,7 +139,7 @@ class PurchaseAdviseController extends Controller {
         if (isset($input_data['is_vat']) && $input_data['is_vat'] == "exclude_vat") {
             $purchase_advise_array['vat_percentage'] = $input_data['vat_percentage'];
         }
-        
+
         if (isset($input_data['delivery_location_id']) && $input_data['delivery_location_id'] == "-1") {
             $purchase_advise_array['delivery_location_id'] = 0;
             $purchase_advise_array['other_location'] = $input_data['other_location_name'];
@@ -451,7 +452,11 @@ class PurchaseAdviseController extends Controller {
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
                 $str .= " Truck Number: " . $purchase_advise->vehicle_number . ". Vikas Associates, 9673000068";
-                $phone_number = $customer->phone_number1;
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                 if (SEND_SMS === true) {

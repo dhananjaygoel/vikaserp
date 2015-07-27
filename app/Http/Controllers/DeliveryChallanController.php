@@ -15,6 +15,7 @@ use Validator;
 use Redirect;
 use App\User;
 use Auth;
+use App;
 use Hash;
 use Config;
 use App\CustomerProductDifference;
@@ -267,7 +268,11 @@ class DeliveryChallanController extends Controller {
                         ", Amount: " . $allorder->grand_price .
                         ", Due By: " . date("jS F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
                         ", . Vikas Associates, 9673000068";
-                $phone_number = $customer->phone_number1;
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                 if (SEND_SMS === true) {

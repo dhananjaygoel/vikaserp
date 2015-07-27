@@ -14,6 +14,7 @@ use App\AllOrderProducts;
 use App\Customer;
 use App\Units;
 use Input;
+use App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -511,7 +512,11 @@ class DeliveryOrderController extends Controller {
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
                 $str .= " Truck Number: " . $delivery_data->vehicle_number . ", Driver number: " . $delivery_data->driver_contact_no . ". Vikas Associates, 9673000068";
-                $phone_number = $customer->phone_number1;
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                 if (SEND_SMS === true) {

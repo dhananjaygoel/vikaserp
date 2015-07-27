@@ -14,6 +14,7 @@ use Closure;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Hash;
+use App;
 use Auth;
 use Config;
 use App\Quotation;
@@ -134,12 +135,12 @@ class PurchaseChallanController extends Controller {
         if (count($purchase_challan) < 1) {
             return redirect('purchase_challan')->with('flash_message', 'Challan not found');
         }
-        
+
 //        echo '<pre>';
 //        print_r($purchase_challan->toArray());
 //        echo '</pre>';
 //        exit;
-        
+
         return view('view_purchase_challan', compact('purchase_challan'));
     }
 
@@ -259,7 +260,11 @@ class PurchaseChallanController extends Controller {
                         ", Amount: " . $purchase_challan->grand_price .
                         ", Due By: " . date("jS F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date)) .
                         ", . Vikas Associates, 9673000068";
-                $phone_number = $customer->phone_number1;
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                 if (SEND_SMS === true) {
