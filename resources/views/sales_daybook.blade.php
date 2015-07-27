@@ -17,10 +17,10 @@
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 
-                                    <form action="{{url('sales_daybook_date')}}" method="POST">
-                                        <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                    <form action="" method="GET">
+                                        <!--<input type="hidden" name="_token" value="{{csrf_token()}}">-->
                                         <div class="col-sm-6 ">
-                                            <input type="text" class="form-control delivery_challan_date" name="challan_date" id="sales_daybook_date" value="{{$challan_date}}">
+                                            <input type="text" class="form-control delivery_challan_date" name="challan_date" id="sales_daybook_date" value="{{Request::get('challan_date')}}">
                                         </div>
                                         <div class="col-sm-6 ">
                                             <input type="submit" class="btn btn-primary form_button_footer" value="Search">
@@ -223,9 +223,6 @@
                                         </div>
                                     </div>
                                 </div> 
-
-
-
                                 <div class="pull-right deletebutton">
                                     <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_selected" ><button type="button" class="btn btn-primary form_button_footer" >Delete All</button></a>
                                 </div>
