@@ -222,7 +222,7 @@ class OrderController extends Controller {
                     $str = "Dear " . $customer->owner_name . ", your order has been logged for following:";
                     foreach ($input_data['product'] as $product_data) {
                         if ($product_data['name'] != "") {
-                            $product = ProductSubCategory::where('product_category_id', '=', $product_data['id'])->first();
+                            $product = ProductSubCategory::find($product_data['id']);
                             $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
                             $total_quantity = $total_quantity + $product_data['quantity'];
                         }
