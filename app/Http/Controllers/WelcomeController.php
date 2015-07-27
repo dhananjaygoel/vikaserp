@@ -406,7 +406,21 @@ class WelcomeController extends Controller {
                     $customer->phone_number1 = $excel->phone_number_1;
                     $customer->phone_number2 = $excel->phone_number_2;
                     $customer->excise_number = $excel->excise_number;
-                    $customer->delivery_location_id = 32;
+
+                    $location = "";
+                    $location = DeliveryLocation::where('area_name', 'like', '%' . $excel->delivery_location . '%')->first();
+
+//                    echo '<pre>';
+//                    print_r($location->toArray());
+//                    echo '</pre>';
+//                    exit;
+//                    echo $location->id;
+//                    exit;
+
+                    $customer->delivery_location_id = $location->id;
+
+
+
 //                    $customer->username = $excel->user_name;
 //                    $customer->password = $excel->password;
                     $customer->credit_period = $excel->credit_period;

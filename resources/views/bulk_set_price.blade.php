@@ -15,7 +15,6 @@
                     <form method="GET" id="searchCustomerForm" action="{{URL::action('CustomerController@bulk_set_price')}}">
                         <div class="form-group  col-md-3  pull-right">
                             <select class="form-control" name="product_filter" onchange="this.form.submit()">
-                                <option value="" selected="">--Product category--</option>
                                 @foreach($product_type as $prod_type)
                                 <option <?php
                                 if (Input::get('product_filter') == $prod_type->id)
