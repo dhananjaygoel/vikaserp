@@ -17,6 +17,7 @@ use Config;
 use Auth;
 use Mail;
 use View;
+use App;
 use App\Http\Requests\InquiryRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
@@ -773,10 +774,17 @@ class InquiryController extends Controller {
                         'order_product' => $order['all_order_products'],
                         'source' => 'inquiry'
                     );
-
-
-                    Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($customers) {
-                        $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: New Order');
+                    $receipent = array();
+                    if (App::environment('development')) {
+                        $receipent['email'] = Config::get('smsdata.emailData.email');
+                        $receipent['name'] = Config::get('smsdata.emailData.name');
+                    } else {
+                        $receipent['email'] = $customers->email;
+                        $receipent['name'] = $customers->owner_name;
+                    }
+                    
+                    Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($receipent) {
+                        $message->to($receipent['email'], $receipent['name'])->subject('Vikash Associates: New Order');
                     });
                 }
             }

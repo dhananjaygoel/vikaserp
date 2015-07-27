@@ -336,7 +336,6 @@ class WelcomeController extends Controller {
             dd(\App::environment());
         }else{
             var_dump(getenv('APP_ENV'));
-            dd(\App::environment());
         }
     }
 

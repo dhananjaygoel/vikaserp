@@ -6,4 +6,8 @@ return [
     'sender_id' => 'VikasPipes',
     'url' => 'http://bulksmspune.mobi/sendurlcomma.aspx',
     'send' => false,
+    'emailData' => array(
+        'email' => 'amana@agstechnologies.com',
+        'name' => 'Aman Agarwal'
+    )
 ];
