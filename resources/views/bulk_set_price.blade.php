@@ -22,13 +22,8 @@
                                 @endforeach
                             </select>
                         </div>
-
-
-                        <!--                    </form>  
-                        
-                                            <form action="{{URL::action('CustomerController@bulk_set_price')}} id="searchCustomerForm">-->
                         <div class="form-group pull-right col-md-3">
-                            <input class="form-control" name="search" id="search" placeholder="Enter Customer,Comapny Name " value="{{Request::get('search')}}" type="text">
+                            <input class="form-control" name="search" id="search" placeholder="Tally Name, City, Delivery Location" value="{{Request::get('search')}}" type="text">
                             <i class="fa fa-search search-icon"></i>
                         </div>
                     </form>   
@@ -117,10 +112,10 @@
 
                                 echo $customer->appends(array('search' => Request::get('search')))->render();
                             } else {
+
                                 echo $customer->render();
                             }
                             ?>
-
                         </span>
 
                         <span class="clearfix"></span>
@@ -137,8 +132,7 @@
                                 </div>
                             </form>
                         </span> 
-                        @endif 
-
+                        @endif
                     </div>
                 </div>
             </div>
