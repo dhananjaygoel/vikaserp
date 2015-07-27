@@ -809,20 +809,19 @@ class OrderController extends Controller {
             $delivery_order->delivery_location_id = $order->delivery_location_id;
             $delivery_order->other_location = $order->other_location;
             $delivery_order->vat_percentage = $order->vat_percentage;
-//            $delivery_order->estimated_delivery_date = $order->estimated_delivery_date;
             $delivery_order->expected_delivery_date = $order->expected_delivery_date;
             $delivery_order->remarks = $input_data['remarks'];
             $delivery_order->vehicle_number = $input_data['vehicle_number'];
-//            $delivery_order->driver_name = $input_data['driver_name'];
             $delivery_order->driver_contact_no = $input_data['driver_contact'];
             $delivery_order->order_status = 'Pending';
             $delivery_order->save();
 
             $order_products = array();
             $order_id = DB::getPdo()->lastInsertId();
+            $total_qty = 0;
+            $present_shipping = 0;
             foreach ($input_data['product'] as $product_data) {
                 if ($product_data['name'] != "" && $product_data['order'] != '') {
-//                    echo $product_data['order'];exit;
                     $order_products = [
                         'order_id' => $order_id,
                         'order_type' => 'delivery_order',
@@ -835,10 +834,12 @@ class OrderController extends Controller {
                         'remarks' => $product_data['remark'],
                         'parent' => $product_data['order']
                     ];
+                    $total_qty = $total_qty + $product_data['quantity'];
+                    $present_shipping = $present_shipping + $product_data['present_shipping'];
+
                     $add_order_products = AllOrderProducts::create($order_products);
                 }
                 if ($product_data['name'] != "" && $product_data['order'] == '') {
-//                    echo $product_data['order'];exit;
                     $order_products = [
                         'order_id' => $order_id,
                         'order_type' => 'delivery_order',
@@ -852,14 +853,8 @@ class OrderController extends Controller {
                     $add_order_products = AllOrderProducts::create($order_products);
                 }
             }
-            $pending_orders = $this->pending_quantity_order($id);
-            $pending_qty = 0;
-            foreach ($pending_orders as $pendings) {
-                $pending_qty = $pending_qty + $pendings['total_pending_quantity'];
-            }
-
             //If pending quantity is Zero complete the order
-            if ($pending_qty == 0) {
+            if ($present_shipping == $total_qty) {
                 Order::where('id', '=', $id)->update(array('order_status' => 'completed'));
             }
 

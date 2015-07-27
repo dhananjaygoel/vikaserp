@@ -1,3 +1,11 @@
+<?php 
+//
+//echo '<pre>';
+//print_r($order->toArray());
+//echo '</pre>';
+//exit;
+?>
+
 @extends('layouts.master')
 @section('title','Create Delivery Order')
 @section('content')
@@ -122,6 +130,7 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
+                                                    <!--{{$product->pending_quantity}}-->
                                                     {{$product->quantity}}
                                                     <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->pending_quantity}}" type="hidden" > 
                                                 </div>
@@ -154,11 +163,9 @@
 
                                             <td class="col-md-2">
                                                 <div class="form-group">
-
                                                     <input type="hidden" value="0" id="pending_qunatity_value_{{$key}}">
                                                     <div id="pending_qunatity_{{$key}}"><span class="text-center">0</span>
                                                     </div>
-
                                                 </div>
                                             </td>
 
