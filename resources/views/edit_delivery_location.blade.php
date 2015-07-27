@@ -22,7 +22,7 @@
                     </header>
                     <div class="main-box-body clearfix">
                         <hr>
-                        {!! Form::open(array('method'=>'PUT','url'=>url('location',$delivery_location->id), 'id'=>'edit_location_form'))!!}
+                        {!! Form::open(array('method'=>'PUT','url'=>url('location',$delivery_location->id), 'id'=>'onenter_prevent'))!!}
 
                         <input type="hidden" name="id" value="{{$delivery_location->id}}">
                         @if (count($errors) > 0)

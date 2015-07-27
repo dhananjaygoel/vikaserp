@@ -33,7 +33,7 @@
                         <div class="form-group">
                             Date : {{date('d F, Y')}}
                         </div> 
-                        {!!Form::open(array('method'=>'PUT','url'=>url('delivery_order/'.$delivery_data['id']),'id'=>'edit_delivery_order'))!!}
+                        {!!Form::open(array('method'=>'PUT','url'=>url('delivery_order/'.$delivery_data['id']),'id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
 
                         @if($delivery_data['customer']->customer_status =="pending")

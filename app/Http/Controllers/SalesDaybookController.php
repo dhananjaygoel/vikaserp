@@ -38,6 +38,17 @@ class SalesDaybookController extends Controller {
         $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products.unit', 'all_order_products.order_product_details', 'delivery_order.location', 'user')->orderBy('created_at', 'desc')->Paginate(20);
         $challan_date = '';
         $allorders->setPath('sales_daybook');
+        
+        
+        echo '<pre>';
+        print_r($allorders->toArray());
+        echo '</pre>';
+        echo '<pre>';
+        print_r('----------------------------------------------------------------------------------');
+        echo '</pre>';
+        echo '<pre>';
+        print_r($allorders['delivery_order']->toArray());
+        echo '</pre>';
 
         return view('sales_daybook', compact('allorders', 'challan_date'));
     }

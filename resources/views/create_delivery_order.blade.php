@@ -16,7 +16,7 @@
                 <div class="main-box">
                     <div class="main-box-body clearfix">
 
-                        {!! Form::open(array('method'=>'post','url'=>url('create_delivery_order',$order->id), 'id'=>'create_delivery_order_form'))!!}
+                        {!! Form::open(array('method'=>'post','url'=>url('create_delivery_order',$order->id), 'id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="order_id" value="{{$order->id}}">
                         <input type="hidden" name="customer_id" value="{{$order['customer']->id}}" id="hidden_cutomer_id">
