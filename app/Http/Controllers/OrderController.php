@@ -297,8 +297,17 @@ class OrderController extends Controller {
                         'source' => 'create_order'
                     );
 
-                    Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($customers) {
-                        $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: New Order');
+                    $receipent = array();
+                    if (App::environment('development')) {
+                        $receipent['email'] = Config::get('smsdata.emailData.email');
+                        $receipent['name'] = Config::get('smsdata.emailData.name');
+                    } else {
+                        $receipent['email'] = $customers->email;
+                        $receipent['name'] = $customers->owner_name;
+                    }
+
+                    Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($receipent) {
+                        $message->to($receipent['email'], $receipent['name'])->subject('Vikash Associates: New Order');
                     });
                 }
             }
@@ -549,9 +558,17 @@ class OrderController extends Controller {
                         'order_product' => $order['all_order_products'],
                         'source' => 'update_order'
                     );
+                    $receipent = array();
+                    if (App::environment('development')) {
+                        $receipent['email'] = Config::get('smsdata.emailData.email');
+                        $receipent['name'] = Config::get('smsdata.emailData.name');
+                    } else {
+                        $receipent['email'] = $customers->email;
+                        $receipent['name'] = $customers->owner_name;
+                    }
 
-                    Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($customers) {
-                        $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: Order Updated');
+                    Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($receipent) {
+                        $message->to($receipent['email'], $receipent['name'])->subject('Vikash Associates: Order Updated');
                     });
                 }
             }
@@ -659,8 +676,17 @@ class OrderController extends Controller {
                         'order_product' => $order['all_order_products']
                     );
 
-                    Mail::send('emails.complete_order_mail', ['order' => $mail_array], function($message) use($customers) {
-                        $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: Order Completed');
+                    $receipent = array();
+                    if (App::environment('development')) {
+                        $receipent['email'] = Config::get('smsdata.emailData.email');
+                        $receipent['name'] = Config::get('smsdata.emailData.name');
+                    } else {
+                        $receipent['email'] = $customers->email;
+                        $receipent['name'] = $customers->owner_name;
+                    }
+
+                    Mail::send('emails.complete_order_mail', ['order' => $mail_array], function($message) use($receipent) {
+                        $message->to($receipent['email'], $receipent['name'])->subject('Vikash Associates: Order Completed');
                     });
                 }
             }

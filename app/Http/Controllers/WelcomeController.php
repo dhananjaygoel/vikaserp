@@ -331,12 +331,12 @@ class WelcomeController extends Controller {
         echo '<pre>';
         print_r($ipaddress);
         echo '</pre>';
-        if (App::environment('development')) {
+//        if (App::environment('development')) {
             var_dump(getenv('APP_ENV'));
             dd(\App::environment());
-        }else{
-            var_dump(getenv('APP_ENV'));
-        }
+//        }else{
+//            var_dump(getenv('APP_ENV'));
+//        }
     }
 
     public function import_delivery_location() {

@@ -261,8 +261,17 @@ class PurchaseOrderController extends Controller {
                             'source' => 'create_order'
                         );
 
-                        Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($customers) {
-                            $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: New Purchase Order');
+                        $receipent = array();
+                        if (App::environment('development')) {
+                            $receipent['email'] = Config::get('smsdata.emailData.email');
+                            $receipent['name'] = Config::get('smsdata.emailData.name');
+                        } else {
+                            $receipent['email'] = $customers->email;
+                            $receipent['name'] = $customers->owner_name;
+                        }
+
+                        Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($receipent) {
+                            $message->to($receipent['email'], $receipent['name'])->subject('Vikash Associates: New Purchase Order');
                         });
                     }
                 }
@@ -493,8 +502,18 @@ class PurchaseOrderController extends Controller {
                         'source' => 'update_order'
                     );
 
-                    Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($customers) {
-                        $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: Purchase Order Updated');
+
+                    $receipent = array();
+                    if (App::environment('development')) {
+                        $receipent['email'] = Config::get('smsdata.emailData.email');
+                        $receipent['name'] = Config::get('smsdata.emailData.name');
+                    } else {
+                        $receipent['email'] = $customers->email;
+                        $receipent['name'] = $customers->owner_name;
+                    }
+
+                    Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($receipent) {
+                        $message->to($receipent['email'], $receipent['name'])->subject('Vikash Associates: Purchase Order Updated');
                     });
                 }
             }
@@ -589,8 +608,18 @@ class PurchaseOrderController extends Controller {
                     'order_product' => $purchase_order['purchase_products']
                 );
 
-                Mail::send('emails.complete_purchase_order_mail', ['order' => $mail_array], function($message) use($customers) {
-                    $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: Order Completed');
+
+                $receipent = array();
+                if (App::environment('development')) {
+                    $receipent['email'] = Config::get('smsdata.emailData.email');
+                    $receipent['name'] = Config::get('smsdata.emailData.name');
+                } else {
+                    $receipent['email'] = $customers->email;
+                    $receipent['name'] = $customers->owner_name;
+                }
+
+                Mail::send('emails.complete_purchase_order_mail', ['order' => $mail_array], function($message) use($receipent) {
+                    $message->to($receipent['email'], $receipent['name'])->subject('Vikash Associates: Order Completed');
                 });
             }
         }
