@@ -169,7 +169,7 @@
                         @else
                         <div class="clearfix"> &nbsp;</div>
                         <div class="alert alert-info alert-dismissible" role="alert">
-                            <strong> No permanent customers found </strong>
+                            <strong> Currently No customers found </strong>
                         </div>
                         @endif
                     </div>

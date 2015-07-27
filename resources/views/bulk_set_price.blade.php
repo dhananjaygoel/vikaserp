@@ -139,7 +139,7 @@
                         @endif
                         @else
                         <div class="alert alert-info alert-dismissible" role="alert">
-                            <strong> No customers found </strong>
+                            <strong> Currently No customers found </strong>
                         </div>
                         @endif
 
