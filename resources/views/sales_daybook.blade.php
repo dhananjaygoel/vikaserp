@@ -115,7 +115,7 @@
                                                 @endif
                                             </td> 
                                             <td >{{$challan["customer"]->owner_name}}</td>
-                                            <td >{{$challan["delivery_order"]->vehicle_number}}</td>
+                                            <td >{{isset($challan["delivery_order"])?$challan["delivery_order"]->vehicle_number: ''}}</td>
 
                                             <td >{{$challan["delivery_order"]->order_source}}</td>
 
