@@ -12,13 +12,17 @@
                 </ol>
                 <div class="filter-block">
                     <h1 class="pull-left">Bulk Set Price</h1> 
-
                     <form method="GET" id="searchCustomerForm" action="{{URL::action('CustomerController@bulk_set_price')}}">
                         <div class="form-group  col-md-3  pull-right">
                             <select class="form-control" name="product_filter" onchange="this.form.submit()">
                                 <option value="" selected="">--Product category--</option>
                                 @foreach($product_type as $prod_type)
-                                <option <?php if (Input::get('product_filter') == $prod_type->id) echo 'selected="selected"'; ?> value="{{$prod_type->id}}"> {{$prod_type->name}}</option>
+                                <option <?php
+                                if (Input::get('product_filter') == $prod_type->id)
+                                    echo 'selected="selected"';
+                                if (1 == $prod_type->id)
+                                    echo 'selected="selected"';
+                                ?> value="{{$prod_type->id}}"> {{$prod_type->name}} </option>
                                 @endforeach
                             </select>
                         </div>
@@ -26,9 +30,7 @@
                             <input class="form-control" name="search" id="search" placeholder="Tally Name, City, Delivery Location" value="{{Request::get('search')}}" type="text">
                             <i class="fa fa-search search-icon"></i>
                         </div>
-                    </form>   
-
-
+                    </form> 
                 </div>
             </div>
         </div>
@@ -43,6 +45,9 @@
                             <strong> {{ Session::get('success') }} </strong>
                         </div>
                         @endif
+
+                        @if(sizeof($customer) > 0)
+
                         <form id="onenter_prevent" method="POST" action="{{URL::action('CustomerController@save_all_set_price')}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <div class="table-responsive">
@@ -117,7 +122,6 @@
                             }
                             ?>
                         </span>
-
                         <span class="clearfix"></span>
                         @if($customer->lastPage() > 1)
                         <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
@@ -133,6 +137,12 @@
                             </form>
                         </span> 
                         @endif
+                        @else
+                        <div class="alert alert-info alert-dismissible" role="alert">
+                            <strong> No customers found </strong>
+                        </div>
+                        @endif
+
                     </div>
                 </div>
             </div>
