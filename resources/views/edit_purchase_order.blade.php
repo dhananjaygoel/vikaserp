@@ -18,7 +18,7 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
-                        {!! Form::open(array('method'=>'PUT','url'=>url('purchase_orders',$purchase_order->id), 'id'=>'edit_purchase_order_form'))!!}
+                        {!! Form::open(array('method'=>'PUT','url'=>url('purchase_orders',$purchase_order->id), 'id'=>'onenter_prevent'))!!}
                         @if (count($errors) > 0)
                         <div role="alert" class="alert alert-warning">
                             <ul>

@@ -130,6 +130,8 @@
 
         <!-- RTL support - for demo only -->
         {!! HTML::script('/resources/assets/js/demo-rtl.js') !!}
+        <!-- Confirm Exit JS -->
+        {!! HTML::script('/resources/assets/js/jquery.confirmExit.min.js') !!}
 
         <!-- Sortable Script Support -->
         {!! HTML::script('/resources/assets/custom_js/my_script.js') !!}

@@ -225,26 +225,32 @@ $('.print_purchase_daybook').click(function () {
 /*
  | RESTRICT REDIRECT ON HALF FILLED FORM STARTS
  */
-var GLOBAL_NAMESPACE = {};
-GLOBAL_NAMESPACE.value_changed = false;
+//var GLOBAL_NAMESPACE = {};
+//GLOBAL_NAMESPACE.value_changed = false;
+//$(document).ready(function () {
+//    setup();
+//    $('a').click(function (e) {
+//        if (GLOBAL_NAMESPACE.value_changed) {
+//            return confirm("are you sure?");
+//        }
+//    });
+//});
+//
+//function setup() {
+//    // bind the change event to all editable fields
+//    $("form :input").bind("change", function (e) {
+//        GLOBAL_NAMESPACE.value_changed = true;
+//    });
+//}
+//$(document).ajaxStart(function () {
+//    GLOBAL_NAMESPACE.value_changed = false;
+//});
+
+
 $(document).ready(function () {
-    setup();
-    $('a').click(function (e) {
-        if (GLOBAL_NAMESPACE.value_changed) {
-            return confirm("are you sure?");
-        }
-    });
+    $('#onenter_prevent').confirmExit('Go away?');
 });
 
-function setup() {
-    // bind the change event to all editable fields
-    $("form :input").bind("change", function (e) {
-        GLOBAL_NAMESPACE.value_changed = true;
-    });
-}
-$(document).ajaxStart(function () {
-    GLOBAL_NAMESPACE.value_changed = false;
-});
 /*
  | RESTRICT REDIRECT ON HALF FILLED FORM ENDS
  */

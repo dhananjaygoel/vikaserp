@@ -15,7 +15,7 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
-                        {!! Form::open(array('method'=>'PUT','url'=>url('orders',$order->id), 'id'=>'edit_order_form'))!!}
+                        {!! Form::open(array('method'=>'PUT','url'=>url('orders',$order->id), 'id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="order_id" value="{{$order->id}}">
                         <input type="hidden" name="customer_id" value="{{$order['customer']->id}}" id="hidden_cutomer_id">

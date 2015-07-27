@@ -275,51 +275,7 @@ $('#onenter_prevent input').keypress(function (e) {
         return false;
     }
 });
-$('#create_delivery_challan_form input').keypress(function (e) {
-    if (e.which == 13) {
-        return false;
-    }
-});
-$('#create_delivery_order_form input').keypress(function (e) {
-    if (e.which == 13) {
-        return false;
-    }
-});
-$('#edit_location_form input').keypress(function (e) {
-    if (e.which == 13) {
-        return false;
-    }
-});
-$('#edit_delivery_order input').keypress(function (e) {
-    if (e.which == 13) {
-        return false;
-    }
-});
-$('#edit_inquiry_form input').keypress(function (e) {
-    if (e.which == 13) {
-        return false;
-    }
-});
-$('#edit_order_form input').keypress(function (e) {
-    if (e.which == 13) {
-        return false;
-    }
-});
-$('#updateUserForm input').keypress(function (e) {
-    if (e.which == 13) {
-        return false;
-    }
-});
-$('#edit_purchase_order_form input').keypress(function (e) {
-    if (e.which == 13) {
-        return false;
-    }
-});
-$('#edit_state_form input').keypress(function (e) {
-    if (e.which == 13) {
-        return false;
-    }
-});
+
 $("#product_size").autocomplete({
     minLength: 1,
     dataType: 'json',
