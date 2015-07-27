@@ -331,7 +331,10 @@ class WelcomeController extends Controller {
         echo '<pre>';
         print_r($ipaddress);
         echo '</pre>';
-        if (App::environment('local')) {
+        if (App::environment('development')) {
+            var_dump(getenv('APP_ENV'));
+            dd(\App::environment());
+        }else{
             var_dump(getenv('APP_ENV'));
             dd(\App::environment());
         }
