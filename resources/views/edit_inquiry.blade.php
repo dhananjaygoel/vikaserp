@@ -31,6 +31,7 @@
                         @if (Session::has('flash_message'))
                         <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
                         @endif
+                        <input type="hidden" name="inquiry_status" value="{{$inquiry->inquiry_status}}">
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="inquiry_id" value="{{$inquiry->id}}">
                         <input type="hidden" name="customer_id" value="{{$inquiry['customer']->id}}" id="hidden_cutomer_id">

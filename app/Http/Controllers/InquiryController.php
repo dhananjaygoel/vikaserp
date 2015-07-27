@@ -357,7 +357,7 @@ class InquiryController extends Controller {
             'vat_percentage' => $vat_price,
             'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['inquiry_remark'],
-            'inquiry_status' => "Pending"
+            'inquiry_status' => $input_data['inquiry_status']
         ]);
 
         if ($location_id == 0) {
@@ -657,7 +657,7 @@ class InquiryController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
-        
+
         if ($input_data['status'] == 'warehouse') {
             $order_status = 'warehouse';
             $supplier_id = 0;

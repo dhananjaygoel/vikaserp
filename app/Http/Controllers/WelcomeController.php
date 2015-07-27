@@ -409,17 +409,7 @@ class WelcomeController extends Controller {
 
                     $location = "";
                     $location = DeliveryLocation::where('area_name', 'like', '%' . $excel->delivery_location . '%')->first();
-
-//                    echo '<pre>';
-//                    print_r($location->toArray());
-//                    echo '</pre>';
-//                    exit;
-//                    echo $location->id;
-//                    exit;
-
                     $customer->delivery_location_id = $location->id;
-
-
 
 //                    $customer->username = $excel->user_name;
 //                    $customer->password = $excel->password;
