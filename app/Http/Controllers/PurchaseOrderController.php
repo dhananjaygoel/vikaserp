@@ -243,26 +243,28 @@ class PurchaseOrderController extends Controller {
 
             if (isset($input_data['send_email'])) {
                 $customers = Customer::find($customer_id);
-                $purchase_order = PurchaseOrder::where('id', '=', $purchase_order_id)->with('purchase_products.purchase_product_details', 'delivery_location')->first();
+                if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
+                    $purchase_order = PurchaseOrder::where('id', '=', $purchase_order_id)->with('purchase_products.purchase_product_details', 'delivery_location')->first();
 
-                if (count($purchase_order) > 0) {
-                    if (count($purchase_order['delivery_location']) > 0) {
-                        $delivery_location = $purchase_order['delivery_location']->area_name;
-                    } else {
-                        $delivery_location = $purchase_order->other_location;
+                    if (count($purchase_order) > 0) {
+                        if (count($purchase_order['delivery_location']) > 0) {
+                            $delivery_location = $purchase_order['delivery_location']->area_name;
+                        } else {
+                            $delivery_location = $purchase_order->other_location;
+                        }
+                        $mail_array = array(
+                            'customer_name' => $customers->owner_name,
+                            'expected_delivery_date' => $purchase_order->expected_delivery_date,
+                            'created_date' => $purchase_order->updated_at,
+                            'delivery_location' => $delivery_location,
+                            'order_product' => $purchase_order['purchase_products'],
+                            'source' => 'create_order'
+                        );
+
+                        Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($customers) {
+                            $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: New Purchase Order');
+                        });
                     }
-                    $mail_array = array(
-                        'customer_name' => $customers->owner_name,
-                        'expected_delivery_date' => $purchase_order->expected_delivery_date,
-                        'created_date' => $purchase_order->updated_at,
-                        'delivery_location' => $delivery_location,
-                        'order_product' => $purchase_order['purchase_products'],
-                        'source' => 'create_order'
-                    );
-
-                    Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($customers) {
-                        $message->to($customers->email, $customers->owner_name)->subject('Vikash Associates: New Purchase Order');
-                    });
                 }
             }
         }
@@ -319,9 +321,9 @@ class PurchaseOrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        
+
         $input_data = Input::all();
-             
+
         $customer_id = 0;
         $i = 0;
         $j = count($input_data['product']);
@@ -392,7 +394,7 @@ class PurchaseOrderController extends Controller {
         } else {
             $vat_percentage = $input_data['vat_percentage'];
         }
-        
+
         $add_purchase_order_array = [
             'is_view_all' => $input_data['viewable_by'],
             'supplier_id' => $customer_id,
@@ -433,7 +435,7 @@ class PurchaseOrderController extends Controller {
             }
         }
         $update_purchase_order = $purchase_order->update($add_purchase_order_array);
-        
+
         if (isset($input_data['purchase_order_location']) && ($input_data['purchase_order_location'] == -1)) {
 //        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] = -1)) {
             $purchase_order->update([
@@ -450,8 +452,8 @@ class PurchaseOrderController extends Controller {
             ]);
 //            $location_id = $input_data['purchase_order_location'];
         }
-        
-        
+
+
         $purchase_order_products = array();
         $delete_old_purchase_products = PurchaseProducts::where('purchase_order_id', '=', $id)->delete();
         foreach ($input_data['product'] as $product_data) {
@@ -474,7 +476,7 @@ class PurchaseOrderController extends Controller {
          */
         if (isset($input_data['send_email'])) {
             $customers = Customer::find($customer_id);
-            if ($customer->email != '') {
+            if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
                 $purchase_order = PurchaseOrder::where('id', '=', $id)->with('purchase_products.purchase_product_details', 'delivery_location')->first();
                 if (count($purchase_order) > 0) {
                     if (count($purchase_order['delivery_location']) > 0) {
