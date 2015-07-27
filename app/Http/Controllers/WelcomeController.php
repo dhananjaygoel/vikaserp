@@ -12,6 +12,7 @@ use App\Http\Requests\ProductCategoryRequest;
 use App\Http\Requests\UserValidation;
 use Input;
 use DB;
+use App;
 use App\City;
 use App\DeliveryLocation;
 use App\Customer;
@@ -330,6 +331,10 @@ class WelcomeController extends Controller {
         echo '<pre>';
         print_r($ipaddress);
         echo '</pre>';
+        if (App::environment('local')) {
+            var_dump(getenv('APP_ENV'));
+            dd(\App::environment());
+        }
     }
 
     public function import_delivery_location() {
