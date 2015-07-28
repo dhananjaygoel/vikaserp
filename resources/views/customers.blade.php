@@ -11,7 +11,7 @@
                 </ol>
                 <div class="filter-block">
                     <h1 class="pull-left">Customers</h1> 
-                    
+
                     <a href="{{url('excel_import_customer')}}" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Import Customer
                     </a>
@@ -55,11 +55,10 @@
                                 <thead>
                                     <tr>
                                         <th class="col-md-1">#</th>
-                                        <!--<th>Owner Name</th>-->
                                         <th>Tally Name</th>
                                         <th>Email</th>
                                         <th>Mobile </th>                                                            
-                                        <!--<th>City</th>-->                                                            
+                                        <th>City</th>                                                            
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -70,10 +69,16 @@
                                     @foreach($customers as $c)
                                     <tr>
                                         <td class="col-md-1">{{$i++}}</td>
-                                        <!--<td>{{$c->owner_name}}</td>-->
                                         <td>{{$c->tally_name}}</td>
                                         <td>{{$c->email}}</td>                                        
                                         <td>{{$c->phone_number1}}</td>
+                                        <td>
+                                            @foreach($city as $town)
+                                            @if($town->id == $c->city)
+                                            {{ $town->city_name }}
+                                            @endif
+                                            @endforeach
+                                        </td>
                                         <td class="text-center">
                                             <a href="{{url('customers/'.$c->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -121,7 +126,6 @@
                                                         <div class="pwd">
                                                             <div class="pwdl"><b>Password:</b></div>
                                                             <div class="pwdr"><input class="form-control" placeholder="" name="password" type="password" type="text"></div>
-
                                                         </div>
                                                         <div class="clearfix"></div>
                                                         <div class="delp">Are you sure you want to <b>delete</b> this customer?</div>

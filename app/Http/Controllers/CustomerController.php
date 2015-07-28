@@ -32,7 +32,6 @@ class CustomerController extends Controller {
         define('SMS_URL', Config::get('smsdata.url'));
         define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
-
     }
 
     /**
@@ -69,21 +68,17 @@ class CustomerController extends Controller {
                             ->orWhere('tally_name', 'like', $term);
                         });
                     })
-                    ->with('city')
                     ->where('customer_status', '=', 'permanent')
                     ->paginate(20);
         } else {
             $customers = Customer::orderBy('created_at', 'desc')
-                    ->with('city')
                     ->where('customer_status', '=', 'permanent')
                     ->paginate(20);
         }
 
-
         $customers->setPath('customers');
-
-
-        return View::make('customers', array('customers' => $customers));
+        $city = City::all();
+        return View::make('customers', array('customers' => $customers, 'city' => $city));
     }
 
     /**
