@@ -118,6 +118,7 @@
                         <div class="form-group">
                             <label for="driver_contact"><b class="challan">Loading: </b></label>
                             {{$allorder->loading_charge}}
+                             <?php $total_amount = $total_amount + $allorder->loading_charge; ?>
                         </div>
                         <hr>
                         <div class="form-group">

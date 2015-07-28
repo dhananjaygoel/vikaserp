@@ -310,8 +310,8 @@ class DeliveryOrderController extends Controller {
             'expected_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
             'remarks' => $input_data['order_remark'],
             'vehicle_number' => $input_data['vehicle_number'],
-            'driver_contact_no' => $input_data['driver_contact'],
-            'order_status' => "Pending"
+            'driver_contact_no' => $input_data['driver_contact']
+//            'order_status' => "Pending"
         ));
 
         $order_products = array();

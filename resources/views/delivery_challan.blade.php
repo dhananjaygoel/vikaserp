@@ -151,7 +151,7 @@
                                         {{$challan->serial_number}}
                                         @endif
                                     </td>                                        
-                                    <td class="text-center">{{$challan->total_quantity}}</td>
+                                    <td class="text-center">{{round($challan->total_quantity, 2)}}</td>
                                     <td class="text-center">
                                         <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
                                             <span class="fa-stack">
