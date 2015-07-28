@@ -38,7 +38,7 @@
                 border-right: 1px solid #ccc;
                 font-size: 8px !important;
             }
-            
+
             .divCell3{
                 float:left;
                 display:table-column;         
@@ -112,13 +112,13 @@
                 $total_qty = 0;
                 foreach ($obj["all_order_products"] as $products) {
                     if ($products['unit']->id == 1) {
-                        $total_qunatity += $products->present_shipping;
+                        $total_qunatity += $products->quantity;
                     }
                     if ($products['unit']->id == 2) {
-                        $total_qunatity += ($products->present_shipping * $products['order_product_details']->weight);
+                        $total_qunatity += ($products->quantity * $products['order_product_details']->weight);
                     }
                     if ($products['unit']->id == 3) {
-                        $total_qunatity += (($products->present_shipping / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
+                        $total_qunatity += (($products->quantity / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
                     }
 
                     $total_qty = $products->price;
@@ -134,7 +134,7 @@
                     <div class="divCell">{{ round($total_qunatity, 2) }}</div> 
                     <div class="divCell">{{ round($obj->grand_price, 2) }}</div>
                     <div class="divCell">@if($obj->bill_number != ""){{ $obj->bill_number }} @else &nbsp; @endif</div>
-                    <div class="divCell">@if($obj->vehicle_number != ""){{ $obj->vehicle_number }}@else &nbsp; @endif</div>
+                    <div class="divCell">{{ $obj['delivery_order']->vehicle_number }}</div>
                     <div class="divCell">@if($obj->loaded_by != ""){{ $obj->loaded_by }}@else &nbsp; @endif</div>
                     <div class="divCell">@if($obj->labours != ""){{ $obj->labours }}@else &nbsp; @endif</div> 
                     <div class="divCell">@if($obj->remarks != ""){{ $obj->remarks }}@else &nbsp; @endif</div> 
