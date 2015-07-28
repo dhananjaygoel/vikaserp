@@ -56,13 +56,16 @@ class PurchaseDaybookController extends Controller {
         $id = Input::all();
 
         if (Hash::check(Input::get('delete_all_password'), Auth::user()->password)) {
+            if (isset($id['daybook'])) {
+                foreach ($id['daybook'] as $key) {
 
-            foreach ($id['daybook'] as $key) {
+                    PurchaseChallan::find($key)->delete();
+                }
 
-                PurchaseChallan::find($key)->delete();
+                return redirect('purchase_order_daybook')->with('success', 'purchase day book details successfully deleted.');
+            } else {
+                return redirect('purchase_order_daybook')->with('error', 'Please select at least on record to delete');
             }
-
-            return redirect('purchase_order_daybook')->with('success', 'purchase day book details successfully deleted.');
         } else {
 
             return redirect('purchase_order_daybook')->with('error', 'Please enter a correct password');
@@ -86,16 +89,7 @@ class PurchaseDaybookController extends Controller {
         $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details', 'delivery_location')
                 ->where('order_status', 'completed')
                 ->get();
-        
-//        echo '<pre>';
-//        print_r($purchase_daybook->toArray());
-//        echo '</pre>';
-//        exit();
-        
-        
-        
-        
-        
+
         Excel::create('Sales Daybook', function($excel) use($purchase_daybook) {
 
             $excel->sheet('Sales-Daybook', function($sheet) use($purchase_daybook) {
