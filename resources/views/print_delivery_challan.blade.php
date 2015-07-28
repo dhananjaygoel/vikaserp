@@ -210,7 +210,6 @@
 
                 @foreach($allorder['delivery_challan_products'] as $prod)
 
-
                 @if($prod->order_type == 'delivery_challan')
                 <div class="divRow">
                     <div class="divCell2">{{ $i++ }}</div>
@@ -297,9 +296,9 @@
                         <div class="label">Vat</div>
                         <div class="value">
                             @if($allorder->vat_percentage != "")
-                            {{$allorder->vat_percentage}}
+                            {{$allorder->vat_percentage.'%'}} 
                             @else
-                            0
+                            0%
                             @endif 
                         </div>
                         <div class="label">Round Off</div>

@@ -562,6 +562,7 @@ function purchase_challan_calculation() {
     var current_row_count = $(".add_product_row").length;
     var total_actual_quantity = 0;
     var total_amount_product = 0;
+    
     for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseFloat($('#product_price_' + i).val())) {
 
