@@ -40,7 +40,7 @@ class PurchaseChallanController extends Controller {
      */
     public function index() {
 
-        $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'purchase_product.product_category.product_sub_category')
+        $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
                 ->where('order_status', 'pending')
                 ->Paginate(20);
         $purchase_challan->setPath('purchase_challan');
@@ -246,7 +246,7 @@ class PurchaseChallanController extends Controller {
             'order_status' => "Completed"
         ));
 
-        $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'purchase_product.purchase_product_details', 'purchase_product.unit')->where('id', $id)->first();
+        $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'all_purchase_products.purchase_product_details', 'all_purchase_products.unit')->where('id', $id)->first();
 
         /*
          * ------------------- -----------------------
