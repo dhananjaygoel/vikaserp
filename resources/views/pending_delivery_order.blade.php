@@ -11,7 +11,7 @@
                 </ol>
                 <div class="clearfix">
                     <h1 class="pull-left">Pending Delivery Order Report</h1>
-                    <div class="pull-right top-page-ui">   
+<!--                    <div class="pull-right top-page-ui">   
                         <div class="col-md-12">
                             <div class="form-group  pull-right">
                                 <div class="col-md-12">
@@ -26,7 +26,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>
@@ -52,8 +52,8 @@
                                 <tbody> 
                                     @foreach($delivery_data as $delivery)
                                     <tr>
-                                        <td>{{ $i }}</td>
-                                        <td>{{ $delivery->estimated_delivery_date }}</td>
+                                        <td>{{ $i++ }}</td>
+                                        <td>{{ date("jS F, Y", strtotime($delivery->estimated_delivery_date)) }}</td>
                                         <td>
                                             @if($delivery->serial_no != "")
                                             {{ $delivery->serial_no }}
