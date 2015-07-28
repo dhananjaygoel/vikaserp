@@ -26,6 +26,7 @@
                 width:7%;         
                 padding: 5px;
                 border-right: 1px solid #ccc;
+                font-size: 8px;
             }
             .divCell2{
                 float:left;
@@ -33,13 +34,12 @@
                 width:5%;         
                 padding: 5px;
                 border-right: 1px solid #ccc;
+                font-size: 8px;
             }
-            .divCell:last-child
-            {
+            .divCell:last-child{
                 border: none;
             }
-            .divRow:last-child
-            {
+            .divRow:last-child{
                 border-top: none;
                 border-bottom:  1px solid #ccc;
             }
@@ -49,8 +49,7 @@
             }        
 
 
-            .invoice
-            {
+            .invoice{
                 width:100%;
                 border: 1px solid #ccc;
                 float: left;
@@ -58,19 +57,14 @@
                 overflow: hidden;
             }
 
-
-
-
-            .title
-            {
+            .title{
                 width: 100%;
                 text-align: center;
                 border-bottom: 1px solid #ccc;
                 padding: 10px 0px 10px 5px;
                 font-weight: 600;
             }
-            .center
-            {
+            .center{
                 text-align: center;
             }
         </style>
@@ -94,26 +88,36 @@
                     <div  class="divCell">Remarks</div>
                 </div>
 
-                <?php $i = 1; ?>
+                <?php $i = 1;
+                $total_qunatity = 0;
+                ?>
                 @foreach ($purchase_daybook as $obj)
                 <?php
                 $qty = 0;
                 $amount = 0;
-                $total_qunatity = 0;
                 ?>
                 @foreach ($obj['all_purchase_products'] as $total_qty)
                 <?php
+//                echo '<pre>';
+//                print_r($total_qty['product_category']->toArray());
+//                echo '</pre>';
+//                exit;
+//                
 //                foreach ($value["all_purchase_products"] as $products) {
 
                 if ($total_qty->unit_id == 1) {
                     $total_qunatity += $total_qty->present_shipping;
                 }
                 if ($total_qty->unit_id == 2) {
-                    $total_qunatity += ($total_qty->present_shipping * $total_qty['order_product_details']->weight);
+                    $total_qunatity += ($total_qty->present_shipping * $total_qty['product_category']['product_sub_category']->weight);
                 }
+
                 if ($total_qty->unit_id == 3) {
-                    $total_qunatity += (($total_qty->present_shipping / $total_qty['order_product_details']->standard_length ) * $total_qty['order_product_details']->weight);
+
+//                    echo $total_qty['product_category']['product_sub_category']->standard_length; exit;
+                    $total_qunatity += ($total_qty->present_shipping / $total_qty['product_category']['product_sub_category']->standard_length) * $total_qty['product_category']['product_sub_category']->weight;
                 }
+
 //                }
 //                $qty += $total_qty->present_shipping;
 //                $amount += $total_qty->present_shipping * $total_qty->price;
@@ -125,7 +129,7 @@
                     <!--<div class="divCell">xxx</div>-->
                     <div class="divCell">{{ $obj['supplier']->owner_name }}</div>
                     <div class="divCell">{{ $obj['delivery_location']->area_name}}</div>
-                    <div class="divCell">{{ $total_qunatity }}</div> 
+                    <div class="divCell">{{ round($total_qunatity, 2) }}</div> 
                     <div class="divCell">{{ $obj->grand_total }}</div>
                     <div class="divCell">{{ $obj->bill_number }}</div>
                     <div class="divCell">{{ $obj->vehicle_number }}</div>
