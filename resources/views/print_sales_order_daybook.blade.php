@@ -89,7 +89,6 @@
                 <div class="headRow">
                     <div  class="divCell2">#</div>
                     <div  class="divCell">Challan No</div>
-                    <!--<div  class="divCell">Do. No</div>-->
                     <div  class="divCell3">Name</div>
                     <div  class="divCell">Del Loc</div>
                     <div  class="divCell">Qty</div>
@@ -128,16 +127,15 @@
                 <div class="divRow">
                     <div class="divCell2 center">{{$i++ }}</div>
                     <div class="divCell">{{ $obj->serial_number }}</div>
-                    <!--<div class="divCell">xxx</div>-->
                     <div class="divCell3">{{ $obj['customer']->owner_name }}</div>
                     <div class="divCell">{{ isset($obj['delivery_order']['location'])?$obj['delivery_order']['location']->area_name: '' }}</div>
                     <div class="divCell">{{ round($total_qunatity, 2) }}</div> 
                     <div class="divCell">{{ round($obj->grand_price, 2) }}</div>
-                    <div class="divCell">@if($obj->bill_number != ""){{ $obj->bill_number }} @else &nbsp; @endif</div>
+                    <div class="divCell">{{ $obj->bill_number }} </div>
                     <div class="divCell">{{ $obj['delivery_order']->vehicle_number }}</div>
-                    <div class="divCell">@if($obj->loaded_by != ""){{ $obj->loaded_by }}@else &nbsp; @endif</div>
-                    <div class="divCell">@if($obj->labours != ""){{ $obj->labours }}@else &nbsp; @endif</div> 
-                    <div class="divCell">@if($obj->remarks != ""){{ $obj->remarks }}@else &nbsp; @endif</div> 
+                    <div class="divCell">{{ $obj->loaded_by }}</div>
+                    <div class="divCell">{{ $obj->labours }}</div> 
+                    <div class="divCell">{{ $obj->remarks }}</div> 
                 </div>
                 @endforeach
             </div>
