@@ -53,7 +53,7 @@
                                     @foreach($delivery_data as $delivery)
                                     <tr>
                                         <td>{{ $i++ }}</td>
-                                        <td>{{ date("jS F, Y", strtotime($delivery->estimated_delivery_date)) }}</td>
+                                        <td>{{ date("jS F, Y", strtotime($delivery->created_at)) }}</td>
                                         <td>
                                             @if($delivery->serial_no != "")
                                             {{ $delivery->serial_no }}
