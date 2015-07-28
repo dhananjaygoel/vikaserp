@@ -26,11 +26,18 @@
                 width:15.2%;         
                 padding: 5px;
                 border-right: 1px solid #ccc;
-            }
+            }            
             .divCell2{
                 float:left;
                 display:table-column;         
                 width:10%;         
+                padding: 5px;
+                border-right: 1px solid #ccc;
+            }
+            .divCell3{
+                float:left;
+                display:table-column;         
+                width:17%;         
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
@@ -175,7 +182,7 @@
             <div class="divTable">                
                 <div class="headRow">
                     <div  class="divCell2">Sr.</div>
-                    <div  class="divCell">Size</div>
+                    <div  class="divCell3">Size</div>
                     <div  class="divCell">Qty</div>
                     <div  class="divCell">Unit</div>                    
                     <div  class="divCell">Act pcs</div>
@@ -189,7 +196,7 @@
                 @if($product['order_type'] == 'delivery_order')
                 <div class="divRow">
                     <div class="divCell2">{{ $i++ }}</div>
-                    <div class="divCell">{{ $product['order_product_details']->alias_name }}</div>
+                    <div class="divCell3">{{ $product['order_product_details']->alias_name }}</div>
                     <div class="divCell">{{ $product->quantity }}</div>
                     <div class="divCell">
                         @foreach($units as $u)
