@@ -230,7 +230,7 @@
                     </div>
                     <div class="divCell">
                         <?php $total_price += $rate * $prod->actual_quantity; ?> 
-                        {{ $total_price }} 
+                        {{ ($rate * $prod->actual_quantity) }} 
                     </div>                
                 </div>
                 <?php
@@ -313,9 +313,9 @@
                         <div class="label">GT</div>
                         <div class="value">
                             <?php
-                            $gt = $total_price + $allorder->freight + $allorder->loading_charge + $allorder->round_off + $allorder->discount + $allorder->vat_percentage / 100 * 100;
+                            $gt = $total_price + $allorder->freight + $allorder->loading_charge + $allorder->round_off + $allorder->discount + ($allorder->vat_percentage / 100) * 100;
                             ?>
-                            {{ round($gt, 2) }}
+                            {{ round($allorder->grand_price, 2) }}
                         </div>
                     </div>
                 </div>
