@@ -53,7 +53,7 @@
             }
             .total-desc{
                 width: 65%;
-                float: left;
+                float: left;              
 
             }
             .total{
@@ -72,7 +72,7 @@
             .time{
                 width: 100%;
                 float: left;
-                padding: 10px 0px 10px 0px;
+                padding: 10px 0px 10px 5px;
 
             }
 
@@ -87,7 +87,7 @@
 
             .delivery-details{
                 width: 100%;
-                padding: 10px 0px 10px 0px;
+                padding: 10px 0px 10px 5px;
                 float: left;
                 border-bottom: 1px solid #ccc;
             }
@@ -103,7 +103,7 @@
             }
             .name-date{
                 width: 100%;            
-                padding: 10px 0px 10px 0px;
+                padding: 10px 0px 10px 5px;
                 float: left;
                 position: relative;
                 border-bottom: 1px solid #ccc;
@@ -136,6 +136,7 @@
             }
             .quantity{
                 height: 80px;
+                padding: 0 5px 0 5px;
             }
             .label{
                 width: 50%;
@@ -143,6 +144,7 @@
                 float: left;
                 border-top: 1px solid rgb(204, 204, 204);
                 border-left: 1px solid rgb(204, 204, 204);
+                /*padding: 0 0px 0 5px;*/
             }
             .label:first-child{
                 border-top: none;
@@ -156,6 +158,7 @@
                 float: right;
                 border-top: 1px solid rgb(204, 204, 204);
                 border-left: 1px solid #ccc;
+                /*padding: 0 5px 0 0px;*/
             }
 
         </style>
@@ -257,64 +260,72 @@
                         Total Quantity: {{ round($total_qty, 2) }}
                     </div>
                     <div class="ruppes grand_price">
+                        &nbsp; 
                         Rupees. <?php echo convert_number_to_words($total_price + $allorder->freight + $allorder->loading_charge + $allorder->discount + $allorder->round_off + $allorder->vat_percentage / 100 * 100); ?> Only
                     </div>
                 </div>
                 <div class="total">                 
                     <div class="">
-                        <div class="label">Total</div>
-                        <div class="value bob"> {{ round($total_price, 2) }} </div>
-                        <div class="label ">Loading</div>
+                        <div class="label"> &nbsp; Total</div>
+                        <div class="value bob"> {{ round($total_price, 2) }} &nbsp;</div>
+                        <div class="label ">&nbsp;Loading</div>
                         <div class="value"> 
                             @if($allorder->loading_charge != "")
                             {{$allorder->loading_charge}}
                             @else
                             0
-                            @endif                            
+                            @endif  
+                            &nbsp;
                         </div>
-                        <div class="label">Frt</div>
+                        <div class="label">&nbsp; Frt</div>
                         <div class="value"> 
                             @if($allorder->freight != "")
                             {{$allorder->freight}}
                             @else
                             0
-                            @endif   
+                            @endif 
+                            &nbsp;
                         </div>
-                        <div class="label">disc.</div>
+                        <div class="label">&nbsp; disc.</div>
                         <div class="value">
                             @if($allorder->discount != "")
                             {{$allorder->discount}}
                             @else
                             0
-                            @endif 
+                            @endif
+                            &nbsp;
                         </div>                
-                        <div class="label">Total</div>
+                        <div class="label">&nbsp; Total</div>
                         <div class="value">
                             <?php $with_total = $total_price + $allorder->loading_charge + $allorder->freight + $allorder->discount; ?>
                             {{ round($with_total, 2) }}
+                            &nbsp;
                         </div>
-                        <div class="label">Vat</div>
+                        <div class="label">&nbsp; Vat</div>
                         <div class="value">
                             @if($allorder->vat_percentage != "")
                             {{$allorder->vat_percentage.'%'}} 
                             @else
                             0%
                             @endif 
+                            &nbsp;
                         </div>
-                        <div class="label">Round Off</div>
+                        <div class="label">&nbsp; Round Off</div>
                         <div class="value">
                             @if($allorder->round_off != "")
                             {{$allorder->round_off}}
                             @else
                             0
                             @endif 
+                            &nbsp;
                         </div>
-                        <div class="label">GT</div>
+                        <div class="label">&nbsp; GT</div>
                         <div class="value">
                             <?php
                             $gt = $total_price + $allorder->freight + $allorder->loading_charge + $allorder->round_off + $allorder->discount + ($allorder->vat_percentage / 100) * 100;
                             ?>
                             {{ round($allorder->grand_price, 2) }}
+                            &nbsp;
                         </div>
                     </div>
                 </div>
