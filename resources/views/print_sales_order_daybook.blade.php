@@ -7,6 +7,9 @@
     </head>
     <body>
         <style>
+            body{
+                font-size: 10px !important;
+            }
             .divTable{
                 display:table;         
                 width:100%;         
@@ -25,6 +28,7 @@
                 width:7%;         
                 padding: 5px;
                 border-right: 1px solid #ccc;
+                font-size: 8px !important;
             }
             .divCell2{
                 float:left;
@@ -32,6 +36,16 @@
                 width:5%;         
                 padding: 5px;
                 border-right: 1px solid #ccc;
+                font-size: 8px !important;
+            }
+            
+            .divCell3{
+                float:left;
+                display:table-column;         
+                width:9%;         
+                padding: 5px;
+                border-right: 1px solid #ccc;
+                font-size: 8px !important;
             }
             .divCell:last-child
             {
@@ -74,9 +88,9 @@
             <div class="divTable">
                 <div class="headRow">
                     <div  class="divCell2">#</div>
-                    <div  class="divCell">Challan sr. No</div>
+                    <div  class="divCell">Challan No</div>
                     <!--<div  class="divCell">Do. No</div>-->
-                    <div  class="divCell">Name</div>
+                    <div  class="divCell3">Name</div>
                     <div  class="divCell">Del Loc</div>
                     <div  class="divCell">Qty</div>
                     <div  class="divCell">Amount</div>  
@@ -94,9 +108,6 @@
                 <?php
                 $qty = 0;
                 $amount = 0;
-                ?>
-
-                <?php
                 $total_qunatity = 0;
                 $total_qty = 0;
                 foreach ($obj["all_order_products"] as $products) {
@@ -118,15 +129,15 @@
                     <div class="divCell2 center">{{$i++ }}</div>
                     <div class="divCell">{{ $obj->serial_number }}</div>
                     <!--<div class="divCell">xxx</div>-->
-                    <div class="divCell">{{ $obj['customer']->owner_name }}</div>
+                    <div class="divCell3">{{ $obj['customer']->owner_name }}</div>
                     <div class="divCell">{{ isset($obj['delivery_order']['location'])?$obj['delivery_order']['location']->area_name: '' }}</div>
-                    <div class="divCell">{{ $total_qunatity }}</div> 
-                    <div class="divCell">{{ $obj->grand_price }}</div>
-                    <div class="divCell">{{ $obj->bill_number }}</div>
-                    <div class="divCell">{{ $obj->vehicle_number }}</div>
-                    <div class="divCell">{{ $obj->loaded_by }}</div>
-                    <div class="divCell">{{ $obj->labours }}</div> 
-                    <div class="divCell">{{ $obj->remarks }}</div> 
+                    <div class="divCell">{{ round($total_qunatity, 2) }}</div> 
+                    <div class="divCell">{{ round($obj->grand_price, 2) }}</div>
+                    <div class="divCell">@if($obj->bill_number != ""){{ $obj->bill_number }} @else &nbsp; @endif</div>
+                    <div class="divCell">@if($obj->vehicle_number != ""){{ $obj->vehicle_number }}@else &nbsp; @endif</div>
+                    <div class="divCell">@if($obj->loaded_by != ""){{ $obj->loaded_by }}@else &nbsp; @endif</div>
+                    <div class="divCell">@if($obj->labours != ""){{ $obj->labours }}@else &nbsp; @endif</div> 
+                    <div class="divCell">@if($obj->remarks != ""){{ $obj->remarks }}@else &nbsp; @endif</div> 
                 </div>
                 @endforeach
             </div>
