@@ -13,14 +13,7 @@
                 border-top: 1px solid #ccc;
                 border-bottom: 1px solid #ccc;
             }
-            .divRow2{
-
-                width:auto;
-                clear:both; 
-                border-top: 1px solid #ccc;
-            }
             .divRow{
-
                 width:auto;
                 clear:both; 
                 border-top: 1px solid #ccc;
@@ -31,88 +24,88 @@
                 width:15.2%;         
                 padding: 5px;
                 border-right: 1px solid #ccc;
+            }            
+            .divCell2{
+                float:left;
+                display:table-column;         
+                width:10%;         
+                padding: 5px;
+                border-right: 1px solid #ccc;
             }
-            .divCell:last-child
-            {
+            .divCell3{
+                float:left;
+                display:table-column;         
+                width:18%;         
+                padding: 5px;
+                border-right: 1px solid #ccc;
+            }
+            
+            .divCell:last-child{
                 border: none;
             }
-            .divRow:last-child
-            {
+            .divRow:last-child{
                 border-top: none;
                 border-bottom:  1px solid #ccc;
             }
             .headRow{
                 display:table-row;
             }        
-            .footer
-            {
-                width: 100%;        
-
+            .footer{
+                width: 100%;      
                 float: left;
             }
-            .remark
-            {
+            .remark{
                 width: 10%;
                 float: left;
                 padding: 30px 5px ;
             }
-            .content
-            {
+            .content{
                 width: 88%;
                 float: left;
-
                 padding-top: 30px;
             }
-            .invoice
-            {
-                width:90%;
-                margin-left: 5%;
+            .invoice{
+                width:100%;
+                /*margin-left: 5%;*/
                 border: 1px solid #ccc;
                 float: left;
                 padding: 0px;
                 overflow: hidden;
             }
-            .del
-            {
+            .del{
                 width: 100%;
                 float: left;        
                 padding: 10px 0px 10px 5px;
             }
-            .trk-mobile
-            {
+            .trk-mobile{
                 width: 100%;
                 float: left;
                 padding: 10px 0px 10px 5px;
                 border-bottom: 1px solid #ccc;
             }
 
-            .trk-no
-            {
+            .trk-no{
                 width: 50%;
                 float: left;
             }
-            .mob-no
-            {
+            .mob-no{
                 width: 50%;
                 float: left;
             }
-            .name
-            {
+            .name{
                 width: 100%;            
                 padding: 10px 0px 10px 5px;
                 float: left;
                 position: relative;
                 border-bottom: 1px solid #ccc;
             }
-            .delivery-details
-            {
+            .delivery-details{
                 width: 100%;
                 padding: 10px 0px 10px 5px;
                 float: left;
                 border-bottom: 1px solid #ccc;
             }
-            .do-no
-            {
+            .do-no {
                 width: 33%;
                 float: left;
                 position: relative;
@@ -167,7 +160,7 @@
             </div>
             <div class="del">
                 Del @:
-                
+
                 @if($purchase_advise->delivery_location_id > 0)
                 {{$purchase_advise['location']->area_name}}
                 @else
@@ -177,8 +170,8 @@
             </div>
             <div class="divTable">
                 <div class="headRow">
-                    <div class="divRow2">Sr.</div>
-                    <div class="divCell">Size</div>
+                    <div class="divCell2">Sr.</div>
+                    <div class="divCell3">Size</div>
                     <div class="divCell">Pcs</div>
                     <div class="divCell">Qty</div>
                     <div class="divCell">Act pcs</div>
@@ -191,10 +184,10 @@
                 @foreach($purchase_advise['purchase_products'] as $prod)
                 @if($prod->order_type == 'purchase_advice')
                 <div class="divRow">
-                    <div class="divRow2">{{ $i++ }}</div>
-                    <div class="divCell">{{ $prod['purchase_product_details']->alias_name }}</div>
+                    <div class="divCell2">{{ $i++ }}</div>
+                    <div class="divCell3">{{ $prod['purchase_product_details']->alias_name }}</div>
                     <div class="divCell"> &nbsp; </div>
-                    <div class="divCell">{{ $prod->quantity }}</div>
+                    <div class="divCell">{{ round($prod->quantity, 2) }}</div>
                     <div class="divCell"> &nbsp; </div>
                     <div class="divCell">{{ $prod->present_shipping }}</div>                
                 </div>

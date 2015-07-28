@@ -62,8 +62,8 @@
             }
             .invoice
             {
-                width:60%;
-                margin-left: 20%;
+                width:95%;
+                /*margin-left: 20%;*/
                 border: 1px solid #ccc;
                 float: left;
                 padding: 0px;
@@ -150,7 +150,7 @@
             }
             .label
             {
-                width: 49%;
+                width: 50%;
                 text-align: left;
                 float: left;
                 border-top: 1px solid rgb(204, 204, 204);
@@ -166,7 +166,7 @@
             }
             .value
             {
-                width: 50%;
+                width: 48%;
                 text-align: right;
                 float: left;
                 border-top: 1px solid rgb(204, 204, 204);
@@ -221,7 +221,6 @@
                 $i = 1;
                 $total_qty = 0;
                 $total_price = 0;
-//                $purchase_challan['delivery_location']->difference;
                 ?>
 
                 @foreach($purchase_challan['all_purchase_products'] as $prod)
@@ -231,7 +230,7 @@
                     <div class="divCell"></div>
                     <div class="divCell">{{ $prod->quantity }}</div>
                     <div class="divCell">&nbsp;</div>
-                    <div class="divCell">{{ $prod->price }}</div>                
+                    <div class="divCell">{{ ($prod->price * $prod->quantity) }}</div>                
                 </div>
                 <?php
                 if ($prod['unit']->id == 1) {
@@ -246,7 +245,7 @@
                     $total_qty += (($prod->present_shipping / $prod['purchase_product_details']->standard_length ) * $prod['purchase_product_details']->weight);
                 }
 
-                $total_price = $total_qty * $prod->price;
+                $total_price = $total_price + ($prod->price * $prod->quantity);
                 ?>
                 @endforeach
 
@@ -254,28 +253,20 @@
             <div class="footer">
                 <div class="total-desc">
                     <div class="quantity">
-                        Total Quantity: {{ $total_qty }}
+                        Total Quantity: {{ round($total_qty, 2) }}
                     </div>
                     <div class="ruppes">
-                        Rs. <?php echo convert_number_to_words($total_price + $purchase_challan->loaded_by + $purchase_challan->freight + $purchase_challan->round_off + $purchase_challan->discount + ($purchase_challan->vat_percentage / 100 * 100)); ?> Rupees.
+                        Rupees <?php echo convert_number_to_words(round($total_price + $purchase_challan->freight + $purchase_challan->round_off + $purchase_challan->discount + ($purchase_challan->vat_percentage / 100 * 100), 2)); ?> Only.
                     </div>
                 </div>
                 <div class="total">                 
                     <div class="">
                         <div class="label">Total</div>
                         <div class="value bob">{{ $total_price }}</div>
-                        <div class="label ">Loading</div>
-                        <div class="value">
-                            @if($purchase_challan->loaded_by != "")
-                            {{$purchase_challan->loaded_by}}
-                            @else
-                            0
-                            @endif 
-                        </div>
                         <div class="label">Frt</div>
                         <div class="value">
                             @if($purchase_challan->freight != "")
-                            {{$purchase_challan->freight}}
+                            {{($purchase_challan->freight)}}
                             @else
                             0
                             @endif 
@@ -289,7 +280,7 @@
                             @endif 
                         </div>
                         <div class="label">Total</div>
-                        <div class="value">{{ $total_price + $purchase_challan->loaded_by + $purchase_challan->freight - $purchase_challan->discount }}</div>
+                        <div class="value">{{ round($total_price + $purchase_challan->freight + $purchase_challan->discount, 2) }}</div>
                         <div class="label">Vat</div>
                         <div class="value">
                             @if($purchase_challan->vat_percentage != "")
@@ -308,7 +299,10 @@
                         </div>
                         <div class="label">GT</div>
                         <div class="value">
-                            {{ $total_price + $purchase_challan->loaded_by + $purchase_challan->freight + $purchase_challan->round_off + $purchase_challan->discount + ($purchase_challan->vat_percentage/100 *100) }}
+                            <?php
+                            $gt = $total_price + $purchase_challan->freight + $purchase_challan->round_off + $purchase_challan->discount + ($purchase_challan->vat_percentage/100 *100);
+                            ?>
+                            {{ round($purchase_challan->grand_total, 2)}}
                         </div>
                     </div>
                 </div>
