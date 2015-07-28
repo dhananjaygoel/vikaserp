@@ -109,7 +109,7 @@
                                     <div class="add_button">
                                         <div class="form-group pull-left">
                                             <label for="addmore"></label>
-                                            <a href="#" class="table-link" title="add more" id="add_more_product" onclick="create_purchase_challan_function();">
+                                            <a href="#" class="table-link" title="add more" id="add_more_product1" onclick="create_purchase_challan_function();">
                                                 <span class="fa-stack more_button" >
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-plus fa-stack-1x fa-inverse"></i>

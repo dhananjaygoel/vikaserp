@@ -556,6 +556,10 @@ function grand_total_challan() {
  * Calculate total amount value for purchase
  */
 function purchase_challan_calculation() {
+    
+    alert('hi');
+    
+    
     var current_row_count = $(".add_product_row").length;
     var total_actual_quantity = 0;
     var total_amount_product = 0;
