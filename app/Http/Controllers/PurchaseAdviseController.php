@@ -51,7 +51,7 @@ class PurchaseAdviseController extends Controller {
             $q->where('advice_status', '=', 'in_process');
         }
 
-        $purchase_advise = $q->paginate(20);
+        $purchase_advise = $q->orderBy('created_at', 'desc')->paginate(20);
         $pending_orders = $this->checkpending_quantity($purchase_advise);
         $purchase_advise->setPath('purchaseorder_advise');
 

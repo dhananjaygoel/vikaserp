@@ -42,7 +42,7 @@ class ProductsubController extends Controller {
         $product_sub_cat = "";
         $input_data = Input::all();
 
-        $q = ProductSubCategory::query();
+        $q = ProductSubCategory::orderBy('created_at', 'desc')->query();
         $q->with('product_category');
         if (Input::get('product_filter') != "") {
             $q->whereHas('product_category', function($query) {

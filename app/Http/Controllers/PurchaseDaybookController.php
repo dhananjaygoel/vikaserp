@@ -37,15 +37,17 @@ class PurchaseDaybookController extends Controller {
                         $query->where('purchase_advice_date', '=', date("Y-m-d", strtotime(Input::get('date'))));
                     })
                     ->with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
+                    ->orderBy('created_at', 'desc')
                     ->Paginate(20);
         } else {
 
             $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
                     ->where('order_status', 'completed')
+                    ->orderBy('created_at', 'desc')
                     ->Paginate(20);
-            $purchase_daybook->setPath('purchase_order_daybook');
         }
-
+        
+        $purchase_daybook->setPath('purchase_order_daybook');
         return view('purchase_order_daybook', compact('purchase_daybook'));
     }
 

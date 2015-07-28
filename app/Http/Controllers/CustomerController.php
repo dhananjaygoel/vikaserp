@@ -32,21 +32,7 @@ class CustomerController extends Controller {
         define('SMS_URL', Config::get('smsdata.url'));
         define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
-//
-//        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-////            echo 'test 1';exit;
-//            $this->middleware('admin_mw');            
-//            
-//        }else{            
-//
-//            if(Auth::user()->role_id == 1){
-////                echo 'test 2';exit;
-////                $this->middleware('guest',['except'=>['create','show']]); 
-//                $this->middleware('admin_mw',['only'=>['destroy']]);
-//            }
-//        }
-//        $this->middleware('auth', ['only' => 'create']);
-//        $this->middleware('admin_mw');
+
     }
 
     /**
@@ -64,7 +50,7 @@ class CustomerController extends Controller {
 
             $term = '%' . Input::get('search') . '%';
 
-            $customers = Customer::orderBy('owner_name', 'ASC')
+            $customers = Customer::orderBy('created_at', 'desc')
                     ->where(function($query) use($term) {
                         $query->whereHas('city', function($q) use ($term) {
                             $q->where('city_name', 'like', $term)
@@ -87,7 +73,7 @@ class CustomerController extends Controller {
                     ->where('customer_status', '=', 'permanent')
                     ->paginate(20);
         } else {
-            $customers = Customer::orderBy('owner_name', 'ASC')
+            $customers = Customer::orderBy('created_at', 'desc')
                     ->with('city')
                     ->where('customer_status', '=', 'permanent')
                     ->paginate(20);

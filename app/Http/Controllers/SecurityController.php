@@ -19,6 +19,7 @@ class SecurityController extends Controller {
     public function __construct() {
 //        $this->middleware('validIP');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -29,7 +30,7 @@ class SecurityController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
-        $sec = Security::Paginate(20);
+        $sec = Security::orderBy('created_at', 'desc')->Paginate(20);
         $sec->setPath('security');
         return view('security', compact('sec'));
     }

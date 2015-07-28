@@ -11,12 +11,10 @@
                 </ol>
                 <div class="filter-block">
                     <h1 class="pull-left">Customers</h1> 
-                    <!--*******************************************************************-->
-                    <!--******************do not remove this comments**********************-->
-                    <!--*******************************************************************-->
-                    <!--                    <a href="{{url('excel_import_customer')}}" class="btn btn-primary pull-right">
-                                            <i class="fa fa-plus-circle fa-lg"></i> Import Customer
-                                        </a>-->
+                    
+                    <a href="{{url('excel_import_customer')}}" class="btn btn-primary pull-right">
+                        <i class="fa fa-plus-circle fa-lg"></i> Import Customer
+                    </a>
 
                     <a href="{{url('customers/create')}}" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Add Customer

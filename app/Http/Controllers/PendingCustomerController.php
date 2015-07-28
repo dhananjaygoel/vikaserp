@@ -40,7 +40,7 @@ class PendingCustomerController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
-        $customers = Customer::where('customer_status', '=', 'pending')->paginate(20);
+        $customers = Customer::orderBy('created_at', 'desc')->where('customer_status', '=', 'pending')->paginate(20);
         $customers->setPath('pending_customers');
         return View::make('pending_customers', array('customers' => $customers));
     }
