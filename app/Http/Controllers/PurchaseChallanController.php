@@ -65,6 +65,13 @@ class PurchaseChallanController extends Controller {
 
         $input_data = Input::all();
 
+
+
+//        echo '<pre>';
+//        print_r($input_data);
+//        echo '</pre>';
+//        exit;
+
         $add_challan = new PurchaseChallan();
         $add_challan->expected_delivery_date = $request->input('bill_date');
         $add_challan->purchase_advice_id = $request->input('purchase_advice_id');
@@ -103,20 +110,32 @@ class PurchaseChallanController extends Controller {
         $order_products = array();
 
         foreach ($input_data['product'] as $product_data) {
-//            if ($product_data['name'] != "") {
-            $order_products = [
-                'purchase_order_id' => $challan_id,
-                'order_type' => 'purchase_challan',
-                'product_category_id' => $product_data['product_category_id'],
-                'unit_id' => $product_data['unit_id'],
-                'quantity' => $product_data['quantity'],
-                'present_shipping' => $product_data['present_shipping'],
-                'price' => $product_data['price'],
-                'parent' => $product_data['id'],
-            ];
+            if (isset($product_data['id']) && $product_data['id'] != "") {
+                $order_products = [
+                    'purchase_order_id' => $challan_id,
+                    'order_type' => 'purchase_challan',
+                    'product_category_id' => $product_data['product_category_id'],
+                    'unit_id' => $product_data['unit_id'],
+                    'quantity' => $product_data['quantity'],
+                    'present_shipping' => $product_data['present_shipping'],
+                    'price' => $product_data['price'],
+                    'parent' => $product_data['id'],
+                ];
 
-            $add_order_products = PurchaseProducts::create($order_products);
-//            }
+                $add_order_products = PurchaseProducts::create($order_products);
+            } else {
+                $order_products = [
+                    'purchase_order_id' => $challan_id,
+                    'order_type' => 'purchase_challan',
+                    'product_category_id' => $product_data['product_category_id'],
+                    'unit_id' => $product_data['unit_id'],
+                    'quantity' => $product_data['quantity'],
+                    'present_shipping' => $product_data['present_shipping'],
+                    'price' => $product_data['price']
+                ];
+
+                $add_order_products = PurchaseProducts::create($order_products);
+            }
         }
 
         return redirect('purchase_challan')->with('success', 'Challan details successfully added.');
@@ -134,11 +153,6 @@ class PurchaseChallanController extends Controller {
         if (count($purchase_challan) < 1) {
             return redirect('purchase_challan')->with('flash_message', 'Challan not found');
         }
-
-//        echo '<pre>';
-//        print_r($purchase_challan->toArray());
-//        echo '</pre>';
-//        exit;
 
         return view('view_purchase_challan', compact('purchase_challan'));
     }

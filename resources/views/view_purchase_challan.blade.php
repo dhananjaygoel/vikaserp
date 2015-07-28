@@ -146,18 +146,14 @@
                                     </tr>
                                 </tbody>
                             </table>
-
                             <a href="{{url('purchase_challan')}}" class="btn btn-default">Back</a>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
-
 @endsection
 
 

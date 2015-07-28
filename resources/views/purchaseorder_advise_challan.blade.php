@@ -199,6 +199,7 @@
                     <hr>
                     <div>
                         <button type="submit" class="btn btn-primary" >Submit</button>
+                        <a href="{{url('purchase_challan')}}" class="btn btn-default">Back</a>
                     </div>
                     <div class="clearfix"></div>                   
                 </form>
