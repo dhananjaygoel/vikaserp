@@ -32,13 +32,15 @@ class PurchaseDaybookController extends Controller {
         if (Input::get('date') != "") {
 
             $purchase_daybook = PurchaseChallan::with('orderedby', 'supplier')
-                            ->where('order_status', 'completed')
-                            ->whereHas('purchase_advice', function($query) {
-                                $query->where('purchase_advice_date', '=', date("Y-m-d", strtotime(Input::get('date'))));
-                            })->Paginate(20);
+                    ->where('order_status', 'completed')
+                    ->whereHas('purchase_advice', function($query) {
+                        $query->where('purchase_advice_date', '=', date("Y-m-d", strtotime(Input::get('date'))));
+                    })
+                    ->with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
+                    ->Paginate(20);
         } else {
 
-            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.product_category.product_sub_category')
+            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
                     ->where('order_status', 'completed')
                     ->Paginate(20);
             $purchase_daybook->setPath('purchase_order_daybook');
@@ -81,9 +83,31 @@ class PurchaseDaybookController extends Controller {
 
     public function expert_purchase_daybook() {
 
-        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.product_category.product_sub_category', 'delivery_location')
+        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details', 'delivery_location')
                 ->where('order_status', 'completed')
                 ->get();
+        
+//        echo '<pre>';
+//        print_r($purchase_daybook->toArray());
+//        echo '</pre>';
+//        exit();
+        
+        
+        
+        
+        
+        Excel::create('Sales Daybook', function($excel) use($purchase_daybook) {
+
+            $excel->sheet('Sales-Daybook', function($sheet) use($purchase_daybook) {
+
+                $sheet->loadView('excelView.purchase', array('purchase_orders' => $purchase_daybook));
+            });
+        })->export('xls');
+
+
+
+
+        exit();
 
         $sheet_data = array();
         $i = 1;

@@ -50,7 +50,7 @@
             .footer{
                 width: 100%;
                 float: left;
-           }
+            }
             .total-desc{
                 width: 70%;
                 float: left;
@@ -224,8 +224,7 @@
 //                $purchase_challan['delivery_location']->difference;
                 ?>
 
-                @foreach($purchase_challan['purchase_product'] as $prod)
-                @if($prod->order_type == 'purchase_order')
+                @foreach($purchase_challan['all_purchase_products'] as $prod)
                 <div class="divRow">
                     <div class="divCell2">{{ $i++ }}</div>
                     <div class="divCell">{{ $prod['purchase_product_details']->alias_name }}</div>
@@ -249,7 +248,6 @@
 
                 $total_price = $total_qty * $prod->price;
                 ?>
-                @endif
                 @endforeach
 
             </div>

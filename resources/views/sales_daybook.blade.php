@@ -136,7 +136,7 @@
                                                         $total_qunatity += (($products->present_shipping / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
                                                     }
                                                 }
-                                                echo $total_qunatity;
+                                                echo round($total_qunatity, 2);
                                                 ?>
                                             </td>
                                             <td >{{$challan->grand_price}}</td>

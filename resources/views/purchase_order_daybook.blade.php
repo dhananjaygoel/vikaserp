@@ -103,19 +103,15 @@
                                             ?>
                                             @foreach($daybook['all_purchase_products'] as $total)
                                             <?php
-//                                            $total_qty += $total->present_shipping;
-//                                            $total_amount += $total->price * $total->present_shipping;                                           
-//                                            foreach ($value["all_order_products"] as $products) {
                                             if ($total->unit_id == 1) {
                                                 $total_qunatity += $total->present_shipping;
                                             }
                                             if ($total->unit_id == 2) {
-                                                $total_qunatity += ($total->present_shipping * $total['product_category']['product_sub_category']->weight);
+                                                $total_qunatity += ($total->present_shipping * $total['purchase_product_details']->weight);
                                             }
                                             if ($total->unit_id == 3) {
-                                                $total_qunatity += (($total->present_shipping / $total['product_category']['product_sub_category']->standard_length ) * $products['product_category']['product_sub_category']->weight);
+                                                $total_qunatity += (($total->present_shipping / $total['purchase_product_details']->standard_length ) * $total['purchase_product_details']->weight);
                                             }
-//                                            }
                                             ?>
                                             @endforeach
                                             <tr>
@@ -131,7 +127,7 @@
                                                 <td>{{ $daybook['orderedby']->first_name }} </td>
                                                 <td>{{ $daybook->unloaded_by }} </td>
                                                 <td>{{ $daybook->labours }}</td>    
-                                                <td>{{ $total_qunatity }}</td>
+                                                <td>{{ round($total_qunatity, 2) }}</td>
                                                 <td>{{ $daybook->grand_total }}</td>                                        
                                                 <td>{{ $daybook->bill_number }}</td>
                                                 <td>

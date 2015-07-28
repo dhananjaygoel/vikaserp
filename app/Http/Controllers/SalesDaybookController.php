@@ -149,46 +149,189 @@ class SalesDaybookController extends Controller {
 
     public function export_sales_daybook() {
 
-        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'all_order_products.unit', 'delivery_order', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
+        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
 
-        $sheet_data = array();
-        $i = 1; //export;
-        foreach ($allorders as $key => $value) {
-
-            $sheet_data[$key]['Sr no.'] = $i++;
-            $sheet_data[$key]['Do No.'] = $value['delivery_order']->serial_no;
-            $sheet_data[$key]['Name'] = $value['customer']->owner_name;
-            $sheet_data[$key]['Delivery Location'] = $value['delivery_location']->area_name;
-
-            $total_qunatity = 0;
-            foreach ($value["all_order_products"] as $products) {
-                if ($products['unit']->id == 1) {
-                    $total_qunatity += $products->present_shipping;
-                }
-                if ($products['unit']->id == 2) {
-                    $total_qunatity += ($products->present_shipping * $products['order_product_details']->weight);
-                }
-                if ($products['unit']->id == 3) {
-                    $total_qunatity += (($products->present_shipping / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
-                }
-            }
+//        echo '<pre>';
+//        print_r($allorders->toArray());
+//        echo '</pre>';
+//        exit();
 
 
-            $sheet_data[$key]['Quantity'] = $total_qunatity;
-            $sheet_data[$key]['Grand Total'] = $value->grand_price;
-            $sheet_data[$key]['Bill No.'] = $value->bill_number;
-            $sheet_data[$key]['Truck No.'] = $value['delivery_order']->vehicle_number;
-            $sheet_data[$key]['Loaded By'] = $value->loaded_by;
-            $sheet_data[$key]['Labour'] = $value->labours;
-            $sheet_data[$key]['Remarks'] = $value->remarks;
-        }
 
-        Excel::create('Sales-Daybook-list', function($excel) use($sheet_data) {
 
-            $excel->sheet('Order List', function($sheet) use($sheet_data) {
-                $sheet->fromArray($sheet_data);
+
+        Excel::create('Sales Daybook', function($excel) use($allorders) {
+
+            $excel->sheet('Sales-Daybook', function($sheet) use($allorders) {
+
+                $sheet->loadView('excelView.sales', array('allorders' => $allorders));
             });
         })->export('xls');
+
+
+
+
+        exit();
+        Excel::create('Sales-Daybook', function($excel) use($allorders) {
+
+            $excel->sheet('Order List', function($sheet) use($allorders) {
+                $sheet->mergeCells('A1:E1');
+                $sheet->mergeCells('A2:E2');
+                $sheet->mergeCells('A3:E3');
+                $sheet->mergeCells('A4:E4');
+
+                $sheet->setStyle(array(
+                    'vertical-align' => 'middle'
+                ));
+
+                $sheet->row(1, function ($row) {
+                    $row->setFontSize(16);
+                });
+                $sheet->row(3, function ($row) {
+                    $row->setFontSize(14);
+                });
+                $sheet->row(2, function ($row) {
+                    $row->setFontSize(10);
+                });
+                $sheet->row(4, function ($row) {
+                    $row->setFontSize(10);
+                });
+
+                $sheet->setHeight(1, 24);
+                $sheet->setHeight(3, 20);
+
+                $sheet->row(1, array('Vikash Associates...(' . date('Y') . ')'));
+                $sheet->row(2, array('411014'));
+                $sheet->row(3, array('Day Book'));
+                $sheet->row(4, array(date('d-m-Y')));
+
+                $data_array = array();
+                $sheet->appendRow(array(
+                    'Date', 'Particulars', 'Time', 'Vch Type', 'Vch No.', 'Inwards Qty', 'Rate', 'Amount', 'Credit Amount'
+                ));
+                foreach ($allorders as $key => $value) {
+                    $sheet->appendRow(array(
+                        'Date' => date('d-m-Y'),
+                        'Particulars' => $value['customer']->owner_name,
+                        'Time' => '',
+                        'Vch Type' => '',
+                        'Vch No.' => '',
+                        'Inwards Qty' => '',
+                        'Rate' => '',
+                        'Amount' => '',
+                        'Credit Amount' => '',
+                    ));
+
+                    foreach ($value['delivery_challan_products'] as $key1 => $value1) {
+                        $sheet->appendRow(array(
+                            'Date' => '',
+                            'Particulars' => $value1['order_product_details']->alias_name,
+                            'Time' => '',
+                            'Vch Type' => '',
+                            'Vch No.' => '',
+                            'Inwards Qty' => $value1->quantity,
+                            'Rate' => $value1->price,
+                            'Amount' => ($value1->quantity * $value1->price),
+                            'Credit Amount' => '',
+                        ));
+                    }
+                    $sheet->appendRow(array(
+                        'Date' => '',
+                        'Particulars' => '',
+                        'Time' => '',
+                        'Vch Type' => '',
+                        'Vch No.' => '',
+                        'Inwards Qty' => '',
+                        'Rate' => '',
+                        'Amount' => '',
+                        'Credit Amount' => $value->grand_price,
+                    ));
+                    $sheet->appendRow(array(
+                        'Date' => '',
+                        'Particulars' => '3loading',
+                        'Time' => '',
+                        'Vch Type' => '',
+                        'Vch No.' => '',
+                        'Inwards Qty' => '',
+                        'Rate' => '',
+                        'Amount' => '',
+                        'Credit Amount' => $value->loading_charge,
+                    ));
+                    $sheet->appendRow(array(
+                        'Date' => '',
+                        'Particulars' => $value['delivery_order']->vehicle_number,
+                        'Time' => '',
+                        'Vch Type' => '',
+                        'Vch No.' => '',
+                        'Inwards Qty' => '',
+                        'Rate' => '',
+                        'Amount' => '',
+                        'Credit Amount' => '',
+                    ));
+                    $sheet->appendRow(array(
+                        'Date' => '',
+                        'Particulars' => '',
+                        'Time' => '',
+                        'Vch Type' => '',
+                        'Vch No.' => '',
+                        'Inwards Qty' => '',
+                        'Rate' => '',
+                        'Amount' => '',
+                        'Credit Amount' => '',
+                    ));
+                }
+
+                $sheet->setStyle(array(
+                    'font' => array(
+                        'name' => 'Calibri',
+                        'size' => 10
+                    )
+                ));
+
+                $sheet->setAutoSize(true);
+            });
+        })->export('xls');
+
+
+        exit();
+//        $sheet_data = array();
+//        $i = 1; //export;
+//        foreach ($allorders as $key => $value) {
+//
+//            $sheet_data[$key]['Sr no.'] = $i++;
+//            $sheet_data[$key]['Do No.'] = $value['delivery_order']->serial_no;
+//            $sheet_data[$key]['Name'] = $value['customer']->owner_name;
+//            $sheet_data[$key]['Delivery Location'] = $value['delivery_location']->area_name;
+//
+//            $total_qunatity = 0;
+//            foreach ($value["all_order_products"] as $products) {
+//                if ($products['unit']->id == 1) {
+//                    $total_qunatity += $products->present_shipping;
+//                }
+//                if ($products['unit']->id == 2) {
+//                    $total_qunatity += ($products->present_shipping * $products['order_product_details']->weight);
+//                }
+//                if ($products['unit']->id == 3) {
+//                    $total_qunatity += (($products->present_shipping / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
+//                }
+//            }
+//
+//
+//            $sheet_data[$key]['Quantity'] = $total_qunatity;
+//            $sheet_data[$key]['Grand Total'] = $value->grand_price;
+//            $sheet_data[$key]['Bill No.'] = $value->bill_number;
+//            $sheet_data[$key]['Truck No.'] = $value['delivery_order']->vehicle_number;
+//            $sheet_data[$key]['Loaded By'] = $value->loaded_by;
+//            $sheet_data[$key]['Labour'] = $value->labours;
+//            $sheet_data[$key]['Remarks'] = $value->remarks;
+//        }
+//
+//        Excel::create('Sales-Daybook-list', function($excel) use($sheet_data) {
+//
+//            $excel->sheet('Order List', function($sheet) use($sheet_data) {
+//                $sheet->fromArray($sheet_data);
+//            });
+//        })->export('xls');
     }
 
     public function print_sales_order_daybook() {
