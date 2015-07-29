@@ -98,7 +98,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="zip">Zip</label>
-                                <input id="zip" class="form-control" placeholder="Zip" name="zip" value="{{ Input::old('zip')}}" type="number">
+                                <input id="zip" class="form-control" placeholder="Zip" name="zip" value="{{ Input::old('zip')}}" type="tel">
                             </div>
                             <div class="form-group">
                                 <label for="email">Email<span class="mandatory">*</span></label>
@@ -160,7 +160,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="credit_period">Credit Period(Days)</label>
-                                <input id="credit_period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ Input::old('credit_period')}}" type="number">
+                                <input id="credit_period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ Input::old('credit_period')}}" type="tel">
                             </div>
                             <div class="form-group col-md-4 del_loc ">
                                 <label for="relationship_manager">Relationship Manager:</label>

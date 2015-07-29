@@ -51,7 +51,7 @@
                 </div>-->
                 <div class="form-group">
                     <label for="price">Price<span class="mandatory">*</span></label>
-                    <input id="price" class="form-control" placeholder="Price" name="price" value="{{ $product_cat[0]['price'] }}" type="number">
+                    <input id="price" class="form-control" placeholder="Price" name="price" value="{{ $product_cat[0]['price'] }}" type="tel">
                 </div>
                 <hr>
                 <div >

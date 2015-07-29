@@ -71,7 +71,7 @@
 
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
-                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$inquiry['customer']->credit_period}}" type="number">
+                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$inquiry['customer']->credit_period}}" type="tel">
                             </div>
                         </div>
                         @elseif($inquiry['customer']->customer_status == "permanent")
@@ -148,7 +148,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="location">Other Location Difference</label>
-                                    <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="{{$inquiry->other_location_difference}}" type="number">
+                                    <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="{{$inquiry->other_location_difference}}" type="tel">
                                 </div>
                             </div>
                         </div>
@@ -189,7 +189,7 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="number">
+                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -266,7 +266,7 @@
                                     <tbody>
                                         <tr class="cdtable">
                                             <td class="cdfirst">VAT Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="" type="number"></td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="" type="tel"></td>
                                         </tr>
                                     </tbody>
                                 </table>

@@ -91,7 +91,7 @@
 
                                 <div class="form-group">
                                     <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
-                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ old('credit_period') }}" type="number">
+                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ old('credit_period') }}" type="tel">
                                 </div>
                             </div>
                             <div class="row col-md-4">
@@ -118,7 +118,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="location">Other Location Difference</label>
-                                        <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="" type="number">
+                                        <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="" type="tel">
                                     </div>
                                 </div>
                             </div>
@@ -144,7 +144,7 @@
                                                     </td>
                                                     <td class="col-md-1">
                                                         <div class="form-group">
-                                                            <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" value="" type="number">
+                                                            <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" value="" type="tel">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-2">
@@ -215,7 +215,7 @@
                                         <tbody>
                                             <tr class="cdtable">
                                                 <td class="cdfirst">VAT Percentage:</td>
-                                                <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="" type="number"></td>
+                                                <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="" type="tel"></td>
                                             </tr>
                                         </tbody>
                                     </table>

@@ -66,7 +66,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="area_name">Difference</label>
-                                <input id="difference" class="form-control" placeholder="Difference" name="difference" value="{{Input::old('difference')}}" type="number">
+                                <input id="difference" class="form-control" placeholder="Difference" name="difference" value="{{Input::old('difference')}}" type="tel">
                             </div>
                             <hr>
                             <div>

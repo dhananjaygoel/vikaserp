@@ -73,7 +73,7 @@
 
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
-                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ $delivery_data['customer']->credit_period }}" type="number">
+                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ $delivery_data['customer']->credit_period }}" type="tel">
                             </div>
                         </div>
                         @elseif($delivery_data['customer']->customer_status == "permanent")
@@ -111,7 +111,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
-                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="number">
+                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="tel">
                             </div>
                         </div>
                         @endif
@@ -139,7 +139,7 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="location">Other Location Difference</label>
-                                    <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="{{ $delivery_data->other_location_difference}}" type="number">
+                                    <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="{{ $delivery_data->other_location_difference}}" type="tel">
                                 </div>
                             </div>
                         </div>
@@ -192,7 +192,7 @@
                                             <td class="col-md-2">
                                                 <div class="form-group col-md-6">
                                                     <!--                                                            form for save product value-->
-                                                    <input type="number" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" placeholder="Present Shipping" onblur="change_quantity2({{$key}});">
+                                                    <input type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" placeholder="Present Shipping" onblur="change_quantity2({{$key}});">
                                                 </div>
                                                 <div class="form-group col-md-6 difference_form">
                                                     <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->     
@@ -296,7 +296,7 @@
                                     <tbody>
                                         <tr class="cdtable">
                                             <td class="cdfirst">VAT Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ $delivery_data->vat_percentage }}" type="number" onblur="grand_total_delivery_order({{$key}});"></td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ $delivery_data->vat_percentage }}" type="tel" onblur="grand_total_delivery_order({{$key}});"></td>
                                         </tr>
                                     </tbody>
                                 </table>
