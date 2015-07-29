@@ -1,4 +1,4 @@
-<?php 
+<?php
 //
 //echo '<pre>';
 //print_r($order->toArray());
@@ -53,13 +53,27 @@
                                 <!--<tr><td><span><b>Warehouse: </b></span> no</td></tr>-->
                                 @foreach($customers as $customer)
                                 @if($customer->id == $order->supplier_id)
-                                <tr><td><span><b>Supplier Name:</b></span>  {{$customer->owner_name.'-'.$customer->tally_name}} </td></tr>
+                                <tr><td><span><b>Supplier Name:</b></span>  
+                                        @if($customer->owner_name != "" && $customer->tally_name != "")
+                                        {{$customer->owner_name.'-'.$customer->tally_name}} 
+                                        @else
+                                        {{$customer->owner_name}} 
+                                        @endif
+
+                                    </td></tr>
                                 @endif
                                 @endforeach
                                 @endif
                                 @foreach($customers as $customer)
                                 @if($customer->id == $order->customer_id)
-                                <tr><td><span><b>Customer Name :</b></span> {{$customer->owner_name.'-'.$customer->tally_name}} </td></tr>
+                                <tr><td><span><b>Customer Name :</b></span> 
+                                        @if($customer->owner_name != "" && $customer->tally_name != "")
+                                        {{$customer->owner_name.'-'.$customer->tally_name}} 
+                                        @else
+                                        {{$customer->owner_name}} 
+                                        @endif
+
+                                    </td></tr>
                                 <tr><td><span><b>Contact Person : </b></span> {{$customer->contact_person}}</td></tr>
                                 <tr><td><span><b>Mobile Number : </b></span>{{$customer->phone_number1}}</td></tr>
 
@@ -150,7 +164,7 @@
                                                     <?php $present_shipping = 0; ?>
                                                     <?php $present_shipping = $product->quantity; ?>                                                    
                                                     <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$product->pending_quantity}}" type="tel" onblur="change_quantity({{$key}});">
-                                                    
+
                                                 </div>
                                             </td>
                                             <td class="col-md-2">

@@ -31,7 +31,14 @@
                                         <td><span>Serial Number: </span> {{ $purchase_challan->serial_number }}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Party Name: </span>{{  $purchase_challan['supplier']->owner_name.'-'.$purchase_challan['supplier']->tally_name }}</td>
+                                        <td><span>Party Name: </span>
+                                            @if($purchase_challan['supplier']->owner_name != "" && $purchase_challan['supplier']->tally_name != "")
+                                            {{$purchase_challan['supplier']->owner_name.'-'.$purchase_challan['supplier']->tally_name}}
+                                            @else
+                                            {{$purchase_challan['supplier']->owner_name}}
+                                            @endif
+
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td><span class="underline"> Product Details </span></td>
@@ -76,14 +83,13 @@
                                         <td> {{$product_data->present_shipping}}</td> 
                                         <td> {{$product_data->price}}</td>
                                         <td> 
-                                            <?php                                        
-                                            
+                                            <?php
                                             $total_quantity += $product_data->quantity;
                                             $amount = $product_data->quantity * $product_data->price;
                                             echo $amount;
-                                            $total_amount = $total_amount + $amount;                                            
+                                            $total_amount = $total_amount + $amount;
                                             ?>
-                                            
+
                                         </td>
                                         <td> {{$product_data->remarks}}</td>
                                     </tr>

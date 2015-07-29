@@ -27,7 +27,14 @@
                             <table id="table-example" class="table customerview_table">
                                 <tbody>                    
                                     <tr>
-                                        <td><span>Customer Name:</span> {{ $delivery_data['customer']->owner_name }}-{{$delivery_data['customer']->tally_name}}</td>
+                                        <td><span>Customer Name:</span> 
+                                            @if($delivery_data['customer']->owner_name != "" && $delivery_data['customer']->tally_name != "")
+                                            {{ $delivery_data['customer']->owner_name }}-{{$delivery_data['customer']->tally_name}}
+                                            @else
+                                            {{ $delivery_data['customer']->owner_name }}
+                                            @endif
+
+                                        </td>
                                     </tr>
                                     <tr><td><span>Contact Person: </span>{{ $delivery_data['customer']->contact_person }}</td></tr>
                                     <tr>

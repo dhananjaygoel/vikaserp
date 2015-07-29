@@ -44,7 +44,14 @@
                         </div>
                         <hr>
                         <div class="form-group">
-                            <td><span>Party:</span> {{ $delivery_data['customer']->owner_name}}-{{$delivery_data['customer']->tally_name}}</td>
+                            <td><span>Party:</span> 
+                                @if($delivery_data['customer']->owner_name != "" && $delivery_data['customer']->tally_name != "")
+                                {{ $delivery_data['customer']->owner_name}}-{{$delivery_data['customer']->tally_name}}
+                                @else
+                                {{ $delivery_data['customer']->owner_name}}
+                                @endif
+
+                            </td>
                         </div>
                         <hr>
                         <div class="form-group underline">Product Details</div>

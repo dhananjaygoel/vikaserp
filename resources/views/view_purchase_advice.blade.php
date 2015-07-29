@@ -31,7 +31,13 @@
                                         <td><span>Bill Date:</span> {{date('jS F, Y', strtotime($purchase_advise->purchase_advice_date))}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Supplier Name:</span> {{$purchase_advise['supplier']->owner_name.'-'.$purchase_advise['supplier']->tally_name}}</td>
+                                        <td><span>Supplier Name:</span> 
+                                            @if($purchase_advise['supplier']->owner_name != "" $purchase_advise['supplier']->tally_name != "")
+                                            {{$purchase_advise['supplier']->owner_name.'-'.$purchase_advise['supplier']->tally_name}}
+                                            @else
+                                            {{$purchase_advise['supplier']->owner_name}}
+                                            @endif
+                                        </td>
                                     </tr>
                                     <tr><td><span>Contact Person: </span> {{$purchase_advise['supplier']->contact_person}}</td></tr>
 

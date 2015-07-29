@@ -35,13 +35,26 @@
                                         @elseif($order->order_source == 'supplier')
                                         @foreach($customers as $customer)
                                         @if($customer->id == $order->supplier_id)
-                                        <tr><td><span><b>Supplier Name:</b></span>  {{$customer->owner_name}}-{{$customer->tally_name}} </td></tr>
+                                        <tr><td><span><b>Supplier Name:</b></span>  
+                                                @if($customer->owner_name != "" && $customer->tally_name != "" )
+                                                {{$customer->owner_name}}-{{$customer->tally_name}} 
+                                                @else
+                                                {{$customer->owner_name}}
+                                                @endif
+
+                                            </td></tr>
                                         @endif
                                         @endforeach
                                         @endif
                                         @foreach($customers as $customer)
                                         @if($customer->id == $order->customer_id)
-                                        <tr><td><span><b>Customer Name:</b></span> {{$customer->owner_name}}-{{$customer->tally_name}}</td></tr>
+                                        <tr><td><span><b>Customer Name:</b></span> 
+                                                @if($customer->owner_name !== "" && $customer->tally_name != "")
+                                                {{$customer->owner_name}}-{{$customer->tally_name}}
+                                                @else
+                                                {{$customer->owner_name}}
+                                                @endif
+                                            </td></tr>
                                         <tr><td><span><b>Contact Person: </b></span> {{$customer->contact_person}}</td></tr>
                                         <tr><td><span><b>Mobile Number: </b></span>{{$customer->phone_number1}}</td></tr>
                                         @if($customer->credit_period != "" || $customer->credit_period>0)
@@ -49,7 +62,7 @@
                                         @endif
                                         @endif
                                         @endforeach  
-                                        
+
                                         <tr>
                                             @if($order->delivery_location_id !=0)
                                             @foreach($delivery_location as $location)
@@ -62,11 +75,11 @@
                                             <td><span>Delivery Location Difference: </span>{{$order->other_location_difference}}</td>
                                             @endif
                                         </tr>                                        
-                                        
+
                                         <tr>
                                             <td><span class="underline">Ordered Product Details </span></td>
                                         </tr>
-                                        
+
                                     </tbody>
                                 </table>
                                 <table id="table-example" class="table table-hover customerview_table  ">
@@ -145,7 +158,7 @@
                                         <tr>
                                             <td><span>Expected Delivery Date: </span>{{date("jS F, Y", strtotime($order->expected_delivery_date)) }}</td>
                                         </tr>      
-                                        
+
                                         <tr>
                                             <td><span>Remark: </span>{{$order->remarks}}</td>
                                         </tr>
