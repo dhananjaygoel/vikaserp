@@ -51,7 +51,12 @@
                                             <tr class="cdtable">
                                                 <td><b>Supplier Name:</b></td>
                                                 <td>
+                                                    @if($purchase_orders['customer']->owner_name != "" && $purchase_orders['customer']->tally_name != "")
                                                     {{$purchase_orders['customer']->owner_name}}{{'-'.$purchase_orders['customer']->tally_name}}
+                                                    @else
+                                                    {{$purchase_orders['customer']->owner_name}}
+                                                    @endif
+
                                                     <input type="hidden" name="supplier_id" value="{{$purchase_orders['customer']->id}}">
                                                 </td>
                                             </tr>
