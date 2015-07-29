@@ -89,7 +89,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="zip">Zip</label>
-                                <input id="zip" class="form-control" placeholder="Zip" name="zip" value="{{$customer->zip}}" type="number">
+                                <input id="zip" class="form-control" placeholder="Zip" name="zip" value="{{$customer->zip}}" type="tel">
                             </div>
                             <div class="form-group">
                                 <label for="email">Email<span class="mandatory">*</span></label>
@@ -137,7 +137,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="credit_period">Credit Period(Days)</label>
-                                <input id="credit_period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$customer->credit_period}}" type="number">
+                                <input id="credit_period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$customer->credit_period}}" type="tel">
                             </div>
                             <div class="form-group col-md-4 del_loc ">
                                 <label for="relationship_manager">Relationship Manager:</label>
@@ -185,7 +185,7 @@
                                                             }
                                                         }
                                                         ?>
-                                                        <input class="setprice" type="number" name="product_differrence[]" value="<?= $price ?>">
+                                                        <input class="setprice" type="tel" name="product_differrence[]" value="<?= $price ?>">
                                                         <?php ?>
                                                         <input type="hidden" name="product_category_id[]" value="{{$pc->id}}">
                                                     </td>

@@ -44,7 +44,7 @@
                             </div>                            
                             <div class="form-group">
                                 <label for="price">Price<span class="mandatory">*</span></label>
-                                <input id="price" class="form-control" placeholder="Price" name="price" value="{{ old('price') }}" type="number">
+                                <input id="price" class="form-control" placeholder="Price" name="price" value="{{ old('price') }}" type="tel">
                             </div>
                             <div>
                                 <button type="button" class="btn btn-primary" id="sendSMS" >Send SMS</button>

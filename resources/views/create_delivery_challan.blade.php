@@ -86,7 +86,7 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input id="actual_pieces_{{$key}}" class="form-control" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="" type="number" onblur="grand_total_challan();">
+                                                    <input id="actual_pieces_{{$key}}" class="form-control" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="" type="tel" onblur="grand_total_challan();">
                                                 </div>
                                             </td>
 
@@ -154,15 +154,15 @@
                         </div>
                         <div class="form-group">
                             <label for="driver_contact"><b class="challan">Loading</b></label>
-                            <input id="loading_charge" class="form-control" placeholder="loading" name="loading" value="" type="number" onblur="grand_total_challan();">
+                            <input id="loading_charge" class="form-control" placeholder="loading" name="loading" value="" type="tel" onblur="grand_total_challan();">
                         </div>
                         <div class="form-group">
                             <label for="vehicle_name"><b class="challan">Discount</b></label>
-                            <input id="discount_value" class="form-control" placeholder="Discount" name="discount" value="" type="number" onblur="grand_total_challan();">
+                            <input id="discount_value" class="form-control" placeholder="Discount" name="discount" value="" type="tel" onblur="grand_total_challan();">
                         </div>
                         <div class="form-group">
                             <label for="driver_name"><b class="challan">Freight</b></label>
-                            <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="" type="number" onblur="grand_total_challan();">
+                            <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="" type="tel" onblur="grand_total_challan();">
                         </div>
                         <div class="form-group">
                             <label for="driver_contact"><b class="challan">Total</b></label>
@@ -175,7 +175,7 @@
                         </div>
                         <div class="form-group">
                             <label for="labour"><b class="challan">Labour </b></label>
-                            <input id="labour" class="form-control" placeholder="Labour" name="labour" value="" type="number">
+                            <input id="labour" class="form-control" placeholder="Labour" name="labour" value="" type="tel">
                         </div>
 
 
@@ -209,7 +209,7 @@
                         </div>
                         <div class="form-group">
                             <label for="labour"><b class="challan">Round Off</b></label>
-                            <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="" type="number" onblur="grand_total_challan();">
+                            <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="" type="tel" onblur="grand_total_challan();">
                         </div>
                         <div class="form-group">
                             <label for="total"><b class="challan">Grand Total : </b>
