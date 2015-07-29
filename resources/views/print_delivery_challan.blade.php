@@ -271,7 +271,7 @@
                         <div class="label ">&nbsp; Loading</div>
                         <div class="value"> 
                             @if($allorder->loading_charge != "")
-                            {{$allorder->loading_charge}}
+                            {{round($allorder->loading_charge,2)}}
                             @else
                             0
                             @endif  
@@ -280,7 +280,7 @@
                         <div class="label">&nbsp; Frt</div>
                         <div class="value"> 
                             @if($allorder->freight != "")
-                            {{$allorder->freight}}
+                            {{round($allorder->freight,2)}}
                             @else
                             0
                             @endif 
@@ -289,7 +289,7 @@
                         <div class="label">&nbsp; disc.</div>
                         <div class="value">
                             @if($allorder->discount != "")
-                            {{$allorder->discount}}
+                            {{round($allorder->discount,2)}}
                             @else
                             0
                             @endif
@@ -313,7 +313,7 @@
                         <div class="label">&nbsp; Round Off</div>
                         <div class="value">
                             @if($allorder->round_off != "")
-                            {{$allorder->round_off}}
+                            {{round($allorder->round_off,2)}}
                             @else
                             0
                             @endif 
