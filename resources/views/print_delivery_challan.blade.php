@@ -136,7 +136,7 @@
             }
             .quantity{
                 height: 80px;
-                padding: 0 5px 0 5px;
+                padding: 5px 5px 0 10px;
             }
             .label{
                 width: 50%;
@@ -268,7 +268,7 @@
                     <div class="">
                         <div class="label"> &nbsp; Total</div>
                         <div class="value bob"> {{ round($total_price, 2) }} &nbsp;</div>
-                        <div class="label ">&nbsp;Loading</div>
+                        <div class="label ">&nbsp; Loading</div>
                         <div class="value"> 
                             @if($allorder->loading_charge != "")
                             {{$allorder->loading_charge}}
