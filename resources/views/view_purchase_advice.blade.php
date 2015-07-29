@@ -32,8 +32,8 @@
                                     </tr>
                                     <tr>
                                         <td><span>Supplier Name:</span> 
-                                            @if($purchase_advise['supplier']->owner_name != "" $purchase_advise['supplier']->tally_name != "")
-                                            {{$purchase_advise['supplier']->owner_name.'-'.$purchase_advise['supplier']->tally_name}}
+                                            @if($purchase_advise['supplier']->owner_name != "" && $purchase_advise['supplier']->tally_name != "")
+                                            {{$purchase_advise['supplier']->owner_name}}-{{$purchase_advise['supplier']->tally_name}}
                                             @else
                                             {{$purchase_advise['supplier']->owner_name}}
                                             @endif
