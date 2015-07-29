@@ -19,14 +19,12 @@
                             <div class="filter-block pull-right">
                                 <div class="form-group pull-left">
                                     <div class="col-md-12">
-
                                         <select class="form-control" id="user_filter" name="pending_purchase_order" onchange="this.form.submit();">
                                             <option value="" selected="">Select Party</option>
                                             @foreach($all_customers as $customer)
                                             <option value="{{$customer->id}}" <?php if ((isset($_GET['pending_purchase_order'])) && $_GET['pending_purchase_order'] == $customer->id) echo "selected=''"; ?>>{{$customer->owner_name}}</option>
                                             @endforeach
                                         </select>
-
                                     </div>
                                 </div>
                                 <div class="form-group pull-left">
@@ -127,12 +125,14 @@
                                                 </span>
                                             </a>
                                             @if($purchase_order->order_status!='completed' || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+                                            @if($purchase_order->order_status =='pending')
                                             <a href="{{ Url::action('PurchaseOrderController@edit', ['id' => $purchase_order->id]) }}" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @endif
                                             <a class="table-link" title="manually complete" data-toggle="modal" data-target="#manual_complete_{{$purchase_order->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>

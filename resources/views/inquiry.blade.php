@@ -55,7 +55,9 @@
                                         <th class="text-center"> Total Quantity</th>
                                         <th class="text-center">Phone Number</th>
                                         <th class="text-center">Delivery Location</th>
+                                        @if(Input::get('inquiry_filter') == 'Pending' || Input::get('inquiry_filter') == '')
                                         <th class="text-center">Place Order</th>
+                                        @endif
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -94,14 +96,17 @@
                                         @elseif($inquiry['delivery_location']['area_name'] =="")
                                         <td class="text-center">{{$inquiry['other_location']}}</td>
                                         @endif
+                                        @if($inquiry->inquiry_status != 'completed')
                                         <td class="text-center">
+
                                             <a title="Place Order" href="{{ url('place_order/'. $inquiry['id']) }}" class="table-link">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-book fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a>
+                                            </a>                                          
                                         </td>
+                                        @endif
                                         <td class="text-center">
                                             <a title="View" href="{{ Url::action('InquiryController@show', ['id' => $inquiry['id']]) }}" class="table-link">
                                                 <span class="fa-stack">
@@ -109,12 +114,16 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @if($inquiry->inquiry_status != 'completed')
                                             <a title="Edit" href="{{ Url::action('InquiryController@edit', ['id' => $inquiry['id']]) }}" class="table-link">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a>
+                                            </a>                                            
+                                            @endif
+
+
                                             @if( Auth::user()->role_id == 0 )
                                             <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_inquiry_{{$inquiry['id']}}">
                                                 <span class="fa-stack">
@@ -172,7 +181,6 @@
                                 @endforeach
                                 </tbody>
                             </table>
-
                             <span class="pull-right">
                                 <?php echo $inquiries->render(); ?>
                             </span>
