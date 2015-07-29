@@ -287,7 +287,7 @@ class DeliveryOrderController extends Controller {
         $delivery_location = 0;
         $location = "";
         $other_location_difference = "";
-        
+
         if ($input_data['add_order_location'] == 'other') {
             $delivery_location = 0;
             $location = $input_data['location'];
@@ -479,12 +479,11 @@ class DeliveryOrderController extends Controller {
     //Generate Serial number and print Delivery order
     public function print_delivery_order($id) {
 
-        echo $current_date = date("m/d/");
+        $current_date = date("m/d/");
 
         $date_letter = 'DO/' . $current_date . "" . $id;
         DeliveryOrder::where('id', $id)->update(array(
             'serial_no' => $date_letter,
-//            'order_status' => "Completed"
         ));
 
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'unit', 'location')->where('id', $id)->first();
@@ -527,6 +526,7 @@ class DeliveryOrderController extends Controller {
                 }
             }
         }
+
         return view('print_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
     }
 
@@ -580,10 +580,7 @@ class DeliveryOrderController extends Controller {
             $product_rate["total_rate"] = $total_rate;
             array_push($product_rates, $product_rate);
         }
-//        echo '<pre>';
-//        print_r($product_rates);
-//        echo '</pre>';
-//        exit;
+
         return $product_rates;
     }
 
@@ -609,7 +606,6 @@ class DeliveryOrderController extends Controller {
             'customer_difference' => $customer_difference
         ];
         echo json_encode(array('data_array' => $data_array));
-//        echo json_encode($product_category->toArray());
     }
 
     function checkpending_quantity($delivery_orders) {
