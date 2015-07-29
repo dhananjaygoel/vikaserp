@@ -109,7 +109,7 @@
                 $amount = 0;
                 $total_qunatity = 0;
                 $total_qty = 0;
-                foreach ($obj["all_order_products"] as $products) {
+                foreach ($obj["delivery_challan_products"] as $products) {
                     if ($products['unit']->id == 1) {
                         $total_qunatity += $products->quantity;
                     }

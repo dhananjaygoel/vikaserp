@@ -125,7 +125,7 @@
                                             <td>
                                                 <?php
                                                 $total_qunatity = 0;
-                                                foreach ($challan["all_order_products"] as $products) {
+                                                foreach ($challan["delivery_challan_products"] as $products) {
                                                     if ($products['unit']->id == 1) {
                                                         $total_qunatity += $products->quantity;
                                                     }
