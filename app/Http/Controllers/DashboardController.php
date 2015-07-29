@@ -16,15 +16,12 @@ use App\PurchaseChallan;
 use App\PurchaseOrder;
 
 class DashboardController extends Controller {
-    /*
-     * To load the dashboard with inquiry, order and purchase details
-     */
 
     public function index() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 2) {
             return Redirect::to('customers');
         }
-
+        
         $order = Order::all()->count();
         $pending_order = Order::where('order_status', 'pending')->count();
         $inquiry = Inquiry::all()->count();
@@ -72,15 +69,16 @@ class DashboardController extends Controller {
 
         return view('dashboard', compact('order', 'pending_order', 'inquiry', 'pending_inquiry', 'deliver_sum', 'deliver_pending_sum', 'challan_sum', 'purc_order_sum'));
     }
-    
-    /*
-     * to logout from the system.
-     */
 
     public function logout() {
 
         Auth::logout(); // logout user
         return redirect(\URL::previous());
+    }
+
+    public function homeredirect() {
+        
+        return redirect('dashboard');
     }
 
 }
