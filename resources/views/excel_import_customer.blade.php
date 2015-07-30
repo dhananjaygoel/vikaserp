@@ -34,6 +34,7 @@
                             </div>
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <button type="submit" class="btn btn-primary">Upload</button>
+                             <a href="{{url('customers')}}" class="btn btn-default form_button_footer">Back</a>
                         </form>
                         <div class="clearfix"></div>
                     </div>

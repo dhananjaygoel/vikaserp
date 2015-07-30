@@ -144,6 +144,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <a href="{{url('delivery_order')}}" class="btn btn-default form_button_footer">Back</a>
                         </div>
                     </div>
                 </div>

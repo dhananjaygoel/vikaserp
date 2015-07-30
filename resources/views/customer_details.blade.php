@@ -113,6 +113,7 @@
                                     @endif
                                 </tbody>
                             </table>
+                             <a href="{{url('customers')}}" class="btn btn-default form_button_footer">Back</a>
                         </div>
                     </div>
                 </div>

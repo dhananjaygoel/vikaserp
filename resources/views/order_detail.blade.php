@@ -164,6 +164,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
                         </div>
                         <div class="clearfix"></div>

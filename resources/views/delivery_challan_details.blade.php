@@ -30,7 +30,7 @@
                                 @else
                                 {{$allorder['customer']->owner_name}}
                                 @endif
-                                
+
                             </label>
                         </div>
                         <hr>
@@ -125,7 +125,7 @@
                         <div class="form-group">
                             <label for="driver_contact"><b class="challan">Loading: </b></label>
                             {{$allorder->loading_charge}}
-                             <?php $total_amount = $total_amount + $allorder->loading_charge; ?>
+                            <?php $total_amount = $total_amount + $allorder->loading_charge; ?>
                         </div>
                         <hr>
                         <div class="form-group">
@@ -183,9 +183,8 @@
                             <label for="challan_remark"><b class="challan">Remark: </b></label>
                             <textarea class="form-control" id="challan_remark" name="challan_remark"  rows="3" readonly="readonly"> {{$allorder->remarks}}</textarea>
                         </div>
-
-
-                    </div>
+                        <a href="{{url('delivery_challan')}}" class="btn btn-default form_button_footer">Back</a>
+                    </div>                  
                 </div>
             </div>
         </div>
