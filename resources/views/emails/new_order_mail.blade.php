@@ -7,7 +7,7 @@
     <p>New order has been generated on <strong>{{$order['created_date']}}</strong></p>
     @endif
     @if($order['source'] == 'update_order')
-    <p>Purchase order has been updated on <strong>{{$order['created_date']}}</strong></p>
+    <p>Order has been updated on <strong>{{$order['created_date']}}</strong></p>
     @endif
     <p>Here are the details for your order,</p>
     <table border='1'>
