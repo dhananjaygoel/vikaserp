@@ -120,7 +120,7 @@ class PurchaseOrderController extends Controller {
         }
 
         if ($i == $j) {
-            return Redirect::back()->with('flash_message', 'Please insert product details');
+            return Redirect::back()->withInput()->with('flash_message', 'Please insert product details');
         }
 
         if ($input_data['supplier_status'] == "new_supplier") {
