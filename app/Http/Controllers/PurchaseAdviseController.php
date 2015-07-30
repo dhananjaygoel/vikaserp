@@ -427,7 +427,7 @@ class PurchaseAdviseController extends Controller {
 
         $current_date = date("/m/d/");
 
-        $date_letter = 'PO' . $current_date . $id;
+        $date_letter = 'PA' . $current_date . $id;
         PurchaseAdvise::where('id', '=', $id)->update(array(
             'serial_number' => $date_letter
 //            'advice_status' => "delivered"
