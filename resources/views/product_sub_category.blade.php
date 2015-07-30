@@ -101,7 +101,11 @@
                                         @if(Input::get('product_filter') != 2)
                                         <td>
                                             @if($produ_sub['product_category']->product_type_id == 1)
-                                            {{ $produ_sub->thickness}}
+                                            @if(is_numeric($produ_sub->thickness))
+                                            {{ round($produ_sub->thickness, 2) }}
+                                            @else
+                                            {{$produ_sub->thickness}}
+                                            @endif
                                             @else
                                             {{'--'}}
                                             @endif
