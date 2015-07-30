@@ -125,15 +125,8 @@
                                             @endif
 
                                         </td>
-<!--                                        <td>
-                                            @foreach($units as $unit)
-                                            @if($unit->id ==  $produ_sub->unit_id)
-                                            {{ $unit->unit_name}}
-                                            @endif
-                                            @endforeach
-                                        </td>-->
-
                                         <td>
+                                            @if(Auth::user()->role_id == 0)
                                             <form method="post" action="{{URL::action('ProductsubController@update_difference')}}">
                                                 <div class="row product-price">
                                                     <div class="form-group col-md-6">
@@ -146,6 +139,9 @@
                                                     </div>
                                                 </div>
                                             </form>
+                                            @else
+                                            <div class="form-group col-md-6">{{ $produ_sub->difference }} </div>
+                                            @endif
                                         </td> 
                                         @if( Auth::user()->role_id == 0 )
                                         <td>

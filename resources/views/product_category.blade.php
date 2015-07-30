@@ -92,7 +92,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <!--<form method="post" action="{{URL::action('ProductController@update_price')}}">-->
+                                                @if(Auth::user()->role_id == 0)
                                                 <div class="row product-price">
                                                     <div class="form-group col-md-6">
                                                         <input type="tel" class="form-control" id="price_{{$product->id}}" name="price[{{$product->id}}][price]" value="{{ $product->price }}">
@@ -103,7 +103,10 @@
                                                         <input class="btn btn-primary" type="button" class="form-control" value="save" onclick="update_price({{$product->id}})">     
                                                     </div>
                                                 </div>
-                                                <!--</form>-->
+                                                @else
+                                                <div class="form-group col-md-6">{{ $product->price }} </div>
+                                                @endif
+
                                             </td> 
                                             <!--<td>{{date("d F, Y", strtotime($product->created_at))}}</td>-->
                                             <td>{{date("jS F, Y", strtotime($product->updated_at))}}</td>

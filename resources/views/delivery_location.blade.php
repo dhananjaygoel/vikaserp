@@ -62,23 +62,7 @@
                                         <td>{{$location_data['city']->city_name}}</td>
                                         <td>{{$location_data->area_name}}</td>
                                         <td>
-                                            @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
-
-                                            <form method="post" action="{{URL::action('DeliveryLocationController@delivery_difference')}}">
-                                                <div class="row product-price">
-                                                    <div class="form-group col-md-6">
-                                                        <input type="tel" disabled="" class="form-control" required="" name="difference" value="{{ $location_data->difference }}">
-                                                        <input type="hidden" class="form-control" name="id" value="{{ $location_data->id}}">
-                                                        <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                                    </div>
-                                                    <div class="form-group col-md-2 difference_form">
-                                                        <input class="btn btn-primary" disabled="" type="submit" class="form-control" value="save" >     
-                                                    </div>
-                                                </div>
-                                            </form>
-
-                                            @else
-
+                                            @if(Auth::user()->role_id == 0)
                                             <form method="post" action="{{URL::action('DeliveryLocationController@delivery_difference')}}">
                                                 <div class="row product-price">
                                                     <div class="form-group col-md-6">
@@ -91,7 +75,8 @@
                                                     </div>
                                                 </div>
                                             </form>
-
+                                            @else
+                                            <div class="form-group col-md-6">{{ $location_data->difference }} </div>
                                             @endif
 
                                         </td>
