@@ -169,7 +169,13 @@
             <div class="name-date">
                 <div class="">
                     <div class="name">
-                        Name: {{ $allorder['customer']->owner_name}}
+                        Name: 
+
+                        @if($allorder['customer']->tally_name != "")
+                        {{$allorder['customer']->tally_name}}
+                        @else
+                        {{$allorder['customer']->owner_name}}
+                        @endif
                     </div>
                     <div class="date">
                         Date: {{date('d F, Y')}}

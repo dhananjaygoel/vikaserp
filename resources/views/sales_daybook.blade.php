@@ -78,7 +78,7 @@
                                             @endif
                                             <th>Date</th>
                                             <th>Serial</th>
-                                            <th>Party</th>
+                                            <th>Tally Name</th>
                                             <th>Truck Number</th>
                                             <th>Fullfilled By</th>
                                             <th>Order By </th> 
@@ -114,11 +114,17 @@
                                                 {{$challan->serial_number}}
                                                 @endif
                                             </td> 
-                                            <td >{{$challan["customer"]->owner_name}}</td>
+                                            <td >
+
+                                                @if($challan["customer"]->tally_name != "")
+                                                {{$challan["customer"]->tally_name}}
+                                                @else
+                                                {{$challan["customer"]->owner_name}}
+                                                @endif
+
+                                            </td>
                                             <td >{{isset($challan["delivery_order"])?$challan["delivery_order"]->vehicle_number: ''}}</td>
-
                                             <td >{{isset($challan["delivery_order"])?$challan["delivery_order"]->order_source: ''}}</td>
-
                                             <td >{{$challan['user'][0]->first_name}}</td>
                                             <td>{{$challan->loaded_by}}</td>
                                             <td >{{$challan->labours}}</td>

@@ -31,7 +31,7 @@
                                         <td><span>Serial Number: </span> {{ $purchase_challan->serial_number }}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Party Name: </span>
+                                        <td><span>Tally Name: </span>
                                             @if($purchase_challan['supplier']->owner_name != "" && $purchase_challan['supplier']->tally_name != "")
                                             {{$purchase_challan['supplier']->owner_name.'-'.$purchase_challan['supplier']->tally_name}}
                                             @else

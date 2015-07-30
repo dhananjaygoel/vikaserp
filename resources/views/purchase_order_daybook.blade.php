@@ -95,6 +95,7 @@
                                         </tr>
                                         </thead>
                                         <tbody> 
+
                                             @foreach($purchase_daybook as $daybook) 
                                             <?php
                                             $total_qty = 0;
@@ -110,7 +111,7 @@
                                                 $total_qunatity += ($total->present_shipping * $total['purchase_product_details']->weight);
                                             }
                                             if ($total->unit_id == 3) {
-                                                $total_qunatity += (($total->present_shipping / $total['purchase_product_details']->standard_length ) * $total['purchase_product_details']->weight);
+                                                $total_qunatity += ($total->present_shipping / $total['purchase_product_details']->standard_length ) * $total['purchase_product_details']->weight;
                                             }
                                             ?>
                                             @endforeach
@@ -128,7 +129,7 @@
                                                 <td>{{ $daybook->unloaded_by }} </td>
                                                 <td>{{ $daybook->labours }}</td>    
                                                 <td>{{ round($total_qunatity, 2) }}</td>
-                                                <td>{{ $daybook->grand_total }}</td>                                        
+                                                <td>{{ $daybook['all_purchase_products']->present_shipping * $total['all_purchase_products']->price }}</td>                                        
                                                 <td>{{ $daybook->bill_number }}</td>
                                                 <td>
                                                     @if((strlen(trim($daybook->remarks))) > 50)                                                
@@ -213,7 +214,7 @@
                                 <div class="clearfix"></div>
                                 <span class="pull-right">
                                     <ul class="pagination pull-right">
-                                        <?php echo $purchase_daybook->render(); ?>
+<?php echo $purchase_daybook->render(); ?>
                                     </ul>
                                 </span>
                                 <div class="clearfix"></div>                            

@@ -36,7 +36,7 @@
                                 <table id="table-example" class="table customerview_table">
                                     <tbody>
                                         <tr>
-                                            <td><span>Customer Name:</span>
+                                            <td><span>Tally Name:</span>
                                                 @if($inquiry['customer']->owner_name != "" && $inquiry['customer']->tally_name != "")
                                                 {{$inquiry['customer']->owner_name}}{{'-'.$inquiry['customer']->tally_name}}
                                                 @else

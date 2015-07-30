@@ -27,7 +27,7 @@
                             <table id="table-example" class="table customerview_table">
                                 <tbody>                    
                                     <tr>
-                                        <td><span>Customer Name:</span> 
+                                        <td><span>Tally Name:</span> 
                                             @if($delivery_data['customer']->owner_name != "" && $delivery_data['customer']->tally_name != "")
                                             {{ $delivery_data['customer']->owner_name }}-{{$delivery_data['customer']->tally_name}}
                                             @else

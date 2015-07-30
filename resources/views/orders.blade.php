@@ -88,7 +88,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Customer Name</th>
+                                        <th>Tally Name</th>
                                         <th>Mobile </th>
                                         <th>Delivery Location</th>
                                         <th>Total Quantity</th>
@@ -101,7 +101,13 @@
                                     @endif
                                     <tr>
                                         <td>{{$k++}}</td>
-                                        <td>{{isset($order['customer'])?$order['customer']->owner_name:''}}</td>
+                                        <td>
+                                            @if($order["customer"]->tally_name != "")
+                                            {{$order["customer"]->tally_name}}
+                                            @else
+                                            {{$order["customer"]->owner_name}}
+                                            @endif
+                                        </td>
                                         <td>{{$order['customer']['phone_number1']}}</td>
                                         @if($order->delivery_location_id !=0)
                                         <td class="text">{{$order['delivery_location']['area_name']}}</td>
@@ -231,7 +237,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Customer Name</th>
+                                        <th>Tally Name</th>
                                         <th>Total Quantity</th>
                                         <th>Mobile </th>
                                         <th>Delivery Location</th>
@@ -243,7 +249,13 @@
                                 <tr>
                                     <td>{{$k++}}</td>
 
-                                    <td>{{isset($order['customer'])?$order['customer']->owner_name:''}}</td>
+                                    <td>
+                                        @if($order["customer"]->tally_name != "")
+                                        {{$order["customer"]->tally_name}}
+                                        @else
+                                        {{$order["customer"]->owner_name}}
+                                        @endif
+                                    </td>
                                     @if(count($pending_orders) > 0)
                                     @foreach($pending_orders as $porder)
                                     @if($porder['id'] == $order->id)
@@ -317,7 +329,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Customer Name</th>
+                                        <th>Tally Name</th>
                                         <th>Total Quantity</th>
                                         <th>Mobile </th>
                                         <th>Delivery Location</th>
@@ -331,7 +343,13 @@
                                     @endif
                                     <tr>
                                         <td>{{$k++}}</td>
-                                        <td>{{$order['customer']->owner_name}}</td>
+                                        <td>
+                                            @if($order["customer"]->tally_name != "")
+                                            {{$order["customer"]->tally_name}}
+                                            @else
+                                            {{$order["customer"]->owner_name}}
+                                            @endif
+                                        </td>
                                         <td><?php
 //                                            $total_quantity = 0;
 //                                            foreach ($order['all_order_products'] as $key => $product) {

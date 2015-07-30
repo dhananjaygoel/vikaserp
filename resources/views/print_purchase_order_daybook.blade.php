@@ -77,7 +77,7 @@
                     <div  class="divCell2">#</div>
                     <div  class="divCell">Challan sr. No</div>
                     <!--<div  class="divCell">Do. No</div>-->
-                    <div  class="divCell">Name</div>
+                    <div  class="divCell">Tally Name</div>
                     <div  class="divCell">Del Loc</div>
                     <div  class="divCell">Qty</div>
                     <div  class="divCell">Amount</div>  

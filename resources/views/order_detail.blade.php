@@ -48,7 +48,7 @@
                                         @endif
                                         @foreach($customers as $customer)
                                         @if($customer->id == $order->customer_id)
-                                        <tr><td><span><b>Customer Name:</b></span> 
+                                        <tr><td><span><b>Tally Name:</b></span> 
                                                 @if($customer->owner_name !== "" && $customer->tally_name != "")
                                                 {{$customer->owner_name}}-{{$customer->tally_name}}
                                                 @else

@@ -66,7 +66,7 @@
                                 <div class="customer_select" <?= $style ?>>
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
-                                            <input class="form-control" placeholder="Enter Customer Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
+                                            <input class="form-control" placeholder="Enter Tally Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
                                             <input type="hidden" id="existing_customer_id" name="autocomplete_customer_id">
                                             <input type="hidden" id="customer_default_location">
                                             <i class="fa fa-search search-icon"></i>

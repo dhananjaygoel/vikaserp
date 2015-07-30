@@ -37,6 +37,18 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
+
+                        @if (count($errors) > 0)
+                        <div role="alert" class="alert alert-warning">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
+
+
                         @if(Session::has('success'))
                         <div class="clearfix"> &nbsp;</div>
                         <div class="alert alert-success alert-dismissible" role="alert">
@@ -79,9 +91,9 @@
                                             }
                                             ?>
                                             <td>
-                                                <input type='tel' name="set_diff[{{$key}}][{{$key1}}][price]" value="{{ $price }}" style="width: 40px;">
-                                                <input type='hidden' name="set_diff[{{$key}}][{{$key1}}][cust_id]" value="{{$c->id}}" style="width: 40px;">
-                                                <input type='hidden' name="set_diff[{{$key}}][{{$key1}}][product_id]" value="{{$prod->id}}" style="width: 40px;">
+                                                <input type='tel' name="set_diff[{{$key}}][{{$key1}}][price]" onblur="this_price(this)" pattern="[0-9]\.[0-9]{5}|[0-9]{2}\.[0-9]{4}" value="{{ $price }}" style="width: 40px;">
+                                                <input type='hidden' name="set_diff[{{$key}}][{{$key1}}][cust_id]" value="{{$c->id}}">
+                                                <input type='hidden' name="set_diff[{{$key}}][{{$key1}}][product_id]" value="{{$prod->id}}">
                                             </td>
                                             @endforeach
                                         </tr>

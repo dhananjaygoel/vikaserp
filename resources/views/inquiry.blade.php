@@ -51,8 +51,8 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th class="text-center">Name</th>
-                                        <th class="text-center"> Total Quantity</th>
+                                        <th class="text-center">Tally Name</th>
+                                        <th class="text-center">Total Quantity</th>
                                         <th class="text-center">Phone Number</th>
                                         <th class="text-center">Delivery Location</th>
                                         @if(Input::get('inquiry_filter') == 'Pending' || Input::get('inquiry_filter') == '')
@@ -66,7 +66,13 @@
                                     @foreach($inquiries as $inquiry)
                                     <tr>
                                         <td class="text-center">{{$i++}}</td>
-                                        <td class="text-center">{{$inquiry['customer']['owner_name']}}</td>
+                                        <td class="text-center">
+                                            @if($inquiry["customer"]->tally_name != "")
+                                            {{$inquiry["customer"]->tally_name}}
+                                            @else
+                                            {{$inquiry["customer"]->owner_name}}
+                                            @endif
+                                        </td>
 
                                         <?php $qty = 0; ?>
                                         @foreach($inquiry['inquiry_products'] as $prod)

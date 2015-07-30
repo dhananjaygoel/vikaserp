@@ -181,7 +181,7 @@
             <div class="name-date">
                 <div class="">
                     <div class="name">
-                        Name: {{ $purchase_challan['supplier']->owner_name }}
+                        Tally Name: {{ $purchase_challan['supplier']->owner_name }}
                     </div>
                     <div class="date">
                         Date: {{ date('d F, Y') }}
