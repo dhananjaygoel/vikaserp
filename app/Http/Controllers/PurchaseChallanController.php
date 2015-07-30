@@ -40,10 +40,27 @@ class PurchaseChallanController extends Controller {
      */
     public function index() {
 
-        $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
-                ->where('order_status', 'pending')
-                ->orderBy('created_at', 'desc')
-                ->Paginate(20);
+
+        if (isset($_GET['order_filter']) && $_GET['order_filter'] != '') {
+            $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
+                    ->where('order_status', $_GET['order_filter'])
+                    ->orderBy('created_at', 'desc')
+                    ->Paginate(20);
+        } else {
+            $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
+                    ->where('order_status', 'pending')
+                    ->orderBy('created_at', 'desc')
+                    ->Paginate(20);
+        }
+
+
+
+
+
+
+
+
+
         $purchase_challan->setPath('purchase_challan');
         return view('purchase_challan', compact('purchase_challan'));
     }

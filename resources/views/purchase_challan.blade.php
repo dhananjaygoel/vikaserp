@@ -12,6 +12,13 @@
                 <div class="clearfix">
                     <h1 class="pull-left">Purchase Challan</h1>
                     <div class="pull-right top-page-ui">
+                        <form action="{{url('purchase_challan')}}" method="GET">
+                            <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
+                                <option value="" selected="">--Status-- </option>
+                                <option <?php if (Input::get('order_filter') == 'pending') echo 'selected=""'; ?> value="pending">Pending</option>
+                                <option <?php if (Input::get('order_filter') == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
+                            </select>
+                        </form>
                     </div>
                 </div>
             </div>
