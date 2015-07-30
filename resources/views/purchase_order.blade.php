@@ -12,11 +12,11 @@
                 <div class="filter-block">
                     <h1 class="pull-left">Purchase Orders</h1>
                     <div class="pull-right top-page-ui">
-                        <form method="GET" action="{{url('purchase_orders')}}">
-                            <a href="{{URL::action('PurchaseOrderController@create')}}"  class="btn btn-primary pull-right">
-                                <i class="fa fa-plus-circle fa-lg"></i> Place Purchase Order
-                            </a>
+                        <form method="GET" action="{{url('purchase_orders')}}">                            
                             <div class="filter-block pull-right">
+                                <a href="{{URL::action('PurchaseOrderController@create')}}"  class="btn btn-primary pull-right">
+                                    <i class="fa fa-plus-circle fa-lg"></i> Place Purchase Order
+                                </a>
                                 <div class="form-group pull-left">
                                     <div class="col-md-12">
                                         <select class="form-control" id="user_filter" name="pending_purchase_order" onchange="this.form.submit();">
@@ -102,10 +102,10 @@
                                         <td>{{isset($purchase_order['delivery_location'])?$purchase_order['delivery_location']['area_name']: $purchase_order->other_location}}</td>
                                         <td>{{$purchase_order['user']->first_name}}</td>
                                         <td>
-                                            {{round($purchase_order->total_quantity, 2) }}
+                                            {{round($purchase_order->total_quantity, 2)}}
                                         </td>
                                         <td>                                        
-                                            {{round($purchase_order->pending_quantity, 2) }}
+                                            {{round($purchase_order->pending_quantity, 2)}}
                                         </td>
                                         @if(Input::get('purchase_order_filter') == 'pending'  || Input::get('purchase_order_filter') == '')
                                         <td class="text-center">
