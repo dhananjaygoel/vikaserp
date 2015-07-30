@@ -37,7 +37,7 @@
                                 <select class="form-control" name="user_type" id="add_user_type">
                                     <option value="" selected="" disabled="">Select User Type</option>
                                     @foreach($roles as $role_data)
-                                    <option value="{{$role_data->role_id}}">{{$role_data->name}}</option>
+                                    <option <?php if(old('user_type') == $role_data->role_id) echo 'selected=""'; ?> value="{{$role_data->role_id}}">{{$role_data->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
