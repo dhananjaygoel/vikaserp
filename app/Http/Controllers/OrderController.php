@@ -224,7 +224,15 @@ class OrderController extends Controller {
                         if ($product_data['name'] != "") {
                             $product = ProductSubCategory::find($product_data['id']);
                             $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
-                            $total_quantity = $total_quantity + $product_data['quantity'];
+                            if ($product_data['units'] == 1) {
+                                $total_quantity = $total_quantity + $product_data['quantity'];
+                            }
+                            if ($product_data['units'] == 2) {
+                                $total_quantity = $total_quantity + $product_data['quantity'] * $product->weight;
+                            }
+                            if ($product_data['units'] == 3) {
+                                $total_quantity = $total_quantity + ($product_data['quantity'] / $product->standard_length ) * $product->weight;
+                            }
                         }
                     }
                     $str .= " meterial will be desp by " . date("jS F, Y", strtotime($datetime->format('Y-m-d'))) . ". Vikas Associates, 9673000068";
@@ -242,7 +250,7 @@ class OrderController extends Controller {
                         curl_close($ch);
                     }
                     if (count($customer['manager']) > 0) {
-                        $str = "Dear '" . $customer['manager']->first_name . "' '" . Auth::user()->first_name . " has logged an order for '" . $customer->owner_name . ", '" . $total_quantity . "'. Kindly chk. Vikas Associates, 9673000068";
+                        $str = "Dear '" . $customer['manager']->first_name . "' '" . Auth::user()->first_name . " has logged an order for '" . $customer->owner_name . ", '" . round($total_quantity, 2) . "'. Kindly chk. Vikas Associates, 9673000068";
                         if (App::environment('development')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
                         } else {
@@ -514,8 +522,17 @@ class OrderController extends Controller {
                 $str = "Dear " . strtoupper($customer->owner_name) . ", your order has been edited and changed as following ";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
+                        $product = ProductSubCategory::find($product_data['id']);
                         $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
-                        $total_quantity = $total_quantity + $product_data['quantity'];
+                        if ($product_data['units'] == 1) {
+                            $total_quantity = $total_quantity + $product_data['quantity'];
+                        }
+                        if ($product_data['units'] == 2) {
+                            $total_quantity = $total_quantity + $product_data['quantity'] * $product->weight;
+                        }
+                        if ($product_data['units'] == 3) {
+                            $total_quantity = $total_quantity + ($product_data['quantity'] / $product->standard_length ) * $product->weight;
+                        }
                     }
                 }
                 $str .= " meterial will be desp by " . date("jS F, Y", strtotime($datetime->format('Y-m-d'))) . ". Vikas Associates, 9673000068";
@@ -533,7 +550,7 @@ class OrderController extends Controller {
                     curl_close($ch);
                 }
                 if (count($customer['manager']) > 0) {
-                    $str = "Dear '" . $customer['manager']->first_name . "' '" . Auth::user()->first_name . "' has edited and changed an order for '" . $customer->owner_name . ", '" . $total_quantity . "'. Kindly chk. Vikas Associates, 9673000068";
+                    $str = "Dear '" . $customer['manager']->first_name . "' '" . Auth::user()->first_name . "' has edited and changed an order for '" . $customer->owner_name . ", '" . round($total_quantity, 2) . "'. Kindly chk. Vikas Associates, 9673000068";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
