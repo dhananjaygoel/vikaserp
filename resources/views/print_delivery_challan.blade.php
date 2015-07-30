@@ -218,18 +218,8 @@
                     <div class="divCell2">{{ $i++ }}</div>
                     <div class="divCell">{{ $prod['order_product_details']->alias_name }}</div>
                     <div class="divCell">{{ $prod->actual_pieces }}</div>
-                    <div class="divCell">{{ $prod->actual_quantity }}</div>
-                    <div class="divCell"> 
-                        <?php
-                        $difference_amount = 0;
-                        foreach ($allorder['customer_difference'] as $cust_diff) {
-                            if ($prod['order_product_details']['product_category']->id == $cust_diff->product_category_id) {
-                                $difference_amount = $cust_diff->difference_amount;
-                            }
-                        }
-                        echo $rate = $prod['order_product_details']['product_category']->price + $prod['order_product_details']->difference + ($allorder['delivery_order']['location'] ? $allorder['delivery_order']['location']->difference : 0) + $difference_amount;
-                        ?>
-                    </div>
+                    <div class="divCell">{{ round($prod->actual_quantity) }}</div>
+                    <div class="divCell"><?php echo $rate = $prod->price; ?></div>
                     <div class="divCell">
                         <?php $total_price += $rate * $prod->actual_quantity; ?> 
                         {{ ($rate * $prod->actual_quantity) }} 
@@ -261,7 +251,7 @@
                     </div>
                     <div class="ruppes grand_price">
                         &nbsp; 
-                        Rupees. <?php echo convert_number_to_words($total_price + $allorder->freight + $allorder->loading_charge + $allorder->discount + $allorder->round_off + $allorder->vat_percentage / 100 * 100); ?> Only
+                        Rupees. <?php echo convert_number_to_words($allorder->grand_price); ?> Only
                     </div>
                 </div>
                 <div class="total">                 

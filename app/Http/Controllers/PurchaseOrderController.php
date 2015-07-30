@@ -181,7 +181,7 @@ class PurchaseOrderController extends Controller {
             $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . ", your order has been logged for following:";
+                $str = "Dear '" . $customer->owner_name . "' your purchase order has been logged for following ";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
@@ -189,7 +189,7 @@ class PurchaseOrderController extends Controller {
                     }
                 }
 
-                $str .= " meterial will be despached by " . date("jS F, Y", strtotime($expected_delivery_date)) . ". Vikas Associates, 9673000068";
+                $str .= " meterial will be desp by " . date("jS F, Y", strtotime($expected_delivery_date)) . ". Vikas Associates, 9673000068";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -205,7 +205,7 @@ class PurchaseOrderController extends Controller {
                 }
             }
         }
-
+        
         $add_purchase_order = PurchaseOrder::create($add_purchase_order_array);
         $purchase_order_id = DB::getPdo()->lastInsertId();
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
@@ -213,16 +213,13 @@ class PurchaseOrderController extends Controller {
                 'delivery_location_id' => 0,
                 'other_location' => $input_data['other_location_name'],
                 'other_location_difference' => $input_data['other_location_difference'],
-//                 'difference' => $input_data['other_location_difference'],
             ]);
-//            $location_id = DB::getPdo()->lastInsertId();
         } else {
             $add_delivery_location = PurchaseOrder::where('id', $purchase_order_id)->update([
                 'delivery_location_id' => $input_data['purchase_order_location'],
                 'other_location' => '',
                 'other_location_difference' => '',
             ]);
-//            $location_id = $input_data['purchase_order_location'];
         }
         $purchase_order_products = array();
         foreach ($input_data['product'] as $product_data) {
@@ -429,14 +426,14 @@ class PurchaseOrderController extends Controller {
             $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . ", your order has been edited and changed as following:";
+                $str = "Dear '" . $customer->owner_name . "' your purchase order has been edited and changed as follows ";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
                         $total_quantity = $total_quantity + $product_data['quantity'];
                     }
                 }
-                $str .= " meterial will be despached by " . date("jS F, Y", strtotime($datetime->format('Y-m-d'))) . ". Vikas Associates, 9673000068";
+                $str .= " meterial will be desp by " . date("jS F, Y", strtotime($datetime->format('Y-m-d'))) . ". Vikas Associates, 9673000068";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -455,20 +452,20 @@ class PurchaseOrderController extends Controller {
         $update_purchase_order = $purchase_order->update($add_purchase_order_array);
 
         if (isset($input_data['purchase_order_location']) && ($input_data['purchase_order_location'] == -1)) {
-//        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] = -1)) {
+
             $purchase_order->update([
                 'delivery_location_id' => 0,
                 'other_location' => $input_data['other_location_name'],
                 'other_location_difference' => $input_data['other_location_difference'],
             ]);
-//            $location_id = DB::getPdo()->lastInsertId();
+
         } else {
             $purchase_order->update([
                 'delivery_location_id' => $input_data['purchase_order_location'],
                 'other_location' => '',
                 'other_location_difference' => '',
             ]);
-//            $location_id = $input_data['purchase_order_location'];
+
         }
 
 
@@ -578,11 +575,11 @@ class PurchaseOrderController extends Controller {
             $customer = Customer::where('id', '=', $purchase_order['customer']->id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . ", your order has been completed.  for following:";
+                $str = "Dear '" . $customer->owner_name . "' your purchase order has been completed for following ";
                 foreach ($purchase_order['purchase_products'] as $product_data) {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
                 }
-                $str .= ", Vikas Associates, 9673000068";
+                $str .= ". Vikas Associates, 9673000068";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {

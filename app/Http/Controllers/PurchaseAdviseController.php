@@ -446,12 +446,12 @@ class PurchaseAdviseController extends Controller {
             $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . ", your meterial has been despatched as follows:";
+                $str = "Dear '" . $customer->owner_name . "' your purchase Advise has been created as follows ";
                 foreach ($input_data as $product_data) {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
-                $str .= " Truck Number: " . $purchase_advise->vehicle_number . ". Vikas Associates, 9673000068";
+                $str .= " Trk No. " . $purchase_advise->vehicle_number . ". Vikas Associates, 9673000068";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
