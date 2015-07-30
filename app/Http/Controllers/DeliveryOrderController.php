@@ -505,12 +505,12 @@ class DeliveryOrderController extends Controller {
             $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . ", your Delivery order has been created as follows:";
+                $str = "Dear '" . $customer->owner_name . "' your DO has been created as follows ";
                 foreach ($input_data as $product_data) {
-                    $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                    $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ',';
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
-                $str .= " Truck Number: " . $delivery_data->vehicle_number . ", Driver number: " . $delivery_data->driver_contact_no . ". Vikas Associates, 9673000068";
+                $str .= " Trk No. " . $delivery_data->vehicle_number . ", Drv No. " . $delivery_data->driver_contact_no . ". Vikas Associates, 9673000068";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {

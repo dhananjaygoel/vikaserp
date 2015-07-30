@@ -17,6 +17,7 @@ use App\ProductCategory;
 use App\CustomerProductDifference;
 use Auth;
 use Hash;
+use App;
 use Config;
 use Redirect;
 
@@ -188,22 +189,22 @@ class PendingCustomerController extends Controller {
         if (Input::has('address1')) {
             $customer->address1 = Input::get('address1');
         }
-        
+
         if (Input::has('address2')) {
             $customer->address2 = Input::get('address2');
         }
-        
+
         if (Input::has('city')) {
             $customer->city = Input::get('city');
         }
-        
+
         if (Input::has('state')) {
-             $customer->state = Input::get('state');   
+            $customer->state = Input::get('state');
         }
-        
-       
-        
-        
+
+
+
+
         if (Input::has('zip')) {
             $customer->zip = Input::get('zip');
         }
@@ -263,14 +264,20 @@ class PendingCustomerController extends Controller {
             $admins = User::where('role_id', '=', 4)->get();
             if (count($admins) > 0) {
                 foreach ($admins as $key => $admin) {
-                    $str = "Dear " . $admin->first_name . " " . Auth::user()->first_name . " has converted a new customer from " . Input::get('owner_name') . " to new account as " . Input::get('owner_name') . " kindly chk. Vikas associates";
-                    $phone_number = $admin->mobile_number;
+                    $str = "Dear '" . $admin->first_name . "' '" . Auth::user()->first_name . "' has converted a new customer from '" . Input::get('owner_name') . "' to new account as '" . Input::get('owner_name') . "' kindly chk. Vikas associates";
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $admin->mobile_number;
+                    }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
                 }
             }
             return redirect('customers')->with('success', 'Customer successfully upgraded as permanent customer');

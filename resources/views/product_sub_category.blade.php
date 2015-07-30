@@ -80,7 +80,7 @@
                                         @endif
                                         <th>Weight(KG)</th>                                        
                                         <th>Standard Length</th>                                        
-                                        <th>Todays Price</th>                                        
+                                        <th>Today's Price</th>                                        
                                         <th class="col-md-2">Difference</th>  
                                         @if( Auth::user()->role_id == 0 )
                                         <th >Actions</th>

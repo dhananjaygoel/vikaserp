@@ -261,19 +261,17 @@ class PurchaseChallanController extends Controller {
             $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . ", your meterial has been despatched as follows:";
+                $str = "Dear '" . $customer->owner_name . "' your meterial has been desp as follows ";
                 foreach ($input_data as $product_data) {
                     $product = ProductSubCategory::find($product_data->product_category_id);
                     $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
-                $str .= " Truck Number: " .
-                        $purchase_challan['purchase_advice']->vehicle_number .
-                        ", Driver number: " . $purchase_challan['purchase_advice']->driver_contact_no .
-                        ", Quantity: " . $purchase_challan['purchase_product']->sum('present_shipping') .
-                        ", Amount: " . $purchase_challan->grand_price .
-                        ", Due By: " . date("jS F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date)) .
-                        ", . Vikas Associates, 9673000068";
+                $str .= " Trk No. " . $purchase_challan['purchase_advice']->vehicle_number
+                        . ", Qty. " . $purchase_challan['purchase_product']->sum('present_shipping')
+                        . ", Amt. " . $purchase_challan->grand_price
+                        . ", Due by " . date("jS F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
+                        . ", . Vikas Associates, 9673000068";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {

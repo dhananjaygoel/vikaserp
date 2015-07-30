@@ -251,19 +251,18 @@ class DeliveryChallanController extends Controller {
             $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . ", your meterial has been despatched as follows:";
+                $str = "Dear '" . $customer->owner_name . "' your meterial has been desp as follows ";
                 foreach ($input_data as $product_data) {
                     $product = ProductSubCategory::find($product_data->product_category_id);
                     $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
-                $str .= " Truck Number: " .
-                        $allorder['delivery_order']->vehicle_number .
-                        ", Driver number: " . $allorder['delivery_order']->driver_contact_no .
-                        ", Quantity: " . $allorder['delivery_challan_products']->sum('present_shipping') .
-                        ", Amount: " . $allorder->grand_price .
-                        ", Due By: " . date("jS F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
-                        ", . Vikas Associates, 9673000068";
+                $str .= " Trk No. " . $allorder['delivery_order']->vehicle_number .
+                        ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
+                        ", Qty " . $allorder['delivery_challan_products']->sum('present_shipping') .
+                        ", Amt " . $allorder->grand_price .
+                        ", Due by: " . date("jS F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
+                        " Vikas Associates, 9673000068";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
