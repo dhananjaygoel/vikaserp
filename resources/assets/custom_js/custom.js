@@ -346,12 +346,34 @@ $("#search_text").autocomplete({
 });
 
 $('#save_all_price_btn').click(function () {
-  
+
     $.ajax({
-        type: 'post', url: baseurl + '/update_all_price', 
+        type: 'post', url: baseurl + '/update_all_price',
         data: $('#save_all_price').serialize(),
         success: function (data) {
             $('.alert-success1').show();
         }
     });
 });
+
+/**
+ * Comment
+ */
+//function this_price(e) {
+////    alert();
+//    var str = $(e).val();
+////    var isValidCurrency = function (str) {
+//    var num = parseFloat($(e).val());
+//    if (!Number.isNaN(num) && num.toFixed(2).toString() === str) {
+//        alert('str')
+//    } else {
+//        $(e).val(num.toFixed(2));
+//    }
+////    };
+//}
+
+
+
+function submit_filter_form(){
+    $("#searchCustomerForm").submit();
+}
