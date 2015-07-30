@@ -128,7 +128,7 @@
                                 </a>
                             </li>
                             @endif
-                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
+                            @if((Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 4) && (Auth::user()->role_id == 2 || Auth::user()->role_id != 3))
                             <li class="{{ (Request::is('*sales_daybook*') ? 'active' : '') }}">
                                 <a href="{{url('sales_daybook')}}">
                                     Sales Daybook
