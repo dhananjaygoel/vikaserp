@@ -254,7 +254,7 @@ class PurchaseChallanController extends Controller {
          * SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
          * -------------------------------------------
          */
-        $input_data = $purchase_challan['purchase_product'];
+        $input_data = $purchase_challan['all_purchase_products'];
         $send_sms = Input::get('send_sms');
         if ($send_sms == 'true') {
             $customer_id = $purchase_challan->supplier_id;
@@ -265,11 +265,19 @@ class PurchaseChallanController extends Controller {
                 foreach ($input_data as $product_data) {
                     $product = ProductSubCategory::find($product_data->product_category_id);
                     $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                    $total_quantity = $total_quantity + $product_data->quantity;
+                    if ($product_data['unit']->id == 1) {
+                        $total_quantity = $total_quantity + $product_data->quantity;
+                    }
+                    if ($product_data['unit']->id == 2) {
+                        $total_quantity = $total_quantity + $product_data->quantity * $product->weight;
+                    }
+                    if ($product_data['unit']->id == 3) {
+                        $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
+                    }
                 }
                 $str .= " Trk No. " . $purchase_challan['purchase_advice']->vehicle_number
-                        . ", Qty. " . $purchase_challan['purchase_product']->sum('present_shipping')
-                        . ", Amt. " . $purchase_challan->grand_price
+                        . ", Qty. " . round($total_quantity, 2)
+                        . ", Amt. " . $purchase_challan->grand_total
                         . ", Due by " . date("jS F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
                         . ", . Vikas Associates, 9673000068";
                 if (App::environment('development')) {
