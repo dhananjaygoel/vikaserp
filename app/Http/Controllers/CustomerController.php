@@ -361,8 +361,6 @@ class CustomerController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-//        echo 'test come';
-//        exit;
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }

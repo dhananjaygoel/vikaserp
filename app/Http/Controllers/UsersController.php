@@ -15,13 +15,14 @@ use App\UserRoles;
 use App\Http\Requests\UserValidation;
 use Input;
 use DB;
+use App\Http\Requests\UserRequest;
 
 class UsersController extends Controller {
 
     public function __construct() {
         $this->middleware('validIP');
     }
-    
+
     public function index() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -38,6 +39,32 @@ class UsersController extends Controller {
         $roles = UserRoles::where('role_id', '!=', 0)->get();
         return view('add_user', compact('roles'));
     }
+
+//    public function store(UserRequest $request) {
+//
+//        echo 'hi';
+//        exit;
+//        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+//            return Redirect::to('orders')->with('error', 'You do not have permission.');
+//        }
+////        $validator = Validator::make(Input::all(), User::$newuser_rules);
+////        if ($validator->passes()) {
+//        $Users_data = new User();
+//        $Users_data->role_id = $request->input('user_type');
+//        $Users_data->first_name = $request->input('first_name');
+//        $Users_data->last_name = $request->input('last_name');
+//        $Users_data->phone_number = $request->input('telephone_number');
+//        $Users_data->mobile_number = $request->input('mobile_number');
+//        $Users_data->email = $request->input('email');
+//        $Users_data->password = Hash::make($request->input('password'));
+//        $Users_data->save();
+//
+//        return redirect('users')->with('flash_message', 'User details successfully added.');
+////        } else {
+////            $error_msg = $validator->messages();
+////            return Redirect::back()->withInput()->withErrors($validator);
+////        }
+//    }
 
     public function store() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
@@ -67,20 +94,28 @@ class UsersController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
-            User::destroy($id);
-            return redirect('users')->with('flash_message', 'User details successfully deleted.');
+        if (Hash::check(Input::get('model_pass'), Auth::user()->password)) {
+            if (Input::get('mobile') == Auth::user()->mobile_number) {
+                //        if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
+                if (User::destroy($id)) {
+                    return redirect('users')->with('flash_message', 'User details successfully deleted.');
+                } else {
+                    return redirect('users')->with('flash_message', 'Unable to delete the user details.');
+                }
+            }
         } else {
             return redirect('users')->with('wrong', 'You have entered wrong credentials');
         }
     }
 
     public function edit($id) {
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+
         $roles = UserRoles::where('role_id', '!=', 0)->get();
-        $user_data = User::where('id', $id)->get();
+        $user_data = User::find($id);
         return view('edit_user', compact('user_data', 'roles'));
     }
 
@@ -135,8 +170,11 @@ class UsersController extends Controller {
 
             User::where('id', $id)
                     ->update($user_data);
-
-            return redirect('users')->with('success', 'User details successfully updated.');
+            if (User) {
+                return redirect('users')->with('success', 'User details successfully updated.');
+            } else {
+                return redirect('users')->with('error', 'Unable to update the user details ');
+            }
         } else {
             $error_msg = $validator->messages();
             return Redirect::back()->withInput()->withErrors($validator);

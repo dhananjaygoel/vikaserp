@@ -227,12 +227,13 @@
                 <div class="divRow">
                     <div class="divCell2">{{ $i++ }}</div>
                     <div class="divCell">{{ $prod['purchase_product_details']->alias_name }}</div>
-                    <div class="divCell"></div>
+                    <div class="divCell">{{ $prod->actual_pieces}}</div>
                     <div class="divCell">{{ $prod->quantity }}</div>
-                    <div class="divCell">&nbsp;</div>
-                    <div class="divCell">{{ ($prod->price * $prod->quantity) }}</div>                
+                    <div class="divCell">{{ $prod->price }}</div>
+                    <div class="divCell">{{ $prod->price * $prod->quantity }}</div>                
                 </div>
                 <?php
+                $total_price = $prod->price * $prod->quantity;
                 if ($prod['unit']->id == 1) {
                     $total_qty += $prod->quantity;
                 }
@@ -245,7 +246,7 @@
                     $total_qty += (($prod->present_shipping / $prod['purchase_product_details']->standard_length ) * $prod['purchase_product_details']->weight);
                 }
 
-                $total_price = $total_price + ($prod->price * $prod->quantity);
+//                $total_price = $total_price + ($prod->price * $prod->quantity);
                 ?>
                 @endforeach
 
@@ -256,7 +257,7 @@
                         Total Quantity: {{ round($total_qty, 2) }}
                     </div>
                     <div class="ruppes">
-                        Rupees <?php echo convert_number_to_words(round($total_price + $purchase_challan->freight + $purchase_challan->round_off + $purchase_challan->discount + ($purchase_challan->vat_percentage / 100 * 100), 2)); ?> Only.
+                        Rupees <?php echo convert_number_to_words(round($purchase_challan->grand_total, 2)); ?> Only.
                     </div>
                 </div>
                 <div class="total">                 
@@ -266,7 +267,7 @@
                         <div class="label">Frt</div>
                         <div class="value">
                             @if($purchase_challan->freight != "")
-                            {{($purchase_challan->freight)}}
+                            {{round($purchase_challan->freight, 2)}}
                             @else
                             0
                             @endif 
@@ -274,7 +275,7 @@
                         <div class="label">disc.</div>
                         <div class="value">
                             @if($purchase_challan->discount != "")
-                            {{$purchase_challan->discount}}
+                            {{round($purchase_challan->discount,2)}}
                             @else
                             0
                             @endif 
@@ -284,7 +285,7 @@
                         <div class="label">Vat</div>
                         <div class="value">
                             @if($purchase_challan->vat_percentage != "")
-                            {{$purchase_challan->vat_percentage}}
+                            {{round($purchase_challan->vat_percentage, 2)}} %
                             @else
                             0
                             @endif 
@@ -292,16 +293,13 @@
                         <div class="label">Round Off</div>
                         <div class="value">
                             @if($purchase_challan->round_off != "")
-                            {{$purchase_challan->round_off}}
+                            {{round($purchase_challan->round_off,2)}}
                             @else
                             0
                             @endif 
                         </div>
                         <div class="label">GT</div>
                         <div class="value">
-                            <?php
-                            $gt = $total_price + $purchase_challan->freight + $purchase_challan->round_off + $purchase_challan->discount + ($purchase_challan->vat_percentage/100 *100);
-                            ?>
                             {{ round($purchase_challan->grand_total, 2)}}
                         </div>
                     </div>

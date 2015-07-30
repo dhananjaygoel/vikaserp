@@ -16,7 +16,7 @@
                 <div class="main-box">
                     <span id="validation_error"></span>
                     <div class="main-box-body clearfix">
-                        {!!Form::open(array('method'=>'PUT','url'=>url('users/'.$user_data[0]['id']),'id'=>'onenter_prevent'))!!}
+                        {!!Form::open(array('method'=>'PUT','url'=>url('users/'.$user_data['id']),'id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
 
                         @if (count($errors) > 0)
@@ -38,31 +38,31 @@
                             <select class="form-control" name="user_type" id="add_user_type">
                                 <option value="" selected="" disabled="">Select User Type</option>
                                 @foreach($roles as $role_data)
-                                <option <?php if ($role_data->role_id == $user_data[0]['role_id']) echo 'selected="selected"'; ?> value="{{$role_data->role_id}}">{{$role_data->name}}</option>
+                                <option <?php if ($role_data->role_id == $user_data['role_id']) echo 'selected="selected"'; ?> value="{{$role_data->role_id}}">{{$role_data->name}}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="first_name">First Name<span class="mandatory">*</span></label>
-                            <input id="first_name" class="form-control" placeholder="First Name" name="first_name" value="{{$user_data[0]['first_name']}}" type="text">
+                            <input id="first_name" class="form-control" placeholder="First Name" name="first_name" value="{{$user_data['first_name']}}" type="text">
                         </div>
                         <div class="form-group">
                             <label for="last_name">Last Name<span class="mandatory">*</span></label>
-                            <input id="last_name" class="form-control" placeholder="Last Name" name="last_name" value="{{$user_data[0]['last_name']}}" type="text">
+                            <input id="last_name" class="form-control" placeholder="Last Name" name="last_name" value="{{$user_data['last_name']}}" type="text">
                         </div>                                               
                         <div class="form-group">
                             <label for="Phone_number">Phone number </label>
-                            <input id="Phone_number" class="form-control" placeholder="Phone number " name="telephone_number" value="{{$user_data[0]['phone_number']}}" type="tel">
+                            <input id="Phone_number" class="form-control" placeholder="Phone number " name="telephone_number" value="{{$user_data['phone_number']}}" type="tel">
                         </div>
 
                         <div class="form-group">
                             <label for="mobile_number">Mobile Number<span class="mandatory">*</span></label>
-                            <input id="mobile_number" class="form-control" placeholder="Mobile Number" name="mobile_number" value="{{$user_data[0]['mobile_number']}}" type="tel">
+                            <input id="mobile_number" class="form-control" placeholder="Mobile Number" name="mobile_number" value="{{$user_data['mobile_number']}}" type="tel">
                         </div>
 
                         <div class="form-group">
                             <label for="email">Email<span class="mandatory">*</span></label>
-                            <input id="email" class="form-control" placeholder="Email Id" name="email" value="{{$user_data[0]['email']}}" type="email">
+                            <input id="email" class="form-control" placeholder="Email Id" name="email" value="{{$user_data['email']}}" type="email">
                         </div>
                         <div class="form-group">
                             <label for="password">Password<span class="mandatory">*</span></label>
