@@ -374,6 +374,18 @@ $('#save_all_price_btn').click(function () {
 
 
 
-function submit_filter_form(){
+function submit_filter_form() {
     $("#searchCustomerForm").submit();
 }
+
+
+$('#labour').on('keyup', function (e) {
+    if (e.which === 46)
+        return false;
+}).on('input', function () {
+    var self = this;
+    setTimeout(function () {
+        if (self.value.indexOf('.') != -1)
+            self.value = parseInt(self.value, 10);
+    }, 0);
+});
