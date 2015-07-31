@@ -141,7 +141,7 @@
                                                 <td><span>Price</span><span class="mandatory">*</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
-                                            <?php for ($i = 1; $i <= 10; $i++) { ?>
+                                            <?php for ($i = 1; $i <= 5; $i++) { ?>
                                                 <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
