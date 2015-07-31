@@ -36,7 +36,7 @@
                     $count = count($name_array);
                     $page_name = $name_array[$count - 1];
                     ?>
-                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
+                    @if(Auth::user()->role_id == 0)
                     <li class="{{ (Request::is('*dashboard*') ? 'active' : '') }}">
                         <a href="{{url('dashboard')}}">
                             <i class="fa fa-dashboard"></i>
