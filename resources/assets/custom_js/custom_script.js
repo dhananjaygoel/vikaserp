@@ -83,13 +83,12 @@ $(document).ready(function () {
     });
 
     $('#expected_delivery_date').datepicker({
-        format: 'mm-dd-yyyy',
         startDate: new Date(),
         autoclose: true
     });
     $('#datepickerDateComponent').datepicker();
-    
-   
+
+
     $("#add_product_row").on("click", function () {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
@@ -168,11 +167,11 @@ $(document).ready(function () {
                 '</tr>';
         $("#add_product_table_purchase").children("tbody").append(purchase_html);
     });
-    
-    
-    
-    
-    
+
+
+
+
+
     $("#add_purchase_advise_product_row").on("click", function () {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({

@@ -257,9 +257,9 @@ function state_option() {
     });
 }
 
-$('#expected_delivery_date').datepicker().on('changeDate', function (e) {
-    $('#expected_delivery_date').datepicker('hide');
-});
+//$('#expected_delivery_date').datepicker().on('changeDate', function (e) {
+//    $('#expected_delivery_date').datepicker('hide');
+//});
 /**
  * Comment
  */
