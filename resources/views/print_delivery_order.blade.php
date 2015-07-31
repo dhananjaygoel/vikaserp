@@ -7,6 +7,9 @@
     </head>
     <body>
         <style>
+            body{
+                font-size: 8px;
+            }
             .divTable{
                 display:table;         
                 width:100%;         
@@ -23,21 +26,21 @@
             .divCell{
                 float:left;
                 display:table-column;         
-                width:15.2%;         
+                width:13%;         
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }            
             .divCell2{
                 float:left;
                 display:table-column;         
-                width:10%;         
+                width:8%;         
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
             .divCell3{
                 float:left;
                 display:table-column;         
-                width:17%;         
+                width:15%;         
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
@@ -58,17 +61,15 @@
                 width: 100%;    
                 float: left;
             }
-            .remark
-            {
-                width: 10%;
+            .remark{
+                width: 8%;
                 float: left;
-                padding: 30px 5px ;
+                padding: 20px 5px ;
             }
-            .content
-            {
+            .content{
                 width: 88%;
                 float: left;
-                padding-top: 30px;
+                padding-top: 20px;
             }
             .invoice
             {
@@ -215,11 +216,10 @@
             </div>
             <div class="footer">
                 <div class="remark">
-                    Remark
+                    Remark: 
                 </div>
                 <div class="content">
                     {{ $delivery_data->remarks }}
-                    <hr>
                 </div>
             </div>
         </div>

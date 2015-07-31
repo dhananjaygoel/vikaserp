@@ -74,7 +74,7 @@
                                         @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
                                         <th class="text-center">Create Delivery Challan</th>
                                         @endif
-                                        <th class="text-center">Actions</th>
+                                        <th class="text-center col-md-2">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>  
