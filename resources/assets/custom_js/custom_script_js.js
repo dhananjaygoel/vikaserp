@@ -117,7 +117,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-2">' +
                 '<div class="form-group">' +
-                '<input id="actual_pieces_' + current_row_count + '" class="form-control" placeholder="Actual Pieces" name="product[' + current_row_count + '][actual_pieces]" value="" type="text" onblur="fetch_price();">' +
+                '<input id="actual_pieces_' + current_row_count + '" class="form-control calc_actual_quantity" placeholder="Actual Pieces" name="product[' + current_row_count + '][actual_pieces]" value="" type="text" onblur="fetch_price();">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
@@ -418,7 +418,10 @@ $("body").delegate(".calc_actual_quantity", "keyup", function (event) {
     rowId = rowId[1];
     var weight = $('#product_weight_' + rowId).val();
     var actual_pieces = $(this).val();
-    $('#actual_quantity_' + rowId).val((actual_pieces * weight).toFixed(2));
+    if (weight != '')
+        $('#actual_quantity_' + rowId).val((actual_pieces * weight).toFixed(2));
+    else
+        $('#actual_quantity_' + rowId).val(actual_pieces);
     fetch_price();
 });
 /**
