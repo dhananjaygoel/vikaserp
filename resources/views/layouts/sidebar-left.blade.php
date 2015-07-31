@@ -191,7 +191,7 @@
                                 </a>
                             </li>
                             @endif
-                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->user_id == 4)
+                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 4)
                             <li class="{{ (Request::is('*purchase_order_daybook*') ? 'active' : '') }}">
                                 <a href="{{url('purchase_order_daybook')}}">
                                     Purchase Daybook

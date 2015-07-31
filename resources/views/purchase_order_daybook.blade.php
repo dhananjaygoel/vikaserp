@@ -71,7 +71,8 @@
                                         <thead>
                                             <?php $i = 1; ?>                                   
                                             <tr>
-                                                <th class="cb"> 
+                                                @if(Auth::user()->role_id != 4)
+                                                <th class="cb">
                                         <div class="checkbox">
                                             <label style="font-weight: bold;">
                                                 <input onclick="select_all_checkbox();" all_checked="allunchecked" type="checkbox" id="select_all_button" value="" />
@@ -79,6 +80,7 @@
                                             </label>
                                         </div>
                                         </th>
+                                        @endif
                                         <th> Date </th>
                                         <th>Serial Number</th>
                                         <th>Party</th>
@@ -90,8 +92,10 @@
                                         <th>Actual Quantity</th>
                                         <th>Amount </th>
                                         <th>Bill Number</th> 
-                                        <th>Remarks </th> 
+                                        <th>Remarks </th>
+                                        @if(Auth::user()->role_id != 4)
                                         <th>Action </th>
+                                        @endif
                                         </tr>
                                         </thead>
                                         <tbody> 
@@ -116,10 +120,12 @@
                                             ?>
                                             @endforeach
                                             <tr>
+                                                @if(Auth::user()->role_id != 4)
                                                 <td>
                                                     <input type="checkbox" name="daybook[]" id="daybook[]" value="{{ $daybook->id }}" />
                                                     <span class="cbt">{{ $i++ }}</span>
                                                 </td>
+                                                @endif
                                                 <td>{{ date("jS F, Y", strtotime($daybook->updated_at)) }}</td>
                                                 <td>{{ $daybook->serial_number }}</td>
                                                 <td>{{ $daybook['supplier']->owner_name }}</td>
@@ -129,7 +135,7 @@
                                                 <td>{{ $daybook->unloaded_by }} </td>
                                                 <td>{{ $daybook->labours }}</td>    
                                                 <td>{{ round($total_qunatity, 2) }}</td>
-                                                <td>{{ $daybook['all_purchase_products']->present_shipping * $total['all_purchase_products']->price }}</td>                                        
+                                                <td>{{ $daybook->grand_total}}</td>                                        
                                                 <td>{{ $daybook->bill_number }}</td>
                                                 <td>
                                                     @if((strlen(trim($daybook->remarks))) > 50)                                                
@@ -138,6 +144,7 @@
                                                     {{trim($daybook->remarks)}}
                                                     @endif
                                                 </td>
+                                                @if(Auth::user()->role_id != 4)
                                                 <td>  <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal{{$daybook->id}}" >
                                                         <span class="fa-stack">
                                                             <i class="fa fa-square fa-stack-2x"></i>
@@ -145,6 +152,7 @@
                                                         </span>
                                                     </a>
                                                 </td>
+                                                @endif
                                             </tr>
 
                                         <div class="modal fade" id="myModal{{$daybook->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -177,11 +185,13 @@
                                         @endforeach
                                         </tbody>
                                     </table>
+                                    @if(Auth::user()->role_id != 4)
                                     <div class="pull-right deletebutton">
                                         <a href="#" class="table-link danger" data-toggle="modal" data-target="#del_all_model" >
                                             <button type="button" class="btn btn-primary form_button_footer" >Delete All</button>
                                         </a>
                                     </div>
+                                    @endif
                                     <div class="modal fade" id="del_all_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -214,7 +224,7 @@
                                 <div class="clearfix"></div>
                                 <span class="pull-right">
                                     <ul class="pagination pull-right">
-<?php echo $purchase_daybook->render(); ?>
+                                        <?php echo $purchase_daybook->render(); ?>
                                     </ul>
                                 </span>
                                 <div class="clearfix"></div>                            

@@ -88,7 +88,8 @@
                     <div  class="divCell">Remarks</div>
                 </div>
 
-                <?php $i = 1;
+                <?php
+                $i = 1;
                 $total_qunatity = 0;
                 ?>
                 @foreach ($purchase_daybook as $obj)
@@ -98,29 +99,15 @@
                 ?>
                 @foreach ($obj['all_purchase_products'] as $total_qty)
                 <?php
-//                echo '<pre>';
-//                print_r($total_qty['product_category']->toArray());
-//                echo '</pre>';
-//                exit;
-//                
-//                foreach ($value["all_purchase_products"] as $products) {
-
                 if ($total_qty->unit_id == 1) {
                     $total_qunatity += $total_qty->present_shipping;
                 }
                 if ($total_qty->unit_id == 2) {
-                    $total_qunatity += ($total_qty->present_shipping * $total_qty['product_category']['product_sub_category']->weight);
+                    $total_qunatity += ($total_qty->present_shipping * $total_qty['purchase_product_details']->weight);
                 }
-
                 if ($total_qty->unit_id == 3) {
-
-//                    echo $total_qty['product_category']['product_sub_category']->standard_length; exit;
-                    $total_qunatity += ($total_qty->present_shipping / $total_qty['product_category']['product_sub_category']->standard_length) * $total_qty['product_category']['product_sub_category']->weight;
+                    $total_qunatity += ($total_qty->present_shipping / $total_qty['purchase_product_details']->standard_length) * $total_qty['product_category']['product_sub_category']->weight;
                 }
-
-//                }
-//                $qty += $total_qty->present_shipping;
-//                $amount += $total_qty->present_shipping * $total_qty->price;
                 ?>
                 @endforeach
                 <div class="divRow">

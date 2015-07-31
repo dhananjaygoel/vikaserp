@@ -56,5 +56,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'password' => 'required|min:8|max:20|confirmed ',
         'password_confirmation' => 'required'
     );
+      
+    public function user_role() {
+        return $this->hasOne('App\UserRoles', 'role_id', 'role_id');
+    }
 
 }

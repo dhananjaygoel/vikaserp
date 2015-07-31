@@ -68,15 +68,7 @@
                                         <td>{{$user->email}}</td>                                        
                                         <td>{{$user->phone_number}}</td>
                                         <td>{{$user->mobile_number}} </td>
-                                        <td>
-                                            @if($user->role_id == 1)
-                                            {{'Admin'}}
-                                            @elseif($user->role_id == 2)
-                                            {{'Sales Staff'}}
-                                            @elseif($user->role_id == 3)
-                                            {{'Delivery Staff'}}
-                                            @endif
-                                        </td>
+                                        <td>{{$user['user_role']->name}}</td>
                                         <td class="text-center">
                                             <a href="{{URL::action('UsersController@edit',['id'=> $user->id])}}" class="table-link">
                                                 <span class="fa-stack">

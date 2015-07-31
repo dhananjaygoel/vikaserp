@@ -27,7 +27,7 @@ class UsersController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $users_data = User::where('role_id', '!=', 0)->orderBy('created_at', 'desc')->Paginate(20);
+        $users_data = User::where('role_id', '!=', 0)->with('user_role')->orderBy('created_at', 'desc')->Paginate(20);
         $users_data->setPath('users');
         return view('users', compact('users_data'));
     }
@@ -39,32 +39,6 @@ class UsersController extends Controller {
         $roles = UserRoles::where('role_id', '!=', 0)->get();
         return view('add_user', compact('roles'));
     }
-
-//    public function store(UserRequest $request) {
-//
-//        echo 'hi';
-//        exit;
-//        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-//            return Redirect::to('orders')->with('error', 'You do not have permission.');
-//        }
-////        $validator = Validator::make(Input::all(), User::$newuser_rules);
-////        if ($validator->passes()) {
-//        $Users_data = new User();
-//        $Users_data->role_id = $request->input('user_type');
-//        $Users_data->first_name = $request->input('first_name');
-//        $Users_data->last_name = $request->input('last_name');
-//        $Users_data->phone_number = $request->input('telephone_number');
-//        $Users_data->mobile_number = $request->input('mobile_number');
-//        $Users_data->email = $request->input('email');
-//        $Users_data->password = Hash::make($request->input('password'));
-//        $Users_data->save();
-//
-//        return redirect('users')->with('flash_message', 'User details successfully added.');
-////        } else {
-////            $error_msg = $validator->messages();
-////            return Redirect::back()->withInput()->withErrors($validator);
-////        }
-//    }
 
     public function store() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
@@ -131,9 +105,10 @@ class UsersController extends Controller {
                 'role_id' => Input::get('user_type'),
                 'first_name' => Input::get('first_name'),
                 'last_name' => Input::get('last_name'),
-                'phone_number' => Input::get('telephone_number')
+                'phone_number' => Input::get('telephone_number'),
+                'role_id' => Input::get('user_type')
             );
-
+            
             if (Input::has('password')) {
 
                 $input_password['password'] = Input::get('password');
@@ -168,9 +143,9 @@ class UsersController extends Controller {
                 $user_data['mobile_number'] = Input::get('mobile_number');
             }
 
-            User::where('id', $id)
+            $user = User::where('id', $id)
                     ->update($user_data);
-            if (User) {
+            if ($user) {
                 return redirect('users')->with('success', 'User details successfully updated.');
             } else {
                 return redirect('users')->with('error', 'Unable to update the user details ');

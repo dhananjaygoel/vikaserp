@@ -195,13 +195,13 @@
                 </div>
 
                 <div class="estmt-no">
-                    Estmt No: 
+                    Estmt No: {{ $purchase_challan->serial_number }}
                 </div>
             </div>
 
             <div class="time">
                 <div class="time-gen">
-                    Time Gen:  {{ date("h:i:sa") }}
+                    Time Gen:  {{ date("h:i:s a" , strtotime($purchase_challan->created_at)) }}
                 </div>
                 <div class="time-prnt">
                     Time Prnt: {{ date("h:i:sa") }}
@@ -233,7 +233,7 @@
                     <div class="divCell">{{ $prod->price * $prod->quantity }}</div>                
                 </div>
                 <?php
-                $total_price = $prod->price * $prod->quantity;
+                $total_price = $total_price + ($prod->price * $prod->quantity);
                 if ($prod['unit']->id == 1) {
                     $total_qty += $prod->quantity;
                 }
@@ -246,7 +246,7 @@
                     $total_qty += (($prod->present_shipping / $prod['purchase_product_details']->standard_length ) * $prod['purchase_product_details']->weight);
                 }
 
-//                $total_price = $total_price + ($prod->price * $prod->quantity);
+//                $total_price = $total_price + $prod->price;
                 ?>
                 @endforeach
 

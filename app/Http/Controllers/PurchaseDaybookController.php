@@ -14,6 +14,7 @@ use Input;
 use Illuminate\Support\Facades\DB;
 use Hash;
 use Auth;
+use Redirect;
 use App\Vendor\Phpoffice\Phpexcel\Classes;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -24,8 +25,8 @@ class PurchaseDaybookController extends Controller {
     }
 
     public function index() {
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('purchase_order_daybook')->with('error', 'You do not have permission.');
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
+            return Redirect::to('purchase_challan')->with('error', 'You do not have permission.');
         }
 
         $purchase_daybook = 0;
@@ -148,10 +149,11 @@ class PurchaseDaybookController extends Controller {
 
     public function print_purchase_daybook() {
 
-        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.product_category.product_sub_category', 'delivery_location')
+        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details', 'delivery_location')
                 ->where('order_status', 'completed')
+                ->orderBy('created_at', 'desc')
                 ->get();
-
+        
         return view('print_purchase_order_daybook', compact('purchase_daybook'));
     }
 
