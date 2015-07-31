@@ -408,7 +408,7 @@ function fetch_price() {
             }
             var rate = $("#product_price_" + i).val();
             var amount = parseFloat(rate) * parseInt(quantity);
-            $("#amount_" + i).html('<span class="text-center">' + amount + '</span>');
+            $("#amount_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
         }
     }
     grand_total_challan();
