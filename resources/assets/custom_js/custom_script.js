@@ -314,7 +314,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td>' +
                 '<div class="form-group" >' +
-                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="" name="product[' + current_row_count + '][quantity]" value="" type="text">' +
+                '<input id="quantity_' + current_row_count + '" readonly="" class="form-control" placeholder="" name="product[' + current_row_count + '][quantity]" value="" type="text">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +

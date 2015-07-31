@@ -127,7 +127,7 @@
                         </table>
                     </div>
                     <div class="form-group">
-                        <label><b>Total Actual Quantity :</b> <div id="total_actual_quantity"></div></label>
+                        <label><b>Total Actual Quantity :</b> <div id="total_actual_quantity">{{$purchase_advise['purchase_products']->sum('present_shipping')}}</div></label>
                     </div>
                     <div class="form-group">
                         <label for="vehicle_name"><b class="challan">Vehicle Number</b></label>

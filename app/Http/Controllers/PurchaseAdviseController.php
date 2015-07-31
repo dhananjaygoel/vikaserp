@@ -219,8 +219,8 @@ class PurchaseAdviseController extends Controller {
                     'remarks' => $input_data['remarks'],
                     'vehicle_number' => $input_data['vehicle_number']
         ));
-
-
+        
+        
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
 
@@ -241,6 +241,7 @@ class PurchaseAdviseController extends Controller {
                         'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
                         'actual_pieces' => $product_data['actual_pieces'],
+                        'quantity' => $product_data['present_shipping'],
                         'present_shipping' => $product_data['present_shipping'],
                         'actual_pieces' => $product_data['actual_pieces'],
                         'price' => $product_data['price'],
