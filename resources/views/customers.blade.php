@@ -11,7 +11,7 @@
                 </ol>
                 <div class="filter-block">
                     <h1 class="pull-left">Customers</h1> 
-
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     <a href="{{url('excel_import_customer')}}" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Import Customer
                     </a>
@@ -22,6 +22,7 @@
                     <a href="{{url('bulk_set_price')}}" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Bulk Set Price
                     </a>
+                    @endif
                     <form method="GET" id="searchCustomerForm">
                         <div class="form-group pull-right col-md-3">
                             <input class="form-control" name="search" id="search" placeholder="Tally Name, City, Delivery Location" value="{{Request::get('search')}}" type="text">
@@ -86,12 +87,14 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                                             <a href="{{url('customers/'.$c->id.'/edit')}}" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @endif
                                             @if(Auth::user()->role_id == 0)
                                             <a href="{{URL::to('set_price/'.$c->id)}}" class="table-link" title="Set Price">
                                                 <span class="fa-stack">

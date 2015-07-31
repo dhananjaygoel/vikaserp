@@ -13,7 +13,7 @@
                     <form action="{{url('delivery_challan')}}" method="GET">
                         <div class=" pull-right col-md-3"> 
                             <select class="form-control" id="user_filter3" name="status_filter" onchange="this.form.submit();">
-                                <option disabled="" value="" selected="">Status</option>
+                                <option value="" selected="">--Status--</option>
                                 <option <?php if (Input::get('status_filter') == 'pending') echo 'selected=""'; ?> value="pending">Inprogress</option>
                                 <option <?php if (Input::get('status_filter') == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
                             </select>
@@ -66,13 +66,15 @@
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a>                                            
+                                            </a>  
+                                            @if( Auth::user()->role_id != 4)
                                             <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan_{{$challan->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @endif
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                             <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_{{$challan->id}}" title="delete">
                                                 <span class="fa-stack">

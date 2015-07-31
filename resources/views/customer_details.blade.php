@@ -12,9 +12,11 @@
                 <div class="filter-block">
                     <h1 class="pull-left">View Customer</h1>                                 
                     <div class="pull-right top-page-ui">
+                        @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                         <a href="{{url('customers/'.$customer->id.'/edit')}}" class="btn btn-primary pull-right">
                             Edit Customer
                         </a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -113,7 +115,7 @@
                                     @endif
                                 </tbody>
                             </table>
-                             <a href="{{url('customers')}}" class="btn btn-default form_button_footer">Back</a>
+                            <a href="{{url('customers')}}" class="btn btn-default form_button_footer">Back</a>
                         </div>
                     </div>
                 </div>

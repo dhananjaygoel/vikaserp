@@ -31,7 +31,7 @@ class SalesDaybookController extends Controller {
      * @return Response
      */
     public function index() {
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 

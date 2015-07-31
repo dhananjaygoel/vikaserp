@@ -81,7 +81,7 @@
                                                 </span>
                                             </a>
 
-                                            @if($challan->order_status != 'completed' || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+                                            @if(($challan->order_status != 'completed' || Auth::user()->role_id == 0  || Auth::user()->role_id == 1) && Auth::user()->role_id != 4)
                                             <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_model_{{$challan->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
