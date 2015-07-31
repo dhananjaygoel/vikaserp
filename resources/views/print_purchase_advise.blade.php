@@ -39,7 +39,7 @@
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
-            
+
             .divCell:last-child{
                 border: none;
             }
@@ -137,7 +137,7 @@
             </div>
             <div class="delivery-details">
                 <div class="do-no">
-                    DO Number:
+                    PA Number:
                     {{ $purchase_advise->serial_number}}
                 </div>
                 <div class="date">
