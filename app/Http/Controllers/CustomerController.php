@@ -44,13 +44,13 @@ class CustomerController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('orders');
         }
-        
+
         $customers = '';
         if (Input::get('search') != '') {
 
             $term = '%' . Input::get('search') . '%';
 
-            $customers = Customer::orderBy('created_at', 'desc')
+            $customers = Customer::orderBy('tally_name', 'asc')
                     ->where(function($query) use($term) {
                         $query->whereHas('city', function($q) use ($term) {
                             $q->where('city_name', 'like', $term)
@@ -72,7 +72,7 @@ class CustomerController extends Controller {
                     ->where('customer_status', '=', 'permanent')
                     ->paginate(20);
         } else {
-            $customers = Customer::orderBy('created_at', 'desc')
+            $customers = Customer::orderBy('tally_name', 'asc')
                     ->where('customer_status', '=', 'permanent')
                     ->paginate(20);
         }
@@ -220,9 +220,11 @@ class CustomerController extends Controller {
      * @return Response
      */
     public function show($id) {
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+
         $customer = Customer::with('deliverylocation', 'customerproduct', 'manager')->find($id);
         $states = States::all();
         $cities = City::all();
