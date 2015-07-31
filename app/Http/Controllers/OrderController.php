@@ -47,6 +47,11 @@ class OrderController extends Controller {
      * @return Response
      */
     public function index() {
+
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
+        }
+
         $q = Order::query();
         if (isset($_GET['order_filter']) && $_GET['order_filter'] != '') {
             $q->where('order_status', '=', $_GET['order_filter']);
