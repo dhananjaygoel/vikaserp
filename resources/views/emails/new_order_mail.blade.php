@@ -25,11 +25,11 @@
             <td>{{ $product['order_product_details']->alias_name }}</td>
             <td>{{ $product->quantity }}</td>
             <td>
-                @if($product['order_product_details']->unit_id == 1)
+                @if($product->unit_id == 1)
                 {{ 'KG' }}
-                @elseif($product['order_product_details']->unit_id == 2)
+                @elseif($product->unit_id == 2)
                 {{ 'Pieces' }}
-                @elseif($product['order_product_details']->unit_id == 3)
+                @elseif($product->unit_id == 3)
                 {{ 'Meter' }}
                 @endif
             </td>
