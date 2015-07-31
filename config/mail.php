@@ -52,7 +52,7 @@ return [
       | used globally for all e-mails that are sent by your application.
       |
      */
-    'from' => ['address' => 'cmrunalini@agstechnologies.com', 'name' => 'Testuser'],
+    'from' => ['address' => 'deepakw@agstechnologies.com', 'name' => 'Deepak Wagh'],
     /*
       |--------------------------------------------------------------------------
       | E-Mail Encryption Protocol
