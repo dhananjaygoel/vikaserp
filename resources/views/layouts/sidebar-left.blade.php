@@ -36,7 +36,6 @@
                     $count = count($name_array);
                     $page_name = $name_array[$count - 1];
                     ?>
-                    @if(Auth::user()->role_id == 0)
                     <li class="{{ (Request::is('*dashboard*') ? 'active' : '') }}">
                         <a href="{{url('dashboard')}}">
                             <i class="fa fa-dashboard"></i>
@@ -44,7 +43,6 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
-                    @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     <li class="{{ (Request::is('*users*') ? 'active' : '') }}">
