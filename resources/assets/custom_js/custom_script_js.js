@@ -418,7 +418,7 @@ $("body").delegate(".calc_actual_quantity", "keyup", function (event) {
     rowId = rowId[1];
     var weight = $('#product_weight_' + rowId).val();
     var actual_pieces = $(this).val();
-    $('#actual_quantity_' + rowId).val(actual_pieces * weight);
+    $('#actual_quantity_' + rowId).val((actual_pieces * weight).toFixed(2));
     fetch_price();
 });
 /**
