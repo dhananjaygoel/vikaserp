@@ -63,7 +63,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Date</th>
-                                        <th>Party Name</th>
+                                        <th>Tally Name</th>
                                         <th>Vechile Number</th>
                                         <th>Quantity</th>
                                         <th>Serial Number</th>
@@ -86,7 +86,13 @@
                                     <tr>
                                         <td>{{ $i }}</td>
                                         <td>{{ date("jS F, Y", strtotime($pa->purchase_advice_date)) }}</td>
-                                        <td>{{ $pa['supplier']->owner_name }}</td>
+                                        <td>
+                                            @if($pa['supplier']->tally_name != "" )
+                                            {{$pa['supplier']->tally_name}}
+                                            @else
+                                            {{$pa['supplier']->owner_name}}
+                                            @endif
+                                        </td>
                                         <td>{{ $pa->vehicle_number}}</td>
                                         <td>{{ round($pa->total_quantity, 2) }}</td>
                                         <td>{{ $pa->serial_number }}</td>
@@ -118,7 +124,7 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            
+
                                             @if($pa->serial_number == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                             @if($pa->advice_status == 'in_process')
                                             <a href="{{url('purchaseorder_advise/'.$pa->id.'/edit')}}" class="table-link" title="edit">
@@ -136,8 +142,8 @@
                                                 </span>
                                             </span>
                                             @endif
-                                            
-                                            
+
+
 
                                             @if($pa->serial_number == ""  || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                             <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#printModal{{$pa->id}}">

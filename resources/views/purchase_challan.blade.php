@@ -39,7 +39,7 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">#</th>
-                                        <th class="text-center ">Party Name</th>
+                                        <th class="text-center ">Tally Name</th>
                                         <th class="text-center ">Serial Number</th>
                                         <th class="text-center">Bill Number</th>
                                         <th class="text-center">Bill date</th>
@@ -52,7 +52,13 @@
                                     @foreach($purchase_challan as $challan)
                                     <tr>
                                         <td class="text-center">{{$i++}}</td>
-                                        <td class="text-center">{{$challan['supplier']->owner_name}}</td>
+                                        <td class="text-center">
+                                            @if($challan['supplier']->tally_name != "")
+                                            {{$challan['supplier']->tally_name}}
+                                            @else
+                                            {{$challan['supplier']->owner_name}}
+                                            @endif
+                                        </td>
                                         <td class="text-center">{{$challan->serial_number}}</td>
                                         <td class="text-center">{{$challan->bill_number}}</td>
                                         <td class="text-center">{{date('jS F, Y',strtotime($challan['purchase_advice']->purchase_advice_date))}}</td>

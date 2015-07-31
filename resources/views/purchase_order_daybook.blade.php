@@ -83,7 +83,7 @@
                                         @endif
                                         <th> Date </th>
                                         <th>Serial Number</th>
-                                        <th>Party</th>
+                                        <th>Tally Name</th>
                                         <th>Truck Number</th>
                                         <th>Deliverd To</th>
                                         <th>Order By </th> 
@@ -128,7 +128,13 @@
                                                 @endif
                                                 <td>{{ date("jS F, Y", strtotime($daybook->updated_at)) }}</td>
                                                 <td>{{ $daybook->serial_number }}</td>
-                                                <td>{{ $daybook['supplier']->owner_name }}</td>
+                                                <td>
+                                                    @if($daybook['supplier']->tally_name != "")
+                                                    {{ $daybook['supplier']->tally_name }}
+                                                    @else
+                                                    {{ $daybook['supplier']->owner_name }}
+                                                    @endif
+                                                </td>
                                                 <td>{{ $daybook->vehicle_number }}</td>                                        
                                                 <td>{{ $daybook['supplier']->owner_name }}</td>
                                                 <td>{{ $daybook['orderedby']->first_name }} </td>

@@ -66,7 +66,7 @@
                                     <tr>
                                         <th class="">#</th>
                                         <th>Date</th>
-                                        <th>Party Name</th>
+                                        <th>Tally Name</th>
                                         <th>Delivery Location</th>
                                         <th>Quantity</th>
                                         <th>Present Shipping</th>
@@ -83,7 +83,14 @@
                                     <tr>
                                         <td>{{ $i++ }}</td>
                                         <td>{{date("jS F, Y", strtotime($delivery->created_at)) }}</td>
-                                        <td> {{$delivery['customer']->owner_name}}</td> 
+                                        <td>
+                                            @if($delivery['customer']->tally_name != "")
+                                            {{$delivery['customer']->tally_name}}
+                                            @else
+                                            {{$delivery['customer']->owner_name}}
+                                            @endif
+
+                                        </td> 
                                         <td>
                                             @if($delivery->delivery_location_id!=0)
                                             @foreach($delivery_locations as $location)
@@ -131,7 +138,7 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            
+
                                             @if($delivery->order_status == 'pending')
                                             @if(($delivery->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1))
                                             <a href="{{URL::action('DeliveryOrderController@edit', ['id'=> $delivery->id])}}" class="table-link" title="edit">

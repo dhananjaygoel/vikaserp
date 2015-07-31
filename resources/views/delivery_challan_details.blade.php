@@ -24,7 +24,7 @@
                 <div class="main-box"> 
                     <div class="main-box-body clearfix">
                         <div class="form-group">
-                            <label><b>Party Name:</b>
+                            <label><b>Tally Name:</b>
                                 @if($allorder['customer']->owner_name != "" && $allorder['customer']->tally_name != "")
                                 {{$allorder['customer']->owner_name}}{{'-'.$allorder['customer']->tally_name}}
                                 @else

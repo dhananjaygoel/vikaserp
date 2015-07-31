@@ -40,7 +40,7 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">#</th>
-                                        <th class="text-center">Party Name</th>
+                                        <th class="text-left">Tally Name</th>
                                         <th class="text-center">Serial Number</th>
                                         <th class="text-center">Present Shipping</th>
                                         <th class="text-center">Actions</th>
@@ -52,7 +52,15 @@
                                     @if($challan->challan_status == 'pending')
                                     <tr>
                                         <td class="text-center">{{$k++}}</td>
-                                        <td class="text-center">{{$challan['customer']->owner_name}}</td>
+                                        <td class="text-left">
+
+                                            @if($challan['customer']->tally_name != "")
+                                            {{$challan['customer']->tally_name}}
+                                            @else
+                                            {{$challan['customer']->owner_name}}
+                                            @endif
+
+                                        </td>
                                         <td class="text-center">
                                             @if($challan->serial_number == '')
                                             @elseif($challan->serial_number != '')
@@ -162,13 +170,13 @@
                                             </span>
                                         </a>
                                         @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-<!--                                        <a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                        </a>
-                                       -->
+                                        <!--                                        <a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
+                                                                                    <span class="fa-stack">
+                                                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                                                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                                                    </span>
+                                                                                </a>
+                                        -->
                                         <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan_{{$challan->id}}">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
