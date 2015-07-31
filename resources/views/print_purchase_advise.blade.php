@@ -187,7 +187,7 @@
                     <div class="divCell2">{{ $i++ }}</div>
                     <div class="divCell3">{{ $prod['purchase_product_details']->alias_name }}</div>
                     <div class="divCell"> &nbsp; </div>
-                    <div class="divCell">{{ round($prod->quantity, 2) }}</div>
+                    <div class="divCell"> &nbsp; </div>
                     <div class="divCell"> &nbsp; </div>
                     <div class="divCell">{{ $prod->present_shipping }}</div>                
                 </div>
