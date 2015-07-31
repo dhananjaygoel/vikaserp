@@ -257,7 +257,8 @@
                     </div>
                     <div class="ruppes grand_price">
                         &nbsp; 
-                        Rupees. <?php echo convert_number_to_words($allorder->grand_price); ?> Only
+                        <?php $gt = round($allorder->grand_price, 2)?>
+                        Rupees. <?php echo convert_number_to_words($gt); ?> Only
                     </div>
                 </div>
                 <div class="total">                 
