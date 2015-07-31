@@ -254,7 +254,7 @@
             <div class="footer">
                 <div class="total-desc">
                     <div class="quantity">
-                        Total Quantity: {{ round($total_qty, 2) }}
+                        Total Quantity: {{ round($purchase_challan['all_purchase_products']->sum('quantity'), 2) }}
                     </div>
                     <div class="ruppes">
                         Rupees <?php echo convert_number_to_words(round($purchase_challan->grand_total, 2)); ?> Only.

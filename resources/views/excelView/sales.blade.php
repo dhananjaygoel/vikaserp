@@ -61,7 +61,7 @@
                             $order_quantity = $order_quantity + (($value1->quantity / $value1['order_product_details']->standard_length ) * $value1['order_product_details']->weight);
                         }
                         ?>
-                        <?= round($order_quantity, 2) . ' Kg' ?>
+                        <?= round($value1->actual_quantity, 2) . ' Kg' ?>
                     </td>
                     <td><?= $value1->price ?>/Kg</td>
                     <td><?= ($value1->quantity * $value1->price) ?></td>

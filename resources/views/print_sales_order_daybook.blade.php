@@ -107,20 +107,20 @@
                 <?php
                 $qty = 0;
                 $amount = 0;
-                $total_qunatity = 0;
+//                $total_qunatity = 0;
                 $total_qty = 0;
                 foreach ($obj["delivery_challan_products"] as $products) {
-                    if ($products['unit']->id == 1) {
-                        $total_qunatity += $products->quantity;
-                    }
-                    if ($products['unit']->id == 2) {
-                        $total_qunatity += ($products->quantity * $products['order_product_details']->weight);
-                    }
-                    if ($products['unit']->id == 3) {
-                        $total_qunatity += (($products->quantity / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
-                    }
-
-                    $total_qty = $products->price;
+//                    if ($products['unit']->id == 1) {
+//                        $total_qunatity += $products->quantity;
+//                    }
+//                    if ($products['unit']->id == 2) {
+//                        $total_qunatity += ($products->quantity * $products['order_product_details']->weight);
+//                    }
+//                    if ($products['unit']->id == 3) {
+//                        $total_qunatity += (($products->quantity / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
+//                    }
+//
+//                    $total_qty = $products->price;
                 }
                 ?>
 
@@ -129,7 +129,7 @@
                     <div class="divCell">{{ $obj->serial_number }}</div>
                     <div class="divCell3">{{ $obj['customer']->owner_name }}</div>
                     <div class="divCell">{{ isset($obj['delivery_order']['location'])?$obj['delivery_order']['location']->area_name: '' }}</div>
-                    <div class="divCell">{{ round($total_qunatity, 2) }}</div> 
+                    <div class="divCell">{{ round($obj["delivery_challan_products"]->sum('actual_quantity'), 2) }}</div> 
                     <div class="divCell">{{ round($obj->grand_price, 2) }}</div>
                     <div class="divCell">{{ $obj->bill_number }} </div>
                     <div class="divCell">{{ $obj['delivery_order']->vehicle_number }}</div>

@@ -91,6 +91,7 @@ class PurchaseDaybookController extends Controller {
 
         $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details', 'delivery_location')
                 ->where('order_status', 'completed')
+                ->orderBy('created_at', 'desc')
                 ->get();
 
         Excel::create('Sales Daybook', function($excel) use($purchase_daybook) {

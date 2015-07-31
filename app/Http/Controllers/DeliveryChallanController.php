@@ -53,18 +53,19 @@ class DeliveryChallanController extends Controller {
                 $order_quantity = 0;
 
                 if (count($order['delivery_challan_products']) > 0) {
-                    foreach ($order['delivery_challan_products'] as $opk => $opv) {
-                        $product_size = ProductSubCategory::find($opv->product_category_id);
-                        if ($opv->unit_id == 1) {
-                            $order_quantity = $order_quantity + $opv->actual_quantity;
-                        }
-                        if ($opv->unit_id == 2) {
-                            $order_quantity = $order_quantity + ($opv->actual_quantity * $product_size->weight);
-                        }
-                        if ($opv->unit_id == 3) {
-                            $order_quantity = $order_quantity + (($opv->actual_quantity / $product_size->standard_length ) * $product_size->weight);
-                        }
-                    }
+//                    foreach ($order['delivery_challan_products'] as $opk => $opv) {
+//                        $product_size = ProductSubCategory::find($opv->product_category_id);
+//                        if ($opv->unit_id == 1) {
+//                            $order_quantity = $order_quantity + $opv->actual_quantity;
+//                        }
+//                        if ($opv->unit_id == 2) {
+//                            $order_quantity = $order_quantity + ($opv->actual_quantity * $product_size->weight);
+//                        }
+//                        if ($opv->unit_id == 3) {
+//                            $order_quantity = $order_quantity + (($opv->actual_quantity / $product_size->standard_length ) * $product_size->weight);
+//                        }
+//                    }
+                    $order_quantity = $order['delivery_challan_products']->sum('actual_quantity');
                 }
 
                 $allorders[$key]['total_quantity'] = $order_quantity;
@@ -259,7 +260,7 @@ class DeliveryChallanController extends Controller {
                 }
                 $str .= " Trk No. " . $allorder['delivery_order']->vehicle_number .
                         ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
-                        ", Qty " . $allorder['delivery_challan_products']->sum('present_shipping') .
+                        ", Qty " . $allorder['delivery_challan_products']->sum('actual_quantity') .
                         ", Amt " . $allorder->grand_price .
                         ", Due by: " . date("jS F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
                         " Vikas Associates, 9673000068";

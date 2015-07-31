@@ -76,7 +76,7 @@
                                                     $total_qty += (($pc->quantity / $pc['purchase_product_details']->standard_length ) * $pc['purchase_product_details']->weight);
                                                 }
                                             }
-                                            echo round($total_qty, 2);
+                                            echo round($challan['all_purchase_products']->sum('quantity'), 2);
                                             ?>
                                         </td>
                                         <td class="text-center">

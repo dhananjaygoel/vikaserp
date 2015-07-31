@@ -142,7 +142,7 @@
                                                         $total_qunatity += (($products->quantity / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
                                                     }
                                                 }
-                                                echo round($total_qunatity, 2);
+                                                echo round($challan['delivery_challan_products']->sum('actual_quantity'), 2);
                                                 ?>
                                             </td>
                                             <td >{{round($challan->grand_price, 2)}}</td>

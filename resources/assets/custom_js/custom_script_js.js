@@ -105,6 +105,7 @@ $(document).ready(function () {
                 '<td class="col-md-2">' +
                 '<div class="form-group searchproduct">' +
                 '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');" onblur="product_rate(' + current_row_count + ')">' +
+                '<input type="hidden" id="product_weight_' + current_row_count + '" value="">' +
                 '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
                 '<i class="fa fa-search search-icon"></i>' +
                 '</div>' +
@@ -116,7 +117,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-2">' +
                 '<div class="form-group">' +
-                '<input id="actual_pieces_' + current_row_count + '" class="form-control" placeholder="Actual Pieces" name="product[' + current_row_count + '][actual_pieces]" value="" type="text">' +
+                '<input id="actual_pieces_' + current_row_count + '" class="form-control" placeholder="Actual Pieces" name="product[' + current_row_count + '][actual_pieces]" value="" type="text" onblur="fetch_price();">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
@@ -412,7 +413,14 @@ function fetch_price() {
     }
     grand_total_challan();
 }
-
+$("body").delegate(".calc_actual_quantity", "keyup", function (event) {
+    var rowId = $(this).attr('id').split('actual_pieces_');
+    rowId = rowId[1];
+    var weight = $('#product_weight_' + rowId).val();
+    var actual_pieces = $(this).val();
+    $('#actual_quantity_' + rowId).val(actual_pieces * weight);
+    fetch_price();
+});
 /**
  * Grand total for creating independent delivery order
  */

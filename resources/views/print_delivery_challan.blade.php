@@ -214,7 +214,7 @@
                 <?php
                 $i = 1;
                 $total_price = 0;
-                $total_qty = 0;
+//                $total_qty = 0;
                 ?>
 
                 @foreach($allorder['delivery_challan_products'] as $prod)
@@ -232,19 +232,19 @@
                     </div>                
                 </div>
                 <?php
-                if ($prod->unit_id == 1) {
-                    $total_qty += $prod->actual_quantity;
-                }
-
-                if ($prod->unit_id == 2) {
-                    echo $prod['order_product_details']['product_category']->weight;
-                    $total_qty += $prod->actual_quantity * $prod['order_product_details']->weight;
-                }
-
-                if ($prod->unit_id == 3) {
-                    echo $prod['order_product_details']['product_category']->standard_length;
-                    $total_qty += ($prod->actual_quantity / $prod['order_product_details']->standard_length) * $prod['order_product_details']->weight;
-                }
+//                if ($prod->unit_id == 1) {
+//                    $total_qty += $prod->actual_quantity;
+//                }
+//
+//                if ($prod->unit_id == 2) {
+//                    echo $prod['order_product_details']['product_category']->weight;
+//                    $total_qty += $prod->actual_quantity * $prod['order_product_details']->weight;
+//                }
+//
+//                if ($prod->unit_id == 3) {
+//                    echo $prod['order_product_details']['product_category']->standard_length;
+//                    $total_qty += ($prod->actual_quantity / $prod['order_product_details']->standard_length) * $prod['order_product_details']->weight;
+//                }
                 ?>
                 @endif
                 @endforeach
@@ -253,7 +253,7 @@
             <div class="footer">
                 <div class="total-desc">
                     <div class="quantity">
-                        Total Quantity: {{ round($total_qty, 2) }}
+                        Total Quantity: {{ round($allorder['delivery_challan_products']->sum('actual_quantity'), 2) }}
                     </div>
                     <div class="ruppes grand_price">
                         &nbsp; 

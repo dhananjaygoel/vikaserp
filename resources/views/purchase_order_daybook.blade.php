@@ -140,7 +140,7 @@
                                                 <td>{{ $daybook['orderedby']->first_name }} </td>
                                                 <td>{{ $daybook->unloaded_by }} </td>
                                                 <td>{{ $daybook->labours }}</td>    
-                                                <td>{{ round($total_qunatity, 2) }}</td>
+                                                <td>{{ round($daybook['all_purchase_products']->sum('quantity'), 2) }}</td>
                                                 <td>{{ $daybook->grand_total}}</td>                                        
                                                 <td>{{ $daybook->bill_number }}</td>
                                                 <td>

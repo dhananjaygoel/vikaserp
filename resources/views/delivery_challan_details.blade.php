@@ -111,6 +111,12 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="vehicle_name"><b class="challan">Total Actual Quantity: </b></label>
+                            {{$allorder['all_order_products']->sum('actual_quantity')}}
+                            <?php  ?>
+                        </div>
+                        <hr>
+                        <div class="form-group">
                             <label for="vehicle_name"><b class="challan">Discount: </b></label>
                             {{$allorder->discount}}
                             <?php $total_amount = $total_amount + $allorder->discount; ?>

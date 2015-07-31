@@ -37,7 +37,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td class="heading2"><?= $value->grand_price ?></td>
+                <td class="heading2"><?= $value->grand_total ?></td>
             </tr>
             <?php
             foreach ($value['all_purchase_products'] as $key1 => $value1) {
@@ -61,7 +61,7 @@
                             $order_quantity = $order_quantity + (($value1->quantity / $value1['purchase_product_details']->standard_length ) * $value1['purchase_product_details']->weight);
                         }
                         ?>
-                        <?= round($order_quantity, 2) . ' Kg' ?>
+                        <?= round($value1->quantity, 2) . ' Kg' ?>
                     </td>
                     <td><?= $value1->price ?>/Kg</td>
                     <td><?= ($value1->quantity * $value1->price) ?></td>

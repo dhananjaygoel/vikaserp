@@ -293,7 +293,7 @@ class PurchaseChallanController extends Controller {
                     }
                 }
                 $str .= " Trk No. " . $purchase_challan['purchase_advice']->vehicle_number
-                        . ", Qty. " . round($total_quantity, 2)
+                        . ", Qty. " . round($input_data->sum('quantity'), 2)
                         . ", Amt. " . $purchase_challan->grand_total
                         . ", Due by " . date("jS F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
                         . ", . Vikas Associates, 9673000068";
