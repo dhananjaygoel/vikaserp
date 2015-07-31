@@ -8,7 +8,7 @@ return [
     'send' => true,
     'send_sms_to' => '8983886688',
     'emailData' => array(
-        'email' => 'deepakw@agstechnologies.com',
+        'email' => 'amana@agstechnologies.com',
         'name' => 'Deepak Wagh'
     )
 ];
