@@ -285,7 +285,7 @@
                                                 <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                             </span>
                                         </a>
-                                        @if(Auth::user()->role_id != 3)
+                                        @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                                         <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal_{{$order->id}}">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
@@ -390,7 +390,7 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @if(Auth::user()->role_id != 3)
+                                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                                             <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal_{{$order->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
