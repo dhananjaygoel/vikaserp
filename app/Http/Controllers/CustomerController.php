@@ -138,16 +138,8 @@ class CustomerController extends Controller {
         }
 
         $customer->tally_name = Input::get('tally_name');
-//        $customer->tally_category = Input::get('tally_category');
-//        $customer->tally_sub_category = Input::get('tally_sub_category');
         $customer->phone_number1 = Input::get('phone_number1');
 
-//        if (Input::has('vat_tin_number')) {
-//            $customer->vat_tin_number = Input::get('vat_tin_number');
-//        }
-//        if (Input::has('excise_number')) {
-//            $customer->excise_number = Input::get('excise_number');
-//        }
         if (Input::has('username')) {
             $customer->username = Input::get('username');
         }
@@ -326,7 +318,6 @@ class CustomerController extends Controller {
             $customer->password = Hash::make(Input::get('relationship_manager'));
         }
 
-
         if ($customer->save()) {
             $product_category_id = Input::get('product_category_id');
             if (isset($product_category_id)) {
@@ -350,7 +341,6 @@ class CustomerController extends Controller {
                     }
                 }
             }
-
             return redirect('customers')->with('success', 'Customer details updated successfully');
         } else {
             return Redirect::back()->with('error', 'Some error occoured while saving customer');
@@ -382,6 +372,10 @@ class CustomerController extends Controller {
             return Redirect::to('customers')->with('error', 'Invalid password');
         }
     }
+    
+    /*
+     * to get the city list
+     */
 
     public function get_city() {
         $state_id = Input::get('state');
@@ -398,6 +392,10 @@ class CustomerController extends Controller {
         echo json_encode(array('city' => $city));
         exit;
     }
+    
+    /*
+     * show the product list form for the single cumstomer
+     */
 
     public function set_price($id) {
         $customer_id = array('id' => $id);
@@ -405,6 +403,10 @@ class CustomerController extends Controller {
         $product_category = ProductCategory::all();
         return view('set_price', compact('cutomer_difference', 'product_category', 'customer_id'));
     }
+    
+    /*
+     * update the product list price for the single cumstomer
+     */
 
     public function update_set_price() {
 
@@ -413,8 +415,6 @@ class CustomerController extends Controller {
         $product_differrence = Input::get('product_differrence');
 
         if (Input::get('product_differrence') != '') {
-
-
 
             $product_difference1 = CustomerProductDifference::where('customer_id', $customer_id)
                     ->delete();
@@ -437,49 +437,12 @@ class CustomerController extends Controller {
         } else {
             return redirect('set_price/' . $customer_id)->with('error', 'Please enter the customer set price please');
         }
-
-
-
-
-
-
-//        $customer_id = Input::get('customer_id');
-//
-//        $product_category_id = Input::get('product_category_id');
-//        if (isset($product_category_id)) {
-//            
-//            foreach ($product_category_id as $key => $value) {
-//                if (Input::get('product_differrence')[$key] != '') {
-//
-//
-//                    $product_difference->product_category_id = $value;
-//                    $product_difference->customer_id = $customer_id;
-//                    $product_difference->difference_amount = Input::get('product_differrence')[$key];
-//                    $product_difference->save();
-//                    $product_difference = CustomerProductDifference::where('product_category_id', '=', $value)->first();
-//                    if (count($product_difference) > 0) {
-//                        $product_difference = $product_difference;
-//                    } else {
-//                        $product_difference = new CustomerProductDifference();
-//                    }
-//
-//                    $product_difference->product_category_id = $value;
-//                    $product_difference->customer_id = $customer_id;
-//                    $product_difference->difference_amount = Input::get('product_differrence')[$key];
-//                    $product_difference->save();
-//                } else {
-//                    $product_difference1 = CustomerProductDifference::where('product_category_id', '=', $value)
-//                            ->where('customer_id', $customer_id)
-//                            ->first();
-//                    if (count($product_difference1) > 0) {
-//                        $product_difference1->delete();
-//                    }
-//                }
-//            }
-//
-//            return redirect('set_price/' . $customer_id)->with('success', 'Customer Set price successfully updated');
-//        }
     }
+    
+    /*
+     * to update bulk pric of the product
+     * shows the form
+     */
 
     public function bulk_set_price() {
 
@@ -518,8 +481,6 @@ class CustomerController extends Controller {
             $customer = Customer::with('customerproduct')->where('customer_status', 'permanent')->paginate(20);
         }
 
-
-
         $product_category = ProductCategory::where('product_type_id', $product_type)->get();
         $customer->setPath('bulk_set_price');
         $product_type = ProductType::all();
@@ -527,6 +488,10 @@ class CustomerController extends Controller {
 
         return view('bulk_set_price', compact('customer', 'product_category', 'product_type', 'filter'));
     }
+    
+    /*
+     * save and update the bulk price of the product for the customer
+     */
 
     public function save_all_set_price() {
 

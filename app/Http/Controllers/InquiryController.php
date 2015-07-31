@@ -502,7 +502,6 @@ class InquiryController extends Controller {
                 ->where('customer_status', '=', 'permanent')
                 ->get();
 
-
         if (count($customers) > 0) {
             foreach ($customers as $customer) {
                 $data_array[] = [
@@ -518,6 +517,10 @@ class InquiryController extends Controller {
         }
         echo json_encode(array('data_array' => $data_array));
     }
+
+    /*
+     * find the product list base on the user inputs
+     */
 
     public function fetch_products() {
 
@@ -559,6 +562,10 @@ class InquiryController extends Controller {
         echo json_encode(array('data_array' => $data_array));
     }
 
+    /*
+     * calculate the product price
+     */
+
     public function recalculate_product_price() {
         $delivery_location = Input::get('delivery_location');
         $customer_id = Input::get('customer_id');
@@ -591,6 +598,10 @@ class InquiryController extends Controller {
         echo json_encode(array('data_array' => $data_array));
     }
 
+    /*
+     * store the price
+     */
+
     public function store_price() {
         $input_data = Input::all();
         $update_price = InquiryProducts::where('id', '=', $input_data['id'])->update(['price' => $input_data['updated_price']]);
@@ -598,7 +609,7 @@ class InquiryController extends Controller {
 
     /*
      * Inquiery to Order
-     * place order
+     * place order loads the form
      */
 
     function place_order($id) {
@@ -618,6 +629,10 @@ class InquiryController extends Controller {
 
         return view('place_order', compact('inquiry', 'customers', 'delivery_location', 'units'));
     }
+    
+    /*
+     * save the order details form for the delivery order
+     */
 
     function store_place_order($id, InquiryRequest $request) {
 
@@ -776,7 +791,7 @@ class InquiryController extends Controller {
                 }
             }
         }
-        
+
         $order->save();
 
         $order_id = DB::getPdo()->lastInsertId();
@@ -796,12 +811,11 @@ class InquiryController extends Controller {
             }
         }
 
-//send mail
+        /*
+         * send mail
+         */
         if (isset($input_data['send_email'])) {
-
-
             $customers = Customer::find($customer_id);
-
             if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
                 $order = Order::where('id', '=', $order_id)->with('all_order_products.order_product_details', 'delivery_location')->first();
                 if (count($order) > 0) {

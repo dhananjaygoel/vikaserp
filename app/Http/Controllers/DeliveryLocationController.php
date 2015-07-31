@@ -17,10 +17,11 @@ use Illuminate\Support\Facades\Auth;
 use Redirect;
 
 class DeliveryLocationController extends Controller {
-    
+
     public function __construct() {
         $this->middleware('validIP');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -28,7 +29,7 @@ class DeliveryLocationController extends Controller {
      */
     public function index() {
         $delivery_location = DeliveryLocation::where('status', '=', 'permanent')->with('city.states')->orderBy('created_at', 'desc')->Paginate(20);
-         
+
         $delivery_location->setPath('location');
         return view('delivery_location', compact('delivery_location'));
     }
@@ -57,26 +58,16 @@ class DeliveryLocationController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('location')->with('error', 'You do not have permission.');
         }
-        
+
         $location = new DeliveryLocation();
-        $location->area_name= $request->input('area_name');
+        $location->area_name = $request->input('area_name');
         $location->state_id = $request->input('state');
         $location->city_id = $request->input('city');
         $location->difference = $request->input('difference');
         $location->status = 'permanent';
         $location->save();
-        
-        return redirect('location')->with('flash_success_message', 'Location details successfully added.');
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id) {
-        //
+        return redirect('location')->with('flash_success_message', 'Location details successfully added.');
     }
 
     /**
@@ -135,6 +126,10 @@ class DeliveryLocationController extends Controller {
         } else
             return redirect('location')->with('flash_message', 'Please enter a correct password');
     }
+
+    /*
+     * update the delivery location difference price
+     */
 
     public function delivery_difference() {
         $data = Input::all();
