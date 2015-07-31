@@ -12,7 +12,7 @@
                 <div class="filter-block">
                     <h1 class="pull-left">View Delivery Order</h1>                                 
                     <div class="pull-right top-page-ui">
-                        @if((Auth::user()->role_id == 0 || Auth::user()->role_id == 1) && $delivery_data->order_status == 'completed')
+                        @if(($delivery_data->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1))
                         <a href="{{URL::action('DeliveryOrderController@edit',['id'=>$delivery_data->id])}}" class="btn btn-primary pull-right">
                             Edit Delivery Order
                         </a>
