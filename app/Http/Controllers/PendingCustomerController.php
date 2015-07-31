@@ -22,6 +22,9 @@ use Config;
 use Redirect;
 
 class PendingCustomerController extends Controller {
+    /*
+     * sms configuration
+     */
 
     public function __construct() {
         define('PROFILE_ID', Config::get('smsdata.profile_id'));
@@ -47,24 +50,6 @@ class PendingCustomerController extends Controller {
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create() {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store() {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -80,7 +65,6 @@ class PendingCustomerController extends Controller {
         }
 
         $managers = User::where('role_id', '=', 1)->get();
-
         $locations = DeliveryLocation::all();
         $states = States::all();
         $cities = City::all();
@@ -169,6 +153,10 @@ class PendingCustomerController extends Controller {
         }
     }
 
+    /*
+     * add the pending customer.
+     */
+
     public function add_pending_customers(StoreCustomer $request, $id) {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
@@ -201,9 +189,6 @@ class PendingCustomerController extends Controller {
         if (Input::has('state')) {
             $customer->state = Input::get('state');
         }
-
-
-
 
         if (Input::has('zip')) {
             $customer->zip = Input::get('zip');
@@ -240,9 +225,7 @@ class PendingCustomerController extends Controller {
         }
 
         $customer->customer_status = 'permanent';
-
         if ($customer->save()) {
-
             //set price difference of the category
             $product_category_id = Input::get('product_category_id');
             if (isset($product_category_id)) {

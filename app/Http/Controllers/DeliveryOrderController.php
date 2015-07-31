@@ -27,6 +27,9 @@ use App\CustomerProductDifference;
 use App\ProductCategory;
 
 class DeliveryOrderController extends Controller {
+    /*
+     * sms construction 
+     */
 
     public function __construct() {
         define('PROFILE_ID', Config::get('smsdata.profile_id'));
@@ -126,16 +129,6 @@ class DeliveryOrderController extends Controller {
             }
         }
 
-
-//        if ($input_data['status'] == 'warehouse') {
-//            $order_status = 'warehouse';
-//            $supplier_id = 0;
-//        }
-//        if ($input_data['status'] == 'supplier') {
-//            $order_status = 'supplier';
-//            $supplier_id = $input_data['supplier_id'];
-//        }
-
         $vat_price = 0;
         if ($input_data['status1'] == 'include_vat') {
             $vat_price = '';
@@ -152,11 +145,9 @@ class DeliveryOrderController extends Controller {
         $delivery_order->delivery_location_id = $input_data['add_order_location'];
         $delivery_order->vat_percentage = $vat_price;
         $delivery_order->estimate_price = 0;
-//        $delivery_order->estimated_delivery_date = date_format(date_create(date("Y-m-d")), 'Y-m-d');
         $delivery_order->expected_delivery_date = date_format(date_create(date("Y-m-d")), 'Y-m-d');
         $delivery_order->remarks = $input_data['order_remark'];
         $delivery_order->vehicle_number = $input_data['vehicle_number'];
-//        $delivery_order->driver_name = $input_data['driver_name'];
         $delivery_order->driver_contact_no = $input_data['driver_contact'];
         $delivery_order->order_status = "Pending";
 
@@ -165,7 +156,6 @@ class DeliveryOrderController extends Controller {
         }
 
         $delivery_order->save();
-
         $delivery_order_id = DB::getPdo()->lastInsertId();
 
         $order_products = array();
@@ -185,7 +175,6 @@ class DeliveryOrderController extends Controller {
                 $add_order_products = AllOrderProducts::create($order_products);
             }
         }
-
         return redirect('delivery_order')->with('validation_message', 'Delivery order details successfully added.');
     }
 
@@ -315,7 +304,6 @@ class DeliveryOrderController extends Controller {
             'remarks' => $input_data['order_remark'],
             'vehicle_number' => $input_data['vehicle_number'],
             'driver_contact_no' => $input_data['driver_contact']
-//            'order_status' => "Pending"
         ));
 
         $order_products = array();
@@ -370,6 +358,10 @@ class DeliveryOrderController extends Controller {
         }
     }
 
+    /*
+     * to calculation the toatal quantity of the order
+     */
+
     public function pending_delivery_order() {
 
         $delivery_data = 0;
@@ -388,6 +380,10 @@ class DeliveryOrderController extends Controller {
 
         return view('pending_delivery_order', compact('delivery_data'));
     }
+    
+    /*
+     * displey the create delivery challan form
+     */
 
     public function create_delivery_challan($id) {
 
@@ -399,10 +395,13 @@ class DeliveryOrderController extends Controller {
 
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
-//        $price_delivery_order = $this->calculate_price($delivery_data);
         $customers = Customer::all();
         return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
     }
+    
+    /*
+     * save create delivery challan form details for the challan
+     */
 
     public function store_delivery_challan($id) {
 
@@ -480,7 +479,10 @@ class DeliveryOrderController extends Controller {
         }
     }
 
-    //Generate Serial number and print Delivery order
+    /*
+     * Generate Serial number and print Delivery order
+     * as welll as send the sms to the customer
+     */
     public function print_delivery_order($id) {
 
         $current_date = date("m/d/");
@@ -494,9 +496,6 @@ class DeliveryOrderController extends Controller {
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
-
-
-
         /*
           |------------------- -----------------------
           | SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
@@ -530,9 +529,12 @@ class DeliveryOrderController extends Controller {
                 }
             }
         }
-
         return view('print_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
     }
+    
+    /*
+     * calculate the pending quantity of the order.
+     */
 
     public function pending_quantity_order($id) {
         $pending_orders = array();
@@ -548,13 +550,12 @@ class DeliveryOrderController extends Controller {
             $temp['total_pending_quantity'] = $p_qty;
             array_push($pending_orders, $temp);
         }
-
-
-
-//            $allorders['total_pending_quantity_'.$order->id]=$pending_quantity;
-
         return $pending_orders;
     }
+    
+    /*
+     * calculate price of the product.
+     */
 
     function calculate_price($delivery_data) {
 
@@ -587,6 +588,11 @@ class DeliveryOrderController extends Controller {
 
         return $product_rates;
     }
+    
+    /*
+     *find product price
+     * may be unused methods
+     */
 
     function product_price() {
         $input_data = Input::get("product_id");
@@ -611,6 +617,10 @@ class DeliveryOrderController extends Controller {
         ];
         echo json_encode(array('data_array' => $data_array));
     }
+    
+    /*
+     * calculate the pending quantity and total quantity
+     */
 
     function checkpending_quantity($delivery_orders) {
         $all_del_orders = array();
