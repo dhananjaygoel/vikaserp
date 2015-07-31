@@ -61,19 +61,27 @@ $(document).ready(function () {
         $(".plusvat").hide();
     });
 });
+
+
+
 $('#datepickerDate').datepicker({
     format: 'mm-dd-yyyy',
-//    startDate: today,
+    startDate: new Date(),
     autoclose: true
 
 });
+
 $('#datepickerDateComponent').datepicker();
+
 $('#datepickerDate1').datepicker({
     format: 'mm-dd-yyyy',
-//    startDate: today,
+    startDate: new Date(),
     autoclose: true
 });
+
 $('#datepickerDateComponent1').datepicker();
+
+
 $(document).ready(function () {
     $("#addmore1").click(function () {
         $(".row5").hide();

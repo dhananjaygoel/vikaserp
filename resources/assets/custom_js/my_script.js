@@ -16,7 +16,7 @@ var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(
 
 $('#bill_date').datepicker({
     format: 'mm-dd-yyyy',
-    startDate: today,
+    startDate: new Date(),
     autoclose: true
 });
 

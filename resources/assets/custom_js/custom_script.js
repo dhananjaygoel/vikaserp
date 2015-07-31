@@ -81,20 +81,15 @@ $(document).ready(function () {
             default_delivery_location();
         }
     });
-    var nowDate = new Date();
-    var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
 
     $('#expected_delivery_date').datepicker({
         format: 'mm-dd-yyyy',
-        startDate: today,
+        startDate: new Date(),
         autoclose: true
     });
     $('#datepickerDateComponent').datepicker();
     
-
-    
-    
-    
+   
     $("#add_product_row").on("click", function () {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({

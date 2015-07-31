@@ -34,6 +34,7 @@
         {!! HTML::style('/resources/assets/css/libs/fullcalendar.print.css') !!}
         {!! HTML::style('/resources/assets/css/compiled/calendar.css') !!}
         {!! HTML::style('/resources/assets/css/libs/morris.css') !!}
+        {!! HTML::style('/resources/assets/css/libs/datepicker.css') !!}
         {!! HTML::style('/resources/assets/css/libs/daterangepicker.css') !!}
         {!! HTML::style('/resources/assets/css/libs/jquery-jvectormap-1.2.2.css') !!}
         {!! HTML::style('/resources/assets/css/custom_style/custom_style.css') !!}
