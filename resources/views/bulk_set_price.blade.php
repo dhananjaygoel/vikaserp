@@ -91,7 +91,8 @@
                                             }
                                             ?>
                                             <td>
-                                                <input type='tel' name="set_diff[{{$key}}][{{$key1}}][price]" onblur="this_price(this)" pattern="[0-9]\.[0-9]{5}|[0-9]{2}\.[0-9]{4}" value="{{ $price }}" style="width: 40px;">
+                                                <!--for the validation of the decimal points pattern="[0-9]\.[0-9]{5}|[0-9]{2}\.[0-9]{4}"--> 
+                                                <input type='tel' name="set_diff[{{$key}}][{{$key1}}][price]" onblur="this_price(this)" value="{{ $price }}" style="width: 40px;">
                                                 <input type='hidden' name="set_diff[{{$key}}][{{$key1}}][cust_id]" value="{{$c->id}}">
                                                 <input type='hidden' name="set_diff[{{$key}}][{{$key1}}][product_id]" value="{{$prod->id}}">
                                             </td>
