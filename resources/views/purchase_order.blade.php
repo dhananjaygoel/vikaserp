@@ -107,6 +107,7 @@
                                         <td>                                        
                                             {{round($purchase_order->pending_quantity, 2)}}
                                         </td>
+                                        
                                         @if(Input::get('purchase_order_filter') == 'pending'  || Input::get('purchase_order_filter') == '')
                                         <td class="text-center">
                                             <a href="{{ url('create_purchase_advice'.'/'.$purchase_order->id)}}" class="table-link" title="Create Purchase Advice">
@@ -117,14 +118,16 @@
                                             </a>
                                         </td>
                                         @endif
-                                        <td class="text-center">
+                                        
+                                        <td class="text-center" style="min-width: 180px;">
                                             <a href="{{ Url::action('PurchaseOrderController@show', ['id' => $purchase_order->id]) }}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @if($purchase_order->order_status!='completed' || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+                                            @if($purchase_order->order_status !='completed' || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+                                            
                                             @if($purchase_order->order_status =='pending')
                                             <a href="{{ Url::action('PurchaseOrderController@edit', ['id' => $purchase_order->id]) }}" class="table-link" title="edit">
                                                 <span class="fa-stack">
@@ -133,6 +136,7 @@
                                                 </span>
                                             </a>
                                             @endif
+                                            
                                             <a class="table-link" title="manually complete" data-toggle="modal" data-target="#manual_complete_{{$purchase_order->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -146,7 +150,6 @@
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-
                                             @endif
                                         </td>
                                     </tr>
