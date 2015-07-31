@@ -461,6 +461,7 @@ function grand_total_challan() {
     var current_row_count = $(".add_product_row").length;
 //    alert(current_row_count);
     var total_price_products = 0;
+    var total_actual_quantity = 0;
     for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseFloat($('#product_price_' + i).val())) {
             var unit_id = $("#units_" + i).val();
@@ -489,6 +490,7 @@ function grand_total_challan() {
 //            }
 
             total_price_products = total_price_products + (parseFloat($('#product_price_' + i).val()) * quantity);
+            total_actual_quantity = total_actual_quantity + quantity;
         }
     }
 
@@ -527,6 +529,7 @@ function grand_total_challan() {
 
 //    total_l_d_f
     $("#total_price").val(total_price_products);
+    $("#total_actual_quantity").val(total_actual_quantity);
 
     var freight_value = 0;
     if ($("#freight_value").length > 0) {
