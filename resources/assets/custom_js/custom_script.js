@@ -55,6 +55,7 @@ $(document).ready(function () {
             $("#existing_customer_id").val(ui.item.id);
 //            alert(ui.item.id);
             $("#customer_default_location").val(ui.item.delivery_location_id);
+            $("#location_difference").val(ui.item.location_difference);
             default_delivery_location();
         }
     });
@@ -450,21 +451,8 @@ function product_autocomplete(id) {
     if (customer_id == "") {
         customer_id = 0;
     }
-
-    var delivery_location = $('#add_order_location').val();
-    var location = 0;
     var location_difference = 0;
-
-    if (delivery_location > 0) {
-
-        location = $('#add_order_location').val();
-
-    } else if (delivery_location == 'other') {
-
-        location_difference = $('#location_difference').val();
-        location = 0;
-    }
-
+    location_difference = $('#location_difference').val();
     $("#add_product_name_" + id).autocomplete({
         minLength: 1,
         dataType: 'json',
@@ -474,7 +462,7 @@ function product_autocomplete(id) {
             $("#add_product_name_" + id).addClass('loadinggif');
             $.ajax({
                 url: baseurl + '/fetch_products',
-                data: {"term": request.term, 'customer_id': customer_id, 'delivery_location': location, 'location_difference': location_difference},
+                data: {"term": request.term, 'customer_id': customer_id, 'location_difference': location_difference},
                 success: function (data) {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
@@ -547,20 +535,8 @@ $('#location_difference').on('keyup', function () {
         if (customer_id == "") {
             customer_id = 0;
         }
-
-        var delivery_location = $('#add_order_location').val();
-        var location = 0;
         var location_difference = 0;
-
-        if (delivery_location > 0) {
-
-            location = $('#add_order_location').val();
-
-        } else if (delivery_location == 'other') {
-
-            location_difference = $('#location_difference').val();
-            location = 0;
-        }
+        location_difference = $('#location_difference').val();
         var rowId = $(this).attr('data-row-id');
         console.log(rowId);
         var product = $(this).find('#add_product_name_' + rowId).val();
@@ -568,7 +544,7 @@ $('#location_difference').on('keyup', function () {
             var product_id = $(this).find('#add_product_id_' + rowId).val();
             $.ajax({
                 url: baseurl + '/recalculate_product_price',
-                data: {"product_id": product_id, 'customer_id': customer_id, 'delivery_location': location, 'location_difference': location_difference},
+                data: {"product_id": product_id, 'customer_id': customer_id, 'location_difference': location_difference},
                 success: function (data) {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
@@ -580,27 +556,15 @@ $('#location_difference').on('keyup', function () {
 });
 
 $('#add_order_location').on('change', function () {
+    var location_difference = $('option:selected', this).attr('data-location-difference');
+    $('#location_difference').val(location_difference);
     $(".add_product_row").each(function (index) {
         var customer_id = $('#existing_customer_id').val();
 
         if (customer_id == "") {
             customer_id = 0;
         }
-
-        var delivery_location = $('#add_order_location').val();
-        var location = 0;
-        var location_difference = 0;
-
-        if (delivery_location > 0) {
-
-            location = $('#add_order_location').val();
-            $('#location_difference').val('');
-
-        } else if (delivery_location == 'other') {
-
-            location_difference = $('#location_difference').val();
-            location = 0;
-        }
+        location_difference = $('#location_difference').val();
         var rowId = $(this).attr('data-row-id');
         console.log(rowId);
         var product = $(this).find('#add_product_name_' + rowId).val();
@@ -608,7 +572,7 @@ $('#add_order_location').on('change', function () {
             var product_id = $(this).find('#add_product_id_' + rowId).val();
             $.ajax({
                 url: baseurl + '/recalculate_product_price',
-                data: {"product_id": product_id, 'customer_id': customer_id, 'delivery_location': location, 'location_difference': location_difference},
+                data: {"product_id": product_id, 'customer_id': customer_id, 'location_difference': location_difference},
                 success: function (data) {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];

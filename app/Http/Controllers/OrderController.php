@@ -208,9 +208,10 @@ class OrderController extends Controller {
         if (isset($input_data['location']) && ($input_data['location'] != "")) {
             $order->delivery_location_id = 0;
             $order->other_location = $input_data['location'];
-            $order->other_location_difference = $input_data['other_location_difference'];
+            $order->location_difference = $input_data['location_difference'];
         } else {
             $order->delivery_location_id = $input_data['add_order_location'];
+            $order->location_difference = $input_data['location_difference'];
         }
 
         /*
@@ -477,13 +478,12 @@ class OrderController extends Controller {
         if ($input_data['add_inquiry_location'] == 'other') {
             $update_order = $order->update([
                 'other_location' => $input_data['other_location_name'],
-                'other_location_difference' => $input_data['other_location_difference']
+                'location_difference' => $input_data['location_difference']
             ]);
-        }
-        if ($input_data['add_inquiry_location'] != 0) {
+        } else {
             $update_order = $order->update([
                 'other_location' => '',
-                'other_location_difference' => ''
+                'location_difference' => $input_data['location_difference']
             ]);
         }
 
@@ -849,14 +849,20 @@ class OrderController extends Controller {
             $delivery_order->customer_id = $input_data['customer_id'];
             $delivery_order->order_source = $order->order_source;
             $delivery_order->created_by = $user->id;
-            $delivery_order->delivery_location_id = $order->delivery_location_id;
-            $delivery_order->other_location = $order->other_location;
             $delivery_order->vat_percentage = $order->vat_percentage;
             $delivery_order->expected_delivery_date = $order->expected_delivery_date;
             $delivery_order->remarks = $input_data['remarks'];
             $delivery_order->vehicle_number = $input_data['vehicle_number'];
             $delivery_order->driver_contact_no = $input_data['driver_contact'];
             $delivery_order->order_status = 'Pending';
+            if ($order->other_location == '') {
+                $delivery_order->delivery_location_id = $order->delivery_location_id;
+                $delivery_order->other_location = '';
+                $delivery_order->location_difference = $order->location_difference;
+            } else {
+                $delivery_order->other_location = $order->other_location;
+                $delivery_order->location_difference = $order->location_difference;
+            }
             $delivery_order->save();
 
             $order_products = array();

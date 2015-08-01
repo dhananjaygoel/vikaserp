@@ -142,7 +142,6 @@ class DeliveryOrderController extends Controller {
         $delivery_order->order_source = 'warehouse';
         $delivery_order->customer_id = $customer_id;
         $delivery_order->created_by = Auth::id();
-        $delivery_order->delivery_location_id = $input_data['add_order_location'];
         $delivery_order->vat_percentage = $vat_price;
         $delivery_order->estimate_price = 0;
         $delivery_order->expected_delivery_date = date_format(date_create(date("Y-m-d")), 'Y-m-d');
@@ -151,8 +150,12 @@ class DeliveryOrderController extends Controller {
         $delivery_order->driver_contact_no = $input_data['driver_contact'];
         $delivery_order->order_status = "Pending";
 
-        if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
+        if (isset($input_data['add_order_location']) && ($input_data['add_order_location'] == "other")) {
             $delivery_order->other_location = $input_data['other_location_name'];
+            $delivery_order->location_difference = $input_data['location_difference'];
+        } else {
+            $delivery_order->delivery_location_id = $input_data['add_order_location'];
+            $delivery_order->location_difference = $input_data['location_difference'];
         }
 
         $delivery_order->save();
@@ -284,11 +287,11 @@ class DeliveryOrderController extends Controller {
         if ($input_data['add_order_location'] == 'other') {
             $delivery_location = 0;
             $location = $input_data['location'];
-            $other_location_difference = $input_data['other_location_difference'];
+            $location_difference = $input_data['location_difference'];
         } else {
             $delivery_location = $input_data['add_order_location'];
             $location = '';
-            $other_location_difference = '';
+            $location_difference = $input_data['location_difference'];
         }
 
         DeliveryOrder::where('id', $id)->update(array(
@@ -296,7 +299,7 @@ class DeliveryOrderController extends Controller {
             'created_by' => Auth::id(),
             'delivery_location_id' => $delivery_location,
             'other_location' => $location,
-            'other_location_difference' => $other_location_difference,
+            'location_difference' => $location_difference,
             'vat_percentage' => $vat_price,
             'estimate_price' => 0,
             'estimated_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
@@ -380,7 +383,7 @@ class DeliveryOrderController extends Controller {
 
         return view('pending_delivery_order', compact('delivery_data'));
     }
-    
+
     /*
      * displey the create delivery challan form
      */
@@ -398,7 +401,7 @@ class DeliveryOrderController extends Controller {
         $customers = Customer::all();
         return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
     }
-    
+
     /*
      * save create delivery challan form details for the challan
      */
@@ -483,6 +486,7 @@ class DeliveryOrderController extends Controller {
      * Generate Serial number and print Delivery order
      * as welll as send the sms to the customer
      */
+
     public function print_delivery_order($id) {
 
         $current_date = date("m/d/");
@@ -531,7 +535,7 @@ class DeliveryOrderController extends Controller {
         }
         return view('print_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
     }
-    
+
     /*
      * calculate the pending quantity of the order.
      */
@@ -552,7 +556,7 @@ class DeliveryOrderController extends Controller {
         }
         return $pending_orders;
     }
-    
+
     /*
      * calculate price of the product.
      */
@@ -588,9 +592,9 @@ class DeliveryOrderController extends Controller {
 
         return $product_rates;
     }
-    
+
     /*
-     *find product price
+     * find product price
      * may be unused methods
      */
 
@@ -617,7 +621,7 @@ class DeliveryOrderController extends Controller {
         ];
         echo json_encode(array('data_array' => $data_array));
     }
-    
+
     /*
      * calculate the pending quantity and total quantity
      */

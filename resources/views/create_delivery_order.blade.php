@@ -40,9 +40,7 @@
                                 <tr><td><span><b>Date: </b></span> <?php echo date('d F, Y'); ?></td></tr>
                                 @if($order->order_source == 'warehouse')
                                 <tr><td><span><b>Warehouse: </b></span> yes</td></tr>
-                                <!--<tr><td><span><b>Supplier Name:</b></span> Warehouse</td></tr>-->
                                 @elseif($order->order_source == 'supplier')
-                                <!--<tr><td><span><b>Warehouse: </b></span> no</td></tr>-->
                                 @foreach($customers as $customer)
                                 @if($customer->id == $order->supplier_id)
                                 <tr><td><span><b>Supplier Name:</b></span>  
@@ -83,6 +81,15 @@
                                         <span><b>Delivery Location : </b></span>
                                         {{$location->area_name}}
                                         <input type="hidden" name="add_order_location" value="{{$order->delivery_location_id}}" id="add_order_location">
+                                        <input type="hidden" name="location_difference" value="{{$order->location_difference}}" id="location_difference">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span><b>Delivery Location Difference</b>: </span>
+                                        {{$order->location_difference}}
+                                        <input type="hidden" name="add_order_location" value="other" id="add_order_location">
+                                        <input type="hidden" name="location_difference" value="{{$order->location_difference}}" id="location_difference">
                                     </td>
                                 </tr>
                                 @endif
@@ -93,12 +100,13 @@
                                         <span><b>Delivery Location</b>: </span>
                                         {{$order->other_location}}
                                     </td>
-                                </tr><tr>
+                                </tr>
+                                <tr>
                                     <td>
                                         <span><b>Delivery Location Difference</b>: </span>
-                                        {{$order->other_location_difference}}
+                                        {{$order->location_difference}}
                                         <input type="hidden" name="add_order_location" value="other" id="add_order_location">
-                                        <input type="hidden" name="location_difference" value="{{$order->other_location_difference}}" id="location_difference">
+                                        <input type="hidden" name="location_difference" value="{{$order->location_difference}}" id="location_difference">
                                     </td>
                                 </tr>
                                 @endif

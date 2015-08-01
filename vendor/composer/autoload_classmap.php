@@ -12,6 +12,7 @@ return array(
     'AlterAllorderProductsAddParent' => $baseDir . '/database/migrations/2015_07_18_053624_alter_allorder_products_add_parent.php',
     'AlterDeliveryChallanTable' => $baseDir . '/database/migrations/2015_07_14_081211_alter_delivery_challan_table.php',
     'AlterInquiryAddSmsCount' => $baseDir . '/database/migrations/2015_07_17_153305_alter_inquiry_add_sms_count.php',
+    'AlterInquiryAlterLocationField' => $baseDir . '/database/migrations/2015_08_01_060907_alter_inquiry_alter_location_field.php',
     'AlterInquiryProductsTable' => $baseDir . '/database/migrations/2015_07_13_135227_alter_inquiry_products_table.php',
     'AlterPurchaseChallanTable' => $baseDir . '/database/migrations/2015_07_14_081228_alter_purchase_challan_table.php',
     'CreateAllOrderProductsTable' => $baseDir . '/database/migrations/2015_06_13_063346_create_all_order_products_table.php',
