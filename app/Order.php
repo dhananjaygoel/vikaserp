@@ -19,7 +19,7 @@ class Order extends Model {
      *
      * @var array
      */
-    protected $fillable = ['order_source','supplier_id','customer_id', 'created_by', 'delivery_location_id', 'vat_percentage', 'estimated_delivery_date','expected_delivery_date', 'remarks', 'order_status', 'other_location', 'other_location_difference'];
+    protected $fillable = ['order_source','supplier_id','customer_id', 'created_by', 'delivery_location_id', 'vat_percentage', 'estimated_delivery_date','expected_delivery_date', 'remarks', 'order_status', 'other_location', 'location_difference'];
     protected $dates = ['deleted_at'];
     
     public function customer() {

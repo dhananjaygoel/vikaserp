@@ -18,7 +18,7 @@ class Inquiry extends Model {
      *
      * @var array
      */
-    protected $fillable = ['customer_id', 'created_by', 'delivery_location_id', 'vat_percentage', 'expected_delivery_date', 'remarks', 'inquiry_status', 'other_location', 'other_location_difference'];
+    protected $fillable = ['customer_id', 'created_by', 'delivery_location_id', 'vat_percentage', 'expected_delivery_date', 'remarks', 'inquiry_status', 'other_location', 'location_difference'];
 
     public function customer() {
         return $this->hasOne('App\Customer', 'id', 'customer_id');

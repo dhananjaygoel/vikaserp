@@ -136,9 +136,10 @@ class InquiryController extends Controller {
         if ('other' == $input_data['add_inquiry_location']) {
             $add_inquiry->delivery_location_id = 0;
             $add_inquiry->other_location = $input_data['other_location_name'];
-            $add_inquiry->other_location_difference = $input_data['other_location_difference'];
+            $add_inquiry->location_difference = $input_data['location_difference'];
         } else {
             $add_inquiry->delivery_location_id = $input_data['add_inquiry_location'];
+            $add_inquiry->location_difference = $input_data['location_difference'];
         }
         $add_inquiry->vat_percentage = $input_data['vat_percentage'];
         $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
@@ -369,7 +370,9 @@ class InquiryController extends Controller {
         if ($input_data['add_inquiry_location'] == 'other') {
             $location_id = 0;
             $other_location = $input_data['other_location_name'];
-            $other_location_difference = $input_data['other_location_difference'];
+            $location_difference = $input_data['location_difference'];
+        } else {
+            $location_difference = $input_data['location_difference'];
         }
 
         $inquiry = Inquiry::find($id);
@@ -387,12 +390,12 @@ class InquiryController extends Controller {
             $inquiry->update([
                 'delivery_location_id' => 0,
                 'other_location' => $other_location,
-                'other_location_difference' => $other_location_difference
+                'location_difference' => $location_difference
             ]);
         } else {
             $inquiry->update([
                 'other_location' => '',
-                'other_location_difference' => '',
+                'location_difference' => $location_difference,
                 'delivery_location_id' => $location_id
             ]);
         }
@@ -500,6 +503,7 @@ class InquiryController extends Controller {
                     });
                 })
                 ->where('customer_status', '=', 'permanent')
+                ->with('deliverylocation')
                 ->get();
 
         if (count($customers) > 0) {
@@ -507,7 +511,8 @@ class InquiryController extends Controller {
                 $data_array[] = [
                     'value' => $customer->owner_name . '-' . $customer->tally_name,
                     'id' => $customer->id,
-                    'delivery_location_id' => $customer->delivery_location_id
+                    'delivery_location_id' => $customer->delivery_location_id,
+                    'location_difference' => $customer['deliverylocation']->difference,
                 ];
             }
         } else {
@@ -529,12 +534,13 @@ class InquiryController extends Controller {
 
         $location_diff = 0;
 
-        if ($delivery_location > 0) {
-            $location = DeliveryLocation::where('id', $delivery_location)->first();
-            $location_diff = $location->difference;
-        } else if (Input::get('location_difference') > 0) {
-            $location_diff = Input::get('location_difference');
-        }
+//        if ($delivery_location > 0) {
+//            $location = DeliveryLocation::where('id', $delivery_location)->first();
+//            $location_diff = $location->difference;
+//        } else if (Input::get('location_difference') > 0) {
+//            $location_diff = Input::get('location_difference');
+//        }
+        $location_diff = Input::get('location_difference');
 
         $term = Input::get('term');
         $products = ProductSubCategory::where('alias_name', 'like', '%' . $term . '%')->with('product_category')->get();
@@ -572,13 +578,13 @@ class InquiryController extends Controller {
         $product_id = Input::get('product_id');
         $location_diff = 0;
 
-        if ($delivery_location > 0) {
-            $location = DeliveryLocation::where('id', $delivery_location)->first();
-            $location_diff = $location->difference;
-        } else if (Input::get('location_difference') > 0) {
-            $location_diff = Input::get('location_difference');
-        }
-
+//        if ($delivery_location > 0) {
+//            $location = DeliveryLocation::where('id', $delivery_location)->first();
+//            $location_diff = $location->difference;
+//        } else if (Input::get('location_difference') > 0) {
+//            $location_diff = Input::get('location_difference');
+//        }
+        $location_diff = Input::get('location_difference');
         $term = Input::get('term');
         $product = ProductSubCategory::find($product_id);
         $cust = 0;
@@ -629,7 +635,7 @@ class InquiryController extends Controller {
 
         return view('place_order', compact('inquiry', 'customers', 'delivery_location', 'units'));
     }
-    
+
     /*
      * save the order details form for the delivery order
      */
@@ -717,7 +723,7 @@ class InquiryController extends Controller {
         if ($input_data['vat_status'] == 'exclude_vat') {
             $vat_price = $input_data['vat_percentage'];
         }
-
+        
         $order = new Order();
         $order->order_source = $order_status;
         $order->supplier_id = $supplier_id;
@@ -729,9 +735,10 @@ class InquiryController extends Controller {
         $order->order_status = "Pending";
         if ('other' == $input_data['add_inquiry_location']) {
             $order->other_location = $input_data['other_location_name'];
-            $order->other_location_difference = $input_data['other_location_difference'];
+            $order->location_difference = $input_data['location_difference'];
         } else {
             $order->delivery_location_id = $input_data['add_inquiry_location'];
+            $order->location_difference = $input_data['location_difference'];
         }
         /*
          * ------------------- --------------

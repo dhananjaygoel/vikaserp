@@ -102,34 +102,37 @@
                                 </div>
                             </div>
 
-                            <div class="row col-md-4">
+                            <div class="row col-md-12">
                                 <div class="form-group">
-                                    <label for="location">Delivery Location:<span class="mandatory">*</span></label>
-                                    <select class="form-control" name="add_order_location" id="add_order_location">
-                                        <option value="" selected="">Delivery Location</option>
-                                        @foreach($delivery_locations as $delivery_location)
-                                        @if($delivery_location->status=='permanent' && $delivery_location->id!=0)
-                                        <option value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
-                                        @endif
-                                        @endforeach
-                                        <option id="other_location" value="other">Other</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div class="locationtext">
-                                <div class="row">
-                                    <div class="form-group col-md-4">
-                                        <label for="location">Location </label>
-                                        <input id="location" class="form-control" placeholder="Location " name="location" value="" type="text">
+                                    <div class="col-md-4">
+                                        <label for="location">Delivery Location:<span class="mandatory">*</span></label>
+                                        <select class="form-control" name="add_order_location" id="add_order_location">
+                                            <option value="" selected="">Delivery Location</option>
+                                            @foreach($delivery_locations as $delivery_location)
+                                            @if($delivery_location->status=='permanent' && $delivery_location->id!=0)
+                                            <option value="{{$delivery_location->id}}" data-location-difference="{{$delivery_location->difference}}">{{$delivery_location->area_name}}</option>
+                                            @endif
+                                            @endforeach
+                                            <option id="other_location" value="other">Other</option>
+                                        </select>
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="location">Other Location Difference</label>
-                                        <input id="location_difference" class="form-control" placeholder="Other Location Difference " name="other_location_difference" value="" type="tel">
+                                        <label for="location">Location Difference</label>
+                                        <input id="location_difference" class="form-control" placeholder="Location Difference " name="location_difference" value="" type="tel">
                                     </div>
                                 </div>
                             </div>
-
+                            <br>
+                            <div class="clearfix"></div>
+                            <div class="locationtext">
+                                <div class="row col-md-12">
+                                    <div class="form-group col-md-4">
+                                        <label for="location">Location </label>
+                                        <input id="location" class="form-control" placeholder="Location Name" name="other_location_name" value="" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
                             <div class="inquiry_table col-md-12">
                                 <div class="table-responsive">
                                     <table id="add_product_table" class="table table-hover">

@@ -157,50 +157,49 @@
                             </div>
                         </div>
                         @endif
-                        <div class="row col-md-4">
+                        <div class="row col-md-12">
                             <div class="form-group">
-                                <label for="location">Delivery Location:<span class="mandatory">*</span></label>
-                                <select class="form-control" name="add_inquiry_location" id="add_order_location">
-                                    <option value="">Delivery Location</option>
-                                    @foreach($delivery_location as $location)
-                                    @if($order->delivery_location_id == $location->id)
-                                    <option value="{{$location->id}}" selected="">{{$location->area_name}}</option>
-                                    @else
-                                    <option value="{{$location->id}}">{{$location->area_name}}</option>
-                                    @endif
-                                    @endforeach
-                                    @if($order->delivery_location_id == 0)
-                                    <option id="other_location" value="other" selected="">Other</option>
-                                    @else
-                                    <option id="other_location" value="other">Other</option>
-                                    @endif
-                                </select>
+                                <div class="col-md-4">
+                                    <label for="location">Delivery Location:<span class="mandatory">*</span></label>
+                                    <select class="form-control" name="add_inquiry_location" id="add_order_location">
+                                        <option value="">Delivery Location</option>
+                                        @foreach($delivery_location as $location)
+                                        @if($order->delivery_location_id == $location->id)
+                                        <option value="{{$location->id}}" selected="" data-location-difference="{{$location->difference}}">{{$location->area_name}}</option>
+                                        @else
+                                        <option value="{{$location->id}}" data-location-difference="{{$location->difference}}">{{$location->area_name}}</option>
+                                        @endif
+                                        @endforeach
+                                        @if($order->delivery_location_id == 0)
+                                        <option id="other_location" value="other" selected="">Other</option>
+                                        @else
+                                        <option id="other_location" value="other">Other</option>
+                                        @endif
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="location">Location Difference</label>
+                                    <input id="location_difference" class="form-control" placeholder="Location Difference" name="location_difference" value="{{$order->location_difference}}" type="tel">
+                                </div>
                             </div>
                         </div>
                         <div class="clearfix"></div>
+                        <br>
                         @if($order->delivery_location_id == 0)
                         <div class="locationtext" id="other_location_input_wrapper" style="display: block;">
-                            <div class="row">
+                            <div class="row col-md-12">
                                 <div class="form-group col-md-4">
                                     <label for="location">Location </label>
                                     <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="{{$order->other_location}}" type="text">
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="location">Other Location Difference</label>
-                                    <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="{{$order->other_location_difference}}" type="tel">
                                 </div>
                             </div>
                         </div>
                         @else
                         <div class="locationtext" id="other_location_input_wrapper" style="display: none;">
-                            <div class="row">
+                            <div class="row col-md-12">
                                 <div class="form-group col-md-4">
                                     <label for="location">Location </label>
                                     <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="" type="text">
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="location">Other Location Difference</label>
-                                    <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="" type="tel">
                                 </div>
                             </div>
                         </div>

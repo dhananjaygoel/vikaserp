@@ -50,8 +50,10 @@
                                 @else
                                 {{ $delivery_data['customer']->owner_name}}
                                 @endif
+                                <input type="hidden" name="existing_customer_id" value="{{$delivery_data['customer']->id}}" id="existing_customer_id">
 
                             </td>
+                            <input type="hidden" name="location_difference" value="{{$delivery_data->location_difference}}" id="location_difference">
                         </div>
                         <hr>
                         <div class="form-group underline">Product Details</div>
