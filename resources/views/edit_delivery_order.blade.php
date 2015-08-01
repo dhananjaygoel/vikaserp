@@ -171,7 +171,8 @@
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product->id}}">
                                                     <input type="hidden" name="product[{{$key}}][order]" value="{{ $product->from}}">
 <!--                                                    <i class="fa fa-search search-icon"></i>-->
-                                                </div>{{ $product['order_product_details']->alias_name}}
+                                                {{ $product['order_product_details']->alias_name}}
+                                                </div>
                                                 <input type="hidden" name="prod_id" value="{{$key}}">
                                             </td>
                                             <td class="col-md-1">

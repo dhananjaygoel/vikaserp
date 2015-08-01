@@ -162,7 +162,13 @@
                 </div>
             </div>
             <div class="name">
-                Name: {{ $delivery_data['customer']->owner_name }}
+                Name: 
+                @if($delivery_data['customer']->tally_name != "")
+                {{ $delivery_data['customer']->tally_name }}
+                @else
+                {{ $delivery_data['customer']->owner_name }}
+                @endif
+
             </div>
             <div class="trk-mobile">
                 <div class="trk-no">
