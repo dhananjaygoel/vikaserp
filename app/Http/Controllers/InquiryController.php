@@ -534,12 +534,6 @@ class InquiryController extends Controller {
 
         $location_diff = 0;
 
-//        if ($delivery_location > 0) {
-//            $location = DeliveryLocation::where('id', $delivery_location)->first();
-//            $location_diff = $location->difference;
-//        } else if (Input::get('location_difference') > 0) {
-//            $location_diff = Input::get('location_difference');
-//        }
         $location_diff = Input::get('location_difference');
 
         $term = Input::get('term');
@@ -578,12 +572,6 @@ class InquiryController extends Controller {
         $product_id = Input::get('product_id');
         $location_diff = 0;
 
-//        if ($delivery_location > 0) {
-//            $location = DeliveryLocation::where('id', $delivery_location)->first();
-//            $location_diff = $location->difference;
-//        } else if (Input::get('location_difference') > 0) {
-//            $location_diff = Input::get('location_difference');
-//        }
         $location_diff = Input::get('location_difference');
         $term = Input::get('term');
         $product = ProductSubCategory::find($product_id);

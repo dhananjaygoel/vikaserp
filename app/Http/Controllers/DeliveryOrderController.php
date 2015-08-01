@@ -410,76 +410,70 @@ class DeliveryOrderController extends Controller {
 
         $input_data = Input::all();
 
-        $validator = Validator::make($input_data, DeliveryOrder::$order_to_delivery_challan_rules);
-        if ($validator->passes()) {
-            $delivery_challan = new DeliveryChallan();
-            $delivery_challan->order_id = $input_data['order_id'];
-            $delivery_challan->delivery_order_id = $id;
-            $delivery_challan->customer_id = $input_data['customer_id'];
-            $delivery_challan->created_by = Auth::id();
+        $delivery_challan = new DeliveryChallan();
+        $delivery_challan->order_id = $input_data['order_id'];
+        $delivery_challan->delivery_order_id = $id;
+        $delivery_challan->customer_id = $input_data['customer_id'];
+        $delivery_challan->created_by = Auth::id();
 
-            if (isset($input_data['billno'])) {
-                $delivery_challan->bill_number = $input_data['billno'];
-            }
-
-            $delivery_challan->discount = $input_data['discount'];
-            $delivery_challan->freight = $input_data['freight'];
-            $delivery_challan->loading_charge = $input_data['loading'];
-            $delivery_challan->round_off = $input_data['round_off'];
-            $delivery_challan->loaded_by = $input_data['loadedby'];
-            $delivery_challan->labours = $input_data['labour'];
-
-            if (isset($input_data['vat_percentage'])) {
-                $delivery_challan->vat_percentage = $input_data['vat_percentage'];
-            }
-
-            $delivery_challan->grand_price = $input_data['grand_total'];
-            $delivery_challan->remarks = $input_data['challan_remark'];
-            $delivery_challan->challan_status = "Pending";
-            $delivery_challan->save();
-
-            $delivery_challan_id = DB::getPdo()->lastInsertId();
-            $order_products = array();
-            foreach ($input_data['product'] as $product_data) {
-                if ($product_data['name'] != "" && $product_data['order'] != "") {
-                    $order_products = [
-                        'order_id' => $delivery_challan_id,
-                        'order_type' => 'delivery_challan',
-                        'product_category_id' => $product_data['id'],
-                        'unit_id' => $product_data['units'],
-                        'actual_pieces' => $product_data['actual_pieces'],
-                        'actual_quantity' => $product_data['actual_quantity'],
-                        'quantity' => $product_data['actual_quantity'],
-                        'present_shipping' => $product_data['present_shipping'],
-                        'price' => $product_data['price'],
-                        'from' => $input_data['order_id'],
-                        'parent' => $product_data['order'],
-                    ];
-                    $add_order_products = AllOrderProducts::create($order_products);
-                } else if ($product_data['name'] != "" && $product_data['order'] == "") {
-                    $order_products = [
-                        'order_id' => $delivery_challan_id,
-                        'order_type' => 'delivery_challan',
-                        'product_category_id' => $product_data['id'],
-                        'unit_id' => $product_data['units'],
-                        'actual_pieces' => $product_data['actual_pieces'],
-                        'actual_quantity' => $product_data['quantity'],
-                        'quantity' => $product_data['quantity'],
-                        'present_shipping' => $product_data['present_shipping'],
-                        'price' => $product_data['price'],
-                        'from' => ''
-                    ];
-                    $add_order_products = AllOrderProducts::create($order_products);
-                }
-            }
-            DeliveryOrder::where('id', '=', $input_data['order_id'])->update(array(
-                'order_status' => 'completed'
-            ));
-            return redirect('delivery_order')->with('success', 'One Delivery Challan is successfully created.');
-        } else {
-            $error_msg = $validator->messages();
-            return Redirect::back()->withInput()->withErrors($validator);
+        if (isset($input_data['billno'])) {
+            $delivery_challan->bill_number = $input_data['billno'];
         }
+
+        $delivery_challan->discount = $input_data['discount'];
+        $delivery_challan->freight = $input_data['freight'];
+        $delivery_challan->loading_charge = $input_data['loading'];
+        $delivery_challan->round_off = $input_data['round_off'];
+        $delivery_challan->loaded_by = $input_data['loadedby'];
+        $delivery_challan->labours = $input_data['labour'];
+
+        if (isset($input_data['vat_percentage'])) {
+            $delivery_challan->vat_percentage = $input_data['vat_percentage'];
+        }
+
+        $delivery_challan->grand_price = $input_data['grand_total'];
+        $delivery_challan->remarks = $input_data['challan_remark'];
+        $delivery_challan->challan_status = "Pending";
+        $delivery_challan->save();
+
+        $delivery_challan_id = DB::getPdo()->lastInsertId();
+        $order_products = array();
+        foreach ($input_data['product'] as $product_data) {
+            if ($product_data['name'] != "" && $product_data['order'] != "") {
+                $order_products = [
+                    'order_id' => $delivery_challan_id,
+                    'order_type' => 'delivery_challan',
+                    'product_category_id' => $product_data['id'],
+                    'unit_id' => $product_data['units'],
+                    'actual_pieces' => $product_data['actual_pieces'],
+                    'actual_quantity' => $product_data['actual_quantity'],
+                    'quantity' => $product_data['actual_quantity'],
+                    'present_shipping' => $product_data['present_shipping'],
+                    'price' => $product_data['price'],
+                    'from' => $input_data['order_id'],
+                    'parent' => $product_data['order'],
+                ];
+                $add_order_products = AllOrderProducts::create($order_products);
+            } else if ($product_data['name'] != "" && $product_data['order'] == "") {
+                $order_products = [
+                    'order_id' => $delivery_challan_id,
+                    'order_type' => 'delivery_challan',
+                    'product_category_id' => $product_data['id'],
+                    'unit_id' => $product_data['units'],
+                    'actual_pieces' => $product_data['actual_pieces'],
+                    'actual_quantity' => $product_data['quantity'],
+                    'quantity' => $product_data['quantity'],
+                    'present_shipping' => $product_data['present_shipping'],
+                    'price' => $product_data['price'],
+                    'from' => ''
+                ];
+                $add_order_products = AllOrderProducts::create($order_products);
+            }
+        }
+        DeliveryOrder::where('id', '=', $input_data['order_id'])->update(array(
+            'order_status' => 'completed'
+        ));
+        return redirect('delivery_order')->with('success', 'One Delivery Challan is successfully created.');
     }
 
     /*
@@ -555,42 +549,6 @@ class DeliveryOrderController extends Controller {
             array_push($pending_orders, $temp);
         }
         return $pending_orders;
-    }
-
-    /*
-     * calculate price of the product.
-     */
-
-    function calculate_price($delivery_data) {
-
-        $product_rates = array();
-        foreach ($delivery_data['delivery_product'] as $product) {
-
-            $sub_product = ProductSubCategory::find($product->product_category_id);
-            $product_category = ProductCategory::where('id', $sub_product->product_category_id)->first();
-            $user_id = $delivery_data['customer']->id;
-            $users_set_price_product = CustomerProductDifference::where('product_category_id', $product->product_category_id)
-                            ->where('customer_id', $user_id)->first();
-            $total_rate = $product_category->price;
-            $users_set_price = 0;
-            if (count($users_set_price_product) > 0) {
-                $total_rate = $total_rate + $users_set_price_product->difference_amount;
-                $users_set_price = $users_set_price_product->difference_amount;
-            }
-            if ($sub_product->difference > 0) {
-                $total_rate = $total_rate + $sub_product->difference;
-            }
-
-            $product_rate = array();
-            $product_rate["product_id"] = $product->product_category_id;
-            $product_rate["product_price"] = $product_category->price;
-            $product_rate["difference"] = $sub_product->difference;
-            $product_rate["difference_amount"] = $users_set_price;
-            $product_rate["total_rate"] = $total_rate;
-            array_push($product_rates, $product_rate);
-        }
-
-        return $product_rates;
     }
 
     /*
