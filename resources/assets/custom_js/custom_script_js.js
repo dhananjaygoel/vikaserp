@@ -99,7 +99,7 @@ $(document).ready(function () {
         var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row">' +
                 '<td class="col-md-2">' +
                 '<div class="form-group searchproduct">' +
-                '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');" onblur="product_rate(' + current_row_count + ')">' +
+                '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +
                 '<input type="hidden" id="product_weight_' + current_row_count + '" value="">' +
                 '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
                 '<i class="fa fa-search search-icon"></i>' +
@@ -155,7 +155,7 @@ $(document).ready(function () {
             }
             $("#units_" + current_row_count).html(html);
         });
-        var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row">' +
+        var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
                 '<td class="col-md-2">' +
                 '<div class="form-group searchproduct">' +
                 '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +

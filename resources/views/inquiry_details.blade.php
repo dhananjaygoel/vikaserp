@@ -62,6 +62,9 @@
                                         <tr>
                                             <td><span class="underline">Delivery Location: </span> {{$location->area_name}} </td>
                                         </tr>
+                                        <tr>
+                                            <td><span class="underline">Location Difference: </span> {{$inquiry->location_difference}} </td>
+                                        </tr>
                                         @endif
                                         @endforeach
                                         @else
@@ -69,7 +72,7 @@
                                             <td><span class="underline">Other Location: </span> {{$inquiry->other_location}} </td>
                                         </tr>
                                         <tr>
-                                            <td><span class="underline">Other Location Difference: </span> {{$inquiry->other_location_difference}} </td>
+                                            <td><span class="underline">Location Difference: </span> {{$inquiry->location_difference}} </td>
                                         </tr>
                                         @endif
                                         <tr>

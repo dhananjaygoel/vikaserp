@@ -191,7 +191,14 @@
             </div>
             <div class="delivery-details">
                 <div class="delivery">
-                    Delivery @: {{ $purchase_challan['delivery_location']->area_name }}
+                    Delivery @: 
+                    <?php
+                    if ($purchase_challan->delivery_location_id == 0) {
+                        echo $purchase_challan['purchase_advice']->other_location;
+                    } else {
+                        echo $purchase_challan['delivery_location']->area_name;
+                    }
+                    ?>
                 </div>
 
                 <div class="estmt-no">

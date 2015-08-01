@@ -123,7 +123,7 @@
                             @endif
                             @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3) 
                             <li class="{{ (Request::is('*pending_delivery_order*') ? 'active' : '') }}">
-                                <a href="{{'pending_delivery_order'}}">
+                                <a href="{{url('pending_delivery_order')}}">
                                     Pending Delivery Order Report
                                 </a>
                             </li>

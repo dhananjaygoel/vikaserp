@@ -11,22 +11,6 @@
                 </ol>
                 <div class="clearfix">
                     <h1 class="pull-left">Pending Delivery Order Report</h1>
-<!--                    <div class="pull-right top-page-ui">   
-                        <div class="col-md-12">
-                            <div class="form-group  pull-right">
-                                <div class="col-md-12">
-                                    <form method="GET" action="{{url('pending_delivery_order')}}" id="filter_form">
-                                        <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
-                                        <select class="form-control" id="order_status" name="order_status" onchange="this.form.submit()">
-                                            <option value="" selected="" disabled="">--Status--</option>
-                                            <option <?php if (Input::get('order_status') == 'Delivered') echo 'selected=""'; ?> value="Delivered">Delivered</option>
-                                            <option <?php if (Input::get('order_status') == 'Inprocess') echo 'selected=""'; ?> value="Inprocess">Inprocess</option>
-                                        </select>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
                 </div>
             </div>
         </div>
@@ -61,7 +45,7 @@
                                             {{ '--' }}
                                             @endif
                                         </td>
-                                        <td>Party Name 1</td>
+                                        <td>{{$delivery['customer']->owner_name}}</td>
                                         <td>{{ $delivery->vehicle_number }}</td>                                    
                                         <td>{{ $delivery['user']->first_name}} </td>
                                         <td>{{$delivery->remarks}}</td>

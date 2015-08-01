@@ -115,7 +115,15 @@
                     <div class="divCell">{{ $obj->serial_number }}</div>
                     <!--<div class="divCell">xxx</div>-->
                     <div class="divCell">{{ $obj['supplier']->owner_name }}</div>
-                    <div class="divCell">{{ $obj['delivery_location']->area_name}}</div>
+                    <div class="divCell">
+                    <?php
+                    if ($obj->delivery_location_id == 0) {
+                        echo $obj['purchase_advice']->other_location;
+                    } else {
+                        echo $obj['delivery_location']->area_name;
+                    }
+                    ?>
+                    </div>
                     <div class="divCell">{{ round($obj['all_purchase_products']->sum('quantity'), 2) }}</div> 
                     <div class="divCell">{{ $obj->grand_total }}</div>
                     <div class="divCell">{{ $obj->bill_number }}</div>

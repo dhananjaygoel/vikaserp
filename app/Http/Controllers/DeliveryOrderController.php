@@ -371,12 +371,12 @@ class DeliveryOrderController extends Controller {
         if (Input::get('order_status')) {
 
             if (Input::get('order_status') == 'Inprocess') {
-                $delivery_data = DeliveryOrder::with('user')->where('order_status', 'pending')->paginate(20);
+                $delivery_data = DeliveryOrder::with('user', 'customer')->where('order_status', 'pending')->paginate(20);
             } elseif (Input::get('order_status') == 'Delivered') {
-                $delivery_data = DeliveryOrder::with('user')->where('order_status', 'completed')->paginate(20);
+                $delivery_data = DeliveryOrder::with('user', 'customer')->where('order_status', 'completed')->paginate(20);
             }
         } else {
-            $delivery_data = DeliveryOrder::with('user')->where('order_status', 'pending')->paginate(20);
+            $delivery_data = DeliveryOrder::with('user', 'customer')->where('order_status', 'pending')->paginate(20);
         }
 
         $delivery_data->setPath('pending_delivery_order');

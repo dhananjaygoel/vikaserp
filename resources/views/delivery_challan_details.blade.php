@@ -9,14 +9,7 @@
                     <li><a href="{{url('delivery_challan')}}">Delivery Challan</a></li>
                     <li class="active"><span>View Delivery Challan</span></li>
                 </ol>
-                <div class="clearfix">
-
-                    <!--                    <div class="pull-right top-page-ui">
-                                            <a href="{{url('delivery_challan/'.$allorder->id.'/edit')}}" class="btn btn-primary pull-right">
-                                                Edit Delivery Challan
-                                            </a>
-                                        </div>-->
-                </div>
+                <div class="clearfix"></div>
             </div>
         </div>
         <div class="row">
@@ -35,7 +28,15 @@
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label><b>Serial Number:</b> {{$allorder['delivery_order']->serial_no}}</label>
+                            <label><b>Serial Number:</b> 
+                                <?php
+                                if ($allorder->serial_number != '') {
+                                    echo $allorder->serial_number;
+                                } else {
+                                    echo $allorder['delivery_order']->serial_no;
+                                }
+                                ?>
+                            </label>
                         </div>
                         <hr>
                         <div class="form-group">
