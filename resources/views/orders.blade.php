@@ -15,7 +15,7 @@
                     <form action="{{url('orders')}}" method="GET">
                         <h1 class="pull-left">Orders</h1> 
                         <div class="pull-right">
-                            @if( Auth::user()->role_id != 3 )
+                            @if(Auth::user()->role_id != 4)
                             <a href="{{url('orders/create')}}" class="btn btn-primary">
                                 <i class="fa fa-plus-circle fa-lg"></i> Place Order
                             </a>

@@ -47,7 +47,7 @@ class DeliveryOrderController extends Controller {
      */
     public function index() {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
         }
 
