@@ -25,10 +25,17 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group pull-right col-md-3">
+                        <div class="input-group col-md-3 pull-right">                            
+                            <input type="text" class="form-control" name="search" id="search" placeholder="Tally Name, City, Delivery Location" value="{{Request::get('search')}}">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                            </span>
+                        </div>
+
+<!--                        <div class="form-group pull-right col-md-3">
                             <input class="form-control" name="search" id="search" placeholder="Tally Name, City, Delivery Location" value="{{Request::get('search')}}" type="text">
                             <i class="fa fa-search search-icon"></i>
-                        </div>
+                        </div>-->
                     </form> 
                 </div>
             </div>
@@ -92,7 +99,7 @@
                                             ?>
                                             <td>
                                                 <!--for the validation of the decimal points pattern="[0-9]\.[0-9]{5}|[0-9]{2}\.[0-9]{4}"--> 
-                                                <input type='tel' name="set_diff[{{$key}}][{{$key1}}][price]" onblur="this_price(this)" value="{{ $price }}" style="width: 40px;">
+                                                <input type='tel' id="set_{{$key}}{{$key1}}" name="set_diff[{{$key}}][{{$key1}}][price]" onblur="this_price({{$key}},{{$key1}})" maxlength="6" value="{{ $price }}" style="width: 40px;">
                                                 <input type='hidden' name="set_diff[{{$key}}][{{$key1}}][cust_id]" value="{{$c->id}}">
                                                 <input type='hidden' name="set_diff[{{$key}}][{{$key1}}][product_id]" value="{{$prod->id}}">
                                             </td>

@@ -24,10 +24,19 @@
                     </a>
                     @endif
                     <form method="GET" id="searchCustomerForm">
-                        <div class="form-group pull-right col-md-3">
-                            <input class="form-control" name="search" id="search" placeholder="Tally Name, City, Delivery Location" value="{{Request::get('search')}}" type="text">
-                            <i onclick="submit_filter_form();" class="fa fa-search search-icon"></i>
+
+
+
+                        <div class="input-group col-md-3 pull-right">                            
+                            <input type="text" class="form-control" name="search" id="search" placeholder="Tally Name, City, Delivery Location" value="{{Request::get('search')}}">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                            </span>
                         </div>
+                        <!--                        <div class="form-group pull-right col-md-3">
+                                                    <input class="form-control" name="search" id="search" placeholder="Tally Name, City, Delivery Location" value="{{Request::get('search')}}" type="text">
+                                                    <i onclick="submit_filter_form();" class="fa fa-search search-icon"></i>
+                                                </div>-->
                     </form>                    
                 </div>
             </div>

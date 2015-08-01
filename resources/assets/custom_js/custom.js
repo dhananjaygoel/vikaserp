@@ -367,18 +367,19 @@ $('#save_all_price_btn').click(function () {
 /**
  * Comment
  */
-//function this_price(e) {
-////    alert();
-//    var str = $(e).val();
-////    var isValidCurrency = function (str) {
-//    var num = parseFloat($(e).val());
-//    if (!Number.isNaN(num) && num.toFixed(2).toString() === str) {
-//        alert('str')
-//    } else {
-//        $(e).val(num.toFixed(2));
-//    }
-////    };
-//}
+function this_price(a, b) {
+    var str = $("#set_" + a + b).val();
+    var num = parseFloat($("#set_" + a + b).val());
+    if (str == "" || isNaN(str) == true) {
+        $("#set_" + a + b).val("");
+    } else {
+        if (Number.isNaN(num) && num.toFixed(2).toString() == str) {
+        } else {
+            $("#set_" + a + b).val(num.toFixed(2));
+        }
+    }
+
+}
 
 
 
