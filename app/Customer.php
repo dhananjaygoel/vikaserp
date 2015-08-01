@@ -32,7 +32,7 @@ class Customer extends Model {
     public function customerproduct() {
         return $this->hasMany('App\CustomerProductDifference', 'customer_id', 'id');
     }
-    
+
     public function city() {
         return $this->hasOne('App\City', 'id', 'city');
     }
@@ -57,8 +57,6 @@ class Customer extends Model {
     public static $existing_customer_order_rules = array(
         'existing_customer_name' => 'required',
     );
-    
-    
     public static $new_supplier_rules = array(
         'supplier_name' => 'required|min:2|max:100',
         'mobile_number' => 'integer|digits_between:10,15|required',
@@ -66,6 +64,9 @@ class Customer extends Model {
     );
     public static $existing_supplier_rules = array(
         'supplier_id' => 'required',
+    );
+    public static $decimal_value = array(
+        'price' => 'required|max:6|min:1'
     );
 
 }

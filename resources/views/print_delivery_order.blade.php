@@ -208,8 +208,6 @@
                     </div>                    
                     <div class="divCell"> &nbsp; </div>
                     <div class="divCell"> &nbsp; </div>                
-                    <!--                    <div class="divCell">{{ $product->actual_pieces }}</div>
-                                        <div class="divCell">{{ $product->actual_quantity }}</div>                -->
                 </div> 
                 @endif
                 @endforeach
