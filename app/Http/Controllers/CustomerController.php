@@ -35,7 +35,7 @@ class CustomerController extends Controller {
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the customer.
      *
      * @return Response
      */
@@ -83,7 +83,7 @@ class CustomerController extends Controller {
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new customer.
      *
      * @return Response
      */
@@ -104,7 +104,7 @@ class CustomerController extends Controller {
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created customer in database.
      *
      * @return Response
      */
@@ -206,7 +206,7 @@ class CustomerController extends Controller {
     }
 
     /**
-     * Display the specified resource.
+     * Display the specific customer.
      *
      * @param  int  $id
      * @return Response
@@ -227,7 +227,7 @@ class CustomerController extends Controller {
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specific customer.
      *
      * @param  int  $id
      * @return Response
@@ -255,7 +255,7 @@ class CustomerController extends Controller {
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specific customer in database.
      *
      * @param  int  $id
      * @return Response
@@ -348,7 +348,7 @@ class CustomerController extends Controller {
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specific customer from database.
      *
      * @param  int  $id
      * @return Response
@@ -372,9 +372,10 @@ class CustomerController extends Controller {
             return Redirect::to('customers')->with('error', 'Invalid password');
         }
     }
-    
+
     /*
-     * to get the city list
+      | Get city list per state for forms
+      | @return Json Responce
      */
 
     public function get_city() {
@@ -392,9 +393,10 @@ class CustomerController extends Controller {
         echo json_encode(array('city' => $city));
         exit;
     }
-    
+
     /*
-     * show the product list form for the single cumstomer
+      | Show list of all products category
+      | Used to set price per customer
      */
 
     public function set_price($id) {
@@ -403,9 +405,10 @@ class CustomerController extends Controller {
         $product_category = ProductCategory::all();
         return view('set_price', compact('cutomer_difference', 'product_category', 'customer_id'));
     }
-    
+
     /*
-     * update the product list price for the single cumstomer
+      | Update Individual customer product category
+      | Difference
      */
 
     public function update_set_price() {
@@ -438,10 +441,10 @@ class CustomerController extends Controller {
             return redirect('set_price/' . $customer_id)->with('error', 'Please enter the customer set price please');
         }
     }
-    
+
     /*
-     * to update bulk pric of the product
-     * shows the form
+      | to update bulk price of the product categories
+      | Populate forms
      */
 
     public function bulk_set_price() {
@@ -488,9 +491,10 @@ class CustomerController extends Controller {
 
         return view('bulk_set_price', compact('customer', 'product_category', 'product_type', 'filter'));
     }
-    
+
     /*
-     * save and update the bulk price of the product for the customer
+      | Update Individual customer product category
+      | Difference
      */
 
     public function save_all_set_price() {

@@ -128,7 +128,8 @@ class DeliveryLocationController extends Controller {
     }
 
     /*
-     * update the delivery location difference price
+      | Update the delivery location
+      | difference price
      */
 
     public function delivery_difference() {
