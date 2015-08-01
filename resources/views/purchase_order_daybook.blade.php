@@ -71,16 +71,21 @@
                                         <thead>
                                             <?php $i = 1; ?>                                   
                                             <tr>
-                                                @if(Auth::user()->role_id != 4)
+
                                                 <th class="cb">
+                                                    
+                                                    @if(Auth::user()->role_id == 0)
                                         <div class="checkbox">
                                             <label style="font-weight: bold;">
-                                                <input onclick="select_all_checkbox();" all_checked="allunchecked" type="checkbox" id="select_all_button" value="" />
+                                                <input onclick="select_all_checkbox();" all_checked="allunchecked" type="checkbox" id="select_all_button" value="" >
                                                 Select All to Delete
                                             </label>
                                         </div>
-                                        </th>
+                                        @else
+                                        #
                                         @endif
+                                        </th>
+
                                         <th> Date </th>
                                         <th>Serial Number</th>
                                         <th>Tally Name</th>
@@ -93,7 +98,7 @@
                                         <th>Amount </th>
                                         <th>Bill Number</th> 
                                         <th>Remarks </th>
-                                        @if(Auth::user()->role_id != 4)
+                                        @if(Auth::user()->role_id == 0)
                                         <th>Action </th>
                                         @endif
                                         </tr>
@@ -120,12 +125,13 @@
                                             ?>
                                             @endforeach
                                             <tr>
-                                                @if(Auth::user()->role_id != 4)
                                                 <td>
+                                                    @if(Auth::user()->role_id == 0)
                                                     <input type="checkbox" name="daybook[]" id="daybook[]" value="{{ $daybook->id }}" />
+                                                    @endif
                                                     <span class="cbt">{{ $i++ }}</span>
                                                 </td>
-                                                @endif
+
                                                 <td>{{ date("jS F, Y", strtotime($daybook->updated_at)) }}</td>
                                                 <td>{{ $daybook->serial_number }}</td>
                                                 <td>
@@ -150,7 +156,7 @@
                                                     {{trim($daybook->remarks)}}
                                                     @endif
                                                 </td>
-                                                @if(Auth::user()->role_id != 4)
+                                                @if(Auth::user()->role_id == 0)
                                                 <td>  <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal{{$daybook->id}}" >
                                                         <span class="fa-stack">
                                                             <i class="fa fa-square fa-stack-2x"></i>
