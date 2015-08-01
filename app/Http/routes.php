@@ -39,8 +39,8 @@ Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
 ]);
-Route::get('logout', 'DashboardController@logout');
 Route::get('/', 'Auth\AuthController@getLogin');
+Route::get('logout', 'Auth\AuthController@getLogout');
 Route::group(['middleware' => ['auth']], function() {
 //        Route::group(['middleware' => ['admin_mw','super_admin_mw']], function() {
 //        Route::get('customers', 'CustomerController',['only' => ['index','show','edit']]);

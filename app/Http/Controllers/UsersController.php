@@ -16,12 +16,20 @@ use App\Http\Requests\UserValidation;
 use Input;
 use DB;
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\UpdateUser;
 
 class UsersController extends Controller {
 
     public function __construct() {
+
+        //Check authorization of user with current ip address
         $this->middleware('validIP');
     }
+
+    /*
+      | Poplulate User list with all users except
+      | Superadmin
+     */
 
     public function index() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
@@ -32,6 +40,11 @@ class UsersController extends Controller {
         return view('users', compact('users_data'));
     }
 
+    /*
+      | Opens create page to
+      | add User
+     */
+
     public function create() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -40,28 +53,35 @@ class UsersController extends Controller {
         return view('add_user', compact('roles'));
     }
 
-    public function store() {
+    /*
+      | Store User
+      | Get the post request and store it
+      | to the database.
+     */
+
+    public function store(UserRequest $request) {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $validator = Validator::make(Input::all(), User::$newuser_rules);
-
-        if ($validator->passes()) {
-            $Users_data = new User();
-            $Users_data->role_id = Input::get('user_type');
-            $Users_data->first_name = Input::get('first_name');
-            $Users_data->last_name = Input::get('last_name');
-            $Users_data->phone_number = Input::get('telephone_number');
-            $Users_data->mobile_number = Input::get('mobile_number');
-            $Users_data->email = Input::get('email');
-            $Users_data->password = Hash::make(Input::get('password'));
-            $Users_data->save();
+        $Users_data = new User();
+        $Users_data->role_id = Input::get('user_type');
+        $Users_data->first_name = Input::get('first_name');
+        $Users_data->last_name = Input::get('last_name');
+        $Users_data->phone_number = Input::get('telephone_number');
+        $Users_data->mobile_number = Input::get('mobile_number');
+        $Users_data->email = Input::get('email');
+        $Users_data->password = Hash::make(Input::get('password'));
+        if ($Users_data->save()) {
             return redirect('users')->with('flash_message', 'User details successfully added.');
         } else {
-            $error_msg = $validator->messages();
-            return Redirect::back()->withInput()->withErrors($validator);
+            return redirect('users')->with('error', 'Unable to store user at this moment');
         }
     }
+
+    /*
+      | Delete User from the system
+      | permanently
+     */
 
     public function destroy($id) {
 
@@ -82,6 +102,11 @@ class UsersController extends Controller {
         }
     }
 
+    /*
+      | Opens create page to
+      | edit User
+     */
+
     public function edit($id) {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
@@ -93,66 +118,65 @@ class UsersController extends Controller {
         return view('edit_user', compact('user_data', 'roles'));
     }
 
-    public function update($id) {
+    /*
+      | Update User
+      | Get the post request and update it
+      | to the database.
+     */
+
+    public function update(UpdateUser $request, $id) {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $validator = Validator::make(Input::all(), User::$updateuser_rules);
 
-        if ($validator->passes()) {
+        $user_data = array(
+            'role_id' => Input::get('user_type'),
+            'first_name' => Input::get('first_name'),
+            'last_name' => Input::get('last_name'),
+            'phone_number' => Input::get('telephone_number'),
+            'role_id' => Input::get('user_type')
+        );
 
-            $user_data = array(
-                'role_id' => Input::get('user_type'),
-                'first_name' => Input::get('first_name'),
-                'last_name' => Input::get('last_name'),
-                'phone_number' => Input::get('telephone_number'),
-                'role_id' => Input::get('user_type')
-            );
-            
-            if (Input::has('password')) {
+        if (Input::has('password')) {
 
-                $input_password['password'] = Input::get('password');
-                $input_password['password_confirmation'] = Input::get('password_confirmation');
+            $input_password['password'] = Input::get('password');
+            $input_password['password_confirmation'] = Input::get('password_confirmation');
 
-                $validation1 = Validator::make($input_password, User::$update_password);
+            $validation1 = Validator::make($input_password, User::$update_password);
 
-                if ($validation1->fails()) {
-                    return Redirect::back()->withErrors($validation1);
-                } else {
-                    $user_data['password'] = Hash::make(Input::get('password'));
-                }
-            }
-
-            $email_count = User::where('id', '!=', $id)
-                    ->where('email', '=', Input::get('email'))
-                    ->count();
-
-            if ($email_count > 0) {
-                return Redirect::back()->withInput()->with('email', 'Email address already taken.');
+            if ($validation1->fails()) {
+                return Redirect::back()->withErrors($validation1);
             } else {
-                $user_data['email'] = Input::get('email');
+                $user_data['password'] = Hash::make(Input::get('password'));
             }
+        }
 
-            $mobile_count = User::where('id', '!=', $id)
-                    ->where('mobile_number', '=', Input::get('mobile_number'))
-                    ->count();
+        $email_count = User::where('id', '!=', $id)
+                ->where('email', '=', Input::get('email'))
+                ->count();
 
-            if ($mobile_count > 0) {
-                return Redirect::back()->withInput()->with('email', 'Mobile number already taken.');
-            } else {
-                $user_data['mobile_number'] = Input::get('mobile_number');
-            }
-
-            $user = User::where('id', $id)
-                    ->update($user_data);
-            if ($user) {
-                return redirect('users')->with('success', 'User details successfully updated.');
-            } else {
-                return redirect('users')->with('error', 'Unable to update the user details ');
-            }
+        if ($email_count > 0) {
+            return Redirect::back()->withInput()->with('email', 'Email address already taken.');
         } else {
-            $error_msg = $validator->messages();
-            return Redirect::back()->withInput()->withErrors($validator);
+            $user_data['email'] = Input::get('email');
+        }
+
+        $mobile_count = User::where('id', '!=', $id)
+                ->where('mobile_number', '=', Input::get('mobile_number'))
+                ->count();
+
+        if ($mobile_count > 0) {
+            return Redirect::back()->withInput()->with('email', 'Mobile number already taken.');
+        } else {
+            $user_data['mobile_number'] = Input::get('mobile_number');
+        }
+
+        $user = User::where('id', $id)
+                ->update($user_data);
+        if ($user) {
+            return redirect('users')->with('success', 'User details successfully updated.');
+        } else {
+            return redirect('users')->with('error', 'Unable to update the user details ');
         }
     }
 
