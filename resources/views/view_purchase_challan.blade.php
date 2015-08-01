@@ -100,7 +100,12 @@
                             <table id="table-example" class="table table-hover customerview_table  ">
                                 <tbody>   
                                     <tr>
-                                        <td><span>Total Actual Quantity: </span>{{$total_quantity}}</td>
+                                        <td>
+                                            <span>Total Actual Quantity: </span>{{$total_quantity}}
+                                            &nbsp;
+                                            &nbsp;
+                                            <span>Total Amount: </span>{{$total_amount}}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td><span>Discount: </span>{{$purchase_challan->discount}}</td>

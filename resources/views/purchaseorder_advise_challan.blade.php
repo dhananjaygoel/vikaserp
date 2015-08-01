@@ -95,7 +95,8 @@
                                 </div>
                             </td>
                             <td>   
-                                <div class="form-group">                                    
+                                <div class="form-group">  
+                                    <?php $total_price += $products->present_shipping * $products->price; ?>
                                     <div id="amount_{{$key}}">{{ $products->present_shipping * $products->price }}</div>
                                 </div>
                             </td>
@@ -128,7 +129,11 @@
                     </div>
                     <div class="form-group">
                         <label><b>Total Actual Quantity :</b> <div id="total_actual_quantity">{{$purchase_advise['purchase_products']->sum('present_shipping')}}</div></label>
+                        &nbsp;
+                        &nbsp;
+                        <label for="total"><b class="challan">Total Amount :</b> <div id="total_price2">{{ $total_price }}</div></label>
                     </div>
+
                     <div class="form-group">
                         <label for="vehicle_name"><b class="challan">Vehicle Number</b></label>
                         <input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{$purchase_advise->vehicle_number}}" type="text">
@@ -142,7 +147,7 @@
                         <input id="freight" class="form-control" placeholder="Freight " name="Freight" value="" type="text" onblur="purchase_challan_calculation();">
                     </div>
                     <div class="form-group">
-                        <label for="total"><b class="challan">Total :</b> <div id="total_price"></div></label>
+                        <label for="total"><b class="challan">Total :</b> <div id="total_price">{{ $total_price }}</div></label>
                     </div>
 
                     <div class="form-group">
