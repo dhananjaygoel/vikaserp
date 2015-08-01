@@ -26,14 +26,11 @@ $(document).ready(function () {
 
     });
     $('#add_order_location').change(function () {
-
-//        alert('hi');
         if ($('#add_order_location').val() == 'other') {
             $('.locationtext').show();
         } else {
             $('.locationtext').hide();
         }
-
     });
 
     $('#add_inquiry_location').change(function () {
@@ -78,14 +75,12 @@ $(document).ready(function () {
         format: 'mm-dd-yyyy',
         startDate: new Date(),
         autoclose: true
-
     });
     $('#sales_daybook_date').datepicker({
         format: 'dd-mm-yyyy',
         startDate: new Date(),
         autoclose: true
     });
-
 
     $("#add_product_row_delivery_challan").on("click", function () {
         var current_row_count = $(".add_product_row").length + 1;
@@ -146,12 +141,8 @@ $(document).ready(function () {
         $("#add_product_table_delivery_challan").children("tbody").append(html);
     });
 
-
-
-
     $("#add_product_row_delivery_order").on("click", function () {
         var current_row_count = $(".add_product_row").length + 2;
-//        alert(current_row_count);
         $.ajax({
             type: "GET",
             url: baseurl + '/get_units'
@@ -210,7 +201,6 @@ $(document).ready(function () {
         $("#add_product_table_delivery_order").children("tbody").append(html);
     });
 
-
     challan_ids = [];
 
     if ($("#add_product_table_delivery_challan").length > 0) {
@@ -237,9 +227,6 @@ function select_all_checkbox() {
     }
 }
 
-/**
- * Comment
- */
 function getunit_name(key) {
     var unit_name = $("#units_" + key).value();
     alert(unit_name);
@@ -256,28 +243,12 @@ function change_quantity(key) {
     var tot_quty = $("#quantity_" + key).val(); //ok
     var total = parseInt(quantity) + parseInt(present_shipping);
 
-
-
-//    if (parseInt(present_shipping) > parseInt(tot_quty)) {
-//        alert('present Shipping is greater than the quantity');
-//    $("#present_shipping_" + key).val(present_shipping);
-//    } else {
-
-//    if((parseInt(tot_quty) - parseInt(present_shipping) < 0)){
-//      $("#pending_qunatity_" + key).html("<span>" + 0 + "</span");  
-//    }else{
-//        $("#pending_qunatity_" + key).html("<span>" + (parseInt(tot_quty) - parseInt(present_shipping)) + "</span");
-//    }
-
-//    }
-
     if (parseInt(present_shipping) > parseInt(tot_quty)) {
         alert('present Shipping is greater than the quantity');
         $("#present_shipping_" + key).val(tot_quty);
     } else {
         $("#pending_qunatity_" + key).html("<span>" + (parseInt(tot_quty) - parseInt(present_shipping)) + "</span");
     }
-
     grand_total_delivery_order();
 }
 
@@ -298,16 +269,10 @@ function change_quantity2(key) {
     grand_total_delivery_order();
 }
 
-
 /**
  * Change Amount
  */
 function product_rate(key) {
-//    var price = $("#product_price_" + key).val();
-//    var quantity = $("#quantity_" + key).val();
-//    alert('price' + price + " qty " + quantity);
-
-//alert($("#add_product_id_" + key).val());
     var product_id = $("#add_product_id_" + key).val();
     var customer_id = $("#customer_id").val();
     $.ajax({
@@ -317,34 +282,26 @@ function product_rate(key) {
         success: function (data) {
             var main_array = JSON.parse(data);
             var arr1 = main_array['data_array'];
-//                    response(arr1);
-//            alert(arr1[0]);
             var product_price = arr1[0].product_price;
             var product_difference = arr1[0].product_difference;
             var customer_difference = arr1[0].customer_difference;
-//            alert(product_price+" diff"+product_difference+" u d"+customer_difference);
             var rate = parseInt(product_price) + parseInt(product_difference) + parseInt(customer_difference);
             $("#product_price_" + key).val(rate);
-
         }
     });
 }
-//function grand_total_delivery_order(key) {
-
 
 /**
  * Grand total for Delivery order
  */
 
 function grand_total_delivery_order() {
-
     var current_row_count = $(".add_product_row").length;
     var total_price = 0;
     for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseInt($('#product_price_' + i).val())) {
             var present_shipping = parseInt($("#present_shipping_" + i).val());
             total_price = total_price + (parseInt($('#product_price_' + i).val()) * present_shipping);
-            
         }
     }
 
@@ -361,7 +318,6 @@ function grand_total_delivery_order() {
     }
     if ($("#discount_value").length > 0) {
         if ($("#discount_value").val() > 0) {
-
             var discount_value = (parseFloat($("#discount_value").val()) * total_price) / 100;
             grand_total = grand_total - discount_value;
         }
@@ -379,10 +335,7 @@ function grand_total_delivery_order() {
             var loading_charge = parseInt($("#loading_charge").val());
             grand_total = grand_total + loading_charge;
         }
-
     }
-
-
     $('#grand_total').val(grand_total);
 }
 
@@ -390,7 +343,6 @@ function grand_total_delivery_order() {
  * Fetch price of the product
  */
 function fetch_price() {
-//    alert('test');
     var current_row_count = $(".add_product_row").length;
 
     for (var i = 0; i <= current_row_count + 1; i++) {
@@ -434,7 +386,6 @@ function calculate_grand_total() {
     var total_price = 0;
     for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseInt($('#product_price_' + i).val())) {
-//            
             var quantity = parseInt($("#quantity_" + i).val());
             total_price = total_price + (parseInt($('#product_price_' + i).val()) * quantity);
         }
@@ -463,7 +414,6 @@ function default_delivery_location() {
 function grand_total_challan() {
 
     var current_row_count = $(".add_product_row").length;
-//    alert(current_row_count);
     var total_price_products = 0;
     var total_actual_quantity = 0;
     for (var i = 0; i <= current_row_count + 1; i++) {
@@ -478,20 +428,6 @@ function grand_total_challan() {
             if ($("#actual_pieces_" + i).val() > 0 && $("#actual_quantity_" + i).val() == 0 || $("#actual_quantity_" + i).val() == '') {
                 quantity = parseFloat($("#actual_pieces_" + i).val());
             }
-//            if ($("#unit_name_" + i).val() != 'kg' || $("#unit_name_" + i).val() != 'KG')
-//            {
-//                $.ajax({
-//                    type: 'GET',
-//                    url: baseurl + '/get_product_weight',
-//                    data: {product_id: product_id}
-//                }).done(function (data) {
-//                    product_wt=data;
-////                        alert(data);
-//                });
-
-//                var actual_pieces = $("#actual_pieces_" + i).val();
-//                actual_quantity = actual_pieces;
-//            }
 
             total_price_products = total_price_products + (parseFloat($('#product_price_' + i).val()) * quantity);
             total_actual_quantity = total_actual_quantity + quantity;
@@ -499,7 +435,6 @@ function grand_total_challan() {
     }
 
     var vat_val = 0;
-
     var total_price = total_price_products;
 
     //loading
@@ -510,8 +445,6 @@ function grand_total_challan() {
             $("#loading_charge").val(loading_charge.toFixed(2));
             total_price += parseFloat(loading_charge.toFixed(2));
         }
-
-
     }
 
     //discount
@@ -519,17 +452,12 @@ function grand_total_challan() {
     if ($("#discount_value").length > 0) {
         if (parseInt($("#discount_value").val())) {
             discount_value = parseFloat($("#discount_value").val());
-//            discount_value = discount_value.toFixed(2);
             $("#discount_value").val(discount_value.toFixed(2));
-
-
 
         }
     }
     total_price = parseFloat(total_price) + parseFloat(discount_value.toFixed(2));
     total_price = total_price.toFixed(2);
-
-
 
 //    total_l_d_f
     $("#total_price").val(total_price_products.toFixed(2));
@@ -564,7 +492,6 @@ function grand_total_challan() {
     }
 
     var grand_total = parseFloat(vat_total) + parseFloat(round_off.toFixed(2));
-
     $('#grand_total').val(grand_total.toFixed(2));
 }
 
@@ -587,13 +514,10 @@ function purchase_challan_calculation() {
             $("#amount_" + i).html('' + amount + '');
             total_actual_quantity = total_actual_quantity + parseFloat(quantity);
             total_amount_product = total_amount_product + amount;
-
         }
     }
-    
-//    $("#total_price2").val(total_amount_product);
-    $("#total_price2").html('' + total_amount_product.toFixed(2));
 
+    $("#total_price2").html('' + total_amount_product.toFixed(2));
     $("#total_actual_quantity").html('' + total_actual_quantity);
     var discount_value = 0;
 
@@ -607,7 +531,6 @@ function purchase_challan_calculation() {
     $("#discount").val(discount);
 
     total_price = total_amount_product + parseFloat(discount);
-
     $("#total_price").html('' + total_price.toFixed(2));
 
     //**************freight
@@ -621,7 +544,6 @@ function purchase_challan_calculation() {
     $("#freight").val(fre);
 
     tot_frt = total_price + parseFloat(fre);
-
     $("#total_price").html('' + tot_frt.toFixed(2));
 
     //*********vat
@@ -646,7 +568,6 @@ function purchase_challan_calculation() {
 
     $("#grand_total").html('' + grand_total.toFixed(2));
     $("#grand_total_val").val(grand_total.toFixed(2));
-
 
     //round up value for the textbox
     round_off = parseFloat(round_off);
@@ -680,7 +601,6 @@ function product_autocomplete_purchase(id) {
         type: 'GET',
         source: function (request, response) {
             $("#add_purchase_product_name_" + id).addClass('loadinggif');
-//            $(".search-icon").hide();
             $.ajax({
                 url: baseurl + '/fetch_products',
                 data: {"term": request.term},
@@ -694,12 +614,8 @@ function product_autocomplete_purchase(id) {
         },
         select: function (event, ui) {
             $("#add_product_id_" + id).val(ui.item.id);
-//            $("#product_price_" + id).val(ui.item.product_price); 
-
-//            $(".search-icon").show();
         }
     });
-//alert(id+'id is called');
 }
 
 
