@@ -344,6 +344,7 @@ function grand_total_delivery_order() {
         if (parseInt($('#product_price_' + i).val())) {
             var present_shipping = parseInt($("#present_shipping_" + i).val());
             total_price = total_price + (parseInt($('#product_price_' + i).val()) * present_shipping);
+            
         }
     }
 
@@ -572,8 +573,6 @@ function grand_total_challan() {
  */
 function purchase_challan_calculation() {
 
-//    alert('hi');
-
     var current_row_count = $(".add_product_row").length;
     var total_actual_quantity = 0;
     var total_amount_product = 0;
@@ -591,6 +590,9 @@ function purchase_challan_calculation() {
 
         }
     }
+    
+//    $("#total_price2").val(total_amount_product);
+    $("#total_price2").html('' + total_amount_product.toFixed(2));
 
     $("#total_actual_quantity").html('' + total_actual_quantity);
     var discount_value = 0;

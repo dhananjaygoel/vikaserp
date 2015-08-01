@@ -113,7 +113,10 @@
                         <div class="form-group">
                             <label for="vehicle_name"><b class="challan">Total Actual Quantity: </b></label>
                             {{$allorder['all_order_products']->sum('actual_quantity')}}
-                            <?php  ?>
+                            &nbsp;
+                            &nbsp;
+                            <label for="vehicle_name"><b class="challan">Total Amount: </b></label>
+                            <?php echo $total_amount; ?>
                         </div>
                         <hr>
                         <div class="form-group">
