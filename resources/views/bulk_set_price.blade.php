@@ -99,7 +99,7 @@
                                             ?>
                                             <td>
                                                 <!--for the validation of the decimal points pattern="[0-9]\.[0-9]{5}|[0-9]{2}\.[0-9]{4}"--> 
-                                                <input type='tel' id="set_{{$key}}{{$key1}}" name="set_diff[{{$key}}][{{$key1}}][price]" onblur="this_price({{$key}},{{$key1}})" maxlength="6" value="{{ $price }}" style="width: 40px;">
+                                                <input type='tel' id="valueSconto_{{$key}}{{$key1}}" name="set_diff[{{$key}}][{{$key1}}][price]" maxlength="5" onkeypress="test({{$key}},{{$key1}}, this)" value="{{ $price }}" style="width: 40px;">
                                                 <input type='hidden' name="set_diff[{{$key}}][{{$key1}}][cust_id]" value="{{$c->id}}">
                                                 <input type='hidden' name="set_diff[{{$key}}][{{$key1}}][product_id]" value="{{$prod->id}}">
                                             </td>

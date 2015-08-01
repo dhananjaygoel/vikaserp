@@ -61,27 +61,19 @@ $(document).ready(function () {
         $(".plusvat").hide();
     });
 });
-
-
-
 $('#datepickerDate').datepicker({
     format: 'mm-dd-yyyy',
     startDate: new Date(),
     autoclose: true
 
 });
-
 $('#datepickerDateComponent').datepicker();
-
 $('#datepickerDate1').datepicker({
     format: 'mm-dd-yyyy',
     startDate: new Date(),
     autoclose: true
 });
-
 $('#datepickerDateComponent1').datepicker();
-
-
 $(document).ready(function () {
     $("#addmore1").click(function () {
         $(".row5").hide();
@@ -283,7 +275,6 @@ $('#onenter_prevent input').keypress(function (e) {
         return false;
     }
 });
-
 $("#product_size").autocomplete({
     minLength: 1,
     dataType: 'json',
@@ -306,7 +297,6 @@ $("#product_size").autocomplete({
     }
 
 });
-
 $("#order_size").autocomplete({
     minLength: 1,
     dataType: 'json',
@@ -329,7 +319,6 @@ $("#order_size").autocomplete({
     }
 
 });
-
 $("#search_text").autocomplete({
     minLength: 1,
     dataType: 'json',
@@ -352,7 +341,6 @@ $("#search_text").autocomplete({
     }
 
 });
-
 $('#save_all_price_btn').click(function () {
 
     $.ajax({
@@ -363,23 +351,55 @@ $('#save_all_price_btn').click(function () {
         }
     });
 });
-
 /**
  * Comment
  */
 function this_price(a, b) {
-    var str = $("#set_" + a + b).val();
-    var num = parseFloat($("#set_" + a + b).val());
-    if (str == "" || isNaN(str) == true) {
-        $("#set_" + a + b).val("");
-    } else {
-        if (Number.isNaN(num) && num.toFixed(2).toString() == str) {
-        } else {
-            $("#set_" + a + b).val(num.toFixed(2));
-        }
-    }
+//    var str = $("#set_" + a + b).val();
+
+//    alert(str.indexOf('.'))
+
+//    if (str.indexOf('.') == -1) {
+//        $("#set_" + a + b).val(str.substr(0, 3));
+//    }
+//
+//    if (str.indexOf('.') > -1) {
+//        alert('hi')
+//        var num = parseFloat($("#set_" + a + b).val());
+//        $("#set_" + a + b).val(num.toFixed(2));
+//    }
+
+
+//    var num = parseFloat($("#set_" + a + b).val());
+//    if (str == "" || isNaN(str) == true) {
+//        $("#set_" + a + b).val("");
+//    } else {
+//        if (Number.isNaN(num) && num.toFixed(2).toString() == str) {
+//        } else {
+//            $("#set_" + a + b).val(num.toFixed(2));
+//        }
+//    }
+
+
+//
+//    var reg = "\d{0,3}[.]\d+|^\d{0,3}$";
+//    if ($(this).val().match(reg) == null)
+//        alert('Invalid input!');
 
 }
+
+/**
+ * Comment
+ */
+function test(a, b, e) {
+    var abc = $(e).val();
+//    $("#valueSconto").on("input", function () {
+        $(e).val(function (i, abc) {
+            return abc.replace(/\d{3}|[^\d{2}\.]|^\./g, "");
+        });
+//    });
+}
+
 
 
 
