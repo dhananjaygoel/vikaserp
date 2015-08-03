@@ -44,7 +44,7 @@
                                     <option value="" selected="">Select supplier</option>
                                     @if(count($customers)>0)
                                     @foreach($customers as $customer)  
-                                    <option value="{{$customer->id}}" >{{$customer->owner_name}}</option>                                       
+                                    <option value="{{$customer->id}}" >{{$customer->tally_name}}</option>                                       
                                     @endforeach
                                     @endif
                                 </select>
@@ -58,16 +58,22 @@
                             </div>
                             <div class="supplier_order">
                                 <select class="form-control" name="supplier_id" id="add_status_type">
-                                    <option value="" >Select supplier</option>
+                                    <option value="" disabled="">Select supplier</option>
                                     @if(count($customers)>0)
+
                                     @foreach($customers as $customer)
-                                    @if($customer->customer_status == 'permanent')
-                                    @if($order['customer']->owner_name == $customer->owner_name)
-                                    <option value="{{$customer->id}}" selected="selected">{{$customer->owner_name}}</option>
-                                    @elseif($order['customer']->owner_name != $customer->owner_name)
-                                    <option value="{{$customer->id}}" >{{$customer->owner_name}}</option>
-                                    @endif
-                                    @endif
+                                    <option 
+                                    <?php
+                                    if ($customer->id == $order->supplier_id) {
+                                        echo 'selected="selected"';
+                                    }
+                                    ?> value="{{$customer->id}}">
+                                        @if($customer->tally_name != "")
+                                        {{$customer->tally_name}}
+                                        @else
+                                        {{$customer->owner_name}}
+                                        @endif
+                                    </option>
                                     @endforeach
                                     @endif
                                 </select>
@@ -135,7 +141,6 @@
                                 </div>
                             </div>
                             <div class="clearfix"></div>
-
                         </div>
                         <div class="exist_field " style="display: none">
                             <div class="form-group">
@@ -218,7 +223,6 @@
                                         @foreach($order['all_order_products'] as $key=>$product)
                                         @if($product->order_type =='order')
                                         <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
-
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
                                                     <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['order_product_details']->alias_name}}" onfocus="product_autocomplete({{$key}});">
@@ -258,7 +262,6 @@
                                         </tr>
                                         @endif
                                         @endforeach
-
                                     </tbody>
                                 </table>
                                 <table>
@@ -267,7 +270,6 @@
                                             <td>
                                                 <div class="add_button1">
                                                     <div class="form-group pull-left">
-
                                                         <label for="addmore"></label>
                                                         <a class="table-link" title="add more" id="add_product_row">
                                                             <span class="fa-stack more_button" >
@@ -275,7 +277,6 @@
                                                                 <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
                                                             </span>
                                                         </a>
-
                                                     </div>
                                                 </div>
                                             </td>
@@ -289,7 +290,6 @@
                                 </table>
                             </div>
                         </div>
-
                         <div class="clearfix"></div>
                         @if($order->vat_percentage == 0)
                         <div class="form-group">
@@ -300,7 +300,6 @@
                                 <label for="optionsRadios4">Plus VAT</label>
                             </div>
                         </div>
-
                         <div class="plusvat " style="display: none">
                             <div class="form-group">
                                 <table id="table-example" class="table ">
@@ -322,7 +321,6 @@
                                 <label for="optionsRadios4">Plus VAT</label>
                             </div>
                         </div>
-
                         <div class="plusvat">
                             <div class="form-group">
                                 <table id="table-example" class="table ">
@@ -336,8 +334,6 @@
                             </div>
                         </div>
                         @endif 
-
-
                         <div class="clearfix"></div>
                         <div class="form-group col-md-4 targetdate">
                             <label for="date">Expected Delivery Date: </label>
@@ -351,19 +347,15 @@
                             <label for="order_remark">Remark:</label>
                             <textarea class="form-control" id="order_remark" name="order_remark"  rows="3">{{$order->remarks}}</textarea>
                         </div>
-
                         <div class="checkbox">
                             <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email</span></label>
-
                         </div>
                         <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" id="sendSMS" >Save and Send SMS</button> 
                         <hr>
                         <div >
                             <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
-
                             <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>
                         </div>
-
                         <div class="clearfix"></div>
                         </form>
                         <div class="clearfix"></div>
@@ -371,7 +363,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 @stop

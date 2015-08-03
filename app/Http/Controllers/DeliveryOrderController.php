@@ -380,7 +380,6 @@ class DeliveryOrderController extends Controller {
         }
 
         $delivery_data->setPath('pending_delivery_order');
-
         return view('pending_delivery_order', compact('delivery_data'));
     }
 
@@ -389,7 +388,6 @@ class DeliveryOrderController extends Controller {
      */
 
     public function create_delivery_challan($id) {
-
 
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->where('id', $id)->first();
         if (count($delivery_data) < 1) {
@@ -408,8 +406,8 @@ class DeliveryOrderController extends Controller {
 
     public function store_delivery_challan($id) {
 
-        $input_data = Input::all();
-
+        $input_data = Input::all();     
+       //supplier_id
         $delivery_challan = new DeliveryChallan();
         $delivery_challan->order_id = $input_data['order_id'];
         $delivery_challan->delivery_order_id = $id;
@@ -484,7 +482,6 @@ class DeliveryOrderController extends Controller {
     public function print_delivery_order($id) {
 
         $current_date = date("m/d/");
-
         $date_letter = 'DO/' . $current_date . "" . $id;
         DeliveryOrder::where('id', $id)->update(array(
             'serial_no' => $date_letter,
@@ -610,12 +607,10 @@ class DeliveryOrderController extends Controller {
                         }
                     }
                 }
-
                 $delivery_orders[$key]['total_quantity'] = $delivery_order_quantity;
                 $delivery_orders[$key]['present_shipping'] = $delivery_order_present_shipping;
             }
         }
-
         return $delivery_orders;
     }
 

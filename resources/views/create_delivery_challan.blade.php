@@ -26,7 +26,6 @@
                             @endforeach                            
                         </div>
                         @endif
-
                         <div class="form-group">
                             Date : {{date('d F, Y')}}
                         </div> 
@@ -43,6 +42,7 @@
                             @endif
                         </div>
                         <hr>
+                        <input type="hidden" name="supplier_id" value="{{ $delivery_data->supplier_id }}"/>
                         <div class="form-group">
                             <td><span>Party:</span> 
                                 @if($delivery_data['customer']->owner_name != "" && $delivery_data['customer']->tally_name != "")
@@ -51,7 +51,6 @@
                                 {{ $delivery_data['customer']->owner_name}}
                                 @endif
                                 <input type="hidden" name="existing_customer_id" value="{{$delivery_data['customer']->id}}" id="existing_customer_id">
-
                             </td>
                             <input type="hidden" name="location_difference" value="{{$delivery_data->location_difference}}" id="location_difference">
                         </div>
@@ -80,7 +79,6 @@
                                                     <input type="hidden" value="{{$product['order_product_details']->weight}}" id="product_weight_{{$key}}">
                                                     <input type="hidden" name="product[{{$key}}][name]" id="name_{{$key}}" value="{{$product['order_product_details']->alias_name}}">
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']->id}}">
-                                                    <!--<i class="fa fa-search search-icon"></i>-->
                                                     <input type="hidden" name="product[{{$key}}][order]" value="{{$product->id}}">
                                                 </div>
                                             </td>
@@ -99,7 +97,6 @@
                                                     <input id="actual_pieces_{{$key}}" class="form-control calc_actual_quantity" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="" type="tel" onblur="fetch_price();">
                                                 </div>
                                             </td>
-
                                             <td class="col-md-2">
                                                 <div class="form-group">
                                                     {{ $product->present_shipping}}
@@ -137,7 +134,6 @@
                                             <td>
                                                 <div class="add_button1">
                                                     <div class="form-group pull-left">
-
                                                         <label for="addmore"></label>
                                                         <a class="table-link" title="add more" id="add_product_row_delivery_challan">
                                                             <span class="fa-stack more_button" >
@@ -164,9 +160,6 @@
                             &nbsp;&nbsp;
                             <label for="total"><b class="challan">Total Actual Quantity</b><span class="gtotal"><input type="text" class="form-control" id="total_actual_quantity" name="total_actual_quantity" placeholder="" readonly="readonly"></span></label>
                         </div>
-<!--                        <div class="form-group">
-                            <label for="total"><b class="challan">Total Actual Quantity</b><span class="gtotal"><input type="text" class="form-control" id="total_actual_quantity" name="total_actual_quantity" placeholder="" readonly="readonly"></span></label>
-                        </div>-->
                         <div class="form-group">
                             <label for="driver_contact"><b class="challan">Loading</b></label>
                             <input id="loading_charge" class="form-control" placeholder="loading" name="loading" value="" type="tel" onblur="grand_total_challan();">
@@ -183,7 +176,6 @@
                             <label for="driver_contact"><b class="challan">Total</b></label>
                             <div id="total_l_d_f"></div>
                         </div>
-
                         <div class="form-group">
                             <label for="loadedby"><b class="challan">Loaded By</b></label>
                             <input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby" value="" type="text">
@@ -192,7 +184,6 @@
                             <label for="labour"><b class="challan">Labour </b></label>
                             <input id="labour" class="form-control" placeholder="Labour" name="labour" value="" type="tel">
                         </div>
-
 
                         @if($delivery_data->vat_percentage==0)
                         <div class="form-group">
@@ -212,14 +203,11 @@
                             </label>
                         </div>
                         @endif
-
-
                         <div class="form-group">
                             <label for="vatp"><b class="challan">Total : </b>
                                 <span class="gtotal">
                                     <input type="text" class="form-control" name="vat_total" id="vat_tot_val" readonly="readonly">
                                 </span>
-
                             </label>
                         </div>
                         <div class="form-group">
@@ -233,21 +221,16 @@
                                 </span>
                             </label>
                         </div>
-
                         @if($delivery_data->vat_percentage > 0)
                         <div class="form-group">
                             <label for="billno"><b class="challan">Bill Number</b></label>
                             <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="text">
                         </div>
                         @endif
-
                         <div class="form-group">
                             <label for="challan_remark"><b class="challan">Remark</b></label>
                             <textarea class="form-control" id="challan_remark" name="challan_remark"  rows="3"></textarea>
                         </div>
-
-                        <!-- <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> -->
-
                         <hr>  
                         <div >
                             <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
@@ -256,12 +239,10 @@
                         <div class="clearfix"></div>
                         </form>
                         <div class="clearfix"></div>
-
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 @stop

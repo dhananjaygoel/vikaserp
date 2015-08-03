@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use DB;
 use App\User;
 use App\DeliveryLocation;
+use App\Customer;
 use Hash;
 use App\AllOrderProducts;
 use App\Vendor\Phpoffice\Phpexcel\Classes;
@@ -45,10 +46,12 @@ class SalesDaybookController extends Controller {
             $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order.location', 'user')->orderBy('created_at', 'desc')->Paginate(20);
         }
 
+        $supplier = Customer::all();
         $challan_date = array('challan_date' => Input::get('challan_date'));
-        
+
         $allorders->setPath('sales_daybook');
-        return view('sales_daybook', compact('allorders', 'challan_date'));
+
+        return view('sales_daybook', compact('allorders', 'challan_date', 'supplier'));
     }
 
     /*
@@ -111,7 +114,6 @@ class SalesDaybookController extends Controller {
                         $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
                         $challan->delete();
                     }
-
                     return Redirect::to('sales_daybook')->with('flash_message', 'Selected Challans are Successfully deleted');
                 }
             } else {
@@ -136,7 +138,6 @@ class SalesDaybookController extends Controller {
         }
 
         $current_user = User::find(Auth::id());
-
         if (Hash::check($password, $current_user->password)) {
             $challan = DeliveryChallan::find($id);
             $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
@@ -152,21 +153,15 @@ class SalesDaybookController extends Controller {
         $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
 
         Excel::create('Sales Daybook', function($excel) use($allorders) {
-
             $excel->sheet('Sales-Daybook', function($sheet) use($allorders) {
-
                 $sheet->loadView('excelView.sales', array('allorders' => $allorders));
             });
         })->export('xls');
-
-
-
-
         exit();
         /*
-         | ----------------------------------------------
-         | Old Export Excel code !WARNING - Do not Delete
-         | ----------------------------------------------
+          | ----------------------------------------------
+          | Old Export Excel code !WARNING - Do not Delete
+          | ----------------------------------------------
          */
         Excel::create('Sales-Daybook', function($excel) use($allorders) {
 
@@ -295,5 +290,4 @@ class SalesDaybookController extends Controller {
         $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'delivery_challan_products', 'delivery_order.location', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
         return view('print_sales_order_daybook', compact('allorders'));
     }
-
 }

@@ -45,7 +45,7 @@
                                         @if(count($customers)>0)
                                         @foreach($customers as $customer)
                                         @if($customer->customer_status == 'permanent')
-                                        <option value="{{$customer->id}}" >{{$customer->owner_name}}</option>
+                                        <option value="{{$customer->id}}" >{{$customer->tally_name}}</option>
                                         @endif
                                         @endforeach
                                         @endif
@@ -112,7 +112,6 @@
                                     <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{old('credit_period')}}" type="tel">
                                 </div>
                             </div>
-
                             <div class="row col-md-12">
                                 <div class="form-group">
                                     <div class="col-md-4">
@@ -143,10 +142,8 @@
                                     </div>
                                 </div>
                             </div>
-
                             <br>
                             <div class="order_table col-md-12">
-
                                 <div class="table-responsive">
                                     <table id="add_product_table" class="table table-hover  ">
                                         <tbody> 
@@ -157,7 +154,6 @@
                                                 <td><span>Price</span><span class="mandatory">*</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
-
                                             <?php for ($i = 1; $i <= 5; $i++) { ?>
                                                 <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
                                                     <td class="col-md-3">
@@ -183,14 +179,10 @@
                                                     </td>
                                                     <td class="col-md-2">
                                                         <div class="form-group col-md-6">
-                                                            <!--                                                            form for save product value-->
                                                             <input type="text" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price">
-
                                                         </div>
                                                         <div class="form-group col-md-6 difference_form">
-                                                            <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->     
                                                         </div>
-
                                                     </td>
                                                     <td class="col-md-4">
                                                         <div class="form-group">
@@ -199,9 +191,6 @@
                                                     </td>
                                                 </tr>
                                             <?php } ?>
-
-
-
                                         </tbody>
                                     </table>
                                     <table>
@@ -210,7 +199,6 @@
                                                 <td>
                                                     <div class="add_button1">
                                                         <div class="form-group pull-left">
-
                                                             <label for="addmore"></label>
                                                             <a class="table-link" title="add more" id="add_product_row">
                                                                 <span class="fa-stack more_button" >
@@ -218,7 +206,6 @@
                                                                     <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
                                                                 </span>
                                                             </a>
-
                                                         </div>
                                                     </div>
                                                 </td>
@@ -232,7 +219,6 @@
                                     </table>
                                 </div>
                             </div>
-
                             <div class="clearfix"></div>
                             <div class="form-group">
                                 <div class="radio">
@@ -254,7 +240,6 @@
                                     </table>
                                 </div>
                             </div> 
-
                             <div class="clearfix"></div>
                             <div class="form-group col-md-4 targetdate">
                                 <label for="time">Expected Delivery Date:<span class="mandatory">*</span> </label>
@@ -270,7 +255,6 @@
                             </div>
                             <div class="checkbox">
                                 <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email</span></label>
-
                             </div>
                             <div >
                                 <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" id="sendSMS" >Save and Send SMS</button>
@@ -278,14 +262,11 @@
                             <hr>
                             <div >
                                 <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
-
                                 <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
-
                             <div class="clearfix"></div>
                         </form>
                         <div class="clearfix"></div>
-
                     </div>
                 </div>
             </div>

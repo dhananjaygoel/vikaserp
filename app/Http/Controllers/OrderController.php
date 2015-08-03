@@ -89,14 +89,12 @@ class OrderController extends Controller {
         $customers = Customer::all();
         $delivery_location = DeliveryLocation::all();
         $delivery_order = DeliveryOrder::all();
-//        $allorder_products = AllOrderProducts::where('order_type', 'order')->groupBy('quantity')->get();
         $product_size = ProductSubCategory::all();
 
         $users = User::all();
         $pending_orders = $this->checkpending_quantity($allorders);
         $allorders->setPath('orders');
         return View::make('orders', compact('delivery_location', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size'));
-//        return View::make('orders', compact('delivery_location', 'customers', 'allorders', 'users', 'cancelledorders', 'product_size'));
     }
 
     /**
@@ -366,13 +364,14 @@ class OrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+
         $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->first();
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
-        $customers = Customer::all();
+        $customers = Customer::where('customer_status', 'permanent')->get();
 
         return View::make('edit_order', compact('order', 'delivery_location', 'units', 'customers'));
     }
@@ -838,16 +837,19 @@ class OrderController extends Controller {
     }
 
     public function store_delivery_order($id) {
+
         $input_data = Input::all();
 
         $validator = Validator::make($input_data, Order::$order_to_delivery_order_rules);
         if ($validator->passes()) {
+
             $user = Auth::user();
             $order = Order::where('id', '=', $id)->with('all_order_products')->first();
             $delivery_order = new DeliveryOrder();
             $delivery_order->order_id = $id;
             $delivery_order->customer_id = $input_data['customer_id'];
             $delivery_order->order_source = $order->order_source;
+            $delivery_order->supplier_id = $order->supplier_id;
             $delivery_order->created_by = $user->id;
             $delivery_order->vat_percentage = $order->vat_percentage;
             $delivery_order->expected_delivery_date = $order->expected_delivery_date;
@@ -893,7 +895,6 @@ class OrderController extends Controller {
                         'order_id' => $order_id,
                         'order_type' => 'delivery_order',
                         'product_category_id' => $product_data['product_category_id'],
-//                        'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
                         'quantity' => $product_data['present_shipping'],
                         'present_shipping' => $product_data['present_shipping'],

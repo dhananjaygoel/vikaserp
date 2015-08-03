@@ -16,9 +16,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-
                                     <form action="" method="GET">
-                                        <!--<input type="hidden" name="_token" value="{{csrf_token()}}">-->
                                         <div class="col-sm-6 ">
                                             <input type="text" class="form-control delivery_challan_date" name="challan_date" id="sales_daybook_date" value="{{Request::get('challan_date')}}">
                                         </div>
@@ -115,19 +113,27 @@
                                                 @endif
                                             </td> 
                                             <td >
-
                                                 @if($challan["customer"]->tally_name != "")
                                                 {{$challan["customer"]->tally_name}}
                                                 @else
                                                 {{$challan["customer"]->owner_name}}
                                                 @endif
-
                                             </td>
-                                            <td >{{isset($challan["delivery_order"])?$challan["delivery_order"]->vehicle_number: ''}}</td>
-                                            <td >{{isset($challan["delivery_order"])?$challan["delivery_order"]->order_source: ''}}</td>
-                                            <td >{{$challan['user'][0]->first_name}}</td>
+                                            <td>{{isset($challan["delivery_order"])?$challan["delivery_order"]->vehicle_number: ''}}</td>
+                                            <td>
+                                                @if($challan["delivery_order"]->supplier_id != 0)
+                                                @foreach($supplier as $sup)
+                                                @if($sup->id == $challan["delivery_order"]->supplier_id)
+                                                {{$sup->tally_name}}
+                                                @endif
+                                                @endforeach
+                                                @else
+                                                {{$challan["delivery_order"]->order_source}}
+                                                @endif
+                                            </td>
+                                            <td>{{$challan['user'][0]->first_name}}</td>
                                             <td>{{$challan->loaded_by}}</td>
-                                            <td >{{$challan->labours}}</td>
+                                            <td>{{$challan->labours}}</td>
                                             <td>
                                                 <?php
                                                 $total_qunatity = 0;
@@ -181,7 +187,6 @@
                                                         <div class="pwd">
                                                             <div class="pwdl"><b>Password:</b></div>
                                                             <div class="pwdr"><input class="form-control" placeholder="" name="password" type="password"></div>
-
                                                         </div>
                                                         <div class="clearfix"></div>
                                                         <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
@@ -207,7 +212,6 @@
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
-
                                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                                             <div class="modal-body">
                                                 <div class="delete">
@@ -225,7 +229,6 @@
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="delete_selected_chllan_button">Yes</button>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div> 
@@ -241,7 +244,6 @@
                                 @else
                                 <?php echo $allorders->render(); ?>
                                 @endif
-
                             </span>
                             <div class="clearfix"></div>                            
                             @if($allorders->lastPage() > 1)

@@ -111,13 +111,7 @@
                                         @elseif($order->delivery_location_id ==0 )
                                         <td class="text">{{$order['other_location']}}</td>
                                         @endif
-<!--                                        <td class="text"><?php
-                                        foreach ($users as $u) {
-                                            if ($u['id'] == $order['created_by']) {
-                                                echo $u['first_name'];
-                                            }
-                                        }
-                                        ?></td>-->
+
                                         <td>{{ round($order->total_quantity, 2) }}</td>
                                         <td>{{ round($order->pending_quantity, 2) }}</td>
                                         <td class="text-center">
