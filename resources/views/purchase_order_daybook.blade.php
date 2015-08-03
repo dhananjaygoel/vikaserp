@@ -71,9 +71,7 @@
                                         <thead>
                                             <?php $i = 1; ?>                                   
                                             <tr>
-
                                                 <th class="cb">
-                                                    
                                                     @if(Auth::user()->role_id == 0)
                                         <div class="checkbox">
                                             <label style="font-weight: bold;">
@@ -197,7 +195,7 @@
                                         @endforeach
                                         </tbody>
                                     </table>
-                                    @if(Auth::user()->role_id != 4)
+                                    @if(Auth::user()->role_id == 0)
                                     <div class="pull-right deletebutton">
                                         <a href="#" class="table-link danger" data-toggle="modal" data-target="#del_all_model" >
                                             <button type="button" class="btn btn-primary form_button_footer" >Delete All</button>
