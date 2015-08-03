@@ -76,7 +76,7 @@ class ProductController extends Controller {
             if (count($admins) > 0) {
                 foreach ($admins as $key => $admin) {
                     $product_type = ProductType::find($request->input('product_type'));
-                    $str = "Dear '" . $admin->first_name . "' '" . Auth::user()->first_name . "' has created a new product catagory as '" . $request->input('product_category_name') . "' under '" . $product_type->name . "' kindly chk. Vikas associates";
+                    $str = "Dear '" . $admin->first_name . "'\n'" . Auth::user()->first_name . "' has created a new product catagory as '" . $request->input('product_category_name') . "' under '" . $product_type->name . "' kindly chk. Vikas associates";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {

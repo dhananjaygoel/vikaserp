@@ -6,7 +6,7 @@ return [
     'sender_id' => 'VikasPipes',
     'url' => 'http://bulksmspune.mobi/sendurlcomma.aspx',
     'send' => true,
-    'send_sms_to' => '8983886688',
+    'send_sms_to' => '9373312962',
     'emailData' => array(
         'email' => 'deepakw@agstechnologies.com',
         'name' => 'Deepak Wagh'

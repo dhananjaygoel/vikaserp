@@ -181,7 +181,7 @@ class PurchaseOrderController extends Controller {
             $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "' your purchase order has been logged for following ";
+                $str = "Dear '" . $customer->owner_name . "'\n your purchase order has been logged for following ";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
@@ -426,7 +426,7 @@ class PurchaseOrderController extends Controller {
             $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "' your purchase order has been edited and changed as follows ";
+                $str = "Dear '" . $customer->owner_name . "'\n your purchase order has been edited and changed as follows ";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
@@ -575,7 +575,7 @@ class PurchaseOrderController extends Controller {
             $customer = Customer::where('id', '=', $purchase_order['customer']->id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "' your purchase order has been completed for following ";
+                $str = "Dear '" . $customer->owner_name . "'\n your purchase order has been completed for following ";
                 foreach ($purchase_order['purchase_products'] as $product_data) {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
                 }

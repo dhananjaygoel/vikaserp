@@ -447,7 +447,7 @@ class PurchaseAdviseController extends Controller {
             $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "' your purchase Advise has been created as follows ";
+                $str = "Dear '" . $customer->owner_name . "'\n your purchase Advise has been created as follows ";
                 foreach ($input_data as $product_data) {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     $total_quantity = $total_quantity + $product_data->quantity;

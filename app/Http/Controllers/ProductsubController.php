@@ -132,7 +132,7 @@ class ProductsubController extends Controller {
                 foreach ($admins as $key => $admin) {
                     $product_category = ProductCategory::where('id', '=', $request->input('select_product_categroy'))->with('product_type')->first();
                     $str = "Dear "
-                            . "'" . $admin->first_name . "' "
+                            . "\n'" . $admin->first_name . "' "
                             . "'" . Auth::user()->first_name . "' "
                             . " has created a new size as "
                             . "'" . $request->input('size') . "' "
@@ -254,7 +254,7 @@ class ProductsubController extends Controller {
                 if (count($admins) > 0) {
                     foreach ($admins as $key => $admin) {
                         $product_category = ProductCategory::where('id', '=', $data['select_product_categroy'])->with('product_type')->first();
-                        $str = "Dear "
+                        $str = "Dear \n"
                                 . "'" . $admin->first_name . "' "
                                 . "'" . Auth::user()->first_name . "' "
                                 . " has updated a size catagory as "

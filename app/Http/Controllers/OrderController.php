@@ -223,7 +223,7 @@ class OrderController extends Controller {
             if ($customer->phone_number1 != "") {
                 if (count($customer) > 0) {
                     $total_quantity = '';
-                    $str = "Dear '" . $customer->owner_name . "' your order has been logged as following ";
+                    $str = "Dear '" . $customer->owner_name . "'\n your order has been logged as following ";
                     foreach ($input_data['product'] as $product_data) {
                         if ($product_data['name'] != "") {
                             $product = ProductSubCategory::find($product_data['id']);
@@ -254,7 +254,7 @@ class OrderController extends Controller {
                         curl_close($ch);
                     }
                     if (count($customer['manager']) > 0) {
-                        $str = "Dear '" . $customer['manager']->first_name . "' '" . Auth::user()->first_name . " has logged an order for '" . $customer->owner_name . ", '" . round($total_quantity, 2) . "'. Kindly chk. Vikas Associates, 9673000068";
+                        $str = "Dear '" . $customer['manager']->first_name . "'\n'" . Auth::user()->first_name . " has logged an order for '" . $customer->owner_name . ", '" . round($total_quantity, 2) . "'. Kindly chk. Vikas Associates, 9673000068";
                         if (App::environment('development')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
                         } else {
@@ -523,7 +523,7 @@ class OrderController extends Controller {
             $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . strtoupper($customer->owner_name) . ", your order has been edited and changed as following ";
+                $str = "Dear " . strtoupper($customer->owner_name) . "\n your order has been edited and changed as following ";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $product = ProductSubCategory::find($product_data['id']);
@@ -554,7 +554,7 @@ class OrderController extends Controller {
                     curl_close($ch);
                 }
                 if (count($customer['manager']) > 0) {
-                    $str = "Dear '" . $customer['manager']->first_name . "' '" . Auth::user()->first_name . "' has edited and changed an order for '" . $customer->owner_name . ", '" . round($total_quantity, 2) . "'. Kindly chk. Vikas Associates, 9673000068";
+                    $str = "Dear '" . $customer['manager']->first_name . "'\n'" . Auth::user()->first_name . "' has edited and changed an order for '" . $customer->owner_name . ", '" . round($total_quantity, 2) . "'. Kindly chk. Vikas Associates, 9673000068";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -674,7 +674,7 @@ class OrderController extends Controller {
             $customer = Customer::where('id', '=', $order['customer']->id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "' your order has been completed for following ";
+                $str = "Dear '" . $customer->owner_name . "'\n your order has been completed for following ";
                 foreach ($order['all_order_products'] as $product_data) {
                     $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
                 }
