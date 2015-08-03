@@ -1,7 +1,5 @@
 var baseurl = $('#baseurl').attr('name');
 var _token = $('#csrf_token').attr('content');
-
-
 $(document).ready(function () {
     $("#existing_customer").click(function () {
         $(".exist_field").hide();
@@ -27,17 +25,25 @@ $(document).ready(function () {
     });
     $("#exclusive_of_vat").click(function () {
         $(".plusvat").show();
-
     });
     $("#inclusive_of_vat").click(function () {
         $(".plusvat").hide();
-
     });
-
     $("#existing_customer_name").autocomplete({
         minLength: 1,
         dataType: 'json',
         type: 'GET',
+        open: function (event) {
+            $('.ui-autocomplete').css('height', 'auto');
+            var $input = $(event.target),
+                    inputTop = $input.offset().top,
+                    inputHeight = $input.height(),
+                    autocompleteHeight = $('.ui-autocomplete').height(),
+                    windowHeight = $(window).height();
+            if ((inputHeight + inputTop + autocompleteHeight) > windowHeight) {
+                $('.ui-autocomplete').css('height', (windowHeight - inputHeight - inputTop - 20) + 'px');
+            }
+        },
         source: function (request, response) {
             $("#existing_customer_name").addClass('loadinggif');
             $.ajax({
@@ -53,11 +59,11 @@ $(document).ready(function () {
         },
         select: function (event, ui) {
             $("#existing_customer_id").val(ui.item.id);
-//            alert(ui.item.id);
             $("#customer_default_location").val(ui.item.delivery_location_id);
             $("#location_difference").val(ui.item.location_difference);
             default_delivery_location();
         }
+
     });
     $("#existing_supplier_name").autocomplete({
         minLength: 1,
@@ -82,14 +88,11 @@ $(document).ready(function () {
             default_delivery_location();
         }
     });
-
     $('#expected_delivery_date').datepicker({
         startDate: new Date(),
         autoclose: true
     });
     $('#datepickerDateComponent').datepicker();
-
-
     $("#add_product_row").on("click", function () {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
@@ -168,11 +171,6 @@ $(document).ready(function () {
                 '</tr>';
         $("#add_product_table_purchase").children("tbody").append(purchase_html);
     });
-
-
-
-
-
     $("#add_purchase_advise_product_row").on("click", function () {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
@@ -251,28 +249,6 @@ $(document).ready(function () {
                 '</tr>';
         $("#add_product_table_purchase").children("tbody").append(purchase_html);
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     $("#add_purchase_advice_product_row").on("click", function () {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
@@ -330,7 +306,6 @@ $(document).ready(function () {
                 '</tr>';
         $("#create_purchase_advise_table").children("tbody").append(html);
     });
-
     $("#add_editadvice_product_row").on("click", function () {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
@@ -377,7 +352,6 @@ $(document).ready(function () {
                 '</tr>';
         $("#add_product_table").children("tbody").append(html);
     });
-
     $("#add_order_location").on("change", function () {
         if ($("#add_order_location").val() == "other")
             $("#other_location_input_wrapper").show();
@@ -385,22 +359,18 @@ $(document).ready(function () {
             $("#other_location_input_wrapper").hide();
     });
 });
-
 function save_price_inquiry_view(id, inq_id) {
 
     var id = $("#hidden_inquiry_product_id_" + id).val();
     var updated_price = $("#difference_" + id).val();
     if (updated_price == "") {
         event.preventDefault();
-
     } else {
         $.ajax({
             type: 'POST',
             url: baseurl + '/store_price',
             data: {id: id, _token: _token, updated_price: updated_price}
         }).done(function () {
-//            location.reload();
-//            $("#difference_" + id).val(updated_price);
             var html_svbtn = '<span type="button" class="btn btn-default normal_cursor" >Save</span>';
             $("#save_btn_" + id).html(html_svbtn);
             $("#save_price_inquiry_view_" + id).removeClass('btn-primary');
@@ -411,9 +381,7 @@ function save_price_inquiry_view(id, inq_id) {
             $("#product_save_btn_" + id).html(html_btn);
             $('#inquire_msg').css('display', 'block');
             var length_btns = $(".customerview_table .btn-primary").length;
-//            alert("lengths "+length_btns);
             if (length_btns > 0) {
-//                alert('button found');
                 var html = '<span title="You can not click unless you save all prices" type="button" class="btn btn-default smstooltip normal_cursor" >Send SMS</span>';
                 $("#send_sms_button").html(html);
             }
@@ -447,7 +415,6 @@ function show_hide_customer(status) {
 function product_autocomplete(id) {
 //    alert('hi');
     var customer_id = $('#existing_customer_id').val();
-
     if (customer_id == "") {
         customer_id = 0;
     }
@@ -482,9 +449,7 @@ function product_autocomplete(id) {
  * purchase order advise product auto autocomplete
  */
 function purchase_order_advise_product_autocomplete(id) {
-//    alert('hi');
     var customer_id = $('#existing_customer_id').val();
-
     if (customer_id == "") {
         customer_id = 0;
     }
@@ -492,11 +457,9 @@ function purchase_order_advise_product_autocomplete(id) {
     var delivery_location = $('#add_order_location').val();
     var location = 0;
     var location_difference = 0;
-
     if (delivery_location > 0) {
 
         location = $('#add_order_location').val();
-
     } else if (delivery_location == 'other') {
 
         location_difference = $('#location_difference').val();
@@ -522,7 +485,6 @@ function purchase_order_advise_product_autocomplete(id) {
             });
         },
         select: function (event, ui) {
-//            $("#product_price_" + id).val(ui.item.product_price); // to add price in the textbox
             $("#add_product_id_" + id).val(ui.item.id);
         }
     });
@@ -531,7 +493,6 @@ function purchase_order_advise_product_autocomplete(id) {
 $('#location_difference').on('keyup', function () {
     $(".add_product_row").each(function (index) {
         var customer_id = $('#existing_customer_id').val();
-
         if (customer_id == "") {
             customer_id = 0;
         }
@@ -554,13 +515,11 @@ $('#location_difference').on('keyup', function () {
         }
     });
 });
-
 $('#add_order_location').on('change', function () {
     var location_difference = $('option:selected', this).attr('data-location-difference');
     $('#location_difference').val(location_difference);
     $(".add_product_row").each(function (index) {
         var customer_id = $('#existing_customer_id').val();
-
         if (customer_id == "") {
             customer_id = 0;
         }
@@ -582,7 +541,6 @@ $('#add_order_location').on('change', function () {
         }
     });
 });
-
 /**
  * Comment
  */
