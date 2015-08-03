@@ -10,18 +10,15 @@
                     <li class="active"><span>Orders</span></li>
                 </ol>
                 <div class="filter-block">
-
-
                     <form action="{{url('orders')}}" method="GET">
                         <h1 class="pull-left">Orders</h1> 
                         <div class="pull-right">
-                            @if(Auth::user()->role_id != 4)
+                            @if(Auth::user()->role_id != 4 && Auth::user()->role_id != 3 )
                             <a href="{{url('orders/create')}}" class="btn btn-primary">
                                 <i class="fa fa-plus-circle fa-lg"></i> Place Order
                             </a>
                             @endif
                         </div>
-
                         <div class="col-md-1 pull-right" style="padding: 0;"> 
                             <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
                                 <option value="" selected="">--Status-- </option>
