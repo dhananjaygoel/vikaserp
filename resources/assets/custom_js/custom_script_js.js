@@ -371,10 +371,12 @@ $("body").delegate(".calc_actual_quantity", "keyup", function (event) {
     rowId = rowId[1];
     var weight = $('#product_weight_' + rowId).val();
     var actual_pieces = $(this).val();
-    if (weight != '')
-        $('#actual_quantity_' + rowId).val((actual_pieces * weight).toFixed(2));
-    else
-        $('#actual_quantity_' + rowId).val(actual_pieces);
+    if (actual_pieces != '') {
+        if (weight != '')
+            $('#actual_quantity_' + rowId).val((actual_pieces * weight).toFixed(2));
+        else
+            $('#actual_quantity_' + rowId).val(actual_pieces);
+    }
     fetch_price();
 });
 /**
@@ -382,7 +384,6 @@ $("body").delegate(".calc_actual_quantity", "keyup", function (event) {
  */
 function calculate_grand_total() {
     var current_row_count = $(".add_product_row").length;
-//    alert(current_row_count);
     var total_price = 0;
     for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseInt($('#product_price_' + i).val())) {
@@ -618,10 +619,6 @@ function product_autocomplete_purchase(id) {
     });
 }
 
-
-/**
- * Comment
- */
 function create_delivery_order_PS(row_id) {
     grand_total_delivery_order();
     var qty = $('#quantity_' + row_id).val();

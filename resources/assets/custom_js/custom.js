@@ -16,8 +16,7 @@ $(document).ready(function () {
         if (prod == 2) {
             $('.thick12').css('display', 'none');
         }
-
-
+        
         var product_type_id = $("#product_sub_category_select").val();
         var url = $('#baseurl2').val();
         var token = $('#_token').val();
@@ -217,8 +216,7 @@ function calutate_pending_order(qty, key) {
 
     var shipping = $('#present_shipping_' + key).val();
     var pending = $('#pending_order_org' + key).val();
-//    if (parseInt(shipping) <= parseInt(pending)) {
-    if (parseInt(shipping) <= parseInt(qty)) {
+ if (parseInt(shipping) <= parseInt(qty)) {
         $('#pending_order_' + key).val(qty - shipping);
     } else {
         alert('Present shipping should not be greater than pending order');
@@ -226,9 +224,6 @@ function calutate_pending_order(qty, key) {
     }
 }
 
-/**
- * Comment
- */
 function state_option() {
 
     var state = $("#state").val();
@@ -249,12 +244,6 @@ function state_option() {
     });
 }
 
-//$('#expected_delivery_date').datepicker().on('changeDate', function (e) {
-//    $('#expected_delivery_date').datepicker('hide');
-//});
-/**
- * Comment
- */
 function update_price(product_id) {
 
     var price = $('#price_' + product_id).val();
@@ -275,6 +264,7 @@ $('#onenter_prevent input').keypress(function (e) {
         return false;
     }
 });
+
 $("#product_size").autocomplete({
     minLength: 1,
     dataType: 'json',
@@ -319,6 +309,7 @@ $("#order_size").autocomplete({
     }
 
 });
+ 
 $("#search_text").autocomplete({
     minLength: 1,
     dataType: 'json',
@@ -339,8 +330,8 @@ $("#search_text").autocomplete({
     select: function (event, ui) {
         $("#search_text").val(ui.item.id);
     }
-
 });
+
 $('#save_all_price_btn').click(function () {
 
     $.ajax({
@@ -351,62 +342,17 @@ $('#save_all_price_btn').click(function () {
         }
     });
 });
-/**
- * Comment
- */
-function this_price(a, b) {
-//    var str = $("#set_" + a + b).val();
 
-//    alert(str.indexOf('.'))
-
-//    if (str.indexOf('.') == -1) {
-//        $("#set_" + a + b).val(str.substr(0, 3));
-//    }
-//
-//    if (str.indexOf('.') > -1) {
-//        alert('hi')
-//        var num = parseFloat($("#set_" + a + b).val());
-//        $("#set_" + a + b).val(num.toFixed(2));
-//    }
-
-
-//    var num = parseFloat($("#set_" + a + b).val());
-//    if (str == "" || isNaN(str) == true) {
-//        $("#set_" + a + b).val("");
-//    } else {
-//        if (Number.isNaN(num) && num.toFixed(2).toString() == str) {
-//        } else {
-//            $("#set_" + a + b).val(num.toFixed(2));
-//        }
-//    }
-
-
-//
-//    var reg = "\d{0,3}[.]\d+|^\d{0,3}$";
-//    if ($(this).val().match(reg) == null)
-//        alert('Invalid input!');
-
-}
-
-/**
- * Comment
- */
 function test(a, b, e) {
     var abc = $(e).val();
-//    $("#valueSconto").on("input", function () {
         $(e).val(function (i, abc) {
             return abc.replace(/\d{3}|[^\d{2}\.]|^\./g, "");
         });
-//    });
 }
-
-
-
 
 function submit_filter_form() {
     $("#searchCustomerForm").submit();
 }
-
 
 $('#labour').on('keyup', function (e) {
     if (e.which === 46)
