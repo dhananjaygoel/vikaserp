@@ -78,12 +78,12 @@
                             </div>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="weight">Product weight</label>
+                            <label for="weight">Product weight<span class="mandatory">*</span></label>
                             <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="1" type="tel">
                         </div>
                         <div class="clearfix"></div>
                         <div class="form-group">
-                            <label for="difference">Standard Length</label>
+                            <label for="difference">Standard Length<span class="mandatory">*</span></label>
                             <input id="standard_length" class="form-control" placeholder=" Standard Length" name="standard_length" value="{{$prod_sub_cat->standard_length}}" type="tel">
                         </div>
                         <div class="form-group">
