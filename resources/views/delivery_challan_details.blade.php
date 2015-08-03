@@ -23,7 +23,6 @@
                                 @else
                                 {{$allorder['customer']->owner_name}}
                                 @endif
-
                             </label>
                         </div>
                         <hr>
@@ -53,18 +52,14 @@
                                         <td class="col-md-2"><span>Present Shipping</span></td>
                                         <td class="col-md-2"><span>Rate</span></td>
                                         <td class="col-md-3"><span>Amount</span></td>
-
                                     </tr>
                                     <?php $total_amount = 0; ?>
                                     @foreach($allorder['all_order_products'] as $key=>$product)
                                     @if($product->order_type =='delivery_challan')
                                     <tr id="add_row_{{$key}}" class="add_product_row">
-
                                         <td class="col-md-2">
                                             <div class="form-group searchproduct">
-
                                                 {{$product['order_product_details']->alias_name}}
-
                                             </div>
                                         </td>
                                         <td class="col-md-1">
@@ -77,7 +72,6 @@
                                                 {{$product->actual_pieces}}
                                             </div>
                                         </td>
-
                                         <td class="col-md-1">
                                             <div class="form-group ">
                                                 {{$product['unit']['unit_name']}}
@@ -105,12 +99,9 @@
                                     </tr>
                                     @endif
                                     @endforeach
-
                                 </tbody>
                             </table>
-
                         </div>
-
                         <div class="form-group">
                             <label for="vehicle_name"><b class="challan">Total Actual Quantity: </b></label>
                             {{$allorder['all_order_products']->sum('actual_quantity')}}
@@ -140,7 +131,6 @@
                         <hr>
                         <div class="form-group">
                             <label for="total"><b class="challan">Total</b><span class="gtotal">{{$total_amount}}</span></label>
-
                         </div>
                         <hr>
                         <div class="form-group">
@@ -153,8 +143,6 @@
                             {{$allorder->labours}}
                         </div>
                         <hr>
-
-
                         @if($allorder->vat_percentage != "" || $allorder->vat_percentage != 0)
                         <div class="form-group">
                             <label for="Plusvat"><b class="challan">VAT: </b> Yes</label>
@@ -162,9 +150,7 @@
                         <hr>
                         <div class="form-group">
                             <label for="driver_contact"><b class="challan">VAT Percentage: </b> {{$allorder->vat_percentage}} %</label>
-
                         </div>
-
                         <hr>
                         @else
                         <div class="form-group">
@@ -172,14 +158,12 @@
                         </div>
                         <hr>
                         @endif
-
                         <div class="form-group">
                             <label for="total"><b class="challan">Round Off: </b><span class="gtotal">{{$allorder->round_off}}</span></label>
                         </div>
-
+                        <hr/>
                         <div class="form-group">
                             <label for="total"><b class="challan">Grand Total: </b><span class="gtotal">{{$allorder->grand_price}}</span></label>
-
                         </div>
                         <hr>
                         @if($allorder->bill_number != "")
@@ -198,8 +182,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
-
 @endsection
