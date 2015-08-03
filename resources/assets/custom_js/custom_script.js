@@ -413,7 +413,6 @@ function show_hide_customer(status) {
  * product_autocomplete
  */
 function product_autocomplete(id) {
-//    alert('hi');
     var customer_id = $('#existing_customer_id').val();
     if (customer_id == "") {
         customer_id = 0;
@@ -424,6 +423,17 @@ function product_autocomplete(id) {
         minLength: 1,
         dataType: 'json',
         type: 'GET',
+//        open: function (event) {
+//            $("#add_product_name_" + id).css('height', 'auto');
+//            var $input = $(event.target),
+//                    inputTop = $input.offset().top,
+//                    inputHeight = $input.height(),
+//                    autocompleteHeight = $(".ui-autocomplete").height(),
+//                    windowHeight = $(window).height();
+//            if ((inputHeight + inputTop + autocompleteHeight) > windowHeight) {
+//                $("#add_product_name_" + id).css('height', (windowHeight - inputHeight - inputTop - 20) + 'px');
+//            }
+//        },
         source: function (request, response) {
 
             $("#add_product_name_" + id).addClass('loadinggif');
