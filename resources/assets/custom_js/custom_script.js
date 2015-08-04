@@ -425,8 +425,9 @@ function product_autocomplete(id) {
         minLength: 1,
         dataType: 'json',
         type: 'GET',
+        autoFocus: true,
+        autoselect: 'first',
         source: function (request, response) {
-
             $("#add_product_name_" + id).addClass('loadinggif');
             $.ajax({
                 url: baseurl + '/fetch_products',
@@ -436,9 +437,11 @@ function product_autocomplete(id) {
                     var arr1 = main_array['data_array'];
                     response(arr1);
                     $("#add_product_name_" + id).removeClass('loadinggif');
-
+                    
                 },
-            });       },
+            });
+        },
+        
         open: function (event, ui) {
             var $input = $(event.target);
             var $results = $input.autocomplete("widget");
@@ -451,12 +454,13 @@ function product_autocomplete(id) {
                     $results.css("top", newTop + "px");
             }
         },
+        
         select: function (event, ui) {
             $("#product_price_" + id).val(ui.item.product_price); // to add price in the textbox
             $("#add_product_id_" + id).val(ui.item.id);
         }
     });
-    
+
     $(window).scroll(function (event) {
         $('.ui-autocomplete.ui-menu').position({
             my: 'left bottom',

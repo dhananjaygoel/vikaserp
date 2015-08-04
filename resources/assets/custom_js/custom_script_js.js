@@ -620,6 +620,8 @@ function product_autocomplete_purchase(id) {
         minLength: 1,
         dataType: 'json',
         type: 'GET',
+        autoFocus: true,
+        autoselect: 'first',
         source: function (request, response) {
             $("#add_purchase_product_name_" + id).addClass('loadinggif');
             $.ajax({
