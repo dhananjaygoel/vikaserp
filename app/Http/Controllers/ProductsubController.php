@@ -36,7 +36,7 @@ class ProductsubController extends Controller {
         $this->middleware('validIP');
     }
 
-    public function index() {//index
+    public function index() {
         $product_type = ProductType::all();
         $units = Units::all();
         $product_sub_cat = "";
@@ -165,10 +165,6 @@ class ProductsubController extends Controller {
         return redirect('product_sub_category')->with('success', 'Product sub category successfully added.');
     }
 
-    public function show($id) {
-        
-    }
-
     public function destroy($id) {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -204,7 +200,6 @@ class ProductsubController extends Controller {
 
         $product_type = ProductType::all();
         $prod_category = ProductCategory::all();
-//        $units = Units::all();
         $units = Units::first();
 
         return view('edit_product_sub_category', compact('product_type', 'prod_sub_cat', 'prod_category', 'units'));
@@ -212,16 +207,12 @@ class ProductsubController extends Controller {
 
     public function update($id) {
 
-
         $validator = Validator::make(Input::all(), ProductSubCategory::$product_sub_category_rules);
 
         if ($validator->passes()) {
-
             $data = Input::all();
-
             $pro_sub_cat = array(
                 'product_category_id' => $data['select_product_categroy'],
-//                'alias_name' => $data['alias_name'],
                 'size' => $data['size'],
                 'weight' => $data['weight'],
                 'unit_id' => $data['units'],

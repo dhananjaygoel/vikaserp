@@ -39,12 +39,20 @@ class ProductController extends Controller {
         $this->middleware('validIP');
     }
 
+    /*
+     * load the view of the product category view.
+     */
+
     public function index() {
 
         $product_cat = ProductCategory::orderBy('created_at', 'desc')->Paginate(20);
         $product_cat->setPath('product_category');
         return view('product_category', compact('product_cat'));
     }
+
+    /*
+     * load the add product category form
+     */
 
     public function create() {
         if (Auth::user()->role_id != 0) {
@@ -53,6 +61,10 @@ class ProductController extends Controller {
         $product_type = ProductType::all();
         return view('add_product_category', compact('product_type'));
     }
+
+    /*
+     * store the product category form data as well se send the sms.
+     */
 
     public function store(ProductCategoryRequest $request) {
         if (Auth::user()->role_id != 0) {
@@ -97,6 +109,10 @@ class ProductController extends Controller {
         return redirect('product_category')->with('success', 'Product category successfully added.');
     }
 
+    /*
+     * show the product category details
+     */
+
     public function show($id) {
 
         $product_cat = ProductCategory::where('id', $id)->with('product_sub_category', 'product_type')->first();
@@ -110,6 +126,10 @@ class ProductController extends Controller {
         return view('view_product_category', compact('product_cat'));
     }
 
+    /*
+     * delete the product category details
+     */
+
     public function destroy($id) {
 
         if (Auth::user()->role_id != 0) {
@@ -119,16 +139,7 @@ class ProductController extends Controller {
         if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
 
             $cat = ProductSubCategory::where('product_category_id', $id)->count();
-//            $order_count = 0;
-//            $purchase_count = 0;
-//            $inquery_count = 0;
-//            foreach ($cat as $prod_cat) {
-//
-//                $order_count += AllOrderProducts::where('product_category_id', $prod_cat->id)->count();
-//                $purchase_count += PurchaseProducts::where('product_category_id', $prod_cat->id)->count();
-//                $inquery_count += InquiryProducts::where('product_category_id', $prod_cat->id)->count();
-//            }
-//            if ($purchase_count == 0 && $order_count == 0 && $inquery_count == 0) {
+
             if ($cat == 0) {
 
                 ProductCategory::destroy($id);
@@ -140,6 +151,10 @@ class ProductController extends Controller {
             return redirect('product_category')->with('wrong', 'Please enter the valid credential to delete the records.');
         }
     }
+
+    /*
+     * loads the product category edit form
+     */
 
     public function edit($id) {
         if (Auth::user()->role_id != 0) {
@@ -155,6 +170,10 @@ class ProductController extends Controller {
 
         return view('edit_product_category', compact('product_cat', 'product_type'));
     }
+
+    /*
+     * update the product category details.
+     */
 
     public function update($id, ProductCategoryRequest $request) {
         if (Auth::user()->role_id != 0) {
@@ -172,6 +191,10 @@ class ProductController extends Controller {
         return redirect('product_category')->with('success', 'Product category successfully updated.');
     }
 
+    /*
+     * update the price of the single product category
+     */
+
     public function update_price() {
         $val = Input::get('price');
         $key = Input::get('product_id');
@@ -180,17 +203,19 @@ class ProductController extends Controller {
                 ->update(array('price' => $val));
     }
 
+    /*
+     * update the price in bulk for the product category.
+     */
+
     public function update_all_price() {
 
         $price = Input::get('price');
         foreach ($price as $key => $value) {
             foreach ($value as $val) {
-
                 ProductCategory::where('id', $key)
                         ->update(array('price' => $val));
             }
         }
-//        return redirect('product_category')->with('success', 'Product category price successfully updated.');
     }
 
 }
