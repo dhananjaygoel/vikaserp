@@ -349,16 +349,28 @@ function fetch_price() {
         if (parseFloat($('#product_price_' + i).val())) {
 
             var quantity = $("#actual_quantity_" + i).val();
-            /*
-             * Calculate checking wih KG and other in
-             * quantity field
-             */
-            if ($("#actual_quantity_" + i).val() > 0 && $("#actual_quantity_" + i).val() != 0 || $("#actual_quantity_" + i).val() != '') {
-                quantity = parseFloat($("#actual_quantity_" + i).val());
+
+
+            if (quantity > 0) {
+
+                /*
+                 * Calculate checking wih KG and other in
+                 * quantity field
+                 */
+
+                if ($("#actual_quantity_" + i).val() > 0 && $("#actual_quantity_" + i).val() != 0 || $("#actual_quantity_" + i).val() != '') {
+                    quantity = parseFloat($("#actual_quantity_" + i).val());
+                }
+            } else {
+
+
+                if ($("#actual_pieces_" + i).val() > 0 && $("#actual_quantity_" + i).val() == 0 || $("#actual_quantity_" + i).val() == '') {
+                    quantity = parseFloat($("#actual_pieces_" + i).val());
+                }
+
             }
-            if ($("#actual_pieces_" + i).val() > 0 && $("#actual_quantity_" + i).val() == 0 || $("#actual_quantity_" + i).val() == '') {
-                quantity = parseFloat($("#actual_pieces_" + i).val());
-            }
+
+
             var rate = $("#product_price_" + i).val();
             var amount = parseFloat(rate) * parseInt(quantity);
             $("#amount_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
@@ -367,17 +379,25 @@ function fetch_price() {
     grand_total_challan();
 }
 $("body").delegate(".calc_actual_quantity", "keyup", function (event) {
+
     var rowId = $(this).attr('id').split('actual_pieces_');
     rowId = rowId[1];
     var weight = $('#product_weight_' + rowId).val();
     var actual_pieces = $(this).val();
-    if (actual_pieces != '') {
-        if (weight != '')
-            $('#actual_quantity_' + rowId).val((actual_pieces * weight).toFixed(2));
-        else
-            $('#actual_quantity_' + rowId).val(actual_pieces);
+
+    if ($('#actual_quantity_' + rowId).val() < 0) {
+
+        if (actual_pieces != '') {
+            if (weight != '')
+                $('#actual_quantity_' + rowId).val((actual_pieces * weight).toFixed(2));
+            else
+                $('#actual_quantity_' + rowId).val(actual_pieces);
+        }
     }
+
+
     fetch_price();
+
 });
 /**
  * Grand total for creating independent delivery order
