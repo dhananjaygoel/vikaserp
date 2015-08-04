@@ -419,21 +419,12 @@ function product_autocomplete(id) {
     }
     var location_difference = 0;
     location_difference = $('#location_difference').val();
+
+
     $("#add_product_name_" + id).autocomplete({
         minLength: 1,
         dataType: 'json',
         type: 'GET',
-//        open: function (event) {
-//            $("#add_product_name_" + id).css('height', 'auto');
-//            var $input = $(event.target),
-//                    inputTop = $input.offset().top,
-//                    inputHeight = $input.height(),
-//                    autocompleteHeight = $(".ui-autocomplete").height(),
-//                    windowHeight = $(window).height();
-//            if ((inputHeight + inputTop + autocompleteHeight) > windowHeight) {
-//                $("#add_product_name_" + id).css('height', (windowHeight - inputHeight - inputTop - 20) + 'px');
-//            }
-//        },
         source: function (request, response) {
 
             $("#add_product_name_" + id).addClass('loadinggif');
@@ -445,13 +436,33 @@ function product_autocomplete(id) {
                     var arr1 = main_array['data_array'];
                     response(arr1);
                     $("#add_product_name_" + id).removeClass('loadinggif');
+
                 },
-            });
+            });       },
+        open: function (event, ui) {
+            var $input = $(event.target);
+            var $results = $input.autocomplete("widget");
+            var scrollTop = $(window).scrollTop();
+            var top = $results.position().top;
+            var height = $results.outerHeight();
+            if (top + height > $(window).innerHeight() + scrollTop) {
+                newTop = top - height - $input.outerHeight();
+                if (newTop > scrollTop)
+                    $results.css("top", newTop + "px");
+            }
         },
         select: function (event, ui) {
             $("#product_price_" + id).val(ui.item.product_price); // to add price in the textbox
             $("#add_product_id_" + id).val(ui.item.id);
         }
+    });
+    
+    $(window).scroll(function (event) {
+        $('.ui-autocomplete.ui-menu').position({
+            my: 'left bottom',
+            at: 'left top',
+            of: '#tags'
+        });
     });
 }
 

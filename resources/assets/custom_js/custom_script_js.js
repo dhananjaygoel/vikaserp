@@ -633,9 +633,29 @@ function product_autocomplete_purchase(id) {
                 },
             });
         },
+        open: function (event, ui) {
+            var $input = $(event.target);
+            var $results = $input.autocomplete("widget");
+            var scrollTop = $(window).scrollTop();
+            var top = $results.position().top;
+            var height = $results.outerHeight();
+            if (top + height > $(window).innerHeight() + scrollTop) {
+                newTop = top - height - $input.outerHeight();
+                if (newTop > scrollTop)
+                    $results.css("top", newTop + "px");
+            }
+        },
         select: function (event, ui) {
             $("#add_product_id_" + id).val(ui.item.id);
         }
+    });
+
+    $(window).scroll(function (event) {
+        $('.ui-autocomplete.ui-menu').position({
+            my: 'left bottom',
+            at: 'left top',
+            of: '#tags'
+        });
     });
 }
 
