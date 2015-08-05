@@ -219,8 +219,8 @@ class PurchaseAdviseController extends Controller {
                     'remarks' => $input_data['remarks'],
                     'vehicle_number' => $input_data['vehicle_number']
         ));
-        
-        
+
+
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
 
@@ -254,7 +254,6 @@ class PurchaseAdviseController extends Controller {
                 }
             }
         }
-
         return redirect('purchaseorder_advise')->with('success', 'Purchase advise updated successfully');
     }
 
@@ -289,7 +288,6 @@ class PurchaseAdviseController extends Controller {
     public function store_advise() {
 
         $input_data = Input::all();
-
         $validator = Validator::make($input_data, PurchaseAdvise::$store_purchase_validation);
         if ($validator->passes()) {
 
@@ -345,7 +343,6 @@ class PurchaseAdviseController extends Controller {
                                 'product_category_id' => $product_data['id'],
                                 'unit_id' => $product_data['units'],
                                 'actual_pieces' => $product_data['actual_pieces'],
-                                //                                'quantity' => $product_data['quantity'],
                                 'price' => $product_data['price'],
                                 'remarks' => $product_data['remark'],
                                 'order_type' => 'purchase_advice',
@@ -373,7 +370,6 @@ class PurchaseAdviseController extends Controller {
                                 'product_category_id' => $product_data['id'],
                                 'unit_id' => $product_data['units'],
                                 'actual_pieces' => $product_data['actual_pieces'],
-                                //                                'quantity' => $product_data['quantity'],
                                 'price' => $product_data['price'],
                                 'remarks' => $product_data['remark'],
                                 'order_type' => 'purchase_advice'
@@ -408,7 +404,6 @@ class PurchaseAdviseController extends Controller {
 
         $pending_advise = PurchaseAdvise::where('advice_status', '=', 'in_process')->with('purchase_products', 'supplier', 'party')->paginate(20);
         $pending_advise->setPath('pending_purchase_advice');
-
         return View::make('pending_purchase_advice', array('pending_advise' => $pending_advise));
     }
 
@@ -420,18 +415,15 @@ class PurchaseAdviseController extends Controller {
         }
         $locations = DeliveryLocation::all();
         $units = Units::all();
-
         return view('purchaseorder_advise_challan', compact('purchase_advise', 'locations', 'units'));
     }
 
     public function print_purchase_advise($id) {
 
         $current_date = date("/m/d/");
-
         $date_letter = 'PA' . $current_date . $id;
         PurchaseAdvise::where('id', '=', $id)->update(array(
             'serial_number' => $date_letter
-//            'advice_status' => "delivered"
         ));
         $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products.purchase_product_details', 'purchase_products.unit', 'location')->where('id', $id)->first();
 
@@ -468,13 +460,11 @@ class PurchaseAdviseController extends Controller {
                 }
             }
         }
-
         return view('print_purchase_advise', compact('purchase_advise'));
     }
 
     function checkpending_quantity($purchase_advise) {
         $pending_orders = array();
-
         if (count($purchase_advise) > 0) {
 
             foreach ($purchase_advise as $key => $del_order) {
@@ -494,11 +484,9 @@ class PurchaseAdviseController extends Controller {
                         }
                     }
                 }
-
                 $purchase_advise[$key]['total_quantity'] = $purchase_order_quantity;
             }
         }
-
         return $pending_orders;
     }
 

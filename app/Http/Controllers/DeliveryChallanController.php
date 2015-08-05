@@ -89,16 +89,16 @@ class DeliveryChallanController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function edit($id) {
-        $allorder = DeliveryChallan::where('id', '=', $id)
-                ->where('challan_status', '=', 'pending')
-                ->with('all_order_products.unit', 'all_order_products.product_category', 'customer', 'delivery_order')
-                ->first();
-
-        $units = Units::all();
-        $delivery_locations = DeliveryLocation::all();
-        return View::make('edit_delivery_challan', compact('allorder', 'price_delivery_order', 'units', 'delivery_locations'));
-    }
+//    public function edit($id) {
+//        $allorder = DeliveryChallan::where('id', '=', $id)
+//                ->where('challan_status', '=', 'pending')
+//                ->with('all_order_products.unit', 'all_order_products.product_category', 'customer', 'delivery_order')
+//                ->first();
+//
+//        $units = Units::all();
+//        $delivery_locations = DeliveryLocation::all();
+//        return View::make('edit_delivery_challan', compact('allorder', 'price_delivery_order', 'units', 'delivery_locations'));
+//    }
 
     /**
      * Update the specified resource in storage.
@@ -106,70 +106,70 @@ class DeliveryChallanController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function update($id) {
-        $input_data = Input::all();
-
-        $i = 0;
-        $j = count($input_data['product']);
-
-        foreach ($input_data['product'] as $product_data) {
-            if ($product_data['name'] == "") {
-                $i++;
-            }
-        }
-
-        if ($i == $j) {
-            return Redirect::back()->with('validation_message', 'Please enter at least one product details');
-        }
-
-        $delivery_challan = DeliveryChallan::find($id);
-        $update_challan = $delivery_challan->update([
-            'bill_number' => $input_data['billno'],
-            'freight' => $input_data['freight'],
-            'loading_charge' => $input_data['loading'],
-            'loaded_by' => $input_data['loadedby'],
-            'labours' => $input_data['labour'],
-            'grand_price' => $input_data['grand_total'],
-            'remarks' => $input_data['challan_remark'],
-            'challan_status' => "Pending"
-        ]);
-
-        if (isset($input_data['discount'])) {
-            $delivery_challan->update([
-                'discount' => $input_data['discount']]);
-        }
-
-        if (isset($input_data['vat_percentage'])) {
-            $delivery_challan->update([
-                'vat_percentage' => $input_data['vat_percentage']]);
-        }
-
-        if (isset($input_data['billno'])) {
-            $delivery_challan->update([
-                "bill_number" => $input_data['billno']]);
-        }
-
-        $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
-        if ($j != 0) {
-            $order_products = array();
-            foreach ($input_data['product'] as $product_data) {
-                if ($product_data['name'] != "") {
-                    $order_products = [
-                        'order_id' => $id,
-                        'order_type' => 'delivery_challan',
-                        'product_category_id' => $product_data['id'],
-                        'unit_id' => $product_data['units'],
-                        'actual_pieces' => $product_data['actual_pieces'],
-                        'quantity' => $product_data['quantity'],
-                        'present_shipping' => $product_data['present_shipping'],
-                        'price' => $product_data['price']
-                    ];
-                    $add_order_products = AllOrderProducts::create($order_products);
-                }
-            }
-        }
-        return redirect('delivery_challan')->with('flash_message', 'One Delivery Challan is successfuly updated.');
-    }
+//    public function update($id) {
+//        $input_data = Input::all();
+//
+//        $i = 0;
+//        $j = count($input_data['product']);
+//
+//        foreach ($input_data['product'] as $product_data) {
+//            if ($product_data['name'] == "") {
+//                $i++;
+//            }
+//        }
+//
+//        if ($i == $j) {
+//            return Redirect::back()->with('validation_message', 'Please enter at least one product details');
+//        }
+//
+//        $delivery_challan = DeliveryChallan::find($id);
+//        $update_challan = $delivery_challan->update([
+//            'bill_number' => $input_data['billno'],
+//            'freight' => $input_data['freight'],
+//            'loading_charge' => $input_data['loading'],
+//            'loaded_by' => $input_data['loadedby'],
+//            'labours' => $input_data['labour'],
+//            'grand_price' => $input_data['grand_total'],
+//            'remarks' => $input_data['challan_remark'],
+//            'challan_status' => "Pending"
+//        ]);
+//
+//        if (isset($input_data['discount'])) {
+//            $delivery_challan->update([
+//                'discount' => $input_data['discount']]);
+//        }
+//
+//        if (isset($input_data['vat_percentage'])) {
+//            $delivery_challan->update([
+//                'vat_percentage' => $input_data['vat_percentage']]);
+//        }
+//
+//        if (isset($input_data['billno'])) {
+//            $delivery_challan->update([
+//                "bill_number" => $input_data['billno']]);
+//        }
+//
+//        $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
+//        if ($j != 0) {
+//            $order_products = array();
+//            foreach ($input_data['product'] as $product_data) {
+//                if ($product_data['name'] != "") {
+//                    $order_products = [
+//                        'order_id' => $id,
+//                        'order_type' => 'delivery_challan',
+//                        'product_category_id' => $product_data['id'],
+//                        'unit_id' => $product_data['units'],
+//                        'actual_pieces' => $product_data['actual_pieces'],
+//                        'quantity' => $product_data['quantity'],
+//                        'present_shipping' => $product_data['present_shipping'],
+//                        'price' => $product_data['price']
+//                    ];
+//                    $add_order_products = AllOrderProducts::create($order_products);
+//                }
+//            }
+//        }
+//        return redirect('delivery_challan')->with('flash_message', 'One Delivery Challan is successfuly updated.');
+//    }
 
     /**
      * Remove the specified resource from storage.
