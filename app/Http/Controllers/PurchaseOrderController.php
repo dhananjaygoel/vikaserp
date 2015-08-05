@@ -205,7 +205,7 @@ class PurchaseOrderController extends Controller {
                 }
             }
         }
-        
+
         $add_purchase_order = PurchaseOrder::create($add_purchase_order_array);
         $purchase_order_id = DB::getPdo()->lastInsertId();
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
@@ -458,16 +458,13 @@ class PurchaseOrderController extends Controller {
                 'other_location' => $input_data['other_location_name'],
                 'other_location_difference' => $input_data['other_location_difference'],
             ]);
-
         } else {
             $purchase_order->update([
                 'delivery_location_id' => $input_data['purchase_order_location'],
                 'other_location' => '',
                 'other_location_difference' => '',
             ]);
-
         }
-
 
         $purchase_order_products = array();
         $delete_old_purchase_products = PurchaseProducts::where('purchase_order_id', '=', $id)->delete();
@@ -507,7 +504,6 @@ class PurchaseOrderController extends Controller {
                         'order_product' => $purchase_order['purchase_products'],
                         'source' => 'update_order'
                     );
-
 
                     $receipent = array();
                     if (App::environment('development')) {
@@ -559,6 +555,10 @@ class PurchaseOrderController extends Controller {
         }
         return view('create_purchase_advice', compact('purchase_orders'));
     }
+
+    /*
+     * complete the purchase order mannually
+     */
 
     public function manual_complete() {
         $input_data = Input::all();
@@ -617,7 +617,6 @@ class PurchaseOrderController extends Controller {
                     'delivery_location' => $delivery_location,
                     'order_product' => $purchase_order['purchase_products']
                 );
-
 
                 $receipent = array();
                 if (App::environment('development')) {

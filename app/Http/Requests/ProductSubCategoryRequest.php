@@ -17,16 +17,17 @@ class ProductSubCategoryRequest extends Request {
 
     /**
      * Get the validation rules that apply to the request.
-     *not deployed
+     * not deployed
      * @return array
      */
     public function rules() {
         return [
             'product_type' => 'required',
-            'select_product_categroy' => 'required',            
+            'select_product_categroy' => 'required',
             'alias_name' => 'unique:product_sub_category|required|min:2|max:100',
             'size' => 'required',
             'weight' => 'required',
+            'standard_length' => 'required',
             'units' => 'required',
             'difference' => 'required'
         ];

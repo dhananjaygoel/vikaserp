@@ -362,7 +362,7 @@ class DeliveryOrderController extends Controller {
     }
 
     /*
-     * to calculation the toatal quantity of the order
+     * Load the list view of pending delivery order. 
      */
 
     public function pending_delivery_order() {
@@ -406,8 +406,7 @@ class DeliveryOrderController extends Controller {
 
     public function store_delivery_challan($id) {
 
-        $input_data = Input::all();     
-       //supplier_id
+        $input_data = Input::all();
         $delivery_challan = new DeliveryChallan();
         $delivery_challan->order_id = $input_data['order_id'];
         $delivery_challan->delivery_order_id = $id;

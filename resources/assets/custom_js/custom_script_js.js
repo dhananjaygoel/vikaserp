@@ -349,16 +349,28 @@ function fetch_price() {
         if (parseFloat($('#product_price_' + i).val())) {
 
             var quantity = $("#actual_quantity_" + i).val();
-            /*
-             * Calculate checking wih KG and other in
-             * quantity field
-             */
-            if ($("#actual_quantity_" + i).val() > 0 && $("#actual_quantity_" + i).val() != 0 || $("#actual_quantity_" + i).val() != '') {
-                quantity = parseFloat($("#actual_quantity_" + i).val());
+
+
+            if (quantity > 0) {
+
+                /*
+                 * Calculate checking wih KG and other in
+                 * quantity field
+                 */
+
+                if ($("#actual_quantity_" + i).val() > 0 && $("#actual_quantity_" + i).val() != 0 || $("#actual_quantity_" + i).val() != '') {
+                    quantity = parseFloat($("#actual_quantity_" + i).val());
+                }
+            } else {
+
+
+                if ($("#actual_pieces_" + i).val() > 0 && $("#actual_quantity_" + i).val() == 0 || $("#actual_quantity_" + i).val() == '') {
+                    quantity = parseFloat($("#actual_pieces_" + i).val());
+                }
+
             }
-            if ($("#actual_pieces_" + i).val() > 0 && $("#actual_quantity_" + i).val() == 0 || $("#actual_quantity_" + i).val() == '') {
-                quantity = parseFloat($("#actual_pieces_" + i).val());
-            }
+
+
             var rate = $("#product_price_" + i).val();
             var amount = parseFloat(rate) * parseInt(quantity);
             $("#amount_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
@@ -367,17 +379,25 @@ function fetch_price() {
     grand_total_challan();
 }
 $("body").delegate(".calc_actual_quantity", "keyup", function (event) {
+
     var rowId = $(this).attr('id').split('actual_pieces_');
     rowId = rowId[1];
     var weight = $('#product_weight_' + rowId).val();
     var actual_pieces = $(this).val();
-    if (actual_pieces != '') {
-        if (weight != '')
-            $('#actual_quantity_' + rowId).val((actual_pieces * weight).toFixed(2));
-        else
-            $('#actual_quantity_' + rowId).val(actual_pieces);
+
+    if ($('#actual_quantity_' + rowId).val() < 0) {
+
+        if (actual_pieces != '') {
+            if (weight != '')
+                $('#actual_quantity_' + rowId).val((actual_pieces * weight).toFixed(2));
+            else
+                $('#actual_quantity_' + rowId).val(actual_pieces);
+        }
     }
+
+
     fetch_price();
+
 });
 /**
  * Grand total for creating independent delivery order
@@ -600,6 +620,8 @@ function product_autocomplete_purchase(id) {
         minLength: 1,
         dataType: 'json',
         type: 'GET',
+        autoFocus: true,
+        autoselect: 'first',
         source: function (request, response) {
             $("#add_purchase_product_name_" + id).addClass('loadinggif');
             $.ajax({
@@ -613,9 +635,29 @@ function product_autocomplete_purchase(id) {
                 },
             });
         },
+        open: function (event, ui) {
+            var $input = $(event.target);
+            var $results = $input.autocomplete("widget");
+            var scrollTop = $(window).scrollTop();
+            var top = $results.position().top;
+            var height = $results.outerHeight();
+            if (top + height > $(window).innerHeight() + scrollTop) {
+                newTop = top - height - $input.outerHeight();
+                if (newTop > scrollTop)
+                    $results.css("top", newTop + "px");
+            }
+        },
         select: function (event, ui) {
             $("#add_product_id_" + id).val(ui.item.id);
         }
+    });
+
+    $(window).scroll(function (event) {
+        $('.ui-autocomplete.ui-menu').position({
+            my: 'left bottom',
+            at: 'left top',
+            of: '#tags'
+        });
     });
 }
 

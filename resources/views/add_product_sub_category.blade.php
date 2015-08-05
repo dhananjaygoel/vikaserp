@@ -10,7 +10,6 @@
                     <li class="active"><span>Add Product Size</span></li>
                 </ol>
                 <div class="clearfix">
-                    <!--                    <h1 class="pull-left"> Add Product Sub Category</h1>                    -->
                 </div>
             </div>
         </div>
@@ -18,7 +17,6 @@
             <div class="col-lg-12">
                 <div class="main-box">                    
                     <div class="main-box-body clearfix">
-
                         @if (count($errors) > 0)
                         <div class="alert alert-warning"> 
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -27,7 +25,6 @@
                             @endforeach                        
                         </div>
                         @endif 
-
                         <form id="onenter_prevent" method="POST" action="{{URL::action('ProductsubController@store')}}" accept-charset="UTF-8" >
                             <input type="hidden" name="units" id="units" value="{{$units->id}}">
                             <div class="form-group productcategory col-md-3">
@@ -64,16 +61,13 @@
                                     <input id="thickness" class="form-control" placeholder="Product Thickness" name="thickness" value="{{ old('thickness') }}" type="text">
                                 </div>
                             </div>
-
-
-
                             <div class="form-group col-md-3">
-                                <label for="weight">Product Weight</label>
+                                <label for="weight">Product Weight<span class="mandatory">*</span></label>
                                 <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="1" type="tel">
                             </div>
                             <div class="clearfix"></div>
                             <div class="form-group">
-                                <label for="difference">Standard Length</label>
+                                <label for="difference">Standard Length<span class="mandatory">*</span></label>
                                 <input id="standard_length" class="form-control" placeholder=" Standard Length" name="standard_length" value="{{ old('standard_length') }}" type="tel">
                             </div>
                             <div class="form-group">

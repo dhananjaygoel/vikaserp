@@ -588,7 +588,6 @@ class InquiryController extends Controller {
             'id' => $product->id,
             'product_price' => $product['product_category']->price + $cust + $location_diff + $product->difference
         ];
-
         echo json_encode(array('data_array' => $data_array));
     }
 

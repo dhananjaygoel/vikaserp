@@ -40,7 +40,6 @@ class PurchaseChallanController extends Controller {
      */
     public function index() {
 
-
         if (isset($_GET['order_filter']) && $_GET['order_filter'] != '') {
             $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
                     ->where('order_status', $_GET['order_filter'])
@@ -53,25 +52,8 @@ class PurchaseChallanController extends Controller {
                     ->Paginate(20);
         }
 
-
-
-
-
-
-
-
-
         $purchase_challan->setPath('purchase_challan');
         return view('purchase_challan', compact('purchase_challan'));
-    }
-
-    /**
-     * Show the form for creating a new resource.use Closure;
-     *
-     * @return Response
-     */
-    public function create() {
-        //
     }
 
     /**
@@ -82,14 +64,6 @@ class PurchaseChallanController extends Controller {
     public function store(PurchaseChallanRequest $request) {
 
         $input_data = Input::all();
-
-
-
-//        echo '<pre>';
-//        print_r($input_data);
-//        echo '</pre>';
-//        exit;
-
         $add_challan = new PurchaseChallan();
         $add_challan->expected_delivery_date = $request->input('bill_date');
         $add_challan->purchase_advice_id = $request->input('purchase_advice_id');
@@ -181,14 +155,14 @@ class PurchaseChallanController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function edit($id) {
-
-        $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'purchase_product.product_sub_category', 'purchase_product.unit')->where('id', $id)->first();
-        if (count($purchase_challan) < 1) {
-            return redirect('purchase_challan')->with('flash_message', 'Challan not found');
-        }
-        return view('edit_purchase_challan', compact('purchase_challan'));
-    }
+//    public function edit($id) {
+//
+//        $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'purchase_product.product_sub_category', 'purchase_product.unit')->where('id', $id)->first();
+//        if (count($purchase_challan) < 1) {
+//            return redirect('purchase_challan')->with('flash_message', 'Challan not found');
+//        }
+//        return view('edit_purchase_challan', compact('purchase_challan'));
+//    }
 
     /**
      * Update the specified resource in storage.
@@ -196,46 +170,46 @@ class PurchaseChallanController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function update($id, PurchaseChallanRequest $request) {
-
-        $challan_data = Input::all();
-        $purchase = array(
-            'vehicle_number' => $request->input('vehicle_number'),
-            'freight' => $request->input('Freight'),
-            'unloaded_by' => $request->input('unloaded_by'),
-            'labours' => $request->input('labour'),
-            'bill_number' => $request->input('billno'),
-            'remarks' => $request->input('remarks'),
-            'remarks' => $request->input('remarks'),
-            'discount' => $request->input('discount')
-        );
-
-        PurchaseChallan::where('id', $id)
-                ->update($purchase);
-
-        PurchaseProducts::where('purchase_order_id', $id)
-                ->where('order_type', 'purchase_challan')
-                ->delete();
-
-        $input_data = Input::all();
-
-        $order_products = array();
-        foreach ($input_data['product'] as $product_data) {
-            $order_products = [
-                'purchase_order_id' => $id,
-                'order_type' => 'purchase_challan',
-                'product_category_id' => $product_data['product_category_id'],
-                'unit_id' => $product_data['unit_id'],
-                'quantity' => $product_data['quantity'],
-                'present_shipping' => $product_data['present_shipping'],
-                'price' => $product_data['price'],
-            ];
-
-            $add_order_products = PurchaseProducts::create($order_products);
-        }
-
-        return redirect('purchase_challan')->with('success', 'Challan details successfully updated');
-    }
+//    public function update($id, PurchaseChallanRequest $request) {
+//
+//        $challan_data = Input::all();
+//        $purchase = array(
+//            'vehicle_number' => $request->input('vehicle_number'),
+//            'freight' => $request->input('Freight'),
+//            'unloaded_by' => $request->input('unloaded_by'),
+//            'labours' => $request->input('labour'),
+//            'bill_number' => $request->input('billno'),
+//            'remarks' => $request->input('remarks'),
+//            'remarks' => $request->input('remarks'),
+//            'discount' => $request->input('discount')
+//        );
+//
+//        PurchaseChallan::where('id', $id)
+//                ->update($purchase);
+//
+//        PurchaseProducts::where('purchase_order_id', $id)
+//                ->where('order_type', 'purchase_challan')
+//                ->delete();
+//
+//        $input_data = Input::all();
+//
+//        $order_products = array();
+//        foreach ($input_data['product'] as $product_data) {
+//            $order_products = [
+//                'purchase_order_id' => $id,
+//                'order_type' => 'purchase_challan',
+//                'product_category_id' => $product_data['product_category_id'],
+//                'unit_id' => $product_data['unit_id'],
+//                'quantity' => $product_data['quantity'],
+//                'present_shipping' => $product_data['present_shipping'],
+//                'price' => $product_data['price'],
+//            ];
+//
+//            $add_order_products = PurchaseProducts::create($order_products);
+//        }
+//
+//        return redirect('purchase_challan')->with('success', 'Challan details successfully updated');
+//    }
 
     /**
      * Remove the specified resource from storage.
@@ -281,7 +255,6 @@ class PurchaseChallanController extends Controller {
                 $str = "Dear '" . $customer->owner_name . "'\n your meterial has been desp as follows ";
                 foreach ($input_data as $product_data) {
                     $product = ProductSubCategory::find($product_data->product_category_id);
-//                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     if ($product_data['unit']->id == 1) {
                         $total_quantity = $total_quantity + $product_data->quantity;
                     }

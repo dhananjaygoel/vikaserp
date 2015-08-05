@@ -25,6 +25,8 @@
 }
 
 .ui-autocomplete{
-    max-height: 500px !important;
     overflow-y: scroll !important;
+    max-height: 250px;
 }
+
+

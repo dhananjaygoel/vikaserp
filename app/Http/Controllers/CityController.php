@@ -63,16 +63,6 @@ class CityController extends Controller {
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id) {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -128,6 +118,10 @@ class CityController extends Controller {
         } else
             return redirect('city')->with('flash_message', 'City details cannot be deleted as it is associated with a location.');
     }
+    
+    /*
+     * give the city list based on the give state id
+     */
 
     public function get_cities() {
         $state_id = Input::get('state_id');
