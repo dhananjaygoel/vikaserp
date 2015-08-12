@@ -1,6 +1,10 @@
 @extends('layouts.master')
 @section('title','Add Purchase Advise Independently')
 @section('content')
+<?php
+
+use Illuminate\Support\Facades\Session;
+?>
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
@@ -127,11 +131,14 @@
                                                 <td><span>Price</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
+                                            <?php
+                                            $session_data = Session::get('input_data');
+                                            ?>
                                             <?php for ($i = 1; $i <= 5; $i++) { ?>
                                                 <tr id="add_row_{{$i}}" class="add_product_row">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
-                                                            <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="purchase_order_advise_product_autocomplete({{$i}});">
+                                                            <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="purchase_order_advise_product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>">
                                                             <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
                                                             <input type="hidden" name="product[{{$i}}][purchase]" value="">
                                                             <i class="fa fa-search search-icon"></i>
@@ -139,7 +146,7 @@
                                                     </td>
                                                     <td class="col-md-1">
                                                         <div class="form-group">
-                                                            <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" value="" type="tel">
+                                                            <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-2">
@@ -153,16 +160,17 @@
                                                     </td>
                                                     <td class="col-md-2">
                                                         <div class="form-group">
-                                                            <input type="text" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price">
+                                                            <input type="text" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-4">
                                                         <div class="form-group">
-                                                            <input id="remark" class="form-control" placeholder="Remark" name="product[{{$i}}][remark]" value="" type="text">
+                                                            <input id="remark" class="form-control" placeholder="Remark" name="product[{{$i}}][remark]" value="" type="text" value="<?php if (isset($session_data['product'][$i]['remark'])) { ?>{{$session_data['product'][$i]['remark']}}<?php } ?>">
                                                         </div>
                                                     </td>
                                                 </tr>
                                             <?php } ?>
+                                            <?php Session::put('input_data', ''); ?>
                                         </tbody>
                                     </table>
                                     <table>

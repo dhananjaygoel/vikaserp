@@ -25,6 +25,7 @@ use App\ProductSubCategory;
 use App\DeliveryChallan;
 use App\CustomerProductDifference;
 use App\ProductCategory;
+use Session;
 
 class DeliveryOrderController extends Controller {
     /*
@@ -117,7 +118,10 @@ class DeliveryOrderController extends Controller {
                 $customer_id = $customers->id;
             } else {
                 $error_msg = $validator->messages();
-                return Redirect::back()->withInput()->withErrors($validator);
+                Session::forget('product');
+                Session::put('input_data', $input_data);
+//                return Redirect::back()->withErrors($validator)->withInput()->with('flash_data', $input_data);
+                return Redirect::back()->withErrors($validator)->withInput();
             }
         } elseif ($input_data['customer_status'] == "exist_customer") {
             $validator = Validator::make($input_data, array('autocomplete_customer_id' => 'required'));
@@ -125,6 +129,8 @@ class DeliveryOrderController extends Controller {
                 $customer_id = $input_data['autocomplete_customer_id'];
             } else {
                 $error_msg = $validator->messages();
+                Session::forget('product');
+                Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }

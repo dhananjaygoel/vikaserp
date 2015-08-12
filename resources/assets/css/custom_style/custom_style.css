@@ -28,5 +28,7 @@
     overflow-y: scroll !important;
     max-height: 250px;
 }
-
+.custom_alert_success{
+    display:none;
+}
 

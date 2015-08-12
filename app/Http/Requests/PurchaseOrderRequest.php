@@ -22,7 +22,7 @@ class PurchaseOrderRequest extends Request {
      */
     public function rules() {
         return [
-            'purchase_order_location' => 'required',
+//            'purchase_order_location' => 'required',
 //            'expected_delivery_date' => 'required'
         ];
     }

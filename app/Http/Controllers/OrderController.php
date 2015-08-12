@@ -29,6 +29,7 @@ use App\DeliveryOrder;
 use App\DeliveryChallan;
 use App\ProductSubCategory;
 use DateTime;
+use Session;
 
 class OrderController extends Controller {
 
@@ -118,8 +119,17 @@ class OrderController extends Controller {
      * @return Response
      */
     public function store(PlaceOrderRequest $request) {
-
         $input_data = Input::all();
+        $rules = array(
+            'status' => 'required',
+        );
+        $validator = Validator::make($input_data, $rules);
+
+        if ($validator->fails()) {
+            Session::forget('product');
+            Session::put('input_data', $input_data);
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
 
         if ($input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
@@ -132,7 +142,9 @@ class OrderController extends Controller {
                 $customers->customer_status = 'pending';
             } else {
                 $error_msg = $validator->messages();
-                return Redirect::back()->withInput()->withErrors($validator);
+                Session::forget('product');
+                Session::put('input_data', $input_data);
+                return Redirect::back()->withErrors($validator)->withInput();
             }
         } elseif ($input_data['customer_status'] == "existing_customer") {
             $validator = Validator::make($input_data, Customer::$existing_customer_inquiry_rules);
@@ -140,7 +152,9 @@ class OrderController extends Controller {
                 $customer_id = $input_data['existing_customer_name'];
             } else {
                 $error_msg = $validator->messages();
-                return Redirect::back()->withInput()->withErrors($validator);
+                Session::forget('product');
+                Session::put('input_data', $input_data);
+                return Redirect::back()->withErrors($validator)->withInput();
             }
         }
         $i = 0;

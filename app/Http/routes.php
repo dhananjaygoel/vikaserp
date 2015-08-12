@@ -136,7 +136,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('create_delivery_challan/{id}', 'DeliveryOrderController@store_delivery_challan');
 
     Route::resource('sales_daybook', 'SalesDaybookController@index');
-    
+
     Route::post('delete_sales_daybook/{id}', 'SalesDaybookController@delete_challan');
     Route::post('delete_multiple_challan', 'SalesDaybookController@delete_multiple_challan');
     Route::post('sales_daybook_date', 'SalesDaybookController@challan_date');
@@ -167,3 +167,4 @@ Route::group(['middleware' => ['auth']], function() {
 Route::get('export/{type}', 'WelcomeController@exportExcel');
 Route::get('get_server_data', 'WelcomeController@get_server_data');
 Route::get('clear_completed_records', 'CronDeleteRecordsController@index');
+Route::post('update_all_sizes', 'ProductsubController@update_all_sizes_difference');
