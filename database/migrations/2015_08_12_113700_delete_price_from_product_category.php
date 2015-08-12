@@ -14,9 +14,6 @@ class DeletePriceFromProductCategory extends Migration {
         Schema::table('product_category', function($t) {
             $t->dropColumn('price');
         });
-        Schema::table('product_category', function($t) {
-            $t->renameColumn('price_new', 'price');
-        });
     }
 
     /**
