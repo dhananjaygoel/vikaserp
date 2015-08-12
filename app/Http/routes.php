@@ -12,6 +12,8 @@
  */
 
 
+Route::get('updatedata', 'HomeController@updatedata');
+Route::get('showupdatedata', 'HomeController@showupdatedata');
 
 
 Route::get('doMigrate', function () {
@@ -136,7 +138,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('create_delivery_challan/{id}', 'DeliveryOrderController@store_delivery_challan');
 
     Route::resource('sales_daybook', 'SalesDaybookController@index');
-    
+
     Route::post('delete_sales_daybook/{id}', 'SalesDaybookController@delete_challan');
     Route::post('delete_multiple_challan', 'SalesDaybookController@delete_multiple_challan');
     Route::post('sales_daybook_date', 'SalesDaybookController@challan_date');
