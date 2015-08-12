@@ -24,6 +24,7 @@ use App\PurchaseOrderCanceled;
 use App\PurchaseAdvise;
 use DateTime;
 use App\ProductSubCategory;
+use Session;
 
 class PurchaseOrderController extends Controller {
 
@@ -104,12 +105,23 @@ class PurchaseOrderController extends Controller {
      * @return Response
      */
     public function store(PurchaseOrderRequest $request) {
+        $input_data = Input::all();
+        $rules = array(
+            'purchase_order_location' => 'required',
+        );
+        $validator = Validator::make($input_data, $rules);
+
+        if ($validator->fails()) {
+            Session::forget('product');
+            Session::put('input_data', $input_data);
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
-        $input_data = Input::all();
+
 
         $i = 0;
         $j = count($input_data['product']);
@@ -135,6 +147,8 @@ class PurchaseOrderController extends Controller {
                 $customer_id = $customers->id;
             } else {
                 $error_msg = $validator->messages();
+                Session::forget('product');
+                Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         } elseif ($input_data['supplier_status'] == "existing_supplier") {
@@ -145,6 +159,8 @@ class PurchaseOrderController extends Controller {
                 $customer_id = $input_data['autocomplete_supplier_id'];
             } else {
                 $error_msg = $validate->messages();
+                Session::forget('product');
+                Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validate);
             }
         }

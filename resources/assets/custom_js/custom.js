@@ -16,7 +16,7 @@ $(document).ready(function () {
         if (prod == 2) {
             $('.thick12').css('display', 'none');
         }
-        
+
         var product_type_id = $("#product_sub_category_select").val();
         var url = $('#baseurl2').val();
         var token = $('#_token').val();
@@ -216,7 +216,7 @@ function calutate_pending_order(qty, key) {
 
     var shipping = $('#present_shipping_' + key).val();
     var pending = $('#pending_order_org' + key).val();
- if (parseInt(shipping) <= parseInt(qty)) {
+    if (parseInt(shipping) <= parseInt(qty)) {
         $('#pending_order_' + key).val(qty - shipping);
     } else {
         alert('Present shipping should not be greater than pending order');
@@ -309,7 +309,7 @@ $("#order_size").autocomplete({
     }
 
 });
- 
+
 $("#search_text").autocomplete({
     minLength: 1,
     dataType: 'json',
@@ -345,9 +345,9 @@ $('#save_all_price_btn').click(function () {
 
 function test(a, b, e) {
     var abc = $(e).val();
-        $(e).val(function (i, abc) {
-            return abc.replace(/\d{3}|[^\d{2}\.]|^\./g, "");
-        });
+    $(e).val(function (i, abc) {
+        return abc.replace(/\d{3}|[^\d{2}\.]|^\./g, "");
+    });
 }
 
 function submit_filter_form() {
@@ -364,3 +364,28 @@ $('#labour').on('keyup', function (e) {
             self.value = parseInt(self.value, 10);
     }, 0);
 });
+$('#save_all_size_btn').click(function () {
+    var token = $('#_token').val();
+    $.ajax({
+        type: 'POST',
+        url: baseurl + '/update_all_sizes',
+        data: {form_data: $('#save_all_product_sizes').serialize(), _token: token},
+        success: function (data) {
+            $('.alert-success1').show();
+        }
+    });
+});
+
+function update_difference(e) {
+    var difference = $(e).parent().parent().children().find("input[type=text]").val();
+    var id = $(e).parent().parent().children().find("input[type=hidden]").val();
+    var token = $('#_token').val();
+    $.ajax({
+        type: 'post',
+        url: baseurl + '/update_difference',
+        data: {difference: difference, id: id, _token: token},
+        success: function (data) {
+            $('.custom_alert_success').fadeOut(5000);
+        }
+    });
+}

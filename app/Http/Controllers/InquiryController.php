@@ -28,6 +28,7 @@ use App\AllOrderProducts;
 use DateTime;
 use App\CustomerProductDifference;
 use App\ProductType;
+use Session;
 
 class InquiryController extends Controller {
 
@@ -89,6 +90,16 @@ class InquiryController extends Controller {
      */
     public function store(InquiryRequest $request) {
         $input_data = Input::all();
+        $rules = array(
+            'add_inquiry_location' => 'required',
+        );
+        $validator = Validator::make($input_data, $rules);
+
+        if ($validator->fails()) {
+            Session::forget('product');
+            Session::put('input_data', $input_data);
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
 
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
         $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));

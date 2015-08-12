@@ -333,4 +333,15 @@ class ProductsubController extends Controller {
         echo json_encode(array('data_array' => $data_array));
     }
 
+    public function update_all_sizes_difference() {
+        $data = Input::get('form_data');
+        $unserialized_data = parse_str(Input::get('form_data'), $formfields);
+        for ($i = 1; $i < sizeof($formfields); $i++) {
+            if (isset($formfields['difference_' . $i])) {
+                ProductSubCategory::where('id', $formfields['id_' . $i])
+                        ->update(array('difference' => $formfields['difference_' . $i]));
+            }
+        }
+    }
+
 }

@@ -65,142 +65,147 @@
                             {{Session::get('wrong')}}                            
                         </div>
                         @endif
-
+                        <div class="alert alert-success alert-success1 custom_alert_success">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            Product differences have been successfully updated.                     
+                        </div>
                         @if(sizeof($product_sub_cat) != 0)
                         <div class="table-responsive">
-                            <table id="table-example" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Product Name</th>
-                                        <th>Alias Name</th>
-                                        <th>Size(Meter)</th>
-                                        @if(Input::get('product_filter') != 2)
-                                        <th>Thickness</th>
-                                        @endif
-                                        <th>Weight(KG)</th>                                        
-                                        <th>Standard Length</th>                                        
-                                        <th>Today's Price</th>                                        
-                                        <th class="col-md-2">Difference</th>  
-                                        @if( Auth::user()->role_id == 0 )
-                                        <th >Actions</th>
-                                        @endif
-                                    </tr>
-                                </thead>
-                                <tbody> 
-                                    <?php
-                                    $i = ($product_sub_cat->currentPage() - 1 ) * $product_sub_cat->perPage() + 1;
-                                    ?>
-                                    @foreach($product_sub_cat as $produ_sub) 
-                                    @if(sizeof($produ_sub['product_category']) != 0)
-                                    <tr>
-                                        <td>{{ $i }}</td>
-                                        <td>{{ $produ_sub['product_category']->product_category_name }} </td>
-                                        <td>{{ $produ_sub->alias_name }}</td>
-                                        <td>{{ $produ_sub->size }}</td>
-                                        @if(Input::get('product_filter') != 2)
-                                        <td>
-                                            @if($produ_sub['product_category']->product_type_id == 1)
-                                            @if(is_numeric($produ_sub->thickness))
-                                            {{ round($produ_sub->thickness, 2) }}
-                                            @else
-                                            {{$produ_sub->thickness}}
+                            <form method="POST" id="save_all_product_sizes">
+                                <input type="hidden" name="_token" value="{{csrf_token()}}" id="_token">
+                                <table id="table-example" class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Product Name</th>
+                                            <th>Alias Name</th>
+                                            <th>Size(Meter)</th>
+                                            @if(Input::get('product_filter') != 2)
+                                            <th>Thickness</th>
                                             @endif
-                                            @else
-                                            {{'--'}}
+                                            <th>Weight(KG)</th>                                        
+                                            <th>Standard Length</th>                                        
+                                            <th>Today's Price</th>                                        
+                                            <th class="col-md-2">Difference</th>  
+                                            @if( Auth::user()->role_id == 0 )
+                                            <th >Actions</th>
                                             @endif
-                                        </td>
-                                        @endif
-                                        <td>{{ $produ_sub->weight }} KG</td>
-                                        <td>{{ $produ_sub->standard_length }}</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody> 
+                                        <?php
+                                        $i = ($product_sub_cat->currentPage() - 1 ) * $product_sub_cat->perPage() + 1;
+                                        ?>
+                                        @foreach($product_sub_cat as $produ_sub) 
+                                        @if(sizeof($produ_sub['product_category']) != 0)
+                                        <tr>
+                                            <td>{{ $i }}</td>
+                                            <td>{{ $produ_sub['product_category']->product_category_name }} </td>
+                                            <td>{{ $produ_sub->alias_name }}</td>
+                                            <td>{{ $produ_sub->size }}</td>
+                                            @if(Input::get('product_filter') != 2)
+                                            <td>
+                                                @if($produ_sub['product_category']->product_type_id == 1)
+                                                @if(is_numeric($produ_sub->thickness))
+                                                {{ round($produ_sub->thickness, 2) }}
+                                                @else
+                                                {{$produ_sub->thickness}}
+                                                @endif
+                                                @else
+                                                {{'--'}}
+                                                @endif
+                                            </td>
+                                            @endif
+                                            <td>{{ $produ_sub->weight }} KG</td>
+                                            <td>{{ $produ_sub->standard_length }}</td>
 
-                                        <td>
-                                            <?php
-                                            $sign = substr($produ_sub->difference, 0, 1);
-                                            ?>
-                                            @if($sign == '-')
-                                            {{ $produ_sub['product_category']->price - substr($produ_sub->difference,1) }}
-                                            @else
-                                            {{ $produ_sub['product_category']->price + $produ_sub->difference }}
-                                            @endif
+                                            <td>
+                                                <?php
+                                                $sign = substr($produ_sub->difference, 0, 1);
+                                                ?>
+                                                @if($sign == '-')
+                                                {{ $produ_sub['product_category']->price - substr($produ_sub->difference,1) }}
+                                                @else
+                                                {{ $produ_sub['product_category']->price + $produ_sub->difference }}
+                                                @endif
 
-                                        </td>
-                                        <td>
-                                            @if(Auth::user()->role_id == 0)
-                                            <form method="post" action="{{URL::action('ProductsubController@update_difference')}}">
+                                            </td>
+                                            <td>
+                                                @if(Auth::user()->role_id == 0)
                                                 <div class="row product-price">
                                                     <div class="form-group col-md-6">
-                                                        <input type="tel" class="form-control" required="" name="difference" value="{{ $produ_sub->difference}}">
-                                                        <input type="hidden" class="form-control" name="id" value="{{ $produ_sub->id}}">
-                                                        <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                                        <input type="text" class="form-control" required="" name="difference_{{$i}}" value="{{ $produ_sub->difference}}">
+                                                        <input type="hidden" class="form-control" name="id_{{$i}}" value="{{ $produ_sub->id}}">
+                                                        <input type="hidden" name="_token" value="{{csrf_token()}}" id="_token">
                                                     </div>
                                                     <div class="form-group col-md-2 difference_form">
-                                                        <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                                        <input class="btn btn-primary" type="button" class="form-control" value="save" onclick="update_difference(this);" >     
                                                     </div>
                                                 </div>
-                                            </form>
-                                            @else
-                                            <div class="form-group col-md-6">{{ $produ_sub->difference }} </div>
+                                                @else
+                                                <div class="form-group col-md-6">{{ $produ_sub->difference }} </div>
+                                                @endif
+                                            </td> 
+                                            @if( Auth::user()->role_id == 0 )
+                                            <td>
+                                                <a href="{{URL::action('ProductsubController@edit',['id'=>$produ_sub->id])}}" class="table-link">
+                                                    <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                    </span>
+                                                </a>
+                                                <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal{{$produ_sub->id}}">
+                                                    <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                        <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                    </span>
+                                                </a>
+                                            </td>
                                             @endif
-                                        </td> 
-                                        @if( Auth::user()->role_id == 0 )
-                                        <td>
-                                            <a href="{{URL::action('ProductsubController@edit',['id'=>$produ_sub->id])}}" class="table-link">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal{{$produ_sub->id}}">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                        </td>
+                                        </tr>                           
+                                        <?php $i++; ?>
                                         @endif
-                                    </tr>                           
-                                    <?php $i++; ?>
-                                    @endif
-                                <div class="modal fade" id="myModal{{$produ_sub->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                <h4 class="modal-title" id="myModalLabel"></h4>
-                                            </div>
-                                            {!! Form::open(array('route' => array('product_sub_category.destroy', $produ_sub->id), 'method' => 'delete')) !!}
-                                            <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                            <div class="modal-body">
-                                                <div class="delete">
-                                                    <?php
-                                                    $us = Auth::user();
-                                                    $us['mobile_number']
-                                                    ?>
-                                                    <div><b>Mobile:</b>
-                                                        {{$us['mobile_number']}}
-                                                        <input type="hidden" name="mobile" value="{{$us['mobile_number']}}"/>
-                                                        <input type="hidden" name="user_id" value="<?php echo $produ_sub->id; ?>"/>
-                                                    </div>
-                                                    <div class="pwd">
-                                                        <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" id="model_pass<?php echo $produ_sub->id; ?>" name="model_pass" placeholder="" required="required" type="password"></div>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                    <div class="delp">Are you sure you want to <b>delete </b>?</div>
+                                    <div class="modal fade" id="myModal{{$produ_sub->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel"></h4>
                                                 </div>
-                                            </div>           
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-default">Yes</button>
+                                                {!! Form::open(array('route' => array('product_sub_category.destroy', $produ_sub->id), 'method' => 'delete')) !!}
+                                                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                                <div class="modal-body">
+                                                    <div class="delete">
+                                                        <?php
+                                                        $us = Auth::user();
+                                                        $us['mobile_number']
+                                                        ?>
+                                                        <div><b>Mobile:</b>
+                                                            {{$us['mobile_number']}}
+                                                            <input type="hidden" name="mobile" value="{{$us['mobile_number']}}"/>
+                                                            <input type="hidden" name="user_id" value="<?php echo $produ_sub->id; ?>"/>
+                                                        </div>
+                                                        <div class="pwd">
+                                                            <div class="pwdl"><b>Password:</b></div>
+                                                            <div class="pwdr"><input class="form-control" id="model_pass<?php echo $produ_sub->id; ?>" name="model_pass" placeholder="" required="required" type="password"></div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                        <div class="delp">Are you sure you want to <b>delete </b>?</div>
+                                                    </div>
+                                                </div>           
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                                    <button type="submit" class="btn btn-default">Yes</button>
+                                                </div>
+                                                {!! Form::close() !!}
                                             </div>
-                                            {!! Form::close() !!}
                                         </div>
-                                    </div>
-                                </div>                                
-                                @endforeach
-                                </tbody>
-                            </table>
+                                    </div>                                
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                                <button name="submit" class="btn btn-primary" id="save_all_size_btn" type="button">Save All Sizes</button>
+                            </form>
                             <span class="pull-right">
                                 <ul class="pagination pull-right">
                                     @if(sizeof($_GET) < 2)

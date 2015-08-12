@@ -24,6 +24,7 @@ use Validator;
 use DateTime;
 use App\ProductSubCategory;
 use App\PurchaseOrder;
+use Session;
 
 class PurchaseAdviseController extends Controller {
 
@@ -81,6 +82,16 @@ class PurchaseAdviseController extends Controller {
     public function store(StorePurchaseAdvise $request) {
 
         $input_data = Input::all();
+        $rules = array(
+            'bill_date' => 'required',
+            'vehicle_number' => 'required',
+        );
+        $validator = Validator::make($input_data, $rules);
+        if ($validator->fails()) {
+            Session::forget('product');
+            Session::put('input_data', $input_data);
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
         $i = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
@@ -105,6 +116,8 @@ class PurchaseAdviseController extends Controller {
                 $customer_id = $customers->id;
             } else {
                 $error_msg = $validator->messages();
+                Session::forget('product');
+                Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         } elseif ($input_data['supplier_status'] == "existing") {
@@ -113,6 +126,8 @@ class PurchaseAdviseController extends Controller {
                 $customer_id = $input_data['supplier_id'];
             } else {
                 $error_msg = $validator->messages();
+                Session::forget('product');
+                Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
