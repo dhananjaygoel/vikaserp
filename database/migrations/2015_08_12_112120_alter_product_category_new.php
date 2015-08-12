@@ -12,9 +12,9 @@ class AlterProductCategoryNew extends Migration {
      */
     public function up() {
 
-        Schema::table('product_category', function($t) {
-            $t->decimal('price_new', 8, 2);
-        });
+//        Schema::table('product_category', function($t) {
+//            $t->decimal('price_new', 8, 2);
+//        });
     }
 
     /**
@@ -23,9 +23,9 @@ class AlterProductCategoryNew extends Migration {
      * @return void
      */
     public function down() {
-        Schema::table('product_category', function($t) {
-            $t->dropColumn('price_new');
-        });
+//        Schema::table('product_category', function($t) {
+//            $t->dropColumn('price_new');
+//        });
     }
 
 }
