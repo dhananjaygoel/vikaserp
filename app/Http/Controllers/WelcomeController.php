@@ -395,7 +395,8 @@ class WelcomeController extends Controller {
             $input = Input::file('excel_file');
             $filename = $input->getRealPath();
 //            var_dump($input);
-
+            ini_set('max_execution_time', 240);
+//            ini_set('memory_limit', '256M');
             Excel::load($filename, function($reader) {
                 $results = $reader->all();
                 foreach ($results as $excel) {
@@ -408,8 +409,8 @@ class WelcomeController extends Controller {
                         if (isset($excel1->company_name))
                             $customer->company_name = $excel1->company_name;
                         if (isset($excel1->address1)) {
-                            $customer->address1 = $excel->address1;
-                            $customer->address2 = $excel->address1;
+                            $customer->address1 = $excel1->address1;
+                            $customer->address2 = $excel1->address1;
                         }
                         $customer->city = 1;
                         $customer->state = 1;
