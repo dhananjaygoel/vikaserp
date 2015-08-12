@@ -128,6 +128,8 @@ class InquiryController extends Controller {
                 $customer_id = $customers->id;
             } else {
                 $error_msg = $validator->messages();
+                Session::forget('product');
+                Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         } elseif ($input_data['customer_status'] == "existing_customer") {
@@ -136,6 +138,8 @@ class InquiryController extends Controller {
                 $customer_id = $input_data['existing_customer_name'];
             } else {
                 $error_msg = $validator->messages();
+                Session::forget('product');
+                Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
