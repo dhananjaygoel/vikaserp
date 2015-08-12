@@ -14,12 +14,9 @@ class AlterProductCategoryTable extends Migration {
 //        Schema::table('product_category', function($t) {
 //            $t->dropColumn('price');
 //        });
-
-
-
-        Schema::table('product_category', function($t) {
-            $t->decimal('price_new', 8, 2);
-        });
+//        Schema::table('product_category', function($t) {
+//            $t->decimal('price_new', 8, 2);
+//        });
     }
 
     /**
@@ -28,9 +25,9 @@ class AlterProductCategoryTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::table('product_category', function($t) {
-            $t->dropColumn('price_new');
-        });
+//        Schema::table('product_category', function($t) {
+//            $t->dropColumn('price_new');
+//        });
     }
 
 }
