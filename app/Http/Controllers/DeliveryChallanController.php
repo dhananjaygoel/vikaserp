@@ -223,6 +223,9 @@ class DeliveryChallanController extends Controller {
                         ->where('challan_status', '=', 'completed')
                         ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
 
+        $calculated_vat_value = $allorder->grand_price * ($allorder->vat_percentage / 100);
+        $allorder['calculated_vat_price'] = $calculated_vat_value;
+
         /*
           | ------------------- -----------------------
           | SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
@@ -292,4 +295,5 @@ class DeliveryChallanController extends Controller {
             }
         }
     }
+
 }

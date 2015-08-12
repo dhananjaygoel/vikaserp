@@ -300,10 +300,10 @@
                         </div>
                         <div class="label">&nbsp; Vat</div>
                         <div class="value">
-                            @if($allorder->vat_percentage != "")
-                            {{$allorder->vat_percentage.'%'}} 
+                            @if($allorder->calculated_vat_price != "")
+                            {{$allorder->calculated_vat_price}} 
                             @else
-                            0%
+                            0
                             @endif 
                             &nbsp;
                         </div>
