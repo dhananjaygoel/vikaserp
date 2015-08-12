@@ -394,40 +394,56 @@ class WelcomeController extends Controller {
 
             $input = Input::file('excel_file');
             $filename = $input->getRealPath();
-            var_dump($input);
+//            var_dump($input);
 
             Excel::load($filename, function($reader) {
                 $results = $reader->all();
-
                 foreach ($results as $excel) {
-                    $customer = new Customer();
-                    $customer->owner_name = $excel->owner_name;
-                    $customer->contact_person = $excel->contact_person;
-                    $customer->company_name = $excel->company_name;
-                    $customer->address1 = $excel->address1;
-                    $customer->address2 = $excel->address1;
-                    $customer->city = 1;
-                    $customer->state = 1;
-                    $customer->zip = $excel->zip;
-                    $customer->email = $excel->email;
-                    $customer->tally_name = $excel->tally_name;
-                    $customer->phone_number1 = $excel->phone_number_1;
-                    $customer->phone_number2 = $excel->phone_number_2;
-                    $customer->excise_number = $excel->excise_number;
-
-                    $location = "";
-                    $location = DeliveryLocation::where('area_name', 'like', '%' . $excel->delivery_location . '%')->first();
-                    $customer->delivery_location_id = $location->id;
-
-                    $customer->username = $excel->user_name;
-                    $customer->password = Hash::make($excel->password);
-                    $customer->credit_period = $excel->credit_period;
-                    $customer->customer_status = 'permanent';
-                    $customer->relationship_manager = 2;
-                    $customer->save();
+                    foreach ($excel as $excel1) {
+                        $customer = new Customer();
+                        if (isset($excel1->owner_name))
+                            $customer->owner_name = $excel1->owner_name;
+                        if (isset($excel1->contact_person))
+                            $customer->contact_person = $excel1->contact_person;
+                        if (isset($excel1->company_name))
+                            $customer->company_name = $excel1->company_name;
+                        if (isset($excel1->address1)) {
+                            $customer->address1 = $excel->address1;
+                            $customer->address2 = $excel->address1;
+                        }
+                        $customer->city = 1;
+                        $customer->state = 1;
+                        if (isset($excel1->zip))
+                            $customer->zip = $excel1->zip;
+                        if (isset($excel1->email))
+                            $customer->email = $excel1->email;
+                        if (isset($excel1->tally_name))
+                            $customer->tally_name = $excel1->tally_name;
+                        if (isset($excel1->phone_number_1))
+                            $customer->phone_number1 = $excel1->phone_number_1;
+                        if (isset($excel1->phone_number_2))
+                            $customer->phone_number2 = $excel1->phone_number_2;
+                        if (isset($excel1->excise_number))
+                            $customer->excise_number = $excel1->excise_number;
+                        $location = "";
+                        if (isset($excel1->delivery_location)) {
+                            $location = DeliveryLocation::where('area_name', 'like', '%' . $excel1->delivery_location . '%')->first();
+                            $customer->delivery_location_id = $location->id;
+                        }
+                        if (isset($excel1->user_name))
+                            $customer->username = $excel1->user_name;
+                        if (isset($excel1->password))
+                            $customer->password = Hash::make($excel1->password);
+                        if (isset($excel1->credit_period))
+                            $customer->credit_period = $excel1->credit_period;
+                        $customer->customer_status = 'permanent';
+                        $customer->relationship_manager = 2;
+                        if (isset($customer->owner_name) && $customer->owner_name != "") {
+                            $customer->save();
+                        }
+                    }
                 }
             });
-
             return redirect('excel_import_customer')->with('success', 'Customer details excel file successfully uploaded.');
         } else {
             return redirect('excel_import_customer')->with('wrong', 'Please select file to upload');
