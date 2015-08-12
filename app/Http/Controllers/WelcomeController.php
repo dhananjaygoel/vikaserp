@@ -395,8 +395,7 @@ class WelcomeController extends Controller {
             $input = Input::file('excel_file');
             $filename = $input->getRealPath();
 //            var_dump($input);
-            ini_set('max_execution_time', 240);
-//            ini_set('memory_limit', '256M');
+//            ini_set('max_execution_time', 240);
             Excel::load($filename, function($reader) {
                 $results = $reader->all();
                 foreach ($results as $excel) {
