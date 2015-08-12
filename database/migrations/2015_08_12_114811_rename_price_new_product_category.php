@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class DeletePriceFromProductCategory extends Migration {
+class RenamePriceNewProductCategory extends Migration {
 
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class DeletePriceFromProductCategory extends Migration {
      */
     public function up() {
         Schema::table('product_category', function($t) {
-            $t->dropColumn('price');
+            $t->renameColumn('price_new', 'price');
         });
     }
 
