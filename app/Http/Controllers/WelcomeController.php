@@ -161,18 +161,17 @@ class WelcomeController extends Controller {
     }
 
     public function upload_excel() {
-        ini_set('max_execution_time', 240);
-        ini_set('memory_limit', '256M');
+        ini_set('max_execution_time', 480);
+        ini_set('memory_limit', '768M');
         if (Input::hasFile('excel_file')) {
             $f = Input::file('excel_file');
 
             $input = Input::file('excel_file');
             $filename = $input->getRealPath();
-            var_dump($input);
+//            var_dump($input);
 
             Excel::load($filename, function($reader) {
                 $results = $reader->all();
-
                 foreach ($results as $excel) {
 
                     if ($excel->type == 'Pipe') {
@@ -180,9 +179,7 @@ class WelcomeController extends Controller {
                                         ->where('product_category_name', $excel->category)->first();
 
                         if (sizeof($exits_cat) > 0) {
-
                             $exits_cat->id;
-
 
                             $exits_sub_cat = ProductSubCategory::where('product_category_id', $exits_cat->id)
                                     ->where('alias_name', $excel->alias)
