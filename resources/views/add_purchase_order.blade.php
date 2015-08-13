@@ -121,8 +121,16 @@ use Illuminate\Support\Facades\Session;
                                             </tr>
                                             <?php
                                             $session_data = Session::get('input_data');
-                                            ?>
-                                            <?php for ($i = 1; $i <= 5; $i++) { ?>
+                                            if (isset($session_data['product'])) {
+                                                $total_products_added = sizeof($session_data['product']);
+                                            }
+                                            if (isset($total_products_added) && ($total_products_added > 5)) {
+                                                $j = $total_products_added;
+                                            } else {
+                                                $j = 5;
+                                            }
+                                            for ($i = 1; $i <= $j; $i++) {
+                                                ?>
                                                 <tr id="add_row_{{$i}}" class="add_product_row">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">

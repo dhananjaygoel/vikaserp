@@ -160,44 +160,53 @@ use Illuminate\Support\Facades\Session;
                                             </tr>
                                             <?php
                                             $session_data = Session::get('input_data');
-                                            ?>
-                                            <?php for ($i = 1; $i <= 5; $i++) { ?>
-                                                <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
-                                                    <td class="col-md-3">
-                                                        <div class="form-group searchproduct">
-                                                            <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>">
-                                                            <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
-                                                            <i class="fa fa-search search-icon"></i>
+                                            if (isset($session_data['product'])) {
+                                                $total_products_added = sizeof($session_data['product']);
+                                            }
+                                            if (isset($total_products_added) && ($total_products_added > 5)) {
+                                                $j = $total_products_added;
+                                            } else {
+                                                $j = 5;
+                                            }
+                                            for ($i = 1; $i <= $j; $i++) {
+                                                ?>
+                                                <tr id = "add_row_{{$i}}" class = "add_product_row" data-row-id = "{{$i}}">
+                                                    <td class = "col-md-3">
+                                                        <div class = "form-group searchproduct">
+                                                            <input class = "form-control" placeholder = "Enter Product name " type = "text" name = "product[{{$i}}][name]" id = "add_product_name_{{$i}}" onfocus = "product_autocomplete({{$i}});" value = "<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>">
+                                                            <input type = "hidden" name = "product[{{$i}}][id]" id = "add_product_id_{{$i}}" value = "">
+                                                            <i class = "fa fa-search search-icon"></i>
                                                         </div>
                                                     </td>
-                                                    <td class="col-md-1">
-                                                        <div class="form-group">
-                                                            <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
+                                                    <td class = "col-md-1">
+                                                        <div class = "form-group">
+                                                            <input id = "quantity_{{$i}}" class = "form-control" placeholder = "Qnty" name = "product[{{$i}}][quantity]" type = "tel" value = "<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
                                                         </div>
                                                     </td>
-                                                    <td class="col-md-2">
-                                                        <div class="form-group ">
-                                                            <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
+                                                    <td class = "col-md-2">
+                                                        <div class = "form-group ">
+                                                            <select class = "form-control" name = "product[{{$i}}][units]" id = "units_{{$i}}">
                                                                 @foreach($units as $unit)
-                                                                <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
+                                                                <option value = "{{$unit->id}}">{{$unit->unit_name}}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                     </td>
-                                                    <td class="col-md-2">
-                                                        <div class="form-group col-md-6">
-                                                            <input type="text" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
+                                                    <td class = "col-md-2">
+                                                        <div class = "form-group col-md-6">
+                                                            <input type = "text" class = "form-control" id = "product_price_{{$i}}" name = "product[{{$i}}][price]" placeholder = "Price" value = "<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
                                                         </div>
-                                                        <div class="form-group col-md-6 difference_form">
+                                                        <div class = "form-group col-md-6 difference_form">
                                                         </div>
                                                     </td>
-                                                    <td class="col-md-4">
-                                                        <div class="form-group">
-                                                            <input id="remark" class="form-control" placeholder="Remark" name="product[{{$i}}][remark]" type="text" value="<?php if (isset($session_data['product'][$i]['remark'])) { ?>{{$session_data['product'][$i]['remark']}}<?php } ?>">
+                                                    <td class = "col-md-4">
+                                                        <div class = "form-group">
+                                                            <input id = "remark" class = "form-control" placeholder = "Remark" name = "product[{{$i}}][remark]" type = "text" value = "<?php if (isset($session_data['product'][$i]['remark'])) { ?>{{$session_data['product'][$i]['remark']}}<?php } ?>">
                                                         </div>
                                                     </td>
                                                 </tr>
-                                            <?php } ?>
+                                            <?php }
+                                            ?>
                                             <?php Session::put('input_data', ''); ?>
                                         </tbody>
                                     </table>
