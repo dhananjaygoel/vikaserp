@@ -1,12 +1,12 @@
 
-$(document).ready(function () {
-    $("#product_type2").click(function () {
+$(document).ready(function() {
+    $("#product_type2").click(function() {
         $(".thick").hide();
     });
-    $("#product_type1").click(function () {
+    $("#product_type1").click(function() {
         $(".thick").show();
     });
-    $('#product_sub_category_select').change(function () {
+    $('#product_sub_category_select').change(function() {
 
         var prod = $('#product_sub_category_select').val();
         if (prod == 1) {
@@ -24,7 +24,7 @@ $(document).ready(function () {
             type: 'get',
             url: url + '/get_product_category',
             data: {product_type_id: product_type_id, _token: token},
-            success: function (data) {
+            success: function(data) {
                 var main_array = JSON.parse(data);
                 var prod = main_array['prod'];
                 var str = '';
@@ -38,25 +38,25 @@ $(document).ready(function () {
         });
     });
 });
-$(document).ready(function () {
-    $("#exist_customer").click(function () {
+$(document).ready(function() {
+    $("#exist_customer").click(function() {
         $(".exist_field").hide();
         $(".customer_select").show();
     });
-    $("#new_customer").click(function () {
+    $("#new_customer").click(function() {
         $(".exist_field").show();
         $(".customer_select").hide();
     });
-    $("#optionsRadios4").click(function () {
+    $("#optionsRadios4").click(function() {
         $(".supplier").show();
     });
-    $("#optionsRadios3").click(function () {
+    $("#optionsRadios3").click(function() {
         $(".supplier").hide();
     });
-    $("#optionsRadios6").click(function () {
+    $("#optionsRadios6").click(function() {
         $(".plusvat").show();
     });
-    $("#optionsRadios5").click(function () {
+    $("#optionsRadios5").click(function() {
         $(".plusvat").hide();
     });
 });
@@ -73,32 +73,32 @@ $('#datepickerDate1').datepicker({
     autoclose: true
 });
 $('#datepickerDateComponent1').datepicker();
-$(document).ready(function () {
-    $("#addmore1").click(function () {
+$(document).ready(function() {
+    $("#addmore1").click(function() {
         $(".row5").hide();
         $(".row6").show();
         $(".row7").show();
     });
-    $("#addmore2").click(function () {
+    $("#addmore2").click(function() {
         $(".row7").hide();
         $(".row8").show();
         $(".row9").show();
     });
-    $("#addmore3").click(function () {
+    $("#addmore3").click(function() {
         $(".row9").hide();
         $(".row10").show();
         $(".row11").show();
     });
-    $("#addmore4").click(function () {
+    $("#addmore4").click(function() {
         $(".row11").hide();
         $(".row12").show();
     });
-    $('#add_more_product').on("click", function () {
+    $('#add_more_product').on("click", function() {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
             type: "GET",
             url: baseurl + '/get_units'
-        }).done(function (data) {
+        }).done(function(data) {
             var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
@@ -148,8 +148,11 @@ $(document).ready(function () {
         $("#table-example").children("tbody").append(str);
     });
 });
-$(function () {
+$(function() {
     $('.smstooltip').tooltip();
+});
+$(function() {
+    $('.menutooltip').tooltip();
 });
 /**
  * Comment
@@ -159,7 +162,7 @@ function create_purchase_challan_function() {
     $.ajax({
         type: "GET",
         url: baseurl + '/get_units'
-    }).done(function (data) {
+    }).done(function(data) {
         var main_array = JSON.parse(data);
         var arr1 = main_array['units'];
         var html = '';
@@ -232,7 +235,7 @@ function state_option() {
         type: "GET",
         url: site_url + '/get_city',
         data: {state: state},
-    }).done(function (data) {
+    }).done(function(data) {
         var main_array = JSON.parse(data);
         var city = main_array['city'];
         var str = '';
@@ -253,13 +256,13 @@ function update_price(product_id) {
         type: "GET",
         url: url + '/update_price',
         data: {price: price, product_id: product_id, _token: token},
-    }).done(function (data) {
+    }).done(function(data) {
         $('.alert-success1').show();
     });
 }
 
 
-$('#onenter_prevent input').keypress(function (e) {
+$('#onenter_prevent input').keypress(function(e) {
     if (e.which == 13) {
         return false;
     }
@@ -269,12 +272,12 @@ $("#product_size").autocomplete({
     minLength: 1,
     dataType: 'json',
     type: 'GET',
-    source: function (request, response) {
+    source: function(request, response) {
         $("#product_size").addClass('loadinggif');
         $.ajax({
             url: baseurl + '/fetch_product_size',
             data: {"term": request.term},
-            success: function (data) {
+            success: function(data) {
                 var main_array = JSON.parse(data);
                 var arr1 = main_array['data_array'];
                 response(arr1);
@@ -282,7 +285,7 @@ $("#product_size").autocomplete({
             },
         });
     },
-    select: function (event, ui) {
+    select: function(event, ui) {
         $("#product_size").val(ui.item.id);
     }
 
@@ -291,12 +294,12 @@ $("#order_size").autocomplete({
     minLength: 1,
     dataType: 'json',
     type: 'GET',
-    source: function (request, response) {
+    source: function(request, response) {
         $("#order_size").addClass('loadinggif');
         $.ajax({
             url: baseurl + '/fetch_product_size',
             data: {"term": request.term},
-            success: function (data) {
+            success: function(data) {
                 var main_array = JSON.parse(data);
                 var arr1 = main_array['data_array'];
                 response(arr1);
@@ -304,7 +307,7 @@ $("#order_size").autocomplete({
             },
         });
     },
-    select: function (event, ui) {
+    select: function(event, ui) {
         $("#order_size").val(ui.item.id);
     }
 
@@ -314,12 +317,12 @@ $("#search_text").autocomplete({
     minLength: 1,
     dataType: 'json',
     type: 'GET',
-    source: function (request, response) {
+    source: function(request, response) {
         $("#search_text").addClass('loadinggif');
         $.ajax({
             url: baseurl + '/fetch_product_name',
             data: {"term": request.term},
-            success: function (data) {
+            success: function(data) {
                 var main_array = JSON.parse(data);
                 var arr1 = main_array['data_array'];
                 response(arr1);
@@ -327,17 +330,17 @@ $("#search_text").autocomplete({
             },
         });
     },
-    select: function (event, ui) {
+    select: function(event, ui) {
         $("#search_text").val(ui.item.id);
     }
 });
 
-$('#save_all_price_btn').click(function () {
+$('#save_all_price_btn').click(function() {
 
     $.ajax({
         type: 'post', url: baseurl + '/update_all_price',
         data: $('#save_all_price').serialize(),
-        success: function (data) {
+        success: function(data) {
             $('.alert-success1').show();
         }
     });
@@ -345,7 +348,7 @@ $('#save_all_price_btn').click(function () {
 
 function test(a, b, e) {
     var abc = $(e).val();
-    $(e).val(function (i, abc) {
+    $(e).val(function(i, abc) {
         return abc.replace(/\d{3}|[^\d{2}\.]|^\./g, "");
     });
 }
@@ -354,23 +357,23 @@ function submit_filter_form() {
     $("#searchCustomerForm").submit();
 }
 
-$('#labour').on('keyup', function (e) {
+$('#labour').on('keyup', function(e) {
     if (e.which === 46)
         return false;
-}).on('input', function () {
+}).on('input', function() {
     var self = this;
-    setTimeout(function () {
+    setTimeout(function() {
         if (self.value.indexOf('.') != -1)
             self.value = parseInt(self.value, 10);
     }, 0);
 });
-$('#save_all_size_btn').click(function () {
+$('#save_all_size_btn').click(function() {
     var token = $('#_token').val();
     $.ajax({
         type: 'POST',
         url: baseurl + '/update_all_sizes',
         data: {form_data: $('#save_all_product_sizes').serialize(), _token: token},
-        success: function (data) {
+        success: function(data) {
             $('.alert-success1').show();
         }
     });
@@ -384,7 +387,7 @@ function update_difference(e) {
         type: 'post',
         url: baseurl + '/update_difference',
         data: {difference: difference, id: id, _token: token},
-        success: function (data) {
+        success: function(data) {
             $('.custom_alert_success').fadeOut(5000);
         }
     });

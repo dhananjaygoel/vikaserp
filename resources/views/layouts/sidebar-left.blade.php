@@ -37,7 +37,7 @@
                     $page_name = $name_array[$count - 1];
                     ?>
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 2)
-                    <li class="{{ (Request::is('*dashboard*') ? 'active' : '') }}">
+                    <li class="{{ (Request::is('*dashboard*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Dashboard">
                         <a href="{{url('dashboard')}}">
                             <i class="fa fa-dashboard"></i>
                             <span>Dashboard</span>
@@ -47,7 +47,7 @@
                     @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
-                    <li class="{{ (Request::is('*users*') ? 'active' : '') }}">
+                    <li class="{{ (Request::is('*users*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Users">
                         <a href="{{url()}}/users">
                             <i class="fa fa-user"></i>
                             <span>Users</span>
@@ -58,7 +58,7 @@
                     @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 4 )
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
-                    <li class="{{ (Request::is('customers*') ? 'active' : '') }}">
+                    <li class="{{ (Request::is('customers*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Customers">
                         <a href="{{url('customers')}}">
                             <i class="fa fa-male"></i>
                             <span>Customers</span>
@@ -69,7 +69,7 @@
                     @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 )
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
-                    <li class="{{ (Request::is('pending_customers*') ? 'active' : '') }}">
+                    <li class="{{ (Request::is('pending_customers*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Pending Customers">
                         <a href="{{url('pending_customers')}}">
                             <i class="fa fa-book"></i>
                             <span>Pending customers</span>
@@ -80,7 +80,7 @@
                     @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
-                    <li class="{{ (Request::is('*inquiry*') ? 'active' : '') }}">
+                    <li class="{{ (Request::is('*inquiry*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Inquiry">
                         <a href="{{url("inquiry")}}">
                             <i class="fa fa-info"></i>
                             <span>Inquiry</span>
@@ -101,7 +101,7 @@
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
                         <ul class="submenu">
-                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3) 
+                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
                             <li class="{{ (Request::is('*orders*') ? 'active' : '') }}">
                                 <a href="{{url('orders')}}" >
                                     Order
@@ -113,7 +113,7 @@
                                 </a>
                             </li>
                             @endif
-                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4) 
+                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
 
                             <li class="{{ (Request::is('*delivery_challan*') ? 'active' : '') }}">
                                 <a href="{{url('delivery_challan')}}">
@@ -121,7 +121,7 @@
                                 </a>
                             </li>
                             @endif
-                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3) 
+                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
                             <li class="{{ (Request::is('*pending_delivery_order*') ? 'active' : '') }}">
                                 <a href="{{url('pending_delivery_order')}}">
                                     Pending Delivery Order Report
@@ -163,7 +163,7 @@
                                 </a>
                             </li>
                             @endif
-                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3) 
+                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
                             <li class="{{ (Request::is('*purchaseorder_advise*') ? 'active' : '') }}">
                                 <a href="{{url('purchaseorder_advise')}}">
                                     Purchase Advice
@@ -171,7 +171,7 @@
                             </li>
 
                             @endif
-                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4) 
+                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
                             <li class="{{ (Request::is('*purchase_challan*') ? 'active' : '') }}">
                                 <a href="{{url("purchase_challan")}}">
                                     Purchase Challan
@@ -184,7 +184,7 @@
                                                                 Purchase Order Report
                                                             </a>
                                                         </li>-->
-                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3) 
+                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
                             <li class="{{ (Request::is('*pending_purchase_advice*') ? 'active' : '') }}">
                                 <a href="{{url('pending_purchase_advice')}}">
                                     Pending Purchase Advise Report
@@ -201,7 +201,7 @@
                         </ul>
                     </li>
                     @endif
-                    @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4) 
+                    @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     <li class="<?php
                     if (Request::is('*product_category*') || Request::is('*product_sub_category*')) {
@@ -229,7 +229,7 @@
                     </li>
                     @endif
                     @endif
-                    @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3) 
+                    @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     <li class="<?php
                     if (Request::is('*states*') || Request::is('*city*') || Request::is('*unit*') || Request::is('*location*')) {
@@ -281,7 +281,7 @@
                     @endif
                     @endif
                     @if(Auth::user()->role_id == 0)
-                    <li class="{{ (Request::is('*security*') ? 'active' : '') }}">
+                    <li class="{{ (Request::is('*security*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Security">
                         <a href="{{url("security")}}">
                             <i class="fa fa-lock"></i>
                             <span>Security</span>
