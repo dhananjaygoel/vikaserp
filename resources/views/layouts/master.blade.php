@@ -60,7 +60,7 @@
         <div id="theme-wrapper">
             <span id="baseurl" style="display: none;">{{url()}}</span>
             @include('layouts.header')
-            <div id="page-wrapper" class="container">
+            <div id="page-wrapper" class="container nav-small">
 
                 <div class="row">
                     @include('layouts.sidebar-left')
@@ -137,7 +137,7 @@
         <!-- Sortable Script Support -->
         {!! HTML::script('/resources/assets/custom_js/my_script.js') !!}
         <!-- Custom Script Support -->
-        
+
         {!! HTML::script('/resources/assets/custom_js/custom_script.js') !!}
         {!! HTML::script('/resources/assets/custom_js/custom_script_js.js') !!}
         {!! HTML::script('/resources/assets/custom_js/custom.js') !!}
