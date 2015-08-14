@@ -50,4 +50,8 @@ class HomeController extends Controller {
         echo "</table>";
     }
 
+    public function update_delivery_location() {
+        $product_data = \App\Customer::where('delivery_location_id', '=', 0)->update(['delivery_location_id' => 32]);
+    }
+
 }
