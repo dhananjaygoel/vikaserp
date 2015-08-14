@@ -37,6 +37,10 @@ class Customer extends Model {
         return $this->hasOne('App\City', 'id', 'city');
     }
 
+    public function states() {
+        return $this->hasOne('App\States', 'id', 'state');
+    }
+
     public static $new_customer_inquiry_rules = array(
         'customer_name' => 'required|min:2|max:100',
         'contact_person' => 'required|min:2|max:100',

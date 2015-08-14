@@ -136,10 +136,10 @@ use Illuminate\Support\Facades\Session;
                                             if (isset($session_data['product'])) {
                                                 $total_products_added = sizeof($session_data['product']);
                                             }
-                                            if (isset($total_products_added) && ($total_products_added > 5)) {
+                                            if (isset($total_products_added) && ($total_products_added > 10)) {
                                                 $j = $total_products_added;
                                             } else {
-                                                $j = 5;
+                                                $j = 10;
                                             }
                                             for ($i = 1; $i <= $j; $i++) {
                                                 ?>
