@@ -150,8 +150,7 @@ class SalesDaybookController extends Controller {
 
     public function export_sales_daybook() {
 
-        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
-
+        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer.states', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
         Excel::create('Sales Daybook', function($excel) use($allorders) {
             $excel->sheet('Sales-Daybook', function($sheet) use($allorders) {
                 $sheet->loadView('excelView.sales', array('allorders' => $allorders));
@@ -290,4 +289,5 @@ class SalesDaybookController extends Controller {
         $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'delivery_challan_products', 'delivery_order.location', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
         return view('print_sales_order_daybook', compact('allorders'));
     }
+
 }
