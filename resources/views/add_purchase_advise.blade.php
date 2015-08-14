@@ -168,7 +168,7 @@ use Illuminate\Support\Facades\Session;
                                                     </td>
                                                     <td class="col-md-2">
                                                         <div class="form-group">
-                                                            <input type="text" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
+                                                            <input type="tel" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-4">
@@ -210,7 +210,7 @@ use Illuminate\Support\Facades\Session;
                             </div>
 
 
-                            <div class="row col-md-4">  
+                            <div class="row col-md-4">
                                 <div class="form-group">
                                     <label for="loc1">Delivery Location:</label>
                                     <select class="form-control" name="delivery_location_id" id="purchase_other_location">
@@ -239,7 +239,7 @@ use Illuminate\Support\Facades\Session;
                                 </div>
                             </div>
                             <div class="clearfix"></div>
-                            <div class="row col-md-4">  
+                            <div class="row col-md-4">
                                 <div class="form-group">
                                     <label for="orderfor">Order For:</label>
                                     <select class="form-control" id="orderfor" name="order_for">
@@ -276,7 +276,7 @@ use Illuminate\Support\Facades\Session;
                                     </table>
 
                                 </div>
-                            </div> 
+                            </div>
                             <!--<div class="form-group">-->
 
                             <!--<label for="price">Total Price</label>-->

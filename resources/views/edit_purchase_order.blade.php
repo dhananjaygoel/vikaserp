@@ -155,7 +155,7 @@
                                         </td>
                                         <td class="col-md-2">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
+                                                <input type="tel" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
                                             </div>
                                         </td>
                                         <td class="col-md-4">
@@ -212,13 +212,13 @@
                                 <option value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
                                 @endif
 
-                                @endif 
+                                @endif
                                 @endforeach
                                 @if( $purchase_order->delivery_location_id == 0)
                                 <option value="-1" selected="">Other </option>
                                 @else
                                 <option value="-1">Other </option>
-                                @endif 
+                                @endif
 
 
                             </select>

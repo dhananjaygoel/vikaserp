@@ -66,7 +66,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="mobile_number">Phone Number <span class="mandatory">*</span></label>
-                                <input id="mobile_number" class="form-control" placeholder="Phone Number " name="mobile_number" value="{{$inquiry['customer']->phone_number1}}" type="text">
+                                <input id="mobile_number" class="form-control" placeholder="Phone Number " name="mobile_number" value="{{$inquiry['customer']->phone_number1}}" type="tel">
                             </div>
 
                             <div class="form-group">
@@ -206,7 +206,7 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
+                                                    <input type="tel" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
                                                 </div>
                                             </td>
                                             <td class="col-md-4">

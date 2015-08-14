@@ -127,7 +127,7 @@ use Illuminate\Support\Facades\Session;
                                             <option value="{{$delivery_location->id}}" data-location-difference="{{$delivery_location->difference}}">{{$delivery_location->area_name}}</option>
                                             @endif
                                             @endforeach
-                                            <option id="other_location" value="other">Other</option>                                        
+                                            <option id="other_location" value="other">Other</option>
                                         </select>
                                     </div>
                                     <div class="col-md-4">
@@ -150,7 +150,7 @@ use Illuminate\Support\Facades\Session;
                             <div class="order_table col-md-12">
                                 <div class="table-responsive">
                                     <table id="add_product_table" class="table table-hover  ">
-                                        <tbody> 
+                                        <tbody>
                                             <tr class="headingunderline">
                                                 <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
                                                 <td><span>Quantity</span></td>
@@ -194,7 +194,7 @@ use Illuminate\Support\Facades\Session;
                                                     </td>
                                                     <td class = "col-md-2">
                                                         <div class = "form-group col-md-6">
-                                                            <input type = "text" class = "form-control" id = "product_price_{{$i}}" name = "product[{{$i}}][price]" placeholder = "Price" value = "<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
+                                                            <input type = "tel" class = "form-control" id = "product_price_{{$i}}" name = "product[{{$i}}][price]" placeholder = "Price" value = "<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
                                                         </div>
                                                         <div class = "form-group col-md-6 difference_form">
                                                         </div>
@@ -256,7 +256,7 @@ use Illuminate\Support\Facades\Session;
                                         </tbody>
                                     </table>
                                 </div>
-                            </div> 
+                            </div>
                             <div class="clearfix"></div>
                             <div class="form-group col-md-4 targetdate">
                                 <label for="time">Expected Delivery Date:<span class="mandatory">*</span> </label>

@@ -117,7 +117,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-1">' +
                 '<div class="form-group">' +
-                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="text" onfocus="grand_total_delivery_order();">' +
+                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
@@ -128,7 +128,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-2">' +
                 '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+                '<input type="tel" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-4">' +
@@ -149,7 +149,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-1">' +
                 '<div class="form-group">' +
-                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="text" onfocus="grand_total_delivery_order();">' +
+                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
@@ -160,7 +160,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-2">' +
                 '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+                '<input type="tel" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-4">' +
@@ -195,7 +195,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-1">' +
                 '<div class="form-group">' +
-                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="text" onfocus="grand_total_delivery_order();">' +
+                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
@@ -206,7 +206,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-2">' +
                 '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+                '<input type="tel" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-4">' +
@@ -227,7 +227,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-1">' +
                 '<div class="form-group">' +
-                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="text" onfocus="grand_total_delivery_order();">' +
+                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
@@ -238,7 +238,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-2">' +
                 '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+                '<input type="tel" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-4">' +
@@ -285,7 +285,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td>' +
                 '<div class="form-group" >' +
-                '<input id="quantity_' + current_row_count + '" readonly="" class="form-control" placeholder="" name="product[' + current_row_count + '][quantity]" value="" type="text">' +
+                '<input id="quantity_' + current_row_count + '" readonly="" class="form-control" placeholder="" name="product[' + current_row_count + '][quantity]" value="" type="tel">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
@@ -295,7 +295,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-1">' +
                 '<div class="form-group">' +
-                '<input type="text" class="form-control units_dropdown" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+                '<input type="tel" class="form-control units_dropdown" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
@@ -336,12 +336,12 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-1">' +
                 '<div class="form-group">' +
-                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="Present shipping" name="product[' + current_row_count + '][present_shipping]" value="" type="text">' +
+                '<input id="quantity_' + current_row_count + '" class="form-control" placeholder="Present shipping" name="product[' + current_row_count + '][present_shipping]" value="" type="tel">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
                 '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+                '<input type="tel" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
                 '</div>' +
                 '</td><td></td>' +
                 '<td class="col-md-4">' +

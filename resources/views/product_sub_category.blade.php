@@ -9,7 +9,7 @@
                     <li><a href="{{url()}}/dashboard">Home</a></li>
                     <li class="active"><span>Product Size</span></li>
                 </ol>
-                <div class="clearfix">                    
+                <div class="clearfix">
                     <div class=" row col-md-12 pull-right top-page-ui">
                         <div class="filter-block col-md-12 productsub_filter pull-right">
                             <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search">
@@ -34,7 +34,7 @@
                                             <option <?php if (Input::get('product_filter') == $prod_type->id) echo 'selected="selected"'; ?> value="{{$prod_type->id}}"> {{$prod_type->name}}</option>
                                             @endforeach
                                         </select>
-                                    </div> 
+                                    </div>
                                     <div class="form-group col-md-2 pull-right">
                                         <input class="form-control ui-autocomplete-input" placeholder="Product Name" autocomplete="off" value="{{Input::get('search_text')}}" name="search_text" id="search_text" type="text" onblur="this.form.submit();">
                                         <a onclick="this.form.submit()" style="cursor: pointer;">
@@ -43,7 +43,7 @@
                                     </div>
                                 </div>
                             </form>
-                        </div>                        
+                        </div>
                     </div>
                 </div>
             </div>
@@ -56,18 +56,18 @@
                         @if (Session::has('success'))
                         <div class="alert alert-success alert-success1">
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            {{Session::get('success')}}                            
+                            {{Session::get('success')}}
                         </div>
                         @endif
                         @if (Session::has('wrong'))
                         <div class="alert alert-danger alert-success1">
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            {{Session::get('wrong')}}                            
+                            {{Session::get('wrong')}}
                         </div>
                         @endif
                         <div class="alert alert-success alert-success1 custom_alert_success">
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            Product differences have been successfully updated.                     
+                            Product differences have been successfully updated.
                         </div>
                         @if(sizeof($product_sub_cat) != 0)
                         <div class="table-responsive">
@@ -83,20 +83,20 @@
                                             @if(Input::get('product_filter') != 2)
                                             <th>Thickness</th>
                                             @endif
-                                            <th>Weight(KG)</th>                                        
-                                            <th>Standard Length</th>                                        
-                                            <th>Today's Price</th>                                        
-                                            <th class="col-md-2">Difference</th>  
+                                            <th>Weight(KG)</th>
+                                            <th>Standard Length</th>
+                                            <th>Today's Price</th>
+                                            <th class="col-md-2">Difference</th>
                                             @if( Auth::user()->role_id == 0 )
                                             <th >Actions</th>
                                             @endif
                                         </tr>
                                     </thead>
-                                    <tbody> 
+                                    <tbody>
                                         <?php
                                         $i = ($product_sub_cat->currentPage() - 1 ) * $product_sub_cat->perPage() + 1;
                                         ?>
-                                        @foreach($product_sub_cat as $produ_sub) 
+                                        @foreach($product_sub_cat as $produ_sub)
                                         @if(sizeof($produ_sub['product_category']) != 0)
                                         <tr>
                                             <td>{{ $i }}</td>
@@ -134,18 +134,18 @@
                                                 @if(Auth::user()->role_id == 0)
                                                 <div class="row product-price">
                                                     <div class="form-group col-md-6">
-                                                        <input type="text" class="form-control" required="" name="difference_{{$i}}" value="{{ $produ_sub->difference}}">
+                                                        <input type="tel" class="form-control" required="" name="difference_{{$i}}" value="{{ $produ_sub->difference}}">
                                                         <input type="hidden" class="form-control" name="id_{{$i}}" value="{{ $produ_sub->id}}">
                                                         <input type="hidden" name="_token" value="{{csrf_token()}}" id="_token">
                                                     </div>
                                                     <div class="form-group col-md-2 difference_form">
-                                                        <input class="btn btn-primary" type="button" class="form-control" value="save" onclick="update_difference(this);" >     
+                                                        <input class="btn btn-primary" type="button" class="form-control" value="save" onclick="update_difference(this);" >
                                                     </div>
                                                 </div>
                                                 @else
                                                 <div class="form-group col-md-6">{{ $produ_sub->difference }} </div>
                                                 @endif
-                                            </td> 
+                                            </td>
                                             @if( Auth::user()->role_id == 0 )
                                             <td>
                                                 <a href="{{URL::action('ProductsubController@edit',['id'=>$produ_sub->id])}}" class="table-link">
@@ -162,7 +162,7 @@
                                                 </a>
                                             </td>
                                             @endif
-                                        </tr>                           
+                                        </tr>
                                         <?php $i++; ?>
                                         @endif
                                     <div class="modal fade" id="myModal{{$produ_sub->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -192,7 +192,7 @@
                                                         <div class="clearfix"></div>
                                                         <div class="delp">Are you sure you want to <b>delete </b>?</div>
                                                     </div>
-                                                </div>           
+                                                </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                     <button type="submit" class="btn btn-default">Yes</button>
@@ -200,7 +200,7 @@
                                                 {!! Form::close() !!}
                                             </div>
                                         </div>
-                                    </div>                                
+                                    </div>
                                     @endforeach
                                     </tbody>
                                 </table>
@@ -212,10 +212,10 @@
                                     <?php echo $product_sub_cat->render(); ?>
                                     @else
                                     <?php echo $product_sub_cat->appends(array('product_size' => $filter[0], 'search_text' => $filter[1], 'product_filter' => $filter[2]))->render(); ?>
-                                    @endif                                    
+                                    @endif
                                 </ul>
                             </span>
-                            <div class="clearfix"></div>  
+                            <div class="clearfix"></div>
 
                             @if($product_sub_cat->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
@@ -241,7 +241,7 @@
                     </div>
                 </div>
             </div>
-        </div>       
+        </div>
     </div>
 </div>
 @endsection

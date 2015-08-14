@@ -45,10 +45,10 @@
                                 <label for="manager_name">Name<span class="mandatory">*</span></label>
                                 <input id="manager_name" class="form-control" placeholder="Manager Name" name="manager_name" value="{{ Input::old('manager_name')}}" type="text">
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="phone_number">Phone number<span class="mandatory">*</span></label>
-                                <input id="phone_number" class="form-control" placeholder="Phone number " name="phone_number" value="{{ Input::old('phone_number')}}" type="text">
+                                <input id="phone_number" class="form-control" placeholder="Phone number " name="phone_number" value="{{ Input::old('phone_number')}}" type="tel">
                             </div>
                             <div class="clearfix"></div>
                             <hr>

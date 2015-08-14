@@ -23,16 +23,16 @@
                         @endif
 
                         @if (count($errors) > 0)
-                        <div role="alert" class="alert alert-warning">                         
+                        <div role="alert" class="alert alert-warning">
                             @foreach ($errors->all() as $error)
                             <p>{{ $error }}</p>
-                            @endforeach                            
+                            @endforeach
                         </div>
                         @endif
 
                         <div class="form-group">
                             Date : {{date('d F, Y')}}
-                        </div> 
+                        </div>
                         {!!Form::open(array('method'=>'PUT','url'=>url('delivery_order/'.$delivery_data['id']),'id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
 
@@ -149,7 +149,7 @@
                         <div class="inquiry_table col-md-12">
                             <div class="table-responsive">
                                 <table id="add_product_table_delivery_order" class="table table-hover">
-                                    <tbody> 
+                                    <tbody>
                                         <tr class="headingunderline">
                                             <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
                                             <td><span>Quantity</span></td>
@@ -171,7 +171,7 @@
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product->id}}">
                                                     <input type="hidden" name="product[{{$key}}][order]" value="{{ $product->from}}">
 <!--                                                    <i class="fa fa-search search-icon"></i>-->
-                                                {{ $product['order_product_details']->alias_name}}
+                                                    {{ $product['order_product_details']->alias_name}}
                                                 </div>
                                                 <input type="hidden" name="prod_id" value="{{$key}}">
                                             </td>
@@ -186,7 +186,7 @@
                                                     <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}">
                                                         @foreach($units as $unit)
                                                         @if($product->unit_id == $unit->id)
-                                                        <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>                                                        
+                                                        <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
                                                         @endif
                                                         @endforeach
                                                     </select>
@@ -198,17 +198,17 @@
                                                     <input type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" placeholder="Present Shipping" onblur="change_quantity2({{$key}});">
                                                 </div>
                                                 <div class="form-group col-md-6 difference_form">
-                                                    <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->     
+                                                    <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group col-md-6">
                                                     <!--                                                            form for save product value-->
-                                                    <input type="text" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price">
+                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price">
 
                                                 </div>
                                                 <div class="form-group col-md-6 difference_form">
-                                                    <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->     
+                                                    <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -304,7 +304,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div> 
+                        </div>
                         <div class="clearfix"></div>
 
                         <div class="form-group">
@@ -312,7 +312,7 @@
                             <textarea class="form-control" id="order_remark" name="order_remark"  rows="3">{{ $delivery_data->remarks }}</textarea>
                         </div>
                         <div >
-                            <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>--> 
+                            <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>-->
                         </div>
                         <hr>
                         <div >

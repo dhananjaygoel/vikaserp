@@ -17,7 +17,7 @@
         <div  class="row">
             <div class="col-lg-12">
                 <div class="main-box">
-                    <div class="main-box-body clearfix"> 
+                    <div class="main-box-body clearfix">
                         <form id="onenter_prevent" method="POST" action="{{url('purchaseorder_advise/'.$purchase_advise->id)}}" accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input name="_method" type="hidden" value="PUT">
@@ -63,7 +63,7 @@
                                                 <td><span>Actual Pieces</span></td>
                                                 <td><span>Pending Order</span></td>
                                                 <td><span>Present Shipping</span></td>
-                                                <td><span>Price</span></td>                                                
+                                                <td><span>Price</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
                                             @foreach($purchase_advise['purchase_products'] as $key=>$product)
@@ -93,17 +93,17 @@
                                             <td class="col-md-1">
                                                 <div class="form-group">
                                                     <?php $pending_quantity = $product->quantity - $product->present_shipping; ?>
-                                                    <input type="text" class="form-control" readonly="" value="{{ $pending_quantity}}" id="pending_order_{{$key}}" name="pending_order_{{$key}}"/>
+                                                    <input type="tel" class="form-control" readonly="" value="{{ $pending_quantity}}" id="pending_order_{{$key}}" name="pending_order_{{$key}}"/>
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
                                                     <input type="tel" class="form-control" value="{{$product->present_shipping}}" id='present_shipping_{{$key}}' onblur="calutate_pending_order111(<?php echo $product->quantity . ',' . $key; ?>)"  name="product[{{$key}}][present_shipping]">
                                                 </div>
-                                            </td> 
+                                            </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
+                                                    <input type="tel" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
                                                 </div>
                                             </td>
                                             <td class="col-md-3">

@@ -24,17 +24,17 @@
                         @endif
 
                         @if (count($errors) > 0)
-                        <div role="alert" class="alert alert-warning">                         
+                        <div role="alert" class="alert alert-warning">
                             @foreach ($errors->all() as $error)
                             <p>{{ $error }}</p>
-                            @endforeach                            
+                            @endforeach
                         </div>
                         @endif
 
                         <div class="form-group">
                             Date: {{date('d F, Y')}}
 
-                        </div>   
+                        </div>
                         <form id="onenter_prevent" method="POST" action="{{URL::action('DeliveryOrderController@store')}}" accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <div class="form-group">
@@ -136,7 +136,7 @@
                             <div class="inquiry_table col-md-12">
                                 <div class="table-responsive">
                                     <table id="add_product_table" class="table table-hover">
-                                        <tbody> 
+                                        <tbody>
                                             <tr class="headingunderline">
                                                 <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
                                                 <td><span>Quantity</span></td>
@@ -182,11 +182,11 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group col-md-6">
                                                             <!--                                                            form for save product value-->
-                                                            <input type="text" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
+                                                            <input type="tel" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
 
                                                         </div>
                                                         <div class="form-group col-md-6 difference_form">
-                                                            <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->     
+                                                            <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
                                                         </div>
 
                                                     </td>
@@ -261,7 +261,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div> 
+                            </div>
                             <div class="clearfix"></div>
 
                             <div class="form-group">
@@ -269,7 +269,7 @@
                                 <textarea class="form-control" id="order_remark" name="order_remark"  rows="3"></textarea>
                             </div>
                             <div >
-                                <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>--> 
+                                <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>-->
                             </div>
                             <hr>
                             <div >

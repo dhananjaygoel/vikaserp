@@ -10,7 +10,7 @@
                     <li class="active"><span>Purchase Challan</span></li>
                 </ol>
                 <div class="filter-block">
-                    <h1 class="pull-left">Edit Purchase Challan </h1>                                 
+                    <h1 class="pull-left">Edit Purchase Challan </h1>
                 </div>
             </div>
         </div>
@@ -20,17 +20,17 @@
                     <div class="main-box-body clearfix">
 
                         @if (count($errors) > 0)
-                        <div class="alert alert-warning">                           
+                        <div class="alert alert-warning">
                             @foreach ($errors->all() as $error)
                             <p>{{ $error }}</p>
-                            @endforeach                        
+                            @endforeach
                         </div>
-                        @endif 
+                        @endif
 
                         {!!Form::open(array('method'=>'PUT','url'=>url('purchase_challan/'.$purchase_challan['id']),'id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <div class="form-group">
-                            <label><b>Bill Date:</b> {{$purchase_challan['purchase_advice']->purchase_advice_date}} </label>  
+                            <label><b>Bill Date:</b> {{$purchase_challan['purchase_advice']->purchase_advice_date}} </label>
                         </div>
                         @if($purchase_challan->bill_number!='')
                         <div class="form-group">
@@ -66,16 +66,16 @@
                                         </td>
                                         <td>
                                             <div class="form-group">
-                                                <input id="quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][quantity]" value="{{$products->quantity}}" type="text">
+                                                <input id="quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][quantity]" value="{{$products->quantity}}" type="tel">
                                             </div>
                                         </td>
-                                        <td> 
+                                        <td>
                                             <div class="form-group">
                                                 {{$products['unit']->unit_name}}
                                                 <input id="unit_id{{$key}}" name="product[{{$key}}][unit_id]" value="{{$products['unit']->id}}" type="hidden">
                                             </div>
                                         </td>
-                                        <td>  
+                                        <td>
                                             <div class="form-group text-center">
                                                 {{$products->present_shipping}}
                                                 <input id="present_shipping_{{$key}}" name="product[{{$key}}][present_shipping]" value="{{$products->present_shipping}}" type="hidden">
@@ -84,11 +84,11 @@
                                         <td class="shippingcolumn">
                                             <div class="row ">
                                                 <div class="form-group col-md-12">
-                                                    <input type="text" class="form-control" id="product_price_{{$key}}" value="{{$products->price}}" name="product[{{$key}}][price]" placeholder="Rate">
-                                                </div>                                         
+                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="{{$products->price}}" name="product[{{$key}}][price]" placeholder="Rate">
+                                                </div>
                                             </div>
                                         </td>
-                                        <td>   
+                                        <td>
                                             <div class="form-group">
                                                 <?php $total_price += $products->present_shipping * $products->price; ?>
                                                 {{ $products->present_shipping * $products->price }}
@@ -154,7 +154,7 @@
                         </div>
                         <div class="form-group">
                             <label for="driver_contact"><b class="challan">VAT Percentage</b> {{ $purchase_challan->vat_percentage }}</label>
-                        </div>                     
+                        </div>
                         <div class="form-group">
                             <label for="total"><b class="challan">Grand Total</b> $25000</label>
                         </div>

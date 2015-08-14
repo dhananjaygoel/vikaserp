@@ -174,7 +174,7 @@ use Illuminate\Support\Facades\Session;
                                                     </td>
                                                     <td class="col-md-2">
                                                         <div class="form-group">
-                                                            <input type="text" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
+                                                            <input type="tel" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-4">
@@ -214,7 +214,7 @@ use Illuminate\Support\Facades\Session;
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>                            
+                            </div>
                             <div class="clearfix"></div>
                             <div class="form-group">
 

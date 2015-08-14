@@ -43,8 +43,8 @@
                                 <select class="form-control" name="supplier_id" id="add_status_type">
                                     <option value="" selected="">Select supplier</option>
                                     @if(count($customers)>0)
-                                    @foreach($customers as $customer)  
-                                    <option value="{{$customer->id}}" >{{$customer->tally_name}}</option>                                       
+                                    @foreach($customers as $customer)
+                                    <option value="{{$customer->id}}" >{{$customer->tally_name}}</option>
                                     @endforeach
                                     @endif
                                 </select>
@@ -62,7 +62,7 @@
                                     @if(count($customers)>0)
 
                                     @foreach($customers as $customer)
-                                    <option 
+                                    <option
                                     <?php
                                     if ($customer->id == $order->supplier_id) {
                                         echo 'selected="selected"';
@@ -79,7 +79,7 @@
                                 </select>
                             </div>
                             @endif
-                            <br/>                               
+                            <br/>
                             <div class="clearfix"></div>
                         </div>
                         @if($order['customer']->customer_status =="pending")
@@ -251,7 +251,7 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
+                                                    <input type="tel" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
                                                 </div>
                                             </td>
                                             <td class="col-md-4">
@@ -333,7 +333,7 @@
                                 </table>
                             </div>
                         </div>
-                        @endif 
+                        @endif
                         <div class="clearfix"></div>
                         <div class="form-group col-md-4 targetdate">
                             <label for="date">Expected Delivery Date: </label>
@@ -350,7 +350,7 @@
                         <div class="checkbox">
                             <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email</span></label>
                         </div>
-                        <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" id="sendSMS" >Save and Send SMS</button> 
+                        <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" id="sendSMS" >Save and Send SMS</button>
                         <hr>
                         <div >
                             <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>

@@ -16,17 +16,17 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <div class="main-box"> 
+                <div class="main-box">
                     <div class="main-box-body clearfix">
                         <form id="onenter_prevent" method="POST" action="{{url('delivery_challan/'.$allorder->id)}}" accept-charset="UTF-8" >
                             @if (Session::has('validation_message'))
                             <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('validation_message') }}</div>
                             @endif
                             @if (count($errors) > 0)
-                            <div role="alert" class="alert alert-warning">                         
+                            <div role="alert" class="alert alert-warning">
                                 @foreach ($errors->all() as $error)
                                 <p>{{ $error }}</p>
-                                @endforeach                            
+                                @endforeach
                             </div>
                             @endif
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
@@ -45,7 +45,7 @@
                                         <tr class="headingunderline">
                                             <td><span>Select Product</span></td>
                                             <td><span>Actual Quantity</span></td>
-                                            <td><span>Actual Pieces</span></td>                                            
+                                            <td><span>Actual Pieces</span></td>
                                             <td><span>Presenting Shipping</span></td>
                                             <td><span>Rate</span></td>
                                             <td><span>Unit</span></td>
@@ -66,15 +66,15 @@
                                                 <div class="form-group">
                                                     <input id="quantity_{{$key}}" type="hidden" value="{{ $product->quantity}}" name="product[{{$key}}][quantity]">
                                                     @if($product->present_shipping >=0)
-                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="" type="text" onblur="fetch_price();">
+                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="" type="tel" onblur="fetch_price();">
                                                     @elseif($product->present_shipping <0)
-                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="" type="text">
+                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="" type="tel">
                                                     @endif
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input id="actual_pieces_{{$key}}" class="form-control" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{$product->actual_pieces}}" type="text" onblur="fetch_price();">
+                                                    <input id="actual_pieces_{{$key}}" class="form-control" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{$product->actual_pieces}}" type="tel" onblur="fetch_price();">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -84,13 +84,13 @@
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
-                                                <div class="form-group">     
+                                                <div class="form-group">
                                                     @foreach($price_delivery_order as $rate)
                                                     @if($rate['product_id'] == $product['product_category']->id)
                                                     <?php $product_price = $rate['total_rate']; ?>
                                                     @endif
                                                     @endforeach
-                                                    <input type="text" class="form-control" id="product_price_{{$key}}" value="{{$product_price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="change_amount({{$key}})">
+                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="{{$product_price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="change_amount({{$key}})">
                                                 </div>
 
                                             </td>
@@ -151,7 +151,7 @@
 
 
                             <div class="form-group">
-                                <label for="total"><b class="challan">Total</b><span class="gtotal"><input type="text" id="total_price" name="total_price" placeholder="" readonly="readonly"></span></label>                           
+                                <label for="total"><b class="challan">Total</b><span class="gtotal"><input type="text" id="total_price" name="total_price" placeholder="" readonly="readonly"></span></label>
 
                             </div>
                             <div class="form-group">
@@ -214,7 +214,7 @@
 
                             <!--  <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> -->
 
-                            <hr>                  
+                            <hr>
 
                             <div>
                                 <button type="submit" class="btn btn-primary" >Submit</button>
