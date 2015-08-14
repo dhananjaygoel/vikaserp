@@ -16,6 +16,11 @@ Route::get('updatedata', 'HomeController@updatedata');
 Route::get('showupdatedata', 'HomeController@showupdatedata');
 Route::get('update_delivery_location', 'HomeController@update_delivery_location');
 
+Route::get('show_delivery_location_table', function() {
+    $pdo = DB::table('delivery_locations')->get();
+    print('<pre>');
+    print_r($pdo);
+});
 
 Route::get('doMigrate', function () {
     define('STDIN', fopen("php://stdin", "r"));
@@ -30,10 +35,6 @@ Route::get('rollback', function() {
     define('STDIN', fopen("php://stdin", "r"));
     Artisan::call('migrate:refresh', ['--quiet' => true, '--force' => true]);
 });
-
-
-
-
 
 
 
