@@ -29,7 +29,7 @@
             }
             ?>
             <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
-                <ul class="nav nav-pills nav-stacked">
+                <ul class="nav nav-pills nav-stacked" id="menuulbox">
                     <?php
                     $full_name = $_SERVER['PHP_SELF'];
                     $name_array = explode('/', $full_name);
