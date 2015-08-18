@@ -22,9 +22,9 @@ class AddIndexProductSubCategory extends Migration {
      * @return void
      */
     public function down() {
-        Schema::table('product_sub_category', function($t) {
-            $t->dropIndex('alias_name');
-        });
+//        Schema::table('product_sub_category', function($t) {
+//            $t->dropIndex('alias_name');
+//        });
     }
 
 }
