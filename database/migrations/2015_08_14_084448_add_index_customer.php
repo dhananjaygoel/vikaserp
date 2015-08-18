@@ -23,10 +23,10 @@ class AddIndexCustomer extends Migration {
      * @return void
      */
     public function down() {
-        Schema::table('customers', function($t) {
-            $t->dropIndex('owner_name');
-            $t->dropIndex('tally_name');
-        });
+//        Schema::table('customers', function($t) {
+//            $t->dropIndex('owner_name');
+//            $t->dropIndex('tally_name');
+//        });
     }
 
 }
