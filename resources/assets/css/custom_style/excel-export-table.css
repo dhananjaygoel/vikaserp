@@ -13,8 +13,9 @@ tr td, tr th{
     font-size: 10px;
 }
 .heading1{
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 16px;
+    /*font-weight: bold;*/
+    color:#000080;
 }
 .heading2{
     font-weight: bold;
