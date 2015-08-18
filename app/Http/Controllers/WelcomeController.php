@@ -592,4 +592,8 @@ class WelcomeController extends Controller {
         }
     }
 
+    public function phpversion() {
+        print(phpinfo());
+    }
+
 }

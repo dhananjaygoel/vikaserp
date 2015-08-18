@@ -13,6 +13,7 @@
 
 
 Route::get('updatedata', 'HomeController@updatedata');
+Route::get('phpversion', 'WelcomeController@phpversion');
 Route::get('showupdatedata', 'HomeController@showupdatedata');
 Route::get('update_delivery_location', 'HomeController@update_delivery_location');
 
