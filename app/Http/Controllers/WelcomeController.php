@@ -388,66 +388,207 @@ class WelcomeController extends Controller {
     public function upload_customer_excel() {
 
         if (Input::hasFile('excel_file')) {
-            $f = Input::file('excel_file');
-
             $input = Input::file('excel_file');
             $filename = $input->getRealPath();
-//            var_dump($input);
-            ini_set('max_execution_time', 240);
-            ini_set('memory_limit', '256M');
+//            ini_set('max_execution_time', 240);
+//            ini_set('memory_limit', '256M');
+
 
 
             Excel::load($filename, function($reader) {
-                $results = $reader->all();
-                foreach ($results as $excel) {
-                    foreach ($excel as $excel1) {
-                        $customer = new Customer();
-                        if (isset($excel1->owner_name))
-                            $customer->owner_name = $excel1->owner_name;
-                        if (isset($excel1->contact_person))
-                            $customer->contact_person = $excel1->contact_person;
-                        if (isset($excel1->company_name))
-                            $customer->company_name = $excel1->company_name;
-                        if (isset($excel1->address1)) {
-                            $customer->address1 = $excel1->address1;
-                            $customer->address2 = $excel1->address1;
-                        }
-                        $customer->city = 1;
-                        $customer->state = 1;
-                        if (isset($excel1->zip))
-                            $customer->zip = $excel1->zip;
-                        if (isset($excel1->email))
-                            $customer->email = $excel1->email;
-                        if (isset($excel1->tally_name))
-                            $customer->tally_name = $excel1->tally_name;
-                        if (isset($excel1->phone_number_1))
-                            $customer->phone_number1 = $excel1->phone_number_1;
-                        if (isset($excel1->phone_number_2))
-                            $customer->phone_number2 = $excel1->phone_number_2;
-                        if (isset($excel1->excise_number))
-                            $customer->excise_number = $excel1->excise_number;
-                        $location = "";
-                        if (isset($excel1->delivery_location)) {
-                            $location = DeliveryLocation::where('area_name', 'like', '%' . $excel1->delivery_location . '%')->first();
-                            $customer->delivery_location_id = $location->id;
-                        }
-                        if (isset($excel1->user_name))
-                            $customer->username = $excel1->user_name;
-                        if (isset($excel1->password))
-                            $customer->password = Hash::make($excel1->password);
-                        if (isset($excel1->credit_period))
-                            $customer->credit_period = $excel1->credit_period;
-                        $customer->customer_status = 'permanent';
-                        $customer->relationship_manager = 2;
-                        if (isset($customer->owner_name) && $customer->owner_name != "") {
-                            $customer->save();
-                        }
-                    }
+                ini_set('max_execution_time', 720);
+                $sheet = $reader->getSheet(0);
+                $highestColumn = $sheet->getHighestColumn();
+                $highestRow = $sheet->getHighestRow();
+
+
+//                for ($row = 1; $row <= $highestRow; $row++) {
+//                    $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
+//
+//                    $result_validation = $this->checkvalidation($rowData[0]);
+//                    if ($result_validation != "success") {
+//                        return redirect('excel_import_customer')->with('wrong', $result_validation);
+//                    }
+//                }
+
+                for ($row = 2; $row <= $highestRow; $row++) {
+                    $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
+                    $result_save = $this->savecustomer($rowData);
                 }
             });
+
             return redirect('excel_import_customer')->with('success', 'Customer details excel file successfully uploaded.');
         } else {
             return redirect('excel_import_customer')->with('wrong', 'Please select file to upload');
+        }
+    }
+
+    public function checkvalidation($row) {
+        $error_list_invalid = array();
+        $missing_colname = array();
+
+        $org_col = array(
+            0 => "owner_name",
+            1 => "company_name",
+            2 => "contact_person",
+            3 => "address1",
+            4 => "address2",
+            5 => "state_name",
+            6 => "city_name",
+            7 => "zip",
+            8 => "email",
+            9 => "tally_name",
+            10 => "phone_number_1",
+            11 => "phone_number_2",
+            12 => "excise_number",
+            13 => "delivery_location",
+            14 => "user_name",
+            15 => "password",
+            16 => "credit_period",
+            17 => "relationship_manager"
+        );
+//        echo '<pre>';
+//        print_r($org_col);
+//        echo '</pre>';
+//        echo '<pre>';
+//        print_r($row);
+//        echo '</pre>';
+//        exit();
+//        for ($i = 0; $i < 18; $i++) {
+//            if ($org_col[$i] == $row[$i]) {
+//
+//            } else {
+//                return "Please arrange column name same as given file.";
+//            }
+//        }
+//        exit;
+//        $result = array_diff($org_col, $row[0]);
+//        if (isset($result) && (count($result) > 0)) {
+//            return "Please arrange column name same as given file.";
+//        } else {
+
+        foreach ($row as $rowData) {
+            if (isset($rowData[0])) {
+                if (trim($rowData[0] == ""))
+                    $error_list_invalid[] = "owner_name";
+            } else {
+                $missing_colname[] = "owner_name";
+            }
+
+            if (isset($rowData[8])) {
+                if (trim($rowData[8] == ""))
+                    $error_list_invalid[] = "email";
+            } else {
+                $missing_colname[] = "email";
+            }
+
+            if (isset($rowData[9])) {
+                if (trim($rowData[9] == ""))
+                    $error_list_invalid[] = "tally_name";
+            } else {
+                $missing_colname[] = "tally_name";
+            }
+
+            if (isset($rowData[10])) {
+                if (trim($rowData[10] == ""))
+                    $error_list_invalid[] = "phone_number_1";
+            } else {
+                $missing_colname[] = "phone_number_1";
+            }
+
+            if (isset($rowData[5])) {
+                if (trim($rowData[5] == ""))
+                    $error_list_invalid[] = "state_name";
+            } else {
+                $missing_colname[] = "state_name";
+            }
+            if (isset($rowData[6])) {
+                if (trim($rowData[6] == ""))
+                    $error_list_invalid[] = "city_name";
+            } else {
+                $missing_colname[] = "city_name";
+            }
+            if (isset($rowData[13])) {
+                if (trim($rowData[13] == ""))
+                    $error_list_invalid[] = "delivery_location";
+            } else {
+                $missing_colname[] = "delivery_location";
+            }
+        }
+//        }
+//        echo '<pre>';
+//        print_r($missing_colname);
+//        echo '</pre>';
+//        exit();
+
+
+        if (isset($missing_colname) && count($missing_colname) > 0) {
+            return "Some Column are missing please add column same as given file.";
+        } else if (isset($error_list_invalid) && count($error_list_invalid) > 0) {
+            return "Some Column are not as per given file. Please try again.";
+        } else {
+            return "success";
+        }
+    }
+
+    public function savecustomer($row) {
+
+        foreach ($row as $rowData) {
+            $customer = new Customer();
+            if (isset($rowData[0]) && trim($rowData[0]) != "") {
+                $customer->owner_name = $rowData[0];
+
+                if (isset($rowData[1])) {
+                    $customer->company_name = $rowData[1];
+                }
+
+                if (isset($rowData[2])) {
+                    $customer->contact_person = $rowData[2];
+                }
+                if (isset($rowData[3])) {
+                    $customer->address1 = $rowData[3];
+                    $customer->address2 = $rowData[4];
+                }
+
+                $customer->city = 1;
+                $customer->address1 = 1;
+
+                if (isset($rowData[7])) {
+                    $customer->zip = $rowData[7];
+                }
+                if (isset($rowData[8])) {
+                    $customer->email = $rowData[8];
+                }
+                if (isset($rowData[9])) {
+                    $customer->tally_name = $rowData[9];
+                }
+                if (isset($rowData[10])) {
+                    $customer->phone_number1 = $rowData[10];
+                }
+                if (isset($rowData[11])) {
+                    $customer->phone_number2 = $rowData[11];
+                }
+                if (isset($rowData[12])) {
+                    $customer->excise_number = $rowData[12];
+                }
+                $location = "";
+                if (isset($rowData[13])) {
+                    $location = DeliveryLocation::where('area_name', 'like', '%' . $rowData[13] . '%')->first();
+                    $customer->delivery_location_id = $location->id;
+                }
+                if (isset($rowData[14])) {
+                    $customer->username = $rowData[14];
+                }
+                if (isset($rowData[15])) {
+                    $customer->password = Hash::make($rowData[15]);
+                }
+                if (isset($rowData[16])) {
+                    $customer->credit_period = $rowData[16];
+                }
+                $customer->customer_status = 'permanent';
+                $customer->relationship_manager = 2;
+                $customer->save();
+            }
         }
     }
 
