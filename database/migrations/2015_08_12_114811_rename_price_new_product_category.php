@@ -11,9 +11,9 @@ class RenamePriceNewProductCategory extends Migration {
      * @return void
      */
     public function up() {
-        Schema::table('product_category', function($t) {
-            $t->renameColumn('price_new', 'price');
-        });
+//        Schema::table('product_category', function($t) {
+//            $t->renameColumn('price_new', 'price');
+//        });
     }
 
     /**
