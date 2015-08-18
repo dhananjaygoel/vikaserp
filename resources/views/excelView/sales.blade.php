@@ -89,7 +89,14 @@
                         }
                     }
                     ?>
-                    <td><?= (($value1->price + $value1['order_product_details']['difference'] + $customer_diff + $value['delivery_location']['difference']) * $value1->quantity) ?></td>
+                    <td><?php
+                        if (isset($customer_diff)) {
+                            echo (($value1->price + $value1['order_product_details']['difference'] + $customer_diff + $value['delivery_location']['difference']) * $value1->quantity);
+                        } else {
+                            echo (($value1->price + $value1['order_product_details']['difference'] + $value['delivery_location']['difference']) * $value1->quantity);
+                        }
+                        ?>
+                    </td>
                     @elseif($value1->actual_quantity == 0)
                     <td><?= $value1->actual_pieces ?></td>
                     <td>Pieces</td>
