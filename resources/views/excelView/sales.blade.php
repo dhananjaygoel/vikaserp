@@ -83,9 +83,11 @@
                     <td><?= $value1->price ?></td>
                     <?php $value1['order_product_details']['product_category']['id'] ?>
                     <?php
-                    foreach ($value['customer']['customerproduct'] as $customer_difference) {
-                        if ($customer_difference['product_category_id'] == $value1['order_product_details']['product_category']['id']) {
-                            $customer_diff = $customer_difference->difference_amount;
+                    if (!empty($value['customer']['customerproduct'])) {
+                        foreach ($value['customer']['customerproduct'] as $customer_difference) {
+                            if ($customer_difference['product_category_id'] == $value1['order_product_details']['product_category']['id']) {
+                                $customer_diff = $customer_difference->difference_amount;
+                            }
                         }
                     }
                     ?>
