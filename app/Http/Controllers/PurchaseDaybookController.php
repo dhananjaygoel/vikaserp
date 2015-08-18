@@ -47,7 +47,7 @@ class PurchaseDaybookController extends Controller {
                     ->orderBy('created_at', 'desc')
                     ->Paginate(20);
         }
-        
+
         $purchase_daybook->setPath('purchase_order_daybook');
         return view('purchase_order_daybook', compact('purchase_daybook'));
     }
@@ -89,7 +89,7 @@ class PurchaseDaybookController extends Controller {
 
     public function expert_purchase_daybook() {
 
-        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details', 'delivery_location')
+        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
                 ->where('order_status', 'completed')
                 ->orderBy('created_at', 'desc')
                 ->get();
@@ -154,7 +154,7 @@ class PurchaseDaybookController extends Controller {
                 ->where('order_status', 'completed')
                 ->orderBy('created_at', 'desc')
                 ->get();
-        
+
         return view('print_purchase_order_daybook', compact('purchase_daybook'));
     }
 
