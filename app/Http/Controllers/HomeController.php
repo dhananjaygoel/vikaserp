@@ -55,9 +55,9 @@ class HomeController extends Controller {
     }
 
     public function database_backup() {
-        $DBUSER = "root";
-        $DBPASSWD = "root123";
-        $DATABASE = "steel-trading-automation";
+        $DBUSER = "agstechn_vauser";
+        $DBPASSWD = "vikasuser23210";
+        $DATABASE = "agstechn_vaoas";
 
         $filename = "backup-" . date("d-m-Y") . ".sql.gz";
         $mime = "application/x-gzip";
