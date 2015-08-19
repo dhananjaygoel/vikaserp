@@ -597,18 +597,17 @@ class WelcomeController extends Controller {
         return "success_data";
     }
 
-    public function phpversion() {
-        print(phpinfo());
+    public function excel_export_customer() {
+        $allcustomers = Customer::where('relationship_manager', '=', 2)->where('customer_status', 'permanent')->get();
+        Excel::create('Sales Daybook', function($excel) use($allcustomers) {
+            $excel->sheet('Sales-Daybook', function($sheet) use($allcustomers) {
+                $sheet->loadView('excelView.customer', array('allcustomers' => $allcustomers));
+            });
+        })->export('xls');
     }
 
-    public function redirection_view($msg) {
-        if ($msg != "error") {
-            return redirect('excel_import_customer')->with('success', 'Customer details excel file successfully uploaded.');
-        } else {
-            echo $msg = "amit";
-            exit;
-            return redirect('excel_import_customer')->with('wrong', 'Please correct column names');
-        }
+    public function phpversion() {
+        print(phpinfo());
     }
 
     public function showdata($table_name) {

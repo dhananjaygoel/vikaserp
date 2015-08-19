@@ -10,8 +10,11 @@
                     <li class="active"><span>Customers</span></li>
                 </ol>
                 <div class="filter-block">
-                    <h1 class="pull-left">Customers</h1> 
+                    <h1 class="pull-left">Customers</h1>
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
+                    <a href="{{url('excel_export_customer')}}" class="btn btn-primary pull-right">
+                        <i class="fa fa-plus-circle fa-lg"></i> Download List
+                    </a>
                     <a href="{{url('excel_import_customer')}}" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Import Customer
                     </a>
@@ -27,7 +30,7 @@
 
 
 
-                        <div class="input-group col-md-3 pull-right">                            
+                        <div class="input-group col-md-3 pull-right">
                             <input type="text" class="form-control" name="search" id="search" placeholder="Tally Name, City, Delivery Location" value="{{Request::get('search')}}">
                             <span class="input-group-btn">
                                 <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
@@ -37,7 +40,7 @@
                                                     <input class="form-control" name="search" id="search" placeholder="Tally Name, City, Delivery Location" value="{{Request::get('search')}}" type="text">
                                                     <i onclick="submit_filter_form();" class="fa fa-search search-icon"></i>
                                                 </div>-->
-                    </form>                    
+                    </form>
                 </div>
             </div>
         </div>
@@ -67,8 +70,8 @@
                                         <th class="col-md-1">#</th>
                                         <th>Tally Name</th>
                                         <th>Email</th>
-                                        <th>Mobile </th>                                                            
-                                        <th>City</th>                                                            
+                                        <th>Mobile </th>
+                                        <th>City</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -80,7 +83,7 @@
                                     <tr>
                                         <td class="col-md-1">{{$i++}}</td>
                                         <td>{{$c->tally_name}}</td>
-                                        <td>{{$c->email}}</td>                                        
+                                        <td>{{$c->email}}</td>
                                         <td>{{$c->phone_number1}}</td>
                                         <td>
                                             @foreach($city as $town)
@@ -142,7 +145,7 @@
                                                         <div class="clearfix"></div>
                                                         <div class="delp">Are you sure you want to <b>delete</b> this customer?</div>
                                                     </div>
-                                                </div>            
+                                                </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                     <button type="submit" class="btn btn-default deleteCustomer" data-dismiss="modal">Yes</button>
@@ -177,8 +180,8 @@
                                         <a onclick="this.form.submit()"></a>
                                     </div>
                                 </form>
-                            </span> 
-                            @endif 
+                            </span>
+                            @endif
                         </div>
                         @else
                         <div class="clearfix"> &nbsp;</div>
