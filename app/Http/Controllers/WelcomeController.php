@@ -13,6 +13,7 @@ use App\Http\Requests\UserValidation;
 use Input;
 use DB;
 use App;
+use Redirect;
 use App\City;
 use App\DeliveryLocation;
 use App\Customer;
@@ -390,10 +391,6 @@ class WelcomeController extends Controller {
         if (Input::hasFile('excel_file')) {
             $input = Input::file('excel_file');
             $filename = $input->getRealPath();
-//            ini_set('max_execution_time', 240);
-//            ini_set('memory_limit', '256M');
-
-
 
             Excel::load($filename, function($reader) {
                 ini_set('max_execution_time', 720);
@@ -401,29 +398,27 @@ class WelcomeController extends Controller {
                 $highestColumn = $sheet->getHighestColumn();
                 $highestRow = $sheet->getHighestRow();
 
-
-//                for ($row = 1; $row <= $highestRow; $row++) {
-//                    $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
-//
-//                    $result_validation = $this->checkvalidation($rowData[0]);
-//                    if ($result_validation != "success") {
-//                        return redirect('excel_import_customer')->with('wrong', $result_validation);
-//                    }
-//                }
-
-                for ($row = 2; $row <= $highestRow; $row++) {
+                for ($row = 1; $row <= 1; $row++) {
                     $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
-                    $result_save = $this->savecustomer($rowData);
+                    $result_validation = $this->checkvalidation($rowData[0]);
+                }
+                if ($result_validation == "success") {
+                    for ($row = 2; $row <= $highestRow; $row++) {
+                        $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
+                        $result_save = $this->savecustomer($rowData);
+                    }
+//                    return Redirect::to('excel_import_customer')->with('success', 'Customer details excel file successfully uploaded.');
+                    return redirect('excel_import_customer')->with('success', 'Customer details excel file successfully uploaded.');
+                } else {
+                    return redirect('excel_import_customer')->with('wrong', 'Please correct column names');
                 }
             });
-
-            return redirect('excel_import_customer')->with('success', 'Customer details excel file successfully uploaded.');
         } else {
             return redirect('excel_import_customer')->with('wrong', 'Please select file to upload');
         }
     }
 
-    public function checkvalidation($row) {
+    public function checkvalidation($rowData) {
         $error_list_invalid = array();
         $missing_colname = array();
 
@@ -447,80 +442,79 @@ class WelcomeController extends Controller {
             16 => "credit_period",
             17 => "relationship_manager"
         );
-//        echo '<pre>';
-//        print_r($org_col);
-//        echo '</pre>';
-//        echo '<pre>';
-//        print_r($row);
-//        echo '</pre>';
-//        exit();
-//        for ($i = 0; $i < 18; $i++) {
-//            if ($org_col[$i] == $row[$i]) {
-//
-//            } else {
-//                return "Please arrange column name same as given file.";
-//            }
-//        }
-//        exit;
-//        $result = array_diff($org_col, $row[0]);
-//        if (isset($result) && (count($result) > 0)) {
-//            return "Please arrange column name same as given file.";
-//        } else {
-
-        foreach ($row as $rowData) {
-            if (isset($rowData[0])) {
-                if (trim($rowData[0] == ""))
-                    $error_list_invalid[] = "owner_name";
-            } else {
-                $missing_colname[] = "owner_name";
-            }
-
-            if (isset($rowData[8])) {
-                if (trim($rowData[8] == ""))
-                    $error_list_invalid[] = "email";
-            } else {
-                $missing_colname[] = "email";
-            }
-
-            if (isset($rowData[9])) {
-                if (trim($rowData[9] == ""))
-                    $error_list_invalid[] = "tally_name";
-            } else {
-                $missing_colname[] = "tally_name";
-            }
-
-            if (isset($rowData[10])) {
-                if (trim($rowData[10] == ""))
-                    $error_list_invalid[] = "phone_number_1";
-            } else {
-                $missing_colname[] = "phone_number_1";
-            }
-
-            if (isset($rowData[5])) {
-                if (trim($rowData[5] == ""))
-                    $error_list_invalid[] = "state_name";
-            } else {
-                $missing_colname[] = "state_name";
-            }
-            if (isset($rowData[6])) {
-                if (trim($rowData[6] == ""))
-                    $error_list_invalid[] = "city_name";
-            } else {
-                $missing_colname[] = "city_name";
-            }
-            if (isset($rowData[13])) {
-                if (trim($rowData[13] == ""))
-                    $error_list_invalid[] = "delivery_location";
-            } else {
-                $missing_colname[] = "delivery_location";
+        for ($i = 0; $i < 18; $i++) {
+            if ($org_col[$i] != $rowData[$i]) {
+                return "Please arrange column name same as given file.";
             }
         }
-//        }
-//        echo '<pre>';
-//        print_r($missing_colname);
-//        echo '</pre>';
-//        exit();
 
+        if (isset($rowData[0])) {
+            if (trim($rowData[0] == "")) {
+//                $error_list_invalid[] = "owner_name";
+                return "Column name - owner_name is invalid please please check excel file.";
+            }
+        } else {
+//            $missing_colname[] = "owner_name";
+            return "Column name - owner_name is missing please check excel file.";
+        }
+
+        if (isset($rowData[8])) {
+            if (trim($rowData[8] == "")) {
+//                $error_list_invalid[] = "email";
+                return "Column name - email is invalid please check excel file.";
+            }
+        } else {
+//            $missing_colname[] = "email";
+            return "Column name - email is missing please check excel file.";
+        }
+
+        if (isset($rowData[9])) {
+            if (trim($rowData[9] == "")) {
+//                $error_list_invalid[] = "tally_name";
+                return "Column name - tally_name is invalid please check excel file.";
+            }
+        } else {
+//            $missing_colname[] = "tally_name";
+            return "Column name - tally_name is missing please check excel file.";
+        }
+
+        if (isset($rowData[10])) {
+            if (trim($rowData[10] == "")) {
+//                $error_list_invalid[] = "phone_number_1";
+                return "Column name - phone_number_1 is invalid please please check excel file.";
+            }
+        } else {
+//            $missing_colname[] = "phone_number_1";
+            return "Column name - phone_number_1 is missing please check excel file.";
+        }
+
+        if (isset($rowData[5])) {
+            if (trim($rowData[5] == "")) {
+//                $error_list_invalid[] = "state_name";
+                return "Column name - state_name is invalid please please check excel file.";
+            }
+        } else {
+//            $missing_colname[] = "state_name";
+            return "Column name - state_name is missing please please check excel file.";
+        }
+        if (isset($rowData[6])) {
+            if (trim($rowData[6] == "")) {
+//                $error_list_invalid[] = "city_name";
+                return "Column name - city_name is invalid please please check excel file.";
+            }
+        } else {
+//            $missing_colname[] = "city_name";
+            return "Column name - city_name is missing please please check excel file.";
+        }
+        if (isset($rowData[13])) {
+            if (trim($rowData[13] == "")) {
+//                $error_list_invalid[] = "delivery_location";
+                return "Column name - delivery_location is invalid please please check excel file.";
+            }
+        } else {
+//            $missing_colname[] = "delivery_location";
+            return "Column name - delivery_location is missing please please check excel file.";
+        }
 
         if (isset($missing_colname) && count($missing_colname) > 0) {
             return "Some Column are missing please add column same as given file.";
@@ -573,7 +567,7 @@ class WelcomeController extends Controller {
                 }
                 $location = "";
                 if (isset($rowData[13])) {
-                    $location = DeliveryLocation::where('area_name', 'like', '%' . $rowData[13] . '%')->first();
+                    $location = DeliveryLocation::where('area_name', 'like', '%' . $rowData [13] . '%')->first();
                     $customer->delivery_location_id = $location->id;
                 }
                 if (isset($rowData[14])) {
@@ -590,6 +584,8 @@ class WelcomeController extends Controller {
                 $customer->save();
             }
         }
+        return "success save data";
+//        return redirect('excel_import_customer')->with('success', 'Customer details excel file successfully uploaded.');
     }
 
     public function phpversion() {
@@ -597,8 +593,6 @@ class WelcomeController extends Controller {
     }
 
     public function showdata($table_name) {
-//        echo $table_name;
-//        exit;
         $pdo = DB::table($table_name)->get();
         print('<pre>');
         print_r($pdo);
