@@ -231,9 +231,7 @@ class DeliveryOrderController extends Controller {
      * @return Response
      */
     public function update($id) {
-
         $input_data = Input::all();
-
         $customer_id = 0;
         if (isset($input_data['customer_status']) && $input_data['customer_status'] == "new_customer") {
 
@@ -264,6 +262,8 @@ class DeliveryOrderController extends Controller {
                 }
             } else {
                 $error_msg = $validator->messages();
+                Session::forget('product');
+                Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         } elseif (isset($input_data['customer_status']) && $input_data['customer_status'] == "existing_customer") {
@@ -274,6 +274,8 @@ class DeliveryOrderController extends Controller {
                 $customer_id = $input_data['autocomplete_customer_id'];
             } else {
                 $error_msg = $validator->messages();
+                Session::forget('product');
+                Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }

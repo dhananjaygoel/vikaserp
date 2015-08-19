@@ -3,33 +3,33 @@
     {!! HTML::style('/resources/assets/css/custom_style/excel-export-table.css') !!}
     <table>
         <tr>
-            <td>Vch No</td>
-            <td>Ref NUM</td>
-            <td class="border2">Vch Type</td>
-            <td class="border2">Date</td>
-            <td class="border2">Code</td>
-            <td class="border2">Name</td>
-            <td class="border2">Address1</td>
-            <td class="border2">Address2</td>
-            <td class="border2">State</td>
-            <td class="border2">Pin Code</td>
-            <td class="border2">Tin No</td>
-            <td class="border2">Item Name</td>
-            <td class="border2">Godown</td>
-            <td class="border2">Pcs</td>
-            <td class="border2">Unit</td>
-            <td class="border2">Qty</td>
-            <td class="border2">Rate</td>
-            <td class="border2">Amt</td>
-            <td class="border2">Discount</td>
-            <td class="border2">Loading</td>
-            <td class="border2">Frieght</td>
-            <td class="border2">Tax Type</td>
-            <td class="border2">Tax Rate</td>
-            <td class="border2">Tax</td>
-            <td class="border2">Round Off</td>
-            <td class="border2">Other Charges</td>
-            <td class="border2">Narration</td>
+            <td class="heading1">Vch No</td>
+            <td class="heading1">Ref NUM</td>
+            <td class="heading1">Vch Type</td>
+            <td class="heading1">Date</td>
+            <td class="heading1">Code</td>
+            <td class="heading1">Name</td>
+            <td class="heading1">Address1</td>
+            <td class="heading1">Address2</td>
+            <td class="heading1">State</td>
+            <td class="heading1">Pin Code</td>
+            <td class="heading1">Tin No</td>
+            <td class="heading1">Item Name</td>
+            <td class="heading1">Godown</td>
+            <td class="heading1">Pcs</td>
+            <td class="heading1">Unit</td>
+            <td class="heading1">Qty</td>
+            <td class="heading1">Rate</td>
+            <td class="heading1">Amt</td>
+            <td class="heading1">Discount</td>
+            <td class="heading1">Loading</td>
+            <td class="heading1">Frieght</td>
+            <td class="heading1">Tax Type</td>
+            <td class="heading1">Tax Rate</td>
+            <td class="heading1">Tax</td>
+            <td class="heading1">Round Off</td>
+            <td class="heading1">Other Charges</td>
+            <td class="heading1">Narration</td>
         </tr>
         <?php
 //        echo '<pre>';

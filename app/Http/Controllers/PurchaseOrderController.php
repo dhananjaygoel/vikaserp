@@ -396,6 +396,8 @@ class PurchaseOrderController extends Controller {
                 }
             } else {
                 $error_msg = $validator->messages();
+                Session::forget('product');
+                Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         } elseif ($input_data['supplier_status'] == "existing_supplier") {
@@ -406,6 +408,8 @@ class PurchaseOrderController extends Controller {
                 $customer_id = $input_data['autocomplete_supplier_id'];
             } else {
                 $error_msg = $validator->messages();
+                Session::forget('product');
+                Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
