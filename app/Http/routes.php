@@ -22,6 +22,11 @@ Route::get('show_delivery_location_table', function() {
     print('<pre>');
     print_r($pdo);
 });
+Route::get('show_users_table', function() {
+    $pdo = DB::table('users')->get();
+    print('<pre>');
+    print_r($pdo);
+});
 
 Route::get('doMigrate', function () {
     define('STDIN', fopen("php://stdin", "r"));
