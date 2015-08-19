@@ -580,7 +580,7 @@ class WelcomeController extends Controller {
                     $customer->username = $rowData[14];
                 }
                 if (isset($rowData[15])) {
-                    $customer->password = Hash::make($rowData[15]);
+                    $customer->password = Hash::make((string) $rowData[15]);
                 }
                 if (isset($rowData[16])) {
                     $customer->credit_period = $rowData[16];
