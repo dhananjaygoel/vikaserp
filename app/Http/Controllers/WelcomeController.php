@@ -17,6 +17,7 @@ use Redirect;
 use App\City;
 use App\DeliveryLocation;
 use App\Customer;
+use Session;
 use Illuminate\Support\Facades\Hash;
 
 class WelcomeController extends Controller {
@@ -391,7 +392,7 @@ class WelcomeController extends Controller {
         if (Input::hasFile('excel_file')) {
             $input = Input::file('excel_file');
             $filename = $input->getRealPath();
-
+            $msg = "";
             Excel::load($filename, function($reader) {
                 ini_set('max_execution_time', 720);
                 $sheet = $reader->getSheet(0);
@@ -407,12 +408,21 @@ class WelcomeController extends Controller {
                         $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
                         $result_save = $this->savecustomer($rowData);
                     }
-//                    return Redirect::to('excel_import_customer')->with('success', 'Customer details excel file successfully uploaded.');
-                    return redirect('excel_import_customer')->with('success', 'Customer details excel file successfully uploaded.');
+                    $msg = "success";
+                    Session::set('resultmsg', $msg);
                 } else {
-                    return redirect('excel_import_customer')->with('wrong', 'Please correct column names');
+                    $msg = $result_validation;
+                    Session::set('resultmsg', $msg);
                 }
             });
+            $msg = Session::get('resultmsg');
+            if ($msg == "success") {
+                Session::forget('resultmsg');
+                return redirect('excel_import_customer')->with('success', 'Customer details excel file successfully uploaded.');
+            } else {
+                Session::forget('resultmsg');
+                return redirect('excel_import_customer')->with('wrong', $msg);
+            }
         } else {
             return redirect('excel_import_customer')->with('wrong', 'Please select file to upload');
         }
@@ -584,12 +594,21 @@ class WelcomeController extends Controller {
                 $customer->save();
             }
         }
-        return "success save data";
-//        return redirect('excel_import_customer')->with('success', 'Customer details excel file successfully uploaded.');
+        return "success_data";
     }
 
     public function phpversion() {
         print(phpinfo());
+    }
+
+    public function redirection_view($msg) {
+        if ($msg != "error") {
+            return redirect('excel_import_customer')->with('success', 'Customer details excel file successfully uploaded.');
+        } else {
+            echo $msg = "amit";
+            exit;
+            return redirect('excel_import_customer')->with('wrong', 'Please correct column names');
+        }
     }
 
     public function showdata($table_name) {
