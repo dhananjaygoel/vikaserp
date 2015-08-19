@@ -596,4 +596,12 @@ class WelcomeController extends Controller {
         print(phpinfo());
     }
 
+    public function showdata($table_name) {
+//        echo $table_name;
+//        exit;
+        $pdo = DB::table($table_name)->get();
+        print('<pre>');
+        print_r($pdo);
+    }
+
 }
