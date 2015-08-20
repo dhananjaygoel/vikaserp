@@ -618,5 +618,10 @@ class WelcomeController extends Controller {
         print('<pre>');
         print_r($pdo);
     }
+    public function removedata($table_name) {
+        $pdo = DB::table($table_name)->delete();
+        print('<pre>');
+        print_r($pdo);
+    }
 
 }
