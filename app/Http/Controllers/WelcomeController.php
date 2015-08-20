@@ -405,6 +405,7 @@ class WelcomeController extends Controller {
                 }
                 if ($result_validation == "success") {
                     for ($row = 2; $row <= $highestRow; $row++) {
+                        ini_set('max_execution_time', 720);
                         $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
                         $result_save = $this->savecustomer($rowData);
                     }
@@ -551,11 +552,13 @@ class WelcomeController extends Controller {
                 }
                 if (isset($rowData[3])) {
                     $customer->address1 = $rowData[3];
+                }
+                if (isset($rowData[4])) {
                     $customer->address2 = $rowData[4];
                 }
 
                 $customer->city = 1;
-                $customer->address1 = 1;
+                $customer->state = 1;
 
                 if (isset($rowData[7])) {
                     $customer->zip = $rowData[7];
@@ -598,9 +601,9 @@ class WelcomeController extends Controller {
     }
 
     public function excel_export_customer() {
-        $allcustomers = Customer::where('relationship_manager', '=', 2)->where('customer_status', 'permanent')->get();
-        Excel::create('Sales Daybook', function($excel) use($allcustomers) {
-            $excel->sheet('Sales-Daybook', function($sheet) use($allcustomers) {
+        $allcustomers = Customer::where('relationship_manager', '=', 2)->where('customer_status', 'permanent')->with('states', 'getcity', 'deliverylocation', 'manager')->get();
+        Excel::create('Customer List', function($excel) use($allcustomers) {
+            $excel->sheet('Customers List', function($sheet) use($allcustomers) {
                 $sheet->loadView('excelView.customer', array('allcustomers' => $allcustomers));
             });
         })->export('xls');

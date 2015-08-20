@@ -1,7 +1,6 @@
 <html>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     {!! HTML::style('/resources/assets/css/custom_style/excel-export-table.css') !!}
-
     <table>
         <tr>
             <td class="heading1">owner_name</td>
@@ -24,7 +23,8 @@
             <td class="heading1">relationship_manager</td>
         </tr>
         <?php
-        foreach ($allcustomers as $key => $value) {
+        ini_set('max_execution_time', 720);
+        foreach ($allcustomers as $value) {
             ?>
             <tr>
                 <td>{{$value->owner_name}}</td>
@@ -32,25 +32,22 @@
                 <td>{{$value->contact_person}}</td>
                 <td>{{$value->address1}}</td>
                 <td>{{$value->address2}}</td>
-                <td>{{$value->state}}</td>
-                <td>{{$value->city}}</td>
+                <td>{{$value->states->state_name}}</td>
+                <td>{{$value->getcity->city_name}}</td>
                 <td>{{$value->zip}}</td>
                 <td>{{$value->email}}</td>
                 <td>{{$value->tally_name}}</td>
                 <td>{{$value->phone_number1}}</td>
                 <td>{{$value->phone_number2}}</td>
                 <td>{{$value->excise_number}}</td>
-                <td>{{$value->delivery_location_id}}</td>
+                <td>{{$value->deliverylocation->area_name}}</td>
                 <td>{{$value->username}}</td>
                 <td></td>
                 <td>{{$value->credit_period}}</td>
-                <td>{{$value->relationship_manager}}</td>
-
-
+                <td>{{$value->manager->first_name}}</td>
             </tr>
             <?php
         }
         ?>
-
     </table>
 </html>
