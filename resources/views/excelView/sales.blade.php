@@ -45,12 +45,13 @@
             <td class="heading1">Narration</td>
         </tr>
         <?php
+        $i = 1;
         foreach ($allorders as $key => $value) {
             foreach ($value['delivery_challan_products'] as $key1 => $value1) {
                 $order_quantity = 0;
                 ?>
                 <tr>
-                    <td>{{$key}}</td>
+                    <td>{{$i}}</td>
                     <td></td>
                     <td>Sales</td>
                     <td><?= date("jS F, Y", strtotime($value->updated_at)) ?></td>
@@ -104,8 +105,7 @@
                     <td>Pieces</td>
                     <td><?= round($value1->actual_quantity, 2) ?></td>
                     <td><?= $value1->price ?></td>
-                    <td><?= ($value1['order_product_details']['weight'] * $value1->actual_pieces) ?></td>
-                    <td><?= (($value1->price + $value1['order_product_details']['difference'] + $value['delivery_location']['difference']) * $value1->quantity) ?></td>
+                    <td><?= ($value1['order_product_details']['weight'] * $value1->actual_pieces * $value1->price) ?></td>
                     @endif
                     <td><?= $value->discount ?></td>
                     <td><?= $value->loading ?></td>
@@ -143,6 +143,7 @@
                 </tr>
                 <?php
             }
+            $i++;
         }
         ?>
 

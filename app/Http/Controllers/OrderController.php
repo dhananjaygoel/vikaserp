@@ -393,6 +393,16 @@ class OrderController extends Controller {
     public function update($id, PlaceOrderRequest $request) {
 
         $input_data = Input::all();
+        $rules = array(
+            'status' => 'required',
+        );
+        $validator = Validator::make($input_data, $rules);
+
+        if ($validator->fails()) {
+            Session::forget('product');
+            Session::put('input_data', $input_data);
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
         $i = 0;
 
         $customer_id = 0;
@@ -436,6 +446,8 @@ class OrderController extends Controller {
                 }
             } else {
                 $error_msg = $validator->messages();
+                Session::forget('product');
+                Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         } elseif (isset($input_data['customer_status']) && $input_data['customer_status'] == "existing_customer") {
@@ -446,6 +458,8 @@ class OrderController extends Controller {
                 $customer_id = $input_data['existing_customer_name'];
             } else {
                 $error_msg = $validator->messages();
+                Session::forget('product');
+                Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
@@ -520,6 +534,7 @@ class OrderController extends Controller {
                 $add_order_products = AllOrderProducts::create($order_products);
             }
         }
+
 
         /*
          * ------------------- --------------

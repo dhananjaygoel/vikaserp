@@ -332,7 +332,16 @@ class InquiryController extends Controller {
     public function update($id, InquiryRequest $request) {
 
         $input_data = Input::all();
+        $rules = array(
+            'add_inquiry_location' => 'required',
+        );
+        $validator = Validator::make($input_data, $rules);
 
+        if ($validator->fails()) {
+            Session::forget('product');
+            Session::put('input_data', $input_data);
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
         $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
@@ -369,6 +378,8 @@ class InquiryController extends Controller {
                 $customer_id = $customers->id;
             } else {
                 $error_msg = $validator->messages();
+                Session::forget('product');
+                Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         } elseif ($input_data['customer_status'] == "existing_customer") {
@@ -377,6 +388,8 @@ class InquiryController extends Controller {
                 $customer_id = $input_data['existing_customer_name'];
             } else {
                 $error_msg = $validator->messages();
+                Session::forget('product');
+                Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
@@ -415,7 +428,6 @@ class InquiryController extends Controller {
             ]);
         }
         $inquiry_products = array();
-
         $delete_old_inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->delete();
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {

@@ -121,7 +121,7 @@
                                 <div class="col-md-4">
                                     <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                                     <select class="form-control" name="add_order_location" id="add_order_location">
-                                        <option value="" selected="">Delivery Location</option>
+                                        <option value="" selected="" disabled="">Delivery Location</option>
                                         @foreach($delivery_locations as $delivery_location)
                                         @if($delivery_location->status=='permanent' && $delivery_location->id!= 0)
                                         <option  data-location-difference="{{$delivery_location->difference}}" <?php if ($delivery_location->id == $delivery_data->delivery_location_id) echo 'selected=""'; ?>  value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
@@ -159,79 +159,232 @@
                                             <td><span>Pending Quantity</span></td>
                                             <td><span>Remark</span></td>
                                         </tr>
+                                        <?php
+                                        $session_data = Session::get('input_data');
+                                        if (isset($session_data['product'])) {
+                                            $total_products_added = sizeof($session_data['product']);
+                                            $a = sizeof($delivery_data['delivery_product']);
+                                            for ($i = 0; $i <= $total_products_added + 1; $i++) {
+                                                if (isset($session_data['product'][$i]['name'])) {
+                                                    if ($i <= $a) {
+                                                        ?>
+                                                        <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
+                                                            <td class="col-md-3">
+                                                                <div class="form-group searchproduct">
+                                                                    <input value="{{$session_data['product'][$i]['name']}}" class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});">
+                                                                    <input type="hidden" name="product[{{$i}}][product_category_id]" id="add_product_id_{{$i}}" value="{{$session_data['product'][$i]['product_category_id']}}">
+                                                                    <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="{{$session_data['product'][$i]['id']}}">
+                                                                    <input type="hidden" name="product[{{$i}}][order]" value="{{ $session_data['product'][$i]['order']}}">
+                <!--                                                    <i class="fa fa-search search-icon"></i>-->
+                                                                    {{$session_data['product'][$i]['name']}}
+                                                                </div>
+                                                                <input type="hidden" name="prod_id" value="{{$i}}">
+                                                            </td>
+                                                            <td class="col-md-1">
+                                                                <div class="form-group">
+                                                                    <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" value="{{$session_data['product'][$i]['quantity']}}" type="hidden">
+                                                                    {{$session_data['product'][$i]['quantity']}}
+                                                                </div>
+                                                            </td>
+                                                            <td class="col-md-2">
+                                                                <div class="form-group ">
+                                                                    <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
+                                                                        @foreach($units as $unit)
+                                                                        @if($session_data['product'][$i]['units'] == $unit->id)
+                                                                        <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
+                                                                        @endif
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                            <td class="col-md-2">
+                                                                <div class="form-group col-md-6">
+                                                                    <!--                                                            form for save product value-->
+                                                                    <input type="tel" class="form-control" id="present_shipping_{{$i}}" value="{{$session_data['product'][$i]['present_shipping']}}" name="product[{{$i}}][present_shipping]" placeholder="Present Shipping" onblur="change_quantity2({{$i}});">
+                                                                </div>
+                                                                <div class="form-group col-md-6 difference_form">
+                                                                    <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
+                                                                </div>
+                                                            </td>
+                                                            <td class="col-md-2">
+                                                                <div class="form-group col-md-6">
+                                                                    <!--                                                            form for save product value-->
+                                                                    <input type="tel" class="form-control" id="product_price_{{$i}}" value="{{$session_data['product'][$i]['price']}}" name="product[{{$i}}][price]" placeholder="Price">
 
-                                        @foreach($delivery_data['delivery_product'] as $key=>$product)
+                                                                </div>
+                                                                <div class="form-group col-md-6 difference_form">
+                                                                    <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
+                                                                </div>
+                                                            </td>
+                                                            <td class="col-md-2">
+                                                                <div class="form-group">
 
-                                        @if($product->order_type =='delivery_order')
-                                        <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
-                                            <td class="col-md-3">
-                                                <div class="form-group searchproduct">
-                                                    <input value="{{ $product['order_product_details']->alias_name}}" class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});">
-                                                    <input type="hidden" name="product[{{$key}}][product_category_id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']->id}}">
-                                                    <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product->id}}">
-                                                    <input type="hidden" name="product[{{$key}}][order]" value="{{ $product->from}}">
-<!--                                                    <i class="fa fa-search search-icon"></i>-->
-                                                    {{ $product['order_product_details']->alias_name}}
-                                                </div>
-                                                <input type="hidden" name="prod_id" value="{{$key}}">
-                                            </td>
-                                            <td class="col-md-1">
-                                                <div class="form-group">
-                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" type="hidden">
-                                                    {{ $product->quantity}}
-                                                </div>
-                                            </td>
-                                            <td class="col-md-2">
-                                                <div class="form-group ">
-                                                    <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}">
-                                                        @foreach($units as $unit)
-                                                        @if($product->unit_id == $unit->id)
-                                                        <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
+                                                                    @foreach($pending_orders as $porder)
+                                                                    @if($porder['product_id'] == $session_data['product'][$i]['product_category_id'] && $porder['id']== $session_data['product'][$i]['id'])
+                                                                    <input type="hidden" value="{{$porder['total_pending_quantity']}}" id="pending_qunatity_value_{{$i}}">
+                                                                    <div id="pending_qunatity_{{$i}}"><span class="text-center">{{$porder['total_pending_quantity']}}</span>
+                                                                    </div>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </div>
+                                                            </td>
+                                                            <td class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <input id="remark" class="form-control" placeholder="Remark" name="product[{{$i}}][remark]" value="{{$session_data['product'][$i]['remark']}}" type="text">
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    <?php } else {
+                                                        ?>
+                                                        <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
+                                                            <td class="col-md-3">
+                                                                <div class="form-group searchproduct">
+                                                                    <input value="{{$session_data['product'][$i]['name']}}" class="form-control" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});">
+                                                                    <input type="hidden" name="product[{{$i}}][product_category_id]" id="add_product_id_{{$i}}" value="{{$session_data['product'][$i]['product_category_id']}}">
+                                                                    <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="{{$session_data['product'][$i]['id']}}">
+                                                                    <input type="hidden" name="product[{{$i}}][order]" value="{{ $session_data['product'][$i]['order']}}">
+                <!--                                                    <i class="fa fa-search search-icon"></i>-->
+                                                                    <!--{{$session_data['product'][$i]['name']}}-->
+                                                                </div>
+                                                                <input type="hidden" name="prod_id" value="{{$i}}">
+                                                            </td>
+                                                            <td class="col-md-1">
+                                                                <div class="form-group">
+                                                                    <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" value="{{$session_data['product'][$i]['quantity']}}" type="text" onblur="create_delivery_order_PS({{$i}});">
+                                                                    <!--{{$session_data['product'][$i]['quantity']}}-->
+                                                                </div>
+                                                            </td>
+                                                            <td class="col-md-2">
+                                                                <div class="form-group ">
+                                                                    <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
+                                                                        @foreach($units as $unit)
+                                                                        @if($session_data['product'][$i]['units'] == $unit->id)
+                                                                        <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
+                                                                        @endif
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                            <td class="col-md-2">
+                                                                <div class="form-group col-md-6">
+                                                                    <!--                                                            form for save product value-->
+                                                                    <input type="tel" class="form-control" id="present_shipping_{{$i}}" value="{{$session_data['product'][$i]['present_shipping']}}" name="product[{{$i}}][present_shipping]" placeholder="Present Shipping" onblur="change_quantity2({{$i}});">
+                                                                </div>
+                                                                <div class="form-group col-md-6 difference_form">
+                                                                    <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
+                                                                </div>
+                                                            </td>
+                                                            <td class="col-md-2">
+                                                                <div class="form-group col-md-6">
+                                                                    <!--                                                            form for save product value-->
+                                                                    <input type="tel" class="form-control" id="product_price_{{$i}}" value="{{$session_data['product'][$i]['price']}}" name="product[{{$i}}][price]" placeholder="Price">
+
+                                                                </div>
+                                                                <div class="form-group col-md-6 difference_form">
+                                                                    <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
+                                                                </div>
+                                                            </td>
+                                                            <td class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <?php $j = 1; ?>
+                                                                    @foreach($pending_orders as $porder)
+                                                                    @if($porder['product_id'] == $session_data['product'][$i]['product_category_id'] && $porder['id']== $session_data['product'][$i]['id'])
+                                                                    <input type="hidden" value="{{$porder['total_pending_quantity']}}" id="pending_qunatity_value_{{$i}}">
+                                                                    <div id="pending_qunatity_{{$i}}"><span class="text-center">{{$porder['total_pending_quantity']}}</span>
+                                                                    </div>
+                                                                    @elseif($j==1)
+                                                                    <input type="hidden" value="0" id="pending_qunatity_value_{{$i}}">
+                                                                    <div id="pending_qunatity_{{$i}}"><span class="text-center">0</span></div>
+                                                                    <?php $j++; ?>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </div>
+                                                            </td>
+                                                            <td class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <input id="remark" class="form-control" placeholder="Remark" name="product[{{$i}}][remark]" value="{{$session_data['product'][$i]['remark']}}" type="text">
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <?php
+                                                    }
+                                                }
+                                            }
+                                            Session::put('input_data', '');
+                                        } else {
+                                            ?>
+                                            @foreach($delivery_data['delivery_product'] as $key=>$product)
+
+                                            @if($product->order_type =='delivery_order')
+                                            <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
+                                                <td class="col-md-3">
+                                                    <div class="form-group searchproduct">
+                                                        <input value="{{ $product['order_product_details']->alias_name}}" class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});">
+                                                        <input type="hidden" name="product[{{$key}}][product_category_id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']->id}}">
+                                                        <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product->id}}">
+                                                        <input type="hidden" name="product[{{$key}}][order]" value="{{ $product->from}}">
+    <!--                                                    <i class="fa fa-search search-icon"></i>-->
+                                                        {{ $product['order_product_details']->alias_name}}
+                                                    </div>
+                                                    <input type="hidden" name="prod_id" value="{{$key}}">
+                                                </td>
+                                                <td class="col-md-1">
+                                                    <div class="form-group">
+                                                        <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" type="hidden">
+                                                        {{ $product->quantity}}
+                                                    </div>
+                                                </td>
+                                                <td class="col-md-2">
+                                                    <div class="form-group ">
+                                                        <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}">
+                                                            @foreach($units as $unit)
+                                                            @if($product->unit_id == $unit->id)
+                                                            <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td class="col-md-2">
+                                                    <div class="form-group col-md-6">
+                                                        <!--                                                            form for save product value-->
+                                                        <input type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" placeholder="Present Shipping" onblur="change_quantity2({{$key}});">
+                                                    </div>
+                                                    <div class="form-group col-md-6 difference_form">
+                                                        <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
+                                                    </div>
+                                                </td>
+                                                <td class="col-md-2">
+                                                    <div class="form-group col-md-6">
+                                                        <!--                                                            form for save product value-->
+                                                        <input type="tel" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price">
+
+                                                    </div>
+                                                    <div class="form-group col-md-6 difference_form">
+                                                        <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
+                                                    </div>
+                                                </td>
+                                                <td class="col-md-2">
+                                                    <div class="form-group">
+
+                                                        @foreach($pending_orders as $porder)
+                                                        @if($porder['product_id'] == $product->product_category_id && $porder['id']== $product->id)
+                                                        <input type="hidden" value="{{$porder['total_pending_quantity']}}" id="pending_qunatity_value_{{$key}}">
+                                                        <div id="pending_qunatity_{{$key}}"><span class="text-center">{{$porder['total_pending_quantity']}}</span>
+                                                        </div>
                                                         @endif
                                                         @endforeach
-                                                    </select>
-                                                </div>
-                                            </td>
-                                            <td class="col-md-2">
-                                                <div class="form-group col-md-6">
-                                                    <!--                                                            form for save product value-->
-                                                    <input type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" placeholder="Present Shipping" onblur="change_quantity2({{$key}});">
-                                                </div>
-                                                <div class="form-group col-md-6 difference_form">
-                                                    <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
-                                                </div>
-                                            </td>
-                                            <td class="col-md-2">
-                                                <div class="form-group col-md-6">
-                                                    <!--                                                            form for save product value-->
-                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price">
-
-                                                </div>
-                                                <div class="form-group col-md-6 difference_form">
-                                                    <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
-                                                </div>
-                                            </td>
-                                            <td class="col-md-2">
-                                                <div class="form-group">
-
-                                                    @foreach($pending_orders as $porder)
-                                                    @if($porder['product_id'] == $product->product_category_id && $porder['id']== $product->id)
-                                                    <input type="hidden" value="{{$porder['total_pending_quantity']}}" id="pending_qunatity_value_{{$key}}">
-                                                    <div id="pending_qunatity_{{$key}}"><span class="text-center">{{$porder['total_pending_quantity']}}</span>
                                                     </div>
-                                                    @endif
-                                                    @endforeach
-                                                </div>
-                                            </td>
-                                            <td class="col-md-4">
-                                                <div class="form-group">
-                                                    <input id="remark" class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @endif
-                                        @endforeach
-                                        <?php //}  ?>
+                                                </td>
+                                                <td class="col-md-4">
+                                                    <div class="form-group">
+                                                        <input id="remark" class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @endif
+                                            @endforeach
+                                        <?php } ?>
                                     </tbody>
                                 </table>
                                 <table>
@@ -299,7 +452,11 @@
                                     <tbody>
                                         <tr class="cdtable">
                                             <td class="cdfirst">VAT Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ $delivery_data->vat_percentage }}" type="tel" onblur="grand_total_delivery_order({{$key}});"></td>
+                                            <?php if (isset($key)) { ?>
+                                                <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ $delivery_data->vat_percentage }}" type="tel" onblur="grand_total_delivery_order({{$key}});"></td>
+                                            <?php } else { ?>
+                                                <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ $delivery_data->vat_percentage }}" type="tel" onblur="grand_total_delivery_order(1);"></td>
+                                            <?php } ?>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -315,7 +472,8 @@
                             <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>-->
                         </div>
                         <hr>
-                        <div >
+                        <div>
+                            <!--<input type="hidden" name="row_count" value="{{sizeof($delivery_data['delivery_product'])}}">-->
                             <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
                             <a href="{{url('delivery_order')}}" class="btn btn-default form_button_footer">Back</a>
                         </div>

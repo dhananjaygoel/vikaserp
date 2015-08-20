@@ -125,47 +125,94 @@
                                         <td><span>Price</span></td>
                                         <td><span>Remark</span></td>
                                     </tr>
-                                    @foreach($purchase_order['purchase_products'] as $key=>$product)
-                                    @if($product->order_type == 'purchase_order')
-                                    <tr id="add_row_{{$key}}" class="add_product_row">
-                                        <td class="col-md-3">
-                                            <div class="form-group searchproduct">
-                                                <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_purchase_product_name_{{$key}}" value="{{$product['purchase_product_details']->alias_name}}" onfocus="product_autocomplete_purchase({{$key}});">
-                                                <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}">
-                                                <i class="fa fa-search search-icon"></i>
-                                            </div>
-                                        </td>
-                                        <td class="col-md-1">
-                                            <div class="form-group">
-                                                <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel">
-                                            </div>
-                                        </td>
-                                        <td class="col-md-2">
-                                            <div class="form-group ">
-                                                <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}">
-                                                    @foreach($units as $unit)
-                                                    @if($product->unit_id == $unit->id)
-                                                    <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
-                                                    @else
-                                                    <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
-                                                    @endif
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </td>
-                                        <td class="col-md-2">
-                                            <div class="form-group">
-                                                <input type="tel" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
-                                            </div>
-                                        </td>
-                                        <td class="col-md-4">
-                                            <div class="form-group">
-                                                <input id="remark" class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endif
-                                    @endforeach
+                                    <?php
+                                    $session_data = Session::get('input_data');
+                                    if (isset($session_data['product'])) {
+                                        $total_products_added = sizeof($session_data['product']);
+                                        for ($i = 0; $i <= $total_products_added; $i++) {
+                                            if (isset($session_data['product'][$i]['name'])) {
+                                                ?>
+                                                <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
+                                                    <td class="col-md-3">
+                                                        <div class="form-group searchproduct">
+                                                            <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>">
+                                                            <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="<?php if (isset($session_data['product'][$i]['id'])) { ?>{{$session_data['product'][$i]['id']}}<?php } ?>">
+                                                            <i class="fa fa-search search-icon"></i>
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-md-1">
+                                                        <div class="form-group">
+                                                            <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                        <div class="form-group ">
+                                                            <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
+                                                                @foreach($units as $unit)
+                                                                <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-md-4">
+                                                        <div class="form-group">
+                                                            <input id="remark" class="form-control" placeholder="Remark" name="product[{{$i}}][remark]" type="text" value="<?php if (isset($session_data['product'][$i]['remark'])) { ?>{{$session_data['product'][$i]['remark']}}<?php } ?>">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <?php
+                                            }
+                                        }
+                                        Session::put('input_data', '');
+                                    } else {
+                                        ?>
+                                        @foreach($purchase_order['purchase_products'] as $key=>$product)
+                                        @if($product->order_type == 'purchase_order')
+                                        <tr id="add_row_{{$key}}" class="add_product_row">
+                                            <td class="col-md-3">
+                                                <div class="form-group searchproduct">
+                                                    <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_purchase_product_name_{{$key}}" value="{{$product['purchase_product_details']->alias_name}}" onfocus="product_autocomplete_purchase({{$key}});">
+                                                    <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}">
+                                                    <i class="fa fa-search search-icon"></i>
+                                                </div>
+                                            </td>
+                                            <td class="col-md-1">
+                                                <div class="form-group">
+                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel">
+                                                </div>
+                                            </td>
+                                            <td class="col-md-2">
+                                                <div class="form-group ">
+                                                    <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}">
+                                                        @foreach($units as $unit)
+                                                        @if($product->unit_id == $unit->id)
+                                                        <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
+                                                        @else
+                                                        <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
+                                                        @endif
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td class="col-md-2">
+                                                <div class="form-group">
+                                                    <input type="tel" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
+                                                </div>
+                                            </td>
+                                            <td class="col-md-4">
+                                                <div class="form-group">
+                                                    <input id="remark" class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endif
+                                        @endforeach
+                                    <?php } ?>
                                 </tbody>
                             </table>
                             <table>
