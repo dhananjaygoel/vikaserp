@@ -11,7 +11,7 @@
                     <li class="active"><span>Bulk Set Price</span></li>
                 </ol>
                 <div class="filter-block">
-                    <h1 class="pull-left">Bulk Set Price</h1> 
+                    <h1 class="pull-left">Bulk Set Price</h1>
                     <form method="GET" id="searchCustomerForm" action="{{URL::action('CustomerController@bulk_set_price')}}">
                         <div class="form-group  col-md-3  pull-right">
                             <select class="form-control" name="product_filter" onchange="this.form.submit()">
@@ -25,18 +25,18 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="input-group col-md-3 pull-right">                            
+                        <div class="input-group col-md-3 pull-right">
                             <input type="text" class="form-control" name="search" id="search" placeholder="Tally Name, City, Delivery Location" value="{{Request::get('search')}}">
                             <span class="input-group-btn">
                                 <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
                             </span>
                         </div>
 
-<!--                        <div class="form-group pull-right col-md-3">
-                            <input class="form-control" name="search" id="search" placeholder="Tally Name, City, Delivery Location" value="{{Request::get('search')}}" type="text">
-                            <i class="fa fa-search search-icon"></i>
-                        </div>-->
-                    </form> 
+                        <!--                        <div class="form-group pull-right col-md-3">
+                                                    <input class="form-control" name="search" id="search" placeholder="Tally Name, City, Delivery Location" value="{{Request::get('search')}}" type="text">
+                                                    <i class="fa fa-search search-icon"></i>
+                                                </div>-->
+                    </form>
                 </div>
             </div>
         </div>
@@ -85,9 +85,9 @@
                                         $product_cat_count = sizeof($product_category);
                                         ?>
                                         @foreach($customer as $key => $c)
-                                        <tr>                                            
+                                        <tr>
                                             <td>{{$i++}}</td>
-                                            <td>{{$c->owner_name}}</td>
+                                            <td>{{$c->tally_name}}</td>
                                             @foreach($product_category as $key1=>$prod)
                                             <?php
                                             $price = '';
@@ -98,7 +98,7 @@
                                             }
                                             ?>
                                             <td>
-                                                <!--for the validation of the decimal points pattern="[0-9]\.[0-9]{5}|[0-9]{2}\.[0-9]{4}"--> 
+                                                <!--for the validation of the decimal points pattern="[0-9]\.[0-9]{5}|[0-9]{2}\.[0-9]{4}"-->
                                                 <input type='tel' id="valueSconto_{{$key}}{{$key1}}" name="set_diff[{{$key}}][{{$key1}}][price]" maxlength="5" onkeypress="test({{$key}},{{$key1}}, this)" value="{{ $price }}" style="width: 40px;">
                                                 <input type='hidden' name="set_diff[{{$key}}][{{$key1}}][cust_id]" value="{{$c->id}}">
                                                 <input type='hidden' name="set_diff[{{$key}}][{{$key1}}][product_id]" value="{{$prod->id}}">
@@ -154,7 +154,7 @@
                                     <a onclick="this.form.submit()"></a>
                                 </div>
                             </form>
-                        </span> 
+                        </span>
                         @endif
                         @else
                         <div class="alert alert-info alert-dismissible" role="alert">
