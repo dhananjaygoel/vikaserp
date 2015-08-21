@@ -36,6 +36,7 @@ class Customer extends Model {
     public function city() {
         return $this->hasOne('App\City', 'id', 'city');
     }
+
     public function getcity() {
         return $this->hasOne('App\City', 'id', 'city');
     }

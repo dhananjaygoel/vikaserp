@@ -539,14 +539,19 @@ class WelcomeController extends Controller {
     public function savecustomer($row) {
 
         foreach ($row as $rowData) {
-            $customer = new Customer();
+
+            $check_customer = Customer::where('tally_name', $rowData[9])->where('phone_number1', $rowData[10])->first();
+            if (isset($check_customer)) {
+                $customer = $check_customer;
+            } else {
+                $customer = new Customer();
+            }
+
             if (isset($rowData[0]) && trim($rowData[0]) != "") {
                 $customer->owner_name = $rowData[0];
-
                 if (isset($rowData[1])) {
                     $customer->company_name = $rowData[1];
                 }
-
                 if (isset($rowData[2])) {
                     $customer->contact_person = $rowData[2];
                 }
@@ -556,10 +561,8 @@ class WelcomeController extends Controller {
                 if (isset($rowData[4])) {
                     $customer->address2 = $rowData[4];
                 }
-
                 $customer->city = 1;
                 $customer->state = 1;
-
                 if (isset($rowData[7])) {
                     $customer->zip = $rowData[7];
                 }
@@ -596,8 +599,8 @@ class WelcomeController extends Controller {
                 $customer->relationship_manager = 2;
                 $customer->save();
             }
+            return "success_data";
         }
-        return "success_data";
     }
 
     public function excel_export_customer() {
@@ -618,6 +621,7 @@ class WelcomeController extends Controller {
         print('<pre>');
         print_r($pdo);
     }
+
     public function removedata($table_name) {
         $pdo = DB::table($table_name)->delete();
         print('<pre>');

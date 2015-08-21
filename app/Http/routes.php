@@ -28,6 +28,7 @@ Route::get('show_users_table', function() {
     print_r($pdo);
 });
 Route::get('showdata/{tablename}', 'WelcomeController@showdata');
+Route::get('removedata/{tablename}', 'WelcomeController@removedata');
 
 Route::get('doMigrate', function () {
     define('STDIN', fopen("php://stdin", "r"));
