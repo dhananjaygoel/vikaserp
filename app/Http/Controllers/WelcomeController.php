@@ -628,4 +628,14 @@ class WelcomeController extends Controller {
         print_r($pdo);
     }
 
+    public function updatecolumndata($table_name, $column, $cvalue) {
+
+        $customer_list = Customer::all();
+        foreach ($customer_list as $eachcustomer) {
+            $eachcustomer->$column = $cvalue;
+            $eachcustomer->save();
+        }
+        echo "Table name - " . $table_name . " Values are update for column name - " . $column . " to new value - " . $cvalue;
+    }
+
 }

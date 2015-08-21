@@ -29,6 +29,7 @@ Route::get('show_users_table', function() {
 });
 Route::get('showdata/{tablename}', 'WelcomeController@showdata');
 Route::get('removedata/{tablename}', 'WelcomeController@removedata');
+Route::get('updatecolumndata/{tablename}/{column}/{value}', 'WelcomeController@updatecolumndata');
 
 Route::get('doMigrate', function () {
     define('STDIN', fopen("php://stdin", "r"));
