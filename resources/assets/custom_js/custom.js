@@ -345,13 +345,25 @@ $('#save_all_price_btn').click(function() {
         }
     });
 });
+function isNumber(evt, element) {
 
-function test(a, b, e) {
-    var abc = $(e).val();
-    $(e).val(function(i, abc) {
-        return abc.replace(/\d{3}|[^\d{2}\.]|^\./g, "");
-    });
-}
+        var charCode = (evt.which) ? evt.which : event.keyCode
+
+        if (
+            (charCode != 45 || $(element).val().indexOf('-') != -1) &&      // “-” CHECK MINUS, AND ONLY ONE.
+            (charCode != 46 || $(element).val().indexOf('.') != -1) &&      // “.” CHECK DOT, AND ONLY ONE.
+            (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    } 
+function test() {
+//    var abc = $(e).val();
+//    $(e).val(function(i, abc) {
+//        return abc.replace(/\d{3}|[^\d{2}\.]|^\./g, "");
+//    });
+    return isNumber(event, this);
+};
 
 function submit_filter_form() {
     $("#searchCustomerForm").submit();
