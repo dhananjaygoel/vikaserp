@@ -47,7 +47,6 @@
         <?php
         $i = 1;
         foreach ($allorders as $key => $value) {
-            $next_cnt = count($value['delivery_challan_products']);
             foreach ($value['delivery_challan_products'] as $key1 => $value1) {
                 $order_quantity = 0;
                 ?>
@@ -89,39 +88,16 @@
                         foreach ($value['customer']['customerproduct'] as $customer_difference) {
                             if ($customer_difference['product_category_id'] == $value1['order_product_details']['product_category']['id']) {
                                 $customer_diff = $customer_difference->difference_amount;
-                                $customer_diff1 = $customer_difference->difference;
                             }
                         }
                     }
                     ?>
                     <td><?php
-                        $total_amt = ($value1->price + $value1['order_product_details']['difference']);
-                        $total_amt = $total_amt + $value->delivery_order->location_difference;
                         if (isset($customer_diff)) {
-                            $total_amt = $total_amt + $customer_diff;
-                        }
-
-                        if (isset($value1->quantity) && !empty($value1->quantity) && $value1->quantity != 0) {
-                            if ($next_cnt == $i) {
-                                $total_amt = ($total_amt * $value1->quantity) + $value->loading_charge + $value->freight + $value->discount + ($value->grand_price * ($value['delivery_order']->vat_percentage / 100));
-                            } else {
-                                $total_amt = $total_amt * $value1->quantity;
-                            }
+                            echo (($value1->price + $value1['order_product_details']['difference'] + $customer_diff + $value['delivery_location']['difference']) * $value1->quantity);
                         } else {
-                            if ($next_cnt == $i) {
-                                $total_amt = ($total_amt * $value1->actual_pieces * $value1->order_product_details->weight) + $value->loading_charge + $value->freight + $value->discount + ($value->grand_price * ($value['delivery_order']->vat_percentage / 100));
-                            } else {
-                                $total_amt = $total_amt * $value1->actual_pieces * $value1->order_product_details->weight;
-                            }
+                            echo (($value1->price + $value1['order_product_details']['difference'] + $value['delivery_location']['difference']) * $value1->quantity);
                         }
-
-                        echo number_format($total_amt, 2, '.', '');
-//                        exit;
-//                        if (isset($customer_diff)) {
-//                            echo (($value1->price + $value1['order_product_details']['difference'] + $customer_diff + $value['delivery_location']['difference']) * $value1->quantity);
-//                        } else {
-//                            echo (($value1->price + $value1['order_product_details']['difference'] + $value['delivery_location']['difference']) * $value1->quantity);
-//                        }
                         ?>
                     </td>
                     @elseif($value1->actual_quantity == 0)
@@ -166,8 +142,8 @@
                     </td>
                 </tr>
                 <?php
-                $i++;
             }
+            $i++;
         }
         ?>
 
