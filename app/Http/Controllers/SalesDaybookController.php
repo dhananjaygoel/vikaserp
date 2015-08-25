@@ -55,9 +55,9 @@ class SalesDaybookController extends Controller {
     }
 
     /*
-     * Challan date function is for sales daybook 
+     * Challan date function is for sales daybook
      * All records of selected date
-     * 
+     *
      */
 
     public function challan_date() {
@@ -87,7 +87,7 @@ class SalesDaybookController extends Controller {
 
     /*
      * Delete multiple selected challan
-     * 
+     *
      */
 
     public function delete_multiple_challan() {
