@@ -148,7 +148,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('upload_customer_excel', 'WelcomeController@upload_customer_excel');
     Route::resource('import_delivery_location', 'WelcomeController@import_delivery_location');
     Route::post('process_import_delivery_location', 'WelcomeController@process_import_delivery_location');
-    Route::any('database_backup', 'HomeController@database_backup');
+    Route::any('database_backup_test', 'HomeController@database_backup_test');
+    Route::any('database_backup_live', 'HomeController@database_backup_live');
+    Route::any('database_backup_local', 'HomeController@database_backup_local');
 });
 
 Route::get('export/{type}', 'WelcomeController@exportExcel');

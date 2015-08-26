@@ -54,10 +54,44 @@ class HomeController extends Controller {
         $product_data = \App\Customer::where('delivery_location_id', '=', 0)->update(['delivery_location_id' => 32]);
     }
 
-    public function database_backup() {
+    public function database_backup_local() {
+        $DBUSER = "root";
+        $DBPASSWD = "root123";
+        $DATABASE = "steel-trading-automation";
+
+        $filename = "backup-" . date("d-m-Y") . ".sql.gz";
+        $mime = "application/x-gzip";
+
+        header("Content-Type: " . $mime);
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+        $cmd = "mysqldump -u $DBUSER --password=$DBPASSWD $DATABASE | gzip --best";
+
+        passthru($cmd);
+
+        exit(0);
+    }
+    public function database_backup_test() {
         $DBUSER = "agstechn_vauser";
         $DBPASSWD = "vikasuser23210";
         $DATABASE = "agstechn_vaoas";
+
+        $filename = "backup-" . date("d-m-Y") . ".sql.gz";
+        $mime = "application/x-gzip";
+
+        header("Content-Type: " . $mime);
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+        $cmd = "mysqldump -u $DBUSER --password=$DBPASSWD $DATABASE | gzip --best";
+
+        passthru($cmd);
+
+        exit(0);
+    }
+    public function database_backup_live() {
+        $DBUSER = "vikaserp_agsus";
+        $DBPASSWD = "passags756";
+        $DATABASE = "vikaserp_ags";
 
         $filename = "backup-" . date("d-m-Y") . ".sql.gz";
         $mime = "application/x-gzip";
