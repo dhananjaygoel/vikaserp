@@ -29,8 +29,8 @@
                         </div>
                         @if(sizeof($allorders) > 0)
                         <div class="pull-right col-md-4">
-                            <a class="btn btn-primary form_button_footer print_sales_order_daybook" >Print</a> 
-                            <a href="{{url('export_sales_daybook')}}" class="btn btn-primary form_button_footer" >Export</a> 
+                            <a class="btn btn-primary form_button_footer print_sales_order_daybook" >Print</a>
+                            <a href="{{url('export_sales_daybook')}}" class="btn btn-primary form_button_footer" >Export</a>
                         </div>
                         @endif
                     </div>
@@ -55,10 +55,10 @@
                         @endif
 
                         @if (count($errors) > 0)
-                        <div role="alert" class="alert alert-danger">                         
+                        <div role="alert" class="alert alert-danger">
                             @foreach ($errors->all() as $error)
                             <p>{{ $error }}</p>
-                            @endforeach                            
+                            @endforeach
                         </div>
                         @endif
                         <div class="table-responsive">
@@ -79,23 +79,23 @@
                                             <th>Tally Name</th>
                                             <th>Truck Number</th>
                                             <th>Fullfilled By</th>
-                                            <th>Order By </th> 
+                                            <th>Order By </th>
                                             <th>Loaded By </th>
                                             <th>Labors </th>
                                             <th>Actual Quantity</th>
                                             <th>Amount</th>
-                                            <th>Bill Number</th> 
-                                            <th>Remarks </th> 
+                                            <th>Bill Number</th>
+                                            <th>Remarks </th>
                                             @if( Auth::user()->role_id == 0)
                                             <th>Action </th>
                                             @endif
                                         </tr>
                                     </thead>
-                                    <tbody id="challan_data" >    
+                                    <tbody id="challan_data" >
                                         <?php
                                         $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
-                                        ?> 
-                                        @foreach($allorders as $challan)                                       
+                                        ?>
+                                        @foreach($allorders as $challan)
                                         <tr class="add_product_row">
                                             @if( Auth::user()->role_id == 0 )
                                             <td><input type="checkbox" id ="checkbox_{{$k}}" name="challan_id[{{$k}}][checkbox]" value="{{$challan->id}}" > </td>
@@ -111,17 +111,19 @@
                                                 @else
                                                 {{$challan->serial_number}}
                                                 @endif
-                                            </td> 
+                                            </td>
                                             <td >
                                                 @if($challan["customer"]->tally_name != "")
-                                                {{$challan["customer"]->tally_name}}
+                                                    {{$challan["customer"]->tally_name}}
                                                 @else
-                                                {{$challan["customer"]->owner_name}}
+                                                    @if(isset($challan["customer"]->owner_name))
+                                                        {{$challan["customer"]->owner_name}}
+                                                    @endif
                                                 @endif
                                             </td>
                                             <td>{{isset($challan["delivery_order"])?$challan["delivery_order"]->vehicle_number: ''}}</td>
                                             <td>
-                                                @if($challan["delivery_order"]->supplier_id != 0)
+                                                @if(isset($challan["delivery_order"]->supplier_id) && $challan["delivery_order"]->supplier_id != 0)
                                                 @foreach($supplier as $sup)
                                                 @if($sup->id == $challan["delivery_order"]->supplier_id)
                                                 {{$sup->tally_name}}
@@ -153,15 +155,15 @@
                                             </td>
                                             <td >{{round($challan->grand_price, 2)}}</td>
                                             <td >{{$challan->bill_number}}</td>
-                                            <td>                                                
-                                                @if((strlen(trim($challan->remarks))) > 50)                                                
+                                            <td>
+                                                @if((strlen(trim($challan->remarks))) > 50)
                                                 {{ substr(trim($challan->remarks),0,50)}} ..
                                                 @else
                                                 {{trim($challan->remarks)}}
                                                 @endif
                                             </td>
                                             @if( Auth::user()->role_id == 0)
-                                            <td>                                                
+                                            <td>
                                                 <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_{{$challan->id}}" title="delete">
                                                     <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
@@ -191,7 +193,7 @@
                                                         <div class="clearfix"></div>
                                                         <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
                                                     </div>
-                                                </div>           
+                                                </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                     <button type="button" class="btn btn-default" id="yes" onclick="this.form.submit();">Yes</button>
@@ -199,9 +201,9 @@
                                                 {!! Form::close() !!}
                                             </div>
                                         </div>
-                                    </div>  
-                                    @endif                                    
-                                    @endforeach                                    
+                                    </div>
+                                    @endif
+                                    @endforeach
                                     </tbody>
                                 </table>
                                 @if( Auth::user()->role_id == 0  )
@@ -224,14 +226,14 @@
                                                     <div class="clearfix"></div>
                                                     <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
                                                 </div>
-                                            </div>           
+                                            </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="delete_selected_chllan_button">Yes</button>
                                             </div>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                                 <div class="pull-right deletebutton">
                                     <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_selected" ><button type="button" class="btn btn-primary form_button_footer" >Delete All</button></a>
                                 </div>
@@ -239,13 +241,13 @@
                             </form>
                             <div class="clearfix"></div>
                             <span class="pull-right">
-                                @if(isset($_GET['challan_date']) && Request::get('challan_date') != '') 
+                                @if(isset($_GET['challan_date']) && Request::get('challan_date') != '')
                                 <?php echo $allorders->appends(array('challan_date' => Request::get('challan_date')))->render(); ?>
                                 @else
                                 <?php echo $allorders->render(); ?>
                                 @endif
                             </span>
-                            <div class="clearfix"></div>                            
+                            <div class="clearfix"></div>
                             @if($allorders->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
                                 <form class="form-inline" method="GET" action="{{url('sales_daybook')}}" id="filter_search">
@@ -258,9 +260,9 @@
                                         <a onclick="this.form.submit()"></a>
                                     </div>
                                 </form>
-                            </span> 
+                            </span>
                             @endif
-                        </div>    
+                        </div>
                     </div>
                     @endif
                 </div>
