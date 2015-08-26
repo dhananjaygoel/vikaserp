@@ -133,7 +133,11 @@
                                                 {{$challan["delivery_order"]->order_source}}
                                                 @endif
                                             </td>
-                                            <td>{{$challan['user'][0]->first_name}}</td>
+                                            <td>
+                                                @if(isset($challan['user'][0]->first_name))
+                                                {{$challan['user'][0]->first_name}}
+                                                @endif                                                
+                                            </td>
                                             <td>{{$challan->loaded_by}}</td>
                                             <td>{{$challan->labours}}</td>
                                             <td>
