@@ -92,7 +92,7 @@ class ProductsubController extends Controller {
 
     public function get_product_category() {
 
-        $product_cat = ProductCategory::where('product_type_id', Input::get('product_type_id'))->get();
+        $product_cat = ProductCategory::where('product_type_id', Input::get('product_type_id'))->orderby('product_category_name', 'ASC')->get();
 
         $prod = array();
         $i = 0;
