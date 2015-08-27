@@ -71,7 +71,7 @@
             }
             .invoice{
                 width:80%;
-                margin-left: 15%;
+                margin-left: 10%;
                 border: 1px solid #ccc;
                 float: left;
                 padding: 0px;
