@@ -12,7 +12,7 @@
                 <div class="filter-block">
                     <h1 class="pull-left">Purchase Orders</h1>
                     <div class="pull-right top-page-ui">
-                        <form method="GET" action="{{url('purchase_orders')}}">                            
+                        <form method="GET" action="{{url('purchase_orders')}}">
                             <div class="filter-block pull-right">
                                 <a href="{{URL::action('PurchaseOrderController@create')}}"  class="btn btn-primary pull-right">
                                     <i class="fa fa-plus-circle fa-lg"></i> Place Purchase Order
@@ -22,7 +22,7 @@
                                         <select class="form-control" id="user_filter" name="pending_purchase_order" onchange="this.form.submit();">
                                             <option value="" selected="">Select Party</option>
                                             @foreach($all_customers as $customer)
-                                            <option value="{{$customer->id}}" <?php if ((isset($_GET['pending_purchase_order'])) && $_GET['pending_purchase_order'] == $customer->id) echo "selected=''"; ?>>{{$customer->owner_name}}</option>
+                                            <option value="{{$customer->id}}" <?php if ((isset($_GET['pending_purchase_order'])) && $_GET['pending_purchase_order'] == $customer->id) echo "selected=''"; ?>>{{$customer->tally_name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -104,10 +104,10 @@
                                         <td>
                                             {{round($purchase_order->total_quantity, 2)}}
                                         </td>
-                                        <td>                                        
+                                        <td>
                                             {{round($purchase_order->pending_quantity, 2)}}
                                         </td>
-                                        
+
                                         @if(Input::get('purchase_order_filter') == 'pending'  || Input::get('purchase_order_filter') == '')
                                         <td class="text-center">
                                             <a href="{{ url('create_purchase_advice'.'/'.$purchase_order->id)}}" class="table-link" title="Create Purchase Advice">
@@ -118,7 +118,7 @@
                                             </a>
                                         </td>
                                         @endif
-                                        
+
                                         <td class="text-center" style="min-width: 180px;">
                                             <a href="{{ Url::action('PurchaseOrderController@show', ['id' => $purchase_order->id]) }}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -127,7 +127,7 @@
                                                 </span>
                                             </a>
                                             @if($purchase_order->order_status !='completed' || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                            
+
                                             @if($purchase_order->order_status =='pending')
                                             <a href="{{ Url::action('PurchaseOrderController@edit', ['id' => $purchase_order->id]) }}" class="table-link" title="edit">
                                                 <span class="fa-stack">
@@ -136,7 +136,7 @@
                                                 </span>
                                             </a>
                                             @endif
-                                            
+
                                             <a class="table-link" title="manually complete" data-toggle="modal" data-target="#manual_complete_{{$purchase_order->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -234,7 +234,7 @@
                                         <a onclick="this.form.submit()"></a>
                                     </div>
                                 </form>
-                            </span> 
+                            </span>
                             @endif
                         </div>
                         @endif

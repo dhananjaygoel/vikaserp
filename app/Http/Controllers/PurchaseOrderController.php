@@ -78,7 +78,7 @@ class PurchaseOrderController extends Controller {
 
         $purchase_orders = $this->quantity_calculation($purchase_orders);
 
-        $all_customers = Customer::where('customer_status', '=', 'permanent')->get();
+        $all_customers = Customer::where('customer_status', '=', 'permanent')->orderBy('tally_name', 'ASC')->get();
         $purchase_orders->setPath('purchase_orders');
 
         return view('purchase_order', compact('purchase_orders', 'all_customers'));
@@ -94,8 +94,8 @@ class PurchaseOrderController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $units = Units::all();
-        $delivery_locations = DeliveryLocation::all();
-        $customers = Customer::where('customer_status', '=', 'permanent')->get();
+        $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
+        $customers = Customer::where('customer_status', '=', 'permanent')->orderBy('tally_name', 'ASC')->get();
         return view('add_purchase_order', compact('units', 'delivery_locations', 'customers'));
     }
 
@@ -690,13 +690,13 @@ class PurchaseOrderController extends Controller {
 
     /*
      * First get all orders
-     * 1 if delevery order is generated from order then only calculate 
-     * pending order from delivery order 
+     * 1 if delevery order is generated from order then only calculate
+     * pending order from delivery order
      * else take order details in pending order
-     * 2 if delivery order is generated then take those products only 
+     * 2 if delivery order is generated then take those products only
      * which has there in order rest skip
-     * 
-     * 
+     *
+     *
      */
 
     function quantity_calculation($purchase_orders) {

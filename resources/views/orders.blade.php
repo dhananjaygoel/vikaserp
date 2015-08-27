@@ -11,7 +11,7 @@
                 </ol>
                 <div class="filter-block">
                     <form action="{{url('orders')}}" method="GET">
-                        <h1 class="pull-left">Orders</h1> 
+                        <h1 class="pull-left">Orders</h1>
                         <div class="pull-right">
                             @if(Auth::user()->role_id != 4 && Auth::user()->role_id != 3 )
                             <a href="{{url('orders/create')}}" class="btn btn-primary">
@@ -19,7 +19,7 @@
                             </a>
                             @endif
                         </div>
-                        <div class="col-md-1 pull-right" style="padding: 0;"> 
+                        <div class="col-md-1 pull-right" style="padding: 0;">
                             <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
                                 <option value="" selected="">--Status-- </option>
                                 <option <?php if (Input::get('order_filter') == 'pending') echo 'selected=""'; ?> value="pending">Pending</option>
@@ -32,27 +32,27 @@
                                 <option value="" selected="">--Select Party--</option>
                                 @foreach($customers as $customer)
                                 @if($customer->customer_status == 'permanent')
-                                <option <?php if (Input::get('party_filter') == $customer->id) echo 'selected=""'; ?> value="{{$customer->id}}">{{$customer->owner_name}}</option>
+                                <option <?php if (Input::get('party_filter') == $customer->id) echo 'selected=""'; ?> value="{{$customer->id}}">{{$customer->tally_name}}</option>
                                 @endif
-                                @endforeach                                        
-                            </select> 
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-md-2 pull-right">
                             <select class="form-control" id="user_filter3" name="fulfilled_filter" onchange="this.form.submit();">
                                 <option value="" selected="">--Fulfilled by--</option>
                                 <option <?php if (Input::get('fulfilled_filter') == '0') echo 'selected=""'; ?>value="0" >Warehouse</option>
                                 <option <?php if (Input::get('fulfilled_filter') == 'all') echo 'selected=""'; ?>value="all" >Direct</option>
-                            </select> 
+                            </select>
                         </div>
                         <div class="col-md-2 pull-right">
                             <select class="form-control" id="user_filter3" name="location_filter" onchange="this.form.submit();">
                                 <option value="" selected="">--Select Location--</option>
-                                @foreach($delivery_location as $location) 
+                                @foreach($delivery_location as $location)
                                 @if($location->status=='permanent' && $location->id!=0)
                                 <option <?php if (Input::get('location_filter') == $location->id) echo 'selected=""'; ?> value="{{$location->id}}">{{$location->area_name}}</option>
                                 @endif
-                                @endforeach 
-                            </select> 
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-md-2 form-group pull-right">
                             <input class="form-control order_filter ui-autocomplete-input" placeholder="Size" value="{{Input::get('size_filter')}}" id="order_size" autocomplete="off" name="size_filter" type="text">
@@ -173,7 +173,7 @@
                                                     <div class="clearfix"></div>
                                                     <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
                                                 </div>
-                                            </div>           
+                                            </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
@@ -181,7 +181,7 @@
                                             {!! Form::close() !!}
                                         </div>
                                     </div>
-                                </div>     
+                                </div>
                                 <div class="modal fade" id="cancel_order_modal_{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -213,15 +213,15 @@
                                                     <label class="marginsms"><input type="checkbox" name="send_email" value="true"><span class="checksms">Send Email to Party</span></label>
                                                     <label><input type="checkbox" value="true" name="sendsms"><span title="SMS would be sent to Party" class="checksms smstooltip">SMS</span></label>
                                                 </div>
-                                            </div>           
+                                            </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" >Yes</button>
                                             </div>
-                                            {!! Form::close() !!}    
+                                            {!! Form::close() !!}
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                                 @endif
                                 @if($order->order_status == 'completed')
                                 @if($k==1)
@@ -232,7 +232,7 @@
                                         <th>Total Quantity</th>
                                         <th>Mobile </th>
                                         <th>Delivery Location</th>
-                                        <th>Order By</th>                                  
+                                        <th>Order By</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -250,7 +250,7 @@
                                     @if(count($pending_orders) > 0)
                                     @foreach($pending_orders as $porder)
                                     @if($porder['id'] == $order->id)
-                                    <td>{{ round($porder['total_quantity'], 2) }}</td>                                   
+                                    <td>{{ round($porder['total_quantity'], 2) }}</td>
                                     @endif
                                     @endforeach
                                     @else
@@ -306,7 +306,7 @@
                                                     <div class="clearfix"></div>
                                                     <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
                                                 </div>
-                                            </div>           
+                                            </div>
                                             <div class="modal-footer">
 
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
@@ -315,7 +315,7 @@
                                             {!! Form::close() !!}
                                         </div>
                                     </div>
-                                </div>     
+                                </div>
                                 @endif
                                 @if($order->order_status == 'cancelled')
                                 @if($k==1)
@@ -411,7 +411,7 @@
                                                     <div class="clearfix"></div>
                                                     <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
                                                 </div>
-                                            </div>           
+                                            </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
@@ -419,7 +419,7 @@
                                             {!! Form::close() !!}
                                         </div>
                                     </div>
-                                </div>     
+                                </div>
                                 @endif
                                 @endforeach
                                 </tbody>
@@ -440,8 +440,8 @@
                                         <a onclick="this.form.submit()"></a>
                                     </div>
                                 </form>
-                            </span> 
-                            @endif 
+                            </span>
+                            @endif
                         </div>
                         @endif
                     </div>

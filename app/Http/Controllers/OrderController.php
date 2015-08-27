@@ -44,7 +44,7 @@ class OrderController extends Controller {
 
     /**
      * Display a listing of the resource.
-     * 
+     *
      * @return Response
      */
     public function index() {
@@ -87,8 +87,8 @@ class OrderController extends Controller {
         $allorders = $q->with('customer', 'delivery_location', 'order_cancelled')
                         ->orderBy('created_at', 'desc')->paginate(20);
         $users = User::all();
-        $customers = Customer::all();
-        $delivery_location = DeliveryLocation::all();
+        $customers = Customer::orderBy('tally_name', 'ASC')->get();
+        $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_order = DeliveryOrder::all();
         $product_size = ProductSubCategory::all();
 
@@ -108,8 +108,8 @@ class OrderController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $units = Units::all();
-        $delivery_locations = DeliveryLocation::all();
-        $customers = Customer::all();
+        $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
+        $customers = Customer::orderBy('tally_name', 'ASC')->get();
         return View::make('add_orders', compact('customers', 'units', 'delivery_locations'));
     }
 
@@ -356,8 +356,8 @@ class OrderController extends Controller {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }
         $units = Units::all();
-        $delivery_location = DeliveryLocation::all();
-        $customers = Customer::all();
+        $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
+        $customers = Customer::orderBy('tally_name', 'ASC')->get();
 
         return View::make('order_detail', compact('order', 'delivery_location', 'units', 'customers'));
     }
@@ -378,7 +378,7 @@ class OrderController extends Controller {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }
         $units = Units::all();
-        $delivery_location = DeliveryLocation::all();
+        $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $customers = Customer::where('customer_status', 'permanent')->get();
 
         return View::make('edit_order', compact('order', 'delivery_location', 'units', 'customers'));
@@ -785,8 +785,8 @@ class OrderController extends Controller {
         }
 
         $units = Units::all();
-        $delivery_location = DeliveryLocation::all();
-        $customers = Customer::all();
+        $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
+        $customers = Customer::orderBy('tally_name', 'ASC')->get();
         return View::make('create_delivery_order', compact('order', 'delivery_location', 'units', 'customers'));
     }
 
@@ -940,13 +940,13 @@ class OrderController extends Controller {
 
     /*
      * First get all orders
-     * 1 if delevery order is generated from order then only calculate 
-     * pending order from delivery order 
+     * 1 if delevery order is generated from order then only calculate
+     * pending order from delivery order
      * else take order details in pending order
-     * 2 if delivery order is generated then take those products only 
+     * 2 if delivery order is generated then take those products only
      * which has there in order rest skip
-     * 
-     * 
+     *
+     *
      */
 
     function checkpending_quantity($allorders) {

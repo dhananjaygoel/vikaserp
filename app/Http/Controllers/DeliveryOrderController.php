@@ -29,7 +29,7 @@ use Session;
 
 class DeliveryOrderController extends Controller {
     /*
-     * sms construction 
+     * sms construction
      */
 
     public function __construct() {
@@ -65,7 +65,7 @@ class DeliveryOrderController extends Controller {
         }
 
         $delivery_data = $this->checkpending_quantity($delivery_data);
-        $delivery_locations = DeliveryLocation::all();
+        $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_data->setPath('delivery_order');
         return view('delivery_order', compact('delivery_data', 'delivery_locations'));
     }
@@ -77,8 +77,8 @@ class DeliveryOrderController extends Controller {
      */
     public function create() {
         $units = Units::all();
-        $delivery_locations = DeliveryLocation::all();
-        $customers = Customer::all();
+        $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
+        $customers = Customer::orderBy('tally_name', 'ASC')->get();
         return view('add_delivery_order', compact('units', 'delivery_locations', 'customers'));
     }
 
@@ -370,7 +370,7 @@ class DeliveryOrderController extends Controller {
     }
 
     /*
-     * Load the list view of pending delivery order. 
+     * Load the list view of pending delivery order.
      */
 
     public function pending_delivery_order() {

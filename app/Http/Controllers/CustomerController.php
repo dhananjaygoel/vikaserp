@@ -94,9 +94,9 @@ class CustomerController extends Controller {
 
         $managers = User::where('role_id', '=', 1)->get();
 
-        $locations = DeliveryLocation::all();
-        $states = States::all();
-        $cities = City::all();
+        $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
+        $states = States::orderBy('state_name', 'ASC')->get();
+        $cities = City::orderBy('city_name', 'ASC')->get();
 
         $product_category = ProductCategory::all();
 

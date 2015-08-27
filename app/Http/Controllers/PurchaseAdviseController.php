@@ -65,9 +65,9 @@ class PurchaseAdviseController extends Controller {
      * @return Response
      */
     public function create() {
-        $customers = Customer::where('customer_status', '=', 'permanent')->get();
+        $customers = Customer::where('customer_status', '=', 'permanent')->orderBy('tally_name', 'ASC')->get();
 
-        $delivery_locations = DeliveryLocation::all();
+        $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
 
         $units = Units::all();
 
@@ -213,7 +213,7 @@ class PurchaseAdviseController extends Controller {
         if (count($purchase_advise) < 1) {
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advise not found');
         }
-        $locations = DeliveryLocation::all();
+        $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $units = Units::all();
 
         return View::make('edit_purchase_advise', array('locations' => $locations, 'units' => $units, 'purchase_advise' => $purchase_advise));
@@ -428,7 +428,7 @@ class PurchaseAdviseController extends Controller {
         if (count($purchase_advise) < 1) {
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advise not found');
         }
-        $locations = DeliveryLocation::all();
+        $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $units = Units::all();
         return view('purchaseorder_advise_challan', compact('purchase_advise', 'locations', 'units'));
     }

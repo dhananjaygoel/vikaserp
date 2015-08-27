@@ -43,8 +43,8 @@ class DeliveryLocationController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('location')->with('error', 'You do not have permission.');
         }
-        $states = States::all();
-        $cities = City::all();
+        $states = States::orderBy('state_name', 'ASC')->get();
+        $cities = City::orderBy('city_name', 'ASC')->get();
         return view('add_delivery_location', compact('states', 'cities'));
     }
 
@@ -81,8 +81,8 @@ class DeliveryLocationController extends Controller {
             return Redirect::to('location')->with('error', 'You do not have permission.');
         }
         $delivery_location = DeliveryLocation::find($id);
-        $states = States::all();
-        $cities = City::all();
+        $states = States::orderBy('state_name', 'ASC')->get();
+        $cities = City::orderBy('city_name', 'ASC')->get();
         return view('edit_delivery_location', compact('cities', 'states', 'delivery_location'));
     }
 

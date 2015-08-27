@@ -246,7 +246,7 @@ use Illuminate\Support\Facades\Session;
                                         <option value="0">Warehouse</option>
                                         @if(count($customers))
                                         @foreach($customers as $c)
-                                        <option value="{{$c->id}}">{{$c->owner_name}}</option>
+                                        <option value="{{$c->id}}">{{$c->tally_name}}</option>
                                         @endforeach
                                         @endif
                                     </select>

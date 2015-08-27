@@ -228,7 +228,7 @@ use Illuminate\Support\Facades\Session;
                                     <select class="form-control" id="orderfor" name="order_for">
                                         <option value="0">Warehouse</option>
                                         @foreach($customers as $supplier)
-                                        <option value="{{$supplier->id}}">{{$supplier->owner_name}}</option>
+                                        <option value="{{$supplier->id}}">{{$supplier->tally_name}}</option>
                                         @endforeach
                                     </select>
                                 </div>

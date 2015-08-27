@@ -41,7 +41,7 @@ class CityController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('city')->with('error', 'You do not have permission.');
         }
-        $states = States::all();
+        $states = States::orderBy('state_name', 'ASC')->get();
         return view('add_city', compact('states'));
     }
 
@@ -73,7 +73,7 @@ class CityController extends Controller {
             return Redirect::to('city')->with('error', 'You do not have permission.');
         }
         $city = City::find($id);
-        $states = States::all();
+        $states = States::orderBy('state_name', 'ASC')->get();
         return view('edit_city', compact('city', 'states'));
     }
 
@@ -118,14 +118,14 @@ class CityController extends Controller {
         } else
             return redirect('city')->with('flash_message', 'City details cannot be deleted as it is associated with a location.');
     }
-    
+
     /*
      * give the city list based on the give state id
      */
 
     public function get_cities() {
         $state_id = Input::get('state_id');
-        $cities = City::where('state_id', '=', $state_id)->get();
+        $cities = City::where('state_id', '=', $state_id)->orderBy('city_name', 'ASC')->get();
         echo json_encode(array('cities' => $cities));
     }
 

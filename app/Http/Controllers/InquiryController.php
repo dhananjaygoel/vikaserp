@@ -79,7 +79,7 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $units = Units::all();
-        $delivery_locations = DeliveryLocation::all();
+        $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         return view('add_inquiry', compact('units', 'delivery_locations'));
     }
 
