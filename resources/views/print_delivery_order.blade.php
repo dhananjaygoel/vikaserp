@@ -11,6 +11,7 @@
                 font-size: 8px;
                 font-family: Bookman Old Style !important;
                 font-weight: bold !important;
+                /*font-family: monospace !important;*/
             }
             .divTable{
                 display:table;         
@@ -28,21 +29,21 @@
             .divCell{
                 float:left;
                 display:table-column;         
-                width:13%;         
+                width:12.5%;         
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }            
             .divCell2{
                 float:left;
                 display:table-column;         
-                width:8%;         
+                width:4%;         
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
             .divCell3{
                 float:left;
                 display:table-column;         
-                width:15%;         
+                width:30%;         
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
