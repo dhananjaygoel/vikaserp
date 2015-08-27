@@ -7,6 +7,10 @@
     </head>
     <body>
         <style>
+            body{
+                font-family: Bookman Old Style !important;
+                font-weight: bold !important;
+            }
             .divTable{
                 display:table;         
                 width:100%;         
@@ -211,7 +215,14 @@
                     Time Gen:  {{ date("h:i:s a" , strtotime($purchase_challan->created_at)) }}
                 </div>
                 <div class="time-prnt">
-                    Time Prnt: {{ date("h:i:sa") }}
+                    <!--Time Prnt: {{ date("h:i:sa") }}-->
+                    Time Prnt:  <?php
+                    echo '<script type="text/javascript">
+                        var x = new Date()
+                        var current_time = x.getHours()+":"+x.getMinutes()+":"+x.getSeconds()
+                        document.write(current_time)
+                        </script>';
+                    ?>
                 </div>
             </div>
 

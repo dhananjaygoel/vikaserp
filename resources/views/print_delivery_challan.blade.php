@@ -7,6 +7,10 @@
     </head>
     <body>
         <style>
+            body{
+                font-family: Bookman Old Style !important;
+                font-weight: bold !important;
+            }
             .divTable{
                 display:table;         
                 width:100%;         
@@ -160,7 +164,6 @@
                 border-left: 1px solid #ccc;
                 /*padding: 0 5px 0 0px;*/
             }
-
         </style>
         <div class="invoice">
             <div class="title">
@@ -206,8 +209,8 @@
                 <div class="headRow">
                     <div  class="divCell2">Sr.</div>
                     <div  class="divCell">Size</div>
-                    <div  class="divCell">Actual Pcs</div>
-                    <div  class="divCell">Actual Qty</div>
+                    <div  class="divCell">Pcs</div>
+                    <div  class="divCell">Qty</div>
                     <div  class="divCell">Rate</div>
                     <div  class="divCell">Amount</div>                
                 </div>

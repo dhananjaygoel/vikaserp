@@ -9,6 +9,8 @@
         <style>
             body{
                 font-size: 8px;
+                font-family: Bookman Old Style !important;
+                font-weight: bold !important;
             }
             .divTable{
                 display:table;         
@@ -73,8 +75,8 @@
             }
             .invoice
             {
-                width:90%;
-                margin-left: 5%;
+                width:70%;
+                margin-left: 15%;
                 border: 1px solid #ccc;
                 float: left;
                 padding: 0px;
@@ -158,7 +160,14 @@
                     Date: {{ date('d F, Y')}}
                 </div>
                 <div class="time">
-                    Time: {{ date("h:i:sa") }}
+                    <!--Time: {{ date("h:i:sa") }}-->
+                    Time: <?php
+                    echo '<script type="text/javascript">
+                        var x = new Date()
+                        var current_time = x.getHours()+":"+x.getMinutes()+":"+x.getSeconds()
+                        document.write(current_time)
+                        </script>';
+                    ?>
                 </div>
             </div>
             <div class="name">
@@ -192,8 +201,8 @@
                     <div  class="divCell3">Size</div>
                     <div  class="divCell">Qty</div>
                     <div  class="divCell">Unit</div>                    
-                    <div  class="divCell">Act pcs</div>
-                    <div  class="divCell">Act Qty</div>                
+                    <div  class="divCell">Pcs</div>
+                    <div  class="divCell">Qty</div>                
                 </div>
 
                 <?php
