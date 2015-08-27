@@ -78,30 +78,28 @@
                                             <?php
                                             $pipe_diff = '';
                                             $structure_diff = '';
-
-                                            foreach ($c['customerproduct'] as $setprice) {
-
+                                            if (isset($c['customerproduct']) && isset($c['customerproduct'][0]) && isset($c['customerproduct'][0]->difference_amount)) {
                                                 if (isset($c['customerproduct'][0]->difference_amount)) {
                                                     $pipe_diff = $c['customerproduct'][0]->difference_amount;
                                                 }
-                                                if (isset($c['customerproduct'][13]->difference_amount)) {
-                                                    $structure_diff = $c['customerproduct'][13]->difference_amount;
-                                                }
+                                            }
+                                            if (isset($c['customerproduct']) && isset($c['customerproduct'][13]) && isset($c['customerproduct'][13]->difference_amount)) {
+                                                $structure_diff = $c['customerproduct'][13]->difference_amount;
                                             }
                                             ?>
                                             <td>
                                                 <input type='tel' id="valueSconto_{{$key}}" name="set_diff[{{$key}}][pipe]"
                                                        maxlength="6" onkeypress="return test();"
-                                                       value="{{$pipe_diff}}" style="width: 40px;">
+                                                       value="{{isset($pipe_diff)?$pipe_diff:''}}" style="width: 40px;">
                                             </td>
                                             <td>
                                                 <input type='tel' id="valuestructure_{{$key}}" name="set_diff[{{$key}}][structure]"
                                                        maxlength="6" onkeypress="return test();"
-                                                       value="{{$structure_diff}}" style="width: 40px;">
+                                                       value="{{isset($structure_diff)?$structure_diff:''}}" style="width: 40px;">
                                             </td>
                                             <td>
                                                 <input type='hidden' name="set_diff[{{$key}}][cust_id]"
-                                                       value="{{$c->id}}">
+                                                       value="{{isset($c->id)?$c->id:''}}">
                                             </td>
                                         </tr>
                                         @endforeach
