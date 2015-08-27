@@ -7,6 +7,10 @@
     </head>
     <body>
         <style>
+            body{
+                font-family: Bookman Old Style !important;
+                font-weight: bold !important;
+            }
             .divTable{
                 display:table;         
                 width:100%;         
@@ -116,13 +120,13 @@
                     <!--<div class="divCell">xxx</div>-->
                     <div class="divCell">{{ $obj['supplier']->owner_name }}</div>
                     <div class="divCell">
-                    <?php
-                    if ($obj->delivery_location_id == 0) {
-                        echo $obj['purchase_advice']->other_location;
-                    } else {
-                        echo $obj['delivery_location']->area_name;
-                    }
-                    ?>
+                        <?php
+                        if ($obj->delivery_location_id == 0) {
+                            echo $obj['purchase_advice']->other_location;
+                        } else {
+                            echo $obj['delivery_location']->area_name;
+                        }
+                        ?>
                     </div>
                     <div class="divCell">{{ round($obj['all_purchase_products']->sum('quantity'), 2) }}</div> 
                     <div class="divCell">{{ $obj->grand_total }}</div>

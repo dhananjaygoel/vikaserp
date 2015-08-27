@@ -8,6 +8,8 @@
         <style>
             body{
                 font-size: 8px;
+                font-family: Bookman Old Style !important;
+                font-weight: bold !important;
             }
             .divTable{
                 display:table;         
@@ -68,8 +70,8 @@
                 padding-top: 20px;
             }
             .invoice{
-                width:100%;
-                /*margin-left: 5%;*/
+                width:80%;
+                margin-left: 10%;
                 border: 1px solid #ccc;
                 float: left;
                 padding: 0px;
@@ -147,7 +149,14 @@
                     Date: {{ date('d F, Y')}}
                 </div>
                 <div class="time">
-                    Time: {{ date("h:i:sa") }}
+                    <!--Time: {{ date("h:i:sa") }}-->
+                    Time:  <?php
+                    echo '<script type="text/javascript">
+                        var x = new Date()
+                        var current_time = x.getHours()+":"+x.getMinutes()+":"+x.getSeconds()
+                        document.write(current_time)
+                        </script>';
+                    ?>
                 </div>
             </div>
             <div class="name">
@@ -201,9 +210,9 @@
                 <div class="remark">
                     Remark: {{$purchase_advise->remarks}}
                 </div>
-<!--                <div class="content">
-                    
-                </div>-->
+                <!--                <div class="content">
+                                    
+                                </div>-->
             </div>
         </div>
     </body>
