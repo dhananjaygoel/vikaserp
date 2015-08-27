@@ -13,18 +13,6 @@
                 <div class="filter-block">
                     <h1 class="pull-left">Bulk Set Price</h1>
                     <form method="GET" id="searchCustomerForm" action="{{URL::action('CustomerController@bulk_set_price')}}">
-                        <div class="form-group  col-md-3  pull-right">
-                            <select class="form-control" name="product_filter" onchange="this.form.submit()">
-                                @foreach($product_type as $prod_type)
-                                <option <?php
-                                if (Input::get('product_filter') == $prod_type->id)
-                                    echo 'selected="selected"';
-                                if (1 == $prod_type->id)
-                                    echo 'selected="selected"';
-                                ?> value="{{$prod_type->id}}"> {{$prod_type->name}} </option>
-                                @endforeach
-                            </select>
-                        </div>
                         <div class="input-group col-md-3 pull-right">
                             <input type="text" class="form-control" name="search" id="search" placeholder="Tally Name, City, Delivery Location" value="{{Request::get('search')}}">
                             <span class="input-group-btn">
@@ -74,9 +62,8 @@
                                         <tr>
                                             <td>#</td>
                                             <td>Customer</td>
-                                            @foreach($product_category as $prod)
-                                            <td>{{$prod->product_category_name}}</td>
-                                            @endforeach
+                                            <td>Pipe</td>
+                                            <td>Structure</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -88,22 +75,34 @@
                                         <tr>
                                             <td>{{$i++}}</td>
                                             <td>{{$c->tally_name}}</td>
-                                            @foreach($product_category as $key1=>$prod)
                                             <?php
-                                            $price = '';
+                                            $pipe_diff = '';
+                                            $structure_diff = '';
+
                                             foreach ($c['customerproduct'] as $setprice) {
-                                                if ($prod->id == $setprice->product_category_id && $c->id == $setprice->customer_id) {
-                                                    $price = $setprice->difference_amount;
+
+                                                if (isset($c['customerproduct'][0]->difference_amount)) {
+                                                    $pipe_diff = $c['customerproduct'][0]->difference_amount;
+                                                }
+                                                if (isset($c['customerproduct'][13]->difference_amount)) {
+                                                    $structure_diff = $c['customerproduct'][13]->difference_amount;
                                                 }
                                             }
                                             ?>
                                             <td>
-                                                <!--for the validation of the decimal points pattern="[0-9]\.[0-9]{5}|[0-9]{2}\.[0-9]{4}"-->
-                                                <input type='tel' id="valueSconto_{{$key}}{{$key1}}" name="set_diff[{{$key}}][{{$key1}}][price]" maxlength="6" onkeypress="return test();" value="{{ $price }}" style="width: 40px;">
-                                                <input type='hidden' name="set_diff[{{$key}}][{{$key1}}][cust_id]" value="{{$c->id}}">
-                                                <input type='hidden' name="set_diff[{{$key}}][{{$key1}}][product_id]" value="{{$prod->id}}">
+                                                <input type='tel' id="valueSconto_{{$key}}" name="set_diff[{{$key}}][pipe]"
+                                                       maxlength="6" onkeypress="return test();"
+                                                       value="{{$pipe_diff}}" style="width: 40px;">
                                             </td>
-                                            @endforeach
+                                            <td>
+                                                <input type='tel' id="valuestructure_{{$key}}" name="set_diff[{{$key}}][structure]"
+                                                       maxlength="6" onkeypress="return test();"
+                                                       value="{{$structure_diff}}" style="width: 40px;">
+                                            </td>
+                                            <td>
+                                                <input type='hidden' name="set_diff[{{$key}}][cust_id]"
+                                                       value="{{$c->id}}">
+                                            </td>
                                         </tr>
                                         @endforeach
                                     </tbody>

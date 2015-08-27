@@ -458,7 +458,7 @@ class CustomerController extends Controller {
 
             $term = '%' . Input::get('search') . '%';
 
-            $customer = Customer::orderBy('owner_name', 'ASC')
+            $customer = Customer::orderBy('tally_name', 'ASC')
                     ->where(function($query) use($term) {
                         $query->whereHas('city', function($q) use ($term) {
                             $q->where('city_name', 'like', $term)
@@ -481,7 +481,7 @@ class CustomerController extends Controller {
                     ->where('customer_status', '=', 'permanent')
                     ->paginate(20);
         } else {
-            $customer = Customer::with('customerproduct')->where('customer_status', 'permanent')->paginate(20);
+            $customer = Customer::with('customerproduct')->where('customer_status', 'permanent')->orderBy('tally_name', 'ASC')->paginate(20);
         }
 
         $product_category = ProductCategory::where('product_type_id', $product_type)->get();
@@ -500,35 +500,78 @@ class CustomerController extends Controller {
     public function save_all_set_price() {
 
         $data = Input::all();
-
         $page = "";
         if (isset($data['page']) && $data['page'] != '') {
             $page = $data['page'];
         }
-
         $product_filter = "";
         if (isset($data['product_filter']) && $data['product_filter'] != '') {
             $product_filter = $data['product_filter'];
         }
+        $product_pipe_category = ProductCategory::where('product_type_id', 1)->get();
+        $product_structure_category = ProductCategory::where('product_type_id', 2)->get();
+        $product_category = ProductCategory::all();
 
         foreach ($data['set_diff'] as $key => $value) {
-            foreach ($value as $key => $value) {
-                if ($value['price'] != "" && $value['cust_id'] != "" && $value['product_id'] != "") {
 
-                    $count = CustomerProductDifference::where('product_category_id', $value['product_id'])
-                            ->where('customer_id', $value['cust_id'])
-                            ->count();
+            if (isset($value['cust_id']) && $value['cust_id'] != "") {
+                $pipe = $value['pipe'];
+                $custid = $value['cust_id'];
+                $structure = $value['structure'];
 
-                    if ($count == 0) {
-                        $diff = new CustomerProductDifference();
-                        $diff->product_category_id = $value['product_id'];
-                        $diff->difference_amount = $value['price'];
-                        $diff->customer_id = $value['cust_id'];
-                        $diff->save();
-                    } else {
-                        CustomerProductDifference::where('product_category_id', $value['product_id'])
-                                ->where('customer_id', $value['cust_id'])
-                                ->update(array('difference_amount' => $value['price']));
+                $count = CustomerProductDifference::where('customer_id', $custid)->count();
+                if ($count == 0) {
+                    foreach ($product_category as $value) {
+                        if ($value->product_type_id == 1 && isset($pipe) && $pipe != "") {
+                            $diff = new CustomerProductDifference();
+                            $diff->product_category_id = $value->id;
+                            $diff->difference_amount = $pipe;
+                            $diff->customer_id = $custid;
+                            $diff->save();
+                        }
+                        if ($value->product_type_id == 2 && isset($structure) && $structure != "") {
+                            $diff = new CustomerProductDifference();
+                            $diff->product_category_id = $value->id;
+                            $diff->difference_amount = $structure;
+                            $diff->customer_id = $custid;
+                            $diff->save();
+                        }
+                    }
+                } else {
+
+                    if (isset($value['pipe']) && !empty($value['pipe']) && $value['pipe'] != "") {
+
+                        foreach ($product_pipe_category as $curr_category) {
+                            $count = CustomerProductDifference::where('product_category_id', $curr_category->id)
+                                            ->where('customer_id', $custid)->count();
+                            if ($count == 0) {
+                                $diff = new CustomerProductDifference();
+                                $diff->product_category_id = $curr_category->product_type_id;
+                                $diff->difference_amount = $pipe;
+                                $diff->customer_id = $custid;
+                                $diff->save();
+                            } else {
+                                CustomerProductDifference::where('product_category_id', $curr_category->id)
+                                        ->where('customer_id', $custid)->update(array('difference_amount' => $pipe));
+                            }
+                        }
+                    }
+                    if (isset($value['structure']) && !empty($value['structure']) && $value['structure'] != "") {
+                        foreach ($product_structure_category as $curr_category) {
+                            $count = CustomerProductDifference::where('product_category_id', $curr_category->id)
+                                            ->where('customer_id', $custid)->count();
+                            if ($count == 0) {
+                                $diff = new CustomerProductDifference();
+                                $diff->product_category_id = $curr_category->product_type_id;
+                                $diff->difference_amount = $structure;
+                                $diff->customer_id = $custid;
+                                $diff->save();
+                            } else {
+                                CustomerProductDifference::where('product_category_id', $curr_category->id)
+                                        ->where('customer_id', $custid)
+                                        ->update(array('difference_amount' => $structure));
+                            }
+                        }
                     }
                 }
             }
