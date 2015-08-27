@@ -1,6 +1,8 @@
 var baseurl = $('#baseurl').attr('name');
 var _token = $('#csrf_token').attr('content');
 $(document).ready(function () {
+    var current_time =  moment().format("h:mm a");
+    $(".current_time").text(current_time);
     $("#existing_customer").click(function () {
         $(".exist_field").hide();
         $(".customer_select").show();
