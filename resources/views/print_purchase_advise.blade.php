@@ -70,8 +70,8 @@
                 padding-top: 20px;
             }
             .invoice{
-                width:100%;
-                /*margin-left: 5%;*/
+                width:80%;
+                margin-left: 15%;
                 border: 1px solid #ccc;
                 float: left;
                 padding: 0px;
