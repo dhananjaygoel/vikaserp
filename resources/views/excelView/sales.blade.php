@@ -46,13 +46,27 @@
         </tr>
         <?php
         $i = 1;
+        $current_number = "";
         foreach ($allorders as $key => $value) {
             $next_cnt = count($value['delivery_challan_products']);
             foreach ($value['delivery_challan_products'] as $key1 => $value1) {
                 $order_quantity = 0;
                 ?>
                 <tr>
-                    <td>{{$i}}</td>
+
+                    <?php
+                    if ($current_number == "") {
+                        $current_number = $i;
+                    } else {
+                        if ($current_number != $i) {
+                            $current_number = $i;
+                        } else {
+                            $current_number = "";
+                        }
+                    }
+                    ?>
+
+                    <td>{{$current_number}}</td>
                     <td></td>
                     <td>Sales</td>
                     <td><?= date("jS F, Y", strtotime($value->updated_at)) ?></td>
@@ -80,7 +94,7 @@
                             $order_quantity = $order_quantity + (($value1->quantity / $value1['order_product_details']->standard_length ) * $value1['order_product_details']->weight);
                         }
                         ?>
-                        <?= round($value1->actual_quantity, 2) ?>
+        <?= round($value1->actual_quantity, 2) ?>
                     </td>
                     <td><?= $value1->price ?></td>
                     <?php $value1['order_product_details']['product_category']['id'] ?>
@@ -166,8 +180,8 @@
                     </td>
                 </tr>
                 <?php
-                $i++;
             }
+            $i++;
         }
         ?>
 

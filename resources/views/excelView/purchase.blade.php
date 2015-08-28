@@ -33,6 +33,8 @@
         </tr>
         <?php
         $i = 1;
+        $current_number = "";
+
         foreach ($purchase_orders as $key => $value) {
             $next_cnt = count($value['all_purchase_products']);
 
@@ -40,7 +42,18 @@
                 $order_quantity = 0;
                 ?>
                 <tr>
-                    <td>{{$i}}</td>
+                    <?php
+                    if ($current_number == "") {
+                        $current_number = $i;
+                    } else {
+                        if ($current_number != $i) {
+                            $current_number = $i;
+                        } else {
+                            $current_number = "";
+                        }
+                    }
+                    ?>
+                    <td>{{$current_number}}</td>
                     <td></td>
                     <td>Purchase</td>
                     <td><?= date("jS F, Y", strtotime($value->updated_at)) ?></td>
@@ -123,8 +136,8 @@
                     <td><?= "[" . $value['purchase_advice']->vehicle_number . "][" . $value->remark . "]" ?></td>
                 </tr>
                 <?php
-                $i++;
             }
+            $i++;
         }
         ?>
     </table>
