@@ -26,14 +26,21 @@
             .divCell{
                 float:left;
                 display:table-column;         
-                width:15.2%;         
+                width:12%;         
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
             .divCell2{
                 float:left;
                 display:table-column;         
-                width:10%;         
+                width:4%;         
+                padding: 5px;
+                border-right: 1px solid #ccc;
+            }
+            .divCell3{
+                float:left;
+                display:table-column;         
+                width:35%;         
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
@@ -229,7 +236,7 @@
             <div class="divTable">
                 <div class="headRow">
                     <div  class="divCell2">Sr.</div>
-                    <div  class="divCell">Size</div>
+                    <div  class="divCell3">Size</div>
                     <div  class="divCell">Pcs</div>
                     <div  class="divCell">Qty</div>
                     <div  class="divCell">Rate</div>
@@ -244,7 +251,7 @@
                 @foreach($purchase_challan['all_purchase_products'] as $prod)
                 <div class="divRow">
                     <div class="divCell2">{{ $i++ }}</div>
-                    <div class="divCell">{{ $prod['purchase_product_details']->alias_name }}</div>
+                    <div class="divCell3">{{ $prod['purchase_product_details']->alias_name }}</div>
                     <div class="divCell">{{ $prod->actual_pieces}}</div>
                     <div class="divCell">{{ $prod->quantity }}</div>
                     <div class="divCell">{{ $prod->price }}</div>
