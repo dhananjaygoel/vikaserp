@@ -31,19 +31,19 @@ Route::get('showdata/{tablename}', 'WelcomeController@showdata');
 Route::get('removedata/{tablename}', 'WelcomeController@removedata');
 Route::get('updatecolumndata/{tablename}/{column}/{value}', 'WelcomeController@updatecolumndata');
 
-Route::get('doMigrate', function () {
-    define('STDIN', fopen("php://stdin", "r"));
-    Artisan::call('migrate', ['--quiet' => true, '--force' => true]);
-});
-Route::get('dataSeeding', function () {
-    define('STDIN', fopen("php://stdin", "r"));
-    Artisan::call('db:seed', array('--force' => true));
-});
-
-Route::get('rollback', function() {
-    define('STDIN', fopen("php://stdin", "r"));
-    Artisan::call('migrate:refresh', ['--quiet' => true, '--force' => true]);
-});
+//Route::get('doMigrate', function () {
+//    define('STDIN', fopen("php://stdin", "r"));
+//    Artisan::call('migrate', ['--quiet' => true, '--force' => true]);
+//});
+//Route::get('dataSeeding', function () {
+//    define('STDIN', fopen("php://stdin", "r"));
+//    Artisan::call('db:seed', array('--force' => true));
+//});
+//
+//Route::get('rollback', function() {
+//    define('STDIN', fopen("php://stdin", "r"));
+//    Artisan::call('migrate:refresh', ['--quiet' => true, '--force' => true]);
+//});
 
 
 
