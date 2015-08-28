@@ -33,14 +33,14 @@
             .divCell2{
                 float:left;
                 display:table-column;         
-                width:8%;         
+                width:4%;         
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
             .divCell3{
                 float:left;
                 display:table-column;         
-                width:18%;         
+                width:35%;         
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
