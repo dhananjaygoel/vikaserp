@@ -32,12 +32,10 @@
             <td class="heading1">Narration</td>
         </tr>
         <?php
-        $i = 1;
-        $current_number = "";
-
         foreach ($purchase_orders as $key => $value) {
             $next_cnt = count($value['all_purchase_products']);
-
+            $i = 1;
+            $current_number = "";
             foreach ($value['all_purchase_products'] as $key1 => $value1) {
                 $order_quantity = 0;
                 ?>
@@ -45,12 +43,6 @@
                     <?php
                     if ($current_number == "") {
                         $current_number = $i;
-                    } else {
-                        if ($current_number != $i) {
-                            $current_number = $i;
-                        } else {
-                            $current_number = "";
-                        }
                     }
                     ?>
                     <td>{{$current_number}}</td>
@@ -113,30 +105,53 @@
                             }
                         }
                         echo number_format($total_amt, 2, '.', '');
+                        $vacant_variable = "";
                         ?>
                     </td>
 
+                    @if($next_cnt == $i)
                     <td><?= $value->discount ?></td>
+                    @else
+                    <td><?= $vacant_variable ?></td>
+                    @endif
+
                     <td><?= $value->loading_charge ?></td>
+
+
+                    @if($next_cnt == $i)
                     <td><?= $value->freight ?></td>
+                    @else
+                    <td><?= $vacant_variable ?></td>
+                    @endif
+
+
                     <td><?php
                         if ($value->purchase_advice->vat_percentage !== "")
                             echo "VAT";
                         else
                             echo "All inclusive";
-                        ?></td>
+                        ?>
+                    </td>
+
+                    @if($next_cnt == $i)
                     <td>
                         <?php
                         if ($value->purchase_advice->vat_percentage !== "")
                             echo $value->purchase_advice->vat_percentage;
                         ?>
                     </td>
+                    @else
+                    <td><?= $vacant_variable ?></td>
+                    @endif
+
+
                     <td><?= $value->round_off ?></td>
                     <td></td>
                     <td><?= "[" . $value['purchase_advice']->vehicle_number . "][" . $value->remark . "]" ?></td>
                 </tr>
                 <?php
             }
+            $current_number = "";
             $i++;
         }
         ?>

@@ -46,27 +46,30 @@
         </tr>
         <?php
         $i = 1;
-        $current_number = "";
+        $j = 1;
         foreach ($allorders as $key => $value) {
             $next_cnt = count($value['delivery_challan_products']);
+            $current_number = 1;
             foreach ($value['delivery_challan_products'] as $key1 => $value1) {
                 $order_quantity = 0;
+                $value_cnt = "";
+                $vacant = " ";
                 ?>
                 <tr>
-
                     <?php
-                    if ($current_number == "") {
-                        $current_number = $i;
+                    $value_cnt = "";
+                    if ($current_number == 1) {
+                        $value_cnt = $j;
                     } else {
-                        if ($current_number != $i) {
-                            $current_number = $i;
-                        } else {
-                            $current_number = "";
-                        }
+                        $value_cnt = "";
                     }
                     ?>
+                    @if($current_number == 1)
+                    <td>{{$value_cnt}}</td>
+                    @else
+                    <td></td>
+                    @endif
 
-                    <td>{{$current_number}}</td>
                     <td></td>
                     <td>Sales</td>
                     <td><?= date("jS F, Y", strtotime($value->updated_at)) ?></td>
@@ -94,7 +97,7 @@
                             $order_quantity = $order_quantity + (($value1->quantity / $value1['order_product_details']->standard_length ) * $value1['order_product_details']->weight);
                         }
                         ?>
-        <?= round($value1->actual_quantity, 2) ?>
+                        <?= round($value1->actual_quantity, 2) ?>
                     </td>
                     <td><?= $value1->price ?></td>
                     <?php $value1['order_product_details']['product_category']['id'] ?>
@@ -130,7 +133,6 @@
                         }
 
                         echo number_format($total_amt, 2, '.', '');
-//                        exit;
 //                        if (isset($customer_diff)) {
 //                            echo (($value1->price + $value1['order_product_details']['difference'] + $customer_diff + $value['delivery_location']['difference']) * $value1->quantity);
 //                        } else {
@@ -180,8 +182,10 @@
                     </td>
                 </tr>
                 <?php
+                $current_number++;
             }
             $i++;
+            $j++;
         }
         ?>
 
