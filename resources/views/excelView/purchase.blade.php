@@ -32,24 +32,15 @@
             <td class="heading1">Narration</td>
         </tr>
         <?php
-//        echo '<pre>';
-//        print_r($purchase_orders->toArray());
-//        echo '<pre>';
-//        exit();
-//        foreach ($purchase_orders as $key => $value) {
-//            echo '<pre>';
-//            print_r($value->grand_total);
-//            echo '<pre>';
-//        }
-//        exit;
+        $i = 1;
         foreach ($purchase_orders as $key => $value) {
-            ?>
-            <?php
+            $next_cnt = count($value['all_purchase_products']);
+
             foreach ($value['all_purchase_products'] as $key1 => $value1) {
                 $order_quantity = 0;
                 ?>
                 <tr>
-                    <td>{{$key}}</td>
+                    <td>{{$i}}</td>
                     <td></td>
                     <td>Purchase</td>
                     <td><?= date("jS F, Y", strtotime($value->updated_at)) ?></td>
@@ -79,7 +70,39 @@
                         <?= round($value1->quantity, 2) ?>
                     </td>
                     <td><?= $value1->price ?></td>
-                    <td><?= ($value1->quantity * $value1->price) ?></td>
+                    <td>
+                        <?php
+                        $total_amt = "";
+                        $vat_amt = 0;
+
+                        if (isset($value1->quantity) && !empty($value1->quantity) && $value1->quantity != 0) {
+
+                            if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
+                                $vat_amt = ($value1->price * $value1->quantity) * ($value['purchase_advice']->vat_percentage / 100);
+                            }
+                            if ($next_cnt == $i) {
+
+                                $total_amt = ($value1->price * $value1->quantity) + $value->loading_charge + $value->freight + $value->discount + $vat_amt;
+                            } else {
+                                $total_amt = $value1->price * $value1->quantity;
+                            }
+                        } else {
+                            $total_amt = $total_amt * $value1->actual_pieces * $value1->order_product_details->weight;
+
+                            if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
+                                $vat_amt = ($value1->price * $value1->quantity) * ($value['purchase_advice']->vat_percentage / 100);
+                            }
+
+                            if ($next_cnt == $i) {
+                                $total_amt = ($value1->price * $value1->actual_pieces * $value1->order_product_details->weight) + $value->loading_charge + $value->freight + $value->discount + $vat_amt;
+                            } else {
+                                $total_amt = $value1->price * $value1->actual_pieces * $value1->order_product_details->weight;
+                            }
+                        }
+                        echo number_format($total_amt, 2, '.', '');
+                        ?>
+                    </td>
+
                     <td><?= $value->discount ?></td>
                     <td><?= $value->loading_charge ?></td>
                     <td><?= $value->freight ?></td>
@@ -95,20 +118,13 @@
                             echo $value->purchase_advice->vat_percentage;
                         ?>
                     </td>
-                    <td>
-                        <?php
-                        if ($value->purchase_advice->vat_percentage !== "")
-                            echo $value->grand_total * ($value['purchase_advice']->vat_percentage / 100);
-                        ?>
-                    </td>
                     <td><?= $value->round_off ?></td>
                     <td></td>
                     <td><?= "[" . $value['purchase_advice']->vehicle_number . "][" . $value->remark . "]" ?></td>
                 </tr>
                 <?php
+                $i++;
             }
-            ?>
-            <?php
         }
         ?>
     </table>
