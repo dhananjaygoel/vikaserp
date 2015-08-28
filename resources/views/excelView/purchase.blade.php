@@ -32,20 +32,30 @@
             <td class="heading1">Narration</td>
         </tr>
         <?php
+        $i = 1;
+        $j = 1;
         foreach ($purchase_orders as $key => $value) {
             $next_cnt = count($value['all_purchase_products']);
-            $i = 1;
-            $current_number = "";
+            $current_number = 1;
             foreach ($value['all_purchase_products'] as $key1 => $value1) {
                 $order_quantity = 0;
+                $value_cnt = "";
+                $vacant = " ";
                 ?>
                 <tr>
                     <?php
-                    if ($current_number == "") {
-                        $current_number = $i;
+                    $value_cnt = "";
+                    if ($current_number == 1) {
+                        $value_cnt = $j;
+                    } else {
+                        $value_cnt = "";
                     }
                     ?>
-                    <td>{{$current_number}}</td>
+                    @if($current_number == 1)
+                    <td>{{$value_cnt}}</td>
+                    @else
+                    <td></td>
+                    @endif
                     <td></td>
                     <td>Purchase</td>
                     <td><?= date("jS F, Y", strtotime($value->updated_at)) ?></td>
@@ -150,9 +160,10 @@
                     <td><?= "[" . $value['purchase_advice']->vehicle_number . "][" . $value->remark . "]" ?></td>
                 </tr>
                 <?php
+                $current_number++;
             }
-            $current_number = "";
             $i++;
+            $j++;
         }
         ?>
     </table>
