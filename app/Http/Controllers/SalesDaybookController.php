@@ -35,9 +35,7 @@ class SalesDaybookController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-
         if (Input::get('challan_date') != "") {
-
             $date = date('Y-m-d', strtotime(Input::get('challan_date')));
             $date = '%' . $date . '%';
             $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->where('updated_at', 'like', $date)->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order.location', 'user')->orderBy('created_at', 'desc')->Paginate(20);
@@ -45,19 +43,16 @@ class SalesDaybookController extends Controller {
 
             $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order.location', 'user')->orderBy('created_at', 'desc')->Paginate(20);
         }
-
         $supplier = Customer::all();
         $challan_date = array('challan_date' => Input::get('challan_date'));
-
         $allorders->setPath('sales_daybook');
-
         return view('sales_daybook', compact('allorders', 'challan_date', 'supplier'));
     }
 
     /*
-     * Challan date function is for sales daybook 
+     * Challan date function is for sales daybook
      * All records of selected date
-     * 
+     *
      */
 
     public function challan_date() {
@@ -87,7 +82,7 @@ class SalesDaybookController extends Controller {
 
     /*
      * Delete multiple selected challan
-     * 
+     *
      */
 
     public function delete_multiple_challan() {

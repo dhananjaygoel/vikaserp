@@ -47,10 +47,22 @@
         <?php
         $i = 1;
         $j = 1;
+
+
+//        echo '<pre>';
+//        print_r($allorders->toArray());
+//        echo '</pre>';
+//        exit();
+
         foreach ($allorders as $key => $value) {
             $next_cnt = count($value['delivery_challan_products']);
             $current_number = 1;
+
             foreach ($value['delivery_challan_products'] as $key1 => $value1) {
+
+
+
+
                 $order_quantity = 0;
                 $value_cnt = "";
                 $vacant = " ";
@@ -119,14 +131,18 @@
                         }
 
                         if (isset($value1->quantity) && !empty($value1->quantity) && $value1->quantity != 0) {
-                            if ($next_cnt == $i) {
-                                $total_amt = ($total_amt * $value1->quantity) + $value->loading_charge + $value->freight + $value->discount + ($value->grand_price * ($value['delivery_order']->vat_percentage / 100));
+                            if ($next_cnt == $current_number) {
+                                $total_amt = ($total_amt * $value1->quantity) + $value->loading_charge + $value->freight + $value->discount;
+                                $vat_amt = ($total_amt * ($value['delivery_order']->vat_percentage / 100));
+                                $total_amt = $vat_amt + $total_amt;
                             } else {
                                 $total_amt = $total_amt * $value1->quantity;
                             }
                         } else {
-                            if ($next_cnt == $i) {
-                                $total_amt = ($total_amt * $value1->actual_pieces * $value1->order_product_details->weight) + $value->loading_charge + $value->freight + $value->discount + ($value->grand_price * ($value['delivery_order']->vat_percentage / 100));
+                            if ($next_cnt == $current_number) {
+                                $total_amt = ($total_amt * $value1->actual_pieces * $value1->order_product_details->weight) + $value->loading_charge + $value->freight + $value->discount;
+                                $vat_amt = ($total_amt * ($value['delivery_order']->vat_percentage / 100));
+                                $total_amt = $vat_amt + $total_amt;
                             } else {
                                 $total_amt = $total_amt * $value1->actual_pieces * $value1->order_product_details->weight;
                             }
@@ -147,29 +163,65 @@
                     <td><?= $value1->price ?></td>
                     <td><?= ($value1['order_product_details']['weight'] * $value1->actual_pieces * $value1->price) ?></td>
                     @endif
+
+                    @if($next_cnt == $current_number)
                     <td><?= $value->discount ?></td>
-                    <td><?= $value->loading ?></td>
+                    @else
+                    <td></td>
+                    @endif
+
+                    @if($next_cnt == $current_number)
+                    <td><?= $value->loading_charge ?></td>
+                    @else
+                    <td></td>
+                    @endif
+
+
+                    @if($next_cnt == $current_number)
                     <td><?= $value->freight ?></td>
+                    @else
+                    <td></td>
+                    @endif
+
+                    @if($next_cnt == $current_number)
                     <td><?php
                         if ($value->delivery_order->vat_percentage !== "")
                             echo "VAT";
                         else
                             echo "All inclusive";
-                        ?></td>
+                        ?>
+                    </td>
+                    @else
+                    <td></td>
+                    @endif
+
+                    @if($next_cnt == $current_number)
                     <td>
                         <?php
                         if ($value->delivery_order->vat_percentage !== "")
                             echo $value->delivery_order->vat_percentage;
                         ?>
                     </td>
+                    @else
+                    <td></td>
+                    @endif
+
+                    @if($next_cnt == $current_number)
                     <td>
                         <?php
                         if ($value->delivery_order->vat_percentage !== "")
-                            echo $value->grand_price * ($value['delivery_order']->vat_percentage / 100);
+                            echo number_format($vat_amt, 2, '.', '');
                         ?>
                     </td>
-                    <td><?= $value->round_off ?></td>
+                    @else
                     <td></td>
+                    @endif
+
+                    @if($next_cnt == $current_number)
+                    <td><?= $value->round_off ?></td>
+                    @else
+                    <td></td>
+                    @endif
                     <td>
                         <?php
                         if (isset($value['delivery_order']->vehicle_number) && $value['delivery_order']->vehicle_number != "")

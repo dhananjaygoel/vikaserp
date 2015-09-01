@@ -88,53 +88,56 @@
                     <td>
                         <?php
                         $total_amt = "";
-                        $vat_amt = 0;
-
                         if (isset($value1->quantity) && !empty($value1->quantity) && $value1->quantity != 0) {
+                            $vat_amt = 0;
+                            if ($next_cnt == $current_number) {
 
-                            if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
-                                $vat_amt = ($value1->price * $value1->quantity) * ($value['purchase_advice']->vat_percentage / 100);
-                            }
-                            if ($next_cnt == $i) {
+                                $total_amt = ($value1->price * $value1->quantity) + $value->loading_charge + $value->freight + $value->discount;
 
-                                $total_amt = ($value1->price * $value1->quantity) + $value->loading_charge + $value->freight + $value->discount + $vat_amt;
+                                if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
+                                    $vat_amt = ($total_amt * ($value['purchase_advice']->vat_percentage / 100));
+                                }
+                                $total_amt = $total_amt + $vat_amt;
                             } else {
                                 $total_amt = $value1->price * $value1->quantity;
                             }
                         } else {
+                            $vat_amt = 0;
                             $total_amt = $total_amt * $value1->actual_pieces * $value1->order_product_details->weight;
 
-                            if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
-                                $vat_amt = ($value1->price * $value1->quantity) * ($value['purchase_advice']->vat_percentage / 100);
-                            }
-
-                            if ($next_cnt == $i) {
-                                $total_amt = ($value1->price * $value1->actual_pieces * $value1->order_product_details->weight) + $value->loading_charge + $value->freight + $value->discount + $vat_amt;
+                            if ($next_cnt == $current_number) {
+                                $total_amt = ($value1->price * $value1->actual_pieces * $value1->order_product_details->weight) + $value->loading_charge + $value->freight + $value->discount;
+                                if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
+                                    $vat_amt = ($total_amt * ($value['purchase_advice']->vat_percentage / 100));
+                                }
+                                $total_amt = $total_amt + $vat_amt;
                             } else {
                                 $total_amt = $value1->price * $value1->actual_pieces * $value1->order_product_details->weight;
                             }
                         }
                         echo number_format($total_amt, 2, '.', '');
-                        $vacant_variable = "";
                         ?>
                     </td>
 
-                    @if($next_cnt == $i)
+                    @if($next_cnt == $current_number)
                     <td><?= $value->discount ?></td>
                     @else
-                    <td><?= $vacant_variable ?></td>
+                    <td></td>
                     @endif
 
+                    @if($next_cnt == $current_number)
                     <td><?= $value->loading_charge ?></td>
+                    @else
+                    <td></td>
+                    @endif
 
-
-                    @if($next_cnt == $i)
+                    @if($next_cnt == $current_number)
                     <td><?= $value->freight ?></td>
                     @else
-                    <td><?= $vacant_variable ?></td>
+                    <td></td>
                     @endif
 
-
+                    @if($next_cnt == $current_number)
                     <td><?php
                         if ($value->purchase_advice->vat_percentage !== "")
                             echo "VAT";
@@ -142,8 +145,11 @@
                             echo "All inclusive";
                         ?>
                     </td>
+                    @else
+                    <td></td>
+                    @endif
 
-                    @if($next_cnt == $i)
+                    @if($next_cnt == $current_number)
                     <td>
                         <?php
                         if ($value->purchase_advice->vat_percentage !== "")
@@ -151,7 +157,7 @@
                         ?>
                     </td>
                     @else
-                    <td><?= $vacant_variable ?></td>
+                    <td></td>
                     @endif
 
 
