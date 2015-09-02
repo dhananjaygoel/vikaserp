@@ -154,7 +154,7 @@
                     <td>
                         <?php
                         if ($value->purchase_advice->vat_percentage !== "")
-                            echo $value->purchase_advice->vat_percentage;
+                            echo $value->purchase_advice->vat_percentage . "%";;
                         ?>
                     </td>
                     @else

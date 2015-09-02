@@ -189,7 +189,7 @@
                     <td>
                         <?php
                         if ($value->delivery_order->vat_percentage !== "")
-                            echo $value->delivery_order->vat_percentage;
+                            echo $value->delivery_order->vat_percentage . "%";
                         ?>
                     </td>
                     @else
