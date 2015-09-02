@@ -20,7 +20,6 @@
                 border-bottom: 1px solid #ccc;
             }
             .divRow{
-
                 width:auto;
                 clear:both;
                 border-top: 1px solid #ccc;
@@ -35,7 +34,7 @@
             .divCell{
                 float:left;
                 display:table-column;
-                width:15.2%;
+                width:14.2%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }

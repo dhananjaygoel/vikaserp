@@ -160,11 +160,10 @@ class OrderController extends Controller {
         $i = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
-            if ($product_data['name'] == "" && $product_data['quantity'] == "") {
+            if (($product_data['name'] == "") || ($product_data['quantity'] == "")) {
                 $i++;
             }
         }
-
         if ($i == $j) {
             return Redirect::back()->withInput()->with('flash_message', 'Please insert product details');
         }

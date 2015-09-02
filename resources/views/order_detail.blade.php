@@ -111,7 +111,7 @@
 
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
-                                                    {{isset($product['order_product_details']->alias_name)?$product['order_product_details']->alias_name:''}}
+                                                    {{isset($product['order_product_details']->alias_name)?$product['order_product_details']->alias_name:' '}}
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
