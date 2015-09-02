@@ -111,28 +111,7 @@
 
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
-
-                                                    <?php
-                                                    if (isset($product['order_product_details']->alias_name)) {
-                                                        echo "<br>===========================<br>";
-                                                        echo "yes";
-                                                        echo "<br>===========================<br>";
-                                                    } else {
-                                                        echo "<br>===========================<br>";
-                                                        echo "no";
-                                                        echo "<br>===========================<br>";
-                                                    }
-                                                    exit;
-
-                                                    echo '<pre>';
-                                                    echo "<br>===========================<br>";
-                                                    print_r($product['order_product_details']->alias_name);
-                                                    echo "<br>===========================<br>";
-                                                    echo '</pre>';
-                                                    exit();
-                                                    ?>
-
-                                                    {{$product['order_product_details']->alias_name}}
+                                                    {{isset($product['order_product_details']->alias_name)?$product['order_product_details']->alias_name:''}}
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
