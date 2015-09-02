@@ -23,7 +23,7 @@
             <td class="heading1">Amt</td>
             <td class="heading1">Discount</td>
             <td class="heading1">Loading</td>
-            <td class="heading1">Frieght</td>
+            <td class="heading1">Freight</td>
             <td class="heading1">Tax Type</td>
             <td class="heading1">Tax Rate</td>
             <td class="heading1">Tax</td>
@@ -56,11 +56,12 @@
                     @else
                     <td></td>
                     @endif
+
                     <td></td>
                     <td>Purchase</td>
                     <td><?= date("jS F, Y", strtotime($value->updated_at)) ?></td>
                     <td></td>
-                    <td><?= $value['supplier']->owner_name ?></td>
+                    <td><?= $value['supplier']->tally_name ?></td>
                     <td><?= $value['supplier']->address1 ?></td>
                     <td><?= $value['supplier']->address2 ?></td>
                     <td><?= $value->supplier->states->state_name ?></td>
@@ -154,6 +155,18 @@
                         <?php
                         if ($value->purchase_advice->vat_percentage !== "")
                             echo $value->purchase_advice->vat_percentage;
+                        ?>
+                    </td>
+                    @else
+                    <td></td>
+                    @endif
+
+
+                    @if($next_cnt == $current_number)
+                    <td>
+                        <?php
+                        if ($value->purchase_advice->vat_percentage !== "")
+                            echo number_format($vat_amt, 2, '.', '');
                         ?>
                     </td>
                     @else

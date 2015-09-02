@@ -36,7 +36,7 @@
             <td class="heading1">Amt</td>
             <td class="heading1">Discount</td>
             <td class="heading1">Loading</td>
-            <td class="heading1">Frieght</td>
+            <td class="heading1">Freight</td>
             <td class="heading1">Tax Type</td>
             <td class="heading1">Tax Rate</td>
             <td class="heading1">Tax</td>
@@ -48,21 +48,11 @@
         $i = 1;
         $j = 1;
 
-
-//        echo '<pre>';
-//        print_r($allorders->toArray());
-//        echo '</pre>';
-//        exit();
-
         foreach ($allorders as $key => $value) {
             $next_cnt = count($value['delivery_challan_products']);
             $current_number = 1;
 
             foreach ($value['delivery_challan_products'] as $key1 => $value1) {
-
-
-
-
                 $order_quantity = 0;
                 $value_cnt = "";
                 $vacant = " ";

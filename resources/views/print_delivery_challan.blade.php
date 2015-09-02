@@ -175,7 +175,7 @@
                     <div class="name">
                         Name:
 
-                        @if($allorder['customer']->tally_name != "")
+                        @if(isset($allorder['customer']->tally_name) && $allorder['customer']->tally_name != "")
                         {{$allorder['customer']->tally_name}}
                         @else
                         {{$allorder['customer']->owner_name}}
