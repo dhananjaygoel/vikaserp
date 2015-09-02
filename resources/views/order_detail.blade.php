@@ -29,15 +29,15 @@
                         <div class="inquiry_table col-md-12">
                             <div class="table-responsive">
                                 <table id="table-example" class="table table-hover customerview_table  ">
-                                    <tbody> 
+                                    <tbody>
                                         @if($order->order_source == 'warehouse')
-                                        <tr><td><span><b>Warehouse: </b></span> yes</td></tr>                                        
+                                        <tr><td><span><b>Warehouse: </b></span> yes</td></tr>
                                         @elseif($order->order_source == 'supplier')
                                         @foreach($customers as $customer)
                                         @if($customer->id == $order->supplier_id)
-                                        <tr><td><span><b>Supplier Name:</b></span>  
+                                        <tr><td><span><b>Supplier Name:</b></span>
                                                 @if($customer->owner_name != "" && $customer->tally_name != "" )
-                                                {{$customer->owner_name}}-{{$customer->tally_name}} 
+                                                {{$customer->owner_name}}-{{$customer->tally_name}}
                                                 @else
                                                 {{$customer->owner_name}}
                                                 @endif
@@ -48,7 +48,7 @@
                                         @endif
                                         @foreach($customers as $customer)
                                         @if($customer->id == $order->customer_id)
-                                        <tr><td><span><b>Tally Name:</b></span> 
+                                        <tr><td><span><b>Tally Name:</b></span>
                                                 @if($customer->owner_name !== "" && $customer->tally_name != "")
                                                 {{$customer->owner_name}}-{{$customer->tally_name}}
                                                 @else
@@ -61,7 +61,7 @@
                                         <tr> <td><span><b>Credit Period(Days): </b></span>{{$customer->credit_period}}</td></tr>
                                         @endif
                                         @endif
-                                        @endforeach  
+                                        @endforeach
 
                                         <tr>
                                             @if($order->delivery_location_id !=0)
@@ -70,7 +70,7 @@
                                             <td><span>Delivery Location: </span>{{$location->area_name}}</td>
                                             <td><span>Delivery Location Difference: </span>{{$order->location_difference}}</td>
                                             @endif
-                                            @endforeach                          
+                                            @endforeach
                                             @else
                                             <td><span>Delivery Location: </span>{{$order->other_location}}</td>
                                             <td><span>Delivery Location Difference: </span>{{$order->location_difference}}</td>
@@ -84,7 +84,7 @@
                                     </tbody>
                                 </table>
                                 <table id="table-example" class="table table-hover customerview_table  ">
-                                    <tbody>   
+                                    <tbody>
                                         <tr class="headingunderline">
                                             <td>
                                                 <span> Product(Alias)</span>
@@ -101,16 +101,38 @@
                                             <td class="widthtable">
                                                 <span>Remark</span>
                                             </td>
-                                        </tr>                                      
-                                        <?php $total = 0; ?>
+                                        </tr>
+                                        <?php
+                                        $total = 0;
+                                        ?>
                                         @foreach($order['all_order_products'] as $key=>$product)
                                         @if($product->order_type =='order')
                                         <tr id="add_row_{{$key}}" class="add_product_row">
 
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
-                                                    {{$product['order_product_details']->alias_name}}
 
+                                                    <?php
+                                                    if (isset($product['order_product_details']->alias_name)) {
+                                                        echo "<br>===========================<br>";
+                                                        echo "yes";
+                                                        echo "<br>===========================<br>";
+                                                    } else {
+                                                        echo "<br>===========================<br>";
+                                                        echo "no";
+                                                        echo "<br>===========================<br>";
+                                                    }
+                                                    exit;
+
+                                                    echo '<pre>';
+                                                    echo "<br>===========================<br>";
+                                                    print_r($product['order_product_details']->alias_name);
+                                                    echo "<br>===========================<br>";
+                                                    echo '</pre>';
+                                                    exit();
+                                                    ?>
+
+                                                    {{$product['order_product_details']->alias_name}}
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -120,7 +142,7 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group ">
-                                                    {{$product['unit']->unit_name}} 
+                                                    {{$product['unit']->unit_name}}
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -140,7 +162,7 @@
                                     </tbody>
                                 </table>
                                 <table id="table-example" class="table table-hover customerview_table  ">
-                                    <tbody> 
+                                    <tbody>
                                         @if($order->vat_percentage !=0)
                                         <tr>
                                             <td><span>Plus VAT: </span>Yes</td>
@@ -158,7 +180,7 @@
                                         </tr>-->
                                         <tr>
                                             <td><span>Expected Delivery Date: </span>{{date("jS F, Y", strtotime($order->expected_delivery_date)) }}</td>
-                                        </tr>      
+                                        </tr>
 
                                         <tr>
                                             <td><span>Remark: </span>{{$order->remarks}}</td>
