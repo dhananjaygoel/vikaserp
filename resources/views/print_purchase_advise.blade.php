@@ -8,7 +8,7 @@
         <style>
             body{
                 font-size: 8px;
-                font-family: Bookman Old Style !important;
+                font-family: Arial !important;
                 font-weight: bold !important;
             }
             .divTable{
