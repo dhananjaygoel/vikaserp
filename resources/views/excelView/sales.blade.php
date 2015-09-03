@@ -63,13 +63,13 @@
                     if ($current_number == 1) {
                         $value_cnt = $j;
                     } else {
-                        $value_cnt = "";
+                        $value_cnt = $j;
                     }
                     ?>
                     @if($current_number == 1)
                     <td>{{$value_cnt}}</td>
                     @else
-                    <td></td>
+                    <td>{{$value_cnt}}</td>
                     @endif
 
                     <td></td>
