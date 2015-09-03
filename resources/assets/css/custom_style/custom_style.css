@@ -29,7 +29,7 @@
     max-height: 250px;
 }
 
-@media only screen and (min-device-width:990px) and (max-device-width:1030px) {
+@media only screen and (min-width:990px) and (max-width:1030px) {
     .ui-autocomplete{
         overflow-y: scroll !important;
         min-height: 150px !important;
