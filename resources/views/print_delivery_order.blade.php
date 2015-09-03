@@ -158,7 +158,7 @@
                     DO Number: {{ $delivery_data->serial_no }}
                 </div>
                 <div class="date">
-                    Date: {{ date('d F, Y')}}
+                    Date: {{ date('F d, Y')}}
                 </div>
                 <div class="time">
                     <!--Time: {{ date("h:i:sa") }}-->

@@ -59,7 +59,7 @@
 
                     <td></td>
                     <td>Purchase</td>
-                    <td><?= date("jS F, Y", strtotime($value->updated_at)) ?></td>
+                    <td><?= date("F jS, Y", strtotime($value->updated_at)) ?></td>
                     <td></td>
                     <td><?= $value['supplier']->tally_name ?></td>
                     <td><?= $value['supplier']->address1 ?></td>
@@ -88,35 +88,39 @@
                     <td><?= $value1->price ?></td>
                     <td>
                         <?php
+                        // Calculation Updated by 157 on 03-09-2015
                         $total_amt = "";
+
                         if (isset($value1->quantity) && !empty($value1->quantity) && $value1->quantity != 0) {
+
                             $vat_amt = 0;
+                            $tot_amt = $value1->price * $value1->quantity;
                             if ($next_cnt == $current_number) {
 
-                                $total_amt = ($value1->price * $value1->quantity) + $value->loading_charge + $value->freight + $value->discount = $value->round_off;
-
+                                $total_amt = $tot_amt + $value->loading_charge + $value->freight + $value->discount = $value->round_off;
                                 if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
                                     $vat_amt = ($total_amt * ($value['purchase_advice']->vat_percentage / 100));
                                 }
-                                $total_amt = $total_amt + $vat_amt;
+                                $total_amt = $vat_amt + $total_amt;
                             } else {
-                                $total_amt = $value1->price * $value1->quantity;
+                                $total_amt = $tot_amt;
                             }
                         } else {
                             $vat_amt = 0;
-                            $total_amt = $total_amt * $value1->actual_pieces * $value1->order_product_details->weight;
+//                            $total_amt = $total_amt * $value1->actual_pieces * $value1->order_product_details->weight;
+                            $tot_amt = $value1->price * $value1->actual_pieces * $value1->order_product_details->weight;
 
                             if ($next_cnt == $current_number) {
-                                $total_amt = ($value1->price * $value1->actual_pieces * $value1->order_product_details->weight) + $value->loading_charge + $value->freight + $value->discount = $value->round_off;
+                                $total_amt = $tot_amt + $value->loading_charge + $value->freight + $value->discount = $value->round_off;
                                 if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
                                     $vat_amt = ($total_amt * ($value['purchase_advice']->vat_percentage / 100));
                                 }
                                 $total_amt = $total_amt + $vat_amt;
                             } else {
-                                $total_amt = $value1->price * $value1->actual_pieces * $value1->order_product_details->weight;
+                                $total_amt = $tot_amt;
                             }
                         }
-                        echo number_format($total_amt, 2, '.', '');
+                        echo number_format($tot_amt, 2, '.', '');
                         ?>
                     </td>
 
@@ -161,7 +165,6 @@
                     <td></td>
                     @endif
 
-
                     @if($next_cnt == $current_number)
                     <td>
                         <?php
@@ -173,16 +176,19 @@
                     <td></td>
                     @endif
 
-
                     <td><?= $value->round_off ?></td>
-                    <td></td>
+                    <td>
+                        {{(isset($total_amt)? number_format($total_amt, 2, '.', '') :'')}}
+                    </td>
                     <td><?= "[" . $value['purchase_advice']->vehicle_number . "][" . $value->remark . "]" ?></td>
                 </tr>
                 <?php
                 $current_number++;
             }
+            if ($next_cnt != 0) {
+                $j++;
+            }
             $i++;
-            $j++;
         }
         ?>
     </table>

@@ -146,7 +146,7 @@
                     {{ $purchase_advise->serial_number}}
                 </div>
                 <div class="date">
-                    Date: {{ date('d F, Y')}}
+                    Date: {{ date('F d, Y')}}
                 </div>
                 <div class="time">
                     <!--Time: {{ date("h:i:sa") }}-->

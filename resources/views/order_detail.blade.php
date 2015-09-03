@@ -158,7 +158,7 @@
                                             <td><span>Total: </span></td>
                                         </tr>-->
                                         <tr>
-                                            <td><span>Expected Delivery Date: </span>{{date("jS F, Y", strtotime($order->expected_delivery_date)) }}</td>
+                                            <td><span>Expected Delivery Date: </span>{{date("F jS, Y", strtotime($order->expected_delivery_date)) }}</td>
                                         </tr>
 
                                         <tr>

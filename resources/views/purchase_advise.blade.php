@@ -85,7 +85,7 @@
                                     @endforeach
                                     <tr>
                                         <td>{{ $i }}</td>
-                                        <td>{{ date("jS F, Y", strtotime($pa->purchase_advice_date)) }}</td>
+                                        <td>{{ date("F jS, Y", strtotime($pa->purchase_advice_date)) }}</td>
                                         <td>
                                             @if($pa['supplier']->tally_name != "" )
                                             {{$pa['supplier']->tally_name}}
@@ -116,7 +116,7 @@
                                             @endif
                                         </td>
 
-                                        @endif    
+                                        @endif
                                         <td class="text-center">
                                             <a href="{{url('purchaseorder_advise/'.$pa->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -159,7 +159,7 @@
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </span>
-                                            @endif                                           
+                                            @endif
 
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                             <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal{{$pa->id}}" title="delete">
@@ -192,7 +192,7 @@
                                                         <div class="clearfix"></div>
                                                         <div class="delp">Are you sure you want to <b>cancel</b> this advise</div>
                                                     </div>
-                                                </div>            
+                                                </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                     <button type="submit" class="btn btn-default deleteCustomer" data-dismiss="modal">Yes</button>
@@ -209,10 +209,10 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
-                                                <div class="row print_time "> 
-                                                    <div class="col-md-12"> Print By <br> 
+                                                <div class="row print_time ">
+                                                    <div class="col-md-12"> Print By <br>
                                                         <span class="current_time"></span>
-                                                    </div> 
+                                                    </div>
                                                 </div>
                                                 <div class="checkbox">
                                                     <label><input type="checkbox" value="" id="checksms"><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
@@ -249,8 +249,8 @@
                                         <a onclick="this.form.submit()"></a>
                                     </div>
                                 </form>
-                            </span> 
-                            @endif 
+                            </span>
+                            @endif
                         </div>
                         @else
                         <div class="clearfix"> &nbsp;</div>

@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('title','View Delivery Order')
 @section('content')
-<div class="row">						
+<div class="row">
     <div class="col-lg-12">
         <div class="row">
             <div class="col-lg-12">
@@ -10,7 +10,7 @@
                     <li class="active"><span>View Delivery Order</span></li>
                 </ol>
                 <div class="filter-block">
-                    <h1 class="pull-left">View Delivery Order</h1>                                 
+                    <h1 class="pull-left">View Delivery Order</h1>
                     <div class="pull-right top-page-ui">
                         @if(($delivery_data->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1))
                         <a href="{{URL::action('DeliveryOrderController@edit',['id'=>$delivery_data->id])}}" class="btn btn-primary pull-right">
@@ -27,9 +27,9 @@
                     <div class="main-box-body main_contents clearfix">
                         <div class="table-responsive">
                             <table id="table-example" class="table customerview_table">
-                                <tbody>                    
+                                <tbody>
                                     <tr>
-                                        <td><span>Tally Name:</span> 
+                                        <td><span>Tally Name:</span>
                                             @if($delivery_data['customer']->owner_name != "" && $delivery_data['customer']->tally_name != "")
                                             {{ $delivery_data['customer']->owner_name }}-{{$delivery_data['customer']->tally_name}}
                                             @else
@@ -40,12 +40,12 @@
                                     </tr>
                                     <tr><td><span>Contact Person: </span>{{ $delivery_data['customer']->contact_person }}</td></tr>
                                     <tr>
-                                        <td><span>Date:</span> {{ date('jS F, Y', strtotime ($delivery_data['created_at'])) }}</td>
+                                        <td><span>Date:</span> {{ date('F jS, Y', strtotime ($delivery_data['created_at'])) }}</td>
                                     </tr>
-                                    <tr><td><span>Serial Number: </span> 
+                                    <tr><td><span>Serial Number: </span>
                                             @if($delivery_data->serial_no != "")
-                                            {{$delivery_data->serial_no}} 
-                                            @else 
+                                            {{$delivery_data->serial_no}}
+                                            @else
                                             {{'--'}}
                                             @endif
                                         </td>
@@ -65,7 +65,7 @@
                                             {{$location->area_name}}
                                             @endif
                                             @endforeach
-                                            @endif                                            
+                                            @endif
 
                                         </td>
                                     </tr>
@@ -81,7 +81,7 @@
                                 </tbody>
                             </table>
                             <table id="table-example" class="table table-hover customerview_table  ">
-                                <tbody>   
+                                <tbody>
                                     <tr class="headingunderline">
                                         <td>
                                             <span>Product(Alias)</span>
@@ -124,10 +124,10 @@
                             </table>
                             <table id="table-example" class="table table-hover customerview_table  ">
                                 <tbody>
-                                    @if($delivery_data->vat_percentage != "" || $delivery_data->vat_percentage > 0)  
+                                    @if($delivery_data->vat_percentage != "" || $delivery_data->vat_percentage > 0)
                                     <tr>
-                                        <td><span>Plus VAT: </span>    
-                                            Yes                                            
+                                        <td><span>Plus VAT: </span>
+                                            Yes
                                         </td>
                                     </tr>
                                     <tr>
@@ -135,11 +135,11 @@
                                     </tr>
                                     @else
                                     <tr>
-                                        <td><span>Plus VAT: </span>    
-                                            No                                            
+                                        <td><span>Plus VAT: </span>
+                                            No
                                         </td>
                                     </tr>
-                                    @endif                                    
+                                    @endif
 
 
                                     <tr><td><b>Vehicle Name:</b> {{ $delivery_data->vehicle_number }} </td> </tr>

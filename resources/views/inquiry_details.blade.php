@@ -79,7 +79,7 @@
                                             <td><span class="underline">Product Details </span></td>
                                         </tr>
                                     </tbody>
-                                </table>                               
+                                </table>
                                 <table id="table-example" class="table customerview_table">
                                     <tbody>
                                         <tr class="headingunderline">
@@ -123,7 +123,7 @@
                                         <tr><td><span>VAT Percentage: </span>{{$inquiry->vat_percentage."%"}}</td></tr>
                                         @endif
                                         <tr>
-                                            <td><span>Expected Delivery Date: </span>{{date('jS F, Y',strtotime($inquiry->expected_delivery_date))}}</td>
+                                            <td><span>Expected Delivery Date: </span>{{date('F jS, Y',strtotime($inquiry->expected_delivery_date))}}</td>
                                         </tr>
                                         <tr>
                                             <td><span>Remark: </span>{{$inquiry->remarks}}</td>

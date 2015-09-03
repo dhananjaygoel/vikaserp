@@ -10,7 +10,7 @@
                     <li class="active"><span>Purchase Challan</span></li>
                 </ol>
                 <div class="filter-block">
-                    <h1 class="pull-left">View Purchase Challan </h1>                                 
+                    <h1 class="pull-left">View Purchase Challan </h1>
                 </div>
             </div>
         </div>
@@ -20,9 +20,9 @@
                     <div class="main-box-body main_contents clearfix">
                         <div class="table-responsive">
                             <table id="table-example" class="table customerview_table">
-                                <tbody>               
+                                <tbody>
                                     <tr>
-                                        <td><span>Bill Date:</span> {{ date('jS F, Y',strtotime($purchase_challan['purchase_advice']->purchase_advice_date)) }}</td>
+                                        <td><span>Bill Date:</span> {{ date('F jS, Y',strtotime($purchase_challan['purchase_advice']->purchase_advice_date)) }}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Bill Number:</span> {{ $purchase_challan->bill_number }}</td>
@@ -46,11 +46,11 @@
                                 </tbody>
                             </table>
                             <table id="table-example" class="table customerview_table">
-                                <tbody>  
+                                <tbody>
                                     <tr class="headingunderline">
                                         <td class="widthtable">
                                             <span>Product Name(Alias)</span>
-                                        </td>       
+                                        </td>
                                         <td class="widthtable">
                                             <span>Actual Quantity</span>
                                         </td>
@@ -80,9 +80,9 @@
                                         <td> {{$product_data['purchase_product_details']->alias_name}} </td>
                                         <td> {{$product_data->quantity}}</td>
                                         <td> {{$product_data['unit']->unit_name}} </td>
-                                        <td> {{$product_data->present_shipping}}</td> 
+                                        <td> {{$product_data->present_shipping}}</td>
                                         <td> {{$product_data->price}}</td>
-                                        <td> 
+                                        <td>
                                             <?php
                                             $total_quantity += $product_data->quantity;
                                             $amount = $product_data->quantity * $product_data->price;
@@ -98,7 +98,7 @@
                                 </tbody>
                             </table>
                             <table id="table-example" class="table table-hover customerview_table  ">
-                                <tbody>   
+                                <tbody>
                                     <tr>
                                         <td>
                                             <span>Total Actual Quantity: </span>{{$total_quantity}}
@@ -144,7 +144,7 @@
                                     </tr>
                                     <tr>
                                         <td><span>Vehicle Name: </span>{{ $purchase_challan->vehicle_number }}</td>
-                                    </tr> 
+                                    </tr>
                                     <tr>
                                         <td>
                                             <span>Delivery Location: </span>

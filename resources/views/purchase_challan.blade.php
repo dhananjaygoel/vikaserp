@@ -30,9 +30,9 @@
 
                         @if (Session::has('success'))
                         <div class="alert alert-success alert-success1">
-                            {{Session::get('success')}}                            
+                            {{Session::get('success')}}
                         </div>
-                        @endif                        
+                        @endif
                         @if(count($purchase_challan) > 0)
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
@@ -61,7 +61,7 @@
                                         </td>
                                         <td class="text-center">{{$challan->serial_number}}</td>
                                         <td class="text-center">{{$challan->bill_number}}</td>
-                                        <td class="text-center">{{date('jS F, Y',strtotime($challan['purchase_advice']->purchase_advice_date))}}</td>
+                                        <td class="text-center">{{date('F jS, Y',strtotime($challan['purchase_advice']->purchase_advice_date))}}</td>
                                         <td class="text-center">
                                             <?php
                                             $total_qty = 0;
@@ -182,7 +182,7 @@
                                         <a onclick="this.form.submit()"></a>
                                     </div>
                                 </form>
-                            </span> 
+                            </span>
                             @endif
                         </div>
                         @else

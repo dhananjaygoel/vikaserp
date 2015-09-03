@@ -18,33 +18,33 @@
                             <i class="fa fa-plus-circle fa-lg"></i> Add Product Category
                         </a>
                     </div>
-                    @endif              
+                    @endif
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
-                    <div class="main-box-body main_contents clearfix"> 
+                    <div class="main-box-body main_contents clearfix">
 
                         <div class="alert alert-success alert-success1" style="display:none;">
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            Product category price successfully updated                          
+                            Product category price successfully updated
                         </div>
 
                         @if (count($errors) > 0)
-                        <div class="alert alert-warning">  
+                        <div class="alert alert-warning">
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             @foreach ($errors->all() as $error)
                             <p>{{ $error }}</p>
-                            @endforeach                       
+                            @endforeach
                         </div>
-                        @endif 
+                        @endif
 
                         @if (Session::has('success'))
                         <div class="alert alert-success alert-success1">
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            {{Session::get('success')}}                            
+                            {{Session::get('success')}}
                         </div>
                         @endif
 
@@ -59,7 +59,7 @@
                         @if (Session::has('wrong'))
                         <div class="alert alert-danger alert-success1">
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            {{Session::get('wrong')}}                            
+                            {{Session::get('wrong')}}
                         </div>
                         @endif
 
@@ -78,13 +78,13 @@
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody>                    
+                                    <tbody>
                                         <?php $i = ($product_cat->currentPage() - 1 ) * $product_cat->perPage() + 1; ?>
                                         @foreach($product_cat as $product)
                                         <tr>
                                             <td>{{ $i++ }}</td>
-                                            <td>{{ $product->product_category_name }}</td>                                        
-                                            <td>                                        
+                                            <td>{{ $product->product_category_name }}</td>
+                                            <td>
                                                 @if($product->product_type_id == 1)
                                                 {{'Pipe'}}
                                                 @else
@@ -100,16 +100,16 @@
                                                         <input type="hidden" id="token" name="_token" value="{{csrf_token()}}">
                                                     </div>
                                                     <div class="form-group col-md-2 difference_form">
-                                                        <input class="btn btn-primary" type="button" class="form-control" value="save" onclick="update_price({{$product->id}})">     
+                                                        <input class="btn btn-primary" type="button" class="form-control" value="save" onclick="update_price({{$product->id}})">
                                                     </div>
                                                 </div>
                                                 @else
                                                 <div class="form-group col-md-6">{{ $product->price }} </div>
                                                 @endif
 
-                                            </td> 
+                                            </td>
                                             <!--<td>{{date("d F, Y", strtotime($product->created_at))}}</td>-->
-                                            <td>{{date("jS F, Y", strtotime($product->updated_at))}}</td>
+                                            <td>{{date("F jS, Y", strtotime($product->updated_at))}}</td>
                                             <td>
                                                 <a href="{{URL::action('ProductController@show',['id'=> $product->id])}}" class="table-link" title="view">
                                                     <span class="fa-stack">
@@ -129,7 +129,7 @@
                                                         <i class="fa fa-square fa-stack-2x"></i>
                                                         <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                                     </span>
-                                                </a> 
+                                                </a>
                                                 @endif
                                             </td>
                                         </tr>
@@ -171,7 +171,7 @@
                                                 <div class="clearfix"></div>
                                                 <div class="delp">Are you sure you want to <b>delete </b>?</div>
                                             </div>
-                                        </div>           
+                                        </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                             <button type="submit" class="btn btn-default">Yes</button>
@@ -191,7 +191,7 @@
                                     <?php echo $product_cat->render(); ?>
                                 </ul>
                             </span>
-                            <div class="clearfix"></div>                            
+                            <div class="clearfix"></div>
                             @if($product_cat->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
                                 <form class="form-inline" method="GET" action="{{url('product_category')}}" id="filter_search">
@@ -204,8 +204,8 @@
                                         <a onclick="this.form.submit()"></a>
                                     </div>
                                 </form>
-                            </span> 
-                            @endif  
+                            </span>
+                            @endif
                         </div>
                         @else
                         <div class="alert alert-info no_data_msg_container">

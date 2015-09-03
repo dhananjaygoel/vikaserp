@@ -196,7 +196,7 @@
                         Tally Name: {{ $purchase_challan['supplier']->owner_name }}
                     </div>
                     <div class="date">
-                        Date: {{ date('d F, Y') }}
+                        Date: {{ date('F d, Y') }}
                     </div>
                 </div>
 

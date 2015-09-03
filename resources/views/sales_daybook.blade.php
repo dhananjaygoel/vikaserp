@@ -104,7 +104,7 @@
                                             @if( Auth::user()->role_id == 1)
                                             <th>{{$k}}</th>
                                             @endif
-                                            <td >{{ date('jS F, Y',strtotime($challan['updated_at']))}}</td>
+                                            <td >{{ date('F jS, Y',strtotime($challan['updated_at']))}}</td>
                                             <td >
                                                 @if($challan->serial_number == '')
                                                 --
@@ -114,11 +114,11 @@
                                             </td>
                                             <td >
                                                 @if($challan["customer"]->tally_name != "")
-                                                    {{$challan["customer"]->tally_name}}
+                                                {{$challan["customer"]->tally_name}}
                                                 @else
-                                                    @if(isset($challan["customer"]->owner_name))
-                                                        {{$challan["customer"]->owner_name}}
-                                                    @endif
+                                                @if(isset($challan["customer"]->owner_name))
+                                                {{$challan["customer"]->owner_name}}
+                                                @endif
                                                 @endif
                                             </td>
                                             <td>{{isset($challan["delivery_order"])?$challan["delivery_order"]->vehicle_number: ''}}</td>
@@ -136,7 +136,7 @@
                                             <td>
                                                 @if(isset($challan['user'][0]->first_name))
                                                 {{$challan['user'][0]->first_name}}
-                                                @endif                                                
+                                                @endif
                                             </td>
                                             <td>{{$challan->loaded_by}}</td>
                                             <td>{{$challan->labours}}</td>

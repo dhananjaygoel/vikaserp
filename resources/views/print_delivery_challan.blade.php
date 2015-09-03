@@ -181,7 +181,7 @@
                         @endif
                     </div>
                     <div class="date">
-                        Date: {{date('d F, Y')}}
+                        Date: {{date('F d, Y')}}
                     </div>
                 </div>
             </div>

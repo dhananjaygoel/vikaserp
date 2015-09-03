@@ -11,7 +11,7 @@
                     <li class="active"><span>Purchase Advice details</span></li>
                 </ol>
                 <div class="filter-block">
-                    <h1 class="pull-left">View Purchase Advice</h1>                                 
+                    <h1 class="pull-left">View Purchase Advice</h1>
                     <div class="pull-right top-page-ui">
                         <a href="{{url('purchaseorder_advise/'.$purchase_advise->id.'/edit')}}" class="btn btn-primary pull-right">
                             Edit Purchase Advice
@@ -26,12 +26,12 @@
                     <div class="main-box-body main_contents clearfix">
                         <div class="table-responsive">
                             <table id="table-example" class="table customerview_table">
-                                <tbody>                    
+                                <tbody>
                                     <tr>
-                                        <td><span>Bill Date:</span> {{date('jS F, Y', strtotime($purchase_advise->purchase_advice_date))}}</td>
+                                        <td><span>Bill Date:</span> {{date('F jS, Y', strtotime($purchase_advise->purchase_advice_date))}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Supplier Name:</span> 
+                                        <td><span>Supplier Name:</span>
                                             @if($purchase_advise['supplier']->owner_name != "" && $purchase_advise['supplier']->tally_name != "")
                                             {{$purchase_advise['supplier']->owner_name}}-{{$purchase_advise['supplier']->tally_name}}
                                             @else
@@ -54,7 +54,7 @@
                                 </tbody>
                             </table>
                             <table id="table-example" class="table table-hover customerview_table  ">
-                                <tbody>   
+                                <tbody>
                                     <tr class="headingunderline">
                                         <td><span>Product</span></td>
                                         <td><span>Unit</span></td>
@@ -78,7 +78,7 @@
                                 </tbody>
                             </table>
                             <table id="table-example" class="table table-hover customerview_table  ">
-                                <tbody>   
+                                <tbody>
                                     <tr>
                                         <td><span>Plus VAT: </span>
                                             <?php
@@ -104,7 +104,7 @@
                                         <td><span>Vehicle Number: </span> {{$purchase_advise->vehicle_number}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Delivery Location: </span> 
+                                        <td><span>Delivery Location: </span>
                                             @if($purchase_advise->delivery_location_id > 0)
                                             {{$purchase_advise['location']->area_name}}
                                             @else
