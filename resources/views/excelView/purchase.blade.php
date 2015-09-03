@@ -93,7 +93,7 @@
                             $vat_amt = 0;
                             if ($next_cnt == $current_number) {
 
-                                $total_amt = ($value1->price * $value1->quantity) + $value->loading_charge + $value->freight + $value->discount;
+                                $total_amt = ($value1->price * $value1->quantity) + $value->loading_charge + $value->freight + $value->discount = $value->round_off;
 
                                 if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
                                     $vat_amt = ($total_amt * ($value['purchase_advice']->vat_percentage / 100));
@@ -107,7 +107,7 @@
                             $total_amt = $total_amt * $value1->actual_pieces * $value1->order_product_details->weight;
 
                             if ($next_cnt == $current_number) {
-                                $total_amt = ($value1->price * $value1->actual_pieces * $value1->order_product_details->weight) + $value->loading_charge + $value->freight + $value->discount;
+                                $total_amt = ($value1->price * $value1->actual_pieces * $value1->order_product_details->weight) + $value->loading_charge + $value->freight + $value->discount = $value->round_off;
                                 if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
                                     $vat_amt = ($total_amt * ($value['purchase_advice']->vat_percentage / 100));
                                 }

@@ -122,7 +122,7 @@
 
                         if (isset($value1->quantity) && !empty($value1->quantity) && $value1->quantity != 0) {
                             if ($next_cnt == $current_number) {
-                                $total_amt = ($total_amt * $value1->quantity) + $value->loading_charge + $value->freight + $value->discount;
+                                $total_amt = ($total_amt * $value1->quantity) + $value->loading_charge + $value->freight + $value->discount + $value->round_off;
                                 $vat_amt = ($total_amt * ($value['delivery_order']->vat_percentage / 100));
                                 $total_amt = $vat_amt + $total_amt;
                             } else {
@@ -130,7 +130,7 @@
                             }
                         } else {
                             if ($next_cnt == $current_number) {
-                                $total_amt = ($total_amt * $value1->actual_pieces * $value1->order_product_details->weight) + $value->loading_charge + $value->freight + $value->discount;
+                                $total_amt = ($total_amt * $value1->actual_pieces * $value1->order_product_details->weight) + $value->loading_charge + $value->freight + $value->discount + $value->round_off;
                                 $vat_amt = ($total_amt * ($value['delivery_order']->vat_percentage / 100));
                                 $total_amt = $vat_amt + $total_amt;
                             } else {
