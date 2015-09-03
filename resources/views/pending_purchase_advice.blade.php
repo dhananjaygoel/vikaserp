@@ -59,7 +59,7 @@
                                     @foreach($pending_advise as $key=>$pa)
                                     <tr>
                                         <td>{{$i}}</td>
-                                        <td>{{date("d-m-Y", strtotime($pa->purchase_advice_date))}}</td>
+                                        <td>{{date("m-d-Y", strtotime($pa->purchase_advice_date))}}</td>
                                         <td>{{$pa->serial_number}}</td>
                                         <td>{{isset($pa['party']->owner_name)?$pa['party']->owner_name:''}}</td>
                                         <td>{{$pa['purchase_products']->sum('quantity')}}</td>
