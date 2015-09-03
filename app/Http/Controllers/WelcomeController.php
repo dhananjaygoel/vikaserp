@@ -689,7 +689,7 @@ class WelcomeController extends Controller {
 
     public function showdata($table_name) {
 //        $pdo = DB::table($table_name)->get();
-        $pdo = DB::table($table_name)->orderby('tally_name', 'ASC')->get();
+        $pdo = DB::table($table_name)->get();
         print('<pre>');
         print_r($pdo);
     }
