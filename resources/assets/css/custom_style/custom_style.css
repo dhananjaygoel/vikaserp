@@ -28,6 +28,15 @@
     overflow-y: scroll !important;
     max-height: 250px;
 }
+
+@media only screen and (min-device-width:990px) and (max-device-width:1030px) {
+    .ui-autocomplete{
+        overflow-y: scroll !important;
+        min-height: 150px !important;
+        max-height: 250px;
+    }
+}
+
 .custom_alert_success{
     display:none;
 }

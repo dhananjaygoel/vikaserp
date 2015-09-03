@@ -59,7 +59,7 @@
                                     @foreach($pending_advise as $key=>$pa)
                                     <tr>
                                         <td>{{$i}}</td>
-                                        <td>{{$pa->purchase_advice_date}}</td>
+                                        <td>{{date("d-m-Y", strtotime($pa->purchase_advice_date))}}</td>
                                         <td>{{$pa->serial_number}}</td>
                                         <td>{{isset($pa['party']->owner_name)?$pa['party']->owner_name:''}}</td>
                                         <td>{{$pa['purchase_products']->sum('quantity')}}</td>
@@ -86,8 +86,8 @@
                                         <a onclick="this.form.submit()"></a>
                                     </div>
                                 </form>
-                            </span> 
-                            @endif  
+                            </span>
+                            @endif
                         </div>
                         @else
                         <div class="clearfix"> &nbsp;</div>
