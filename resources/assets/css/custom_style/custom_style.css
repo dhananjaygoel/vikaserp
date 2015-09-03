@@ -29,15 +29,15 @@
     max-height: 250px;
 }
 
-@media (min-width:990px) and (max-width:1030px) {
+.custom_alert_success{
+    display:none;
+}
+
+@media (min-width:995px) and (max-width:1030px) {
+
     .ui-autocomplete{
         overflow-y: scroll !important;
         min-height: 150px !important;
         max-height: 250px;
     }
 }
-
-.custom_alert_success{
-    display:none;
-}
-
