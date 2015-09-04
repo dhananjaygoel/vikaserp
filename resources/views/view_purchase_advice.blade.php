@@ -98,7 +98,7 @@
                                         </tr>
                                     <?php } ?>
                                     <tr>
-                                        <td><span>Expected Delivery Date: </span>{{date("jS F, Y", strtotime($purchase_advise->expected_delivery_date))}}</td>
+                                        <td><span>Expected Delivery Date: </span>{{date("F jS, Y", strtotime($purchase_advise->expected_delivery_date))}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Vehicle Number: </span> {{$purchase_advise->vehicle_number}}</td>
