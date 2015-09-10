@@ -41,7 +41,7 @@
             <td class="heading1">Tax Rate</td>
             <td class="heading1">Tax</td>
             <td class="heading1">Round Off</td>
-            <td class="heading1">Other Charges</td>
+            <td class="heading1">Grand total</td>
             <td class="heading1">Narration</td>
         </tr>
         <?php
@@ -74,7 +74,7 @@
 
                     <td></td>
                     <td>Sales</td>
-                    <td><?= date("F jS, Y", strtotime($value->updated_at)) ?></td>
+                    <td><?= date("m-d-Y", strtotime($value->updated_at)) ?></td>
                     <td></td>
                     <td><?= $value['customer']->tally_name ?></td>
                     <td><?= $value['customer']->address1 ?></td>
@@ -221,9 +221,15 @@
                     @else
                     <td></td>
                     @endif
+
+
+                    @if($next_cnt == $current_number)
                     <td>
                         {{(isset($total_amt)? number_format($total_amt, 2, '.', '') :'')}}
                     </td>
+                    @else
+                    <td></td>
+                    @endif
                     <td>
                         <?php
                         if (isset($value['delivery_order']->vehicle_number) && $value['delivery_order']->vehicle_number != "")
