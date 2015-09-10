@@ -18,6 +18,7 @@ use App\City;
 use App\DeliveryLocation;
 use App\Customer;
 use Session;
+use Schema;
 use Illuminate\Support\Facades\Hash;
 
 class WelcomeController extends Controller {
@@ -708,6 +709,24 @@ class WelcomeController extends Controller {
             $eachcustomer->save();
         }
         echo "Table name - " . $table_name . " Values are update for column name - " . $column . " to new value - " . $cvalue;
+    }
+
+    public function showtableinfo($tablename) {
+        $column_details = Schema::getColumnListing($tablename);
+        $total_info = array();
+        $total_info['tablename'] = $tablename;
+        foreach ($column_details as $column) {
+            $col_type = DB::connection()->getDoctrineColumn($tablename, $column)->getType()->getName();
+            $total_info[$tablename][$column] = $col_type;
+        }
+        echo '<br>======================<br>';
+        echo "Table name : <strong>";
+        print_r($total_info['tablename']);
+        echo "</strong>";
+        echo '<br>======================<br>';
+        echo '<pre>';
+        print_r($total_info);
+        echo '</pre>';
     }
 
 }
