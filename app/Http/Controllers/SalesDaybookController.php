@@ -109,8 +109,8 @@ class SalesDaybookController extends Controller {
                         $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
                         $challan->delete();
                     }
-                    return Redirect::to('sales_daybook')->with('flash_message', 'Selected Challans are Successfully deleted');
                 }
+                return Redirect::to('sales_daybook')->with('flash_message', 'Selected Challans are Successfully deleted');
             } else {
                 return Redirect::to('sales_daybook')->with('error', 'Please select at least on record to delete');
             }
