@@ -20,12 +20,28 @@
                             @endif
                         </div>
                         <div class="col-md-1 pull-right" style="padding: 0;">
+                            <?php
+                            $session_sort_type_order = Session::get('order-sort-type');
+                            $qstring_sort_type_order = Input::get('order_filter');
+
+                            if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
+                                $qstring_sort_type_order = $qstring_sort_type_order;
+                            } else {
+                                $qstring_sort_type_order = $session_sort_type_order;
+                            }
+                            ?>
                             <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
                                 <option value="" selected="">--Status-- </option>
-                                <option <?php if (Input::get('order_filter') == 'pending') echo 'selected=""'; ?> value="pending">Pending</option>
-                                <option <?php if (Input::get('order_filter') == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
-                                <option <?php if (Input::get('order_filter') == 'cancelled') echo 'selected=""'; ?> value="cancelled">Canceled</option>
+                                <option <?php if ($qstring_sort_type_order == 'pending') echo 'selected=""'; ?> value="pending">Pending</option>
+                                <option <?php if ($qstring_sort_type_order == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
+                                <option <?php if ($qstring_sort_type_order == 'cancelled') echo 'selected=""'; ?> value="cancelled">Canceled</option>
                             </select>
+                            <?php
+                            if (isset($session_sort_type_order)) {
+                                Session::put('order-sort-type', "");
+                            }
+                            ?>
+
                         </div>
                         <div class="col-md-2 pull-right">
                             <select class="form-control" id="user_filter3" name="party_filter" onchange="this.form.submit();">
@@ -175,6 +191,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
+                                                <input type="hidden" name="order_sort_type" value="{{(Input::get('order_filter')!="")?Input::get('order_filter'):""}}"/>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
                                             </div>
@@ -308,7 +325,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-
+                                                <input type="hidden" name="order_sort_type" value="{{(Input::get('order_filter')!="")?Input::get('order_filter'):""}}"/>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
                                             </div>
@@ -413,6 +430,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
+                                                <input type="hidden" name="order_sort_type" value="{{(Input::get('order_filter')!="")?Input::get('order_filter'):""}}"/>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
                                             </div>
