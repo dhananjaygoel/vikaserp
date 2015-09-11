@@ -12,11 +12,26 @@
                 <div class="filter-block">
                     <form action="{{url('delivery_challan')}}" method="GET">
                         <div class=" pull-right col-md-3">
+                            <?php
+                            $session_sort_type_order = Session::get('order-sort-type');
+                            $qstring_sort_type_order = Input::get('status_filter');
+
+                            if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
+                                $qstring_sort_type_order = $qstring_sort_type_order;
+                            } else {
+                                $qstring_sort_type_order = $session_sort_type_order;
+                            }
+                            ?>
                             <select class="form-control" id="user_filter3" name="status_filter" onchange="this.form.submit();">
                                 <option value="" selected="">--Status--</option>
-                                <option <?php if (Input::get('status_filter') == 'pending') echo 'selected=""'; ?> value="pending">Inprogress</option>
-                                <option <?php if (Input::get('status_filter') == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
+                                <option <?php if ($qstring_sort_type_order == 'pending') echo 'selected=""'; ?> value="pending">Inprogress</option>
+                                <option <?php if ($qstring_sort_type_order == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
                             </select>
+                            <?php
+                            if (isset($session_sort_type_order)) {
+                                Session::put('order-sort-type', "");
+                            }
+                            ?>
                             <br>
                         </div>
                     </form>
@@ -53,10 +68,6 @@
                                     <tr>
                                         <td class="text-center">{{$k++}}</td>
                                         <td class="text-left">
-
-
-
-
 
                                             @if($challan['customer']->tally_name != "")
                                             {{$challan['customer']->tally_name}}
@@ -120,6 +131,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
+                                                <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
                                             </div>
@@ -189,7 +201,6 @@
                                                 <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                             </span>
                                         </a>
-
                                         <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_{{$challan->id}}" title="delete">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
@@ -198,11 +209,7 @@
                                         </a>
                                         @endif
                                     </td>
-
                                 </tr>
-
-
-
                                 <div class="modal fade" id="delete_challan_{{$challan->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -223,13 +230,10 @@
                                                     </div>
                                                     <div class="clearfix"></div>
                                                     <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
-
-
                                                 </div>
-
                                             </div>
                                             <div class="modal-footer">
-
+                                                <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
                                             </div>

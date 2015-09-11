@@ -52,12 +52,25 @@ class DeliveryOrderController extends Controller {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
         }
 
-        $delivery_data = 0;
-        if (Input::get('order_status')) {
+        $session_sort_type_order = Session::get('order-sort-type');
 
-            if (Input::get('order_status') == 'Inprocess') {
+        $qstring_sort_type_order = Input::get('order_status');
+
+        if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
+            $qstring_sort_type_order = $qstring_sort_type_order;
+        } else {
+            if (isset($session_sort_type_order) && ($session_sort_type_order != "")) {
+                $qstring_sort_type_order = $session_sort_type_order;
+            } else {
+                $qstring_sort_type_order = "";
+            }
+        }
+        $delivery_data = 0;
+        if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
+
+            if ($qstring_sort_type_order == 'Inprocess') {
                 $delivery_data = DeliveryOrder::orderBy('created_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer')->paginate(20);
-            } elseif (Input::get('order_status') == 'Delivered') {
+            } elseif ($qstring_sort_type_order == 'Delivered') {
                 $delivery_data = DeliveryOrder::orderBy('created_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer')->paginate(20);
             }
         } else {
@@ -361,8 +374,11 @@ class DeliveryOrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('delivery_order')->with('error', 'You do not have permission.');
         }
+        $order_sort_type = Input::get('order_sort_type');
+
         if (Hash::check(Input::get('model_pass'), Auth::user()->password)) {
             DeliveryOrder::find($id)->delete();
+            Session::put('order-sort-type', $order_sort_type);
             return redirect('delivery_order')->with('success', 'Delivery order details successfully deleted.');
         } else {
             return redirect('delivery_order')->with('wrong', 'You have entered wrong credentials');

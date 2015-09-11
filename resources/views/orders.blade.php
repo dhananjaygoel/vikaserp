@@ -191,7 +191,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <input type="hidden" name="order_sort_type" value="{{(Input::get('order_filter')!="")?Input::get('order_filter'):""}}"/>
+                                                <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
                                             </div>
@@ -325,7 +325,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <input type="hidden" name="order_sort_type" value="{{(Input::get('order_filter')!="")?Input::get('order_filter'):""}}"/>
+                                                <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
                                             </div>

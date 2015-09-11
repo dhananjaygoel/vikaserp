@@ -18,11 +18,26 @@
                         <div class="col-md-12">
                             <form method="GET" action="{{URL::action('DeliveryOrderController@index')}}" id="filter_form">
                                 <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                                <?php
+                                $session_sort_type_order = Session::get('order-sort-type');
+                                $qstring_sort_type_order = Input::get('order_status');
+
+                                if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
+                                    $qstring_sort_type_order = $qstring_sort_type_order;
+                                } else {
+                                    $qstring_sort_type_order = $session_sort_type_order;
+                                }
+                                ?>
                                 <select class="form-control" id="order_status" name="order_status" onchange="this.form.submit()">
                                     <option value="" selected="">--Status--</option>
-                                    <option <?php if (Input::get('order_status') == 'Delivered') echo 'selected=""'; ?> value="Delivered">Delivered</option>
-                                    <option <?php if (Input::get('order_status') == 'Inprocess') echo 'selected=""'; ?> value="Inprocess">Inprocess</option>
+                                    <option <?php if ($qstring_sort_type_order == 'Delivered') echo 'selected=""'; ?> value="Delivered">Delivered</option>
+                                    <option <?php if ($qstring_sort_type_order == 'Inprocess') echo 'selected=""'; ?> value="Inprocess">Inprocess</option>
                                 </select>
+                                <?php
+                                if (isset($session_sort_type_order)) {
+                                    Session::put('order-sort-type', "");
+                                }
+                                ?>
                             </form>
                         </div>
                     </div>
@@ -212,6 +227,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
+                                                <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default">Yes</button>
                                             </div>

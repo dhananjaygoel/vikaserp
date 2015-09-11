@@ -18,19 +18,35 @@
                         <div class="form-group pull-right">
                             <form method="GET" id="purchaseaAdviseFilterForm">
                                 <div class="col-md-12">
+                                    <?php
+                                    $session_sort_type_order = Session::get('order-sort-type');
+                                    $qstring_sort_type_order = Input::get('purchaseaAdviseFilter');
+
+
+                                    if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
+                                        $qstring_sort_type_order = $qstring_sort_type_order;
+                                    } else {
+                                        $qstring_sort_type_order = $session_sort_type_order;
+                                    }
+                                    ?>
                                     <select class="form-control" id="purchaseaAdviseFilter" name="purchaseaAdviseFilter">
                                         <option value="" selected="">Status</option>
                                         <option value="delivered" <?php
-                                        if (Request::get('purchaseaAdviseFilter') == "delivered") {
+                                        if ($qstring_sort_type_order == "delivered") {
                                             echo "selected=selected";
                                         }
                                         ?>>Delivered</option>
                                         <option value="in_process" <?php
-                                        if (Request::get('purchaseaAdviseFilter') == "in_process") {
+                                        if ($qstring_sort_type_order == "in_process") {
                                             echo "selected=selected";
                                         }
                                         ?>>Inprocess</option>
                                     </select>
+                                    <?php
+                                    if (isset($session_sort_type_order)) {
+                                        Session::put('order-sort-type', "");
+                                    }
+                                    ?>
                                 </div>
                             </form>
                         </div>
@@ -194,6 +210,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
+                                                    <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                     <button type="submit" class="btn btn-default deleteCustomer" data-dismiss="modal">Yes</button>
                                                 </div>

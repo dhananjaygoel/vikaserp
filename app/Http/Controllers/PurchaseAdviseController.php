@@ -46,8 +46,25 @@ class PurchaseAdviseController extends Controller {
 
         $q = PurchaseAdvise::query()->with('supplier', 'purchase_products');
 
-        if (Input::has('purchaseaAdviseFilter') && Input::get('purchaseaAdviseFilter') != '') {
-            $q->where('advice_status', '=', Input::get('purchaseaAdviseFilter'));
+
+        $session_sort_type_order = Session::get('order-sort-type');
+        $qstring_sort_type_order = Input::get('purchaseaAdviseFilter');
+
+        if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
+            $qstring_sort_type_order = $qstring_sort_type_order;
+        } else {
+            if (isset($session_sort_type_order) && ($session_sort_type_order != "")) {
+                $qstring_sort_type_order = $session_sort_type_order;
+            } else {
+                $qstring_sort_type_order = "";
+            }
+        }
+
+
+
+
+        if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != '')) {
+            $q->where('advice_status', '=', $qstring_sort_type_order);
         } else {
             $q->where('advice_status', '=', 'in_process');
         }
@@ -280,6 +297,7 @@ class PurchaseAdviseController extends Controller {
      */
     public function destroy($id) {
 
+        $order_sort_type = Input::get('order_sort_type');
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -294,6 +312,7 @@ class PurchaseAdviseController extends Controller {
         if (Hash::check($password, $current_user->password)) {
             $purchase_advise = PurchaseAdvise::find($id);
             $purchase_advise->delete();
+            Session::put('order-sort-type', $order_sort_type);
             return Redirect::to('purchaseorder_advise')->with('success', 'Purchase advise Successfully deleted');
         } else {
             return Redirect::to('purchaseorder_advise')->with('error', 'Invalid password');

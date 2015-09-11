@@ -23,6 +23,7 @@ use App\Units;
 use App\DeliveryLocation;
 use App\Customer;
 use App\ProductSubCategory;
+use Session;
 
 class DeliveryChallanController extends Controller {
 
@@ -42,8 +43,21 @@ class DeliveryChallanController extends Controller {
      */
     public function index() {
 
-        if ((isset($_GET['status_filter'])) && $_GET['status_filter'] != '') {
-            $allorders = DeliveryChallan::where('challan_status', '=', $_GET['status_filter'])->with('customer', 'delivery_challan_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(20);
+        $session_sort_type_order = Session::get('order-sort-type');
+        if (isset($_GET['status_filter']))
+            $qstring_sort_type_order = $_GET['status_filter'];
+        if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
+            $qstring_sort_type_order = $qstring_sort_type_order;
+        } else {
+            if (isset($session_sort_type_order) && ($session_sort_type_order != "")) {
+                $qstring_sort_type_order = $session_sort_type_order;
+            } else {
+                $qstring_sort_type_order = "";
+            }
+        }
+
+        if ((isset($qstring_sort_type_order)) && ($qstring_sort_type_order != '')) {
+            $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)->with('customer', 'delivery_challan_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(20);
         } else {
             $allorders = DeliveryChallan::where('challan_status', '=', 'pending')->with('customer', 'delivery_challan_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(20);
         }
@@ -178,6 +192,7 @@ class DeliveryChallanController extends Controller {
      * @return Response
      */
     public function destroy($id) {
+        $order_sort_type = Input::get('order_sort_type');
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
         }
@@ -199,6 +214,7 @@ class DeliveryChallanController extends Controller {
                 $products->delete();
             }
             $order->delete();
+            Session::put('order-sort-type', $order_sort_type);
             return redirect('delivery_challan')->with('flash_message', 'One record is deleted.');
         } else {
             return Redirect::back()->with('flash_message', 'Password entered is not valid.');
