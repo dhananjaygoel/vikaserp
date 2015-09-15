@@ -1,0 +1,10 @@
+
+
+@media (min-width:995px) and (max-width:1030px) {
+
+    .ui-autocomplete{
+        overflow-y: scroll !important;
+        min-height: 150px !important;
+        max-height: 250px;
+    }
+}

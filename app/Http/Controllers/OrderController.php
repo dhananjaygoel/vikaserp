@@ -53,6 +53,11 @@ class OrderController extends Controller {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
         }
 
+        $order_sorttype = Session::get('order-sort-type');
+        if (isset($order_sorttype) && ($order_sorttype != "")) {
+            $_GET['order_filter'] = $order_sorttype;
+        }
+
         $q = Order::query();
         if (isset($_GET['order_filter']) && $_GET['order_filter'] != '') {
             $q->where('order_status', '=', $_GET['order_filter']);
@@ -160,11 +165,10 @@ class OrderController extends Controller {
         $i = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
-            if ($product_data['name'] == "" && $product_data['quantity'] == "") {
+            if (($product_data['name'] == "") || ($product_data['quantity'] == "")) {
                 $i++;
             }
         }
-
         if ($i == $j) {
             return Redirect::back()->withInput()->with('flash_message', 'Please insert product details');
         }
@@ -644,6 +648,9 @@ class OrderController extends Controller {
      * @return Response
      */
     public function destroy($id) {
+
+        $order_sort_type = Input::get('order_sort_type');
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -665,6 +672,9 @@ class OrderController extends Controller {
                 $products->delete();
             }
             $order->delete();
+
+            Session::put('order-sort-type', $order_sort_type);
+
             return redirect('orders')->with('flash_message', 'One record is deleted.');
         } else {
             return Redirect::back()->with('flash_message', 'Password entered is not valid.');

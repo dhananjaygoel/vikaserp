@@ -23,38 +23,45 @@
             <td class="heading1">Amt</td>
             <td class="heading1">Discount</td>
             <td class="heading1">Loading</td>
-            <td class="heading1">Frieght</td>
+            <td class="heading1">Freight</td>
             <td class="heading1">Tax Type</td>
             <td class="heading1">Tax Rate</td>
             <td class="heading1">Tax</td>
             <td class="heading1">Round Off</td>
-            <td class="heading1">Other Charges</td>
+            <td class="heading1">Grand total</td>
             <td class="heading1">Narration</td>
         </tr>
         <?php
-//        echo '<pre>';
-//        print_r($purchase_orders->toArray());
-//        echo '<pre>';
-//        exit();
-//        foreach ($purchase_orders as $key => $value) {
-//            echo '<pre>';
-//            print_r($value->grand_total);
-//            echo '<pre>';
-//        }
-//        exit;
+        $i = 1;
+        $j = 1;
         foreach ($purchase_orders as $key => $value) {
-            ?>
-            <?php
+            $next_cnt = count($value['all_purchase_products']);
+            $current_number = 1;
             foreach ($value['all_purchase_products'] as $key1 => $value1) {
                 $order_quantity = 0;
+                $value_cnt = "";
+                $vacant = " ";
                 ?>
                 <tr>
-                    <td>{{$key}}</td>
+                    <?php
+                    $value_cnt = "";
+                    if ($current_number == 1) {
+                        $value_cnt = $j;
+                    } else {
+                        $value_cnt = $j;
+                    }
+                    ?>
+                    @if($current_number == 1)
+                    <td>{{$value_cnt}}</td>
+                    @else
+                    <td>{{$value_cnt}}</td>
+                    @endif
+
                     <td></td>
                     <td>Purchase</td>
-                    <td><?= date("jS F, Y", strtotime($value->updated_at)) ?></td>
+                    <td><?= date("m-d-Y", strtotime($value->updated_at)) ?></td>
                     <td></td>
-                    <td><?= $value['supplier']->owner_name ?></td>
+                    <td><?= $value['supplier']->tally_name ?></td>
                     <td><?= $value['supplier']->address1 ?></td>
                     <td><?= $value['supplier']->address2 ?></td>
                     <td><?= $value->supplier->states->state_name ?></td>
@@ -79,36 +86,113 @@
                         <?= round($value1->quantity, 2) ?>
                     </td>
                     <td><?= $value1->price ?></td>
-                    <td><?= ($value1->quantity * $value1->price) ?></td>
+                    <td>
+                        <?php
+                        // Calculation Updated by 157 on 03-09-2015
+                        $total_amt = "";
+
+                        if (isset($value1->quantity) && !empty($value1->quantity) && $value1->quantity != 0) {
+
+                            $vat_amt = 0;
+                            $tot_amt = $value1->price * $value1->quantity;
+                            if ($next_cnt == $current_number) {
+
+                                $total_amt = $tot_amt + $value->loading_charge + $value->freight + $value->discount = $value->round_off;
+                                if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
+                                    $vat_amt = ($total_amt * ($value['purchase_advice']->vat_percentage / 100));
+                                }
+                                $total_amt = $vat_amt + $total_amt;
+                            } else {
+                                $total_amt = $tot_amt;
+                            }
+                        } else {
+                            $vat_amt = 0;
+//                            $total_amt = $total_amt * $value1->actual_pieces * $value1->order_product_details->weight;
+                            $tot_amt = $value1->price * $value1->actual_pieces * $value1->order_product_details->weight;
+
+                            if ($next_cnt == $current_number) {
+                                $total_amt = $tot_amt + $value->loading_charge + $value->freight + $value->discount = $value->round_off;
+                                if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
+                                    $vat_amt = ($total_amt * ($value['purchase_advice']->vat_percentage / 100));
+                                }
+                                $total_amt = $total_amt + $vat_amt;
+                            } else {
+                                $total_amt = $tot_amt;
+                            }
+                        }
+                        echo number_format($tot_amt, 2, '.', '');
+                        ?>
+                    </td>
+
+                    @if($next_cnt == $current_number)
                     <td><?= $value->discount ?></td>
+                    @else
+                    <td></td>
+                    @endif
+
+                    @if($next_cnt == $current_number)
                     <td><?= $value->loading_charge ?></td>
+                    @else
+                    <td></td>
+                    @endif
+
+                    @if($next_cnt == $current_number)
                     <td><?= $value->freight ?></td>
+                    @else
+                    <td></td>
+                    @endif
+
+                    @if($next_cnt == $current_number)
                     <td><?php
                         if ($value->purchase_advice->vat_percentage !== "")
                             echo "VAT";
                         else
                             echo "All inclusive";
-                        ?></td>
-                    <td>
-                        <?php
-                        if ($value->purchase_advice->vat_percentage !== "")
-                            echo $value->purchase_advice->vat_percentage;
                         ?>
                     </td>
-                    <td>
-                        <?php
-                        if ($value->purchase_advice->vat_percentage !== "")
-                            echo $value->grand_total * ($value['purchase_advice']->vat_percentage / 100);
-                        ?>
-                    </td>
-                    <td><?= $value->round_off ?></td>
+                    @else
                     <td></td>
+                    @endif
+
+                    @if($next_cnt == $current_number)
+                    <td>
+                        <?php
+                        if ($value->purchase_advice->vat_percentage !== "")
+                            echo $value->purchase_advice->vat_percentage . "%";;
+                        ?>
+                    </td>
+                    @else
+                    <td></td>
+                    @endif
+
+                    @if($next_cnt == $current_number)
+                    <td>
+                        <?php
+                        if ($value->purchase_advice->vat_percentage !== "")
+                            echo number_format($vat_amt, 2, '.', '');
+                        ?>
+                    </td>
+                    @else
+                    <td></td>
+                    @endif
+
+                    <td><?= $value->round_off ?></td>
+                    @if($next_cnt == $current_number)
+                    <td>
+                        {{(isset($total_amt)? number_format($total_amt, 2, '.', '') :'')}}
+                    </td>
+                    @else
+                    <td></td>
+                    @endif
                     <td><?= "[" . $value['purchase_advice']->vehicle_number . "][" . $value->remark . "]" ?></td>
                 </tr>
                 <?php
+                $current_number++;
             }
-            ?>
-            <?php
+            if ($next_cnt != 0) {
+                $j++;
+            }
+            $i++;
         }
         ?>
     </table>

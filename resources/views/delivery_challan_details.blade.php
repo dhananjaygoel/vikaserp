@@ -14,12 +14,12 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <div class="main-box"> 
+                <div class="main-box">
                     <div class="main-box-body clearfix">
                         <div class="form-group">
                             <label><b>Tally Name:</b>
-                                @if($allorder['customer']->owner_name != "" && $allorder['customer']->tally_name != "")
-                                {{$allorder['customer']->owner_name}}{{'-'.$allorder['customer']->tally_name}}
+                                @if($allorder['customer']->tally_name != "")
+                                {{$allorder['customer']->tally_name}}
                                 @else
                                 {{$allorder['customer']->owner_name}}
                                 @endif
@@ -27,7 +27,7 @@
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label><b>Serial Number:</b> 
+                            <label><b>Serial Number:</b>
                                 <?php
                                 if ($allorder->serial_number != '') {
                                     echo $allorder->serial_number;
@@ -178,7 +178,7 @@
                             <textarea class="form-control" id="challan_remark" name="challan_remark"  rows="3" readonly="readonly"> {{$allorder->remarks}}</textarea>
                         </div>
                         <a href="{{url('delivery_challan')}}" class="btn btn-default form_button_footer">Back</a>
-                    </div>                  
+                    </div>
                 </div>
             </div>
         </div>

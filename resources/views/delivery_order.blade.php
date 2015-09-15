@@ -18,11 +18,26 @@
                         <div class="col-md-12">
                             <form method="GET" action="{{URL::action('DeliveryOrderController@index')}}" id="filter_form">
                                 <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                                <?php
+                                $session_sort_type_order = Session::get('order-sort-type');
+                                $qstring_sort_type_order = Input::get('order_status');
+
+                                if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
+                                    $qstring_sort_type_order = $qstring_sort_type_order;
+                                } else {
+                                    $qstring_sort_type_order = $session_sort_type_order;
+                                }
+                                ?>
                                 <select class="form-control" id="order_status" name="order_status" onchange="this.form.submit()">
                                     <option value="" selected="">--Status--</option>
-                                    <option <?php if (Input::get('order_status') == 'Delivered') echo 'selected=""'; ?> value="Delivered">Delivered</option>
-                                    <option <?php if (Input::get('order_status') == 'Inprocess') echo 'selected=""'; ?> value="Inprocess">Inprocess</option>
+                                    <option <?php if ($qstring_sort_type_order == 'Delivered') echo 'selected=""'; ?> value="Delivered">Delivered</option>
+                                    <option <?php if ($qstring_sort_type_order == 'Inprocess') echo 'selected=""'; ?> value="Inprocess">Inprocess</option>
                                 </select>
+                                <?php
+                                if (isset($session_sort_type_order)) {
+                                    Session::put('order-sort-type', "");
+                                }
+                                ?>
                             </form>
                         </div>
                     </div>
@@ -42,7 +57,7 @@
                         @endif
                         @if (Session::has('success'))
                         <div class="alert alert-success alert-success1">
-                            {{Session::get('success')}}                            
+                            {{Session::get('success')}}
                         </div>
                         @endif
 
@@ -55,7 +70,7 @@
 
                         @if (Session::has('wrong'))
                         <div class="alert alert-danger alert-success1">
-                            {{Session::get('wrong')}}                            
+                            {{Session::get('wrong')}}
                         </div>
                         @endif
 
@@ -77,12 +92,12 @@
                                         <th class="text-center col-md-2">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>  
+                                <tbody>
                                     <?php $i = ($delivery_data->currentPage() - 1 ) * $delivery_data->perPage() + 1; ?>
                                     @foreach($delivery_data as $delivery)
                                     <tr>
                                         <td>{{ $i++ }}</td>
-                                        <td>{{date("jS F, Y", strtotime($delivery->created_at)) }}</td>
+                                        <td>{{date("F jS, Y", strtotime($delivery->created_at)) }}</td>
                                         <td>
                                             @if($delivery['customer']->tally_name != "")
                                             {{$delivery['customer']->tally_name}}
@@ -90,7 +105,7 @@
                                             {{$delivery['customer']->owner_name}}
                                             @endif
 
-                                        </td> 
+                                        </td>
                                         <td>
                                             @if($delivery->delivery_location_id!=0)
                                             @foreach($delivery_locations as $location)
@@ -102,16 +117,16 @@
                                             {{$delivery->other_location}}
                                             @endif
 
-                                        </td> 
+                                        </td>
                                         <td>
                                             {{ round($delivery->total_quantity, 2) }}
-                                        </td> 
+                                        </td>
                                         <td>
                                             {{ round($delivery->present_shipping, 2) }}
-                                        </td> 
+                                        </td>
                                         <td>
                                             {{$delivery->vehicle_number}}
-                                        </td> 
+                                        </td>
                                         @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
                                         <td class="text-center">
                                             @if($delivery->serial_no != "")
@@ -210,8 +225,9 @@
                                                     <div class="clearfix"></div>
                                                     <div class="delp">Are you sure you want to <b>delete </b>?</div>
                                                 </div>
-                                            </div>           
+                                            </div>
                                             <div class="modal-footer">
+                                                <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default">Yes</button>
                                             </div>
@@ -227,10 +243,10 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
-                                                <div class="row print_time "> 
+                                                <div class="row print_time ">
                                                     <div class="col-md-12"> Print By <br>
                                                         <span class="current_time"></span>
-                                                    </div> 
+                                                    </div>
                                                 </div>
                                                 <div class="checkbox">
                                                     <label><input type="checkbox" id="checksms" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
@@ -246,7 +262,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                                 @endforeach
                                 </tbody>
                             </table>
@@ -274,8 +290,8 @@
                                         <a onclick="this.form.submit()"></a>
                                     </div>
                                 </form>
-                            </span> 
-                            @endif 
+                            </span>
+                            @endif
                         </div>
                         @else
                         <div class="alert alert-info no_data_msg_container">

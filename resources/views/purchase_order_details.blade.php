@@ -28,13 +28,13 @@
                             <div class="table-responsive">
                                 <table id="table-example" class="table table-hover customerview_table  ">
                                     <tbody>
-                                        <tr><td><span>Supplier Name:</span> 
+                                        <tr><td><span>Supplier Name:</span>
                                                 @if($purchase_orders['customer']->owner_name != "" && $purchase_orders['customer']->tally_name != "")
                                                 {{$purchase_orders['customer']->owner_name}}{{'-'.$purchase_orders['customer']->tally_name}}
                                                 @else
                                                 {{$purchase_orders['customer']->owner_name}}
                                                 @endif
-                                                
+
                                             </td></tr>
                                         <?php if ($purchase_orders['customer']->contact_person != '') { ?>
                                             <tr><td><span>Contact Person:</span>{{$purchase_orders['customer']->contact_person}}</td></tr>
@@ -87,7 +87,7 @@
                                         <tr><td><span>VAT Percentage: </span>{{$purchase_orders['vat_percentage']."%"}}</td></tr>
                                         @endif
 
-                                        <tr><td><span>Expected Delivery Date: </span>{{date("jS F, Y", strtotime($purchase_orders['expected_delivery_date']))}}</td></tr>
+                                        <tr><td><span>Expected Delivery Date: </span>{{date("F jS, Y", strtotime($purchase_orders['expected_delivery_date']))}}</td></tr>
 
                                         @if($purchase_orders->delivery_location_id > 0)
                                         <tr><td><span>Delivery Location: </span>{{$purchase_orders['delivery_location']->area_name}}</td></tr>

@@ -38,6 +38,7 @@
         {!! HTML::style('/resources/assets/css/libs/daterangepicker.css') !!}
         {!! HTML::style('/resources/assets/css/libs/jquery-jvectormap-1.2.2.css') !!}
         {!! HTML::style('/resources/assets/css/custom_style/custom_style.css') !!}
+        {!! HTML::style('/resources/assets/css/custom_style/custom_media_query.css') !!}
 
 
 

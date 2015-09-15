@@ -9,31 +9,32 @@
         <style>
             body{
                 font-size: 10px !important;
+                font-family: Arial !important;
             }
             .divTable{
-                display:table;         
-                width:100%;         
+                display:table;
+                width:100%;
                 background-color:#fff;
                 border-top: 1px solid #ccc;
                 border-bottom: 1px solid #ccc;
             }
             .divRow{
                 width:auto;
-                clear:both; 
+                clear:both;
                 border-top: 1px solid #ccc;
             }
             .divCell{
                 float:left;
-                display:table-column;         
-                width:7%;         
+                display:table-column;
+                width:7%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
                 font-size: 8px !important;
             }
             .divCell2{
                 float:left;
-                display:table-column;         
-                width:5%;         
+                display:table-column;
+                width:5%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
                 font-size: 8px !important;
@@ -41,8 +42,8 @@
 
             .divCell3{
                 float:left;
-                display:table-column;         
-                width:9%;         
+                display:table-column;
+                width:9%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
                 font-size: 8px !important;
@@ -59,7 +60,7 @@
             .headRow{
                 display:table-row;
                 text-align: center;
-            }        
+            }
             .invoice {
                 width:100%;
                 border: 1px solid #ccc;
@@ -81,10 +82,10 @@
         <div class="invoice">
             <div class="title">
                 Vikas Associate Order Automation System
-            </div>            
+            </div>
             <div class="title">
-                Sales-Daybook({{ date('d F, Y')}})
-            </div>            
+                Sales-Daybook({{ date('F d, Y')}})
+            </div>
             <div class="divTable">
                 <div class="headRow">
                     <div  class="divCell2">#</div>
@@ -92,7 +93,7 @@
                     <div  class="divCell3">Name</div>
                     <div  class="divCell">Del Loc</div>
                     <div  class="divCell">Qty</div>
-                    <div  class="divCell">Amount</div>  
+                    <div  class="divCell">Amount</div>
                     <div  class="divCell">Bill No.</div>
                     <div  class="divCell">Truck No</div>
                     <div  class="divCell">Loaded By</div>
@@ -129,17 +130,17 @@
                     <div class="divCell">{{ $obj->serial_number }}</div>
                     <div class="divCell3">{{ $obj['customer']->owner_name }}</div>
                     <div class="divCell">{{ isset($obj['delivery_order']['location'])?$obj['delivery_order']['location']->area_name: '' }}</div>
-                    <div class="divCell">{{ round($obj["delivery_challan_products"]->sum('actual_quantity'), 2) }}</div> 
+                    <div class="divCell">{{ round($obj["delivery_challan_products"]->sum('actual_quantity'), 2) }}</div>
                     <div class="divCell">{{ round($obj->grand_price, 2) }}</div>
                     <div class="divCell">{{ $obj->bill_number }} </div>
                     <div class="divCell">{{ $obj['delivery_order']->vehicle_number }}</div>
                     <div class="divCell">{{ $obj->loaded_by }}</div>
-                    <div class="divCell">{{ $obj->labours }}</div> 
-                    <div class="divCell">{{ $obj->remarks }}</div> 
+                    <div class="divCell">{{ $obj->labours }}</div>
+                    <div class="divCell">{{ $obj->remarks }}</div>
                 </div>
                 @endforeach
             </div>
-        </div>    
+        </div>
     </body>
 </html>
 

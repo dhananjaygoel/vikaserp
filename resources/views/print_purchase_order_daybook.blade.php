@@ -8,12 +8,13 @@
     <body>
         <style>
             body{
-                font-family: Bookman Old Style !important;
+                font-size: 8px;
+                font-family: Arial !important;
                 font-weight: bold !important;
             }
             .divTable{
-                display:table;         
-                width:100%;         
+                display:table;
+                width:100%;
                 background-color:#fff;
                 border-top: 1px solid #ccc;
                 border-bottom: 1px solid #ccc;
@@ -21,21 +22,21 @@
             .divRow{
 
                 width:auto;
-                clear:both; 
+                clear:both;
                 border-top: 1px solid #ccc;
             }
             .divCell{
                 float:left;
-                display:table-column;         
-                width:7%;         
+                display:table-column;
+                width:7%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
                 font-size: 8px;
             }
             .divCell2{
                 float:left;
-                display:table-column;         
-                width:5%;         
+                display:table-column;
+                width:5%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
                 font-size: 8px;
@@ -50,7 +51,7 @@
             .headRow{
                 display:table-row;
                 text-align: center;
-            }        
+            }
 
 
             .invoice{
@@ -75,7 +76,7 @@
         <div class="invoice">
             <div class="title">
                 Purchase Daybook
-            </div>            
+            </div>
             <div class="divTable">
                 <div class="headRow">
                     <div  class="divCell2">#</div>
@@ -84,7 +85,7 @@
                     <div  class="divCell">Tally Name</div>
                     <div  class="divCell">Del Loc</div>
                     <div  class="divCell">Qty</div>
-                    <div  class="divCell">Amount</div>  
+                    <div  class="divCell">Amount</div>
                     <div  class="divCell">Bill No.</div>
                     <div  class="divCell">Truck No</div>
                     <div  class="divCell">Loaded By</div>
@@ -128,13 +129,13 @@
                         }
                         ?>
                     </div>
-                    <div class="divCell">{{ round($obj['all_purchase_products']->sum('quantity'), 2) }}</div> 
+                    <div class="divCell">{{ round($obj['all_purchase_products']->sum('quantity'), 2) }}</div>
                     <div class="divCell">{{ $obj->grand_total }}</div>
                     <div class="divCell">{{ $obj->bill_number }}</div>
                     <div class="divCell">{{ $obj->vehicle_number }}</div>
                     <div class="divCell">{{ $obj->unloaded_by }}</div>
-                    <div class="divCell">{{ $obj->labours }}</div> 
-                    <div class="divCell">{{ $obj->remarks }}</div> 
+                    <div class="divCell">{{ $obj->labours }}</div>
+                    <div class="divCell">{{ $obj->remarks }}</div>
                 </div>
                 @endforeach
             </div>

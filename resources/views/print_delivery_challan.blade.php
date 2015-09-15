@@ -8,33 +8,33 @@
     <body>
         <style>
             body{
-                font-family: Bookman Old Style !important;
+                font-size: 8px;
+                font-family: Arial !important;
                 font-weight: bold !important;
             }
             .divTable{
-                display:table;         
-                width:100%;         
+                display:table;
+                width:100%;
                 background-color:#fff;
                 border-top: 1px solid #ccc;
                 border-bottom: 1px solid #ccc;
             }
             .divRow{
-
                 width:auto;
-                clear:both; 
+                clear:both;
                 border-top: 1px solid #ccc;
             }
             .divCell2{
                 float:left;
-                display:table-column;         
-                width:6%;         
+                display:table-column;
+                width:6%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
             .divCell{
                 float:left;
-                display:table-column;         
-                width:15.2%;         
+                display:table-column;
+                width:14.2%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
@@ -50,14 +50,14 @@
             }
             .headRow{
                 display:table-row;
-            }        
+            }
             .footer{
                 width: 100%;
                 float: left;
             }
             .total-desc{
                 width: 65%;
-                float: left;              
+                float: left;
 
             }
             .total{
@@ -106,7 +106,7 @@
                 position: relative;
             }
             .name-date{
-                width: 100%;            
+                width: 100%;
                 padding: 10px 0px 10px 5px;
                 float: left;
                 position: relative;
@@ -173,21 +173,21 @@
             <div class="name-date">
                 <div class="">
                     <div class="name">
-                        Name: 
+                        Name:
 
-                        @if($allorder['customer']->tally_name != "")
+                        @if(isset($allorder['customer']->tally_name) && $allorder['customer']->tally_name != "")
                         {{$allorder['customer']->tally_name}}
                         @else
                         {{$allorder['customer']->owner_name}}
                         @endif
                     </div>
                     <div class="date">
-                        Date: {{date('d F, Y')}}
+                        Date: {{date('F d, Y')}}
                     </div>
                 </div>
             </div>
             <div class="delivery-details">
-                <div class="delivery">                    
+                <div class="delivery">
                     Delivery @: @if($allorder['delivery_order']->delivery_location_id!=0)
                     {{ $allorder['delivery_order']['location']->area_name }}
                     @else
@@ -210,12 +210,12 @@
 
             <div class="divTable">
                 <div class="headRow">
-                    <div  class="divCell2">Sr.</div>
-                    <div  class="divCell">Size</div>
-                    <div  class="divCell">Pcs</div>
-                    <div  class="divCell">Qty</div>
-                    <div  class="divCell">Rate</div>
-                    <div  class="divCell">Amount</div>                
+                    <div class="divCell2">Sr.</div>
+                    <div class="divCell">Size</div>
+                    <div class="divCell">Pcs</div>
+                    <div class="divCell">Qty</div>
+                    <div class="divCell">Rate</div>
+                    <div class="divCell">Amount</div>
                 </div>
                 <?php
                 $i = 1;
@@ -233,9 +233,9 @@
                     <div class="divCell">{{ round($prod->actual_quantity) }}</div>
                     <div class="divCell"><?php echo $rate = $prod->price; ?></div>
                     <div class="divCell">
-                        <?php $total_price += $rate * $prod->actual_quantity; ?> 
-                        {{ ($rate * $prod->actual_quantity) }} 
-                    </div>                
+                        <?php $total_price += $rate * $prod->actual_quantity; ?>
+                        {{ ($rate * $prod->actual_quantity) }}
+                    </div>
                 </div>
                 <?php
 //                if ($prod->unit_id == 1) {
@@ -271,27 +271,26 @@
 
                     </div>
                 </div>
-
                 <div class="total">                 
                     <div class="">
                         <div class="label"> &nbsp; Total</div>
                         <div class="value bob"> {{ round($total_price, 2) }} &nbsp;</div>
                         <div class="label ">&nbsp; Loading</div>
-                        <div class="value"> 
+                        <div class="value">
                             @if($allorder->loading_charge != "")
                             {{round($allorder->loading_charge,2)}}
                             @else
                             0
-                            @endif  
+                            @endif
                             &nbsp;
                         </div>
                         <div class="label">&nbsp; Frt</div>
-                        <div class="value"> 
+                        <div class="value">
                             @if($allorder->freight != "")
                             {{round($allorder->freight,2)}}
                             @else
                             0
-                            @endif 
+                            @endif
                             &nbsp;
                         </div>
                         <div class="label">&nbsp; disc.</div>
@@ -302,7 +301,7 @@
                             0
                             @endif
                             &nbsp;
-                        </div>                
+                        </div>
                         <div class="label">&nbsp; Total</div>
                         <div class="value">
                             <?php $with_total = $total_price + $allorder->loading_charge + $allorder->freight + $allorder->discount; ?>
@@ -312,10 +311,10 @@
                         <div class="label">&nbsp; Vat</div>
                         <div class="value">
                             @if($allorder->calculated_vat_price != "")
-                            {{$allorder->calculated_vat_price}} 
+                            {{$allorder->calculated_vat_price}}
                             @else
                             0
-                            @endif 
+                            @endif
                             &nbsp;
                         </div>
                         <div class="label">&nbsp; Round Off</div>
@@ -324,7 +323,7 @@
                             {{round($allorder->round_off,2)}}
                             @else
                             0
-                            @endif 
+                            @endif
                             &nbsp;
                         </div>
                         <div class="label">&nbsp; GT</div>

@@ -64,9 +64,26 @@ class PurchaseOrderController extends Controller {
             }
         }
 
+
+//        $session_sort_type_order = Session::get('order-sort-type');
+//        $qstring_sort_type_order = $_GET['purchase_order_filter'];
+
+        $session_sort_type_order = Session::get('order-sort-type');
+        if (isset($_GET['purchase_order_filter']))
+            $qstring_sort_type_order = $_GET['purchase_order_filter'];
+        if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
+            $qstring_sort_type_order = $qstring_sort_type_order;
+        } else {
+            if (isset($session_sort_type_order) && ($session_sort_type_order != "")) {
+                $qstring_sort_type_order = $session_sort_type_order;
+            } else {
+                $qstring_sort_type_order = "";
+            }
+        }
+
         if (Auth::user()->role_id < 1) {
-            if ((isset($_GET['purchase_order_filter'])) && $_GET['purchase_order_filter'] != '') {
-                $q = $q->where('order_status', '=', $_GET['purchase_order_filter']);
+            if ((isset($qstring_sort_type_order)) && $qstring_sort_type_order != '') {
+                $q = $q->where('order_status', '=', $qstring_sort_type_order);
             } else {
                 $q = $q->where('order_status', '=', 'pending');
             }
@@ -550,12 +567,17 @@ class PurchaseOrderController extends Controller {
      * @return Response
      */
     public function destroy($id) {
+
+        $order_sort_type = Input::get('order_sort_type');
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (Hash::check(Input::get('password'), Auth::user()->password)) {
             $delete_purchase_order = PurchaseOrder::find($id)->delete();
             $delete_purchase_products = PurchaseProducts::where('purchase_order_id', '=', $id)->delete();
+
+            Session::put('order-sort-type', $order_sort_type);
             return redirect('purchase_orders')->with('flash_message', 'Purchase order details successfully deleted.');
         } else {
             return redirect('purchase_orders')->with('flash_message', 'Please enter a correct password.');

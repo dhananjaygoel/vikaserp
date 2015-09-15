@@ -11,12 +11,27 @@
                 </ol>
                 <div class="filter-block">
                     <form action="{{url('delivery_challan')}}" method="GET">
-                        <div class=" pull-right col-md-3"> 
+                        <div class=" pull-right col-md-3">
+                            <?php
+                            $session_sort_type_order = Session::get('order-sort-type');
+                            $qstring_sort_type_order = Input::get('status_filter');
+
+                            if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
+                                $qstring_sort_type_order = $qstring_sort_type_order;
+                            } else {
+                                $qstring_sort_type_order = $session_sort_type_order;
+                            }
+                            ?>
                             <select class="form-control" id="user_filter3" name="status_filter" onchange="this.form.submit();">
                                 <option value="" selected="">--Status--</option>
-                                <option <?php if (Input::get('status_filter') == 'pending') echo 'selected=""'; ?> value="pending">Inprogress</option>
-                                <option <?php if (Input::get('status_filter') == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
+                                <option <?php if ($qstring_sort_type_order == 'pending') echo 'selected=""'; ?> value="pending">Inprogress</option>
+                                <option <?php if ($qstring_sort_type_order == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
                             </select>
+                            <?php
+                            if (isset($session_sort_type_order)) {
+                                Session::put('order-sort-type', "");
+                            }
+                            ?>
                             <br>
                         </div>
                     </form>
@@ -25,7 +40,7 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <div class="main-box clearfix">                    
+                <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
                         @if(sizeof($allorders)==0)
                         <div class="alert alert-info no_data_msg_container">
@@ -40,13 +55,13 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">#</th>
-                                        <th class="text-left">Tally Name</th>
+                                        <th class="text-center">Tally Name</th>
                                         <th class="text-center">Serial Number</th>
                                         <th class="text-center">Present Shipping</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>                    
+                                <tbody>
                                     <?php $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1; ?>
                                     @foreach($allorders as $challan)
                                     @if($challan->challan_status == 'pending')
@@ -66,7 +81,7 @@
                                             @elseif($challan->serial_number != '')
                                             {{$challan->serial_number}}
                                             @endif
-                                        </td>                                        
+                                        </td>
                                         <td class="text-center">{{ round($challan->total_quantity, 2) }}</td>
                                         <td class="text-center">
                                             <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
@@ -74,7 +89,7 @@
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a>  
+                                            </a>
                                             @if( Auth::user()->role_id != 4)
                                             <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan_{{$challan->id}}">
                                                 <span class="fa-stack">
@@ -114,15 +129,16 @@
                                                     <div class="clearfix"></div>
                                                     <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
                                                 </div>
-                                            </div>           
+                                            </div>
                                             <div class="modal-footer">
+                                                <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
                                             </div>
                                             {!! Form::close() !!}
                                         </div>
                                     </div>
-                                </div>    
+                                </div>
                                 <div class="modal fade" id="print_challan_{{$challan->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -134,10 +150,10 @@
                                                 <input type="hidden" name="_token"value="{{csrf_token()}}">
                                                 <input type="hidden" name="serial_number" value="{{$challan['delivery_order']->serial_no}}">
                                                 <input type="hidden" name="delivery_order_id" value="{{$challan['delivery_order']->id}}">
-                                                <div class="row print_time"> 
-                                                    <div class="col-md-12"> Print By <br> 
+                                                <div class="row print_time">
+                                                    <div class="col-md-12"> Print By <br>
                                                         <span class="current_time"></span>
-                                                    </div> 
+                                                    </div>
                                                 </div>
                                                 <div class="checkbox">
                                                     <label><input type="checkbox" value="" id="checksms"><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
@@ -152,17 +168,17 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                                 @elseif($challan->challan_status == 'completed')
                                 <tr>
                                     <td class="text-center">{{$k++}}</td>
-                                    <td class="text-center">{{$challan['customer']->owner_name}}</td>
+                                    <td class="text-center">{{$challan['customer']->tally_name}}</td>
                                     <td class="text-center">
                                         @if($challan->serial_number == '')
                                         @elseif($challan->serial_number != '')
                                         {{$challan->serial_number}}
                                         @endif
-                                    </td>                                        
+                                    </td>
                                     <td class="text-center">{{round($challan->total_quantity, 2)}}</td>
                                     <td class="text-center">
                                         <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
@@ -185,7 +201,6 @@
                                                 <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                             </span>
                                         </a>
-
                                         <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_{{$challan->id}}" title="delete">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
@@ -194,11 +209,7 @@
                                         </a>
                                         @endif
                                     </td>
-
                                 </tr>
-
-
-
                                 <div class="modal fade" id="delete_challan_{{$challan->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -219,20 +230,17 @@
                                                     </div>
                                                     <div class="clearfix"></div>
                                                     <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
-
-
                                                 </div>
-
-                                            </div>           
+                                            </div>
                                             <div class="modal-footer">
-
+                                                <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
                                             </div>
                                             {!! Form::close() !!}
                                         </div>
                                     </div>
-                                </div>    
+                                </div>
 
                                 <div class="modal fade" id="print_challan_{{$challan->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -246,10 +254,10 @@
 
                                                 <input type="hidden" name="serial_number" value="{{$challan['delivery_order']->serial_no}}">
                                                 <input type="hidden" name="delivery_order_id" value="{{$challan['delivery_order']->id}}">
-                                                <div class="row print_time"> 
-                                                    <div class="col-md-12"> Print By <br> 
+                                                <div class="row print_time">
+                                                    <div class="col-md-12"> Print By <br>
                                                         <span class="current_time"></span>
-                                                    </div> 
+                                                    </div>
                                                 </div>
                                                 <div class="checkbox">
                                                     <label><input type="checkbox" value="" id="checksms"><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
@@ -266,7 +274,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                                 @endif
                                 @endforeach
 
@@ -290,10 +298,10 @@
                                         <a onclick="this.form.submit()"></a>
                                     </div>
                                 </form>
-                            </span> 
-                            @endif 
+                            </span>
+                            @endif
 
-                        </div>    
+                        </div>
                     </div>
                     @endif
                 </div>

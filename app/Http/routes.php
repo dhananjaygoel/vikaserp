@@ -28,6 +28,7 @@ Route::get('show_users_table', function() {
     print_r($pdo);
 });
 Route::get('showdata/{tablename}', 'WelcomeController@showdata');
+Route::get('showtableinfo/{tablename}', 'WelcomeController@showtableinfo');
 Route::get('removedata/{tablename}', 'WelcomeController@removedata');
 Route::get('updatecolumndata/{tablename}/{column}/{value}', 'WelcomeController@updatecolumndata');
 

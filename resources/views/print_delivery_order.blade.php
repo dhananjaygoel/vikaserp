@@ -9,13 +9,13 @@
         <style>
             body{
                 font-size: 8px;
-                font-family: Bookman Old Style !important;
+                font-family: Arial !important;
                 font-weight: bold !important;
                 /*font-family: monospace !important;*/
             }
             .divTable{
-                display:table;         
-                width:100%;         
+                display:table;
+                width:100%;
                 background-color:#fff;
                 border-top: 1px solid #ccc;
                 border-bottom: 1px solid #ccc;
@@ -23,27 +23,27 @@
             .divRow{
 
                 width:auto;
-                clear:both; 
+                clear:both;
                 border-top: 1px solid #ccc;
             }
             .divCell{
                 float:left;
-                display:table-column;         
-                width:12.5%;         
+                display:table-column;
+                width:11.0%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
-            }            
+            }
             .divCell2{
                 float:left;
-                display:table-column;         
-                width:4%;         
+                display:table-column;
+                width:4%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
             .divCell3{
                 float:left;
-                display:table-column;         
-                width:30%;         
+                display:table-column;
+                width:30%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
@@ -58,10 +58,10 @@
             }
             .headRow{
                 display:table-row;
-            }        
+            }
             .footer
             {
-                width: 100%;    
+                width: 100%;
                 float: left;
             }
             .remark{
@@ -86,7 +86,7 @@
             .del
             {
                 width: 100%;
-                float: left;        
+                float: left;
                 padding: 10px 0px 10px 5px;
             }
             .trk-mobile
@@ -109,7 +109,7 @@
             }
             .name
             {
-                width: 100%;            
+                width: 100%;
                 padding: 10px 0px 10px 5px;
                 float: left;
                 position: relative;
@@ -158,7 +158,7 @@
                     DO Number: {{ $delivery_data->serial_no }}
                 </div>
                 <div class="date">
-                    Date: {{ date('d F, Y')}}
+                    Date: {{ date('F d, Y')}}
                 </div>
                 <div class="time">
                     <!--Time: {{ date("h:i:sa") }}-->
@@ -172,7 +172,7 @@
                 </div>
             </div>
             <div class="name">
-                Name: 
+                Name:
                 @if($delivery_data['customer']->tally_name != "")
                 {{ $delivery_data['customer']->tally_name }}
                 @else
@@ -189,21 +189,21 @@
                 </div>
             </div>
             <div class="del">
-                Delivery @: 
+                Delivery @:
                 @if($delivery_data->delivery_location_id!=0)
                 {{ $delivery_data['location']->area_name }}
                 @else
                 {{ $delivery_data->other_location }}
                 @endif
             </div>
-            <div class="divTable">                
+            <div class="divTable">
                 <div class="headRow">
-                    <div  class="divCell2">Sr.</div>
-                    <div  class="divCell3">Size</div>
-                    <div  class="divCell">Qty</div>
-                    <div  class="divCell">Unit</div>                    
-                    <div  class="divCell">Pcs</div>
-                    <div  class="divCell">Qty</div>                
+                    <div class="divCell2">Sr.</div>
+                    <div class="divCell3">Size</div>
+                    <div class="divCell">Qty</div>
+                    <div class="divCell">Unit</div>
+                    <div class="divCell">Pcs</div>
+                    <div class="divCell">Qty</div>
                 </div>
 
                 <?php
@@ -221,16 +221,16 @@
                         {{$u->unit_name}}
                         @endif
                         @endforeach
-                    </div>                    
+                    </div>
                     <div class="divCell"> &nbsp; </div>
-                    <div class="divCell"> &nbsp; </div>                
-                </div> 
+                    <div class="divCell"> &nbsp; </div>
+                </div>
                 @endif
                 @endforeach
             </div>
             <div class="footer">
                 <div class="remark">
-                    Remark: 
+                    Remark:
                 </div>
                 <div class="content">
                     {{ $delivery_data->remarks }}

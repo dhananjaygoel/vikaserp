@@ -46,11 +46,21 @@
                                 </div>
                                 <div class="form-group pull-left">
                                     <div class="col-md-12">
+                                        <?php
+                                        $session_sort_type_order = Session::get('order-sort-type');
+                                        $qstring_sort_type_order = Input::get('purchase_order_filter');
+
+                                        if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
+                                            $qstring_sort_type_order = $qstring_sort_type_order;
+                                        } else {
+                                            $qstring_sort_type_order = $session_sort_type_order;
+                                        }
+                                        ?>
                                         <select class="form-control" id="purchase_order_filter" name="purchase_order_filter" onchange="this.form.submit();">
                                             <option value="">Status</option>
-                                            <option value="pending" <?php if (isset($_GET['purchase_order_filter']) && ($_GET['purchase_order_filter'] == "pending")) echo "selected=''"; ?>>Pending</option>
-                                            <option value="completed" <?php if (isset($_GET['purchase_order_filter']) && ($_GET['purchase_order_filter'] == "completed")) echo "selected=''"; ?>>Completed</option>
-                                            <option value="canceled" <?php if (isset($_GET['purchase_order_filter']) && ($_GET['purchase_order_filter'] == "canceled")) echo "selected=''"; ?>>Canceled</option>
+                                            <option value="pending" <?php if ($qstring_sort_type_order == "pending") echo "selected=''"; ?>>Pending</option>
+                                            <option value="completed" <?php if ($qstring_sort_type_order == "completed") echo "selected=''"; ?>>Completed</option>
+                                            <option value="canceled" <?php if ($qstring_sort_type_order == "canceled") echo "selected=''"; ?>>Canceled</option>
                                         </select>
                                     </div>
                                 </div>
@@ -173,6 +183,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
+                                                <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
                                                 {!! Form::close() !!}

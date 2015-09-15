@@ -8,39 +8,40 @@
     <body>
         <style>
             body{
-                font-family: Bookman Old Style !important;
+                font-size: 8px;
+                font-family: Arial !important;
                 font-weight: bold !important;
             }
             .divTable{
-                display:table;         
-                width:100%;         
+                display:table;
+                width:100%;
                 background-color:#fff;
                 border-top: 1px solid #ccc;
                 border-bottom: 1px solid #ccc;
             }
             .divRow{
                 width:auto;
-                clear:both; 
+                clear:both;
                 border-top: 1px solid #ccc;
             }
             .divCell{
                 float:left;
-                display:table-column;         
-                width:12%;         
+                display:table-column;
+                width:12%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
             .divCell2{
                 float:left;
-                display:table-column;         
-                width:4%;         
+                display:table-column;
+                width:4%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
             .divCell3{
                 float:left;
-                display:table-column;         
-                width:35%;         
+                display:table-column;
+                width:35%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
@@ -57,7 +58,7 @@
             }
             .headRow{
                 display:table-row;
-            }        
+            }
             .footer{
                 width: 100%;
                 float: left;
@@ -120,7 +121,7 @@
             }
             .name-date
             {
-                width: 100%;            
+                width: 100%;
                 padding: 10px 0px 10px 0px;
                 float: left;
                 position: relative;
@@ -195,14 +196,14 @@
                         Tally Name: {{ $purchase_challan['supplier']->owner_name }}
                     </div>
                     <div class="date">
-                        Date: {{ date('d F, Y') }}
+                        Date: {{ date('F d, Y') }}
                     </div>
                 </div>
 
             </div>
             <div class="delivery-details">
                 <div class="delivery">
-                    Delivery @: 
+                    Delivery @:
                     <?php
                     if ($purchase_challan->delivery_location_id == 0) {
                         echo $purchase_challan['purchase_advice']->other_location;
@@ -240,7 +241,7 @@
                     <div  class="divCell">Pcs</div>
                     <div  class="divCell">Qty</div>
                     <div  class="divCell">Rate</div>
-                    <div  class="divCell">Amount</div>                
+                    <div  class="divCell">Amount</div>
                 </div>
                 <?php
                 $i = 1;
@@ -255,7 +256,7 @@
                     <div class="divCell">{{ $prod->actual_pieces}}</div>
                     <div class="divCell">{{ $prod->quantity }}</div>
                     <div class="divCell">{{ $prod->price }}</div>
-                    <div class="divCell">{{ $prod->price * $prod->quantity }}</div>                
+                    <div class="divCell">{{ $prod->price * $prod->quantity }}</div>
                 </div>
                 <?php
                 $total_price = $total_price + ($prod->price * $prod->quantity);
@@ -285,7 +286,7 @@
                         Rupees <?php echo convert_number_to_words(round($purchase_challan->grand_total, 2)); ?> Only.
                     </div>
                 </div>
-                <div class="total">                 
+                <div class="total">
                     <div class="">
                         <div class="label">Total</div>
                         <div class="value bob">{{ $total_price }}</div>
@@ -295,7 +296,7 @@
                             {{round($purchase_challan->freight, 2)}}
                             @else
                             0
-                            @endif 
+                            @endif
                         </div>
                         <div class="label">disc.</div>
                         <div class="value">
@@ -303,7 +304,7 @@
                             {{round($purchase_challan->discount,2)}}
                             @else
                             0
-                            @endif 
+                            @endif
                         </div>
                         <div class="label">Total</div>
                         <div class="value">{{ round($total_price + $purchase_challan->freight + $purchase_challan->discount, 2) }}</div>
@@ -313,7 +314,7 @@
                             {{round($purchase_challan->vat_percentage, 2)}} %
                             @else
                             0
-                            @endif 
+                            @endif
                         </div>
                         <div class="label">Round Off</div>
                         <div class="value">
@@ -321,7 +322,7 @@
                             {{round($purchase_challan->round_off,2)}}
                             @else
                             0
-                            @endif 
+                            @endif
                         </div>
                         <div class="label">GT</div>
                         <div class="value">

@@ -37,17 +37,17 @@
 
                         <table id="table-example" class="table table-hover  ">
                             <tbody>
-                                <tr><td><span><b>Date: </b></span> <?php echo date('d F, Y'); ?></td></tr>
+                                <tr><td><span><b>Date: </b></span> <?php echo date('F d, Y'); ?></td></tr>
                                 @if($order->order_source == 'warehouse')
                                 <tr><td><span><b>Warehouse: </b></span> yes</td></tr>
                                 @elseif($order->order_source == 'supplier')
                                 @foreach($customers as $customer)
                                 @if($customer->id == $order->supplier_id)
-                                <tr><td><span><b>Supplier Name:</b></span>  
+                                <tr><td><span><b>Supplier Name:</b></span>
                                         @if($customer->owner_name != "" && $customer->tally_name != "")
-                                        {{$customer->owner_name.'-'.$customer->tally_name}} 
+                                        {{$customer->owner_name.'-'.$customer->tally_name}}
                                         @else
-                                        {{$customer->owner_name}} 
+                                        {{$customer->owner_name}}
                                         @endif
 
                                     </td></tr>
@@ -56,11 +56,11 @@
                                 @endif
                                 @foreach($customers as $customer)
                                 @if($customer->id == $order->customer_id)
-                                <tr><td><span><b>Tally Name :</b></span> 
+                                <tr><td><span><b>Tally Name :</b></span>
                                         @if($customer->owner_name != "" && $customer->tally_name != "")
-                                        {{$customer->owner_name.'-'.$customer->tally_name}} 
+                                        {{$customer->owner_name.'-'.$customer->tally_name}}
                                         @else
-                                        {{$customer->owner_name}} 
+                                        {{$customer->owner_name}}
                                         @endif
 
                                     </td></tr>
@@ -68,7 +68,7 @@
                                 <tr><td><span><b>Mobile Number : </b></span>{{$customer->phone_number1}}</td></tr>
 
                                 @if($customer->credit_period > 0 || $customer->credit_period != 0)
-                                <tr> <td><span><b>Credit Period(Days) : </b></span>{{$customer->credit_period}}</td></tr>   
+                                <tr> <td><span><b>Credit Period(Days) : </b></span>{{$customer->credit_period}}</td></tr>
                                 @endif
                                 @endif
                                 @endforeach
@@ -146,11 +146,11 @@
                                                 <div class="form-group">
                                                     <!--{{$product->pending_quantity}}-->
                                                     {{$product->quantity}}
-                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->pending_quantity}}" type="hidden" > 
+                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->pending_quantity}}" type="hidden" >
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
-                                                <div class="form-group "> 
+                                                <div class="form-group ">
                                                     @foreach($units as $unit)
                                                     @if($product->unit_id == $unit->id)
                                                     {{$unit->unit_name}}
@@ -162,7 +162,7 @@
                                             <td class="col-md-1">
                                                 <div class="form-group">
                                                     <?php $present_shipping = 0; ?>
-                                                    <?php $present_shipping = $product->quantity; ?>                                                    
+                                                    <?php $present_shipping = $product->quantity; ?>
                                                     <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$product->pending_quantity}}" type="tel" onblur="change_quantity({{$key}});">
 
                                                 </div>
@@ -279,7 +279,7 @@
                                 <input type="text" name="expected_date" class="form-control" value="{{date('Y-m-d', strtotime($order->expected_delivery_date))}}" readonly="readonly">
                             </div>
                         </div>
-                        <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>--> 
+                        <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>-->
                         <hr>
                         <div >
                             <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>

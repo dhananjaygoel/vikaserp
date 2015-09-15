@@ -8,39 +8,39 @@
         <style>
             body{
                 font-size: 8px;
-                font-family: Bookman Old Style !important;
+                font-family: Arial !important;
                 font-weight: bold !important;
             }
             .divTable{
-                display:table;         
-                width:100%;         
+                display:table;
+                width:100%;
                 background-color:#fff;
                 border-top: 1px solid #ccc;
                 border-bottom: 1px solid #ccc;
             }
             .divRow{
                 width:auto;
-                clear:both; 
+                clear:both;
                 border-top: 1px solid #ccc;
             }
             .divCell{
                 float:left;
-                display:table-column;         
-                width:13%;         
+                display:table-column;
+                width:13%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
-            }            
+            }
             .divCell2{
                 float:left;
-                display:table-column;         
-                width:4%;         
+                display:table-column;
+                width:4%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
             .divCell3{
                 float:left;
-                display:table-column;         
-                width:35%;         
+                display:table-column;
+                width:30%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
@@ -54,9 +54,9 @@
             }
             .headRow{
                 display:table-row;
-            }        
+            }
             .footer{
-                width: 100%;      
+                width: 100%;
                 float: left;
             }
             .remark{
@@ -79,7 +79,7 @@
             }
             .del{
                 width: 100%;
-                float: left;        
+                float: left;
                 padding: 10px 0px 10px 5px;
             }
             .trk-mobile{
@@ -98,7 +98,7 @@
                 float: left;
             }
             .name{
-                width: 100%;            
+                width: 100%;
                 padding: 10px 0px 10px 5px;
                 float: left;
                 position: relative;
@@ -146,7 +146,7 @@
                     {{ $purchase_advise->serial_number}}
                 </div>
                 <div class="date">
-                    Date: {{ date('d F, Y')}}
+                    Date: {{ date('F d, Y')}}
                 </div>
                 <div class="time">
                     <!--Time: {{ date("h:i:sa") }}-->
@@ -167,7 +167,7 @@
                     Trk No: {{ $purchase_advise->vehicle_number}}
                 </div>
                 <div class="mob-no">
-                    Driver Mob: 
+                    Driver Mob:
                 </div>
             </div>
             <div class="del">
@@ -187,7 +187,7 @@
                     <div class="divCell">Pcs</div>
                     <div class="divCell">Qty</div>
                     <div class="divCell">Act pcs</div>
-                    <div class="divCell">Act Qty</div>                
+                    <div class="divCell">Act Qty</div>
                 </div>
                 <?php
                 $i = 1;
@@ -201,7 +201,7 @@
                     <div class="divCell"> &nbsp; </div>
                     <div class="divCell"> {{ $prod->present_shipping }} </div>
                     <div class="divCell"> &nbsp; </div>
-                    <div class="divCell"> &nbsp; </div>                
+                    <div class="divCell"> &nbsp; </div>
                 </div>
                 @endif
                 @endforeach
@@ -211,7 +211,7 @@
                     Remark: {{$purchase_advise->remarks}}
                 </div>
                 <!--                <div class="content">
-                                    
+
                                 </div>-->
             </div>
         </div>

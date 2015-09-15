@@ -35,7 +35,7 @@
                         </div>
                         <div class="col-md-4">
                             <a class="btn btn-primary form_button_footer print_purchase_daybook" > Print </a>
-                            <a href="{{url('expert_purchase_daybook')}}" class="btn btn-primary form_button_footer" > Export </a>                         
+                            <a href="{{url('expert_purchase_daybook')}}" class="btn btn-primary form_button_footer" > Export </a>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -43,7 +43,7 @@
                 </div>
             </div>
             <br/>
-            <div id="table1" class="row">				
+            <div id="table1" class="row">
                 <div class="col-lg-12">
                     <div class="main-box clearfix">
                         <div class="main-box-body main_contents clearfix">
@@ -69,7 +69,7 @@
                                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                                     <table id="table-example" class="table table-hover">
                                         <thead>
-                                            <?php $i = 1; ?>                                   
+                                            <?php $i = 1; ?>
                                             <tr>
                                                 <th class="cb">
                                                     @if(Auth::user()->role_id == 0)
@@ -89,21 +89,21 @@
                                         <th>Tally Name</th>
                                         <th>Truck Number</th>
                                         <th>Deliverd To</th>
-                                        <th>Order By </th> 
+                                        <th>Order By </th>
                                         <th>Loaded By </th>
                                         <th>Labors </th>
                                         <th>Actual Quantity</th>
                                         <th>Amount </th>
-                                        <th>Bill Number</th> 
+                                        <th>Bill Number</th>
                                         <th>Remarks </th>
                                         @if(Auth::user()->role_id == 0)
                                         <th>Action </th>
                                         @endif
                                         </tr>
                                         </thead>
-                                        <tbody> 
+                                        <tbody>
 
-                                            @foreach($purchase_daybook as $daybook) 
+                                            @foreach($purchase_daybook as $daybook)
                                             <?php
                                             $total_qty = 0;
                                             $total_amount = 0;
@@ -130,7 +130,7 @@
                                                     <span class="cbt">{{ $i++ }}</span>
                                                 </td>
 
-                                                <td>{{ date("jS F, Y", strtotime($daybook->updated_at)) }}</td>
+                                                <td>{{ date("m-d-Y", strtotime($daybook->updated_at)) }}</td>
                                                 <td>{{ $daybook->serial_number }}</td>
                                                 <td>
                                                     @if($daybook['supplier']->tally_name != "")
@@ -139,16 +139,16 @@
                                                     {{ $daybook['supplier']->owner_name }}
                                                     @endif
                                                 </td>
-                                                <td>{{ $daybook->vehicle_number }}</td>                                        
+                                                <td>{{ $daybook->vehicle_number }}</td>
                                                 <td>{{ $daybook['supplier']->owner_name }}</td>
                                                 <td>{{ $daybook['orderedby']->first_name }} </td>
                                                 <td>{{ $daybook->unloaded_by }} </td>
-                                                <td>{{ $daybook->labours }}</td>    
+                                                <td>{{ $daybook->labours }}</td>
                                                 <td>{{ round($daybook['all_purchase_products']->sum('quantity'), 2) }}</td>
-                                                <td>{{ $daybook->grand_total}}</td>                                        
+                                                <td>{{ $daybook->grand_total}}</td>
                                                 <td>{{ $daybook->bill_number }}</td>
                                                 <td>
-                                                    @if((strlen(trim($daybook->remarks))) > 50)                                                
+                                                    @if((strlen(trim($daybook->remarks))) > 50)
                                                     {{ substr(trim($daybook->remarks),0,50)}} ..
                                                     @else
                                                     {{trim($daybook->remarks)}}
@@ -191,7 +191,7 @@
                                                     {!! Form::close() !!}
                                                 </div>
                                             </div>
-                                        </div>                                       
+                                        </div>
                                         @endforeach
                                         </tbody>
                                     </table>
@@ -226,10 +226,10 @@
                                                         <button type="submit" class="btn btn-default" id="btnmodel">Yes</button>
                                                     </div>
                                                     <div class="clearfix"></div>
-                                                </div>           
+                                                </div>
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>
                                 </form>
                                 <div class="clearfix"></div>
                                 <span class="pull-right">
@@ -237,7 +237,7 @@
                                         <?php echo $purchase_daybook->render(); ?>
                                     </ul>
                                 </span>
-                                <div class="clearfix"></div>                            
+                                <div class="clearfix"></div>
                                 @if($purchase_daybook->lastPage() > 1)
                                 <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
                                     <form class="form-inline" method="GET" action="{{url('purchase_order_daybook')}}" id="filter_search">
@@ -250,7 +250,7 @@
                                             <a onclick="this.form.submit()"></a>
                                         </div>
                                     </form>
-                                </span> 
+                                </span>
                                 @endif
                             </div>
                             @else
