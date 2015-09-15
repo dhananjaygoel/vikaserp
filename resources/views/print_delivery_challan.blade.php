@@ -165,6 +165,7 @@
                 /*padding: 0 5px 0 0px;*/
             }
         </style>
+
         <div class="invoice">
             <div class="title">
                 Estimate
@@ -197,6 +198,7 @@
                     Challan Serial: {{ $allorder->serial_number }}
                 </div>
             </div>
+
             <div class="time">
                 <div class="time-gen">
                     Time Created: {{ date("h:i:sa", strtotime($allorder->created_at))}}
@@ -205,6 +207,7 @@
                     Time Print: {{ date("h:i:sa") }}
                 </div>
             </div>
+
             <div class="divTable">
                 <div class="headRow">
                     <div  class="divCell2">Sr.</div>
@@ -253,17 +256,22 @@
                 @endforeach
 
             </div>
+
             <div class="footer">
                 <div class="total-desc">
                     <div class="quantity">
                         Total Quantity: {{ round($allorder['delivery_challan_products']->sum('actual_quantity'), 2) }}
                     </div>
                     <div class="ruppes grand_price">
-                        &nbsp; 
+                        &nbsp;
                         <?php $gt = round($allorder->grand_price, 2) ?>
-                        Rupees. <?php echo convert_number($gt); ?> Only
+                        Rupees <?php
+                        echo $allorder->convert_value;
+                        ?> only.
+
                     </div>
                 </div>
+
                 <div class="total">                 
                     <div class="">
                         <div class="label"> &nbsp; Total</div>
@@ -329,7 +337,9 @@
                         </div>
                     </div>
                 </div>
+
             </div>
+
         </div>
 
         <?php

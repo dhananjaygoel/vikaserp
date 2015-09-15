@@ -207,7 +207,6 @@ class DeliveryChallanController extends Controller {
 
     //Generate Serial number and print Delivery Challan
     public function print_delivery_challan($id) {
-
         $serial_number_delivery_order = Input::get('serial_number');
         $current_date = date("m/d/");
         $date_letter = 'DC/' . $current_date . $id;
@@ -225,7 +224,8 @@ class DeliveryChallanController extends Controller {
 
         $calculated_vat_value = $allorder->grand_price * ($allorder->vat_percentage / 100);
         $allorder['calculated_vat_price'] = $calculated_vat_value;
-
+        $convert_value = $this->convert_number($allorder);
+        $allorder['convert_value'] = $convert_value;
         /*
           | ------------------- -----------------------
           | SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
@@ -266,6 +266,65 @@ class DeliveryChallanController extends Controller {
             }
         }
         return view('print_delivery_challan', compact('allorder'));
+    }
+
+    function convert_number($all_orders) {
+
+        $number = round($all_orders->grand_price, 2);
+        $no = round($number);
+//        $point = round($number - $no, 2) * 100;
+//        $a = $no - $number;
+//        $point = round(1 - $a, 2);
+        $exploded_value = explode(".", $number);
+        $point = $exploded_value[1];
+        $hundred = null;
+        $digits_1 = strlen($no);
+        $i = 0;
+        $str = array();
+        $words = array('0' => '', '1' => 'one', '2' => 'two',
+            '3' => 'three', '4' => 'four', '5' => 'five', '6' => 'six',
+            '7' => 'seven', '8' => 'eight', '9' => 'nine',
+            '10' => 'ten', '11' => 'eleven', '12' => 'twelve',
+            '13' => 'thirteen', '14' => 'fourteen',
+            '15' => 'fifteen', '16' => 'sixteen', '17' => 'seventeen',
+            '18' => 'eighteen', '19' => 'nineteen', '20' => 'twenty',
+            '30' => 'thirty', '40' => 'forty', '50' => 'fifty',
+            '60' => 'sixty', '70' => 'seventy',
+            '80' => 'eighty', '90' => 'ninety');
+        $digits = array('', 'hundred', 'thousand', 'lakh', 'crore');
+        while ($i < $digits_1) {
+            $divider = ($i == 2) ? 10 : 100;
+            $number = floor($no % $divider);
+            $no = floor($no / $divider);
+            $i += ($divider == 10) ? 1 : 2;
+            if ($number) {
+                $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
+                $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
+                $str [] = ($number < 21) ? $words[$number] .
+                        " " . $digits[$counter] . $plural . " " . $hundred :
+                        $words[floor($number / 10) * 10]
+                        . " " . $words[$number % 10] . " "
+                        . $digits[$counter] . $plural . " " . $hundred;
+            } else
+                $str[] = null;
+        }
+        $str = array_reverse($str);
+        $result = implode('', $str);
+
+        if ($point != 0) {
+            if (strlen($point) == 1)
+                $points = $words[$point * 10];
+            else
+                $points = $words[$point];
+            $strs = preg_replace('/\W\w+\s*(\W*)$/', '$1', $result);
+//            $points = ($point) ?
+//                    $words[$point / 10] . " " .
+//                    $words[$point = $point % 10] : '';
+            $convert_value = ucfirst($strs . " rupees and " . $points . " paise");
+        } else
+            $convert_value = ucfirst($result);
+
+        return $convert_value;
     }
 
     function checkpending_quantity() {
