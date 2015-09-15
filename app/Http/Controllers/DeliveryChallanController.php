@@ -336,7 +336,7 @@ class DeliveryChallanController extends Controller {
 //            $points = ($point) ?
 //                    $words[$point / 10] . " " .
 //                    $words[$point = $point % 10] : '';
-            $convert_value = ucfirst($strs . " rupees and " . $points . " paise");
+            $convert_value = ucfirst($result . " rupees and " . $points . " paise");
         } else
             $convert_value = ucfirst($result);
 
