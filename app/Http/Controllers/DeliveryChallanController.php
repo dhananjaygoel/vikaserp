@@ -287,14 +287,15 @@ class DeliveryChallanController extends Controller {
     function convert_number($all_orders) {
 
         $number = round($all_orders->grand_price, 2);
-        $no = round($number);
+//        $no = round($number);
 //        $point = round($number - $no, 2) * 100;
 //        $a = $no - $number;
 //        $point = round(1 - $a, 2);
         $exploded_value = explode(".", $number);
         $point = $exploded_value[1];
+        $no = $exploded_value[0];
         $hundred = null;
-        $digits_1 = strlen($no);
+        $digits_1 = strlen($exploded_value[0]);
         $i = 0;
         $str = array();
         $words = array('0' => '', '1' => 'one', '2' => 'two',
@@ -311,6 +312,7 @@ class DeliveryChallanController extends Controller {
         while ($i < $digits_1) {
             $divider = ($i == 2) ? 10 : 100;
             $number = floor($no % $divider);
+
             $no = floor($no / $divider);
             $i += ($divider == 10) ? 1 : 2;
             if ($number) {
@@ -339,7 +341,6 @@ class DeliveryChallanController extends Controller {
             $convert_value = ucfirst($result . " rupees and " . $points . " paise");
         } else
             $convert_value = ucfirst($result);
-
         return $convert_value;
     }
 
