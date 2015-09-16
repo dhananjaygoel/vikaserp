@@ -16,15 +16,12 @@ use App\PurchaseChallan;
 class CronDeleteRecordsController extends Controller {
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return Response
+     * Delete data which is 7 days old.
      */
     public function index() {
 
-        \App\Units::create(['unit_name' => 'tons']);
-
-        exit();
+//        \App\Units::create(['unit_name' => 'tons']);
+//        exit();
         $date = date('Y-m-d H:i:s', strtotime('-7 days'));
 
         /*
