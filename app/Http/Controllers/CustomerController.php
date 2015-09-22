@@ -47,9 +47,7 @@ class CustomerController extends Controller {
 
         $customers = '';
         if (Input::get('search') != '') {
-
             $term = '%' . Input::get('search') . '%';
-
             $customers = Customer::orderBy('tally_name', 'asc')
                     ->where(function($query) use($term) {
                         $query->whereHas('city', function($q) use ($term) {

@@ -57,9 +57,15 @@ class DeliveryChallanController extends Controller {
         }
 
         if ((isset($qstring_sort_type_order)) && ($qstring_sort_type_order != '')) {
-            $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)->with('customer', 'delivery_challan_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(20);
+            $allorders = DeliveryChallan::withTrashed()
+                            ->where('challan_status', '=', $qstring_sort_type_order)
+                            ->with('customer', 'delivery_challan_products', 'delivery_order')
+                            ->orderBy('created_at', 'desc')->Paginate(20);
         } else {
-            $allorders = DeliveryChallan::where('challan_status', '=', 'pending')->with('customer', 'delivery_challan_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(20);
+            $allorders = DeliveryChallan::withTrashed()
+                            ->where('challan_status', '=', 'pending')
+                            ->with('customer', 'delivery_challan_products', 'delivery_order')
+                            ->orderBy('created_at', 'desc')->Paginate(20);
         }
 
         if (count($allorders) > 0) {
@@ -76,7 +82,6 @@ class DeliveryChallanController extends Controller {
         }
 
         $allorders->setPath('delivery_challan');
-
         return view('delivery_challan', compact('allorders'));
     }
 

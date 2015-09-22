@@ -43,9 +43,8 @@ class OrderController extends Controller {
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return Response
+     * Added by : Amit Gupta
+     * Functioanlity: Display order details
      */
     public function index() {
 
@@ -91,6 +90,11 @@ class OrderController extends Controller {
 
         $allorders = $q->with('customer', 'delivery_location', 'order_cancelled')
                         ->orderBy('created_at', 'desc')->paginate(20);
+
+
+
+
+
         $users = User::all();
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
@@ -100,13 +104,19 @@ class OrderController extends Controller {
         $users = User::all();
         $pending_orders = $this->checkpending_quantity($allorders);
         $allorders->setPath('orders');
+
+
+//        echo '<pre>';
+//        print_r($allorders->toArray());
+//        echo '</pre>';
+//        exit();
+
         return View::make('orders', compact('delivery_location', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size'));
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
+     * Added by : Amit Gupta
+     * Functioanlity: Add new order page display
      */
     public function create() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
@@ -119,9 +129,8 @@ class OrderController extends Controller {
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
+     * Added by : Amit Gupta
+     * Functioanlity: Save order details
      */
     public function store(PlaceOrderRequest $request) {
         $input_data = Input::all();
@@ -349,10 +358,8 @@ class OrderController extends Controller {
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
+     * Added by : Amit Gupta
+     * Functioanlity: Display order details of particulat order
      */
     public function show($id) {
         $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->first();
@@ -367,10 +374,8 @@ class OrderController extends Controller {
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
+     * Added by : Amit Gupta
+     * Functioanlity: Show edit order details page
      */
     public function edit($id) {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
@@ -389,10 +394,8 @@ class OrderController extends Controller {
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Response
+     * Added by : Amit Gupta
+     * Functioanlity: Update order details
      */
     public function update($id, PlaceOrderRequest $request) {
 
@@ -642,10 +645,8 @@ class OrderController extends Controller {
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
+     * Added by : Amit Gupta
+     * Functioanlity: Delete individual order details
      */
     public function destroy($id) {
 
@@ -682,7 +683,7 @@ class OrderController extends Controller {
     }
 
     /*
-     * Manual Complete order
+     * Functioanlity: Manual Complete individual order
      */
 
     public function manual_complete_order(ManualCompleteOrderRequest $request) {
@@ -966,6 +967,13 @@ class OrderController extends Controller {
             $delivery_order_quantity = 0;
             $delivery_order_products = AllOrderProducts::where('from', '=', $order->id)->get();
             if (count($delivery_order_products) > 0) {
+
+//                echo '<pre>';
+//                print_r($delivery_order_products->toArray());
+//                echo '</pre>';
+//                exit();
+
+
                 foreach ($delivery_order_products as $dopk => $dopv) {
                     $product_size = ProductSubCategory::find($dopv->product_category_id);
                     if ($dopv->unit_id == 1) {
@@ -981,6 +989,12 @@ class OrderController extends Controller {
             }
 
             if (count($order['all_order_products']) > 0) {
+
+//                echo '<pre>';
+//                print_r("its 2");
+//                echo '</pre>';
+//                exit();
+
                 foreach ($order['all_order_products'] as $opk => $opv) {
                     $product_size = ProductSubCategory::find($opv->product_category_id);
                     if ($opv->unit_id == 1) {
@@ -997,6 +1011,16 @@ class OrderController extends Controller {
 
             $allorders[$key]['pending_quantity'] = ($order_quantity - $delivery_order_quantity);
             $allorders[$key]['total_quantity'] = $order_quantity;
+
+
+//            echo '<pre>';
+//            echo '<br>====================<br>';
+//            print_r($allorders[$key]['pending_quantity']);
+//            echo '<br>====================<br>';
+//            print_r($allorders[$key]['total_quantity']);
+//            echo '<br>====================<br>';
+//            echo '</pre>';
+//            exit();
         }
         return $allorders;
     }
