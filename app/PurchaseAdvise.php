@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PurchaseAdvise extends Model {
 
@@ -13,12 +14,14 @@ class PurchaseAdvise extends Model {
      */
     protected $table = 'purchase_advice';
 
+    use SoftDeletes;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['purchase_order_id','supplier_id', 'created_by', 'purchase_advice_date', 'serial_number', 'delivery_location_id', 'order_by', 'vat_percentage', 'expected_delivery_date', 'total_price', 'remarks', 'advice_status', 'vehicle_number','other_location','other_location_difference'];
+    protected $fillable = ['purchase_order_id', 'supplier_id', 'created_by', 'purchase_advice_date', 'serial_number', 'delivery_location_id', 'order_by', 'vat_percentage', 'expected_delivery_date', 'total_price', 'remarks', 'advice_status', 'vehicle_number', 'other_location', 'other_location_difference'];
 
     public function supplier() {
         return $this->hasOne('App\Customer', 'id', 'supplier_id');

@@ -25,7 +25,10 @@ class PurchaseChallan extends Model {
     }
 
     public function purchase_advice() {
-        return $this->hasOne('App\PurchaseAdvise', 'id', 'purchase_advice_id');
+        return $this->hasOne('App\PurchaseAdvise', 'id', 'purchase_advice_id')->withTrashed();
+        /* Commented by Amit on 22-09-1015 To avoid error for previously deleted purchase advice
+          return $this->hasOne('App\PurchaseAdvise', 'id', 'purchase_advice_id');
+         */
     }
 
     public function purchase_product() {

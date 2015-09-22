@@ -38,13 +38,11 @@ class PurchaseAdviseController extends Controller {
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the Purchase Advices.
      */
     public function index() {
 
         $q = PurchaseAdvise::query()->with('supplier', 'purchase_products');
-
-
         $session_sort_type_order = Session::get('order-sort-type');
         $qstring_sort_type_order = Input::get('purchaseaAdviseFilter');
 
