@@ -19,7 +19,7 @@
                                     <form action="{{URL::action('PurchaseDaybookController@index')}}" method="GET" >
                                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control delivery_challan_date" name="date" id="sales_daybook_date" <?php
+                                            <input type="text" class="form-control delivery_challan_date" name="date" placeholder="Search by date" id="sales_daybook_date" <?php
                                             if (Input::get('date') != "") {
                                                 echo "value='" . Input::get('date') . "'";
                                             }

@@ -18,7 +18,7 @@
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                     <form action="" method="GET">
                                         <div class="col-sm-6 ">
-                                            <input type="text" class="form-control delivery_challan_date" name="challan_date" id="sales_daybook_date" value="{{Request::get('challan_date')}}">
+                                            <input type="text" class="form-control delivery_challan_date" name="challan_date" id="sales_daybook_date" placeholder="Search by date" value="{{Request::get('challan_date')}}">
                                         </div>
                                         <div class="col-sm-6 ">
                                             <input type="submit" class="btn btn-primary form_button_footer" value="Search">

@@ -40,7 +40,7 @@
                         <input type="hidden" name="id" value="{{$state->id}}">
                         <div class="form-group">
                             <label for="state_name">State<span class="mandatory">*</span></label>
-                            <input id="state_name" class="form-control" placeholder="Unit" name="state_name" value="{{$state->state_name}}" type="text">
+                            <input id="state_name" class="form-control" placeholder="State Name" name="state_name" value="{{$state->state_name}}" type="text">
                         </div>
                         <hr>
                         <div>
