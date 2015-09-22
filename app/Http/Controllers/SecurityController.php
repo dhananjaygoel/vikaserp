@@ -22,8 +22,6 @@ class SecurityController extends Controller {
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index() {
         if (Auth::user()->role_id != 0) {
@@ -37,13 +35,11 @@ class SecurityController extends Controller {
 
     //Show security add form
     public function get_security() {
-        
+
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
     public function create() {
         if (Auth::user()->role_id != 0) {
@@ -54,8 +50,6 @@ class SecurityController extends Controller {
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
     public function store(Request $request) {
         if (Auth::user()->role_id != 0) {
@@ -78,9 +72,6 @@ class SecurityController extends Controller {
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function show($id) {
         if (Auth::user()->role_id != 0) {
@@ -91,9 +82,6 @@ class SecurityController extends Controller {
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return or_wheResponse
      */
     public function edit($id) {
         if (Auth::user()->role_id != 0) {
@@ -106,9 +94,6 @@ class SecurityController extends Controller {
 
     /**
      * Update the specified ronsubmit="validation('password_{{$security->id}}')"esource in storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function update(EditSecurityRequest $request, $id) {
         if (Auth::user()->role_id != 0) {
@@ -134,9 +119,6 @@ class SecurityController extends Controller {
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function destroy($id) {
         if (Auth::user()->role_id != 0) {

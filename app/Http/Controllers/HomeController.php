@@ -16,8 +16,6 @@ class HomeController extends Controller {
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct() {
         $this->middleware('auth');
@@ -25,8 +23,6 @@ class HomeController extends Controller {
 
     /**
      * Show the application dashboard to the user.
-     *
-     * @return Response
      */
     public function index() {
         return view('dashboard');
@@ -54,6 +50,11 @@ class HomeController extends Controller {
         $product_data = \App\Customer::where('delivery_location_id', '=', 0)->update(['delivery_location_id' => 32]);
     }
 
+    /**
+     * Written by : AMit GupTA
+     * This function takes backup of whole datbase of local machine
+     * Note : just change the $DBUSER, $DBPASSWD, $DATABASE values as per your need and you can use this for any project
+     */
     public function database_backup_local() {
         $DBUSER = "root";
         $DBPASSWD = "root123";
@@ -71,6 +72,11 @@ class HomeController extends Controller {
 
         exit(0);
     }
+
+    /**
+     * Written by : AMit GupTA
+     * This function takes backup of whole datbase of test server machine
+     */
     public function database_backup_test() {
         $DBUSER = "agstechn_vauser";
         $DBPASSWD = "vikasuser23210";
@@ -88,21 +94,21 @@ class HomeController extends Controller {
 
         exit(0);
     }
+
+    /**
+     * Written by : AMit GupTA
+     * This function takes backup of whole datbase of production server machine
+     */
     public function database_backup_live() {
         $DBUSER = "vikaserp_agsus";
         $DBPASSWD = "passags756";
         $DATABASE = "vikaserp_ags";
-
         $filename = "backup-" . date("d-m-Y") . ".sql.gz";
         $mime = "application/x-gzip";
-
         header("Content-Type: " . $mime);
         header('Content-Disposition: attachment; filename="' . $filename . '"');
-
         $cmd = "mysqldump -u $DBUSER --password=$DBPASSWD $DATABASE | gzip --best";
-
         passthru($cmd);
-
         exit(0);
     }
 

@@ -36,8 +36,6 @@ class CustomerController extends Controller {
 
     /**
      * Display a listing of the customer.
-     *
-     * @return Response
      */
     public function index() {
 
@@ -82,8 +80,6 @@ class CustomerController extends Controller {
 
     /**
      * Show the form for creating a new customer.
-     *
-     * @return Response
      */
     public function create() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
@@ -103,8 +99,6 @@ class CustomerController extends Controller {
 
     /**
      * Store a newly created customer in database.
-     *
-     * @return Response
      */
     public function store(StoreCustomer $request) {
 
@@ -205,9 +199,6 @@ class CustomerController extends Controller {
 
     /**
      * Display the specific customer.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function show($id) {
 
@@ -226,9 +217,6 @@ class CustomerController extends Controller {
 
     /**
      * Show the form for editing the specific customer.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function edit($id) {
         $states = States::all();
@@ -254,9 +242,6 @@ class CustomerController extends Controller {
 
     /**
      * Update the specific customer in database.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function update(StoreCustomer $request, $id) {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
@@ -347,9 +332,6 @@ class CustomerController extends Controller {
 
     /**
      * Remove the specific customer from database.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function destroy($id) {
         if (Auth::user()->role_id != 0) {

@@ -102,9 +102,6 @@ class PurchaseDaybookController extends Controller {
             });
         })->export('xls');
 
-
-
-
         exit();
 
         $sheet_data = array();

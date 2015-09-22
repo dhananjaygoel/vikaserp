@@ -44,8 +44,6 @@ class WelcomeController extends Controller {
 
     /**
      * Show the application welcome screen to the user.
-     *
-     * @return Response
      */
     public function index() {
         return view('welcome');
@@ -684,10 +682,18 @@ class WelcomeController extends Controller {
         })->export('xls');
     }
 
+    /**
+     * Written by : AMit GupTA
+     * This function displays all the php configuration info
+     */
     public function phpversion() {
         print(phpinfo());
     }
 
+    /**
+     * Written by : AMit GupTA
+     * This function takes tablename as argument and displays all the data of that table
+     */
     public function showdata($table_name) {
 //        $pdo = DB::table($table_name)->get();
         $pdo = DB::table($table_name)->get();
@@ -695,12 +701,20 @@ class WelcomeController extends Controller {
         print_r($pdo);
     }
 
+    /**
+     * Written by : AMit GupTA
+     * This function takes tablename as argument and deletes all the records of that table
+     */
     public function removedata($table_name) {
         $pdo = DB::table($table_name)->delete();
         print('<pre>');
         print_r($pdo);
     }
 
+    /**
+     * Written by : AMit GupTA
+     * This function takes tablename, columnname, and column values as argument and updates the data accordingly
+     */
     public function updatecolumndata($table_name, $column, $cvalue) {
 
         $customer_list = Customer::all();
@@ -711,6 +725,10 @@ class WelcomeController extends Controller {
         echo "Table name - " . $table_name . " Values are update for column name - " . $column . " to new value - " . $cvalue;
     }
 
+    /**
+     * Written by : AMit GupTA
+     * This function takes tablename as argument and displays all the column along with data type of that column
+     */
     public function showtableinfo($tablename) {
         $column_details = Schema::getColumnListing($tablename);
         $total_info = array();

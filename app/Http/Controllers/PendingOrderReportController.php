@@ -29,10 +29,9 @@ class PendingOrderReportController extends Controller {
     public function __construct() {
         $this->middleware('validIP');
     }
+
     /**
      * Display a listing of the resource.
-     * 
-     * @return Response
      */
     public function index() {
         if ((isset($_GET['party_filter'])) && $_GET['party_filter'] != '') {
@@ -74,8 +73,8 @@ class PendingOrderReportController extends Controller {
             $allorders = Order::where('order_status', '=', 'pending')
                             ->with(array('customer', 'delivery_location', 'all_order_products' =>
                                 function($q) use($size) {
-                                    $q->where('quantity', '=', $size)->where('order_type', 'order');
-                                }))->Paginate(20);
+                            $q->where('quantity', '=', $size)->where('order_type', 'order');
+                        }))->Paginate(20);
 
 //            }
         } else {
@@ -95,6 +94,9 @@ class PendingOrderReportController extends Controller {
         return View::make('pending_order_report', compact('allorders', 'users', 'customers', 'delivery_location', 'delivery_order', 'allorder_products', 'total_quantity'));
     }
 
+    /**
+     * This function returns all the pending quantity of orders
+     */
     function checkpending_quantity($allorders) {
         $pending_orders = array();
         foreach ($allorders as $order) {

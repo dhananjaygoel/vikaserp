@@ -43,8 +43,6 @@ class InquiryController extends Controller {
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index() {
 
@@ -71,8 +69,6 @@ class InquiryController extends Controller {
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
     public function create() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
@@ -85,8 +81,6 @@ class InquiryController extends Controller {
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
     public function store(InquiryRequest $request) {
         $input_data = Input::all();
@@ -244,9 +238,6 @@ class InquiryController extends Controller {
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function show($id) {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
@@ -306,9 +297,6 @@ class InquiryController extends Controller {
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function edit($id) {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
@@ -325,9 +313,6 @@ class InquiryController extends Controller {
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function update($id, InquiryRequest $request) {
 
@@ -500,9 +485,6 @@ class InquiryController extends Controller {
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function destroy($id) {
         if (Auth::user()->role_id != 0) {
@@ -812,7 +794,6 @@ class InquiryController extends Controller {
                 }
             }
         }
-
         $order->save();
 
         $order_id = DB::getPdo()->lastInsertId();

@@ -38,8 +38,6 @@ class DeliveryChallanController extends Controller {
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index() {
 
@@ -87,9 +85,6 @@ class DeliveryChallanController extends Controller {
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function show($id) {
 
@@ -192,9 +187,6 @@ class DeliveryChallanController extends Controller {
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function destroy($id) {
         $order_sort_type = Input::get('order_sort_type');
@@ -226,7 +218,11 @@ class DeliveryChallanController extends Controller {
         }
     }
 
-    //Generate Serial number and print Delivery Challan
+    /*
+     * Generate Serial number and print Delivery Challan
+     *
+     */
+
     public function print_delivery_challan($id) {
         $serial_number_delivery_order = Input::get('serial_number');
         $current_date = date("m/d/");

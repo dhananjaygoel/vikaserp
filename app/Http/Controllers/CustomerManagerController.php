@@ -19,11 +19,9 @@ class CustomerManagerController extends Controller {
     public function __construct() {
         $this->middleware('validIP');
     }
-    
+
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index() {
         if (Auth::user()->role_id != 0) {
@@ -35,8 +33,6 @@ class CustomerManagerController extends Controller {
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
     public function create() {
         if (Auth::user()->role_id != 0) {
@@ -47,8 +43,6 @@ class CustomerManagerController extends Controller {
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
     public function store(StoreCustomerManager $request) {
         if (Auth::user()->role_id != 0) {
@@ -66,9 +60,6 @@ class CustomerManagerController extends Controller {
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function show($id) {
         //
@@ -76,9 +67,6 @@ class CustomerManagerController extends Controller {
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function edit($id) {
         if (Auth::user()->role_id != 0) {
@@ -90,9 +78,6 @@ class CustomerManagerController extends Controller {
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function update(StoreCustomerManager $request, $id) {
         if (Auth::user()->role_id != 0) {
@@ -110,9 +95,6 @@ class CustomerManagerController extends Controller {
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function destroy($id) {
         if (Auth::user()->role_id != 0) {

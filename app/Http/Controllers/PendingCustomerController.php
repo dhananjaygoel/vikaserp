@@ -37,8 +37,6 @@ class PendingCustomerController extends Controller {
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
@@ -52,9 +50,6 @@ class PendingCustomerController extends Controller {
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function show($id) {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
@@ -69,7 +64,6 @@ class PendingCustomerController extends Controller {
         $locations = DeliveryLocation::all();
         $states = States::all();
         $cities = City::all();
-
         $product_category = ProductCategory::all();
 
         return View::make('add_pendingcustomers', array('customer' => $customer, 'locations' => $locations, 'managers' => $managers, 'states' => $states, 'cities' => $cities, 'product_category' => $product_category));
@@ -77,9 +71,6 @@ class PendingCustomerController extends Controller {
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function edit($id) {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
@@ -92,9 +83,6 @@ class PendingCustomerController extends Controller {
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function update($id) {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
@@ -130,9 +118,6 @@ class PendingCustomerController extends Controller {
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function destroy($id) {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {

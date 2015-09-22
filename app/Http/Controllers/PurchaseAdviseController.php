@@ -39,8 +39,6 @@ class PurchaseAdviseController extends Controller {
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index() {
 
@@ -60,9 +58,6 @@ class PurchaseAdviseController extends Controller {
             }
         }
 
-
-
-
         if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != '')) {
             $q->where('advice_status', '=', $qstring_sort_type_order);
         } else {
@@ -78,8 +73,6 @@ class PurchaseAdviseController extends Controller {
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
     public function create() {
         $customers = Customer::where('customer_status', '=', 'permanent')->orderBy('tally_name', 'ASC')->get();
@@ -93,8 +86,6 @@ class PurchaseAdviseController extends Controller {
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
     public function store(StorePurchaseAdvise $request) {
 
@@ -207,9 +198,6 @@ class PurchaseAdviseController extends Controller {
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function show($id) {
         $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details')->find($id);
@@ -221,9 +209,6 @@ class PurchaseAdviseController extends Controller {
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function edit($id) {
         $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details')->find($id);
@@ -238,9 +223,6 @@ class PurchaseAdviseController extends Controller {
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function update($id) {
 
@@ -291,9 +273,6 @@ class PurchaseAdviseController extends Controller {
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
     public function destroy($id) {
 
@@ -497,6 +476,9 @@ class PurchaseAdviseController extends Controller {
         return view('print_purchase_advise', compact('purchase_advise'));
     }
 
+    /**
+     * This function returns all the pending quantity of purchase advise
+     */
     function checkpending_quantity($purchase_advise) {
         $pending_orders = array();
         if (count($purchase_advise) > 0) {

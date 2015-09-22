@@ -24,14 +24,11 @@ class DeliveryOrder extends Model implements AuthenticatableContract, CanResetPa
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
-
     public static $order_to_delivery_challan_rules = array(
-        
     );
-    
 
     public function delivery_product() {
-        return $this->hasMany('App\AllOrderProducts', 'order_id', 'id')->where('order_type' , '=', 'delivery_order');
+        return $this->hasMany('App\AllOrderProducts', 'order_id', 'id')->where('order_type', '=', 'delivery_order');
     }
 
     public function customer() {
@@ -41,11 +38,11 @@ class DeliveryOrder extends Model implements AuthenticatableContract, CanResetPa
     public function user() {
         return $this->hasOne('App\User', 'id', 'created_by');
     }
-    
+
     public function location() {
         return $this->hasOne('App\DeliveryLocation', 'id', 'delivery_location_id');
     }
-    
+
     public function unit() {
         return $this->hasOne('App\Units', 'id', 'unit_id');
     }
