@@ -225,6 +225,15 @@ class PurchaseAdviseController extends Controller {
     public function update($id) {
 
         $input_data = Input::all();
+        $rules = array(
+            'vehicle_number' => 'required',
+        );
+        $validator = Validator::make($input_data, $rules);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
+
+
         $purchase_advise = PurchaseAdvise::find($id);
         $purchase_advise->update(
                 array(

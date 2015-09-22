@@ -20,11 +20,11 @@
                 <div class="main-box">
                     <header class="main-box-header clearfix">
                         <h2><i class="fa fa-user"></i> &nbsp; Add IP Address </h2>
-                    </header>            
+                    </header>
                     <div class="main-box-body clearfix">
                         @if(Session::has('error'))
-                        <div class="alert alert-danger">                                        
-                            <ul>                         
+                        <div class="alert alert-warning">
+                            <ul>
                                 <li> {{Session::get('error')}}</li>
                             </ul>
                         </div>
@@ -36,7 +36,7 @@
                             <div class="form-group">
                                 <label for="ip">IP Address</label>
                                 <input id="ip_address" class="form-control" placeholder="IP Address" name="ip_address" value="" type="tel">
-                            </div>                                                    
+                            </div>
                             <hr>
                             <div >
                                 <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
