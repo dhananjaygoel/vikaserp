@@ -20,6 +20,10 @@ use Input;
 use App\URLAccess;
 use App\States;
 use App\City;
+use App\Inquiry;
+use App\Order;
+use App\DeliveryOrder;
+use App\DeliveryChallan;
 use Config;
 use App\ProductType;
 
@@ -346,6 +350,26 @@ class CustomerController extends Controller {
 
         if (Hash::check($password, $current_user->password)) {
             $customer = Customer::find($id);
+
+            $customer_inquiry = Inquiry::where('customer_id', $customer->id)->get();
+            if (isset($customer_inquiry) && (count($customer_inquiry) > 0))
+                return Redirect::to('customers')->with('error', 'Customer details cannot be deleted as details are associated with one or more Inquiry');
+
+            $customer_order = Order::where('customer_id', $customer->id)->get();
+            if (isset($customer_order) && (count($customer_order) > 0))
+                return Redirect::to('customers')->with('error', 'Customer details cannot be deleted as details are associated with one or more Order');
+
+            $customer_delivery_order = DeliveryOrder::where('customer_id', $customer->id)->get();
+            if (isset($customer_delivery_order) && (count($customer_delivery_order) > 0))
+                return Redirect::to('customers')->with('error', 'Customer details cannot be deleted as details are associated with one or more Delivery Order');
+
+
+            $customer_delivery_challan = DeliveryChallan::where('customer_id', $customer->id)->get();
+            if (isset($customer_delivery_challan) && (count($customer_delivery_challan) > 0))
+                return Redirect::to('customers')->with('error', 'Customer details cannot be deleted as details are associated with one or more Delivery Challan');
+
+            exit;
+
             $customer->delete();
             return Redirect::to('customers')->with('success', 'Customer Successfully deleted');
         } else {
