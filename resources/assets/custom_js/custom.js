@@ -401,7 +401,7 @@ $('#save_all_size_btn').click(function() {
 });
 
 function update_difference(e) {
-    var difference = $(e).parent().parent().children().find("input[type=text]").val();
+    var difference = $(e).parent().parent().children().find("input[type=tel]").val();
     var id = $(e).parent().parent().children().find("input[type=hidden]").val();
     var token = $('#_token').val();
     $.ajax({
