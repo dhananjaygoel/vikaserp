@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
     $("#product_type2").click(function() {
         $(".thick").hide();
@@ -373,7 +372,6 @@ function isNumberFormat(evt) {
 
     return true;
 }
-
 function submit_filter_form() {
     $("#searchCustomerForm").submit();
 }
