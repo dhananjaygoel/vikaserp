@@ -287,14 +287,11 @@ class DeliveryChallanController extends Controller {
 
     function convert_number($all_orders) {
 
-        $number = round($all_orders->grand_price, 2);
-//        $no = round($number);
-//        $point = round($number - $no, 2) * 100;
-//        $a = $no - $number;
-//        $point = round(1 - $a, 2);
+//        $number = round($all_orders->grand_price, 2);
+        $number = $all_orders->grand_price;
         $exploded_value = explode(".", $number);
-        $point = $exploded_value[1];
         $no = $exploded_value[0];
+        $point = $exploded_value[1];
         $hundred = null;
         $digits_1 = strlen($exploded_value[0]);
         $i = 0;
