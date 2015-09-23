@@ -78,8 +78,7 @@ $(document).ready(function () {
     });
     $('#sales_daybook_date').datepicker({
         format: 'dd-mm-yyyy',
-        startDate: new Date(),
-        autoclose: true
+        autoclose: false
     });
 
     $("#add_product_row_delivery_challan").on("click", function () {

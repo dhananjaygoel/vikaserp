@@ -28,10 +28,8 @@ class PurchaseDaybookController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('purchase_challan')->with('error', 'You do not have permission.');
         }
-
         $purchase_daybook = 0;
         if (Input::get('date') != "") {
-
             $purchase_daybook = PurchaseChallan::with('orderedby', 'supplier')
                     ->where('order_status', 'completed')
                     ->whereHas('purchase_advice', function($query) {
@@ -41,13 +39,11 @@ class PurchaseDaybookController extends Controller {
                     ->orderBy('created_at', 'desc')
                     ->Paginate(20);
         } else {
-
             $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
                     ->where('order_status', 'completed')
                     ->orderBy('created_at', 'desc')
                     ->Paginate(20);
         }
-
         $purchase_daybook->setPath('purchase_order_daybook');
         return view('purchase_order_daybook', compact('purchase_daybook'));
     }

@@ -340,31 +340,32 @@ $('#save_all_price_btn').click(function() {
     $.ajax({
         type: 'post', url: baseurl + '/update_all_price',
         data: $('#save_all_price').serialize(),
-        success: function(data) {
+        success: function(data) {            
+            $('html,body').animate({scrollTop: 0}, 'slow');
             $('.alert-success1').show();
-            $('html,body').animate({scrollTop:0}, 'slow');
-    }
+        }
     });
 });
 function isNumber(evt, element) {
 
-        var charCode = (evt.which) ? evt.which : event.keyCode
+    var charCode = (evt.which) ? evt.which : event.keyCode
 
-        if (
-            (charCode != 45 || $(element).val().indexOf('-') != -1) &&      // “-” CHECK MINUS, AND ONLY ONE.
-            (charCode != 46 || $(element).val().indexOf('.') != -1) &&      // “.” CHECK DOT, AND ONLY ONE.
+    if (
+            (charCode != 45 || $(element).val().indexOf('-') != -1) && // “-” CHECK MINUS, AND ONLY ONE.
+            (charCode != 46 || $(element).val().indexOf('.') != -1) && // “.” CHECK DOT, AND ONLY ONE.
             (charCode < 48 || charCode > 57))
-            return false;
+        return false;
 
-        return true;
-    } 
+    return true;
+}
 function test() {
 //    var abc = $(e).val();
 //    $(e).val(function(i, abc) {
 //        return abc.replace(/\d{3}|[^\d{2}\.]|^\./g, "");
 //    });
     return isNumber(event, this);
-};
+}
+;
 
 function submit_filter_form() {
     $("#searchCustomerForm").submit();
