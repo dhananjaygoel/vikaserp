@@ -34,7 +34,7 @@
                         </div>
                         @else
                         @if (Session::has('flash_message'))
-                        <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
+                        <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('flash_message') }}</div>
                         @endif
                         @if (Session::has('flash_success_message'))
                         <div id="flash_error" class="alert alert-success no_data_msg_container">{{ Session::get('flash_success_message') }}</div>

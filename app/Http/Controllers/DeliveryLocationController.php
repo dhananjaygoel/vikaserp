@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\LocationRequest;
 use App\Http\Requests\EditLocationRequest;
 use Hash;
+use App\Inquiry;
+use App\Order;
+use App\DeliveryOrder;
+use App\PurchaseOrder;
+use App\PurchaseChallan;
+use App\PurchaseAdvise;
 use Illuminate\Support\Facades\Auth;
 use Redirect;
 
@@ -106,7 +112,37 @@ class DeliveryLocationController extends Controller {
             return Redirect::to('location')->with('error', 'You do not have permission.');
         }
         if (Hash::check(Input::get('password'), Auth::user()->password)) {
-            $delete_location = DeliveryLocation::find($id)->delete();
+            $delete_location = DeliveryLocation::find($id);
+
+
+            $delivery_location_inquiry_count = Inquiry::where('delivery_location_id', $delete_location->id)->count();
+            $delivery_location_order_count = order::where('delivery_location_id', $delete_location->id)->count();
+            $delivery_location_delivery_order_count = DeliveryOrder::where('delivery_location_id', $delete_location->id)->count();
+
+            $delivery_location_purchase_order_count = PurchaseOrder::where('delivery_location_id', $delete_location->id)->count();
+            $delivery_location_purchase_advice_count = PurchaseAdvise::where('delivery_location_id', $delete_location->id)->count();
+            $delivery_location_purchase_challan_count = PurchaseChallan::where('delivery_location_id', $delete_location->id)->count();
+
+            if (isset($delivery_location_inquiry_count) && ($delivery_location_inquiry_count > 0))
+                return redirect('location')->with('flash_message', 'Delivery Location can not be deleted as it is associated with one more Inquiry Order');
+
+            if (isset($delivery_location_order_count) && ($delivery_location_order_count > 0))
+                return redirect('location')->with('flash_message', 'Delivery Location can not be deleted as it is associated with one more Order');
+
+            if (isset($delivery_location_delivery_order_count) && ($delivery_location_delivery_order_count > 0))
+                return redirect('location')->with('flash_message', 'Delivery Location can not be deleted as it is associated with one more Delivery Order');
+
+            if (isset($delivery_location_purchase_order_count) && ($delivery_location_purchase_order_count > 0))
+                return redirect('location')->with('flash_message', 'Delivery Location can not be deleted as it is associated with one more Purchase Order');
+
+            if (isset($delivery_location_purchase_advice_count) && ($delivery_location_purchase_advice_count > 0))
+                return redirect('location')->with('flash_message', 'Delivery Location can not be deleted as it is associated with one more Purchase Advice');
+
+            if (isset($delivery_location_purchase_challan_count) && ($delivery_location_purchase_challan_count > 0))
+                return redirect('location')->with('flash_message', 'Delivery Location can not be deleted as it is associated with one more Purchase Challan');
+
+            $delete_location->delete();
+
             return redirect('location')->with('flash_success_message', 'Location details successfully deleted.');
         } else
             return redirect('location')->with('flash_message', 'Please enter a correct password');
