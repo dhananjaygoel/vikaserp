@@ -77,6 +77,9 @@ $(document).ready(function () {
         autoclose: true
     });
     $('#sales_daybook_date').datepicker({
+//        format: 'dd-mm-yyyy',
+//        startDate: new Date(),
+//        autoclose: true        
         format: 'dd-mm-yyyy',
         autoclose: false
     });

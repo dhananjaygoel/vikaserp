@@ -47,10 +47,10 @@
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
-            .divCell:last-child
-            {
-                border: none;
-            }
+            /*            .divCell:last-child
+                        {
+                            border: none;
+                        }*/
             .divRow:last-child
             {
                 border-top: none;

@@ -66,12 +66,12 @@
                                             <form method="post" action="{{URL::action('DeliveryLocationController@delivery_difference')}}">
                                                 <div class="row product-price">
                                                     <div class="form-group col-md-6">
-                                                        <input type="tel" class="form-control" required="" name="difference" value="{{ $location_data->difference }}">
+                                                        <input type="tel" class="form-control" required="" name="difference" onkeypress="return isNumberFormat(event)" value="{{ $location_data->difference }}">
                                                         <input type="hidden" class="form-control" name="id" value="{{ $location_data->id}}">
                                                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                                                     </div>
                                                     <div class="form-group col-md-2 difference_form">
-                                                        <input class="btn btn-primary" type="submit" class="form-control" value="save" >     
+                                                        <input class="btn btn-primary" type="submit" class="form-control" value="save" >
                                                     </div>
                                                 </div>
                                             </form>
@@ -153,8 +153,8 @@
                                         <a onclick="this.form.submit()"></a>
                                     </div>
                                 </form>
-                            </span> 
-                            @endif 
+                            </span>
+                            @endif
 
                         </div>
                         @endif
