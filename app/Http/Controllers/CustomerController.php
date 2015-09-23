@@ -368,8 +368,6 @@ class CustomerController extends Controller {
             if (isset($customer_delivery_challan) && (count($customer_delivery_challan) > 0))
                 return Redirect::to('customers')->with('error', 'Customer details cannot be deleted as details are associated with one or more Delivery Challan');
 
-            exit;
-
             $customer->delete();
             return Redirect::to('customers')->with('success', 'Customer Successfully deleted');
         } else {
