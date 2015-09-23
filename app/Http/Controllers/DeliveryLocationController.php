@@ -19,6 +19,7 @@ use App\DeliveryOrder;
 use App\PurchaseOrder;
 use App\PurchaseChallan;
 use App\PurchaseAdvise;
+use App\Customer;
 use Illuminate\Support\Facades\Auth;
 use Redirect;
 
@@ -122,6 +123,7 @@ class DeliveryLocationController extends Controller {
             $delivery_location_purchase_order_count = PurchaseOrder::where('delivery_location_id', $delete_location->id)->count();
             $delivery_location_purchase_advice_count = PurchaseAdvise::where('delivery_location_id', $delete_location->id)->count();
             $delivery_location_purchase_challan_count = PurchaseChallan::where('delivery_location_id', $delete_location->id)->count();
+            $delivery_location_customer_count = Customer::where('delivery_location_id', $delete_location->id)->count();
 
             if (isset($delivery_location_inquiry_count) && ($delivery_location_inquiry_count > 0))
                 return redirect('location')->with('flash_message', 'Delivery Location can not be deleted as it is associated with one more Inquiry Order');
@@ -140,6 +142,9 @@ class DeliveryLocationController extends Controller {
 
             if (isset($delivery_location_purchase_challan_count) && ($delivery_location_purchase_challan_count > 0))
                 return redirect('location')->with('flash_message', 'Delivery Location can not be deleted as it is associated with one more Purchase Challan');
+
+            if (isset($delivery_location_customer_count) && ($delivery_location_customer_count > 0))
+                return redirect('location')->with('flash_message', 'Delivery Location can not be deleted as it is associated with one more Customer');
 
             $delete_location->delete();
 
