@@ -342,9 +342,7 @@ $('#save_all_price_btn').click(function() {
         data: $('#save_all_price').serialize(),
         success: function(data) {
             $('.alert-success1').show();
-            $('html,body').animate({
-            scrollTop: $(".breadcrumb").offset().top},
-            'slow');
+            $('html,body').animate({scrollTop:0}, 'slow');
     }
     });
 });
