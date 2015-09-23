@@ -367,7 +367,6 @@ function test() {
 }
 function isNumberFormat(evt) {
     var charCode = (evt.which) ? evt.which : event.keyCode;
-    alert(charCode);
     if (charCode != 46 && charCode != 45 && charCode > 31
     && (charCode < 48 || charCode > 57))
         return false;
