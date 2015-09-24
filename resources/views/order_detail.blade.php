@@ -48,15 +48,15 @@
                                         @endif
                                         @foreach($customers as $customer)
                                         @if($customer->id == $order->customer_id)
-                                        <tr><td><span><b>Tally Name:</b></span>
+                                        <tr><td colspan="2"><span><b>Tally Name:</b></span>
                                                 @if($customer->owner_name !== "" && $customer->tally_name != "")
                                                 {{$customer->owner_name}}-{{$customer->tally_name}}
                                                 @else
                                                 {{$customer->owner_name}}
                                                 @endif
                                             </td></tr>
-                                        <tr><td><span><b>Contact Person: </b></span> {{$customer->contact_person}}</td></tr>
-                                        <tr><td><span><b>Mobile Number: </b></span>{{$customer->phone_number1}}</td></tr>
+                                        <tr><td colspan="2"><span><b>Contact Person: </b></span> {{$customer->contact_person}}</td></tr>
+                                        <tr><td colspan="2"><span><b>Mobile Number: </b></span>{{$customer->phone_number1}}</td></tr>
                                         @if($customer->credit_period != "" || $customer->credit_period>0)
                                         <tr> <td><span><b>Credit Period(Days): </b></span>{{$customer->credit_period}}</td></tr>
                                         @endif
@@ -78,7 +78,7 @@
                                         </tr>
 
                                         <tr>
-                                            <td><span class="underline">Ordered Product Details </span></td>
+                                            <td colspan="2"><span class="underline">Ordered Product Details </span></td>
                                         </tr>
 
                                     </tbody>
