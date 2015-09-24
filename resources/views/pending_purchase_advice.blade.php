@@ -43,12 +43,12 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th><a href="#" class="desc"><span>Date</span></a></th>
-                                        <th><a href="#" class="asc"><span>Serial</span></a></th>
-                                        <th><a href="#" class="desc"><span>Party</span></a></th>
-                                        <th><a href="#" class="desc"><span>Total Quantity</span></a></th>
-                                        <th><a href="#" class="desc"><span>Truck Number</span></a></th>
-                                        <th><a href="#" class="desc"><span>Order By</span></a> </th>
+                                        <th><a href="javascript:void(0);" class="desc pendingpadvice" data-column="purchase_advice_date"><span>Date</span></a></th>
+                                        <th><a href="javascript:void(0);" class="asc  pendingpadvice" data-column="serial_number"><span>Serial</span></a></th>
+                                        <th><a href="javascript:void(0);" class="desc pendingpadvice" data-column="party"><span>Party</span></a></th>
+                                        <th><a href="javascript:void(0);" class="desc pendingpadvice" data-column="tot_qty"><span>Total Quantity</span></a></th>
+                                        <th><a href="javascript:void(0);" class="desc pendingpadvice" data-column="vehicle_number"><span>Truck Number</span></a></th>
+                                        <th><a href="javascript:void(0);" class="desc pendingpadvice" data-column="owner_name"><span>Order By</span></a> </th>
                                         <th class="col-md-2">Remarks </th>
                                     </tr>
                                 </thead>
@@ -89,6 +89,16 @@
                             </span>
                             @endif
                         </div>
+                        <?php
+                        $sort_column = "";
+                        $sort_column_by = "";
+                        $sort_column = Input::get('filteron');
+                        $sort_column_by = Input::get('filterby');
+                        ?>
+                        <input type="hidden" name="base_url" id="base_url" value="{{URL::to('/')}}">
+                        <input type="hidden" name="pending_advice_sortfield" id="pending_advice_sortfield" value="{{($sort_column!="")?$sort_column:''}}">
+                        <input type="hidden" name="pending_advice_sortfieldby" id="pending_advice_sortfieldby" value="{{($sort_column_by!="")?$sort_column_by:''}}">
+                        <a id="redirect_url_for_sorting" href=''></a>
                         @else
                         <div class="clearfix"> &nbsp;</div>
                         <div class="alert alert-info alert-dismissible" role="alert">

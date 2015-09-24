@@ -397,6 +397,53 @@ $('#save_all_size_btn').click(function() {
         }
     });
 });
+$('body').delegate(".pendingpadvice", "click", function () {
+    var column_name = $(this).attr("data-column");
+    var url = $('#base_url').val();
+    var sortfield = $('#pending_advice_sortfield').val();
+    var sortfieldby = $('#pending_advice_sortfieldby').val();
+    
+    if(sortfieldby == ""){
+        $('#redirect_url_for_sorting').attr("href", url+"/pending_purchase_advice?filteron="+column_name+"&filterby=asc");
+    }else{
+        if(sortfieldby == "desc"){
+         $('#redirect_url_for_sorting').attr("href", url+"/pending_purchase_advice?filteron="+column_name+"&filterby=asc");   
+        }else{
+         $('#redirect_url_for_sorting').attr("href", url+"/pending_purchase_advice?filteron="+column_name+"&filterby=desc");   
+        }        
+    }
+    $('#redirect_url_for_sorting').trigger("click");
+});
+
+$('body').delegate( "#redirect_url_for_sorting", "click",function() {
+        var href = $('#redirect_url_for_sorting').attr("href");
+        window.parent.location.href = href;
+});
+
+
+$('body').delegate(".pendingorder", "click", function () {
+    var column_name = $(this).attr("data-column");
+    var url = $('#base_url').val();
+    var sortfield = $('#pending_order_sortfield').val();
+    var sortfieldby = $('#pending_order_sortfieldby').val();
+    
+    
+    
+    
+    
+    
+    if(sortfieldby == ""){
+        $('#redirect_url_for_sorting').attr("href", url+"/pending_delivery_order?filteron="+column_name+"&filterby=asc");
+    }else{
+        if(sortfieldby == "desc"){
+         $('#redirect_url_for_sorting').attr("href", url+"/pending_delivery_order?filteron="+column_name+"&filterby=asc");   
+        }else{
+         $('#redirect_url_for_sorting').attr("href", url+"/pending_delivery_order?filteron="+column_name+"&filterby=desc");   
+        }        
+    }
+    $('#redirect_url_for_sorting').trigger("click");
+});
+
 
 function update_difference(e) {
     var difference = $(e).parent().parent().children().find("input[type=tel]").val();

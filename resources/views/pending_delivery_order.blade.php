@@ -20,20 +20,32 @@
                     <div class="main-box-body main_contents clearfix">
                         <?php $i = ($delivery_data->currentPage() - 1 ) * $delivery_data->perPage() + 1; ?>
                         @if(sizeof($delivery_data) != 0)
+
+                        <?php
+                        $sort_column = "";
+                        $sort_column_by = "";
+                        $sort_column = Input::get('filteron');
+                        $sort_column_by = Input::get('filterby');
+                        ?>
+                        <input type="hidden" name="base_url" id="base_url" value="{{URL::to('/')}}">
+                        <input type="hidden" name="pending_order_sortfield" id="pending_order_sortfield" value="{{($sort_column!="")?$sort_column:''}}">
+                        <input type="hidden" name="pending_order_sortfieldby" id="pending_order_sortfieldby" value="{{($sort_column_by!="")?$sort_column_by:''}}">
+                        <a id="redirect_url_for_sorting" href=''></a>
+
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th><a href="#" class="desc"><span>Date</span></a></th>
-                                        <th><a href="#" class="asc"><span>Serial</span></a></th>
-                                        <th><a href="#" class="desc"><span>Party</span></a></th>
-                                        <th><a href="#" class="desc"><span>Truck Number</span></a></th>
-                                        <th><a href="#" class="desc"><span>Order By</span></a> </th>                                       
-                                        <th class="col-md-2">Remarks </th> 
+                                        <th><a href="javascript:void(0);" class="desc pendingorder" data-column="created_at"><span>Date</span></a></th>
+                                        <th><a href="javascript:void(0);" class="asc  pendingorder" data-column="serial_no"><span>Serial</span></a></th>
+                                        <th><a href="javascript:void(0);" class="desc pendingorder" data-column="created_at"><span>Party</span></a></th>
+                                        <th><a href="javascript:void(0);" class="desc pendingorder" data-column="vehicle_number"><span>Truck Number</span></a></th>
+                                        <th><a href="javascript:void(0);" class="desc pendingorder" data-column="created_at"><span>Order By</span></a> </th>
+                                        <th class="col-md-2">Remarks </th>
                                     </tr>
                                 </thead>
-                                <tbody> 
+                                <tbody>
                                     @foreach($delivery_data as $delivery)
                                     <tr>
                                         <td>{{ $i++ }}</td>
@@ -46,7 +58,7 @@
                                             @endif
                                         </td>
                                         <td>{{$delivery['customer']->owner_name}}</td>
-                                        <td>{{ $delivery->vehicle_number }}</td>                                    
+                                        <td>{{ $delivery->vehicle_number }}</td>
                                         <td>{{ $delivery['user']->first_name}} </td>
                                         <td>{{$delivery->remarks}}</td>
                                     </tr>
@@ -71,9 +83,9 @@
                                         <a onclick="this.form.submit()"></a>
                                     </div>
                                 </form>
-                            </span> 
-                            @endif 
-                        </div>                       
+                            </span>
+                            @endif
+                        </div>
                         @else
                         <div class="alert alert-info no_data_msg_container">
                             Currently no pending delivery order data available.
