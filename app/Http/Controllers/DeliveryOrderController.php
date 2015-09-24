@@ -373,16 +373,45 @@ class DeliveryOrderController extends Controller {
 
     public function pending_delivery_order() {
 
+        $filteron = "";
+        $filterby = "";
+        $filteron = Input::get('filteron');
+        $filterby = Input::get('filterby');
+
         $delivery_data = 0;
         if (Input::get('order_status')) {
 
             if (Input::get('order_status') == 'Inprocess') {
-                $delivery_data = DeliveryOrder::with('user', 'customer')->where('order_status', 'pending')->paginate(20);
+
+                if ((isset($filteron) && ($filteron != "")) && (isset($filterby) && ($filterby != ""))) {
+                    $delivery_data = DeliveryOrder::where('order_status', 'pending')
+                            ->orderby($filteron, $filterby)
+                            ->with('user', 'customer')
+                            ->paginate(20);
+                } else {
+                    $delivery_data = DeliveryOrder::with('user', 'customer')->where('order_status', 'pending')->paginate(20);
+                }
             } elseif (Input::get('order_status') == 'Delivered') {
-                $delivery_data = DeliveryOrder::with('user', 'customer')->where('order_status', 'completed')->paginate(20);
+                if ((isset($filteron) && ($filteron != "")) && (isset($filterby) && ($filterby != ""))) {
+                    $delivery_data = DeliveryOrder::
+                            where('order_status', 'completed')
+                            ->orderby($filteron, $filterby)
+                            ->with('user', 'customer')
+                            ->paginate(20);
+                } else {
+                    $delivery_data = DeliveryOrder::with('user', 'customer')->where('order_status', 'completed')->paginate(20);
+                }
             }
         } else {
-            $delivery_data = DeliveryOrder::with('user', 'customer')->where('order_status', 'pending')->paginate(20);
+            if ((isset($filteron) && ($filteron != "")) && (isset($filterby) && ($filterby != ""))) {
+                $delivery_data = DeliveryOrder::
+                        where('order_status', 'pending')
+                        ->orderby($filteron, $filterby)
+                        ->with('user', 'customer')
+                        ->paginate(20);
+            } else {
+                $delivery_data = DeliveryOrder::with('user', 'customer')->where('order_status', 'pending')->paginate(20);
+            }
         }
 
         $delivery_data->setPath('pending_delivery_order');

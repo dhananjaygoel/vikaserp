@@ -61,8 +61,8 @@ class ProductsubController extends Controller {
                 $size = $size_ar[0];
                 $size2 = $size_ar[1];
                 $q->whereHas('product_category', function($query) use ($size, $size2) {
-                    $query->where('size', 'like', '%' . trim($size) . '%')
-                            ->orWhere('alias_name', 'like', '%' . trim($size2) . '%');
+//                    $query->where('size', 'like', '%' . trim($size) . '%')->orWhere('alias_name', 'like', '%' . trim($size2) . '%');
+                    $query->where('alias_name', 'like', '%' . trim($size2) . '%');
                 });
             } else {
                 $blanck = Input::get('product_size');

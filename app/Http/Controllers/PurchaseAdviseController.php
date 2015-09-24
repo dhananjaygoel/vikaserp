@@ -422,7 +422,22 @@ class PurchaseAdviseController extends Controller {
 
     public function pending_purchase_advice() {
 
-        $pending_advise = PurchaseAdvise::where('advice_status', '=', 'in_process')->with('purchase_products', 'supplier', 'party')->paginate(20);
+        $filteron = "";
+        $filterby = "";
+        $filteron = Input::get('filteron');
+        $filterby = Input::get('filterby');
+
+        if ((isset($filteron) && ($filteron != "")) && (isset($filterby) && ($filterby != ""))) {
+            $pending_advise = PurchaseAdvise::where('advice_status', '=', "in_process")
+                    ->orderby($filteron, $filterby)
+                    ->with('purchase_products', 'supplier', 'party')
+                    ->paginate(20);
+        } else {
+            $pending_advise = PurchaseAdvise::where('advice_status', '=', "in_process")
+                    ->with('purchase_products', 'supplier', 'party')
+                    ->paginate(20);
+        }
+
         $pending_advise->setPath('pending_purchase_advice');
         return View::make('pending_purchase_advice', array('pending_advise' => $pending_advise));
     }
