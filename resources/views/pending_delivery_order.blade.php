@@ -38,10 +38,10 @@
                                     <tr>
                                         <th>#</th>
                                         <th><a href="javascript:void(0);" class="desc pendingorder" data-column="created_at"><span>Date</span></a></th>
-                                        <th><a href="javascript:void(0);" class="asc  pendingorder" data-column="serial_no"><span>Serial</span></a></th>
-                                        <th><a href="javascript:void(0);" class="desc pendingorder" data-column="created_at"><span>Party</span></a></th>
-                                        <th><a href="javascript:void(0);" class="desc pendingorder" data-column="vehicle_number"><span>Truck Number</span></a></th>
-                                        <th><a href="javascript:void(0);" class="desc pendingorder" data-column="created_at"><span>Order By</span></a> </th>
+                                        <th><a href="javascript:void(0);" class="desc  pendingorder" data-column="serial_no"><span>Serial</span></a></th>
+                                        <th><a href="javascript:void(0);" class="hidesorticon" data-column="created_at"><span>Party</span></a></th>
+                                        <th><a href="javascript:void(0);" class="hidesorticon" data-column="vehicle_number"><span>Truck Number</span></a></th>
+                                        <th><a href="javascript:void(0);" class="hidesorticon" data-column="created_at"><span>Order By</span></a> </th>
                                         <th class="col-md-2">Remarks </th>
                                     </tr>
                                 </thead>

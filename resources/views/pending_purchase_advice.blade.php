@@ -44,11 +44,11 @@
                                     <tr>
                                         <th>#</th>
                                         <th><a href="javascript:void(0);" class="desc pendingpadvice" data-column="purchase_advice_date"><span>Date</span></a></th>
-                                        <th><a href="javascript:void(0);" class="asc  pendingpadvice" data-column="serial_number"><span>Serial</span></a></th>
-                                        <th><a href="javascript:void(0);" class="desc pendingpadvice" data-column="party"><span>Party</span></a></th>
-                                        <th><a href="javascript:void(0);" class="desc pendingpadvice" data-column="tot_qty"><span>Total Quantity</span></a></th>
-                                        <th><a href="javascript:void(0);" class="desc pendingpadvice" data-column="vehicle_number"><span>Truck Number</span></a></th>
-                                        <th><a href="javascript:void(0);" class="desc pendingpadvice" data-column="owner_name"><span>Order By</span></a> </th>
+                                        <th><a href="javascript:void(0);" class="desc  pendingpadvice" data-column="serial_number"><span>Serial</span></a></th>
+                                        <th><a href="javascript:void(0);" class="hidesorticon" data-column="party"><span>Party</span></a></th>
+                                        <th><a href="javascript:void(0);" class="hidesorticon" data-column="tot_qty"><span>Total Quantity</span></a></th>
+                                        <th><a href="javascript:void(0);" class="hidesorticon" data-column="vehicle_number"><span>Truck Number</span></a></th>
+                                        <th><a href="javascript:void(0);" class="hidesorticon" data-column="owner_name"><span>Order By</span></a> </th>
                                         <th class="col-md-2">Remarks </th>
                                     </tr>
                                 </thead>

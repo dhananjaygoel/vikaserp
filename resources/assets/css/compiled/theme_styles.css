@@ -2065,7 +2065,9 @@ blockquote.pull-right:before {
     margin-left: 5px;
     font-size: 0.75em;
 }
-
+.hidesorticon > span:after{
+    display:none;
+}
 .table thead > tr > th > a:hover {
     text-decoration: none;
 }
