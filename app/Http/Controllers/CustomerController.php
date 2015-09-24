@@ -24,6 +24,9 @@ use App\Inquiry;
 use App\Order;
 use App\DeliveryOrder;
 use App\DeliveryChallan;
+use App\PurchaseOrder;
+use App\PurchaseAdvise;
+use App\PurchaseChallan;
 use Config;
 use App\ProductType;
 
@@ -350,23 +353,121 @@ class CustomerController extends Controller {
 
         if (Hash::check($password, $current_user->password)) {
             $customer = Customer::find($id);
+            $customer_exist = array();
+            $customer_exist['customer_inquiry'] = "";
+            $customer_exist['customer_order'] = "";
+            $customer_exist['customer_delivery_order'] = "";
+            $customer_exist['customer_delivery_challan'] = "";
+            $customer_exist['customer_purchase_order'] = "";
+            $customer_exist['customer_purchase_advice'] = "";
+            $customer_exist['customer_purchase_challan'] = "";
 
             $customer_inquiry = Inquiry::where('customer_id', $customer->id)->get();
-            if (isset($customer_inquiry) && (count($customer_inquiry) > 0))
-                return Redirect::to('customers')->with('error', 'Customer details cannot be deleted as details are associated with one or more Inquiry');
-
             $customer_order = Order::where('customer_id', $customer->id)->get();
-            if (isset($customer_order) && (count($customer_order) > 0))
-                return Redirect::to('customers')->with('error', 'Customer details cannot be deleted as details are associated with one or more Order');
-
             $customer_delivery_order = DeliveryOrder::where('customer_id', $customer->id)->get();
-            if (isset($customer_delivery_order) && (count($customer_delivery_order) > 0))
-                return Redirect::to('customers')->with('error', 'Customer details cannot be deleted as details are associated with one or more Delivery Order');
-
-
             $customer_delivery_challan = DeliveryChallan::where('customer_id', $customer->id)->get();
-            if (isset($customer_delivery_challan) && (count($customer_delivery_challan) > 0))
-                return Redirect::to('customers')->with('error', 'Customer details cannot be deleted as details are associated with one or more Delivery Challan');
+            $customer_purchase_order = PurchaseOrder::where('supplier_id', $customer->id)->get();
+            $customer_purchase_advice = PurchaseAdvise::where('supplier_id', $customer->id)->get();
+            $customer_purchase_challan = PurchaseChallan::where('supplier_id', $customer->id)->get();
+
+            $cust_msg = 'Customer can not be deleted as details are associated with one or more ';
+
+            if (isset($customer_inquiry) && (count($customer_inquiry) > 0)) {
+                $customer_exist['customer_inquiry'] = 1;
+                $cust_msg .= "Inquiry";
+            }
+
+            if (isset($customer_order) && (count($customer_order) > 0)) {
+                $customer_exist['customer_order'] = 1;
+                if ($customer_exist['customer_inquiry'] == 1) {
+                    $cust_msg .= ", Order";
+                } else {
+                    $cust_msg .= "Order";
+                }
+            }
+
+            if (isset($customer_delivery_order) && (count($customer_delivery_order) > 0)) {
+                $customer_exist['customer_delivery_order'] = 1;
+
+                if ($customer_exist['customer_inquiry'] == 1) {
+                    $cust_msg .= ", Delievry Order";
+                } elseif ($customer_exist['customer_order'] == 1) {
+                    $cust_msg .= ", Delievry Order";
+                } else {
+                    $cust_msg .= "Delievry Order";
+                }
+            }
+
+            if (isset($customer_delivery_challan) && (count($customer_delivery_challan) > 0)) {
+                $customer_exist['customer_delivery_challan'] = 1;
+                if ($customer_exist['customer_inquiry'] == 1) {
+                    $cust_msg .= ", Delievry Challan";
+                } elseif ($customer_exist['customer_order'] == 1) {
+                    $cust_msg .= ", Delievry Challan";
+                } elseif ($customer_exist['customer_delivery_order'] == 1) {
+                    $cust_msg .= ", Delievry Challan";
+                } else {
+                    $cust_msg .= "Delievry Challan";
+                }
+            }
+
+            if (isset($customer_purchase_order) && (count($customer_purchase_order) > 0)) {
+                $customer_exist['customer_purchase_order'] = 1;
+                if ($customer_exist['customer_inquiry'] == 1) {
+                    $cust_msg .= ", Purchase Order";
+                } elseif ($customer_exist['customer_order'] == 1) {
+                    $cust_msg .= ", Purchase Order";
+                } elseif (['customer_delivery_order'] == 1) {
+                    $cust_msg .= ", Purchase Order";
+                } elseif ($customer_exist['customer_delivery_challan'] == 1) {
+                    $cust_msg .= ", Purchase Order";
+                } else {
+                    $cust_msg .= "Purchase Order";
+                }
+            }
+
+            if (isset($customer_purchase_advice) && (count($customer_purchase_advice) > 0)) {
+                $customer_exist['customer_purchase_advice'] = 1;
+                if ($customer_exist['customer_inquiry'] == 1) {
+                    $cust_msg .= ", Purchase Advice";
+                } elseif ($customer_exist['customer_order'] == 1) {
+                    $cust_msg .= ", Purchase Advice";
+                } elseif ($customer_exist['customer_delivery_order'] == 1) {
+                    $cust_msg .= ", Purchase Advice";
+                } elseif ($customer_exist['customer_delivery_challan'] == 1) {
+                    $cust_msg .= ", Purchase Advice";
+                } elseif ($customer_exist['customer_purchase_order'] == 1) {
+                    $cust_msg .= ", Purchase Advice";
+                } else {
+                    $cust_msg .= "Purchase Advice";
+                }
+            }
+
+            if (isset($customer_purchase_challan) && (count($customer_purchase_challan) > 0)) {
+                $customer_exist['customer_purchase_challan'] = 1;
+                if ($customer_exist['customer_inquiry'] == 1) {
+                    $cust_msg .= ", Purchase Challan";
+                } elseif ($customer_exist['customer_order'] == 1) {
+                    $cust_msg .= ", Purchase Challan";
+                } elseif ($customer_exist['customer_delivery_order'] == 1) {
+                    $cust_msg .= ", Purchase Challan";
+                } elseif ($customer_exist['customer_delivery_challan'] == 1) {
+                    $cust_msg .= ", Purchase Challan";
+                } elseif ($customer_exist['customer_purchase_order'] == 1) {
+                    $cust_msg .= ", Purchase Challan";
+                } elseif ($customer_exist['customer_purchase_advice'] == 1) {
+                    $cust_msg .= ", Purchase Challan";
+                } else {
+                    $cust_msg .= "Purchase Challan";
+                }
+            }
+
+
+
+
+            return Redirect::to('customers')
+                            ->with('error', $cust_msg);
+
 
             $customer->delete();
             return Redirect::to('customers')->with('success', 'Customer Successfully deleted');
@@ -480,7 +581,7 @@ class CustomerController extends Controller {
                         });
                     })
                     ->with('city')
-                    ->where('customer_status', '=', 'permanent')
+                    ->where('customer_status', ' = ', 'permanent')
                     ->paginate(20);
         } else {
             $customer = Customer::with('customerproduct')->where('customer_status', 'permanent')->orderBy('tally_name', 'ASC')->paginate(20);
@@ -579,7 +680,7 @@ class CustomerController extends Controller {
             }
         }
 
-        return redirect('bulk_set_price?page=' . $page . '&product_filter=' . $product_filter)->with('success', 'Customer Set price for the product successfully updated');
+        return redirect('bulk_set_price?page = ' . $page . '&product_filter = ' . $product_filter)->with('success', 'Customer Set price for the product successfully updated');
     }
 
 }
