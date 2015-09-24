@@ -371,10 +371,12 @@ class CustomerController extends Controller {
             $customer_purchase_challan = PurchaseChallan::where('supplier_id', $customer->id)->get();
 
             $cust_msg = 'Customer can not be deleted as details are associated with one or more ';
+            $cust_flag = "";
 
             if (isset($customer_inquiry) && (count($customer_inquiry) > 0)) {
                 $customer_exist['customer_inquiry'] = 1;
                 $cust_msg .= "Inquiry";
+                $cust_flag = 1;
             }
 
             if (isset($customer_order) && (count($customer_order) > 0)) {
@@ -384,6 +386,7 @@ class CustomerController extends Controller {
                 } else {
                     $cust_msg .= "Order";
                 }
+                $cust_flag = 1;
             }
 
             if (isset($customer_delivery_order) && (count($customer_delivery_order) > 0)) {
@@ -396,6 +399,7 @@ class CustomerController extends Controller {
                 } else {
                     $cust_msg .= "Delievry Order";
                 }
+                $cust_flag = 1;
             }
 
             if (isset($customer_delivery_challan) && (count($customer_delivery_challan) > 0)) {
@@ -409,6 +413,7 @@ class CustomerController extends Controller {
                 } else {
                     $cust_msg .= "Delievry Challan";
                 }
+                $cust_flag = 1;
             }
 
             if (isset($customer_purchase_order) && (count($customer_purchase_order) > 0)) {
@@ -424,6 +429,7 @@ class CustomerController extends Controller {
                 } else {
                     $cust_msg .= "Purchase Order";
                 }
+                $cust_flag = 1;
             }
 
             if (isset($customer_purchase_advice) && (count($customer_purchase_advice) > 0)) {
@@ -441,6 +447,7 @@ class CustomerController extends Controller {
                 } else {
                     $cust_msg .= "Purchase Advice";
                 }
+                $cust_flag = 1;
             }
 
             if (isset($customer_purchase_challan) && (count($customer_purchase_challan) > 0)) {
@@ -460,17 +467,15 @@ class CustomerController extends Controller {
                 } else {
                     $cust_msg .= "Purchase Challan";
                 }
+                $cust_flag = 1;
             }
 
-
-
-
-            return Redirect::to('customers')
-                            ->with('error', $cust_msg);
-
-
-            $customer->delete();
-            return Redirect::to('customers')->with('success', 'Customer Successfully deleted');
+            if ($cust_flag == 1) {
+                return Redirect::to('customers')->with('error', $cust_msg);
+            } else {
+                $customer->delete();
+                return Redirect::to('customers')->with('success', 'Customer Successfully deleted');
+            }
         } else {
             return Redirect::to('customers')->with('error', 'Invalid password');
         }
