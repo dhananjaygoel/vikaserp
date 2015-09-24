@@ -57,11 +57,11 @@ class CronDeleteRecordsController extends Controller {
 
         if (count($order) > 0) {
             foreach ($order as $key => $value) {
-                $check_if_delivery_order_exists = DeliveryOrder::where('order_id', '=', $order[$key])->get();
-                $check_if_delivery_challan_exists = DeliveryChallan::where('order_id', '=', $order[$key])->get();
-                if ((count($check_if_delivery_order_exists) == 0) || (count($check_if_delivery_challan_exists) == 0)) {
-                    $order[$key]->delete();
-                }
+//                $check_if_delivery_order_exists = DeliveryOrder::where('order_id', '=', $order[$key])->get();
+//                $check_if_delivery_challan_exists = DeliveryChallan::where('order_id', '=', $order[$key])->get();
+//                if ((count($check_if_delivery_order_exists) == 0) || (count($check_if_delivery_challan_exists) == 0)) {
+                $order[$key]->delete();
+//                }
             }
         }
 
@@ -80,10 +80,10 @@ class CronDeleteRecordsController extends Controller {
 
         if (count($delivery_order) > 0) {
             foreach ($delivery_order as $key => $value) {
-                $check_if_delivery_challan_exists = DeliveryChallan::where('delivery_order_id', '=', $delivery_order[$key])->get();
-                if ((count($check_if_delivery_challan_exists) == 0)) {
-                    $delivery_order[$key]->delete();
-                }
+//                $check_if_delivery_challan_exists = DeliveryChallan::where('delivery_order_id', '=', $delivery_order[$key])->get();
+//                if ((count($check_if_delivery_challan_exists) == 0)) {
+                $delivery_order[$key]->delete();
+//                }
             }
         }
 
@@ -120,11 +120,11 @@ class CronDeleteRecordsController extends Controller {
 
         if (count($purchase_order) > 0) {
             foreach ($purchase_order as $key => $value) {
-                $check_if_purchase_advise_exists = PurchaseAdvise::where('purchase_order_id', '=', $purchase_order[$key])->get();
-                $check_if_purchase_challan_exists = PurchaseChallan::where('purchase_order_id', '=', $purchase_order[$key])->get();
-                if ((count($check_if_purchase_advise_exists) == 0) || (count($check_if_purchase_challan_exists) == 0)) {
-                    $purchase_order[$key]->delete();
-                }
+//                $check_if_purchase_advise_exists = PurchaseAdvise::where('purchase_order_id', '=', $purchase_order[$key])->get();
+//                $check_if_purchase_challan_exists = PurchaseChallan::where('purchase_order_id', '=', $purchase_order[$key])->get();
+//                if ((count($check_if_purchase_advise_exists) == 0) || (count($check_if_purchase_challan_exists) == 0)) {
+                $purchase_order[$key]->delete();
+//                }
             }
         }
 
@@ -142,10 +142,10 @@ class CronDeleteRecordsController extends Controller {
 
         if (count($purchase_advise) > 0) {
             foreach ($purchase_advise as $key => $value) {
-                $check_if_purchase_challan_exists = PurchaseChallan::where('purchase_order_id', '=', $purchase_advise[$key])->get();
-                if (count($check_if_purchase_challan_exists) == 0) {
-                    $purchase_advise[$key]->delete();
-                }
+//                $check_if_purchase_challan_exists = PurchaseChallan::where('purchase_order_id', '=', $purchase_advise[$key])->get();
+//                if (count($check_if_purchase_challan_exists) == 0) {
+                $purchase_advise[$key]->delete();
+//                }
             }
         }
 
