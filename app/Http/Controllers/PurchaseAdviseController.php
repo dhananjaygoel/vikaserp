@@ -305,6 +305,11 @@ class PurchaseAdviseController extends Controller {
         }
     }
 
+    /*
+     * store purchase advice data into database
+     *
+     */
+
     public function store_advise() {
 
         $input_data = Input::all();
@@ -419,6 +424,11 @@ class PurchaseAdviseController extends Controller {
             return Redirect::back()->withInput()->withErrors($validator);
         }
     }
+
+    /*
+     * Find pending purchase advice
+     *
+     */
 
     public function pending_purchase_advice() {
 

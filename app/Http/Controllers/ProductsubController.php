@@ -80,6 +80,11 @@ class ProductsubController extends Controller {
         return view('product_sub_category', compact('product_sub_cat', 'product_type', 'units', 'filter'));
     }
 
+    /*
+     * Show add new product sub category form
+     *
+     */
+
     public function create() {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -89,6 +94,11 @@ class ProductsubController extends Controller {
 
         return view('add_product_sub_category', compact('product_type', 'units'));
     }
+
+    /*
+     * Show sub product category from product category
+     *
+     */
 
     public function get_product_category() {
 
@@ -104,6 +114,11 @@ class ProductsubController extends Controller {
         echo json_encode(array('prod' => $prod));
         exit;
     }
+
+    /*
+     * Add new product sub category data in to database
+     *
+     */
 
     public function store(ProductSubCategoryRequest $request) {
         if (Auth::user()->role_id != 0) {
@@ -165,6 +180,11 @@ class ProductsubController extends Controller {
         return redirect('product_sub_category')->with('success', 'Product sub category successfully added.');
     }
 
+    /*
+     * Remove product sub category and also check for validation if data is associated with other order the do not delete
+     *
+     */
+
     public function destroy($id) {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -188,6 +208,11 @@ class ProductsubController extends Controller {
         }
     }
 
+    /*
+     * Edit product sub category details
+     *
+     */
+
     public function edit($id) {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('product_sub_category')->with('error', 'You do not have permission.');
@@ -204,6 +229,11 @@ class ProductsubController extends Controller {
 
         return view('edit_product_sub_category', compact('product_type', 'prod_sub_cat', 'prod_category', 'units'));
     }
+
+    /*
+     * Update product sub category details
+     *
+     */
 
     public function update($id) {
 

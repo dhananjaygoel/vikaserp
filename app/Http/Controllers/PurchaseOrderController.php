@@ -37,6 +37,11 @@ class PurchaseOrderController extends Controller {
         $this->middleware('validIP');
     }
 
+    /*
+     * Show purchase order list
+     *
+     */
+
     public function index() {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {

@@ -28,8 +28,6 @@ class SalesDaybookController extends Controller {
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
@@ -52,7 +50,6 @@ class SalesDaybookController extends Controller {
     /*
      * Challan date function is for sales daybook
      * All records of selected date
-     *
      */
 
     public function challan_date() {
@@ -82,7 +79,6 @@ class SalesDaybookController extends Controller {
 
     /*
      * Delete multiple selected challan
-     *
      */
 
     public function delete_multiple_challan() {
@@ -278,6 +274,11 @@ class SalesDaybookController extends Controller {
         })->export('xls');
         exit();
     }
+
+    /*
+     * Print sales day book data
+     *
+     */
 
     public function print_sales_order_daybook() {
 

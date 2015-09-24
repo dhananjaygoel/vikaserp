@@ -425,12 +425,7 @@ $('body').delegate(".pendingorder", "click", function () {
     var column_name = $(this).attr("data-column");
     var url = $('#base_url').val();
     var sortfield = $('#pending_order_sortfield').val();
-    var sortfieldby = $('#pending_order_sortfieldby').val();
-    
-    
-    
-    
-    
+    var sortfieldby = $('#pending_order_sortfieldby').val();    
     
     if(sortfieldby == ""){
         $('#redirect_url_for_sorting').attr("href", url+"/pending_delivery_order?filteron="+column_name+"&filterby=asc");

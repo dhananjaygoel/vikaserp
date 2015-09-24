@@ -1011,16 +1011,6 @@ class OrderController extends Controller {
 
             $allorders[$key]['pending_quantity'] = ($order_quantity - $delivery_order_quantity);
             $allorders[$key]['total_quantity'] = $order_quantity;
-
-
-//            echo '<pre>';
-//            echo '<br>====================<br>';
-//            print_r($allorders[$key]['pending_quantity']);
-//            echo '<br>====================<br>';
-//            print_r($allorders[$key]['total_quantity']);
-//            echo '<br>====================<br>';
-//            echo '</pre>';
-//            exit();
         }
         return $allorders;
     }

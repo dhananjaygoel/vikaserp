@@ -302,9 +302,21 @@ class WelcomeController extends Controller {
         }
     }
 
+    /*
+     * Code added by Amit Gupta
+     * Show export form for customer import 
+     *
+     */
+
     public function excel_import_customer() {
         return view('excel_import_customer');
     }
+
+    /*
+     * Code added by Amit Gupta
+     * Import customer list into database from excel file
+     *
+     */
 
     public function upload_customer_excel() {
 
@@ -348,6 +360,10 @@ class WelcomeController extends Controller {
         }
     }
 
+    /**
+     * Code added by Amit Gupta
+     * Functionality: Check validation of excel file before importing customers
+     */
     public function checkvalidation($rowData) {
         $error_list_invalid = array();
         $missing_colname = array();
@@ -455,6 +471,10 @@ class WelcomeController extends Controller {
         }
     }
 
+    /**
+     *
+     * Check validation size
+     */
     public function checkvalidation_size($rowData) {
         $error_list_invalid = array();
         $missing_colname = array();
@@ -477,6 +497,10 @@ class WelcomeController extends Controller {
         return "success";
     }
 
+    /**
+     * Code added by Amit Gupta
+     * Functionality: Save imported customer data into database
+     */
     public function savecustomer($row) {
 
         foreach ($row as $rowData) {
@@ -544,6 +568,10 @@ class WelcomeController extends Controller {
         }
     }
 
+    /**
+     *
+     * save size into database
+     */
     public function savesize($row) {
 
         foreach ($row as $excel) {
@@ -673,6 +701,10 @@ class WelcomeController extends Controller {
         return "success_data";
     }
 
+    /**
+     * Code added by Amit Gupta
+     * Functionality: Export exisitng customer list into excel file
+     */
     public function excel_export_customer() {
         $allcustomers = Customer::where('relationship_manager', '=', 2)->where('customer_status', 'permanent')->with('states', 'getcity', 'deliverylocation', 'manager')->get();
         Excel::create('Customer List', function($excel) use($allcustomers) {
@@ -692,7 +724,7 @@ class WelcomeController extends Controller {
 
     /**
      * Written by : AMit GupTA
-     * This function takes tablename as argument and displays all the data of that table
+     * This function takes table name as argument and displays all the data of that table
      */
     public function showdata($table_name) {
 //        $pdo = DB::table($table_name)->get();

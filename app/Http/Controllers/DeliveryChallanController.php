@@ -285,6 +285,11 @@ class DeliveryChallanController extends Controller {
         return view('print_delivery_challan', compact('allorder'));
     }
 
+    /*
+     * Convert numbers into words
+     *
+     */
+
     function convert_number($all_orders) {
 
 //        $number = round($all_orders->grand_price, 2);
@@ -341,6 +346,11 @@ class DeliveryChallanController extends Controller {
             $convert_value = ucfirst($result);
         return $convert_value;
     }
+
+    /*
+     * Find total pending quantity
+     *
+     */
 
     function checkpending_quantity() {
         $allorders = Order::all();

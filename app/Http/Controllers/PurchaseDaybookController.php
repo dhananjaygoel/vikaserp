@@ -24,6 +24,11 @@ class PurchaseDaybookController extends Controller {
         $this->middleware('validIP');
     }
 
+    /*
+     * Show list of purchase day book
+     *
+     */
+
     public function index() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('purchase_challan')->with('error', 'You do not have permission.');
@@ -48,6 +53,11 @@ class PurchaseDaybookController extends Controller {
         return view('purchase_order_daybook', compact('purchase_daybook'));
     }
 
+    /*
+     * Delete all purchase day book
+     *
+     */
+
     public function delete_all_daybook() {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -71,6 +81,11 @@ class PurchaseDaybookController extends Controller {
         }
     }
 
+    /*
+     * Delete particular purchase day book
+     *
+     */
+
     public function destroy($id) {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -82,6 +97,11 @@ class PurchaseDaybookController extends Controller {
             return redirect('purchase_order_daybook')->with('error', 'Please enter a correct password');
         }
     }
+
+    /*
+     * Export/download purchase day book data into excel file
+     *
+     */
 
     public function expert_purchase_daybook() {
 
@@ -140,6 +160,11 @@ class PurchaseDaybookController extends Controller {
             });
         })->export('xls');
     }
+
+    /*
+     * Print purchase day book data into excel file
+     *
+     */
 
     public function print_purchase_daybook() {
 
