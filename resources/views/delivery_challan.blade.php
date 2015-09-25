@@ -175,7 +175,7 @@
                                     <td class="text-center">{{$challan['customer']->tally_name}}</td>
                                     <td class="text-center">
                                         @if($challan->serial_number == '')
-                                        @elseif($challan->serial_number != '')
+                                        @elseif(isset($challan->serial_number) && $challan->serial_number != '')
                                         {{$challan->serial_number}}
                                         @endif
                                     </td>
@@ -187,6 +187,7 @@
                                                 <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                             </span>
                                         </a>
+
                                         @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                         <!--                                        <a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
                                                                                     <span class="fa-stack">
@@ -280,7 +281,6 @@
 
                                 </tbody>
                             </table>
-
                             <span class="pull-right">
                                 <?php echo $allorders->render(); ?>
                             </span>
