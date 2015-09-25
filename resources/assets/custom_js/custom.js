@@ -420,7 +420,6 @@ $('body').delegate( "#redirect_url_for_sorting", "click",function() {
         window.parent.location.href = href;
 });
 
-
 $('body').delegate(".pendingorder", "click", function () {
     var column_name = $(this).attr("data-column");
     var url = $('#base_url').val();
