@@ -271,7 +271,7 @@
 
                     </div>
                 </div>
-                <div class="total">                 
+                <div class="total">
                     <div class="">
                         <div class="label"> &nbsp; Total</div>
                         <div class="value bob"> {{ round($total_price, 2) }} &nbsp;</div>
@@ -385,6 +385,7 @@
                     "." . $words[$point / 10] . " " .
                     $words[$point = $point % 10] : '';
 //            return $result . "Rupees  " . $points . " Paise";
+
             return $result;
         }
         ?>

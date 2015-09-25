@@ -296,55 +296,108 @@ class DeliveryChallanController extends Controller {
         $number = $all_orders->grand_price;
         $exploded_value = explode(".", $number);
         $no = $exploded_value[0];
-        $point = $exploded_value[1];
-        $hundred = null;
-        $digits_1 = strlen($exploded_value[0]);
-        $i = 0;
-        $str = array();
-        $words = array('0' => '', '1' => 'one', '2' => 'two',
-            '3' => 'three', '4' => 'four', '5' => 'five', '6' => 'six',
-            '7' => 'seven', '8' => 'eight', '9' => 'nine',
-            '10' => 'ten', '11' => 'eleven', '12' => 'twelve',
-            '13' => 'thirteen', '14' => 'fourteen',
-            '15' => 'fifteen', '16' => 'sixteen', '17' => 'seventeen',
-            '18' => 'eighteen', '19' => 'nineteen', '20' => 'twenty',
-            '30' => 'thirty', '40' => 'forty', '50' => 'fifty',
-            '60' => 'sixty', '70' => 'seventy',
-            '80' => 'eighty', '90' => 'ninety');
-        $digits = array('', 'hundred', 'thousand', 'lakh', 'crore');
-        while ($i < $digits_1) {
-            $divider = ($i == 2) ? 10 : 100;
-            $number = floor($no % $divider);
+        $point = $number;
 
-            $no = floor($no / $divider);
-            $i += ($divider == 10) ? 1 : 2;
-            if ($number) {
-                $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
-                $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
-                $str [] = ($number < 21) ? $words[$number] .
-                        " " . $digits[$counter] . $plural . " " . $hundred :
-                        $words[floor($number / 10) * 10]
-                        . " " . $words[$number % 10] . " "
-                        . $digits[$counter] . $plural . " " . $hundred;
-            } else
-                $str[] = null;
-        }
-        $str = array_reverse($str);
-        $result = implode('', $str);
 
-        if ($point != 0) {
-            if (strlen($point) == 1)
-                $points = $words[$point * 10];
-            else
-                $points = $words[$point];
-            $strs = preg_replace('/\W\w+\s*(\W*)$/', '$1', $result);
+        $result_paisa = $exploded_value[1] % 10;
+
+        if (isset($exploded_value[1]) && strlen($exploded_value[1]) > 1 && $result_paisa != 0) {
+
+            $number = $all_orders->grand_price;
+            $no = round($number);
+            $point = round($number - $no, 2) * 100;
+            $hundred = null;
+            $digits_1 = strlen($no);
+            $i = 0;
+            $str = array();
+            $words = array('0' => '', '1' => 'one', '2' => 'two',
+                '3' => 'three', '4' => 'four', '5' => 'five', '6' => 'six',
+                '7' => 'seven', '8' => 'eight', '9' => 'nine',
+                '10' => 'ten', '11' => 'eleven', '12' => 'twelve',
+                '13' => 'thirteen', '14' => 'fourteen',
+                '15' => 'fifteen', '16' => 'sixteen', '17' => 'seventeen',
+                '18' => 'eighteen', '19' => 'nineteen', '20' => 'twenty',
+                '30' => 'thirty', '40' => 'forty', '50' => 'fifty',
+                '60' => 'sixty', '70' => 'seventy',
+                '80' => 'eighty', '90' => 'ninety');
+            $digits = array('', 'hundred', 'thousand', 'lakh', 'crore');
+            while ($i < $digits_1) {
+                $divider = ($i == 2) ? 10 : 100;
+                $number = floor($no % $divider);
+                $no = floor($no / $divider);
+                $i += ($divider == 10) ? 1 : 2;
+                if ($number) {
+                    $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
+                    $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
+                    $str [] = ($number < 21) ? $words[$number] .
+                            " " . $digits[$counter] . $plural . " " . $hundred :
+                            $words[floor($number / 10) * 10]
+                            . " " . $words[$number % 10] . " "
+                            . $digits[$counter] . $plural . " " . $hundred;
+                } else
+                    $str[] = null;
+            }
+            $str = array_reverse($str);
+            $result = implode('', $str);
+            $points = ($point) ?
+                    "." . $words[$point / 10] . " " .
+                    $words[$point = $point % 10] : '';
+            return $result . "Rupees  " . $points . " Paise";
+        } else {
+
+            $number = $all_orders->grand_price;
+            $exploded_value = explode(".", $number);
+            $no = $exploded_value[0];
+            $point = $exploded_value[1];
+            $hundred = null;
+            $digits_1 = strlen($exploded_value[0]);
+            $i = 0;
+            $str = array();
+            $words = array('0' => '', '1' => 'one', '2' => 'two',
+                '3' => 'three', '4' => 'four', '5' => 'five', '6' => 'six',
+                '7' => 'seven', '8' => 'eight', '9' => 'nine',
+                '10' => 'ten', '11' => 'eleven', '12' => 'twelve',
+                '13' => 'thirteen', '14' => 'fourteen',
+                '15' => 'fifteen', '16' => 'sixteen', '17' => 'seventeen',
+                '18' => 'eighteen', '19' => 'nineteen', '20' => 'twenty',
+                '30' => 'thirty', '40' => 'forty', '50' => 'fifty',
+                '60' => 'sixty', '70' => 'seventy',
+                '80' => 'eighty', '90' => 'ninety');
+            $digits = array('', 'hundred', 'thousand', 'lakh', 'crore');
+            while ($i < $digits_1) {
+                $divider = ($i == 2) ? 10 : 100;
+                $number = floor($no % $divider);
+
+                $no = floor($no / $divider);
+                $i += ($divider == 10) ? 1 : 2;
+                if ($number) {
+                    $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
+                    $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
+                    $str [] = ($number < 21) ? $words[$number] .
+                            " " . $digits[$counter] . $plural . " " . $hundred :
+                            $words[floor($number / 10) * 10]
+                            . " " . $words[$number % 10] . " "
+                            . $digits[$counter] . $plural . " " . $hundred;
+                } else
+                    $str[] = null;
+            }
+            $str = array_reverse($str);
+            $result = implode('', $str);
+
+            if ($point != 0) {
+                if (strlen($point) == 1)
+                    $points = $words[$point * 10];
+                else
+                    $points = $point; //$points = $words[$point];
+                $strs = preg_replace('/\W\w+\s*(\W*)$/', '$1', $result);
 //            $points = ($point) ?
 //                    $words[$point / 10] . " " .
 //                    $words[$point = $point % 10] : '';
-            $convert_value = ucfirst($result . " rupees and " . $points . " paise");
-        } else
-            $convert_value = ucfirst($result);
-        return $convert_value;
+                $convert_value = ucfirst($result . " rupees and " . $points . " paise");
+            } else
+                $convert_value = ucfirst($result);
+            return $convert_value;
+        }
     }
 
     /*
