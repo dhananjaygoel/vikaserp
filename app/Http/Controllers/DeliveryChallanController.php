@@ -55,13 +55,11 @@ class DeliveryChallanController extends Controller {
         }
 
         if ((isset($qstring_sort_type_order)) && ($qstring_sort_type_order != '')) {
-            $allorders = DeliveryChallan::withTrashed()
-                            ->where('challan_status', '=', $qstring_sort_type_order)
+            $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
                             ->with('customer', 'delivery_challan_products', 'delivery_order')
                             ->orderBy('created_at', 'desc')->Paginate(20);
         } else {
-            $allorders = DeliveryChallan::withTrashed()
-                            ->where('challan_status', '=', 'pending')
+            $allorders = DeliveryChallan::where('challan_status', '=', 'pending')
                             ->with('customer', 'delivery_challan_products', 'delivery_order')
                             ->orderBy('created_at', 'desc')->Paginate(20);
         }
