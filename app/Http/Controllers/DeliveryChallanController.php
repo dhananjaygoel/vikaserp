@@ -248,7 +248,8 @@ class DeliveryChallanController extends Controller {
         $result_paisa = $exploded_value[1] % 10;
 
         if (isset($exploded_value[1]) && strlen($exploded_value[1]) > 1 && $result_paisa != 0) {
-            $convert_value = $this->convert_number_to_words($allorder);
+
+            $convert_value = $this->convert_number_to_words($allorder->grand_price);
         } else {
             $convert_value = $this->convert_number($allorder);
         }
@@ -303,7 +304,8 @@ class DeliveryChallanController extends Controller {
 
     function convert_number_to_words($all_orders) {
 
-        $number = $all_orders->grand_price;
+//      $number = $all_orders->grand_price;
+        $number = $all_orders;
         $hyphen = '-';
         $conjunction = ' and ';
         $separator = ', ';
@@ -360,7 +362,7 @@ class DeliveryChallanController extends Controller {
         }
 
         if ($number < 0) {
-            return $negative . convert_number_to_words(abs($number));
+            return $negative . $this->convert_number_to_words(abs($number));
         }
 
         $string = $fraction = null;
@@ -386,17 +388,17 @@ class DeliveryChallanController extends Controller {
                 $remainder = $number % 100;
                 $string = $dictionary[$hundreds] . ' ' . $dictionary[100];
                 if ($remainder) {
-                    $string .= $conjunction . convert_number_to_words($remainder);
+                    $string .= $conjunction . $this->convert_number_to_words($remainder);
                 }
                 break;
             default:
                 $baseUnit = pow(1000, floor(log($number, 1000)));
                 $numBaseUnits = (int) ($number / $baseUnit);
                 $remainder = $number % $baseUnit;
-                $string = convert_number_to_words($numBaseUnits) . ' ' . $dictionary[$baseUnit];
+                $string = $this->convert_number_to_words($numBaseUnits) . ' ' . $dictionary[$baseUnit];
                 if ($remainder) {
                     $string .= $remainder < 100 ? $conjunction : $separator;
-                    $string .= convert_number_to_words($remainder);
+                    $string .= $this->convert_number_to_words($remainder);
                 }
                 break;
         }
@@ -416,7 +418,8 @@ class DeliveryChallanController extends Controller {
     function convert_number($all_orders) {
 
 //        $number = round($all_orders->grand_price, 2);
-        $number = $all_orders->grand_price;
+//        $number = $all_orders->grand_price;
+        $number = $all_orders;
         $exploded_value = explode(".", $number);
         $no = $exploded_value[0];
         $point = $number;
@@ -425,7 +428,8 @@ class DeliveryChallanController extends Controller {
 
         if (isset($exploded_value[1]) && strlen($exploded_value[1]) > 1 && $result_paisa != 0) {
 
-            $number = $all_orders->grand_price;
+//            $number = $all_orders->grand_price;
+            $number = $all_orders;
             $no = round($number);
             $point = round($number - $no, 2) * 100;
             $hundred = null;
@@ -467,7 +471,8 @@ class DeliveryChallanController extends Controller {
             return $result . "Rupees  " . $points . " Paise";
         } else {
 
-            $number = $all_orders->grand_price;
+//            $number = $all_orders->grand_price;
+            $number = $all_orders;
             $exploded_value = explode(".", $number);
             $no = $exploded_value[0];
             $point = $exploded_value[1];
