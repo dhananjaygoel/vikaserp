@@ -265,15 +265,16 @@ class WelcomeController extends Controller {
 
     public function process_import_delivery_location() {
 
-        $States = new States();
-        $States->state_name = 'Maharashtra';
-        $States->save();
+//        $States = new States();
+//        $States->state_name = 'Maharashtra';
+//        $States->save();
+//
+//        $States_id = DB::getPdo()->lastInsertId();
+//        $City = new City();
+//        $City->state_id = $States_id;
+//        $City->city_name = 'Pune';
+//        $City->save();
 
-        $States_id = DB::getPdo()->lastInsertId();
-        $City = new City();
-        $City->state_id = $States_id;
-        $City->city_name = 'Pune';
-        $City->save();
 
         if (Input::hasFile('excel_file')) {
             $f = Input::file('excel_file');
@@ -286,11 +287,30 @@ class WelcomeController extends Controller {
 
                 $results = $reader->all();
                 foreach ($results as $excel) {
+
                     $delivery = new DeliveryLocation();
-                    $delivery->state_id = 1;
-                    $delivery->city_id = 1;
-                    $delivery->difference = $excel->diff;
-                    $delivery->area_name = $excel->area_name;
+
+                    $state_details = States::where('state_name', "Maharashtra")->pluck('id');
+                    if (isset($state_details) && ($state_details != "")) {
+                        $delivery->state_id = $state_details;
+                    } else {
+                        $States = new States();
+                        $States->state_name = 'Maharashtra';
+                        $States->save();
+                        $delivery->state_id = DB::getPdo()->lastInsertId();
+                    }
+                    $city_details = City::where('city_name', $excel->city)->where('state_id', $delivery->state_id)->pluck('id');
+                    if (isset($city_details) && ($city_details != "")) {
+                        $delivery->city_id = $city_details;
+                    } else {
+                        $City = new City();
+                        $City->state_id = $delivery->state_id;
+                        $City->city_name = $excel->city;
+                        $City->save();
+                        $delivery->city_id = DB::getPdo()->lastInsertId();
+                    }
+                    $delivery->difference = $excel->freight;
+                    $delivery->area_name = $excel->location;
                     $delivery->status = 'permanent';
                     $delivery->save();
                 }
@@ -304,7 +324,7 @@ class WelcomeController extends Controller {
 
     /*
      * Code added by Amit Gupta
-     * Show export form for customer import 
+     * Show export form for customer import
      *
      */
 
