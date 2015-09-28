@@ -26,11 +26,11 @@ class CreatePurchaseChallanTable extends Migration {
             $table->string('vehicle_number');
             $table->float('amount');
             $table->string('unloaded_by');
-            $table->integer('unloading');
+            $table->float('unloading');
             $table->integer('labours');
             $table->float('discount');
-            $table->integer('freight');
-            $table->integer('unloading_charge');
+            $table->float('freight');
+            $table->float('unloading_charge');
             $table->float('grand_total');
             $table->enum('order_status', array('pending', 'completed'));
             $table->string('remarks');

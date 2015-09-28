@@ -11,9 +11,9 @@ class UpdatePriceColumnProductCategory extends Migration {
      * @return void
      */
     public function up() {
-        Schema::table('product_category', function($t) {
-            $t->decimal('price_new', 8, 2)->after('price');
-        });
+//        Schema::table('product_category', function($t) {
+//            $t->decimal('price_new', 8, 2)->after('price');
+//        });
     }
 
     /**
@@ -22,9 +22,9 @@ class UpdatePriceColumnProductCategory extends Migration {
      * @return void
      */
     public function down() {
-        Schema::table('product_category', function($t) {
-            $t->dropColumn('price_new');
-        });
+//        Schema::table('product_category', function($t) {
+//            $t->dropColumn('price_new');
+//        });
     }
 
 }

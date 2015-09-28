@@ -16,15 +16,15 @@
                     <div class="main-box-body clearfix">
                         @if (Session::has('wrong'))
                         <div class="alert alert-danger alert-success1">
-                            {{Session::get('wrong')}}                            
+                            {{Session::get('wrong')}}
                         </div>
                         @endif
 
                         @if (Session::has('success'))
                         <div class="alert alert-success alert-success1">
-                            {{Session::get('success')}}                            
+                            {{Session::get('success')}}
                         </div>
-                        @endif 
+                        @endif
                         <form action="{{URL::action('WelcomeController@process_import_delivery_location')}}" method="post" role="form" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="exampleInputFile">File input</label>

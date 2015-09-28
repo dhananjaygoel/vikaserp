@@ -5,32 +5,28 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateProductCategoryTable extends Migration {
 
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		Schema::create('product_category', function(Blueprint $table)
-		{
-			$table->increments('id');
-			$table->integer('product_type_id');
-                        $table->string('product_category_name');                       
-                        $table->integer('price'); 
-                        $table->timestamps();
-			
-		});
-	}
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up() {
+        Schema::create('product_category', function(Blueprint $table) {
+            $table->increments('id');
+            $table->integer('product_type_id');
+            $table->string('product_category_name');
+            $table->decimal('price', 8, 2);
+            $table->timestamps();
+        });
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		Schema::drop('product_category');
-	}
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down() {
+        Schema::drop('product_category');
+    }
 
 }
