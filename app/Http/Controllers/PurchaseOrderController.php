@@ -747,7 +747,11 @@ class PurchaseOrderController extends Controller {
                 }
             }
 
-            $purchase_orders[$key]['pending_quantity'] = ($purchase_order_quantity - $purchase_order_advise_quantity);
+            if ($purchase_order_advise_quantity >= $purchase_order_quantity) {
+                $purchase_orders[$key]['pending_quantity'] = 0;
+            } else {
+                $purchase_orders[$key]['pending_quantity'] = ($purchase_order_quantity - $purchase_order_advise_quantity);
+            }
             $purchase_orders[$key]['total_quantity'] = $purchase_order_quantity;
         }
         return $purchase_orders;

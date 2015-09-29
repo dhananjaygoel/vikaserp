@@ -968,12 +968,6 @@ class OrderController extends Controller {
             $delivery_order_products = AllOrderProducts::where('from', '=', $order->id)->get();
             if (count($delivery_order_products) > 0) {
 
-//                echo '<pre>';
-//                print_r($delivery_order_products->toArray());
-//                echo '</pre>';
-//                exit();
-
-
                 foreach ($delivery_order_products as $dopk => $dopv) {
                     $product_size = ProductSubCategory::find($dopv->product_category_id);
                     if ($dopv->unit_id == 1) {
@@ -990,11 +984,6 @@ class OrderController extends Controller {
 
             if (count($order['all_order_products']) > 0) {
 
-//                echo '<pre>';
-//                print_r("its 2");
-//                echo '</pre>';
-//                exit();
-
                 foreach ($order['all_order_products'] as $opk => $opv) {
                     $product_size = ProductSubCategory::find($opv->product_category_id);
                     if ($opv->unit_id == 1) {
@@ -1008,8 +997,11 @@ class OrderController extends Controller {
                     }
                 }
             }
-
-            $allorders[$key]['pending_quantity'] = ($order_quantity - $delivery_order_quantity);
+            if ($delivery_order_quantity >= $order_quantity) {
+                $allorders[$key]['pending_quantity'] = 0;
+            } else {
+                $allorders[$key]['pending_quantity'] = ($order_quantity - $delivery_order_quantity);
+            }
             $allorders[$key]['total_quantity'] = $order_quantity;
         }
         return $allorders;
