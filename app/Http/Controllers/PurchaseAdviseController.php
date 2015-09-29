@@ -411,7 +411,7 @@ class PurchaseAdviseController extends Controller {
                 }
             }
 
-            if ($total_present_shipping == $total_quantity) {
+            if ($total_present_shipping == $total_quantity || $total_present_shipping > $total_quantity) {
                 PurchaseOrder::where('id', '=', $input_data['id'])->update(array(
                     'order_status' => 'completed'
                 ));

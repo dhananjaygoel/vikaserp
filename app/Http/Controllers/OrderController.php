@@ -938,7 +938,7 @@ class OrderController extends Controller {
                 }
             }
             //If pending quantity is Zero complete the order
-            if ($present_shipping == $total_qty) {
+            if ($present_shipping == $total_qty || $present_shipping >= $total_qty) {
                 Order::where('id', '=', $id)->update(array('order_status' => 'completed'));
             }
 

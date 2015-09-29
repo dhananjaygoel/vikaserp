@@ -221,8 +221,9 @@ function calutate_pending_order(qty, key) {
     if (parseInt(shipping) <= parseInt(qty)) {
         $('#pending_order_' + key).val(qty - shipping);
     } else {
-        alert('Present shipping should not be greater than pending order');
-        $('#present_shipping_' + key).val("");
+//        alert('Present shipping should not be greater than pending order');// Commented by amit on 29-09-2015 to allow shipping > actual quantity
+//        $('#present_shipping_' + key).val("");
+        $('#pending_order_' + key).val('0');    
     }
 }
 

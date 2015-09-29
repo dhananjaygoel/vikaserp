@@ -246,8 +246,10 @@ function change_quantity(key) {
     var total = parseInt(quantity) + parseInt(present_shipping);
 
     if (parseInt(present_shipping) > parseInt(tot_quty)) {
-        alert('present Shipping is greater than the quantity');
-        $("#present_shipping_" + key).val(tot_quty);
+//        alert('present Shipping is greater than the quantity');// Commented by amit on 29-09-2015 to allow shipping > actual quantity
+//        $("#present_shipping_" + key).val(tot_quty);
+        $("#present_shipping_" + key).val(parseInt(present_shipping));
+        $("#pending_qunatity_" + key).html("<span>" + 0 + "</span");
     } else {
         $("#pending_qunatity_" + key).html("<span>" + (parseInt(tot_quty) - parseInt(present_shipping)) + "</span");
     }
