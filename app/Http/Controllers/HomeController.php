@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\City;
 use App\DeliveryLocation;
 use App\States;
+use App\Customer;
 
 class HomeController extends Controller {
     /*
@@ -118,10 +119,11 @@ class HomeController extends Controller {
 
     public function updatecity_delievrylocation() {
 
-        $city_data = States::where('id', 4)->update(array('id' => 1));
-        $city_data = City::where('id', 26)->update(array('id' => 1));
-        $delivery_location_data = DeliveryLocation::where('city_id', 26)->update(array('city_id' => 1));
-        $delivery_location_data = DeliveryLocation::where('state_id', 4)->update(array('state_id' => 1));
+//        $city_data = States::where('id', 4)->update(array('id' => 1));
+//        $city_data = City::where('id', 26)->update(array('id' => 1));
+//        $delivery_location_city_data = DeliveryLocation::where('city_id', 26)->update(array('city_id' => 1));
+//        $delivery_location_state_data = DeliveryLocation::where('state_id', 4)->update(array('state_id' => 1));
+        $delivery_location_id_data = Customer::where('delivery_location_id', 224)->update(array('delivery_location_id' => 444));
     }
 
 }
