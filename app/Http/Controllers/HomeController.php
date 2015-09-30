@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\City;
+use App\DeliveryLocation;
+use App\States;
+
 class HomeController extends Controller {
     /*
       |--------------------------------------------------------------------------
@@ -110,6 +114,13 @@ class HomeController extends Controller {
         $cmd = "mysqldump -u $DBUSER --password=$DBPASSWD $DATABASE | gzip --best";
         passthru($cmd);
         exit(0);
+    }
+
+    public function updatecity_delievrylocation() {
+
+        $city_data = States::where('id', 4)->update(array('id' => 1));
+        $city_data = City::where('id', 26)->update(array('id' => 1));
+        $delivery_location_data = DeliveryLocation::where('city_id', 26)->update(array('id' => 1));
     }
 
 }
