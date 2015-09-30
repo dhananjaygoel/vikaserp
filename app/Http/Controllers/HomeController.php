@@ -120,7 +120,7 @@ class HomeController extends Controller {
 
         $city_data = States::where('id', 4)->update(array('id' => 1));
         $city_data = City::where('id', 26)->update(array('id' => 1));
-        $delivery_location_data = DeliveryLocation::where('city_id', 26)->update(array('id' => 1));
+        $delivery_location_data = DeliveryLocation::where('city_id', 26)->update(array('city_id' => 1));
     }
 
 }
