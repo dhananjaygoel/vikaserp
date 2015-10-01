@@ -17,8 +17,6 @@ class CreateCustomerProductDifferenceTable extends Migration {
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down() {
         Schema::drop('customer_product_difference');

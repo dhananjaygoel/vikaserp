@@ -17,10 +17,12 @@ class CreatePurchaseProductsTable extends Migration {
             $table->enum('order_type', array('purchase_order', 'purchase_advice', 'purchase_challan'));
             $table->integer('product_category_id');
             $table->integer('unit_id');
-            $table->integer('quantity');
             $table->integer('actual_pieces');
-            $table->integer('price');
             $table->integer('present_shipping');
+            $table->decimal('quantity', 8, 2);
+            $table->decimal('price', 8, 2);
+            $table->integer('parent')->comment('Parent row id of same table');
+            $table->string('from')->comment('purchase from which module');
             $table->text('remarks');
             $table->softDeletes();
             $table->timestamps();

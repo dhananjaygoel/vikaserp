@@ -7,8 +7,6 @@ class CreateDeliveryOrderTable extends Migration {
 
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up() {
         Schema::create('delivery_order', function(Blueprint $table) {
@@ -20,6 +18,7 @@ class CreateDeliveryOrderTable extends Migration {
             $table->integer('created_by');
             $table->integer('delivery_location_id');
             $table->string('other_location');
+            $table->string('location_difference')->comment('Contains other delivery location');
             $table->string('vat_percentage');
             $table->integer('estimate_price');
             $table->string('estimated_delivery_date');
@@ -30,7 +29,7 @@ class CreateDeliveryOrderTable extends Migration {
             $table->string('driver_name');
             $table->string('driver_contact_no', 20);
             $table->enum('order_status', array('pending', 'completed', 'cancelled'));
-            $table->string('other_location_difference')->comment('Contains other delivery location');
+            $table->integer('supplier_id')->comment('fullfilled by supplier id');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -38,8 +37,6 @@ class CreateDeliveryOrderTable extends Migration {
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down() {
         Schema::drop('delivery_order');

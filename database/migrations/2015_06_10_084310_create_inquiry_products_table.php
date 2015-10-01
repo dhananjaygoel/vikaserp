@@ -7,8 +7,6 @@ class CreateInquiryProductsTable extends Migration {
 
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up() {
         Schema::create('inquiry_products', function(Blueprint $table) {
@@ -17,7 +15,7 @@ class CreateInquiryProductsTable extends Migration {
             $table->integer('product_category_id')->comment('Product category id from product category table');
             $table->integer('unit_id')->comment('Unit id from units table');
             $table->integer('quantity')->comment('Product quantity');
-            $table->integer('price')->comment('Product price');
+            $table->decimal('price', 8, 2)->comment('Product price');
             $table->text('remarks')->comment('Contains remark for the product');
             $table->timestamps();
             $table->softDeletes();
@@ -26,8 +24,6 @@ class CreateInquiryProductsTable extends Migration {
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down() {
         Schema::drop('inquiry_products');

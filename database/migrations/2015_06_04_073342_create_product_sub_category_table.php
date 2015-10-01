@@ -21,6 +21,7 @@ class CreateProductSubCategoryTable extends Migration {
             $table->string('thickness');
             $table->string('standard_length');
             $table->string('difference', 100);
+            $table->index('alias_name');
             $table->timestamps();
         });
     }

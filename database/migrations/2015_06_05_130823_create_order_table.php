@@ -24,7 +24,7 @@ class CreateOrderTable extends Migration {
             $table->string('remarks')->comment('Creator comment on the order');
             $table->enum('order_status', array('pending', 'completed', 'cancelled'))->comment('order status');
             $table->string('other_location')->comment('Contains other delivery location');
-            $table->string('other_location_difference')->comment('Contains other delivery location difference');
+            $table->string('location_difference')->comment('Contains other delivery location difference');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -36,7 +36,7 @@ class CreateOrderTable extends Migration {
      * @return void
      */
     public function down() {
-            Schema::drop('orders');
+        Schema::drop('orders');
     }
 
 }

@@ -7,8 +7,6 @@ class CreateDeliveryChallanTable extends Migration {
 
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up() {
         Schema::create('delivery_challan', function(Blueprint $table) {
@@ -24,6 +22,7 @@ class CreateDeliveryChallanTable extends Migration {
             $table->string('discount', 20);
             $table->float('freight');
             $table->float('loading_charge');
+            $table->decimal('round_off', 8, 2);
             $table->string('vat_percentage', 20);
             $table->string('grand_price', 20);
             $table->enum('challan_status', array('pending', 'completed'));

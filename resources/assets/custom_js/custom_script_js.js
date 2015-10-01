@@ -437,7 +437,7 @@ function default_delivery_location() {
  * Function for grand total for challan
  */
 function grand_total_challan() {
-
+    
     var current_row_count = $(".add_product_row").length;
     var total_price_products = 0;
     var total_actual_quantity = 0;
@@ -465,7 +465,7 @@ function grand_total_challan() {
     //loading
     var loading_charge = 0;
     if ($("#loading_charge").length > 0) {
-        if (parseInt($("#loading_charge").val())) {
+        if (parseFloat($("#loading_charge").val())) {
             loading_charge = parseFloat($("#loading_charge").val());
             $("#loading_charge").val(loading_charge.toFixed(2));
             total_price += parseFloat(loading_charge.toFixed(2));
@@ -475,7 +475,7 @@ function grand_total_challan() {
     //discount
     var discount_value = 0;
     if ($("#discount_value").length > 0) {
-        if (parseInt($("#discount_value").val())) {
+        if (parseFloat($("#discount_value").val())) {
             discount_value = parseFloat($("#discount_value").val());
             $("#discount_value").val(discount_value.toFixed(2));
 
@@ -490,7 +490,7 @@ function grand_total_challan() {
 
     var freight_value = 0;
     if ($("#freight_value").length > 0) {
-        if (parseInt($("#freight_value").val())) {
+        if (parseFloat($("#freight_value").val())) {
             freight_value = parseFloat($("#freight_value").val());
         }
         $("#freight_value").val(freight_value.toFixed(2));
