@@ -610,37 +610,36 @@ class OrderController extends Controller {
          */
         if (isset($input_data['send_email'])) {
             $customers = Customer::find($customer_id);
-            if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
 
-                $order = Order::where('id', '=', $id)->with('all_order_products.order_product_details', 'delivery_location')->first();
-                if (count($order) > 0) {
-                    if (count($order['delivery_location']) > 0) {
-                        $delivery_location = $order['delivery_location']->area_name;
-                    } else {
-                        $delivery_location = $order->other_location;
-                    }
-                    $mail_array = array(
-                        'customer_name' => $customers->owner_name,
-                        'expected_delivery_date' => $order->expected_delivery_date,
-                        'created_date' => $order->created_at,
-                        'delivery_location' => $delivery_location,
-                        'order_product' => $order['all_order_products'],
-                        'source' => 'update_order'
-                    );
-                    $receipent = array();
-                    if (App::environment('development')) {
-                        $receipent['email'] = Config::get('smsdata.emailData.email');
-                        $receipent['name'] = Config::get('smsdata.emailData.name');
-                    } else {
-                        $receipent['email'] = $customers->email;
-                        $receipent['name'] = $customers->owner_name;
-                    }
-
-                    Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($receipent) {
-                        $message->to($receipent['email'], $receipent['name'])->subject('Vikash Associates: Order Updated');
-                    });
+            $order = Order::where('id', '=', $id)->with('all_order_products.order_product_details', 'delivery_location')->first();
+            if (count($order) > 0) {
+                if (count($order['delivery_location']) > 0) {
+                    $delivery_location = $order['delivery_location']->area_name;
+                } else {
+                    $delivery_location = $order->other_location;
                 }
+                $mail_array = array(
+                    'customer_name' => $customers->owner_name,
+                    'expected_delivery_date' => $order->expected_delivery_date,
+                    'created_date' => $order->created_at,
+                    'delivery_location' => $delivery_location,
+                    'order_product' => $order['all_order_products'],
+                    'source' => 'update_order'
+                );
+                $receipent = array();
+                if (App::environment('development')) {
+                    $receipent['email'] = Config::get('smsdata.emailData.email');
+                    $receipent['name'] = Config::get('smsdata.emailData.name');
+                } else {
+                    $receipent['email'] = $customers->email;
+                    $receipent['name'] = $customers->owner_name;
+                }
+
+                Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($receipent) {
+                    $message->to($receipent['email'], $receipent['name'])->subject('Vikash Associates: Order Updated');
+                });
             }
+//            }
         }
         return redirect('orders')->with('flash_message', 'Order details successfully modified.');
     }
