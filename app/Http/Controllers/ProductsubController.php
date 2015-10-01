@@ -146,10 +146,9 @@ class ProductsubController extends Controller {
             if (count($admins) > 0) {
                 foreach ($admins as $key => $admin) {
                     $product_category = ProductCategory::where('id', '=', $request->input('select_product_categroy'))->with('product_type')->first();
-                    $str = "Dear "
-                            . "\n'" . $admin->first_name . "' "
-                            . "'" . Auth::user()->first_name . "' "
-                            . " has created a new size as "
+                    $str = "Dear " . $admin->first_name . " \n" .
+                            "DT " . date("j M, Y") . "\n" .
+                            Auth::user()->first_name . " has created a new size as "
                             . "'" . $request->input('size') . "', "
                             . "'" . $request->input('thickness') . "', "
                             . "'" . $request->input('weight') . "', "
@@ -159,7 +158,9 @@ class ProductsubController extends Controller {
                             . "'" . $product_category->product_category_name . "' "
                             . "& "
                             . "'" . $product_category['product_type']->name . "' "
-                            . "kindly chk. Vikas associates";
+                            . "kindly chk. \nVIKAS ASSOCIATES";
+
+
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -275,9 +276,9 @@ class ProductsubController extends Controller {
                 if (count($admins) > 0) {
                     foreach ($admins as $key => $admin) {
                         $product_category = ProductCategory::where('id', '=', $data['select_product_categroy'])->with('product_type')->first();
-                        $str = "Dear \n"
-                                . "'" . $admin->first_name . "' "
-                                . "'" . Auth::user()->first_name . "' "
+                        $str = "Dear "
+                                . "'" . $admin->first_name . "'\nDT " . date("j M, Y") . "\n"
+                                . "'" . Auth::user()->first_name . "'"
                                 . " has updated a size catagory as "
                                 . "'" . $data['size'] . "' "
                                 . "'" . $data['thickness'] . "' "
@@ -288,7 +289,8 @@ class ProductsubController extends Controller {
                                 . "'" . $product_category->product_category_name . "' "
                                 . "& "
                                 . "'" . $product_category['product_type']->name . "' "
-                                . "kindly chk. Vikas associates";
+                                . "kindly chk.\nVIKAS ASSOCIATES";
+
                         if (App::environment('development')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
                         } else {

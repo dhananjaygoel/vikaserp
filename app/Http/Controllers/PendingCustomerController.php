@@ -233,7 +233,7 @@ class PendingCustomerController extends Controller {
             $admins = User::where('role_id', '=', 4)->get();
             if (count($admins) > 0) {
                 foreach ($admins as $key => $admin) {
-                    $str = "Dear '" . $admin->first_name . "' '" . Auth::user()->first_name . "' has converted a new customer from '" . Input::get('owner_name') . "' to new account as '" . Input::get('owner_name') . "' kindly chk. Vikas associates";
+                    $str = "Dear '" . $admin->first_name . "'\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . "' has converted a new customer from '" . Input::get('owner_name') . "' to new account as '" . Input::get('owner_name') . "' kindly chk.\nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {

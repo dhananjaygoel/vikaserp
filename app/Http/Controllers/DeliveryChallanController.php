@@ -237,9 +237,6 @@ class DeliveryChallanController extends Controller {
                         ->where('challan_status', '=', 'completed')
                         ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
 
-
-
-
         $calculated_vat_value = $allorder->grand_price * ($allorder->vat_percentage / 100);
         $allorder['calculated_vat_price'] = $calculated_vat_value;
 
@@ -251,7 +248,7 @@ class DeliveryChallanController extends Controller {
 
             $convert_value = $this->convert_number_to_words($allorder->grand_price);
         } else {
-            $convert_value = $this->convert_number($allorder);
+            $convert_value = $this->convert_number($allorder->grand_price);
         }
         $allorder['convert_value'] = $convert_value;
 
@@ -267,7 +264,7 @@ class DeliveryChallanController extends Controller {
             $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\n your meterial has been desp as follows ";
+                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour meterial has been desp as follows ";
                 foreach ($input_data as $product_data) {
                     $product = ProductSubCategory::find($product_data->product_category_id);
 //                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
@@ -278,7 +275,8 @@ class DeliveryChallanController extends Controller {
                         ", Qty " . $allorder['delivery_challan_products']->sum('actual_quantity') .
                         ", Amt " . $allorder->grand_price .
                         ", Due by: " . date("jS F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
-                        " Vikas Associates, 9673000068";
+                        "\nVIKAS ASSOCIATES";
+
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {

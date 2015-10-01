@@ -242,7 +242,7 @@ class PurchaseChallanController extends Controller {
             $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\n your meterial has been desp as follows ";
+                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour meterial has been desp as follows ";
                 foreach ($input_data as $product_data) {
                     $product = ProductSubCategory::find($product_data->product_category_id);
                     if ($product_data['unit']->id == 1) {
@@ -259,12 +259,13 @@ class PurchaseChallanController extends Controller {
                         . ", Qty. " . round($input_data->sum('quantity'), 2)
                         . ", Amt. " . $purchase_challan->grand_total
                         . ", Due by " . date("jS F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
-                        . ", . Vikas Associates, 9673000068";
+                        . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
                     $phone_number = $customer->phone_number1;
                 }
+
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=4";
                 if (SEND_SMS === true) {
