@@ -276,38 +276,38 @@ class PurchaseOrderController extends Controller {
 
             if (isset($input_data['send_email'])) {
                 $customers = Customer::find($customer_id);
-                if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
-                    $purchase_order = PurchaseOrder::where('id', '=', $purchase_order_id)->with('purchase_products.purchase_product_details', 'delivery_location')->first();
+//                if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
+                $purchase_order = PurchaseOrder::where('id', '=', $purchase_order_id)->with('purchase_products.purchase_product_details', 'delivery_location')->first();
 
-                    if (count($purchase_order) > 0) {
-                        if (count($purchase_order['delivery_location']) > 0) {
-                            $delivery_location = $purchase_order['delivery_location']->area_name;
-                        } else {
-                            $delivery_location = $purchase_order->other_location;
-                        }
-                        $mail_array = array(
-                            'customer_name' => $customers->owner_name,
-                            'expected_delivery_date' => $purchase_order->expected_delivery_date,
-                            'created_date' => $purchase_order->updated_at,
-                            'delivery_location' => $delivery_location,
-                            'order_product' => $purchase_order['purchase_products'],
-                            'source' => 'create_order'
-                        );
-
-                        $receipent = array();
-                        if (App::environment('development')) {
-                            $receipent['email'] = Config::get('smsdata.emailData.email');
-                            $receipent['name'] = Config::get('smsdata.emailData.name');
-                        } else {
-                            $receipent['email'] = $customers->email;
-                            $receipent['name'] = $customers->owner_name;
-                        }
-
-                        Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($receipent) {
-                            $message->to($receipent['email'], $receipent['name'])->subject('Vikash Associates: New Purchase Order');
-                        });
+                if (count($purchase_order) > 0) {
+                    if (count($purchase_order['delivery_location']) > 0) {
+                        $delivery_location = $purchase_order['delivery_location']->area_name;
+                    } else {
+                        $delivery_location = $purchase_order->other_location;
                     }
+                    $mail_array = array(
+                        'customer_name' => $customers->owner_name,
+                        'expected_delivery_date' => $purchase_order->expected_delivery_date,
+                        'created_date' => $purchase_order->updated_at,
+                        'delivery_location' => $delivery_location,
+                        'order_product' => $purchase_order['purchase_products'],
+                        'source' => 'create_order'
+                    );
+
+                    $receipent = array();
+                    if (App::environment('development')) {
+                        $receipent['email'] = Config::get('smsdata.emailData.email');
+                        $receipent['name'] = Config::get('smsdata.emailData.name');
+                    } else {
+                        $receipent['email'] = $customers->email;
+                        $receipent['name'] = $customers->owner_name;
+                    }
+
+                    Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($receipent) {
+                        $message->to($receipent['email'], $receipent['name'])->subject('Vikash Associates: New Purchase Order');
+                    });
                 }
+//                }
             }
         }
         return redirect('purchase_orders')->with('flash_message', 'Purchase order details successfully added.');
@@ -518,37 +518,37 @@ class PurchaseOrderController extends Controller {
          */
         if (isset($input_data['send_email'])) {
             $customers = Customer::find($customer_id);
-            if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
-                $purchase_order = PurchaseOrder::where('id', '=', $id)->with('purchase_products.purchase_product_details', 'delivery_location')->first();
-                if (count($purchase_order) > 0) {
-                    if (count($purchase_order['delivery_location']) > 0) {
-                        $delivery_location = $purchase_order['delivery_location']->area_name;
-                    } else {
-                        $delivery_location = $purchase_order->other_location;
-                    }
-                    $mail_array = array(
-                        'customer_name' => $customers->owner_name,
-                        'expected_delivery_date' => $purchase_order->expected_delivery_date,
-                        'created_date' => $purchase_order->updated_at,
-                        'delivery_location' => $delivery_location,
-                        'order_product' => $purchase_order['purchase_products'],
-                        'source' => 'update_order'
-                    );
-
-                    $receipent = array();
-                    if (App::environment('development')) {
-                        $receipent['email'] = Config::get('smsdata.emailData.email');
-                        $receipent['name'] = Config::get('smsdata.emailData.name');
-                    } else {
-                        $receipent['email'] = $customers->email;
-                        $receipent['name'] = $customers->owner_name;
-                    }
-
-                    Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($receipent) {
-                        $message->to($receipent['email'], $receipent['name'])->subject('Vikash Associates: Purchase Order Updated');
-                    });
+//            if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
+            $purchase_order = PurchaseOrder::where('id', '=', $id)->with('purchase_products.purchase_product_details', 'delivery_location')->first();
+            if (count($purchase_order) > 0) {
+                if (count($purchase_order['delivery_location']) > 0) {
+                    $delivery_location = $purchase_order['delivery_location']->area_name;
+                } else {
+                    $delivery_location = $purchase_order->other_location;
                 }
+                $mail_array = array(
+                    'customer_name' => $customers->owner_name,
+                    'expected_delivery_date' => $purchase_order->expected_delivery_date,
+                    'created_date' => $purchase_order->updated_at,
+                    'delivery_location' => $delivery_location,
+                    'order_product' => $purchase_order['purchase_products'],
+                    'source' => 'update_order'
+                );
+
+                $receipent = array();
+                if (App::environment('development')) {
+                    $receipent['email'] = Config::get('smsdata.emailData.email');
+                    $receipent['name'] = Config::get('smsdata.emailData.name');
+                } else {
+                    $receipent['email'] = $customers->email;
+                    $receipent['name'] = $customers->owner_name;
+                }
+
+                Mail::send('emails.new_purchase_order_mail', ['purchase_order' => $mail_array], function($message) use($receipent) {
+                    $message->to($receipent['email'], $receipent['name'])->subject('Vikash Associates: Purchase Order Updated');
+                });
             }
+//            }
         }
         return redirect('purchase_orders')->with('flash_message', 'Purchase order details successfully updated.');
     }
