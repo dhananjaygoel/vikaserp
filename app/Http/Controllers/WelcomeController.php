@@ -17,6 +17,7 @@ use Redirect;
 use App\City;
 use App\DeliveryLocation;
 use App\Customer;
+use App\AllOrderProducts;
 use Session;
 use Schema;
 use Illuminate\Support\Facades\Hash;
@@ -797,6 +798,11 @@ class WelcomeController extends Controller {
         echo '<pre>';
         print_r($total_info);
         echo '</pre>';
+    }
+
+    public function delete_order_data() {
+
+        DB::table('all_order_products')->where('product_category_id', '0')->delete();
     }
 
 }

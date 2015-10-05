@@ -92,9 +92,6 @@ class OrderController extends Controller {
                         ->orderBy('created_at', 'desc')->paginate(20);
 
 
-
-
-
         $users = User::all();
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
@@ -176,6 +173,13 @@ class OrderController extends Controller {
         foreach ($input_data['product'] as $product_data) {
             if (($product_data['name'] == "") || ($product_data['quantity'] == "")) {
                 $i++;
+            }
+        }
+        foreach ($input_data['product'] as $product_data) {
+            if (($product_data['name'] != "") && ($product_data['quantity'] != "")) {
+                if (($product_data['id'] == "") || ($product_data['id'] == 0) || ($product_data['id'] == '0')) {
+                    return Redirect::back()->withInput()->with('flash_message', 'Please select product name again from autocomplete');
+                }
             }
         }
         if ($i == $j) {
