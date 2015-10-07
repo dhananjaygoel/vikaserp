@@ -139,7 +139,7 @@
                                                 </span>
                                             </a>
 
-                                            @if($pa->serial_number == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+                                            @if($pa->serial_number == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
                                             @if($pa->advice_status == 'in_process')
                                             <a href="{{url('purchaseorder_advise/'.$pa->id.'/edit')}}" class="table-link" title="edit">
                                                 <span class="fa-stack">
@@ -148,7 +148,7 @@
                                                 </span>
                                             </a>
                                             @endif
-                                            @elseif($pa->serial_number != "" && Auth::user()->role_id == 0  || Auth::user()->role_id == 1 )
+                                            @elseif($pa->serial_number != "" && Auth::user()->role_id == 0  || Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
                                             <span class="table-link normal_cursor" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
