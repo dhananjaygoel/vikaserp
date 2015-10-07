@@ -807,4 +807,9 @@ class WelcomeController extends Controller {
         DB::table('all_order_products')->where('product_category_id', '0')->delete();
     }
 
+    public function update_user_role() {
+        DB::table('user_roles')->where('role_id', '1')->update(array('role_id' => 0));
+        DB::table('users')->where('role_id', '1')->update(array('role_id' => 0));
+    }
+
 }

@@ -16,7 +16,7 @@ class UserRolesSeeder extends Seeder {
                     ),
                     array(
                         'id' => '2',
-                        'role_id' => '1',
+                        'role_id' => '0',
                         'name' => 'Admin'
                     ),
                     array(

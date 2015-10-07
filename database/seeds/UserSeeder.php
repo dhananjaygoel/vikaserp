@@ -29,7 +29,7 @@ class UserSeeder extends Seeder {
                         'mobile_number' => '9898989891',
                         'email' => 'admin@admin.com',
                         'password' => '$2y$10$CscOJeTOQHM3cLOBmIRFT.7owVhR7NUjT/UTlo3Z9PR3SS9w3m.Ia',
-                        'role_id' => '1'
+                        'role_id' => '0'
                     ),
                     //Sales Staff
                     array(
