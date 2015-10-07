@@ -800,6 +800,8 @@ class WelcomeController extends Controller {
         echo '</pre>';
     }
 
+    /* Created by Amit Gupta to resolve the order error issue on 05-10-2015 */
+
     public function delete_order_data() {
 
         DB::table('all_order_products')->where('product_category_id', '0')->delete();

@@ -10,7 +10,7 @@
                     <li class="active"><span>Orders</span></li>
                 </ol>
                 <div class="filter-block">
-                    <h1 class="pull-left">Orders</h1>                                 
+                    <h1 class="pull-left">Orders</h1>
                     <div class="pull-right top-page-ui">
 
                         <div class="form-group pull-right">
@@ -20,8 +20,8 @@
                                         <option value="" selected="">Select Party</option>
                                         @foreach($customers as $customer)
                                         <option value="{{$customer->id}}">{{$customer->owner_name}}</option>
-                                        @endforeach                                        
-                                    </select>                                    
+                                        @endforeach
+                                    </select>
                                 </form>
                             </div>
                             <div class="col-md-4">
@@ -33,18 +33,18 @@
                                         @foreach($customers as $customer)
                                         <option value="{{$customer->id}}">{{$customer->owner_name}}</option>
                                         @endforeach
-                                    </select>                                    
+                                    </select>
                                 </form>
                             </div>
                             <div class="col-md-4">
                                 <form action="{{url('pending_order_report')}}" method="GET">
                                     <select class="form-control" id="user_filter3" name="location_filter" onchange="this.form.submit();">
                                         <option value="" selected="">Select Location</option>
-                                        @foreach($delivery_location as $location)                                        
+                                        @foreach($delivery_location as $location)
                                         <option value="{{$location->id}}">{{$location->area_name}}</option>
-                                        @endforeach 
+                                        @endforeach
 
-                                    </select>                                    
+                                    </select>
                                 </form>
                             </div>
                             <!--                            <div class="col-md-3">
@@ -53,8 +53,8 @@
                                                                      <option value="" selected="">Select Size</option>
                                                                     @foreach($customers as $customer)
                                                                         <option value="{{$customer->id}}">{{$customer->owner_name}}</option>
-                                                                    @endforeach                                        
-                                                                </select>                                    
+                                                                    @endforeach
+                                                                </select>
                                                             </form>
                                                         </div>-->
                         </div>
@@ -90,54 +90,44 @@
                                         <th>Remarks</th>
                                         <th>Delivery Location</th>
                                         <th>Order By</th>
-
-
-
                                     </tr>
-                                </thead><tbody>
+                                </thead>
+                                <tbody>
                                     @endif
-
-
                                     <tr>
-
                                         <td>{{$k++}}</td>
-
-                                        <th><?php
+                                        <th>
+                                            <?php
                                             $order_date = strtotime($order['created_at']);
                                             echo date('d F Y', $order_date);
-                                            ?></th>
+                                            ?>
+                                        </th>
                                         <td>{{$order['customer']->owner_name}}</td>
-                                        <td><?php
+                                        <td>
+                                            <?php
                                             $total_quantity = 0;
                                             foreach ($order['all_order_products'] as $key => $product) {
                                                 $total_quantity = $total_quantity + $product['quantity'];
                                             }
                                             echo $total_quantity;
-                                            ?></td>
+                                            ?>
+                                        </td>
                                         <td>{{$order['remarks']}}</td>
                                         @if($order['delivery_location']['area_name'] !="")
-
                                         <td class="text">{{$order['delivery_location']['area_name']}}</td>
                                         @elseif($order['delivery_location']['area_name'] =="")
                                         <td class="text">{{$order['other_location']}}</td>
                                         @endif
-                                        <td class="text"><?php
+                                        <td class="text">
+                                            <?php
                                             foreach ($users as $u) {
                                                 if ($u['id'] == $order['created_by']) {
                                                     echo $u['first_name'];
                                                 }
                                             }
-                                            ?></td>
-
-
+                                            ?>
+                                        </td>
                                     </tr>
-
-
-
-
-
-
-
                                     @endforeach
                                 </tbody>
                             </table>
@@ -157,8 +147,8 @@
                                         <a onclick="this.form.submit()"></a>
                                     </div>
                                 </form>
-                            </span> 
-                            @endif  
+                            </span>
+                            @endif
                         </div>
                         @endif
                     </div>

@@ -61,7 +61,7 @@
                                         <td>{{$i}}</td>
                                         <td>{{date("m-d-Y", strtotime($pa->purchase_advice_date))}}</td>
                                         <td>{{$pa->serial_number}}</td>
-                                        <td>{{isset($pa['party']->owner_name)?$pa['party']->owner_name:''}}</td>
+                                        <td>{{isset($pa['party']->tally_name)?$pa['party']->tally_name:''}}</td>
                                         <td>{{$pa['purchase_products']->sum('quantity')}}</td>
                                         <td>{{$pa->vehicle_number}}</td>
                                         <td>{{$pa['supplier']->owner_name}}</td>

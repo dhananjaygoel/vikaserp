@@ -223,7 +223,7 @@ function calutate_pending_order(qty, key) {
     } else {
 //        alert('Present shipping should not be greater than pending order');// Commented by amit on 29-09-2015 to allow shipping > actual quantity
 //        $('#present_shipping_' + key).val("");
-        $('#pending_order_' + key).val('0');    
+        $('#pending_order_' + key).val('0');
     }
 }
 
@@ -340,7 +340,7 @@ $('#save_all_price_btn').click(function() {
     $.ajax({
         type: 'post', url: baseurl + '/update_all_price',
         data: $('#save_all_price').serialize(),
-        success: function(data) {            
+        success: function(data) {
             $('html,body').animate({scrollTop: 0}, 'slow');
             $('.alert-success1').show();
         }
@@ -368,7 +368,7 @@ function test() {
 function isNumberFormat(evt) {
     var charCode = (evt.which) ? evt.which : event.keyCode;
     if (charCode != 46 && charCode != 45 && charCode > 31
-    && (charCode < 48 || charCode > 57))
+            && (charCode < 48 || charCode > 57))
         return false;
 
     return true;
@@ -395,46 +395,50 @@ $('#save_all_size_btn').click(function() {
         data: {form_data: $('#save_all_product_sizes').serialize(), _token: token},
         success: function(data) {
             $('.alert-success1').show();
+            $('html, body').animate({
+                scrollTop: $('.navbar-brand').offset().top
+            }, 1000);
+
         }
     });
 });
-$('body').delegate(".pendingpadvice", "click", function () {
+$('body').delegate(".pendingpadvice", "click", function() {
     var column_name = $(this).attr("data-column");
     var url = $('#base_url').val();
     var sortfield = $('#pending_advice_sortfield').val();
     var sortfieldby = $('#pending_advice_sortfieldby').val();
-    
-    if(sortfieldby == ""){
-        $('#redirect_url_for_sorting').attr("href", url+"/pending_purchase_advice?filteron="+column_name+"&filterby=asc");
-    }else{
-        if(sortfieldby == "desc"){
-         $('#redirect_url_for_sorting').attr("href", url+"/pending_purchase_advice?filteron="+column_name+"&filterby=asc");   
-        }else{
-         $('#redirect_url_for_sorting').attr("href", url+"/pending_purchase_advice?filteron="+column_name+"&filterby=desc");   
-        }        
+
+    if (sortfieldby == "") {
+        $('#redirect_url_for_sorting').attr("href", url + "/pending_purchase_advice?filteron=" + column_name + "&filterby=asc");
+    } else {
+        if (sortfieldby == "desc") {
+            $('#redirect_url_for_sorting').attr("href", url + "/pending_purchase_advice?filteron=" + column_name + "&filterby=asc");
+        } else {
+            $('#redirect_url_for_sorting').attr("href", url + "/pending_purchase_advice?filteron=" + column_name + "&filterby=desc");
+        }
     }
     $('#redirect_url_for_sorting').trigger("click");
 });
 
-$('body').delegate( "#redirect_url_for_sorting", "click",function() {
-        var href = $('#redirect_url_for_sorting').attr("href");
-        window.parent.location.href = href;
+$('body').delegate("#redirect_url_for_sorting", "click", function() {
+    var href = $('#redirect_url_for_sorting').attr("href");
+    window.parent.location.href = href;
 });
 
-$('body').delegate(".pendingorder", "click", function () {
+$('body').delegate(".pendingorder", "click", function() {
     var column_name = $(this).attr("data-column");
     var url = $('#base_url').val();
     var sortfield = $('#pending_order_sortfield').val();
-    var sortfieldby = $('#pending_order_sortfieldby').val();    
-    
-    if(sortfieldby == ""){
-        $('#redirect_url_for_sorting').attr("href", url+"/pending_delivery_order?filteron="+column_name+"&filterby=asc");
-    }else{
-        if(sortfieldby == "desc"){
-         $('#redirect_url_for_sorting').attr("href", url+"/pending_delivery_order?filteron="+column_name+"&filterby=asc");   
-        }else{
-         $('#redirect_url_for_sorting').attr("href", url+"/pending_delivery_order?filteron="+column_name+"&filterby=desc");   
-        }        
+    var sortfieldby = $('#pending_order_sortfieldby').val();
+
+    if (sortfieldby == "") {
+        $('#redirect_url_for_sorting').attr("href", url + "/pending_delivery_order?filteron=" + column_name + "&filterby=asc");
+    } else {
+        if (sortfieldby == "desc") {
+            $('#redirect_url_for_sorting').attr("href", url + "/pending_delivery_order?filteron=" + column_name + "&filterby=asc");
+        } else {
+            $('#redirect_url_for_sorting').attr("href", url + "/pending_delivery_order?filteron=" + column_name + "&filterby=desc");
+        }
     }
     $('#redirect_url_for_sorting').trigger("click");
 });
@@ -449,7 +453,12 @@ function update_difference(e) {
         url: baseurl + '/update_difference',
         data: {difference: difference, id: id, _token: token},
         success: function(data) {
-            $('.custom_alert_success').fadeOut(5000);
+//            $('.custom_alert_success').fadeOut(5000);
+            $('.alert-success1').show();
+            $('html, body').animate({
+                scrollTop: $('.navbar-brand').offset().top
+            }, 1000);
+
         }
     });
 }

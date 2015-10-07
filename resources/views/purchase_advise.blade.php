@@ -21,8 +21,6 @@
                                     <?php
                                     $session_sort_type_order = Session::get('order-sort-type');
                                     $qstring_sort_type_order = Input::get('purchaseaAdviseFilter');
-
-
                                     if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
                                         $qstring_sort_type_order = $qstring_sort_type_order;
                                     } else {
@@ -158,9 +156,6 @@
                                                 </span>
                                             </span>
                                             @endif
-
-
-
                                             @if($pa->serial_number == ""  || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                             <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#printModal{{$pa->id}}">
                                                 <span class="fa-stack">
