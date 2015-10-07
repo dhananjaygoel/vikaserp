@@ -111,9 +111,7 @@ class PurchaseDaybookController extends Controller {
                 ->get();
 
         Excel::create('Purchase Daybook', function($excel) use($purchase_daybook) {
-
             $excel->sheet('Purchase-Daybook', function($sheet) use($purchase_daybook) {
-
                 $sheet->loadView('excelView.purchase', array('purchase_orders' => $purchase_daybook));
             });
         })->export('xls');

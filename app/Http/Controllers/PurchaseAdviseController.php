@@ -233,14 +233,12 @@ class PurchaseAdviseController extends Controller {
             return Redirect::back()->withErrors($validator)->withInput();
         }
 
-
         $purchase_advise = PurchaseAdvise::find($id);
         $purchase_advise->update(
                 array(
                     'remarks' => $input_data['remarks'],
                     'vehicle_number' => $input_data['vehicle_number']
         ));
-
 
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {

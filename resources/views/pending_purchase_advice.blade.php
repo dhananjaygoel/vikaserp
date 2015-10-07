@@ -64,7 +64,7 @@
                                         <td>{{isset($pa['party']->tally_name)?$pa['party']->tally_name:''}}</td>
                                         <td>{{$pa['purchase_products']->sum('quantity')}}</td>
                                         <td>{{$pa->vehicle_number}}</td>
-                                        <td>{{$pa['supplier']->owner_name}}</td>
+                                        <td>{{$pa['supplier']->tally_name}}</td>
                                         <td>{{$pa->remarks}}</td>
                                     </tr>
                                     <?php $i++; ?>
