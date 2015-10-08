@@ -29,14 +29,21 @@
             .divCell{
                 float:left;
                 display:table-column;
-                width:11.0%;
+                width:14%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
+            }
+            .divCell:last-child{
+                float:left;
+                display:table-column;
+                width:14%;
+                padding: 5px;
+                border-right: none;
             }
             .divCell2{
                 float:left;
                 display:table-column;
-                width:4%;
+                width:4.2%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
