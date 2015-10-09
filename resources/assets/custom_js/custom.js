@@ -438,11 +438,8 @@ $('body').delegate(".each_product_detail", "blur", function() {
 
         var related_cur_product_id = $('#add_product_id_' + cur_product_id).val();
         if (related_cur_product_id == "") {
-//            alert('please slecte valid product');
             $(this).focus();
             $(this).css('border-color', 'red');
-//            $('#add_row_' + cur_product_id).css('background-color', '#ffb4d9');
-
             $(this).css('box-shadow', 'none');
         } else {
             $(this).css('border-color', '#e7ebee');
@@ -466,7 +463,6 @@ $('body').delegate(".pendingorder", "click", function() {
     }
     $('#redirect_url_for_sorting').trigger("click");
 });
-
 
 function update_difference(e) {
     var difference = $(e).parent().parent().children().find("input[type=tel]").val();
