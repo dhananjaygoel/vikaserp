@@ -20,31 +20,31 @@
                         @endif
                         <div id="flash_error_present_shipping"></div>
                         @if (count($errors) > 0)
-                        <div role="alert" class="alert alert-warning">                         
+                        <div role="alert" class="alert alert-warning">
                             @foreach ($errors->all() as $error)
                             <p>{{ $error }}</p>
-                            @endforeach                            
+                            @endforeach
                         </div>
                         @endif
                         <div class="form-group">
                             Date : {{date('d F, Y')}}
-                        </div> 
+                        </div>
                         <hr>
                         {!!Form::open(array('method'=>'POST','url'=>url('create_delivery_challan/'.$delivery_data['id']),'id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="order_id" value="{{$delivery_data->id}}">
                         <input type="hidden" id="customer_id" name="customer_id" value="{{$delivery_data['customer']->id}}">
                         <div class="form-group">
-                            <span>Serial Number: </span> 
+                            <span>Serial Number: </span>
                             @if($delivery_data->serial_no != "")
-                            {{$delivery_data->serial_no}} 
-                            @else 
+                            {{$delivery_data->serial_no}}
+                            @else
                             {{'--'}}
                             @endif
                         </div>
                         <hr>
                         <input type="hidden" name="supplier_id" value="{{ $delivery_data->supplier_id }}"/>
                         <div class="form-group">
-                            <td><span>Party:</span> 
+                            <td><span>Party:</span>
                                 @if($delivery_data['customer']->owner_name != "" && $delivery_data['customer']->tally_name != "")
                                 {{ $delivery_data['customer']->owner_name}}-{{$delivery_data['customer']->tally_name}}
                                 @else
@@ -59,11 +59,11 @@
                         <div class="inquiry_table col-md-12">
                             <div class="table-responsive">
                                 <table id="add_product_table_delivery_challan" class="table table-hover">
-                                    <tbody> 
+                                    <tbody>
                                         <tr class="headingunderline">
                                             <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
                                             <td><span>Actual Quantity</span></td>
-                                            <td><span>Actual Pieces</span></td>                                            
+                                            <td><span>Actual Pieces</span></td>
                                             <td><span>Presenting Shipping</span></td>
                                             <td><span>Rate</span></td>
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
@@ -156,7 +156,7 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="form-group">
-                            <label for="total"><b class="challan">Total</b><span class="gtotal"><input type="text" class="form-control" id="total_price" name="total_price" placeholder="" readonly="readonly"></span></label>   
+                            <label for="total"><b class="challan">Total</b><span class="gtotal"><input type="text" class="form-control" id="total_price" name="total_price" placeholder="" readonly="readonly"></span></label>
                             &nbsp;&nbsp;
                             <label for="total"><b class="challan">Total Actual Quantity</b><span class="gtotal"><input type="text" class="form-control" id="total_actual_quantity" name="total_actual_quantity" placeholder="" readonly="readonly"></span></label>
                         </div>
@@ -165,7 +165,7 @@
                             <input id="loading_charge" class="form-control" placeholder="loading" name="loading" value="" type="tel" onblur="grand_total_challan();">
                         </div>
                         <div class="form-group">
-                            <label for="vehicle_name"><b class="challan">Discount</b></label>
+                            <label for="Discount"><b class="challan">Discount</b></label>
                             <input id="discount_value" class="form-control" placeholder="Discount" name="discount" value="" type="tel" onblur="grand_total_challan();">
                         </div>
                         <div class="form-group">
@@ -227,11 +227,20 @@
                             <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="text">
                         </div>
                         @endif
+
+                        <div class="form-group">
+                            <label for="challan_vehicle_number"><b class="challan">Vehicle Number</b></label>
+                            <input id="challan_vehicle_number" class="form-control" name="challan_vehicle_number" readonly="" value="{{isset($delivery_data->vehicle_number)?$delivery_data->vehicle_number:''}}" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label for="challan_driver_contact"><b class="challan">Driver Contact</b></label>
+                            <input id="challan_driver_contact" class="form-control" name="challan_driver_contact" readonly="" value="{{isset($delivery_data->driver_contact_no)?$delivery_data->driver_contact_no:''}}" type="text">
+                        </div>
                         <div class="form-group">
                             <label for="challan_remark"><b class="challan">Remark</b></label>
                             <textarea class="form-control" id="challan_remark" name="challan_remark"  rows="3"></textarea>
                         </div>
-                        <hr>  
+                        <hr>
                         <div >
                             <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
                             <a href="{{url('delivery_order')}}" class="btn btn-default form_button_footer">Back</a>

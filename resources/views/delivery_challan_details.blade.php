@@ -165,6 +165,18 @@
                         <div class="form-group">
                             <label for="total"><b class="challan">Grand Total: </b><span class="gtotal">{{$allorder->grand_price}}</span></label>
                         </div>
+                        <hr/>
+                        <div class="form-group">
+                            <label for="vehicle_number">
+                                <b class="challan">Vehicle Number: </b>
+                                <span class="gtotal">{{$allorder['delivery_order']->vehicle_number}}</span></label>
+                        </div>
+                        <hr/>
+                        <div class="form-group">
+                            <label for="driver_contact">
+                                <b class="challan">Driver Contact: </b>
+                                <span class="gtotal">{{$allorder['delivery_order']->driver_contact_no}}</span></label>
+                        </div>
                         <hr>
                         @if($allorder->bill_number != "")
                         <div class="form-group">
