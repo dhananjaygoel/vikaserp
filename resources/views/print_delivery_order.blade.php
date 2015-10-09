@@ -36,7 +36,7 @@
             .divCell:last-child{
                 float:left;
                 display:table-column;
-                width:14%;
+                width:auto;
                 padding: 5px;
                 border-right: none;
             }
