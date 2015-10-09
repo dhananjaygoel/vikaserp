@@ -425,6 +425,30 @@ $('body').delegate("#redirect_url_for_sorting", "click", function() {
     window.parent.location.href = href;
 });
 
+$('body').delegate(".each_product_detail", "blur", function() {
+    var current_product = $(this).val()
+    var cur_product_id = $(this).attr("data-productid");
+
+    if (current_product == "") {
+        $(this).css('border-color', '#e7ebee');
+
+        $('#add_product_id_' + cur_product_id).val('');
+        $('#add_product_id_' + cur_product_id).attr('data-curname', '');
+    } else {
+
+        var related_cur_product_id = $('#add_product_id_' + cur_product_id).val();
+        if (related_cur_product_id == "") {
+//            alert('please slecte valid product');
+            $(this).focus();
+            $(this).css('border-color', 'red');
+//            $('#add_row_' + cur_product_id).css('background-color', '#ffb4d9');
+
+            $(this).css('box-shadow', 'none');
+        } else {
+            $(this).css('border-color', '#e7ebee');
+        }
+    }
+});
 $('body').delegate(".pendingorder", "click", function() {
     var column_name = $(this).attr("data-column");
     var url = $('#base_url').val();

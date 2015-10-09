@@ -112,8 +112,8 @@ $(document).ready(function () {
         var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
                 '<td class="col-md-3">' +
                 '<div class="form-group searchproduct">' +
-                '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +
-                '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
+                '<input class="form-control each_product_detail" data-productid="' + current_row_count + '" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +
+                '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '" value="">' +
                 '<i class="fa fa-search search-icon"></i>' +
                 '</div>' +
                 '</td>' +
@@ -439,11 +439,11 @@ function product_autocomplete(id) {
                     var arr1 = main_array['data_array'];
                     response(arr1);
                     $("#add_product_name_" + id).removeClass('loadinggif');
-                    
+
                 },
             });
         },
-        
+
         open: function (event, ui) {
             var $input = $(event.target);
             var $results = $input.autocomplete("widget");
@@ -456,10 +456,11 @@ function product_autocomplete(id) {
                     $results.css("top", newTop + "px");
             }
         },
-        
+
         select: function (event, ui) {
             $("#product_price_" + id).val(ui.item.product_price); // to add price in the textbox
             $("#add_product_id_" + id).val(ui.item.id);
+            $("#add_product_id_" + id).attr('data-curname',ui.item.value);
         }
     });
 

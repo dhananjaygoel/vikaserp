@@ -79,7 +79,7 @@ $(document).ready(function () {
     $('#sales_daybook_date').datepicker({
 //        format: 'dd-mm-yyyy',
 //        startDate: new Date(),
-//        autoclose: true        
+//        autoclose: true
         format: 'dd-mm-yyyy',
         autoclose: false
     });
@@ -437,7 +437,7 @@ function default_delivery_location() {
  * Function for grand total for challan
  */
 function grand_total_challan() {
-    
+
     var current_row_count = $(".add_product_row").length;
     var total_price_products = 0;
     var total_actual_quantity = 0;
