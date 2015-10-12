@@ -172,7 +172,7 @@
                                 @elseif($challan->challan_status == 'completed')
                                 <tr>
                                     <td class="text-center">{{$k++}}</td>
-                                    <td class="text-center">{{$challan['customer']->tally_name}}</td>
+                                    <td class="text-center">{{($challan['customer']->tally_name != "")?$challan['customer']->tally_name:$challan['customer']->owner_name}}</td>
                                     <td class="text-center">
                                         @if($challan->serial_number == '')
                                         @elseif(isset($challan->serial_number) && $challan->serial_number != '')
