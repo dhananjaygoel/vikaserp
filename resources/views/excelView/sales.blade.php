@@ -74,8 +74,8 @@
                     <td></td>
                     <td>Sales</td>
                     <td>{{ date("m-d-Y", strtotime($value->updated_at)) }}</td>
-                    <td></td>
-                    <td>{{($value['customer']->tally_name != "")?$value['customer']->tally_name:$value['customer']->owner_name}}</td>
+                    <td>{{isset($value->serial_number)?$value->serial_number:''}}</td>
+                    <td>{{($value['customer']->tally_name != "")?$value['customer']->tally_name:"Advance Sales"}}</td>
                     <td>{{isset($value['customer']->address1) ? $value['customer']->address1 : ''}}</td>
                     <td>{{isset($value['customer']->address2) ? $value['customer']->address2 : ''}}</td>
                     <td>{{isset($value['customer']->states) ? $value->customer->states->state_name : ''}}</td>
@@ -255,3 +255,4 @@
         ?>
     </table>
 </html>
+</
