@@ -1,41 +1,41 @@
 var baseurl = $('#baseurl').attr('name');
 var _token = $('#csrf_token').attr('content');
-$(document).ready(function () {
-    var current_time =  moment().format("h:mm a");
+$(document).ready(function() {
+    var current_time = moment().format("h:mm a");
     $(".current_time").text(current_time);
-    $("#existing_customer").click(function () {
+    $("#existing_customer").click(function() {
         $(".exist_field").hide();
         $(".customer_select").show();
     });
-    $("#new_customer").click(function () {
+    $("#new_customer").click(function() {
         $(".exist_field").show();
         $(".customer_select").hide();
     });
-    $("#optionsRadios4").click(function () {
+    $("#optionsRadios4").click(function() {
         $(".plusvat").show();
     });
-    $("#optionsRadios3").click(function () {
+    $("#optionsRadios3").click(function() {
         $(".plusvat").hide();
     });
-    $("#existing_supplier").click(function () {
+    $("#existing_supplier").click(function() {
         $(".exist_field").hide();
         $(".customer_select").show();
     });
-    $("#new_supplier").click(function () {
+    $("#new_supplier").click(function() {
         $(".exist_field").show();
         $(".customer_select").hide();
     });
-    $("#exclusive_of_vat").click(function () {
+    $("#exclusive_of_vat").click(function() {
         $(".plusvat").show();
     });
-    $("#inclusive_of_vat").click(function () {
+    $("#inclusive_of_vat").click(function() {
         $(".plusvat").hide();
     });
     $("#existing_customer_name").autocomplete({
         minLength: 1,
         dataType: 'json',
         type: 'GET',
-        open: function (event) {
+        open: function(event) {
             $('.ui-autocomplete').css('height', 'auto');
             var $input = $(event.target),
                     inputTop = $input.offset().top,
@@ -46,12 +46,12 @@ $(document).ready(function () {
                 $('.ui-autocomplete').css('height', (windowHeight - inputHeight - inputTop - 20) + 'px');
             }
         },
-        source: function (request, response) {
+        source: function(request, response) {
             $("#existing_customer_name").addClass('loadinggif');
             $.ajax({
                 url: baseurl + '/fetch_existing_customer',
                 data: {"term": request.term},
-                success: function (data) {
+                success: function(data) {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
                     response(arr1);
@@ -59,7 +59,7 @@ $(document).ready(function () {
                 },
             });
         },
-        select: function (event, ui) {
+        select: function(event, ui) {
             $("#existing_customer_id").val(ui.item.id);
             $("#customer_default_location").val(ui.item.delivery_location_id);
             $("#location_difference").val(ui.item.location_difference);
@@ -71,12 +71,12 @@ $(document).ready(function () {
         minLength: 1,
         dataType: 'json',
         type: 'GET',
-        source: function (request, response) {
+        source: function(request, response) {
             $("#existing_supplier_name").addClass('loadinggif');
             $.ajax({
                 url: baseurl + '/fetch_existing_customer',
                 data: {"term": request.term},
-                success: function (data) {
+                success: function(data) {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
                     response(arr1);
@@ -84,7 +84,7 @@ $(document).ready(function () {
                 },
             });
         },
-        select: function (event, ui) {
+        select: function(event, ui) {
             $("#existing_supplier_id").val(ui.item.id);
             $("#customer_default_location").val(ui.item.delivery_location_id);
             default_delivery_location();
@@ -95,12 +95,12 @@ $(document).ready(function () {
         autoclose: true
     });
     $('#datepickerDateComponent').datepicker();
-    $("#add_product_row").on("click", function () {
+    $("#add_product_row").on("click", function() {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
             type: "GET",
             url: baseurl + '/get_units'
-        }).done(function (data) {
+        }).done(function(data) {
             var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
@@ -173,12 +173,12 @@ $(document).ready(function () {
                 '</tr>';
         $("#add_product_table_purchase").children("tbody").append(purchase_html);
     });
-    $("#add_purchase_advise_product_row").on("click", function () {
+    $("#add_purchase_advise_product_row").on("click", function() {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
             type: "GET",
             url: baseurl + '/get_units'
-        }).done(function (data) {
+        }).done(function(data) {
             var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
@@ -251,12 +251,12 @@ $(document).ready(function () {
                 '</tr>';
         $("#add_product_table_purchase").children("tbody").append(purchase_html);
     });
-    $("#add_purchase_advice_product_row").on("click", function () {
+    $("#add_purchase_advice_product_row").on("click", function() {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
             type: "GET",
             url: baseurl + '/get_units'
-        }).done(function (data) {
+        }).done(function(data) {
             var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
@@ -308,12 +308,12 @@ $(document).ready(function () {
                 '</tr>';
         $("#create_purchase_advise_table").children("tbody").append(html);
     });
-    $("#add_editadvice_product_row").on("click", function () {
+    $("#add_editadvice_product_row").on("click", function() {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
             type: "GET",
             url: baseurl + '/get_units'
-        }).done(function (data) {
+        }).done(function(data) {
             var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
@@ -354,11 +354,17 @@ $(document).ready(function () {
                 '</tr>';
         $("#add_product_table").children("tbody").append(html);
     });
-    $("#add_order_location").on("change", function () {
-        if ($("#add_order_location").val() == "other")
-            $("#other_location_input_wrapper").show();
-        else
-            $("#other_location_input_wrapper").hide();
+    $("#add_order_location").on("change", function() {
+        if ($('#add_order_location').val() == '0') {
+            $('#add_order_location').addClass('error_validation');
+            $("#add_order_location").focus();
+        } else {
+            $('#add_order_location').removeClass('error_validation');
+            if ($("#add_order_location").val() == "other")
+                $("#other_location_input_wrapper").show();
+            else
+                $("#other_location_input_wrapper").hide();
+        }
     });
 });
 function save_price_inquiry_view(id, inq_id) {
@@ -372,7 +378,7 @@ function save_price_inquiry_view(id, inq_id) {
             type: 'POST',
             url: baseurl + '/store_price',
             data: {id: id, _token: _token, updated_price: updated_price}
-        }).done(function () {
+        }).done(function() {
             var html_svbtn = '<span type="button" class="btn btn-default normal_cursor" >Save</span>';
             $("#save_btn_" + id).html(html_svbtn);
             $("#save_price_inquiry_view_" + id).removeClass('btn-primary');
@@ -429,12 +435,12 @@ function product_autocomplete(id) {
         type: 'GET',
         autoFocus: true,
         autoselect: 'first',
-        source: function (request, response) {
+        source: function(request, response) {
             $("#add_product_name_" + id).addClass('loadinggif');
             $.ajax({
                 url: baseurl + '/fetch_products',
                 data: {"term": request.term, 'customer_id': customer_id, 'location_difference': location_difference},
-                success: function (data) {
+                success: function(data) {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
                     response(arr1);
@@ -443,8 +449,7 @@ function product_autocomplete(id) {
                 },
             });
         },
-
-        open: function (event, ui) {
+        open: function(event, ui) {
             var $input = $(event.target);
             var $results = $input.autocomplete("widget");
             var scrollTop = $(window).scrollTop();
@@ -456,15 +461,14 @@ function product_autocomplete(id) {
                     $results.css("top", newTop + "px");
             }
         },
-
-        select: function (event, ui) {
+        select: function(event, ui) {
             $("#product_price_" + id).val(ui.item.product_price); // to add price in the textbox
             $("#add_product_id_" + id).val(ui.item.id);
-            $("#add_product_id_" + id).attr('data-curname',ui.item.value);
+            $("#add_product_id_" + id).attr('data-curname', ui.item.value);
         }
     });
 
-    $(window).scroll(function (event) {
+    $(window).scroll(function(event) {
         $('.ui-autocomplete.ui-menu').position({
             my: 'left bottom',
             at: 'left top',
@@ -498,13 +502,13 @@ function purchase_order_advise_product_autocomplete(id) {
         minLength: 1,
         dataType: 'json',
         type: 'GET',
-        source: function (request, response) {
+        source: function(request, response) {
 
             $("#add_product_name_" + id).addClass('loadinggif');
             $.ajax({
                 url: baseurl + '/fetch_products',
                 data: {"term": request.term, 'customer_id': customer_id, 'delivery_location': location, 'location_difference': location_difference},
-                success: function (data) {
+                success: function(data) {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
                     response(arr1);
@@ -512,14 +516,14 @@ function purchase_order_advise_product_autocomplete(id) {
                 },
             });
         },
-        select: function (event, ui) {
+        select: function(event, ui) {
             $("#add_product_id_" + id).val(ui.item.id);
         }
     });
 }
 
-$('#location_difference').on('keyup', function () {
-    $(".add_product_row").each(function (index) {
+$('#location_difference').on('keyup', function() {
+    $(".add_product_row").each(function(index) {
         var customer_id = $('#existing_customer_id').val();
         if (customer_id == "") {
             customer_id = 0;
@@ -534,7 +538,7 @@ $('#location_difference').on('keyup', function () {
             $.ajax({
                 url: baseurl + '/recalculate_product_price',
                 data: {"product_id": product_id, 'customer_id': customer_id, 'location_difference': location_difference},
-                success: function (data) {
+                success: function(data) {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
                     $('#product_price_' + rowId).val(arr1[0]['product_price']);
@@ -543,10 +547,10 @@ $('#location_difference').on('keyup', function () {
         }
     });
 });
-$('#add_order_location').on('change', function () {
+$('#add_order_location').on('change', function() {
     var location_difference = $('option:selected', this).attr('data-location-difference');
     $('#location_difference').val(location_difference);
-    $(".add_product_row").each(function (index) {
+    $(".add_product_row").each(function(index) {
         var customer_id = $('#existing_customer_id').val();
         if (customer_id == "") {
             customer_id = 0;
@@ -560,7 +564,7 @@ $('#add_order_location').on('change', function () {
             $.ajax({
                 url: baseurl + '/recalculate_product_price',
                 data: {"product_id": product_id, 'customer_id': customer_id, 'location_difference': location_difference},
-                success: function (data) {
+                success: function(data) {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
                     $('#product_price_' + rowId).val(arr1[0]['product_price']);
@@ -578,7 +582,7 @@ function fetch_city() {
         type: 'GET',
         url: baseurl + '/get_cities',
         data: {state_id: state_id}
-    }).done(function (data) {
+    }).done(function(data) {
         var main_array = JSON.parse(data);
         var arr1 = main_array['cities'];
         var html = '';

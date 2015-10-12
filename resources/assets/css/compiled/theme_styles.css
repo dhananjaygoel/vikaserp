@@ -8045,3 +8045,9 @@ h1.printwrapper{margin:20px 0px;color:#000}
 .billdate .cdfirst{width:8%;padding-left: 0px!important}
 .enquirybadge{margin-left: 10px;font-size: 14px;background-color:#216897;}
 .gtotal{margin-left: 10px}
+
+/* below css added by amit on 12-10-2015 for validation */
+.error_validation{
+    border-color: red !important;
+    box-shadow: none !important;
+}

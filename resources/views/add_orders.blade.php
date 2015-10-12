@@ -100,20 +100,20 @@ use Illuminate\Support\Facades\Session;
                             <div class="new_customer_details" style="<?= $style ?>">
                                 <div class="form-group">
                                     <label for="name">Customer Name<span class="mandatory">*</span></label>
-                                    <input id="name" class="form-control" placeholder="Name" name="customer_name" value="{{old('customer_name')}}" type="text">
+                                    <input id="name" required class="form-control" placeholder="Name" name="customer_name" value="{{old('customer_name')}}" type="text">
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Contact Person</label>
-                                    <input id="contact_person" class="form-control" placeholder="Contact Person" name="contact_person" value="{{old('contact_person')}}" type="text">
+                                    <label for="name">Contact Person<span class="mandatory">*</span></label>
+                                    <input id="contact_person" class="form-control" placeholder="Contact Person" required name="contact_person" value="{{old('contact_person')}}" type="text">
                                 </div>
                                 <div class="form-group">
-                                    <label for="mobile_number">Mobile Number </label>
-                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{old('mobile_number')}}" type="tel">
+                                    <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
+                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number" required name="mobile_number" value="{{old('mobile_number')}}" type="tel">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="period">Credit Period(Days)</label>
-                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{old('credit_period')}}" type="tel">
+                                    <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
+                                    <input id="period" class="form-control" placeholder="Credit Period" required name="credit_period" value="{{old('credit_period')}}" type="tel">
                                 </div>
                             </div>
                             <div class="row col-md-12">
@@ -121,7 +121,7 @@ use Illuminate\Support\Facades\Session;
                                     <div class="col-md-4">
                                         <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                                         <select class="form-control" name="add_order_location" id="add_order_location">
-                                            <option value="" selected="">Delivery Location</option>
+                                            <option value="0" selected="">Delivery Location</option>
                                             @foreach($delivery_locations as $delivery_location)
                                             @if($delivery_location->status=='permanent' && $delivery_location->id!=0)
                                             <option value="{{$delivery_location->id}}" data-location-difference="{{$delivery_location->difference}}">{{$delivery_location->area_name}}</option>
@@ -180,7 +180,7 @@ use Illuminate\Support\Facades\Session;
                                                     </td>
                                                     <td class = "col-md-1">
                                                         <div class = "form-group">
-                                                            <input id = "quantity_{{$i}}" class = "form-control" placeholder = "Qnty" name = "product[{{$i}}][quantity]" type = "tel" value = "<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
+                                                            <input id = "quantity_{{$i}}" class = "form-control each_product_qty" data-productid="{{$i}}" placeholder = "Qnty" name = "product[{{$i}}][quantity]" type = "tel" value = "<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
                                                         </div>
                                                     </td>
                                                     <td class = "col-md-2">
@@ -278,7 +278,8 @@ use Illuminate\Support\Facades\Session;
                             </div>
                             <hr>
                             <div >
-                                <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
+                                <input type="hidden" name="total_products" id="total_products" value="{{isset($existig_product)?$existig_product:10}}">
+                                <button type="submit" class="btn btn-primary form_button_footer btn_add_order">Submit</button>
                                 <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>
