@@ -75,12 +75,12 @@
                     <td>Sales</td>
                     <td>{{ date("m-d-Y", strtotime($value->updated_at)) }}</td>
                     <td></td>
-                    <td>{{isset($value['customer']->tally_name) ? $value['customer']->tally_name : $value['customer']->owner_name}}</td>
-                    <td>{{isset($value['customer']->address1) ? $value['customer']->address1 : ''}}></td>
+                    <td>{{($value['customer']->tally_name != "")?$value['customer']->tally_name:$value['customer']->owner_name}}</td>
+                    <td>{{isset($value['customer']->address1) ? $value['customer']->address1 : ''}}</td>
                     <td>{{isset($value['customer']->address2) ? $value['customer']->address2 : ''}}</td>
                     <td>{{isset($value['customer']->states) ? $value->customer->states->state_name : ''}}</td>
                     <td>{{isset($value['customer']->zip) ? $value['customer']->zip : '' }}</td>
-                    <td>{{isset($value['customer']->vat_tin_number) ? $value['customer']->vat_tin_number : ''}}></td>
+                    <td>{{isset($value['customer']->vat_tin_number) ? $value['customer']->vat_tin_number : ''}}</td>
                     <td>{{isset($value1['order_product_details']->alias_name) ? $value1['order_product_details']->alias_name : '' }}</td>
                     <td></td>
 
