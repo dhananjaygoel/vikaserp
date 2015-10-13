@@ -61,7 +61,6 @@
                 padding: 0px;
                 overflow: hidden;
             }
-
             .title{
                 width: 100%;
                 text-align: center;
@@ -117,9 +116,9 @@
                 @endforeach
                 <div class="divRow">
                     <div class="divCell2 center">{{ $i++ }}</div>
-                    <div class="divCell">{{ $obj->serial_number }}</div>
+                    <div class="divCell">{{ isset($obj->serial_number) ? $obj->serial_number : '' }}</div>
                     <!--<div class="divCell">xxx</div>-->
-                    <div class="divCell">{{ $obj['supplier']->owner_name }}</div>
+                    <div class="divCell">{{ ( $obj['supplier']->tally_name != '') ? $obj['supplier']->tally_name : 'Advance Sales' }}</div>
                     <div class="divCell">
                         <?php
                         if ($obj->delivery_location_id == 0) {
@@ -130,12 +129,12 @@
                         ?>
                     </div>
                     <div class="divCell">{{ round($obj['all_purchase_products']->sum('quantity'), 2) }}</div>
-                    <div class="divCell">{{ $obj->grand_total }}</div>
-                    <div class="divCell">{{ $obj->bill_number }}</div>
-                    <div class="divCell">{{ $obj->vehicle_number }}</div>
-                    <div class="divCell">{{ $obj->unloaded_by }}</div>
-                    <div class="divCell">{{ $obj->labours }}</div>
-                    <div class="divCell">{{ $obj->remarks }}</div>
+                    <div class="divCell">{{ isset($obj->grand_total) ? $obj->grand_total : '' }}</div>
+                    <div class="divCell">{{ isset($obj->bill_number) ? $obj->bill_number : '' }}</div>
+                    <div class="divCell">{{ isset($obj->vehicle_number) ? $obj->vehicle_number : '' }}</div>
+                    <div class="divCell">{{ isset($obj->unloaded_by) ? $obj->unloaded_by : '' }}</div>
+                    <div class="divCell">{{ isset($obj->labours) ? $obj->labours : '' }}</div>
+                    <div class="divCell">{{ isset($obj->remarks) ? $obj->remarks : '' }}</div>
                 </div>
                 @endforeach
             </div>

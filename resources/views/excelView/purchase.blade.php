@@ -61,16 +61,18 @@
                     <td>Purchase</td>
                     <td><?= date("m-d-Y", strtotime($value->updated_at)) ?></td>
                     <td></td>
-                    <td>{{($value['supplier']->tally_name != "")?$value['supplier']->tally_name:'Advance Sales'}}</td>
-                    <td><?= $value['supplier']->address1 ?></td>
-                    <td><?= $value['supplier']->address2 ?></td>
-                    <td><?= $value->supplier->states->state_name ?></td>
-                    <td><?= $value['supplier']->zip ?></td>
-                    <td><?= $value['supplier']->vat_tin_number ?></td>
-                    <td><?= $value1['purchase_product_details']->alias_name ?></td>
+
+
+                    <td>{{ ($value['supplier']->tally_name != "") ? $value['supplier']->tally_name : 'Advance Sales' }}</td>
+                    <td>{{ isset($value['supplier']->address1) ? $value['supplier']->address1 : '' }}</td>
+                    <td>{{ isset($value['supplier']->address2) ? $value['supplier']->address2 : '' }}</td>
+                    <td>{{ isset($value['supplier']->states) ? $value->supplier->states->state_name : '' }}</td>
+                    <td>{{ isset($value['supplier']->zip) ? $value['supplier']->zip : '' }}</td>
+                    <td>{{ isset($value['supplier']->vat_tin_number) ? $value['supplier']->vat_tin_number : '' }}</td>
+                    <td>{{ isset($value1['purchase_product_details']->alias_name) ? $value1['purchase_product_details']->alias_name : '' }}</td>
                     <td></td>
-                    <td><?= $value1->actual_pieces ?></td>
-                    <td><?= $value1->unit->unit_name ?></td>
+                    <td>{{ isset($value1->actual_pieces) ? $value1->actual_pieces : '' }}</td>
+                    <td>{{ isset($value1->unit->unit_name) ? $value1->unit->unit_name : '' }}</td>
                     <td>
                         <?php
                         if ($value1->unit_id == 1) {
@@ -85,7 +87,7 @@
                         ?>
                         <?= round($value1->quantity, 2) ?>
                     </td>
-                    <td><?= $value1->price ?></td>
+                    <td>{{ isset($value1->price) ? $value1->price : '' }}</td>
                     <td>
                         <?php
                         // Calculation Updated by 157 on 03-09-2015
@@ -125,40 +127,30 @@
                     </td>
 
                     @if($next_cnt == $current_number)
-                    <td><?= $value->discount ?></td>
+                    <td>{{ isset($value->discount) ? $value->discount : '' }}</td>
                     @else
                     <td></td>
                     @endif
 
                     @if($next_cnt == $current_number)
-                    <td><?= $value->loading_charge ?></td>
+                    <td>{{ isset($value->loading_charge) ? $value->loading_charge : '' }}</td>
                     @else
                     <td></td>
                     @endif
 
                     @if($next_cnt == $current_number)
-                    <td><?= $value->freight ?></td>
+                    <td>{{isset($value->freight) ? $value->freight : ''}}</td>
                     @else
                     <td></td>
                     @endif
 
                     @if($next_cnt == $current_number)
-                    <td><?php
-                        if ($value->purchase_advice->vat_percentage !== "")
-                            echo "VAT";
-                        else
-                            echo "All inclusive";
-                        ?>
-                    </td>
-                    @else
-                    <td></td>
-                    @endif
-
-                    @if($next_cnt == $current_number)
-                    <td>
+                    <td>{{ ($value->purchase_advice->vat_percentage != "") ? "VAT" : "All inclusive" }}
                         <?php
-                        if ($value->purchase_advice->vat_percentage !== "")
-                            echo $value->purchase_advice->vat_percentage . "%";;
+//                        if ($value->purchase_advice->vat_percentage !== "")
+//                            echo "VAT";
+//                        else
+//                            echo "All inclusive";
                         ?>
                     </td>
                     @else
@@ -166,20 +158,31 @@
                     @endif
 
                     @if($next_cnt == $current_number)
-                    <td>
+                    <td>{{ ($value->purchase_advice->vat_percentage != "") ? $value->purchase_advice->vat_percentage . "%" : '' }}
                         <?php
-                        if ($value->purchase_advice->vat_percentage !== "")
-                            echo number_format($vat_amt, 2, '.', '');
+//                        if ($value->purchase_advice->vat_percentage !== "")
+//                            echo $value->purchase_advice->vat_percentage . "%";
                         ?>
                     </td>
                     @else
                     <td></td>
                     @endif
 
-                    <td><?= $value->round_off ?></td>
+                    @if($next_cnt == $current_number)
+                    <td>{{ ($value->purchase_advice->vat_percentage != "") ? number_format($vat_amt, 2, '.', '') : '' }}
+                        <?php
+//                        if ($value->purchase_advice->vat_percentage !== "")
+//                            echo number_format($vat_amt, 2, '.', '');
+                        ?>
+                    </td>
+                    @else
+                    <td></td>
+                    @endif
+
+                    <td>{{ isset($value->round_off) ? $value->round_off : '' }}</td>
                     @if($next_cnt == $current_number)
                     <td>
-                        {{(isset($total_amt)? number_format($total_amt, 2, '.', '') :'')}}
+                        {{ isset($total_amt) ? number_format($total_amt, 2, '.', '') : '' }}
                     </td>
                     @else
                     <td></td>

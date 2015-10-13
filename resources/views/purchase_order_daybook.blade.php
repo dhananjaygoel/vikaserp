@@ -136,7 +136,7 @@
                                                     @if($daybook['supplier']->tally_name != "")
                                                     {{ $daybook['supplier']->tally_name }}
                                                     @else
-                                                    {{ $daybook['supplier']->owner_name }}
+                                                    {{"Advance Sales"}}
                                                     @endif
                                                 </td>
                                                 <td>{{ $daybook->vehicle_number }}</td>

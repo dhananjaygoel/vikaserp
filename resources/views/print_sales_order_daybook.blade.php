@@ -127,16 +127,16 @@
 
                 <div class="divRow">
                     <div class="divCell2 center">{{$i++ }}</div>
-                    <div class="divCell">{{ $obj->serial_number }}</div>
-                    <div class="divCell3">{{ $obj['customer']->owner_name }}</div>
-                    <div class="divCell">{{ isset($obj['delivery_order']['location'])?$obj['delivery_order']['location']->area_name: '' }}</div>
+                    <div class="divCell">{{ isset($obj->serial_number) ? $obj->serial_number : '' }}</div>
+                    <div class="divCell3">{{ ($obj['customer']->tally_name != '') ? $obj['customer']->tally_name : 'Advance Sales' }}</div>
+                    <div class="divCell">{{ isset($obj['delivery_order']['location']) ? $obj['delivery_order']['location']->area_name : '' }}</div>
                     <div class="divCell">{{ round($obj["delivery_challan_products"]->sum('actual_quantity'), 2) }}</div>
-                    <div class="divCell">{{ round($obj->grand_price, 2) }}</div>
-                    <div class="divCell">{{ $obj->bill_number }} </div>
-                    <div class="divCell">{{ $obj['delivery_order']->vehicle_number }}</div>
-                    <div class="divCell">{{ $obj->loaded_by }}</div>
-                    <div class="divCell">{{ $obj->labours }}</div>
-                    <div class="divCell">{{ $obj->remarks }}</div>
+                    <div class="divCell">{{ isset($obj->grand_price) ? round($obj->grand_price, 2) : '' }}</div>
+                    <div class="divCell">{{ isset($obj->bill_number) ? $obj->bill_number : '' }}</div>
+                    <div class="divCell">{{ isset($obj['delivery_order']->vehicle_number) ? $obj['delivery_order']->vehicle_number : '' }}</div>
+                    <div class="divCell">{{ isset($obj->loaded_by) ? $obj->loaded_by : '' }}</div>
+                    <div class="divCell">{{ isset($obj->labours) ? $obj->labours : '' }}</div>
+                    <div class="divCell">{{ isset($obj->remarks) ? $obj->remarks : '' }}</div>
                 </div>
                 @endforeach
             </div>

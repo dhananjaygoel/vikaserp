@@ -68,19 +68,10 @@
                                     <tr>
                                         <td class="text-center">{{$k++}}</td>
                                         <td class="text-left">
-
-                                            @if($challan['customer']->tally_name != "")
-                                            {{$challan['customer']->tally_name}}
-                                            @else
-                                            {{$challan['customer']->owner_name}}
-                                            @endif
-
+                                            {{ ($challan['customer']->tally_name != "") ? $challan['customer']->tally_name : $challan['customer']->owner_name }}
                                         </td>
                                         <td class="text-center">
-                                            @if($challan->serial_number == '')
-                                            @elseif($challan->serial_number != '')
-                                            {{$challan->serial_number}}
-                                            @endif
+                                            {{ ($challan->serial_number != '') ? $challan->serial_number : '' }}
                                         </td>
                                         <td class="text-center">{{ round($challan->total_quantity, 2) }}</td>
                                         <td class="text-center">
@@ -131,7 +122,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
+                                                <input type="hidden" name="order_sort_type" value="{{ ($qstring_sort_type_order!="") ? $qstring_sort_type_order : "" }}"/>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
                                             </div>
@@ -172,7 +163,7 @@
                                 @elseif($challan->challan_status == 'completed')
                                 <tr>
                                     <td class="text-center">{{$k++}}</td>
-                                    <td class="text-center">{{($challan['customer']->tally_name != "")?$challan['customer']->tally_name:$challan['customer']->owner_name}}</td>
+                                    <td class="text-center">{{ ($challan['customer']->tally_name != "") ? $challan['customer']->tally_name : $challan['customer']->owner_name }}</td>
                                     <td class="text-center">
                                         @if($challan->serial_number == '')
                                         @elseif(isset($challan->serial_number) && $challan->serial_number != '')

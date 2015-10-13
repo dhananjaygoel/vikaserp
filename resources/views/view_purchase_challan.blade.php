@@ -140,7 +140,7 @@
                                         <td><span>Round Off: </span>{{ $purchase_challan->round_off }}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Grand Total:</span>{{$purchase_challan->grand_total}}</td>
+                                        <td><span>Grand Total: </span>{{$purchase_challan->grand_total}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Vehicle Name: </span>{{ $purchase_challan->vehicle_number }}</td>

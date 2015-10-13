@@ -70,22 +70,21 @@
                     @else
                     <td>{{$value_cnt}}</td>
                     @endif
-
-                    <td>{{isset($value->serial_number)?$value->serial_number:''}}</td>
+                    <td>{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
                     <td>Sales</td>
                     <td>{{ date("m-d-Y", strtotime($value->updated_at)) }}</td>
                     <td></td>
-                    <td>{{($value['customer']->tally_name != "")?$value['customer']->tally_name:"Advance Sales"}}</td>
-                    <td>{{isset($value['customer']->address1) ? $value['customer']->address1 : ''}}</td>
-                    <td>{{isset($value['customer']->address2) ? $value['customer']->address2 : ''}}</td>
-                    <td>{{isset($value['customer']->states) ? $value->customer->states->state_name : ''}}</td>
-                    <td>{{isset($value['customer']->zip) ? $value['customer']->zip : '' }}</td>
-                    <td>{{isset($value['customer']->vat_tin_number) ? $value['customer']->vat_tin_number : ''}}</td>
-                    <td>{{isset($value1['order_product_details']->alias_name) ? $value1['order_product_details']->alias_name : '' }}</td>
+                    <td>{{ ($value['customer']->tally_name != "") ? $value['customer']->tally_name : "Advance Sales" }}</td>
+                    <td>{{ isset($value['customer']->address1) ? $value['customer']->address1 : '' }}</td>
+                    <td>{{ isset($value['customer']->address2) ? $value['customer']->address2 : '' }}</td>
+                    <td>{{ isset($value['customer']->states) ? $value->customer->states->state_name : '' }}</td>
+                    <td>{{ isset($value['customer']->zip) ? $value['customer']->zip : '' }}</td>
+                    <td>{{ isset($value['customer']->vat_tin_number) ? $value['customer']->vat_tin_number : '' }}</td>
+                    <td>{{ isset($value1['order_product_details']->alias_name) ? $value1['order_product_details']->alias_name : '' }}</td>
                     <td></td>
 
                     @if($value1->actual_quantity != 0 )
-                    <td>{{isset($value1->actual_pieces) ? $value1->actual_pieces : ''}}</td>
+                    <td>{{ isset($value1->actual_pieces) ? $value1->actual_pieces : '' }}</td>
                     <td>Kg</td>
                     <td>
                         <?php
@@ -101,7 +100,7 @@
                         ?>
                         <?= round($value1->actual_quantity, 2) ?>
                     </td>
-                    <td>{{isset($value1->price) ? $value1->price : ''}}</td>
+                    <td>{{ isset($value1->price) ? $value1->price : '' }}</td>
                     <?php $value1['order_product_details']['product_category']['id'] ?>
                     <?php
                     if (!empty($value['customer']['customerproduct'])) {
@@ -115,7 +114,7 @@
                     ?>
                     <td>
                         <?php
-//                        Commented by 157 on 03-09-2015
+//                        Commented by Amit Gupta on 03-09-2015
 //
 //                        $total_amt = ($value1->price + $value1['order_product_details']['difference']);
 //                        $total_amt = $total_amt + $value->delivery_order->location_difference;
@@ -156,41 +155,42 @@
                         ?>
                     </td>
                     @else
-                    <td>{{isset($value1->actual_pieces) ? $value1->actual_pieces : ''}}</td>
+                    <td>{{ isset($value1->actual_pieces) ? $value1->actual_pieces : '' }}</td>
                     <td>Pieces</td>
                     @if((isset($value1->actual_quantity)) && ($value1->actual_quantity!=""))
                     <td><?= round($value1->actual_quantity, 2) ?></td>
                     @else
                     <td></td>
                     @endif
-                    <td>{{isset($value1->price) ? $value1->price : ''}}</td>
+                    <td>{{ isset($value1->price) ? $value1->price : '' }}</td>
                     <td><?php ($value1['order_product_details']['weight'] * $value1->actual_pieces * $value1->price) ?></td>
                     @endif
 
                     @if($next_cnt == $current_number)
-                    <td>{{isset($value->discount) ? $value->discount : ''}}</td>
+                    <td>{{ isset($value->discount) ? $value->discount : '' }}</td>
                     @else
                     <td></td>
                     @endif
 
                     @if($next_cnt == $current_number)
-                    <td>{{isset($value->loading_charge) ? $value->loading_charge : '' }}</td>
+                    <td>{{ isset($value->loading_charge) ? $value->loading_charge : '' }}</td>
                     @else
                     <td></td>
                     @endif
 
                     @if($next_cnt == $current_number)
-                    <td>{{isset($value->freight) ? $value->freight : ''}}</td>
+                    <td>{{ isset($value->freight) ? $value->freight : '' }}</td>
                     @else
                     <td></td>
                     @endif
 
                     @if($next_cnt == $current_number)
-                    <td><?php
-                        if ($value->delivery_order->vat_percentage !== "")
-                            echo "VAT";
-                        else
-                            echo "All inclusive";
+                    <td>{{ ($value->delivery_order->vat_percentage !== "") ? "VAT" : "All inclusive" }}
+                        <?php
+//                        if ($value->delivery_order->vat_percentage !== "")
+//                            echo "VAT";
+//                        else
+//                            echo "All inclusive";
                         ?>
                     </td>
                     @else

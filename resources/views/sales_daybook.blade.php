@@ -117,7 +117,7 @@
                                                 {{$challan["customer"]->tally_name}}
                                                 @else
                                                 @if(isset($challan["customer"]->owner_name))
-                                                {{$challan["customer"]->owner_name}}
+                                                {{"Advance Sales"}}
                                                 @endif
                                                 @endif
                                             </td>
@@ -148,10 +148,10 @@
                                                         $total_qunatity += $products->quantity;
                                                     }
                                                     if ($products['unit']->id == 2) {
-                                                        $total_qunatity += ($products->quantity * $products['order_product_details']->weight);
+                                                        $total_qunatity +=($products->quantity * $products['order_product_details']->weight);
                                                     }
                                                     if ($products['unit']->id == 3) {
-                                                        $total_qunatity += (($products->quantity / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
+                                                        $total_qunatity +=(($products->quantity / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
                                                     }
                                                 }
                                                 echo round($challan['delivery_challan_products']->sum('actual_quantity'), 2);
