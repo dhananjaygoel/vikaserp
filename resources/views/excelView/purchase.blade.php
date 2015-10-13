@@ -37,6 +37,7 @@
         foreach ($purchase_orders as $key => $value) {
             $next_cnt = count($value['all_purchase_products']);
             $current_number = 1;
+            $grand_vat_amt = 0;
             foreach ($value['all_purchase_products'] as $key1 => $value1) {
                 $order_quantity = 0;
                 $value_cnt = "";
@@ -97,6 +98,11 @@
 
                             $vat_amt = 0;
                             $tot_amt = $value1->price * $value1->quantity;
+
+                            if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
+                                $grand_vat_amt = $grand_vat_amt + ($tot_amt * ($value['purchase_advice']->vat_percentage / 100));
+                            }
+
                             if ($next_cnt == $current_number) {
 
                                 $total_amt = $tot_amt + $value->loading_charge + $value->freight + $value->discount = $value->round_off;
@@ -111,7 +117,9 @@
                             $vat_amt = 0;
 //                            $total_amt = $total_amt * $value1->actual_pieces * $value1->order_product_details->weight;
                             $tot_amt = $value1->price * $value1->actual_pieces * $value1->order_product_details->weight;
-
+                            if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
+                                $grand_vat_amt = $grand_vat_amt + ($tot_amt * ($value['purchase_advice']->vat_percentage / 100));
+                            }
                             if ($next_cnt == $current_number) {
                                 $total_amt = $tot_amt + $value->loading_charge + $value->freight + $value->discount = $value->round_off;
                                 if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
@@ -169,7 +177,7 @@
                     @endif
 
                     @if($next_cnt == $current_number)
-                    <td>{{ ($value->purchase_advice->vat_percentage != "") ? number_format($vat_amt, 2, '.', '') : '' }}
+                    <td>{{ ($value->purchase_advice->vat_percentage != "") ? number_format($grand_vat_amt, 2, '.', '') : '' }}
                         <?php
 //                        if ($value->purchase_advice->vat_percentage !== "")
 //                            echo number_format($vat_amt, 2, '.', '');

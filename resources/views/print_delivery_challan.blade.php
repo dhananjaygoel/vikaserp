@@ -325,7 +325,7 @@
                         <div class="label">&nbsp; GT</div>
                         <div class="value">
                             <?php
-                            $gt = $total_price + $allorder->freight + $allorder->loading_charge + $allorder->round_off + $allorder->discount + ($allorder->vat_percentage / 100) * 100;
+                            $gt = $total_price + $allorder->freight + $allorder->loading_charge + $allorder->round_off + $allorder->discount + (($total_price * $allorder->vat_percentage) / 100);
                             ?>
                             {{ round($gt, 2) }}
                             &nbsp;

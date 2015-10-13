@@ -317,13 +317,7 @@
                             @endif
                         </div>
                         <div class="label">Round Off</div>
-                        <div class="value">
-                            @if($purchase_challan->round_off != "")
-                            {{round($purchase_challan->round_off,2)}}
-                            @else
-                            0
-                            @endif
-                        </div>
+                        <div class="value">{{ ($purchase_challan->round_off != "") ? round($purchase_challan->round_off,2) : 0 }}</div>
                         <div class="label">GT</div>
                         <div class="value">
                             {{ round($purchase_challan->grand_total, 2)}}
