@@ -166,36 +166,14 @@
                     <td><?php ($value1['order_product_details']['weight'] * $value1->actual_pieces * $value1->price) ?></td>
                     @endif
 
-                    @if($next_cnt == $current_number)
-                    <td>{{ isset($value->discount) ? $value->discount : '' }}</td>
-                    @else
-                    <td></td>
-                    @endif
+                    <td>{{ ($next_cnt == $current_number) ? (isset($value->discount) ? $value->discount : '') : '' }}</td>
 
-                    @if($next_cnt == $current_number)
-                    <td>{{ isset($value->loading_charge) ? $value->loading_charge : '' }}</td>
-                    @else
-                    <td></td>
-                    @endif
+                    <td>{{ ($next_cnt == $current_number) ? (isset($value->loading_charge) ? $value->loading_charge : '') : '' }}</td>
 
-                    @if($next_cnt == $current_number)
-                    <td>{{ isset($value->freight) ? $value->freight : '' }}</td>
-                    @else
-                    <td></td>
-                    @endif
+                    <td>{{ ($next_cnt == $current_number) ? (isset($value->freight) ? $value->freight : '') : '' }}</td>
 
-                    @if($next_cnt == $current_number)
-                    <td>{{ ($value->delivery_order->vat_percentage !== "") ? "VAT" : "All inclusive" }}
-                        <?php
-//                        if ($value->delivery_order->vat_percentage !== "")
-//                            echo "VAT";
-//                        else
-//                            echo "All inclusive";
-                        ?>
-                    </td>
-                    @else
-                    <td></td>
-                    @endif
+                    <td>{{ ($next_cnt == $current_number) ? (($value->delivery_order->vat_percentage !== "") ? "VAT" : "All inclusive") : '' }}</td>
+
 
                     @if($next_cnt == $current_number)
                     <td>
@@ -219,20 +197,9 @@
                     <td></td>
                     @endif
 
-                    @if($next_cnt == $current_number)
-                    <td>{{isset($value->round_off) ? $value->round_off : ''}}</td>
-                    @else
-                    <td></td>
-                    @endif
+                    <td>{{ ($next_cnt == $current_number) ? (isset($value->round_off) ? $value->round_off : '') : '' }}</td>
 
-
-                    @if($next_cnt == $current_number)
-                    <td>
-                        {{(isset($total_amt) ? number_format($total_amt, 2, '.', '') : '')}}
-                    </td>
-                    @else
-                    <td></td>
-                    @endif
+                    <td>{{ ($next_cnt == $current_number) ? (isset($value->grand_price) ? number_format($value->grand_price, 2, '.', '') : '') : '' }}</td>
                     <td>
                         <?php
                         if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))

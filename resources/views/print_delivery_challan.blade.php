@@ -310,11 +310,7 @@
                         </div>
                         <div class="label">&nbsp; Vat</div>
                         <div class="value">
-                            @if($with_total != "")
-                            {{ round(($with_total*5)/100,2) }}
-                            @else
-                            0
-                            @endif
+                            {{ (isset($allorder->vat_percentage) && ($with_total != "")) ? round(($with_total*$allorder->vat_percentage)/100,2) : 0 }}
                             &nbsp;
                         </div>
                         <div class="label">&nbsp; Round Off</div>
@@ -331,7 +327,7 @@
                             <?php
                             $gt = $total_price + $allorder->freight + $allorder->loading_charge + $allorder->round_off + $allorder->discount + ($allorder->vat_percentage / 100) * 100;
                             ?>
-                            {{ round($allorder->grand_price, 2) }}
+                            {{ round($gt, 2) }}
                             &nbsp;
                         </div>
                     </div>
