@@ -57,11 +57,11 @@
                     <td>{{$value_cnt}}</td>
                     @endif
 
-                    <td></td>
+                    <td>{{isset($value->serial_number)?$value->serial_number:''}}</td>
                     <td>Purchase</td>
                     <td><?= date("m-d-Y", strtotime($value->updated_at)) ?></td>
                     <td></td>
-                    <td><?= $value['supplier']->tally_name ?></td>
+                    <td>{{($value['supplier']->tally_name != "")?$value['supplier']->tally_name:'Advance Sales'}}</td>
                     <td><?= $value['supplier']->address1 ?></td>
                     <td><?= $value['supplier']->address2 ?></td>
                     <td><?= $value->supplier->states->state_name ?></td>
