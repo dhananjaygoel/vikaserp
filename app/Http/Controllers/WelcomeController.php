@@ -805,7 +805,9 @@ class WelcomeController extends Controller {
     public function delete_order_data() {
 
         //DB::table('all_order_products')->where('product_category_id', '0')->delete();//commented on 12-10-2015
-        DB::table('all_order_products')->where('id', '2215')->delete(); //Added on for delivery prder empty product 12-10-2015
+        //DB::table('all_order_products')->where('id', '2377')->delete(); //Added on for delivery prder empty product 12-10-2015
+        DB::table('all_order_products')->where('id', '2377')->delete(); //Added on for delivery order delete product empty product 14-10-2015
+        DB::table('all_order_products')->where('id', '2387')->delete(); //Added on for delivery order delete product empty product 14-10-2015
     }
 
     public function update_user_role() {
