@@ -220,8 +220,8 @@
                                 <div class="col-md-4">
                                     <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                                     <select class="form-control" name="add_inquiry_location" id="add_order_location">
-                                        <option value="">Delivery Location</option>
-                                        @foreach($delivery_location as $location)                                       
+                                        <option value="0">Delivery Location</option>
+                                        @foreach($delivery_location as $location)
                                         <option value="{{$location->id}}" <?php
                                         if ($inquiry->delivery_location_id == $location->id) {
                                             echo 'selected="selected"';
@@ -252,7 +252,7 @@
                                 </div>
                             </div>
                         </div>
-                        @else                 
+                        @else
                         <div class="locationtext" id="other_location_input_wrapper">
                             <div class="row col-md-12">
                                 <div class="form-group col-md-4">
@@ -260,7 +260,7 @@
                                     <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="" type="text">
                                 </div>
                             </div>
-                        </div>                      
+                        </div>
                         @endif
                         <div class="clearfix"></div>
                         @if($inquiry->vat_percentage == 0)
@@ -320,13 +320,13 @@
                             <label for="inquiry_remark">Remark</label>
                             <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3">{{$inquiry->remarks}}</textarea>
                         </div>
-                        <button type="button" class="btn btn-primary" id="sendSMS" >Save and Send SMS</button>
+                        <button type="button" class="btn btn-primary btn_inquiry_to_order_sms" id="add_inquiry_to_order_sendSMS" >Save and Send SMS</button>
                         <div class="checkbox">
                             <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email</span></label>
                         </div>
                         <hr>
                         <div>
-                            <input type="submit" class="btn btn-primary form_button_footer" value="Submit">
+                            <input type="submit" class="btn btn-primary form_button_footer btn_inquiry_to_order" value="Submit">
                             <a href="{{URL::to('inquiry')}}" class="btn btn-default form_button_footer">Back</a>
                         </div>
                         <div class="clearfix"></div>

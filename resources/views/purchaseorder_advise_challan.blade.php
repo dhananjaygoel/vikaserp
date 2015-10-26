@@ -17,12 +17,12 @@
         <div class="main-box">
             <div class="main-box-body clearfix">
                 @if (count($errors) > 0)
-                <div class="alert alert-warning">                        
+                <div class="alert alert-warning">
                     @foreach ($errors->all() as $error)
                     <p>{{ $error }}</p>
-                    @endforeach                       
+                    @endforeach
                 </div>
-                @endif 
+                @endif
                 <form method="POST" action="{{URL::action('PurchaseChallanController@store')}}" accept-charset="UTF-8" id="onenter_prevent">
                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                     <input type="hidden" name="purchase_advice_id" value="{{$purchase_advise->id}}"/>
@@ -31,18 +31,18 @@
 
                     <div class="form-group">
                         <label><b>Bill Date:</b> {{ date("jS F, Y", strtotime($purchase_advise->purchase_advice_date)) }}
-                            <input type='hidden' class="form-control" name="bill_date" value="{{$purchase_advise->purchase_advice_date}}"/> 
+                            <input type='hidden' class="form-control" name="bill_date" value="{{$purchase_advise->purchase_advice_date}}"/>
                         </label>
                     </div>
                     <div class="form-group">
                         <label><b>Serial Number:</b> {{$purchase_advise->serial_number}}
-                            <input type="hidden" class="form-control" name="serial_no" value="{{$purchase_advise->serial_number}}"/> 
+                            <input type="hidden" class="form-control" name="serial_no" value="{{$purchase_advise->serial_number}}"/>
                         </label>
                     </div>
                     <div class="form-group">
                         <label><b>Created By:</b> {{$purchase_advise['supplier']->owner_name }}
-                            <input type="hidden" name="supplier_id" value="{{$purchase_advise['supplier']->id }}"/> 
-                            <input type="hidden" name="created_by" value="{{$purchase_advise->created_by }}"/> 
+                            <input type="hidden" name="supplier_id" value="{{$purchase_advise['supplier']->id }}"/>
+                            <input type="hidden" name="created_by" value="{{$purchase_advise->created_by }}"/>
                         </label>
                     </div>
                     <div class="table-responsive">
@@ -74,13 +74,13 @@
                                     <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][quantity]" value="{{$products->present_shipping}}" type="text" onblur="purchase_challan_calculation();">
                                 </div>
                             </td>
-                            <td> 
+                            <td>
                                 <div class="form-group">
                                     {{$products['unit']->unit_name}}
                                     <input id="unit_id{{$key}}" name="product[{{$key}}][unit_id]" value="{{$products['unit']->id}}" type="hidden">
                                 </div>
                             </td>
-                            <td>  
+                            <td>
                                 <div class="form-group text-center">
                                     {{$products->present_shipping}}
                                     <input id="present_shipping_{{$key}}" name="product[{{$key}}][present_shipping]" value="{{$products->present_shipping}}" type="hidden">
@@ -91,17 +91,17 @@
                                     <div class="form-group col-md-12">
                                         <!--<input type="text" class="form-control" id="difference" value="{{$products->price}}" placeholder="Rate">-->
                                         <input type="text" class="form-control" id="product_price_{{$key}}" value="{{$products->price}}" name="product[{{$key}}][price]" placeholder="Rate">
-                                    </div>                                         
+                                    </div>
                                 </div>
                             </td>
-                            <td>   
-                                <div class="form-group">  
+                            <td>
+                                <div class="form-group">
                                     <?php $total_price += $products->present_shipping * $products->price; ?>
                                     <div id="amount_{{$key}}">{{ $products->present_shipping * $products->price }}</div>
                                 </div>
                             </td>
                             </tr>
-                            @endforeach                         
+                            @endforeach
                             </tbody>
                         </table>
                         <table >
@@ -128,7 +128,7 @@
                         </table>
                     </div>
                     <div class="form-group">
-                       
+
                         <label><b>Total Actual Quantity :</b> <div id="total_actual_quantity">{{$purchase_advise['purchase_products']->sum('present_shipping')}}</div></label>
                         &nbsp;
                         &nbsp;
@@ -204,10 +204,10 @@
                     <!--   <button title="SMS would be sent to Relationship Manager" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> -->
                     <hr>
                     <div>
-                        <button type="submit" class="btn btn-primary" >Submit</button>
+                        <button type="submit" class="btn btn-primary btn_puradvice_to_purchallan" >Submit</button>
                         <a href="{{url('purchase_challan')}}" class="btn btn-default">Back</a>
                     </div>
-                    <div class="clearfix"></div>                   
+                    <div class="clearfix"></div>
                 </form>
                 <div class="clearfix"></div>
             </div>

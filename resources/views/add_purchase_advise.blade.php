@@ -88,7 +88,7 @@ use Illuminate\Support\Facades\Session;
                                 ?>
                                 <div class="supplier" <?= $style ?>>
                                     <select class="form-control" name="supplier_id" id="supplier_select" onchange="get_default_location();">
-                                        <option value="" selected="">Select supplier</option>
+                                        <option value="0" selected="">Select supplier</option>
                                         @if(count($customers))
                                         @foreach($customers as $c)
                                         <option value="{{$c->id}}" default_location="{{$c->delivery_location_id}}">{{$c->owner_name.'-'.$c->tally_name}}</option>
@@ -208,13 +208,11 @@ use Illuminate\Support\Facades\Session;
                                     </table>
                                 </div>
                             </div>
-
-
                             <div class="row col-md-4">
                                 <div class="form-group">
                                     <label for="loc1">Delivery Location:</label>
                                     <select class="form-control" name="delivery_location_id" id="purchase_other_location">
-                                        <option value="" selected="" disabled="">--Delivery Location--</option>
+                                        <option value="0" selected="">--Delivery Location--</option>
                                         @foreach($delivery_locations as $delivery_location)
                                         @if($delivery_location->status == 'permanent')
                                         <option value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
@@ -265,8 +263,6 @@ use Illuminate\Support\Facades\Session;
                             <div class="plusvat " style="display: none">
                                 <div class="form-group">
                                     <table id="table-example" class="table ">
-
-
                                         <tbody>
                                             <tr class="cdtable">
                                                 <td class="cdfirst">VAT Percentage:</td>
@@ -305,7 +301,7 @@ use Illuminate\Support\Facades\Session;
                             </div>
                             <hr>
                             <div >
-                                <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
+                                <button type="submit" class="btn btn-primary form_button_footer btn_add_purchase_advice" >Submit</button>
                                 <a href="{{url('purchaseorder_advise')}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>

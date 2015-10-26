@@ -121,7 +121,7 @@
                                 <div class="col-md-4">
                                     <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                                     <select class="form-control" name="add_order_location" id="add_order_location">
-                                        <option value="" selected="" disabled="">Delivery Location</option>
+                                        <option value="0" selected="">Delivery Location</option>
                                         @foreach($delivery_locations as $delivery_location)
                                         @if($delivery_location->status=='permanent' && $delivery_location->id!= 0)
                                         <option  data-location-difference="{{$delivery_location->difference}}" <?php if ($delivery_location->id == $delivery_data->delivery_location_id) echo 'selected=""'; ?>  value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
@@ -474,7 +474,7 @@
                         <hr>
                         <div>
                             <!--<input type="hidden" name="row_count" value="{{sizeof($delivery_data['delivery_product'])}}">-->
-                            <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
+                            <button type="submit" class="btn btn-primary form_button_footer btn_edit_delivery_order">Submit</button>
                             <a href="{{url('delivery_order')}}" class="btn btn-default form_button_footer">Back</a>
                         </div>
                         <div class="clearfix"></div>

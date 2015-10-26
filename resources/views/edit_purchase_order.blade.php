@@ -247,7 +247,7 @@
                         <div class="form-group">
                             <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                             <select class="form-control" name="purchase_order_location" id="purchase_other_location">
-                                <option value="" selected="" disabled="">--Delivery Location--</option>
+                                <option value="0" selected="">--Delivery Location--</option>
 
                                 @foreach($delivery_locations as $delivery_location)
 
@@ -381,7 +381,7 @@
                     </div>
                     <hr>
                     <div>
-                        <input type="button" title="SMS would be sent to Party" class="btn btn-primary smstooltip" id="sendSMS" value="Save and Send SMS">
+                        <input type="button" title="SMS would be sent to Party" class="btn btn-primary smstooltip" id="sendSMSEditPurchaseOrder" value="Save and Send SMS">
                         <a href="{{URL::to('purchase_orders')}}" class="btn btn-default form_button_footer">Back</a>
                     </div>
                     <div class="clearfix"></div>

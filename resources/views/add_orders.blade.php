@@ -274,7 +274,7 @@ use Illuminate\Support\Facades\Session;
                                 <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email</span></label>
                             </div>
                             <div >
-                                <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" id="sendSMS" >Save and Send SMS</button>
+                                <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip btn_add_order_sms" id="add_order_sendSMS" >Save and Send SMS</button>
                             </div>
                             <hr>
                             <div >

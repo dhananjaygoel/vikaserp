@@ -121,7 +121,7 @@
                                 <div class="col-md-4">
                                     <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                                     <select class="form-control" name="add_inquiry_location" id="add_order_location">
-                                        <option value="" disabled="">Delivery Location</option>
+                                        <option value="0">Delivery Location</option>
                                         @foreach($delivery_location as $location)
                                         @if($location->status=='permanent' && $location->id!=0)
                                         @if($inquiry->delivery_location_id == $location->id)
@@ -187,14 +187,14 @@
                                                     <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
                                                         <td class="col-md-3">
                                                             <div class="form-group searchproduct">
-                                                                <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>">
+                                                                <input class="form-control each_product_detail_edit" data-productid="{{$i}}" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>">
                                                                 <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="<?php if (isset($session_data['product'][$i]['id'])) { ?>{{$session_data['product'][$i]['id']}}<?php } ?>">
                                                                 <i class="fa fa-search search-icon"></i>
                                                             </div>
                                                         </td>
                                                         <td class="col-md-1">
                                                             <div class="form-group">
-                                                                <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
+                                                                <input id="quantity_{{$i}}" class="form-control each_product_qty" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
                                                             </div>
                                                         </td>
                                                         <td class="col-md-2">
@@ -227,14 +227,14 @@
                                             <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
                                                 <td class="col-md-3">
                                                     <div class="form-group searchproduct">
-                                                        <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{isset($product['inquiry_product_details'])?$product['inquiry_product_details']->alias_name: ''}}">
+                                                        <input class="form-control each_product_detail_edit" data-productid="{{key}}" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});" value="{{isset($product['inquiry_product_details'])?$product['inquiry_product_details']->alias_name: ''}}">
                                                         <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}" id="add_product_id_{{$key}}">
                                                         <i class="fa fa-search search-icon"></i>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-1">
                                                     <div class="form-group">
-                                                        <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel">
+                                                        <input id="quantity_{{$key}}" class="form-control each_product_qty" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel">
                                                     </div>
                                                 </td>
                                                 <td class="col-md-2">
@@ -352,10 +352,10 @@
                             <label for="inquiry_remark">Remark</label>
                             <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3">{{$inquiry->remarks}}</textarea>
                         </div>
-                        <button type="button" class="btn btn-primary" id="sendSMS" >Save and Send SMS</button>
+                        <button type="button" class="btn btn-primary btn_edit_inquiry_sms" id="edit_inquiry_sendSMS" >Save and Send SMS</button>
                         <hr>
                         <div>
-                            <input type="submit" class="btn btn-primary form_button_footer" value="Submit">
+                            <input type="submit" class="btn btn-primary form_button_footer btn_edit_inquiry" value="Submit">
                             <a href="{{URL::to('inquiry')}}" class="btn btn-default form_button_footer">Back</a>
                         </div>
                         <div class="clearfix"></div>

@@ -282,7 +282,7 @@
                         <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>-->
                         <hr>
                         <div >
-                            <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
+                            <button type="submit" class="btn btn-primary form_button_footer btn_order_to_delorder">Submit</button>
                             <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>
                         </div>
                         <div class="clearfix"></div>

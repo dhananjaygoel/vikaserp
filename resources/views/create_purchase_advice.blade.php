@@ -38,7 +38,7 @@
                                     <table id="table-example" class="table ">
                                         <tbody>
                                             <tr class="cdtable">
-                                                <td class="cdfirst">Bill Date:</td>
+                                                <td class="cdfirst">Bill Date: <span class="mandatory">*</span></td>
                                                 <td>
                                                     <div class="targetdate">
                                                         <div class="input-group">
@@ -155,7 +155,7 @@
                                         <input type="hidden" name="vat_percentage" value="{{$purchase_orders['vat_percentage']}}">
                                         @endif
                                         <tr class="cdtable">
-                                            <td class="cdfirst">Vehicle Number:</td>
+                                            <td class="cdfirst">Vehicle Number <span class="mandatory">*</span></td>
                                             <td><input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="" type="text"></td>
                                         </tr>
                                         </tbody>
@@ -199,7 +199,7 @@
                             <!--<button title="SMS would be sent to Relationship Manager" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>-->
                             <hr>
                             <div>
-                                <input type="submit" class="btn btn-primary" value="Submit">
+                                <input type="submit" class="btn btn-primary btn_purorder_to_puradvice" value="Submit">
                                 <a href="{{url('purchase_orders')}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
                         </form>

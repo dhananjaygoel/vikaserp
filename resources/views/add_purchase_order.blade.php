@@ -134,14 +134,14 @@ use Illuminate\Support\Facades\Session;
                                                 <tr id="add_row_{{$i}}" class="add_product_row">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
-                                                            <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_purchase_product_name_{{$i}}" onfocus="product_autocomplete_purchase({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>">
+                                                            <input class="form-control each_product_detail" data-productid="{{$i}}" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_purchase_product_name_{{$i}}" onfocus="product_autocomplete_purchase({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>">
                                                             <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
                                                             <i class="fa fa-search search-icon"></i>
                                                         </div>
                                                     </td>
                                                     <td class="col-md-1">
                                                         <div class="form-group">
-                                                            <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
+                                                            <input id="quantity_{{$i}}"  class="form-control each_product_qty" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-2">
@@ -198,7 +198,7 @@ use Illuminate\Support\Facades\Session;
                                 <div class="form-group">
                                     <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                                     <select class="form-control" name="purchase_order_location" id="purchase_other_location">
-                                        <option value="" selected="" disabled="">--Delivery Location--</option>
+                                        <option value="0" selected="" >--Delivery Location--</option>
                                         @foreach($delivery_locations as $delivery_location)
                                         @if($delivery_location->status == 'permanent')
                                         <option value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
@@ -273,7 +273,7 @@ use Illuminate\Support\Facades\Session;
                             </div>
                             <hr>
                             <div>
-                                <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" id="sendSMS" >Save and Send SMS</button>
+                                <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" id="sendSMSPurchaseOrder" >Save and Send SMS</button>
                                 <a href="{{URL::to('purchase_orders')}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>

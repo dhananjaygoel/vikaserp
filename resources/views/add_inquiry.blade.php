@@ -103,7 +103,7 @@ use Illuminate\Support\Facades\Session;
                                     <div class="form-group col-md-4">
                                         <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                                         <select class="form-control" name="add_inquiry_location" id="add_order_location">
-                                            <option value="" selected="" disabled="">Delivery Location</option>
+                                            <option value="0" selected="">Delivery Location</option>
                                             @foreach($delivery_locations as $delivery_location)
                                             @if($delivery_location->status=='permanent' && $delivery_location->id!=0)
                                             <option value="{{$delivery_location->id}}" data-location-difference="{{$delivery_location->difference}}">{{$delivery_location->area_name}}</option>
@@ -153,14 +153,14 @@ use Illuminate\Support\Facades\Session;
                                                 <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
-                                                            <input class="form-control" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>">
+                                                            <input class="form-control each_product_detail" data-productid="{{$i}}" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>">
                                                             <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
                                                             <i class="fa fa-search search-icon"></i>
                                                         </div>
                                                     </td>
                                                     <td class="col-md-1">
                                                         <div class="form-group">
-                                                            <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
+                                                            <input id="quantity_{{$i}}" class="form-control each_product_qty" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-2">
@@ -250,10 +250,10 @@ use Illuminate\Support\Facades\Session;
                                 <label for="inquiry_remark">Remark</label>
                                 <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3"></textarea>
                             </div>
-                            <button type="button" class="btn btn-primary" id="sendSMS" >Save and Send SMS</button>
+                            <button type="button" class="btn btn-primary btn_add_inquiry_sms" id="add_inquiry_sendSMS">Save and Send SMS</button>
                             <hr>
                             <div>
-                                <input type="submit" class="btn btn-primary form_button_footer" value="Submit">
+                                <input type="submit" class="btn btn-primary form_button_footer btn_add_inquiry" value="Submit">
                                 <a href="{{URL::to('inquiry')}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>

@@ -11,7 +11,7 @@
                 </ol>
             </div>
         </div>
-        <div  class="row">
+        <div class="row">
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
@@ -167,7 +167,7 @@
                                 <div class="col-md-4">
                                     <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                                     <select class="form-control" name="add_inquiry_location" id="add_order_location">
-                                        <option value="">Delivery Location</option>
+                                        <option value="0">Delivery Location</option>
                                         @foreach($delivery_location as $location)
                                         @if($order->delivery_location_id == $location->id)
                                         <option value="{{$location->id}}" selected="" data-location-difference="{{$location->difference}}">{{$location->area_name}}</option>
@@ -398,10 +398,10 @@
                         <div class="checkbox">
                             <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email</span></label>
                         </div>
-                        <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" id="sendSMS" >Save and Send SMS</button>
+                        <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip btn_edit_order_sms" id="edit_order_sendSMS" >Save and Send SMS</button>
                         <hr>
                         <div >
-                            <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
+                            <button type="submit" class="btn btn-primary form_button_footer btn_edit_order">Submit</button>
                             <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>
                         </div>
                         <div class="clearfix"></div>
