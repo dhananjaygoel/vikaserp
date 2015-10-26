@@ -205,6 +205,11 @@ $('body').delegate("#sendSMSEditPurchaseOrder", "click", function() {
 
 $('body').delegate("#sendSMSPurchaseOrder", "click", function() {
     var status_form = 0;
+
+    if ($('#datepickerDate').val() == "") {
+        $('#datepickerDate').addClass('error_validation');
+        status_form = 1;
+    }
     if ($('input[name=supplier_status]:checked').val() == 'new_supplier') {
         if ($('#name').val() == "") {
             $('#name').addClass('error_validation');

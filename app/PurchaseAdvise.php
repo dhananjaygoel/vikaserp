@@ -40,7 +40,8 @@ class PurchaseAdvise extends Model {
     }
 
     public static $store_purchase_validation = array(
-        'bill_date' => 'required'
+        'bill_date' => 'required',
+        'vehicle_number' => 'required'
     );
 
 }
