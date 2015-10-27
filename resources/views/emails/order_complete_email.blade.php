@@ -1,4 +1,4 @@
-<p><em>Dear </em>,</p>
+<p><em>Dear {{$key}}</em>,</p>
 You order successfully completed .
 <div style="font-size: 12px !important; margin-top: 50px !important;">
     <hr style="width: 100% !important;">
