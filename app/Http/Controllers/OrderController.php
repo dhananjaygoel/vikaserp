@@ -252,7 +252,7 @@ class OrderController extends Controller {
                     foreach ($input_data['product'] as $product_data) {
                         if ($product_data['name'] != "") {
                             $product = ProductSubCategory::find($product_data['id']);
-                            $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ',\n';
+                            $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", \n";
                             if ($product_data['units'] == 1) {
                                 $total_quantity = $total_quantity + $product_data['quantity'];
                             }
@@ -264,7 +264,7 @@ class OrderController extends Controller {
                             }
                         }
                     }
-                    $str .= " meterial will be desp by " . date("jS F, Y", strtotime($datetime->format('Y-m-d'))) . ". Vikas Associates, 9673000068";
+                    $str .= " meterial will be desp by " . date("jS F, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -562,7 +562,7 @@ class OrderController extends Controller {
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $product = ProductSubCategory::find($product_data['id']);
-                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ',\n';
+                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                         if ($product_data['units'] == 1) {
                             $total_quantity = $total_quantity + $product_data['quantity'];
                         }
@@ -712,11 +712,11 @@ class OrderController extends Controller {
             $customer = Customer::where('id', '=', $order['customer']->id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\n your order has been completed for following ";
+                $str = "Dear '" . $customer->owner_name . "'\n your order has been completed for following \n";
                 foreach ($order['all_order_products'] as $product_data) {
-                    $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
+                    $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                 }
-                $str .= ". Vikas Associates, 9673000068";
+                $str .= ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {

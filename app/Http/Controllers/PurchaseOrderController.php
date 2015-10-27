@@ -215,7 +215,7 @@ class PurchaseOrderController extends Controller {
                 $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour purchase order has been logged for following \n";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
-                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ',\n';
+                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                         $total_quantity = $total_quantity + $product_data['quantity'];
                     }
                 }
@@ -378,8 +378,6 @@ class PurchaseOrderController extends Controller {
             $validator = Validator::make($input_data, Customer::$new_supplier_inquiry_rules);
             if ($validator->passes()) {
 
-
-
                 if (isset($input_data['pending_user_id']) && $input_data['pending_user_id'] > 0) {
 
                     $pending_cust = array(
@@ -458,7 +456,7 @@ class PurchaseOrderController extends Controller {
                 $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour purchase order has been edited and changed as follows \n";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
-                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ',\n';
+                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                         $total_quantity = $total_quantity + $product_data['quantity'];
                     }
                 }
@@ -607,11 +605,11 @@ class PurchaseOrderController extends Controller {
             $customer = Customer::where('id', '=', $purchase_order['customer']->id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\n your purchase order has been completed for following ";
+                $str = "Dear '" . $customer->owner_name . "'\n your purchase order has been completed for following \n";
                 foreach ($purchase_order['purchase_products'] as $product_data) {
-                    $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
+                    $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", \n";
                 }
-                $str .= ". Vikas Associates, 9673000068";
+                $str .= ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
