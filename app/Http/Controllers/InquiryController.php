@@ -258,14 +258,15 @@ class InquiryController extends Controller {
          */
         $input_data = $inquiry['inquiry_products'];
         $input = Input::all();
+        $str = "";
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             $customer_id = $inquiry->customer_id;
             $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nPrices for your inq. are as follows ";
+                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nPrices for your inq. are as follows\n";
                 foreach ($input_data as $product_data) {
-                    $str .= $product_data['inquiry_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
+                    $str .= $product_data['inquiry_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                     $total_quantity = $total_quantity + $product_data['quantity'];
                 }
                 $str .= " meterials will be desp by " . date('jS F, Y', strtotime($inquiry['expected_delivery_date'])) . ".\nVIKAS ASSOCIATES";
@@ -273,6 +274,22 @@ class InquiryController extends Controller {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
                     $phone_number = $customer->phone_number1;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user = " . PROFILE_ID . "&pwd = " . PASS . "&senderid = " . SENDER_ID . "&mobileno = " . $phone_number . "&msgtext = " . $msg . "&smstype = 4";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+            if (count($customer['manager']) > 0) {
+//                $str = "Dear '" . $customer['manager']->first_name . "'\n'" . Auth::user()->first_name . "' has logged an enquiry for '" . $customer->owner_name . "', '" . round($total_quantity, 2) . "'. Kindly chk and qt. Vikas Associates";
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer['manager']->mobile_number;
                 }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user = " . PROFILE_ID . "&pwd = " . PASS . "&senderid = " . SENDER_ID . "&mobileno = " . $phone_number . "&msgtext = " . $msg . "&smstype = 4";
@@ -748,11 +765,11 @@ class InquiryController extends Controller {
             $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour order has been logged for following ";
+                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour order has been logged for following \n";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $product = ProductSubCategory::find($product_data['id']);
-                        $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
+                        $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                         if ($product_data['units'] == 1) {
                             $total_quantity = $total_quantity + $product_data['quantity'];
                         }
