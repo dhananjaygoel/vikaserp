@@ -263,7 +263,8 @@ class PurchaseChallanController extends Controller {
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
-                    $phone_number = $customer->phone_number1;
+//                    $phone_number = $customer->phone_number1;
+                    $phone_number = $customer['manager']->mobile_number;
                 }
 
                 $msg = urlencode($str);
