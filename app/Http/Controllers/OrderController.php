@@ -631,13 +631,13 @@ class OrderController extends Controller {
                     'source' => 'update_order'
                 );
                 $receipent = array();
-                if (App::environment('development')) {
-                    $receipent['email'] = Config::get('smsdata.emailData.email');
-                    $receipent['name'] = Config::get('smsdata.emailData.name');
-                } else {
-                    $receipent['email'] = $customers->email;
-                    $receipent['name'] = $customers->owner_name;
-                }
+//                if (App::environment('development')) {
+                $receipent['email'] = Config::get('smsdata.emailData.email');
+                $receipent['name'] = Config::get('smsdata.emailData.name');
+//                } else {
+//                    $receipent['email'] = $customers->email;
+//                    $receipent['name'] = $customers->owner_name;
+//                }
 
                 Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($receipent) {
                     $message->to($receipent['email'], $receipent['name'])->subject('Vikash Associates: Order Updated');
