@@ -589,7 +589,7 @@ class OrderController extends Controller {
                     curl_close($ch);
                 }
                 if (count($customer['manager']) > 0) {
-                    $str = "Dear '" . $customer['manager']->first_name . "'\n'" . Auth::user()->first_name . "' has edited and changed an order for '" . $customer->owner_name . ", '" . round($total_quantity, 2) . "'. Kindly chk. Vikas Associates, 9673000068";
+//                    $str = "Dear '" . $customer['manager']->first_name . "'\n'" . Auth::user()->first_name . "' has edited and changed an order for '" . $customer->owner_name . ", '" . round($total_quantity, 2) . "'. Kindly chk. \nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
