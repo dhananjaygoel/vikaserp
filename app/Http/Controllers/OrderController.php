@@ -248,11 +248,11 @@ class OrderController extends Controller {
             if ($customer->phone_number1 != "") {
                 if (count($customer) > 0) {
                     $total_quantity = '';
-                    $str = "Dear '" . $customer->owner_name . "'\n your order has been logged as following ";
+                    $str = "Dear '" . $customer->owner_name . "'\n your order has been logged as following \n";
                     foreach ($input_data['product'] as $product_data) {
                         if ($product_data['name'] != "") {
                             $product = ProductSubCategory::find($product_data['id']);
-                            $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
+                            $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ',\n';
                             if ($product_data['units'] == 1) {
                                 $total_quantity = $total_quantity + $product_data['quantity'];
                             }
@@ -279,8 +279,8 @@ class OrderController extends Controller {
                         curl_close($ch);
                     }
                     if (count($customer['manager']) > 0) {
-                        $str = "Dear '" . $customer['manager']->first_name . "'\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has logged an order for '" . $customer->owner_name . ", '" . round($total_quantity, 2) . "'. Kindly chk.\nVIKAS ASSOCIATES";
-
+//                        $str = "Dear '" . $customer['manager']->first_name . "'\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has logged an order for '" . $customer->owner_name . ", '" . round($total_quantity, 2) . "'. Kindly chk.\nVIKAS ASSOCIATES";
+                        $str = urlencode($str);
                         if (App::environment('development')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
                         } else {
@@ -558,11 +558,11 @@ class OrderController extends Controller {
             $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . strtoupper($customer->owner_name) . "\nDT " . date("j M, Y") . "\nYour order has been edited and changed as following ";
+                $str = "Dear " . strtoupper($customer->owner_name) . "\nDT " . date("j M, Y") . "\nYour order has been edited and changed as following \n";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $product = ProductSubCategory::find($product_data['id']);
-                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
+                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ',\n';
                         if ($product_data['units'] == 1) {
                             $total_quantity = $total_quantity + $product_data['quantity'];
                         }

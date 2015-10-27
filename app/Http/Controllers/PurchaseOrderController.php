@@ -212,10 +212,10 @@ class PurchaseOrderController extends Controller {
             $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour purchase order has been logged for following ";
+                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour purchase order has been logged for following \n";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
-                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
+                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ',\n';
                         $total_quantity = $total_quantity + $product_data['quantity'];
                     }
                 }
@@ -455,10 +455,10 @@ class PurchaseOrderController extends Controller {
             $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour purchase order has been edited and changed as follows ";
+                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour purchase order has been edited and changed as follows \n";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
-                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ', ';
+                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ',\n';
                         $total_quantity = $total_quantity + $product_data['quantity'];
                     }
                 }

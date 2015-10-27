@@ -15,6 +15,6 @@ return [
     'emailData' => array(
 //        'email' => 'deepakw@agstechnologies.com', 'abhimanipal@gmail.com',
         'email' => 'abhimanipal@gmail.com',
-        'name' => 'Deepak Wagh'
+        'name' => 'Abhishekh'
     )
 ];
