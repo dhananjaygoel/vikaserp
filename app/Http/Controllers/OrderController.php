@@ -787,6 +787,16 @@ class OrderController extends Controller {
         return redirect('orders')->with('flash_message', 'One order is cancelled.');
     }
 
+    public function testemailproduction() {
+
+        $receipent['email'] = Config::get('smsdata.emailData.email');
+        $receipent['name'] = Config::get('smsdata.emailData.name');
+        $key = "just testing mail";
+        Mail::send('emails.order_complete_email', ['order' => $key], function($message) use($receipent) {
+            $message->to($receipent['email'], $receipent['name'])->subject('Vikash Associates: Order Completed');
+        });
+    }
+
     public function create_delivery_order($id) {
 
         $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->first();
