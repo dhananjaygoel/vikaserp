@@ -159,4 +159,4 @@ Route::get('clear_completed_records', 'CronDeleteRecordsController@index');
 Route::post('update_all_sizes', 'ProductsubController@update_all_sizes_difference');
 Route::any('update_user_role', 'WelcomeController@update_user_role');
 Route::any('updatecity_delievrylocation', 'HomeController@updatecity_delievrylocation');
-Route::any('testemailproduction', 'HomeController@testemailproduction');
+Route::any('testemailproduction', 'OrderController@testemailproduction');
