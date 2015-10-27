@@ -136,11 +136,14 @@
         {!! HTML::script('/resources/assets/js/jquery.confirmExit.min.js') !!}
 
         <!-- Sortable Script Support -->
-        <script src="resources/assets/custom_js/my_script.js?<?php echo time(); ?>"></script>
+        <script src="{{url()."/resources/assets/custom_js/my_script.js?".time()}}"></script>
+
         <!-- Custom Script Support -->
-        <script src="resources/assets/custom_js/custom_script.js?<?php echo time(); ?>"></script>
-        <script src="resources/assets/custom_js/custom_script_js.js?<?php echo time(); ?>"></script>
-        <script src="resources/assets/custom_js/custom.js?<?php echo time(); ?>"></script>
+
+        <script src="{{url()."/resources/assets/custom_js/custom_script.js?".time()}}"></script>
+        <script src="{{url()."/resources/assets/custom_js/custom_script_js.js?".time()}}"></script>
+        <script src="{{url()."/resources/assets/custom_js/custom.js?".time()}}"></script>
+
         <script>
 $(function($) {
     $('#datepickerDate').datepicker({
