@@ -14,7 +14,9 @@ return [
     'send_sms_to' => '9975755595', //Changed on 18-09-2015
     'emailData' => array(
 //        'email' => 'deepakw@agstechnologies.com', 'abhimanipal@gmail.com',
-        'email' => 'abhimanipal@gmail.com',
-        'name' => 'Deepak Wagh'
+//        'email' => 'abhimanipal@gmail.com',
+//        'name' => 'Deepak Wagh'
+        'email' => 'gamit@agstechnologies.com',
+        'name' => 'Amit Gupta'
     )
 ];
