@@ -154,7 +154,7 @@ Route::group(['middleware' => ['auth']], function() {
 
 Route::get('export/{type}', 'WelcomeController@exportExcel');
 Route::get('get_server_data', 'WelcomeController@get_server_data');
-Route::get('delete_order_data', 'WelcomeController@delete_order_data');
+Route::get('delete_order_data/{table}/{col}/{cvalue}', 'WelcomeController@delete_order_data');
 Route::get('clear_completed_records', 'CronDeleteRecordsController@index');
 Route::post('update_all_sizes', 'ProductsubController@update_all_sizes_difference');
 Route::any('update_user_role', 'WelcomeController@update_user_role');

@@ -802,12 +802,16 @@ class WelcomeController extends Controller {
 
     /* Created by Amit Gupta to resolve the order error issue on 05-10-2015 */
 
-    public function delete_order_data() {
+    public function delete_order_data($tablename = NULL, $columnname = NULL, $value = NULL) {
 
         //DB::table('all_order_products')->where('product_category_id', '0')->delete();//commented on 12-10-2015
         //DB::table('all_order_products')->where('id', '2377')->delete(); //Added on for delivery prder empty product 12-10-2015
-        DB::table('all_order_products')->where('id', '2377')->delete(); //Added on for delivery order delete product empty product 14-10-2015
-        DB::table('all_order_products')->where('id', '2387')->delete(); //Added on for delivery order delete product empty product 14-10-2015
+//        DB::table('all_order_products')->where('id', '2377')->delete(); //Added on for delivery order delete product empty product 14-10-2015
+//        DB::table('all_order_products')->where('id', '2387')->delete(); //Added on for delivery order delete product empty product 14-10-2015
+
+        DB::table($tablename)->where($columnname, $value)->delete(); //Added on for delivery order delete id - 6077 empty product 28-10-2015
+
+        echo "Order deleted from table name " . $tablename . " for column " . $columnname . " having value of " . $value;
     }
 
     public function update_user_role() {
