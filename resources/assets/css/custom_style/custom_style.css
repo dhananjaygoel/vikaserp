@@ -41,3 +41,19 @@
         max-height: 250px;
     }
 }
+.error_page_link{
+    color: #3498db !important;
+    text-decoration: underline !important;
+}
+.error_page_link:hover{
+    color: #333 !important;
+    text-decoration: none !important;
+}
+.erro_page_heading{
+    font-size: 28px;
+}
+.error_page_div{
+    margin-top: 50px;
+    text-align: center;
+}
+

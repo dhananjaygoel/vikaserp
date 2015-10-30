@@ -25,7 +25,7 @@ class Inquiry extends Model {
     }
 
     public function inquiry_products() {
-        return $this->hasMany('App\InquiryProducts', 'inquiry_id', 'id');
+        return $this->hasMany('App\InquiryProducts', 'inquiry_id', 'id')->where('product_category_id', '>', '0');
     }
 
     public function product_category() {
