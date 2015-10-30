@@ -353,7 +353,7 @@ class InquiryController extends Controller {
         $i = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
-            if ($product_data['name'] == "" || $product_data['id'] == "" || $product_data['id'] <= 0) {
+            if ($product_data['name'] == "") {
                 $i++;
             }
         }

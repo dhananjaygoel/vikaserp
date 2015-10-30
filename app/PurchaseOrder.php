@@ -21,8 +21,9 @@ class PurchaseOrder extends Model {
     protected $fillable = ['supplier_id', 'created_by', 'is_view_all', 'delivery_location_id', 'order_for', 'expected_delivery_date', 'total_price', 'vat_percentage', 'remarks', 'order_status', 'other_location', 'other_location_difference'];
 
     public function purchase_products() {
-        return $this->hasMany('App\PurchaseProducts', 'purchase_order_id', 'id')->where('order_type', '=', 'purchase_order');
+        return $this->hasMany('App\PurchaseProducts', 'purchase_order_id', 'id')->where('order_type', '=', 'purchase_order')->where('product_category_id', '>', '0');
     }
+
 //********************
     public function product_category() {
         return $this->hasOne('App\ProductCategory', 'id', 'product_category_id');
@@ -31,6 +32,7 @@ class PurchaseOrder extends Model {
     public function product_sub_category() {
         return $this->hasOne('App\ProductSubCategory', 'product_type_id', 'id');
     }
+
 //**************
     public function customer() {
         return $this->hasOne('App\Customer', 'id', 'supplier_id');

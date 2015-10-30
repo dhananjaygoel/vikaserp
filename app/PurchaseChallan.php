@@ -40,7 +40,7 @@ class PurchaseChallan extends Model {
     }
 
     public function all_purchase_products() {
-        return $this->hasMany('App\PurchaseProducts', 'purchase_order_id', 'id')->where('order_type', '=', 'purchase_challan');
+        return $this->hasMany('App\PurchaseProducts', 'purchase_order_id', 'id')->where('order_type', '=', 'purchase_challan')->where('product_category_id', '>', '0');
     }
 
     public function delivery_location() {

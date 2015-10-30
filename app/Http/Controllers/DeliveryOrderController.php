@@ -266,7 +266,6 @@ class DeliveryOrderController extends Controller {
             }
         } elseif (isset($input_data['customer_status']) && $input_data['customer_status'] == "existing_customer") {
 
-
             $validator = Validator::make($input_data, array('autocomplete_customer_id' => 'required'));
             if ($validator->passes()) {
                 $customer_id = $input_data['autocomplete_customer_id'];
