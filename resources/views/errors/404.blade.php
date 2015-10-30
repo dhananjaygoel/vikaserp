@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','Place Order')
+@section('title','Page Not Found')
 @section('content')
 
 <div class="row">
