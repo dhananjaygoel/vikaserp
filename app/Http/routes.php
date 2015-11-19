@@ -101,6 +101,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('change_password', 'PasswordController@getPassword');
     Route::post('change_password', 'PasswordController@postPassword');
     Route::resource('inquiry', 'InquiryController');
+    Route::get('fetch_existing_supplier', 'InquiryController@fetch_existing_supplier');
     Route::get('fetch_existing_customer', 'InquiryController@fetch_existing_customer');
     Route::get('fetch_products', 'InquiryController@fetch_products');
     Route::get('recalculate_product_price', 'InquiryController@recalculate_product_price');
