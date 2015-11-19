@@ -521,7 +521,7 @@ class InquiryController extends Controller {
     /*
      * Fetch Exsisting supplier
      */
-    public function fetch_existing_supplier() {
+    public function fetch_existing_customer() {
 
         $term = '%' . Input::get('term') . '%';
 
@@ -556,7 +556,7 @@ class InquiryController extends Controller {
     /*
      * Fetch Exsisting customer
      */
-    public function fetch_existing_customer() {
+    public function fetch_existing_supplier() {
         $term = '%' . Input::get('term') . '%';
         $customers = Customer::select('owner_name','tally_name','delivery_location_id')
                 ->Where('tally_name', 'like', $term)
