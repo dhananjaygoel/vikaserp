@@ -525,8 +525,7 @@ class InquiryController extends Controller {
 
         $term = '%' . Input::get('term') . '%';
 
-        $customers = Customer::orderBy('owner_name', 'ASC')
-                ->where(function($query) use($term) {
+        $customers = Customer::where(function($query) use($term) {
                     $query->whereHas('city', function($q) use ($term) {
                         $q->where('city_name', 'like' . $term)
                         ->orWhere('company_name', $term);
@@ -536,6 +535,7 @@ class InquiryController extends Controller {
                 ->orWhere('tally_name', 'like', $term)
                 ->where('customer_status', '=', 'permanent')
                 ->with('deliverylocation')
+                ->orderBy('owner_name', 'ASC')
                 ->get();
 
         if (count($customers) > 0) {
