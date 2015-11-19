@@ -521,15 +521,15 @@ class InquiryController extends Controller {
     public function fetch_existing_customer() {
 
         $term = '%' . Input::get('term') . '%';
-
-        $customers = Customer::orderBy('owner_name', 'ASC')
+        
+        $customers = Customer::select('owner_name','tally_name','delivery_location_id')->orderBy('owner_name', 'ASC')
                 ->where(function($query) use($term) {
                     $query->whereHas('city', function($q) use ($term) {
                         $q->where('city_name', 'like' . $term)
-                        ->orWhere('company_name', $term)
-                        ->orWhere('tally_name', 'like', $term);
+                        ->orWhere('company_name', $term);
                     });
                 })
+                ->orWhere('tally_name', 'like', $term)
                 ->where('customer_status', '=', 'permanent')
                 ->with('deliverylocation')
                 ->get();

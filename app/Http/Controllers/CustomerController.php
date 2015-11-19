@@ -53,25 +53,24 @@ class CustomerController extends Controller {
         $customers = '';
         if (Input::get('search') != '') {
             $term = '%' . Input::get('search') . '%';
+           
             $customers = Customer::orderBy('tally_name', 'asc')
                     ->where(function($query) use($term) {
                         $query->whereHas('city', function($q) use ($term) {
-                            $q->where('city_name', 'like', $term)
-                            ->orWhere('tally_name', 'like', $term);
+                            $q->where('city_name', 'like', $term);
                         });
                     })
                     ->orWhere(function($query) use($term) {
                         $query->whereHas('deliverylocation', function($q) use ($term) {
-                            $q->where('area_name', 'like', $term)
-                            ->orWhere('tally_name', 'like', $term);
+                            $q->where('area_name', 'like', $term);
                         });
                     })
                     ->orWhere(function($query) use($term) {
                         $query->whereHas('manager', function($q) use ($term) {
-                            $q->where('first_name', 'like', $term)
-                            ->orWhere('tally_name', 'like', $term);
+                            $q->where('first_name', 'like', $term);
                         });
                     })
+                    ->orWhere('tally_name','like',$term)
                     ->where('customer_status', '=', 'permanent')
                     ->paginate(20);
         } else {
