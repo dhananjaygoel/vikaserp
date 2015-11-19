@@ -523,7 +523,7 @@ class InquiryController extends Controller {
      */
     public function fetch_existing_customer() {
 
-        $term = '%' . Input::get('term') . '%';
+        $term = '%' . Input::get('term') . '%'; 
 
         $customers = Customer::where(function($query) use($term) {
                     $query->whereHas('city', function($q) use ($term) {
