@@ -86,7 +86,7 @@ $(document).ready(function() {
         source: function(request, response) {
             $("#existing_supplier_name").addClass('loadinggif');
             $.ajax({
-                url: baseurl + '/fetch_existing_supplier',
+                url: baseurl + '/fetch_existing_customer',
                 data: {"term": request.term},
                 success: function(data) {
                     var main_array = JSON.parse(data);

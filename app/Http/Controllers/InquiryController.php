@@ -519,7 +519,7 @@ class InquiryController extends Controller {
     }
 
     /*
-     * Fetch Exsisting supplier
+     * Fetch Exsisting customer
      */
     public function fetch_existing_customer() {
 
@@ -529,10 +529,11 @@ class InquiryController extends Controller {
                 ->where(function($query) use($term) {
                     $query->whereHas('city', function($q) use ($term) {
                         $q->where('city_name', 'like' . $term)
-                        ->orWhere('company_name', $term)
-                        ->orWhere('tally_name', 'like', $term);
+                        ->orWhere('company_name', $term);
+                        
                     });
                 })
+                ->orWhere('tally_name', 'like', $term)
                 ->where('customer_status', '=', 'permanent')
                 ->with('deliverylocation')
                 ->get();
@@ -553,34 +554,7 @@ class InquiryController extends Controller {
         }
         echo json_encode(array('data_array' => $data_array));
     }
-    /*
-     * Fetch Exsisting customer
-     */
-    public function fetch_existing_supplier() {
-        $term = '%' . Input::get('term') . '%';
-        $customers = Customer::select('owner_name','tally_name','delivery_location_id')
-                ->Where('tally_name', 'like', $term)
-                ->where('customer_status', '=', 'permanent')
-                ->with('deliverylocation')
-                ->orderBy('owner_name', 'ASC')
-                ->get();
-
-        if (count($customers) > 0) {
-            foreach ($customers as $customer) {
-                $data_array[] = [
-                    'value' => $customer->owner_name . '-' . $customer->tally_name,
-                    'id' => $customer->id,
-                    'delivery_location_id' => $customer->delivery_location_id,
-                    'location_difference' => $customer['deliverylocation']->difference,
-                ];
-            }
-        } else {
-            $data_array[] = [
-                'value' => 'No Customers',
-            ];
-        }
-        echo json_encode(array('data_array' => $data_array));
-    }
+    
     /*
      * find the product list base on the user inputs
      */
