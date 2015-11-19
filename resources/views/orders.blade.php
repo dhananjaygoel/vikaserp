@@ -10,7 +10,7 @@
                     <li class="active"><span>Orders</span></li>
                 </ol>
                 <div class="filter-block">
-                    <form action="{{url('orders')}}" method="GET">
+                    <form action="{{url('orders')}}" method="GET" id="orderForm">
                         <h1 class="pull-left">Orders</h1>
                         <div class="pull-right">
                             @if(Auth::user()->role_id != 4 && Auth::user()->role_id != 3 )
@@ -72,7 +72,7 @@
                         </div>
                         <div class="col-md-2 form-group pull-right">
                             <input class="form-control order_filter ui-autocomplete-input" placeholder="Size" value="{{Input::get('size_filter')}}" id="order_size" autocomplete="off" name="size_filter" type="text">
-                            <a onclick="this.form.submit()">
+                            <a onclick="javascript:document.getElementById('orderForm').submit();">
                                 <i class="fa fa-search search-icon" id="search_icon"></i>
                             </a>
                         </div>
