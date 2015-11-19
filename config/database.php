@@ -52,29 +52,29 @@ return [
 			'prefix'   => '',
 		],
 
-		'mysql' => [
-			'driver'    => 'mysql',
-			'host'      => 'localhost',
-			'database'  => 'vikaserp_ags',
-			'username'  => 'vikaserp_agsus',
-			'password'  => 'passags756',
-			'charset'   => 'utf8',
-			'collation' => 'utf8_unicode_ci',
-			'prefix'    => '',
-			'strict'    => false,
-		],
-            
 //		'mysql' => [
 //			'driver'    => 'mysql',
 //			'host'      => 'localhost',
-//			'database'  => 'steel-trading-automation',
-//			'username'  => 'root',
-//			'password'  => 'root123',
+//			'database'  => 'vikaserp_ags',
+//			'username'  => 'vikaserp_agsus',
+//			'password'  => 'passags756',
 //			'charset'   => 'utf8',
 //			'collation' => 'utf8_unicode_ci',
 //			'prefix'    => '',
 //			'strict'    => false,
 //		],
+            
+		'mysql' => [
+			'driver'    => 'mysql',
+			'host'      => 'localhost',
+			'database'  => 'steel-trading-automation',
+			'username'  => 'root',
+			'password'  => 'root123',
+			'charset'   => 'utf8',
+			'collation' => 'utf8_unicode_ci',
+			'prefix'    => '',
+			'strict'    => false,
+		],
 //            
 //		'mysql' => [
 //			'driver'    => 'mysql',

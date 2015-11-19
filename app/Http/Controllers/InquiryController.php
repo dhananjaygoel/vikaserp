@@ -529,7 +529,6 @@ class InquiryController extends Controller {
                     $query->whereHas('city', function($q) use ($term) {
                         $q->where('city_name', 'like' . $term)
                         ->orWhere('company_name', $term);
-                        
                     });
                 })
                 ->orWhere('tally_name', 'like', $term)
