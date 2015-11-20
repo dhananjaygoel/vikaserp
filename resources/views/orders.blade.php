@@ -70,11 +70,13 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-2 form-group pull-right">
+                        <div class="input-group col-md-2 pull-right">
                             <input class="form-control order_filter ui-autocomplete-input" placeholder="Size" value="{{Input::get('size_filter')}}" id="order_size" autocomplete="off" name="size_filter" type="text">
-                            <a onclick="javascript:document.getElementById('orderForm').submit();">
-                                <i class="fa fa-search search-icon" id="search_icon"></i>
-                            </a>
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" onclick="javascript:document.getElementById('orderForm').submit();">
+                                    <i class="fa fa-search" id="search_icon"></i>
+                                </button>
+                            </span>
                         </div>
                     </form>
                 </div>
