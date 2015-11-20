@@ -103,10 +103,10 @@ class OrderController extends Controller {
         $allorders->setPath('orders');
 
 
-//        echo '<pre>';
-//        print_r($allorders->toArray());
-//        echo '</pre>';
-//        exit();
+        echo '<pre>';
+        print_r($allorders->toArray());
+        echo '</pre>';
+        exit();
 
         return View::make('orders', compact('delivery_location', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size'));
     }
