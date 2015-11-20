@@ -29,7 +29,7 @@ class Order extends Model {
     }
 
     public function all_order_products() {
-        return $this->hasMany('App\AllOrderProducts', 'order_id', 'id')->where('order_type', '=', 'order')->where('product_category_id','=','2');
+        return $this->hasMany('App\AllOrderProducts', 'order_id', 'id')->where('order_type', '=', 'order')->where('product_category_id', '>', '0');
     }
 
     public function delivery_location() {

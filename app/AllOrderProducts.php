@@ -35,7 +35,5 @@ class AllOrderProducts extends Model {
     public function order_product_details() {
         return $this->hasOne('App\ProductSubCategory', 'id', 'product_category_id')->with('product_category');
     }
-    
-   
 
 }

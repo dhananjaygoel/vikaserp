@@ -80,16 +80,14 @@ class OrderController extends Controller {
         }
         if (isset($_GET['size_filter']) && $_GET['size_filter'] != '') {
             $size = $_GET['size_filter'];
-            
-            $q->with('all_order_products')  
+            $q->with('all_order_products')
                     ->whereHas('all_order_products.product_category.product_sub_categories', function($query) use ($size) {
-                        $query->where('size','=', $size);
+                        $query->where('size', '=', $size);
                     });
-                
         } else {
             $q->with('all_order_products');
         }
-        
+
         $allorders = $q->with('customer', 'delivery_location', 'order_cancelled')
                         ->orderBy('created_at', 'desc')->paginate(20);
 
@@ -103,12 +101,12 @@ class OrderController extends Controller {
         $users = User::all();
         $pending_orders = $this->checkpending_quantity($allorders);
         $allorders->setPath('orders');
-            
 
-        echo '<pre>';
-        print_r($allorders->toArray());
-        echo '</pre>';
-        exit();
+
+//        echo '<pre>';
+//        print_r($allorders->toArray());
+//        echo '</pre>';
+//        exit();
 
         return View::make('orders', compact('delivery_location', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size'));
     }
