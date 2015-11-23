@@ -34,7 +34,7 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
-                        <div id="flash_message" class="alert alert-success no_data_msg_container"></div>
+                        <div id="flash_message" class="alert no_data_msg_container"></div>
                         @if(sizeof($inquiries) ==0)
                         <div class="alert alert-info no_data_msg_container">
                             Currently no inquiries have been added.

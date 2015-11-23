@@ -651,6 +651,8 @@ $('.delete_inquiry_form_submit').click(function() {
         {
             $("#inquiry_row_"+inquiry_id).remove();
             $('#flash_message').html("Inquiry Deleted Successfully");
+            $('#flash_message').removeClass('alert-danger');
+            $('#flash_message').addClass('alert-success');
             $('#flash_message').fadeIn();
             $('#flash_message').fadeOut(5000);
         }
