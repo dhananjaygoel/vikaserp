@@ -647,6 +647,7 @@ $('.delete_inquiry_form_submit').click(function() {
    
     var posting = $.post(url, {formData: $data});
     posting.done(function(data) {
+        $("#pwdr").val('');
         if(data['message']=='success')
         {
             $("#inquiry_row_"+inquiry_id).remove();

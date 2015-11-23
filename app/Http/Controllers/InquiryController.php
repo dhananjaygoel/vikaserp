@@ -515,8 +515,8 @@ class InquiryController extends Controller {
             parse_str($inputData, $formFields);
 
         if (Hash::check($formFields['password'], Auth::user()->password)) {
-//            $delete_inquiry = Inquiry::find($id)->delete();
-//            $delete_inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->delete();
+            $delete_inquiry = Inquiry::find($id)->delete();
+            $delete_inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->delete();
             return array('message'=>'success');
         } else {
          
