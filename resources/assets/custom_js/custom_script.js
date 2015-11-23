@@ -691,7 +691,7 @@ function delete_inquiry_row(inquiry_id)
 /*Code use to delete inquiry*/
 $('.delete_inquiry_form_submit').click(function() {
      
-   $('#delete_inquiry').css('display','none').attr('aria-hidden','true');
+   $('#delete_inquiry').modal('hide');
     /*Form token set up*/
     $.ajaxSetup({
         headers: {

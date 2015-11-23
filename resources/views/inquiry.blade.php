@@ -140,6 +140,8 @@
                                             @endif
                                         </td>
                                     </tr>
+                                
+                                @endforeach
                                 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -157,7 +159,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                @endforeach
                                 <div class="modal fade" id="delete_inquiry" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
