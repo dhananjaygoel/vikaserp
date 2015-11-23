@@ -34,7 +34,7 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
-
+                        <div id="flash_message" class="alert alert-success no_data_msg_container"></div>
                         @if(sizeof($inquiries) ==0)
                         <div class="alert alert-info no_data_msg_container">
                             Currently no inquiries have been added.
@@ -64,7 +64,7 @@
                                 <tbody>
                                     <?php $i = ($inquiries->currentPage() - 1) * $inquiries->perPage() + 1; ?>
                                     @foreach($inquiries as $inquiry)
-                                    <tr id='inquiry_{{$inquiry['id']}}'>
+                                    <tr id="inquiry_row_{{$inquiry['id']}}">
                                         <td class="text-center">{{$i++}}</td>
                                         <td class="text-center">
                                             @if($inquiry["customer"]->tally_name != "")
@@ -131,7 +131,7 @@
 
 
                                             @if( Auth::user()->role_id == 0 )
-                                            <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_inquiry_{{$inquiry['id']}}">
+                                            <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_inquiry" onclick="delete_inquiry_row({{$inquiry['id']}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -157,7 +157,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal fade" id="delete_inquiry_{{$inquiry['id']}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                @endforeach
+                                <div class="modal fade" id="delete_inquiry" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -165,11 +166,11 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
-                                               {!! Form::open(array('method'=>'DELETE', 'id'=>'delete_inquiry_form'))!!}
-                                                <form method="post" class="delete_inquiry_form">
+                                               <!--{!! Form::open(array('method'=>'DELETE', 'id'=>'delete_inquiry_form'))!!}-->
+                                                <form method="post" class="delete_inquiry_form" >
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <input type='hidden' id='inquiry_row_id' value='inquiry_{{$inquiry['id']}}'>
-                                                <input class="form-control" id="inquiry_id" type="hidden" value="{{url('inquiry',$inquiry['id'])}}-delete">
+                                                
+                                                <!--<input class="form-control" id="inquiry_id" type="hidden" value="{{$inquiry['id']}}">-->
                                                 <div class="delete">
                                                     <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                     <div class="pwd">
@@ -181,7 +182,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <a class="btn btn-default delete_inquiry_form_submit" id="delete_inquiry_form_submit" value='{{$inquiry['id']}}'>Confirm</a>
+                                                <a class="btn btn-default delete_inquiry_form_submit">Confirm</a>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                             </div>
                                             </form>
@@ -189,7 +190,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                @endforeach
                                 </tbody>
                             </table>
                             <span class="pull-right">

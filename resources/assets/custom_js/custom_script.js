@@ -1,5 +1,6 @@
 var baseurl = $('#baseurl').attr('name');
 var _token = $('#csrf_token').attr('content');
+   
 $(document).ready(function() {
 
     var current_time = moment().format("h:mm a");
@@ -187,6 +188,8 @@ $(document).ready(function() {
                 '</td>' +
                 '</tr>';
         $("#add_product_table_purchase").children("tbody").append(purchase_html);
+       
+        
     });
 
     $("#add_purchase_advise_product_row").on("click", function() {
@@ -385,6 +388,8 @@ $(document).ready(function() {
                 $("#other_location_input_wrapper").hide();
         }
     });
+    //flash message should be hide 
+        $('#flash_message').hide();
 });
 
 function save_price_inquiry_view(id, inq_id) {
@@ -611,30 +616,52 @@ function fetch_city() {
     });
 }
 
+/*
+ * Seting inquiry_id to form onclick on the delete button
+ * @param {type} inquiry_id
+ */
+function delete_inquiry_row(inquiry_id)
+{
+     $form = $('.delete_inquiry_form');
+     
+     $('.delete_inquiry_form_submit').val(inquiry_id);
+}
+
 /*Code use to delete inquiry*/
 $('.delete_inquiry_form_submit').click(function() {
-    
+     
+   $('.modal').hide();
     /*Form token set up*/
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }});
-
+    inquiry_id=$('.delete_inquiry_form_submit').val();
     /* Mail setting form id object*/
-    $form = $('#delete_inquiry_form');
+    $form = $('.delete_inquiry_form');
     /*Mail setting form data*/
     $data = $form.serialize();
     /*Mail setting from url*/
-    url =$("#inquiry_id").val();
-    
+    url =baseurl+'/inquiry/'+inquiry_id+'-delete';
+  //alert(baseurl+'/inquiry/'+inquiry_id+'-delete');
+   
     var posting = $.post(url, {formData: $data});
     posting.done(function(data) {
         if(data['message']=='success')
         {
-            $("#"+$("#inquiry_row_id").val()).remove();
-          alert("sucess");  
+            $("#inquiry_row_"+inquiry_id).remove();
+            $('#flash_message').html("Inquiry Deleted Successfully");
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
         }
-       
+       else{
+           
+            $('#flash_message').html("Delete Opration Failed");
+            $('#flash_message').removeClass('alert-success');
+            $('#flash_message').addClass('alert-danger');
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
+       }
 
     }, 'json'); //done    
 

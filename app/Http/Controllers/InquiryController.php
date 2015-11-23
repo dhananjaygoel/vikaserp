@@ -511,13 +511,15 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $inputData = Input::get('formData');
+        
             parse_str($inputData, $formFields);
-            
+
         if (Hash::check($formFields['password'], Auth::user()->password)) {
 //            $delete_inquiry = Inquiry::find($id)->delete();
 //            $delete_inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->delete();
             return array('message'=>'success');
         } else {
+         
             return array('message'=> 'failed');
         }
     }
