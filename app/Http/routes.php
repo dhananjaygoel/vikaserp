@@ -100,7 +100,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('print_purchase_daybook', 'PurchaseDaybookController@print_purchase_daybook');
     Route::get('change_password', 'PasswordController@getPassword');
     Route::post('change_password', 'PasswordController@postPassword');
+    Route::post('inquiry/{id}-delete','InquiryController@destroy');
     Route::resource('inquiry', 'InquiryController');
+    
 //    Route::get('fetch_existing_supplier', 'InquiryController@fetch_existing_supplier');
     Route::get('fetch_existing_customer', 'InquiryController@fetch_existing_customer');
     Route::get('fetch_products', 'InquiryController@fetch_products');

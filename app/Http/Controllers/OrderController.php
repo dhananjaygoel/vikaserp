@@ -80,7 +80,7 @@ class OrderController extends Controller {
         }
         if (isset($_GET['size_filter']) && $_GET['size_filter'] != '') {
             $size = $_GET['size_filter'];
-            return $size;
+          
             $q->with('all_order_products')
                     ->whereHas('all_order_products.product_category.product_sub_categories', function($query) use ($size) {
                         $query->where('size', '=', $size);

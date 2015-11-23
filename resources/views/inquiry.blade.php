@@ -64,7 +64,7 @@
                                 <tbody>
                                     <?php $i = ($inquiries->currentPage() - 1) * $inquiries->perPage() + 1; ?>
                                     @foreach($inquiries as $inquiry)
-                                    <tr>
+                                    <tr id='inquiry_{{$inquiry['id']}}'>
                                         <td class="text-center">{{$i++}}</td>
                                         <td class="text-center">
                                             @if($inquiry["customer"]->tally_name != "")
@@ -165,7 +165,11 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
-                                                {!! Form::open(array('method'=>'DELETE','url'=>url('inquiry',$inquiry['id']), 'id'=>'delete_inquiry_form'))!!}
+                                               {!! Form::open(array('method'=>'DELETE', 'id'=>'delete_inquiry_form'))!!}
+                                                <form method="post" class="delete_inquiry_form">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <input type='hidden' id='inquiry_row_id' value='inquiry_{{$inquiry['id']}}'>
+                                                <input class="form-control" id="inquiry_id" type="hidden" value="{{url('inquiry',$inquiry['id'])}}-delete">
                                                 <div class="delete">
                                                     <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                     <div class="pwd">
@@ -177,10 +181,11 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="submit" class="btn btn-default" id="yes">Confirm</button>
+                                                <a class="btn btn-default delete_inquiry_form_submit" id="delete_inquiry_form_submit" value='{{$inquiry['id']}}'>Confirm</a>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                             </div>
-                                            {!! Form::close() !!}
+                                            </form>
+                                           
                                         </div>
                                     </div>
                                 </div>

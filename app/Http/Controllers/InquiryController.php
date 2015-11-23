@@ -506,15 +506,19 @@ class InquiryController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy($id) {
+        
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        if (Hash::check(Input::get('password'), Auth::user()->password)) {
-            $delete_inquiry = Inquiry::find($id)->delete();
-            $delete_inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->delete();
-            return redirect('inquiry')->with('flash_message', 'Inquiry details successfully deleted.');
+        $inputData = Input::get('formData');
+            parse_str($inputData, $formFields);
+            
+        if (Hash::check($formFields['password'], Auth::user()->password)) {
+//            $delete_inquiry = Inquiry::find($id)->delete();
+//            $delete_inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->delete();
+            return array('message'=>'success');
         } else {
-            return redirect('inquiry')->with('flash_message', 'Please enter a correct password.');
+            return array('message'=> 'failed');
         }
     }
 

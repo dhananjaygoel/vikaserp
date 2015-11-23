@@ -610,3 +610,33 @@ function fetch_city() {
         $("#select_city").html(html);
     });
 }
+
+/*Code use to delete inquiry*/
+$('.delete_inquiry_form_submit').click(function() {
+    
+    /*Form token set up*/
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        }});
+
+    /* Mail setting form id object*/
+    $form = $('#delete_inquiry_form');
+    /*Mail setting form data*/
+    $data = $form.serialize();
+    /*Mail setting from url*/
+    url =$("#inquiry_id").val();
+    
+    var posting = $.post(url, {formData: $data});
+    posting.done(function(data) {
+        if(data['message']=='success')
+        {
+            $("#"+$("#inquiry_row_id").val()).remove();
+          alert("sucess");  
+        }
+       
+
+    }, 'json'); //done    
+
+
+});
