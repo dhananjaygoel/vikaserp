@@ -1,6 +1,6 @@
 var baseurl = $('#baseurl').attr('name');
 var _token = $('#csrf_token').attr('content');
-   
+var cache = {};
 $(document).ready(function() {
 
     var current_time = moment().format("h:mm a");
@@ -43,6 +43,7 @@ $(document).ready(function() {
         $(".plusvat").hide();
     });
 
+
     $("#existing_customer_name").autocomplete({
         minLength: 1,
         dataType: 'json',
@@ -60,16 +61,26 @@ $(document).ready(function() {
         },
         source: function(request, response) {
             $("#existing_customer_name").addClass('loadinggif');
-            $.ajax({
-                url: baseurl + '/fetch_existing_customer',
-                data: {"term": request.term},
-                success: function(data) {
-                    var main_array = JSON.parse(data);
-                    var arr1 = main_array['data_array'];
-                    response(arr1);
-                    $("#existing_customer_name").removeClass('loadinggif');
-                },
-            });
+            var customer = request.term;
+                    if ( customer in cache ) {
+                      response( cache[ customer ] );
+                      $("#existing_customer_name").removeClass('loadinggif');
+                      return;
+                    }
+                    else{
+                        $.ajax({
+                        url: baseurl + '/fetch_existing_customer',
+                        data: {"term": request.term},
+                        success: function(data) {
+                            var main_array = JSON.parse(data);
+                            cache[ customer ] = main_array['data_array'];
+                            response(main_array['data_array']);
+                            $("#existing_customer_name").removeClass('loadinggif');
+                        },
+                       });
+                    }
+
+           
         },
         select: function(event, ui) {
             $("#existing_customer_id").val(ui.item.id);
@@ -79,23 +90,32 @@ $(document).ready(function() {
         }
 
     });
-
+   
+    
     $("#existing_supplier_name").autocomplete({
         minLength: 1,
         dataType: 'json',
         type: 'GET',
         source: function(request, response) {
             $("#existing_supplier_name").addClass('loadinggif');
-            $.ajax({
-                url: baseurl + '/fetch_existing_customer',
-                data: {"term": request.term},
-                success: function(data) {
-                    var main_array = JSON.parse(data);
-                    var arr1 = main_array['data_array'];
-                    response(arr1);
-                    $("#existing_supplier_name").removeClass('loadinggif');
-                },
-            });
+            var supplier = request.term;
+                    if ( supplier in cache ) {
+                      response( cache[ supplier ] );
+                      $("#existing_supplier_name").removeClass('loadinggif');
+                      return;
+                    }
+                    else{
+                        $.ajax({
+                            url: baseurl + '/fetch_existing_customer',
+                            data: {"term": request.term},
+                            success: function(data) {
+                                var main_array = JSON.parse(data);
+                                cache[ supplier ] = main_array['data_array'];
+                                response(main_array['data_array']);
+                                $("#existing_supplier_name").removeClass('loadinggif');
+                            },
+                        });
+                    }
         },
         select: function(event, ui) {
             $("#existing_supplier_id").val(ui.item.id);
@@ -460,17 +480,26 @@ function product_autocomplete(id) {
         autoselect: 'first',
         source: function(request, response) {
             $("#add_product_name_" + id).addClass('loadinggif');
-            $.ajax({
-                url: baseurl + '/fetch_products',
-                data: {"term": request.term, 'customer_id': customer_id, 'location_difference': location_difference},
-                success: function(data) {
-                    var main_array = JSON.parse(data);
-                    var arr1 = main_array['data_array'];
-                    response(arr1);
-                    $("#add_product_name_" + id).removeClass('loadinggif');
+            var product = request.term;
+                    if ( product in cache ) {
+                      response( cache[ product ] );
+                      $("#add_product_name_" + id).removeClass('loadinggif');
+                      return;
+                    }
+                    else{
+                        $.ajax({
+                            url: baseurl + '/fetch_products',
+                            data: {"term": request.term, 'customer_id': customer_id, 'location_difference': location_difference},
+                            success: function(data) {
+                                var main_array = JSON.parse(data);
+                                cache[ product ] = main_array['data_array'];
+                                response(main_array['data_array']);
+                                $("#add_product_name_" + id).removeClass('loadinggif');
 
-                },
-            });
+                            },
+                        });
+                    }
+            
         },
         open: function(event, ui) {
             var $input = $(event.target);
