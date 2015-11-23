@@ -98,8 +98,8 @@ $(document).ready(function() {
         type: 'GET',
         source: function(request, response) {
             $("#existing_supplier_name").addClass('loadinggif');
-            var supplier = request.term;
-                    if ( supplier in cache ) {
+            var supplier = request.term; 
+                    if ( supplier in cache ) { 
                       response( cache[ supplier ] );
                       $("#existing_supplier_name").removeClass('loadinggif');
                       return;
@@ -110,8 +110,8 @@ $(document).ready(function() {
                             data: {"term": request.term},
                             success: function(data) {
                                 var main_array = JSON.parse(data);
-                                cache[ supplier ] = main_array['data_array'];
-                                response(main_array['data_array']);
+                                cache[ supplier ] = main_array['data_array']; 
+                                response(main_array['data_array']); 
                                 $("#existing_supplier_name").removeClass('loadinggif');
                             },
                         });
