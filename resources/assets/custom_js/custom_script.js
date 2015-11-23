@@ -1,7 +1,8 @@
 var baseurl = $('#baseurl').attr('name');
 var _token = $('#csrf_token').attr('content');
-var cache = {};
-
+var cache_customer = {};
+var cache_product={};
+var cache_supplier={};   
 function setCookie(cname,cvalue,exdays){
     var d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
@@ -89,8 +90,8 @@ $(document).ready(function() {
         source: function(request, response) {
             $("#existing_customer_name").addClass('loadinggif');
             var customer = request.term;
-                    if ( customer in cache ) {
-                      response( cache[ customer ] );
+                    if ( customer in cache_customer ) {
+                      response( cache_customer[ customer ] );
                       $("#existing_customer_name").removeClass('loadinggif');
                       return;
                     }
@@ -101,7 +102,7 @@ $(document).ready(function() {
                         cache: true,
                         success: function(data) {
                             var main_array = JSON.parse(data);
-                            cache[ customer ] = main_array['data_array'];
+                            cache_customer[ customer ] = main_array['data_array'];
                             response(main_array['data_array']);
                             $("#existing_customer_name").removeClass('loadinggif');
 //                             var data_cache=JSON.parse(cache);
@@ -128,8 +129,8 @@ $(document).ready(function() {
         source: function(request, response) {
             $("#existing_supplier_name").addClass('loadinggif');
             var supplier = request.term; 
-                    if ( supplier in cache ) { 
-                      response( cache[ supplier ] );
+                    if ( supplier in cache_supplier ) { 
+                      response( cache_supplier[ supplier ] );
                       $("#existing_supplier_name").removeClass('loadinggif');
                       return;
                     }
@@ -140,7 +141,7 @@ $(document).ready(function() {
                             cache: true,
                             success: function(data) {
                                 var main_array = JSON.parse(data);
-                                cache[ supplier ] = main_array['data_array']; 
+                                cache_supplier[ supplier ] = main_array['data_array']; 
                                 response(main_array['data_array']); 
                                 $("#existing_supplier_name").removeClass('loadinggif');
                             },
@@ -512,8 +513,8 @@ function product_autocomplete(id) {
         source: function(request, response) {
             $("#add_product_name_" + id).addClass('loadinggif');
             var product = request.term;
-                    if ( product in cache ) {
-                      response( cache[ product ] );
+                    if ( product in cache_product ) {
+                      response( cache_product[ product ] );
                       $("#add_product_name_" + id).removeClass('loadinggif');
                       return;
                     }
@@ -524,7 +525,7 @@ function product_autocomplete(id) {
                             data: {"term": request.term, 'customer_id': customer_id, 'location_difference': location_difference},
                             success: function(data) {
                                 var main_array = JSON.parse(data);
-                                cache[ product ] = main_array['data_array'];
+                                cache_product[ product ] = main_array['data_array'];
                                 response(main_array['data_array']);
                                 $("#add_product_name_" + id).removeClass('loadinggif');
 
