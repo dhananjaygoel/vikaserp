@@ -1,6 +1,31 @@
 var baseurl = $('#baseurl').attr('name');
 var _token = $('#csrf_token').attr('content');
 var cache = {};
+
+function setCookie(cname,cvalue,exdays){
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+function deleteCookie(cname)
+{
+    document.cookie = cname+"=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+}
+
+  
 $(document).ready(function() {
 
     var current_time = moment().format("h:mm a");
@@ -43,7 +68,9 @@ $(document).ready(function() {
         $(".plusvat").hide();
     });
 
-
+/*
+ * autocomplete 
+ */
     $("#existing_customer_name").autocomplete({
         minLength: 1,
         dataType: 'json',
@@ -71,16 +98,18 @@ $(document).ready(function() {
                         $.ajax({
                         url: baseurl + '/fetch_existing_customer',
                         data: {"term": request.term},
+                        cache: true,
                         success: function(data) {
                             var main_array = JSON.parse(data);
                             cache[ customer ] = main_array['data_array'];
                             response(main_array['data_array']);
                             $("#existing_customer_name").removeClass('loadinggif');
+//                             var data_cache=JSON.parse(cache);
+//                            setCookie('cache',data_cache,1);
                         },
                        });
                     }
-
-           
+                   
         },
         select: function(event, ui) {
             $("#existing_customer_id").val(ui.item.id);
@@ -108,6 +137,7 @@ $(document).ready(function() {
                         $.ajax({
                             url: baseurl + '/fetch_existing_customer',
                             data: {"term": request.term},
+                            cache: true,
                             success: function(data) {
                                 var main_array = JSON.parse(data);
                                 cache[ supplier ] = main_array['data_array']; 
@@ -116,6 +146,7 @@ $(document).ready(function() {
                             },
                         });
                     }
+                    
         },
         select: function(event, ui) {
             $("#existing_supplier_id").val(ui.item.id);
@@ -489,6 +520,7 @@ function product_autocomplete(id) {
                     else{
                         $.ajax({
                             url: baseurl + '/fetch_products',
+                            cache: true,
                             data: {"term": request.term, 'customer_id': customer_id, 'location_difference': location_difference},
                             success: function(data) {
                                 var main_array = JSON.parse(data);
@@ -659,7 +691,7 @@ function delete_inquiry_row(inquiry_id)
 /*Code use to delete inquiry*/
 $('.delete_inquiry_form_submit').click(function() {
      
-   $('.modal').hide();
+   $('#delete_inquiry').css('display','none').attr('aria-hidden','true');
     /*Form token set up*/
     $.ajaxSetup({
         headers: {
