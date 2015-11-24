@@ -679,14 +679,14 @@ class OrderController extends Controller {
 
         if (Hash::check($password, $current_user->password)) {
 
-//            $order = Order::find($id);
-//
-//            $all_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'order');
-//
-//            foreach ($all_order_products as $products) {
-//                $products->delete();
-//            }
-//            $order->delete();
+            $order = Order::find($id);
+
+            $all_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'order');
+
+            foreach ($all_order_products as $products) {
+                $products->delete();
+            }
+            $order->delete();
 
             Session::put('order-sort-type', $order_sort_type);
 
@@ -786,17 +786,17 @@ class OrderController extends Controller {
 //            }
         }
 
-//        $update_order = $order->update([
-//            'order_status' => "Cancelled"
-//        ]);
-//
-//        $cancel_order = OrderCancelled::create([
-//                    'order_id' => $order_id,
-//                    'order_type' => 'Order',
-//                    'reason_type' => $reason_type,
-//                    'reason' => $reason,
-//                    'cancelled_by' => Auth::id()
-//        ]);
+        $update_order = $order->update([
+            'order_status' => "Cancelled"
+        ]);
+
+        $cancel_order = OrderCancelled::create([
+                    'order_id' => $order_id,
+                    'order_type' => 'Order',
+                    'reason_type' => $reason_type,
+                    'reason' => $reason,
+                    'cancelled_by' => Auth::id()
+        ]);
 
         return array('message'=>'success');
     }

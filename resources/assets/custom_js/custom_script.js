@@ -786,7 +786,7 @@ $('.delete_orders_modal_submit').click(function() {
         if(data['message']=='success')
         {
             $("#order_row_"+order_id).remove();
-            $('#flash_message').html("Inquiry Deleted Successfully");
+            $('#flash_message').html("Order Deleted Successfully");
             $('#flash_message').removeClass('alert-danger');
             $('#flash_message').addClass('alert-success');
             $('#flash_message').fadeIn();
