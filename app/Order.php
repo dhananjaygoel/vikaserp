@@ -32,7 +32,7 @@ class Order extends Model {
     public function all_order_products() {
         return $this->hasMany('App\AllOrderProducts', 'order_id', 'id')->where('order_type','=', 'order');
     }
-
+    
     public function delivery_location() {
         return $this->hasOne('App\DeliveryLocation', 'id', 'delivery_location_id');
     }

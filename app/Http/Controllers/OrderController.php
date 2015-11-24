@@ -80,12 +80,11 @@ class OrderController extends Controller {
         if ((isset($_GET['location_filter'])) && $_GET['location_filter'] != '') {
             $q->where('delivery_location_id', '=', $_GET['location_filter']);
         }
+        $product_category_id=0;
         if (isset($_GET['size_filter']) && $_GET['size_filter'] != '') {
             $size = $_GET['size_filter'];
             $subquerytest=ProductSubCategory::select('product_category_id')->where('size','=',$size)->first();
             $product_category_id=$subquerytest->product_category_id;
-            print_r($product_category_id);
-            
             $q->whereHas('all_order_products.product_category.product_sub_category', function($query) use ($size) {
                                  $query->where('size', '=', $size);
             });
@@ -102,21 +101,21 @@ class OrderController extends Controller {
         $users = User::all();
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
-        $delivery_order = DeliveryOrder::all();
+//        $delivery_order = DeliveryOrder::all();
+        $delivery_order= AllOrderProducts::where('order_type','=','delivery_order')->where('product_category_id','=',$product_category_id)->get();
         $product_size = ProductSubCategory::all();
 
         $users = User::all();
         $pending_orders = $this->checkpending_quantity($allorders);
         $allorders->setPath('orders');
         
-       
-         
 //        echo '<pre>';
+//       print_r($remaining_delivery_order->toArray());
 //        print_r($allorders->toArray()); 
 //        echo '</pre>';
 //        exit();
 
-        return View::make('orders', compact('delivery_location', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size'));
+        return View::make('orders', compact('delivery_location','delivery_order','customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size','product_category_id'));
     }
 
     /**

@@ -139,9 +139,26 @@
                                         @elseif($order->delivery_location_id ==0 )
                                         <td class="text">{{$order['other_location']}}</td>
                                         @endif
-
-                                        <td>{{ round($order->total_quantity, 2) }}</td>
-                                        <td>{{ round($order->pending_quantity, 2) }}</td>
+                                         
+                                        @if($product_category_id==0)
+                                            <td>{{ round($order->total_quantity, 2) }}</td>
+                                            <td>{{ round($order->pending_quantity, 2) }}</td>
+                                        @else
+                                               <?php $total_size_quantity=0;?>
+                                               <?php $substract_size_quantity=0;?>
+                                               @foreach($order->all_order_products as $order_product_array)
+                                                        @if($order_product_array->product_category_id==$product_category_id)
+                                                            @foreach($delivery_order as $remaining_delivery)
+                                                                @if($remaining_delivery->parent==$order_product_array->id)
+                                                                    <?php $substract_size_quantity+=$remaining_delivery->quantity?>
+                                                                @endif
+                                                            @endforeach
+                                                            <?php $total_size_quantity+=$order_product_array->quantity?>
+                                                        @endif
+                                               @endforeach
+                                               <td>{{ round($total_size_quantity, 2) }}</td>
+                                               <td>{{ round($total_size_quantity-$substract_size_quantity, 2) }}</td>
+                                        @endif
                                         <td class="text-center">
                                             <a href="{{url('create_delivery_order/'.$order->id)}}" class="table-link" title="Create Delivery order">
                                                 <span class="fa-stack">
