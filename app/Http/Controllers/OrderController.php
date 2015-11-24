@@ -80,7 +80,7 @@ class OrderController extends Controller {
         }
         if (isset($_GET['size_filter']) && $_GET['size_filter'] != '') {
             $size = $_GET['size_filter'];
-            return $size;
+            
             $q->with('all_order_products')
                     ->whereHas('all_order_products.product_category.product_sub_categories', function($query) use ($size) {
                         $query->where('size', '=', $size);
@@ -104,10 +104,10 @@ class OrderController extends Controller {
         $allorders->setPath('orders');
 
 
-//        echo '<pre>';
-//        print_r($allorders->toArray());
-//        echo '</pre>';
-//        exit();
+        echo '<pre>';
+        print_r($allorders->toArray());
+        echo '</pre>';
+        exit();
 
         return View::make('orders', compact('delivery_location', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size'));
     }
