@@ -23,9 +23,9 @@ class ProductCategory extends Model implements AuthenticatableContract, CanReset
     public function product_sub_category() {
         return $this->hasone('App\ProductSubCategory', 'product_category_id', 'id');
     }
-
+   
     public function product_sub_categories() {
-        return $this->hasMany('App\ProductSubCategory', 'product_category_id', 'id');
+       return $this->hasone('App\ProductSubCategory', 'id', 'product_type_id');
     }
 
     public function product_type() {

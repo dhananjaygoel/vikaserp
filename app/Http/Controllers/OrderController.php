@@ -85,7 +85,7 @@ class OrderController extends Controller {
             $size = $_GET['size_filter'];
             $subquerytest=ProductSubCategory::select('product_category_id')->where('size','=',$size)->first();
             $product_category_id=$subquerytest->product_category_id;
-            $q->whereHas('all_order_products.product_category.product_sub_category', function($query) use ($size) {
+            $q->whereHas('all_order_products.product_category.product_sub_categories', function($query) use ($size) {
                                  $query->where('size', '=', $size);
             });
                    
