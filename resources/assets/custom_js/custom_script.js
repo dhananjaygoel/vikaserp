@@ -2,13 +2,27 @@ var baseurl = $('#baseurl').attr('name');
 var _token = $('#csrf_token').attr('content');
 var cache_customer = {};
 var cache_product={};
-var cache_supplier={};   
+var cache_supplier={}; 
+
+/*
+ * Setting new Cookie
+ * @param {type} cname
+ * @param {type} cvalue
+ * @param {type} exdays
+ * @returns {undefined}
+ */
 function setCookie(cname,cvalue,exdays){
     var d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
     var expires = "expires="+d.toUTCString();
     document.cookie = cname + "=" + cvalue + "; " + expires;
 } 
+
+/*
+ * Get the cookie value by name
+ * @param {type} cname name of cookie
+ * @returns {String}
+ */
 function getCookie(cname) {
     var name = cname + "=";
     var ca = document.cookie.split(';');
@@ -21,6 +35,12 @@ function getCookie(cname) {
     }
     return "";
 }
+
+/*
+ * Delete the cookie by name
+ * @param {type} cname
+ * @returns {undefined}
+ */
 function deleteCookie(cname)
 {
     document.cookie = cname+"=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
