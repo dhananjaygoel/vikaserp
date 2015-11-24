@@ -85,7 +85,7 @@ class OrderController extends Controller {
             $size = $_GET['size_filter'];
             $subquerytest=ProductSubCategory::select('product_category_id')->where('size','=',$size)->first();
             $product_category_id=$subquerytest->product_category_id;
-            $q->whereHas('all_order_products.product_category.product_sub_category', function($query) use ($size) {
+            $q->whereHas('all_order_products.product_sub_category', function($query) use ($size) {
                                  $query->where('size', '=', $size);
             });
                    
@@ -109,10 +109,11 @@ class OrderController extends Controller {
         $pending_orders = $this->checkpending_quantity($allorders);
         $allorders->setPath('orders');
         
-//        echo '<pre>';
-//       print_r($remaining_delivery_order->toArray());
-//        print_r($allorders->toArray()); 
-//        echo '</pre>';
+        echo '<pre>';
+        print_r($product_category_id);
+       print_r($delivery_order->toArray());
+        print_r($allorders->toArray()); 
+        echo '</pre>';
 //        exit();
 
         return View::make('orders', compact('delivery_location','delivery_order','customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size','product_category_id'));
