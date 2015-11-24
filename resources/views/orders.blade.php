@@ -86,6 +86,7 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
+                        <div id="flash_message" class="alert no_data_msg_container"></div>
                         @if(sizeof($allorders)==0)
                         <div class="alert alert-info no_data_msg_container">
                             Currently no orders have been added.
@@ -123,7 +124,7 @@
                                 </thead>
                                 <tbody>
                                     @endif
-                                    <tr>
+                                    <tr id="order_row_{{$order->id}}">
                                         <td>{{$k++}}</td>
                                         <td>
                                             @if($order["customer"]->tally_name != "")
@@ -163,7 +164,7 @@
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="#" class="table-link" title="manual complete" data-toggle="modal" data-target="#cancel_order_modal_{{$order->id}}">
+                                            <a href="#" class="table-link" title="manual complete" data-toggle="modal" data-target="#cancel_order_modal" onclick="cancel_order_row({{$order->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
@@ -171,7 +172,7 @@
                                             </a>
                                             @endif
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                            <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal_{{$order->id}}">
+                                            <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal" onclick="delete_order_row({{$order->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -180,76 +181,6 @@
                                             @endif
                                         </td>
                                     </tr>
-                                <div class="modal fade" id="delete_orders_modal_{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                <h4 class="modal-title" id="myModalLabel"></h4>
-                                            </div>
-                                            {!! Form::open(array('method'=>'POST','url'=>url('orders',$order->id), 'id'=>'delete_order_form'))!!}
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                            <div class="modal-body">
-                                                <div class="delete">
-                                                    <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
-                                                    <div class="pwd">
-                                                        <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" placeholder="" name="password" type="password"></div>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                    <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-default" id="yes">Yes</button>
-                                            </div>
-                                            {!! Form::close() !!}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal fade" id="cancel_order_modal_{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                                <h4 class="modal-title" id="myModalLabel"></h4>
-                                            </div>
-                                            {!! Form::open(array('method'=>'POST','url'=>url('manual_complete_order'), 'id'=>'cancel_order_form'))!!}
-                                            <input type="hidden" name="order_id" value="{{$order->id}}">
-                                            <div class="modal-body">
-                                                <p> Are you sure to complete the Order?</p>
-                                                <div class="radio">
-                                                    <input  id="overprice_{{$order->id}}" value="overprice" name="reason_type" type="radio">
-                                                    <label for="overprice_{{$order->id}}">Over Pricing</label>
-                                                </div>
-                                                <div class="radio">
-                                                    <input  id="delivery_{{$order->id}}" value="delivery" name="reason_type" type="radio">
-                                                    <label for="delivery_{{$order->id}}">Late Delivery</label>
-                                                </div>
-                                                <div class="radio">
-                                                    <input  id="quality_{{$order->id}}" value="quality" name="reason_type" type="radio">
-                                                    <label for="quality_{{$order->id}}">Undesired Quality</label>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="reason"><b>Reason</b></label>
-                                                    <textarea class="form-control" id="inquiry_remark" name="reason"  rows="2" placeholder="Reason"></textarea>
-                                                </div>
-                                                <div class="checkbox">
-                                                    <label class="marginsms"><input type="checkbox" name="send_email" value="true"><span class="checksms">Send Email to Party</span></label>
-                                                    <label><input type="checkbox" value="true" name="sendsms"><span title="SMS would be sent to Party" class="checksms smstooltip">SMS</span></label>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-default" >Yes</button>
-                                            </div>
-                                            {!! Form::close() !!}
-                                        </div>
-                                    </div>
-                                </div>
                                 @endif
                                 @if($order->order_status == 'completed')
                                 @if($k==1)
@@ -265,7 +196,7 @@
                                     </tr>
                                 </thead>
                                 @endif
-                                <tr>
+                                <tr id="order_row_{{$order->id}}">
                                     <td>{{$k++}}</td>
 
                                     <td>
@@ -305,7 +236,7 @@
                                             </span>
                                         </a>
                                         @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
-                                        <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal_{{$order->id}}">
+                                        <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal" onclick="delete_order_row({{$order->id}})">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -314,36 +245,7 @@
                                         @endif
                                     </td>
                                 </tr>
-                                <div class="modal fade" id="delete_orders_modal_{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                <h4 class="modal-title" id="myModalLabel"></h4>
-                                            </div>
-                                            {!! Form::open(array('method'=>'POST','url'=>url('orders',$order->id), 'id'=>'delete_order_form'))!!}
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                            <div class="modal-body">
-                                                <div class="delete">
-                                                    <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
-                                                    <div class="pwd">
-                                                        <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" placeholder="" name="password" type="password"></div>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                    <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-default" id="yes">Yes</button>
-                                            </div>
-                                            {!! Form::close() !!}
-                                        </div>
-                                    </div>
-                                </div>
+                                
                                 @endif
                                 @if($order->order_status == 'cancelled')
                                 @if($k==1)
@@ -362,7 +264,7 @@
                                 </thead>
                                 <tbody>
                                     @endif
-                                    <tr>
+                                    <tr id="order_row_{{$order->id}}">
                                         <td>{{$k++}}</td>
                                         <td>
                                             @if($order["customer"]->tally_name != "")
@@ -410,7 +312,7 @@
                                                 </span>
                                             </a>
                                             @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
-                                            <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal_{{$order->id}}">
+                                            <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal" onclick="delete_order_row({{$order->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -419,16 +321,64 @@
                                             @endif
                                         </td>
                                     </tr>
-                                <div class="modal fade" id="delete_orders_modal_{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                               
+                                @endif
+                                @endforeach
+                                
+                                </tbody>
+                            </table>
+                            <div class="modal fade" id="cancel_order_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                                <h4 class="modal-title" id="myModalLabel"></h4>
+                                            </div>
+                                            {!! Form::open(array('method'=>'POST','url'=>url('manual_complete_order'), 'id'=>'cancel_order_form'))!!}
+                                           
+                                            <input type="hidden" name="order_id" id="order_id">
+                                            <div class="modal-body">
+                                                <p> Are you sure to complete the Order?</p>
+                                                <div class="radio">
+                                                    <input  id="overprice" value="overprice" name="reason_type" type="radio">
+                                                    <label for="overprice">Over Pricing</label>
+                                                </div>
+                                                <div class="radio">
+                                                    <input  id="delivery" value="delivery" name="reason_type" type="radio">
+                                                    <label for="delivery">Late Delivery</label>
+                                                </div>
+                                                <div class="radio">
+                                                    <input  id="quality" value="quality" name="reason_type" type="radio">
+                                                    <label for="quality">Undesired Quality</label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="reason"><b>Reason</b></label>
+                                                    <textarea class="form-control" id="inquiry_remark" name="reason"  rows="2" placeholder="Reason"></textarea>
+                                                </div>
+                                                <div class="checkbox">
+                                                    <label class="marginsms"><input type="checkbox" name="send_email" value="true"><span class="checksms">Send Email to Party</span></label>
+                                                    <label><input type="checkbox" value="true" name="sendsms"><span title="SMS would be sent to Party" class="checksms smstooltip">SMS</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                                <button type="button" class="btn btn-default cancel_orders_modal_submit" >Yes</button>
+                                            </div>
+                                            {!! Form::close() !!}
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="modal fade" id="delete_orders_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
-                                            {!! Form::open(array('method'=>'POST','url'=>url('orders',$order->id), 'id'=>'delete_order_form'))!!}
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                            <form method="post" class="delete_order_form" >
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+<!--                                            <input name="_method" type="hidden" value="DELETE">-->
+                                            
                                             <div class="modal-body">
                                                 <div class="delete">
                                                     <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
@@ -441,18 +391,14 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <input type="hidden" name="order_sort_type" value="{{(Input::get('order_filter')!="")?Input::get('order_filter'):""}}"/>
+<!--                                                <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>-->
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-default" id="yes">Yes</button>
+                                                <button type="button" class="btn btn-default delete_orders_modal_submit">Yes</button>
                                             </div>
-                                            {!! Form::close() !!}
+                                            <form>
                                         </div>
                                     </div>
                                 </div>
-                                @endif
-                                @endforeach
-                                </tbody>
-                            </table>
                             <span class="pull-right">
                                 <?php echo $allorders->render(); ?>
                             </span>

@@ -752,3 +752,106 @@ $('.delete_inquiry_form_submit').click(function() {
 
 
 });
+
+/*
+ * Delete Order Form set orderId to order_id
+ * @param {type} order_id
+ * @returns {undefined}
+ */
+function delete_order_row(order_id)
+{
+   $('.delete_orders_modal_submit').val(order_id);
+}
+/*
+ * Delete order by AJAX call
+ */
+$('.delete_orders_modal_submit').click(function() {
+     $('#delete_orders_modal').modal('hide');
+    /*Form token set up*/
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        }});
+    order_id=$('.delete_orders_modal_submit').val();
+    /* Mail setting form id object*/
+    $form = $('.delete_order_form');
+    /*Mail setting form data*/
+    $data = $form.serialize();
+    /*Mail setting from url*/
+    url =baseurl+'/order/'+order_id+'-delete';
+   
+   var posting = $.post(url, {formData: $data});
+    posting.done(function(data) {
+        $("#pwdr").val('');
+        if(data['message']=='success')
+        {
+            $("#order_row_"+order_id).remove();
+            $('#flash_message').html("Inquiry Deleted Successfully");
+            $('#flash_message').removeClass('alert-danger');
+            $('#flash_message').addClass('alert-success');
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
+        }
+       else{
+           
+            $('#flash_message').html("Delete Opration Failed");
+            $('#flash_message').removeClass('alert-success');
+            $('#flash_message').addClass('alert-danger');
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
+       }
+
+    }, 'json'); //done 
+   
+});
+/*
+ * cancel order form set orderId to order_id in form
+ * @param {type} order_id
+ * @returns {undefined}
+ */
+function cancel_order_row(order_id)
+{
+   $('#order_id').val(order_id);
+}
+/*
+ * Cancel the order using AJAX request
+ */
+$('.cancel_orders_modal_submit').click(function() {
+     $('#cancel_order_modal').modal('hide');
+    /*Form token set up*/
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        }});
+    
+    /* Mail setting form id object*/
+    $form = $('#cancel_order_form');
+    /*Mail setting form data*/
+    $data = $form.serialize();
+    /*Mail setting from url*/
+    url =$form.attr('action');
+  
+   var posting = $.post(url, {formData: $data});
+    posting.done(function(data) {
+        $("#pwdr").val('');
+        if(data['message']=='success')
+        {
+            $("#order_row_"+$('#order_id').val()).remove();
+            $('#flash_message').html("Order Cancel Successfully");
+            $('#flash_message').removeClass('alert-danger');
+            $('#flash_message').addClass('alert-success');
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
+        }
+       else{
+           
+            $('#flash_message').html("Order Cancel Failed");
+            $('#flash_message').removeClass('alert-success');
+            $('#flash_message').addClass('alert-danger');
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
+       }
+
+    }, 'json'); //done 
+   
+});

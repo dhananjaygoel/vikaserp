@@ -114,6 +114,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('purchaseorder_advise', 'PurchaseAdviseController');
     Route::get('print_purchase_advise/{id}', 'PurchaseAdviseController@print_purchase_advise');
     Route::get('pending_purchase_advice', 'PurchaseAdviseController@pending_purchase_advice');
+    Route::post('order/{id}-delete','OrderController@destroy');
     Route::resource('orders', 'OrderController');
     Route::post('manual_complete_order', 'OrderController@manual_complete_order');
     Route::get('fetch_order_size', 'ProductsubController@fetch_order_size');

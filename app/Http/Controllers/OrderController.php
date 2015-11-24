@@ -56,8 +56,10 @@ class OrderController extends Controller {
         if (isset($order_sorttype) && ($order_sorttype != "")) {
             $_GET['order_filter'] = $order_sorttype;
         }
-
+        
+        
         $q = Order::query();
+        
         if (isset($_GET['order_filter']) && $_GET['order_filter'] != '') {
             $q->where('order_status', '=', $_GET['order_filter']);
         } else {
@@ -80,19 +82,23 @@ class OrderController extends Controller {
         }
         if (isset($_GET['size_filter']) && $_GET['size_filter'] != '') {
             $size = $_GET['size_filter'];
+            $subquerytest=ProductSubCategory::select('product_category_id')->where('size','=',$size)->first();
+            $product_category_id=$subquerytest->product_category_id;
+            print_r($product_category_id);
             
-            $q->with('all_order_products')
-                    ->whereHas('all_order_products.product_category.product_sub_categories', function($query) use ($size) {
-                        $query->where('size', '=', $size);
-                    });
+            $q->whereHas('all_order_products.product_category.product_sub_category', function($query) use ($size) {
+                                 $query->where('size', '=', $size);
+            });
+                   
+                    
         } else {
             $q->with('all_order_products');
         }
 
-        $allorders = $q->with('customer', 'delivery_location', 'order_cancelled')
+        $allorders = $q->with('all_order_products')->with('customer', 'delivery_location', 'order_cancelled')
                         ->orderBy('created_at', 'desc')->paginate(20);
 
-
+        
         $users = User::all();
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
@@ -102,8 +108,9 @@ class OrderController extends Controller {
         $users = User::all();
         $pending_orders = $this->checkpending_quantity($allorders);
         $allorders->setPath('orders');
-
-
+        
+       
+         
 //        echo '<pre>';
 //        print_r($allorders->toArray()); 
 //        echo '</pre>';
@@ -660,7 +667,9 @@ class OrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $password = Input::get('password');
+         $inputData = Input::get('formData');
+         parse_str($inputData, $formFields);
+            $password = $formFields['password'];
 
         if ($password == '') {
             return Redirect::to('orders')->with('error', 'Please enter your password');
@@ -670,20 +679,20 @@ class OrderController extends Controller {
 
         if (Hash::check($password, $current_user->password)) {
 
-            $order = Order::find($id);
-
-            $all_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'order');
-
-            foreach ($all_order_products as $products) {
-                $products->delete();
-            }
-            $order->delete();
+//            $order = Order::find($id);
+//
+//            $all_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'order');
+//
+//            foreach ($all_order_products as $products) {
+//                $products->delete();
+//            }
+//            $order->delete();
 
             Session::put('order-sort-type', $order_sort_type);
 
-            return redirect('orders')->with('flash_message', 'One record is deleted.');
+            return array('message'=>'success');
         } else {
-            return Redirect::back()->with('flash_message', 'Password entered is not valid.');
+            return array('message'=> 'failed');
         }
     }
 
@@ -691,15 +700,19 @@ class OrderController extends Controller {
      * Functioanlity: Manual Complete individual order
      */
 
-    public function manual_complete_order(ManualCompleteOrderRequest $request) {
+    public function manual_complete_order() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $input_data = Input::all();
-
-        $order_id = $input_data['order_id'];
-        $reason_type = $input_data['reason_type'];
-        $reason = $input_data['reason'];
+        
+        $formFields = Input::get('formData');
+       
+         parse_str($formFields, $input);
+         
+        $order_id = $input['order_id'];
+        $reason_type = $input['reason_type'];
+    
+        $reason = $input['reason'];
 
         $order = Order::where('id', '=', $order_id)->with('all_order_products.order_product_details', 'all_order_products.unit', 'customer')->first();
 
@@ -708,7 +721,7 @@ class OrderController extends Controller {
           | SEND SMS TO CUSTOMER FOR MANUALLY COMPLETING AN ORDER
           | -----------------------------------------------------
          */
-        $input = Input::all();
+        
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             $customer = Customer::where('id', '=', $order['customer']->id)->with('manager')->first();
             if (count($customer) > 0) {
@@ -785,7 +798,7 @@ class OrderController extends Controller {
                     'cancelled_by' => Auth::id()
         ]);
 
-        return redirect('orders')->with('flash_message', 'One order is cancelled.');
+        return array('message'=>'success');
     }
 
     public function create_delivery_order($id) {

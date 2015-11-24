@@ -23,13 +23,14 @@ class Order extends Model {
      */
     protected $fillable = ['order_source', 'supplier_id', 'customer_id', 'created_by', 'delivery_location_id', 'vat_percentage', 'estimated_delivery_date', 'expected_delivery_date', 'remarks', 'order_status', 'other_location', 'location_difference'];
     protected $dates = ['deleted_at'];
-
+   
+    
     public function customer() {
         return $this->hasOne('App\Customer', 'id', 'customer_id');
     }
 
     public function all_order_products() {
-        return $this->hasMany('App\AllOrderProducts', 'order_id', 'id')->where('order_type','=', 'order')->where('product_category_id', '>', '0');
+        return $this->hasMany('App\AllOrderProducts', 'order_id', 'id')->where('order_type','=', 'order');
     }
 
     public function delivery_location() {
@@ -43,5 +44,10 @@ class Order extends Model {
     public static $order_to_delivery_order_rules = array(
         'driver_contact' => 'min:8|max:20'
     );
-
+    public function setProductCategoryId($product_category_id){
+        $this->product_category_id=$product_category_id;
+    }
+    public function getProductCategoryId(){
+       return $this->product_category_id;
+    }
 }
