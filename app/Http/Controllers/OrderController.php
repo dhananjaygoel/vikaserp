@@ -786,17 +786,17 @@ class OrderController extends Controller {
 //            }
         }
 
-        $update_order = $order->update([
-            'order_status' => "Cancelled"
-        ]);
-
-        $cancel_order = OrderCancelled::create([
-                    'order_id' => $order_id,
-                    'order_type' => 'Order',
-                    'reason_type' => $reason_type,
-                    'reason' => $reason,
-                    'cancelled_by' => Auth::id()
-        ]);
+//        $update_order = $order->update([
+//            'order_status' => "Cancelled"
+//        ]);
+//
+//        $cancel_order = OrderCancelled::create([
+//                    'order_id' => $order_id,
+//                    'order_type' => 'Order',
+//                    'reason_type' => $reason_type,
+//                    'reason' => $reason,
+//                    'cancelled_by' => Auth::id()
+//        ]);
 
         return array('message'=>'success');
     }
