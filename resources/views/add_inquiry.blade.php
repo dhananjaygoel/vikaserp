@@ -59,7 +59,7 @@ use Illuminate\Support\Facades\Session;
                                     $style = 'display:block;';
                                 }
                                 ?>
-<!--                                <div class="customer_select" style="<?= $style ?>" >
+                                <div class="customer_select" style="<?= $style ?>" >
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
                                             <input class="form-control" placeholder="Enter Tally Name" type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
@@ -68,8 +68,8 @@ use Illuminate\Support\Facades\Session;
                                             <i class="fa fa-search search-icon"></i>
                                         </div>
                                     </div>
-                                </div>-->
-                                <div class="customer_select" style="<?= $style ?>" >
+                                </div>
+<!--                                <div class="customer_select" style="<?= $style ?>" >
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
                                             <input class="form-control" placeholder="Enter Tally Name" type="text" id="existing_customer_name1" autocomplete="off">
@@ -78,7 +78,7 @@ use Illuminate\Support\Facades\Session;
                                             <i class="fa fa-search search-icon"></i>
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="clearfix"></div>
                             </div>
                             <?php
