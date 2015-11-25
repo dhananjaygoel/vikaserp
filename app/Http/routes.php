@@ -111,7 +111,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('store_price', 'InquiryController@store_price');
     Route::get('get_product_sub_category', 'InquiryController@get_product_sub_category');
     Route::get('get_units', 'UnitController@get_units');
+    Route::post('purchase_orders/{id}-delete', 'PurchaseOrderController@destroy');
     Route::resource('purchase_orders', 'PurchaseOrderController');
+    Route::post('purchaseorder_advise/{id}-delete', 'PurchaseAdviseController@destroy');
     Route::resource('purchaseorder_advise', 'PurchaseAdviseController');
     Route::get('print_purchase_advise/{id}', 'PurchaseAdviseController@print_purchase_advise');
     Route::get('pending_purchase_advice', 'PurchaseAdviseController@pending_purchase_advice');
@@ -126,6 +128,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('create_delivery_order/{id}', 'OrderController@create_delivery_order');
     Route::post('create_delivery_order/{id}', 'OrderController@store_delivery_order');
     Route::get('pending_order_report', 'PendingOrderReportController@index');
+    Route::post('delivery_challan/{id}-delete', 'DeliveryChallanController@destroy');
     Route::resource('delivery_challan', 'DeliveryChallanController');
     Route::post('manual_complete', 'PurchaseOrderController@manual_complete');
     Route::get('purchase_order_report', 'PurchaseOrderController@purchase_order_report');

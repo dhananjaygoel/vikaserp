@@ -556,19 +556,22 @@ class PurchaseOrderController extends Controller {
      */
     public function destroy($id) {
 
-        $order_sort_type = Input::get('order_sort_type');
+         $inputData = Input::get('formData');
+         parse_str($inputData, $formFields);
+            $password = $formFields['password'];
+            $order_sort_type = $formFields['order_sort_type'];
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        if (Hash::check(Input::get('password'), Auth::user()->password)) {
+        if (Hash::check($password, Auth::user()->password)) {
             $delete_purchase_order = PurchaseOrder::find($id)->delete();
             $delete_purchase_products = PurchaseProducts::where('purchase_order_id', '=', $id)->delete();
 
             Session::put('order-sort-type', $order_sort_type);
-            return redirect('purchase_orders')->with('flash_message', 'Purchase order details successfully deleted.');
+            return array('message'=>'success');
         } else {
-            return redirect('purchase_orders')->with('flash_message', 'Please enter a correct password.');
+            return array('message'=> 'failed');
         }
     }
 
@@ -591,7 +594,8 @@ class PurchaseOrderController extends Controller {
      */
 
     public function manual_complete() {
-        $input_data = Input::all();
+        $inputData = Input::get('formData');
+         parse_str($inputData, $input_data);
         $purchase_order_id = $input_data['purchase_order_id'];
         $purchase_order = PurchaseOrder::where('id', '=', $purchase_order_id)->with('purchase_products.purchase_product_details', 'purchase_products.unit', 'customer')->first();
 
@@ -600,7 +604,8 @@ class PurchaseOrderController extends Controller {
           | SEND SMS TO CUSTOMER FOR MANUALLY COMPLETING A PURCHASE ORDER
           | -------------------------------------------------------------
          */
-        $input = Input::all();
+        $inputData = Input::get('formData');
+          parse_str($inputData, $input);
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             $customer = Customer::where('id', '=', $purchase_order['customer']->id)->with('manager')->first();
             if (count($customer) > 0) {
@@ -673,7 +678,7 @@ class PurchaseOrderController extends Controller {
             'order_status' => 'canceled'
         ));
 
-        return redirect('purchase_orders')->with('flash_message', 'Successfully completed purchase order');
+         return array('message'=>'success');
     }
 
     public function purchase_order_report() {
