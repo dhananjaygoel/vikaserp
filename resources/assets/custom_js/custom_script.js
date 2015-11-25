@@ -910,3 +910,55 @@ $('.delete_delivery_order_submit').click(function() {
     }, 'json'); //done 
    
 });
+
+/*
+ * set challan id to the form model 
+ * @param {type} challan_id
+ * @returns {undefined}
+ */
+function delete_challan(challan_id)
+{
+   $('#delete_challan_submit').val(challan_id);
+}
+/*
+ * Delete the challan by challan_id
+ */
+$('.delete_challan_submit').click(function() {
+     $('#delete_challan').modal('hide');
+    /*Form token set up*/
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        }});
+    
+    /* Mail setting form id object*/
+    $form = $('#delete_delivery_challan');
+    /*Mail setting form data*/
+    $data = $form.serialize();
+    /*Mail setting from url*/
+    url =baseurl+'/delivery_challan/'+$('#delete_challan_submit').val()+'-delete';
+
+   var posting = $.post(url, {formData: $data});
+    posting.done(function(data) {
+        $("#pwdr").val('');
+        if(data['message']=='success')
+        {
+            $("#challan_order_row_"+ $('#delete_challan_submit').val()).remove();
+            $('#flash_message').html("Order Deleted Successfully");
+            $('#flash_message').removeClass('alert-danger');
+            $('#flash_message').addClass('alert-success');
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
+        }
+       else{
+           
+            $('#flash_message').html("Delete Opration Failed");
+            $('#flash_message').removeClass('alert-success');
+            $('#flash_message').addClass('alert-danger');
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
+       }
+
+    }, 'json'); //done 
+   
+});

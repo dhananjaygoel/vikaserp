@@ -666,7 +666,7 @@ class OrderController extends Controller {
      */
     public function destroy($id) {
 
-        $order_sort_type = Input::get('order_sort_type');
+        
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -674,7 +674,7 @@ class OrderController extends Controller {
          $inputData = Input::get('formData');
          parse_str($inputData, $formFields);
             $password = $formFields['password'];
-
+            $order_sort_type = $formFields['order_sort_type'];
         if ($password == '') {
             return Redirect::to('orders')->with('error', 'Please enter your password');
         }

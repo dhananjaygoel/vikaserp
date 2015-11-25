@@ -520,7 +520,11 @@ $('.print_delivery_order').click(function() {
         }
     });
 });
+function print_delivery_challan(challan_id){
+     $('#print_delivery_challan').val(challan_id);
+}
 $('.print_delivery_challan').click(function() {
+    $('#print_challan').modal('hide');
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
     if ($("#checksms").is(':checked'))
@@ -529,14 +533,14 @@ $('.print_delivery_challan').click(function() {
         send_sms = false;  // unchecked
     $.ajax({
         type: "GET",
-        url: base_url + '/print_delivery_challan/' + $(this).attr('id') + '?send_sms=' + send_sms,
+        url: base_url + '/print_delivery_challan/' + $('#print_delivery_challan').val() + '?send_sms=' + send_sms,
         success: function(data) {
             var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
             printWindow.onunload = function() {
-                location.reload();
+               
             };
         }
     });
