@@ -14,10 +14,11 @@ return [
 //    'send_sms_to' => '8983886688', //Changed on 29-10-2015
 //    'send_sms_to' => '9975755595', //Changed on 29-10-2015
 //      'send_sms_to' => '9822232962', //Changed on 30-10-2015
-      'send_sms_to' => '8983886688', //Changed on 25-11-2015
+    'send_sms_to' => '8983886688', //Changed on 25-11-2015
     'emailData' => array(
 //        'email' => 'deepakw@agstechnologies.com', 'abhimanipal@gmail.com',
-        'email' => 'abhimanipal@gmail.com',
+        'email' => 'deepakw@agstechnologies.com', 'mpravin@agstechnologies.com',
+//        'email' => 'abhimanipal@gmail.com',
         'name' => 'Abhishekh'
     )
 ];
