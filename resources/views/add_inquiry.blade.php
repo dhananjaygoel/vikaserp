@@ -291,6 +291,10 @@ use Illuminate\Support\Facades\Session;
 //             val = $('#existing_customer_name1').val();
 //          });
           
+          {!! $products =  \Cache::rememberForever('product-sub-category', function () {
+                    return \App\ProductSubCategory::with('product_category')->get();
+              }); !!}
+            
           {!! FormAutocomplete::selector('#existing_customer_name1')->source(function(){
             return \App\Customer::where('customer_status', '=', 'permanent')
                 ->orderBy('tally_name', 'ASC')
