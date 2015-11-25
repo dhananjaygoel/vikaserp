@@ -132,6 +132,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('delivery_challan', 'DeliveryChallanController');
     Route::post('manual_complete', 'PurchaseOrderController@manual_complete');
     Route::get('purchase_order_report', 'PurchaseOrderController@purchase_order_report');
+    Route::post('purchase_challan/{id}-delete', 'PurchaseChallanController@destroy');
     Route::resource('purchase_challan', 'PurchaseChallanController');
     Route::get('create_delivery_challan/{id}', 'DeliveryOrderController@create_delivery_challan');
     Route::post('create_delivery_challan/{id}', 'DeliveryOrderController@store_delivery_challan');

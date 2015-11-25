@@ -208,14 +208,19 @@ class PurchaseChallanController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy($id) {
+        $inputData = Input::get('formData');
+         parse_str($inputData, $formFields);
+            $password = $formFields['password'];
+            
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        if (Hash::check(Input::get('password'), Auth::user()->password)) {
+        if (Hash::check($password, Auth::user()->password)) {
             $delete_purchase_challan = PurchaseChallan::find($id)->delete();
-            return redirect('purchase_challan')->with('flash_success_message', 'Purchase challan details successfully deleted.');
-        } else
-            return redirect('purchase_challan')->with('flash_message', 'Please enter a correct password');
+            return array('message'=>'success');
+        } else {
+            return array('message'=> 'failed');
+        }
     }
 
     public function print_purchase_challan($id) {
