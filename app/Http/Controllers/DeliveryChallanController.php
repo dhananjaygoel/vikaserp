@@ -187,11 +187,14 @@ class DeliveryChallanController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy($id) {
-        $order_sort_type = Input::get('order_sort_type');
+        $inputData = Input::get('formData');
+         parse_str($inputData, $formFields);
+            $password = $formFields['password'];
+            $order_sort_type = $formFields['order_sort_type'];
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
         }
-        $password = Input::get('password');
+       
 
         if ($password == '') {
             return Redirect::to('delivery_challan')->with('error', 'Please enter your password');
@@ -210,9 +213,9 @@ class DeliveryChallanController extends Controller {
             }
             $order->delete();
             Session::put('order-sort-type', $order_sort_type);
-            return redirect('delivery_challan')->with('flash_message', 'One record is deleted.');
+          return array('message'=>'success');
         } else {
-            return Redirect::back()->with('flash_message', 'Password entered is not valid.');
+            return array('message'=> 'failed');
         }
     }
 

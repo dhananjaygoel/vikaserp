@@ -42,6 +42,7 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
+                        <div id="flash_message" class="alert no_data_msg_container"></div>
                         @if(sizeof($allorders)==0)
                         <div class="alert alert-info no_data_msg_container">
                             Currently no orders have been added to Delivery Challan.
@@ -65,7 +66,7 @@
                                     <?php $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1; ?>
                                     @foreach($allorders as $challan)
                                     @if($challan->challan_status == 'pending')
-                                    <tr>
+                                    <tr id="challan_order_row_{{$challan->id}}">
                                         <td class="text-center">{{$k++}}</td>
                                         <td class="text-left">
                                             {{ ($challan['customer']->tally_name != "") ? $challan['customer']->tally_name : $challan['customer']->owner_name }}
@@ -82,7 +83,7 @@
                                                 </span>
                                             </a>
                                             @if( Auth::user()->role_id != 4)
-                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan_{{$challan->id}}">
+                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_delivery_challan({{$challan->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
@@ -90,7 +91,7 @@
                                             </a>
                                             @endif
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_{{$challan->id}}" title="delete">
+                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan" title="delete" onclick="delete_challan({{$challan->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -99,69 +100,10 @@
                                             @endif
                                         </td>
                                     </tr>
-                                <div class="modal fade" id="delete_challan_{{$challan->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                                <h4 class="modal-title" id="myModalLabel"></h4>
-                                            </div>
-                                            {!! Form::open(array('method'=>'POST','url'=>url('delivery_challan',$challan->id), 'id'=>'delete_delivery_challan_form'))!!}
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                            <div class="modal-body">
-                                                <div class="delete">
-                                                    <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
-                                                    <div class="pwd">
-                                                        <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" placeholder="" name="password" type="password"></div>
-
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                    <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <input type="hidden" name="order_sort_type" value="{{ ($qstring_sort_type_order!="") ? $qstring_sort_type_order : "" }}"/>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-default" id="yes">Yes</button>
-                                            </div>
-                                            {!! Form::close() !!}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal fade" id="print_challan_{{$challan->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                                <h4 class="modal-title" id="myModalLabel"></h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <input type="hidden" name="_token"value="{{csrf_token()}}">
-                                                <input type="hidden" name="serial_number" value="{{$challan['delivery_order']->serial_no}}">
-                                                <input type="hidden" name="delivery_order_id" value="{{$challan['delivery_order']->id}}">
-                                                <div class="row print_time">
-                                                    <div class="col-md-12"> Print By <br>
-                                                        <span class="current_time"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="checkbox">
-                                                    <label><input type="checkbox" value="" id="checksms"><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
-                                                </div>
-                                                <div class="clearfix"></div>
-                                                <hr>
-                                                <div >
-                                                    <button type="submit" class="btn btn-primary form_button_footer print_delivery_challan" id="{{$challan->id}}">Generate Challan</button>
-                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                                                </div>
-                                                <div class="clearfix"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                
+                                
                                 @elseif($challan->challan_status == 'completed')
-                                <tr>
+                                <tr id="challan_order_row_{{$challan->id}}">
                                     <td class="text-center">{{$k++}}</td>
                                     <td class="text-center">{{ ($challan['customer']->tally_name != "") ? $challan['customer']->tally_name : $challan['customer']->owner_name }}</td>
                                     <td class="text-center">
@@ -187,13 +129,13 @@
                                                                                     </span>
                                                                                 </a>
                                         -->
-                                        <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan_{{$challan->id}}">
+                                        <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_delivery_challan({{$challan->id}})">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                             </span>
                                         </a>
-                                        <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_{{$challan->id}}" title="delete">
+                                        <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan" title="delete" onclick="delete_challan({{$challan->id}})">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -202,22 +144,25 @@
                                         @endif
                                     </td>
                                 </tr>
-                                <div class="modal fade" id="delete_challan_{{$challan->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                @endif
+                                @endforeach
+                                <div class="modal fade" id="delete_challan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
-                                            {!! Form::open(array('method'=>'POST','url'=>url('delivery_challan',$challan->id), 'id'=>'delete_delivery_challan_form'))!!}
-                                            <input name="_method" type="hidden" value="DELETE">
+                                            
+                                            <form method="POST" id="delete_delivery_challan">
                                             <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                            <input type="hidden" id="challan_id">
                                             <div class="modal-body">
                                                 <div class="delete">
                                                     <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                     <div class="pwd">
                                                         <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" placeholder="" name="password" type="password"></div>
+                                                        <div class="pwdr"><input class="form-control" placeholder="" name="password" id="pwdr" type="password"></div>
 
                                                     </div>
                                                     <div class="clearfix"></div>
@@ -225,16 +170,15 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
+                                                <input type="hidden" name="order_sort_type" value="{{ ($qstring_sort_type_order!="") ? $qstring_sort_type_order : "" }}"/>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-default" id="yes">Yes</button>
+                                                <button type="button" class="btn btn-default delete_challan_submit" id="delete_challan_submit">Yes</button>
                                             </div>
-                                            {!! Form::close() !!}
+                                          </form>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="modal fade" id="print_challan_{{$challan->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="print_challan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -243,7 +187,6 @@
                                             </div>
                                             <div class="modal-body">
                                                 <input type="hidden" name="_token"value="{{csrf_token()}}">
-
                                                 <input type="hidden" name="serial_number" value="{{$challan['delivery_order']->serial_no}}">
                                                 <input type="hidden" name="delivery_order_id" value="{{$challan['delivery_order']->id}}">
                                                 <div class="row print_time">
@@ -257,19 +200,14 @@
                                                 <div class="clearfix"></div>
                                                 <hr>
                                                 <div >
-                                                    <button type="submit" class="btn btn-primary form_button_footer print_delivery_challan" id="{{$challan->id}}">Generate Challan</button>
-                                                    <!--<button type="button" class="btn btn-primary form_button_footer" >Send Message</button>-->
+                                                    <button type="button" class="btn btn-primary form_button_footer print_delivery_challan" id="print_delivery_challan">Generate Challan</button>
                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                                                 </div>
-
                                                 <div class="clearfix"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                @endif
-                                @endforeach
-
                                 </tbody>
                             </table>
                             <span class="pull-right">

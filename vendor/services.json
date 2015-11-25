@@ -28,7 +28,8 @@
         "App\\Providers\\BusServiceProvider",
         "App\\Providers\\ConfigServiceProvider",
         "App\\Providers\\EventServiceProvider",
-        "App\\Providers\\RouteServiceProvider"
+        "App\\Providers\\RouteServiceProvider",
+        "Sukohi\\FormAutocomplete\\FormAutocompleteServiceProvider"
     ],
     "eager": [
         "Illuminate\\Auth\\AuthServiceProvider",
@@ -127,7 +128,8 @@
         "translator": "Illuminate\\Translation\\TranslationServiceProvider",
         "translation.loader": "Illuminate\\Translation\\TranslationServiceProvider",
         "html": "Illuminate\\Html\\HtmlServiceProvider",
-        "form": "Illuminate\\Html\\HtmlServiceProvider"
+        "form": "Illuminate\\Html\\HtmlServiceProvider",
+        "form-autocomplete": "Sukohi\\FormAutocomplete\\FormAutocompleteServiceProvider"
     },
     "when": {
         "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider": [
@@ -164,6 +166,9 @@
 
         ],
         "Illuminate\\Html\\HtmlServiceProvider": [
+
+        ],
+        "Sukohi\\FormAutocomplete\\FormAutocompleteServiceProvider": [
 
         ]
     }

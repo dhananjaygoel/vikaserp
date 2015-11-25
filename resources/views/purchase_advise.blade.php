@@ -56,6 +56,7 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
+                        <div id="flash_message" class="alert no_data_msg_container"></div>
                         @if(Session::has('success'))
                         <div class="clearfix"> &nbsp;</div>
                         <div class="alert alert-success alert-dismissible" role="alert">
@@ -97,7 +98,7 @@
                                     @foreach($pa['purchase_products'] as $prod)
                                     <?php $qty_sum += $prod->quantity; ?>
                                     @endforeach
-                                    <tr>
+                                    <tr id="purchase_advice_row_{{$pa->id}}">
                                         <td>{{ $i }}</td>
                                         <td>{{ date("F jS, Y", strtotime($pa->purchase_advice_date)) }}</td>
                                         <td>
@@ -157,7 +158,7 @@
                                             </span>
                                             @endif
                                             @if($pa->serial_number == ""  || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                            <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#printModal{{$pa->id}}">
+                                            <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#printModal" onclick="print_purchase_advice({{$pa->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
@@ -173,7 +174,7 @@
                                             @endif
 
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal{{$pa->id}}" title="delete">
+                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#deletePurchaseAdvice" title="delete" onclick="delete_purchase_advice({{$pa->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -182,10 +183,14 @@
                                             @endif
                                         </td>
                                     </tr>
-                                <div class="modal fade" id="myModal{{$pa->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                
+                                
+                                <?php $i++; ?>
+                                @endforeach
+                                <div class="modal fade" id="deletePurchaseAdvice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
-                                            <form method="POST" action="{{url('purchaseorder_advise/'.$pa->id)}}" id="deleteCustomerForm{{$pa->id}}">
+                                            <form method="POST" id="delete_purchase_advice">
                                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                                                 <input name="_method" type="hidden" value="DELETE">
                                                 <div class="modal-header">
@@ -197,7 +202,7 @@
                                                         <div><b>UserID:</b> {{Auth::user()->phone_number}}</div>
                                                         <div class="pwd">
                                                             <div class="pwdl"><b>Password:</b></div>
-                                                            <div class="pwdr"><input class="form-control" placeholder="" name="password" type="password" type="text"></div>
+                                                            <div class="pwdr"><input class="form-control" id="pwdr" placeholder="" name="password" type="password" type="text"></div>
 
                                                         </div>
                                                         <div class="clearfix"></div>
@@ -207,13 +212,13 @@
                                                 <div class="modal-footer">
                                                     <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                    <button type="submit" class="btn btn-default deleteCustomer" data-dismiss="modal">Yes</button>
+                                                    <button type="button" class="btn btn-default delete_purchase_advice_submit" id="delete_purchase_advice_submit" data-dismiss="modal">Yes</button>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal fade" id="printModal{{$pa->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="printModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -232,9 +237,9 @@
                                                 <div class="clearfix"></div>
                                                 <hr>
                                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                                <input type="hidden" name="pa_id" value="{{$pa->id}}"/>
+                                                <input type="hidden" name="pa_id" id="pa_id"/>
                                                 <div >
-                                                    <button type="button" class="btn btn-primary form_button_footer print_purchase_advise" id="{{$pa->id}}" >Print</button>
+                                                    <button type="button" class="btn btn-primary form_button_footer print_purchase_advise" data-dismiss="modal">Print</button>
                                                     <button class="btn btn-default form_button_footer" data-dismiss="modal">Cancel</button>
                                                 </div>
                                                 <div class="clearfix"></div>
@@ -242,8 +247,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <?php $i++; ?>
-                                @endforeach
                                 </tbody>
                             </table>
                             <span class="pull-right">

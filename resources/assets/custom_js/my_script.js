@@ -493,21 +493,24 @@ function print_challan(delivery_order_id){
     $('#print_delivery_order').val(delivery_order_id);
 }
 /*
- * print challan to new page on delivery order 
+ * print challan to new page on delivery order  
  */
 $('.print_delivery_order').click(function() {
     $('#print_challan').modal('hide');
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
+    
     if ($("#checksms").is(':checked'))
         send_sms = true;  // checked
     else
         send_sms = false;  // unchecked
+    
     $.ajax({
         type: "GET",
         url: base_url + '/print_delivery_order/' + $(this).val() + '?send_sms=' + send_sms,
         success: function(data) {
-            var printWindow = window.open('', '');
+            var printWindow = window.open('about:blank');
+            printWindow.document.open();
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
@@ -517,7 +520,11 @@ $('.print_delivery_order').click(function() {
         }
     });
 });
+function print_delivery_challan(challan_id){
+     $('#print_delivery_challan').val(challan_id);
+}
 $('.print_delivery_challan').click(function() {
+    $('#print_challan').modal('hide');
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
     if ($("#checksms").is(':checked'))
@@ -526,14 +533,14 @@ $('.print_delivery_challan').click(function() {
         send_sms = false;  // unchecked
     $.ajax({
         type: "GET",
-        url: base_url + '/print_delivery_challan/' + $(this).attr('id') + '?send_sms=' + send_sms,
+        url: base_url + '/print_delivery_challan/' + $('#print_delivery_challan').val() + '?send_sms=' + send_sms,
         success: function(data) {
             var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
             printWindow.onunload = function() {
-                location.reload();
+               
             };
         }
     });
@@ -576,7 +583,17 @@ $('.print_purchase_challan').click(function() {
         }
     });
 });
-
+/*
+ * set purchase advice id for print form
+ * @param {type} purchase_advice_id
+ * @returns {integer}
+ */
+function print_purchase_advice(purchase_advice_id){
+     $('#pa_id').val(purchase_advice_id);
+}
+/*
+ * print purchase advice
+ */
 $('.print_purchase_advise').click(function() {
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
@@ -586,14 +603,14 @@ $('.print_purchase_advise').click(function() {
         send_sms = false;  // unchecked
     $.ajax({
         type: "GET",
-        url: base_url + '/print_purchase_advise/' + $(this).attr('id') + '?send_sms=' + send_sms,
+        url: base_url + '/print_purchase_advise/' + $('#pa_id').val() + '?send_sms=' + send_sms,
         success: function(data) {
             var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
             printWindow.onunload = function() {
-                location.reload();
+                
             };
         }
     });

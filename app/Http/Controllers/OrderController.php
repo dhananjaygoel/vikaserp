@@ -84,11 +84,15 @@ class OrderController extends Controller {
         if (isset($_GET['size_filter']) && $_GET['size_filter'] != '') {
             $size = $_GET['size_filter'];
             $subquerytest=ProductSubCategory::select('id')->where('size','=',$size)->first();
-            $product_category_id=$subquerytest->id;
-            $q->whereHas('all_order_products.product_sub_category', function($query) use ($product_category_id) {
-                                 $query->where('id', '=', $product_category_id);
-            });
-                   
+            if(isset($subquerytest)){
+                $product_category_id=$subquerytest->id;
+                $q->whereHas('all_order_products.product_sub_category', function($query) use ($product_category_id) {
+                                     $query->where('id', '=', $product_category_id);
+                });
+            }
+            else{
+                return Redirect::back()->withInput()->with('flash_message', 'Please Enter Valid Size Name');
+            }
                     
         } else {
             $q->with('all_order_products');
@@ -662,15 +666,15 @@ class OrderController extends Controller {
      */
     public function destroy($id) {
 
-        $order_sort_type = Input::get('order_sort_type');
+        $inputData = Input::get('formData');
+         parse_str($inputData, $formFields);
+            $password = $formFields['password'];
+            $order_sort_type = $formFields['order_sort_type'];
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-         $inputData = Input::get('formData');
-         parse_str($inputData, $formFields);
-            $password = $formFields['password'];
-
+         
         if ($password == '') {
             return Redirect::to('orders')->with('error', 'Please enter your password');
         }

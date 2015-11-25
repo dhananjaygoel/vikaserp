@@ -910,3 +910,212 @@ $('.delete_delivery_order_submit').click(function() {
     }, 'json'); //done 
    
 });
+
+/*
+ * set challan id to the form model 
+ * @param {type} challan_id
+ * @returns {undefined}
+ */
+function delete_challan(challan_id)
+{
+   $('#delete_challan_submit').val(challan_id);
+}
+/*
+ * Delete the challan by challan_id
+ */
+$('.delete_challan_submit').click(function() {
+     $('#delete_challan').modal('hide');
+    /*Form token set up*/
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        }});
+    
+    /* Mail setting form id object*/
+    $form = $('#delete_delivery_challan');
+    /*Mail setting form data*/
+    $data = $form.serialize();
+    /*Mail setting from url*/
+    url =baseurl+'/delivery_challan/'+$('#delete_challan_submit').val()+'-delete';
+
+   var posting = $.post(url, {formData: $data});
+    posting.done(function(data) {
+        $("#pwdr").val('');
+        if(data['message']=='success')
+        {
+            $("#challan_order_row_"+ $('#delete_challan_submit').val()).remove();
+            $('#flash_message').html("Order Deleted Successfully");
+            $('#flash_message').removeClass('alert-danger');
+            $('#flash_message').addClass('alert-success');
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
+        }
+       else{
+           
+            $('#flash_message').html("Delete Opration Failed");
+            $('#flash_message').removeClass('alert-success');
+            $('#flash_message').addClass('alert-danger');
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
+       }
+
+    }, 'json'); //done 
+   
+});
+
+function delete_purchase_order(purchase_order_id)
+{
+   $('#delete_purchase_order_submit').val(purchase_order_id);
+}
+/*
+ * Delete order by AJAX call
+ */
+$('.delete_purchase_order_submit').click(function() {
+     $('#delete_purchase_order').modal('hide');
+    /*Form token set up*/
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        }});
+    purchase_order_id=$('#delete_purchase_order_submit').val();
+    /* Mail setting form id object*/
+    $form = $('.delete_purchase_order');
+    /*Mail setting form data*/
+    $data = $form.serialize();
+    /*Mail setting from url*/
+    url =baseurl+'/purchase_orders/'+purchase_order_id+'-delete';
+   
+   var posting = $.post(url, {formData: $data});
+    posting.done(function(data) {
+        $("#pwdr").val('');
+        if(data['message']=='success')
+        {
+            $("#purchase_order_row_"+purchase_order_id).remove();
+            $('#flash_message').html("Purchase Order Deleted Successfully");
+            $('#flash_message').removeClass('alert-danger');
+            $('#flash_message').addClass('alert-success');
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
+        }
+       else{
+           
+            $('#flash_message').html("Purchase Order Delete Opration Failed");
+            $('#flash_message').removeClass('alert-success');
+            $('#flash_message').addClass('alert-danger');
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
+       }
+
+    }, 'json'); //done 
+   
+});
+
+/*
+ * set Purchase order id for manual complete
+ * @param {type} purchase_order_id
+ * @returns {undefined}
+ */
+
+function manual_complete(purchase_order_id)
+{
+   $('#purchase_order_id').val(purchase_order_id);
+}
+
+/*
+ * Cancel the Purchase order using AJAX request
+ */
+$('.manual_complete_purchase_order_submit').click(function() {
+     $('#manual_complete').modal('hide');
+    /*Form token set up*/
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        }});
+    
+    /* Mail setting form id object*/
+    $form = $('.manual_complete_purchase_order');
+    /*Mail setting form data*/
+    $data = $form.serialize();
+    /*Mail setting from url*/
+    url =$form.attr('action');
+  
+   var posting = $.post(url, {formData: $data});
+    posting.done(function(data) {
+       
+        if(data['message']=='success')
+        {
+            $("#purchase_order_row_"+$('#purchase_order_id').val()).remove();
+            $('#flash_message').html("Purchase Order Cancel Successfully");
+            $('#flash_message').removeClass('alert-danger');
+            $('#flash_message').addClass('alert-success');
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
+        }
+       else{
+           
+            $('#flash_message').html("Purchase Order Cancel Failed");
+            $('#flash_message').removeClass('alert-success');
+            $('#flash_message').addClass('alert-danger');
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
+       }
+
+    }, 'json'); //done 
+   
+});
+
+/*
+ * set purchase advice id to form model
+ * @param {type} purchase_advice_id
+ * @returns {undefined}
+ */
+function delete_purchase_advice(purchase_advice_id)
+{
+    
+   $("#delete_purchase_advice").attr('action',baseurl+'/purchaseorder_advise/'+purchase_advice_id+'-delete');
+   $('#delete_purchase_advice_submit').val(purchase_advice_id);
+   
+}
+
+/*
+ * Delete Purchase Advice from delivery order page
+ */
+$('.delete_purchase_advice_submit').click(function() {
+     $('#deletePurchaseAdvice').modal('hide');
+    /*Form token set up*/
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        }});
+    
+    /* Mail setting form id object*/
+    $form = $('#delete_purchase_advice');
+    /*Mail setting form data*/
+    $data = $form.serialize();
+    /*Mail setting from url*/
+    url =$form.attr('action');
+   
+   var posting = $.post(url, {formData: $data});
+    posting.done(function(data) {
+        $("#pwdr").val('');
+        if(data['message']=='success')
+        {
+            $("#purchase_advice_row_"+$('#delete_purchase_advice_submit').val()).remove();
+            $('#flash_message').html("Purchase Advice Deleted Successfully");
+            $('#flash_message').removeClass('alert-danger');
+            $('#flash_message').addClass('alert-success');
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
+        }
+       else{
+           
+            $('#flash_message').html("Purchase Advice Delete Opration Failed");
+            $('#flash_message').removeClass('alert-success');
+            $('#flash_message').addClass('alert-danger');
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
+       }
+
+    }, 'json'); //done 
+   
+});

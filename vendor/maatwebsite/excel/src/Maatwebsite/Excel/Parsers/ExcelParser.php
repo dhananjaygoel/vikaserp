@@ -224,6 +224,13 @@ class ExcelParser {
             case 'slugged':
                 return $this->getSluggedIndex($value, Config::get('excel.import.to_ascii', true));
                 break;
+            case 'slugged_with_count':
+                $index = $this->getSluggedIndex($value, Config::get('excel.import.to_ascii', true));
+                if(in_array($index,$this->indices)){
+                    $index = $this->appendOrIncreaseStringCount($index);
+                }
+                return $index;
+                break;
 
             case 'ascii':
                 return $this->getAsciiIndex($value);
@@ -241,6 +248,32 @@ class ExcelParser {
                 return $value;
                 break;
         }
+    }
+
+    /**
+     * Append or increase the count at the String like: test to test_1
+     * @param string $index
+     * @return string
+     */
+    protected function appendOrIncreaseStringCount($index)
+    {
+        do {
+            if (preg_match("/(\d+)$/",$index,$matches) === 1)
+            {
+                // increase +1
+                $index = preg_replace_callback( "/(\d+)$/",
+                    function ($matches) {
+                        return ++$matches[1];
+                    }, $index);
+            }
+            else
+            {
+                $index .= '_1';
+            }
+
+        } while(in_array($index,$this->indices));
+
+        return $index;
     }
 
     /**
@@ -396,26 +429,36 @@ class ExcelParser {
         $i = 0;
         $parsedCells = array();
 
-        // Set the cell iterator
-        $cellIterator = $this->row->getCellIterator();
+        try {
+            // Set the cell iterator
+            $cellIterator = $this->row->getCellIterator();
 
-        // Ignore empty cells if needed
-        $cellIterator->setIterateOnlyExistingCells($this->reader->needsIgnoreEmpty());
+            // Ignore empty cells if needed
+            $cellIterator->setIterateOnlyExistingCells($this->reader->needsIgnoreEmpty());
 
-        // Foreach cells
-        foreach ($cellIterator as $this->cell)
-        {
-            // Check how we need to save the parsed array
-            $index = ($this->reader->hasHeading() && isset($this->indices[$i])) ? $this->indices[$i] : $this->getIndexFromColumn();
-
-            // Check if we want to select this column
-            if ( $this->cellNeedsParsing($index) )
+            // Foreach cells
+            foreach ($cellIterator as $this->cell)
             {
-                // Set the value
-                $parsedCells[$index] = $this->parseCell($index);
+                // Check how we need to save the parsed array
+                $index = ($this->reader->hasHeading() && isset($this->indices[$i])) ? $this->indices[$i] : $this->getIndexFromColumn();
+
+                // Check if we want to select this column
+                if ( $this->cellNeedsParsing($index) )
+                {
+                    // Set the value
+                    $parsedCells[$index] = $this->parseCell($index);
+                }
+
+                $i++;
             }
 
-            $i++;
+        } catch (PHPExcel_Exception $e) {
+            // silently ignore the 'No cells exist within the specified range' error, but rethrow any others
+            if ($e->getMessage() != 'No cells exist within the specified range') {
+                throw $e;
+            }
+            // make sure that we return an empty CellCollection
+            $parsedCells = array();
         }
 
         // Return array with parsed cells
