@@ -944,7 +944,7 @@ $('.delete_challan_submit').click(function() {
         if(data['message']=='success')
         {
             $("#challan_order_row_"+ $('#delete_challan_submit').val()).remove();
-            $('#flash_message').html("Order Deleted Successfully");
+            $('#flash_message').html("Order deleted successfully");
             $('#flash_message').removeClass('alert-danger');
             $('#flash_message').addClass('alert-success');
             $('#flash_message').fadeIn();
@@ -952,7 +952,7 @@ $('.delete_challan_submit').click(function() {
         }
        else{
            
-            $('#flash_message').html("Delete Opration Failed");
+            $('#flash_message').html("Delete opration failed");
             $('#flash_message').removeClass('alert-success');
             $('#flash_message').addClass('alert-danger');
             $('#flash_message').fadeIn();
@@ -991,7 +991,7 @@ $('.delete_purchase_order_submit').click(function() {
         if(data['message']=='success')
         {
             $("#purchase_order_row_"+purchase_order_id).remove();
-            $('#flash_message').html("Purchase Order Deleted Successfully");
+            $('#flash_message').html("Purchase order deleted successfully");
             $('#flash_message').removeClass('alert-danger');
             $('#flash_message').addClass('alert-success');
             $('#flash_message').fadeIn();
@@ -999,7 +999,7 @@ $('.delete_purchase_order_submit').click(function() {
         }
        else{
            
-            $('#flash_message').html("Purchase Order Delete Opration Failed");
+            $('#flash_message').html("Purchase order delete opration failed");
             $('#flash_message').removeClass('alert-success');
             $('#flash_message').addClass('alert-danger');
             $('#flash_message').fadeIn();
@@ -1045,7 +1045,7 @@ $('.manual_complete_purchase_order_submit').click(function() {
         if(data['message']=='success')
         {
             $("#purchase_order_row_"+$('#purchase_order_id').val()).remove();
-            $('#flash_message').html("Purchase Order Cancel Successfully");
+            $('#flash_message').html("Purchase order cancel successfully");
             $('#flash_message').removeClass('alert-danger');
             $('#flash_message').addClass('alert-success');
             $('#flash_message').fadeIn();
@@ -1053,7 +1053,7 @@ $('.manual_complete_purchase_order_submit').click(function() {
         }
        else{
            
-            $('#flash_message').html("Purchase Order Cancel Failed");
+            $('#flash_message').html("Purchase order cancel failed");
             $('#flash_message').removeClass('alert-success');
             $('#flash_message').addClass('alert-danger');
             $('#flash_message').fadeIn();
@@ -1101,7 +1101,7 @@ $('.delete_purchase_advice_submit').click(function() {
         if(data['message']=='success')
         {
             $("#purchase_advice_row_"+$('#delete_purchase_advice_submit').val()).remove();
-            $('#flash_message').html("Purchase Advice Deleted Successfully");
+            $('#flash_message').html("Purchase advice deleted successfully");
             $('#flash_message').removeClass('alert-danger');
             $('#flash_message').addClass('alert-success');
             $('#flash_message').fadeIn();
@@ -1109,7 +1109,59 @@ $('.delete_purchase_advice_submit').click(function() {
         }
        else{
            
-            $('#flash_message').html("Purchase Advice Delete Opration Failed");
+            $('#flash_message').html("Purchase advice delete opration failed");
+            $('#flash_message').removeClass('alert-success');
+            $('#flash_message').addClass('alert-danger');
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
+       }
+
+    }, 'json'); //done 
+   
+});
+
+/*
+ * set purchase challan id to the form model 
+ * @param {type} challan_id
+ * @returns {undefined}
+ */
+function delete_purchase_challan(purchase_challan_id)
+{
+   $('#delete_purchase_challan_submit').val(purchase_challan_id);
+}
+/*
+ * Delete the purchase challan by challan_id
+ */
+$('.delete_purchase_challan_submit').click(function() {
+     $('#delete_purchase_challan').modal('hide');
+    /*Form token set up*/
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        }});
+    
+    /* Mail setting form id object*/
+    $form = $('#delete_purchase_challan');
+    /*Mail setting form data*/
+    $data = $form.serialize();
+    /*Mail setting from url*/
+    url =baseurl+'/purchase_challan/'+$('#delete_purchase_challan_submit').val()+'-delete';
+
+   var posting = $.post(url, {formData: $data});
+    posting.done(function(data) {
+        $("#pwdr").val('');
+        if(data['message']=='success')
+        {
+            $("#purchase_challan_row_"+ $('#delete_purchase_challan_submit').val()).remove();
+            $('#flash_message').html("Purchase challan deleted successfully");
+            $('#flash_message').removeClass('alert-danger');
+            $('#flash_message').addClass('alert-success');
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
+        }
+       else{
+           
+            $('#flash_message').html("Purchase challan delete opration failed");
             $('#flash_message').removeClass('alert-success');
             $('#flash_message').addClass('alert-danger');
             $('#flash_message').fadeIn();

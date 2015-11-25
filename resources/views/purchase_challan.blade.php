@@ -27,7 +27,7 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
-
+                        <div id="flash_message" class="alert no_data_msg_container"></div>
                         @if (Session::has('success'))
                         <div class="alert alert-success alert-success1">
                             {{Session::get('success')}}
@@ -50,7 +50,7 @@
                                 <tbody>
                                     <?php $i = ($purchase_challan->currentPage() - 1) * $purchase_challan->perPage() + 1; ?>
                                     @foreach($purchase_challan as $challan)
-                                    <tr>
+                                    <tr id="purchase_challan_row_{{$challan->id}}">
                                         <td class="text-center">{{$i++}}</td>
                                         <td class="text-center">
                                             @if($challan['supplier']->tally_name != "")
@@ -88,7 +88,7 @@
                                             </a>
 
                                             @if(($challan->order_status != 'completed' || Auth::user()->role_id == 0  || Auth::user()->role_id == 1) && Auth::user()->role_id != 4)
-                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_model_{{$challan->id}}">
+                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_model" onclick="print_purchase_challan({{$challan->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
@@ -96,7 +96,7 @@
                                             </a>
                                             @endif
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_purchase_challan_{{$challan->id}}" title="delete">
+                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_purchase_challan" title="delete" onclick="delete_purchase_challan({{$challan->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -107,7 +107,9 @@
 
                                     </tr>
 
-                                <div class="modal fade" id="delete_purchase_challan_{{$challan->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                
+                                @endforeach
+                                <div class="modal fade" id="delete_purchase_challan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -115,7 +117,7 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
-                                                {!! Form::open(array('method'=>'DELETE','url'=>url('purchase_challan',$challan->id), 'id'=>'delete_purchase_challan_form'))!!}
+                                                <form method="POST" id="delete_purchase_challan">
                                                 <div class="delete">
                                                     <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                     <div class="pwd">
@@ -128,13 +130,13 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-default" id="yes">Yes</button>
+                                                <button type="submit" class="btn btn-default delete_purchase_challan_submit" id="delete_purchase_challan_submit">Yes</button>
                                             </div>
-                                            {!! Form::close() !!}
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal fade" id="print_model_{{$challan->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="print_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -143,7 +145,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                                <input type="hidden" name="challan_id" value="{{$challan->id}}"/>
+                                                <input type="hidden" name="purchase_challan_id"/>
                                                 <div class="row print_time">
                                                     <div class="col-md-12"> Print By <br>
                                                         <span class="current_time"></span>
@@ -155,7 +157,7 @@
                                                 <div class="clearfix"></div>
                                                 <hr>
                                                 <div >
-                                                    <button type="button" class="btn btn-primary form_button_footer print_purchase_challan" id="{{$challan->id}}" >Generate Challan</button>
+                                                    <button type="button" class="btn btn-primary form_button_footer print_purchase_challan" >Generate Challan</button>
                                                     <a href="#" class="btn btn-default form_button_footer">Cancel</a>
                                                 </div>
                                                 <div class="clearfix"></div>
@@ -164,7 +166,6 @@
                                     </div>
                                 </div>
 
-                                @endforeach
                                 </tbody>
                             </table>
                             <span class="pull-right">

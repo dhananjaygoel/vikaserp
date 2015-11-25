@@ -172,7 +172,7 @@
                                             <div class="modal-footer">
                                                 <input type="hidden" name="order_sort_type" value="{{ ($qstring_sort_type_order!="") ? $qstring_sort_type_order : "" }}"/>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="button" class="btn btn-default delete_challan_submit" id="delete_challan_submit">Yes</button>
+                                                <button type="button" class="btn btn-default delete_challan_submit" id="delete_challan_submit" data-dismiss="modal">Yes</button>
                                             </div>
                                           </form>
                                         </div>
