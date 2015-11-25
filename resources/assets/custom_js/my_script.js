@@ -493,7 +493,7 @@ function print_challan(delivery_order_id){
     $('#print_delivery_order').val(delivery_order_id);
 }
 /*
- * print challan to new page on delivery order 
+ * print challan to new page on delivery order  
  */
 $('.print_delivery_order').click(function() {
     $('#print_challan').modal('hide');
