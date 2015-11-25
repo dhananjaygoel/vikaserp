@@ -561,7 +561,9 @@ $('.print_sales_order_daybook').click(function() {
         }
     });
 });
-
+function print_purchase_challan(purchase_challan_id){
+     $('#purchase_challan_id').val(purchase_challan_id);
+}
 $('.print_purchase_challan').click(function() {
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
@@ -571,14 +573,14 @@ $('.print_purchase_challan').click(function() {
         send_sms = false;  // unchecked
     $.ajax({
         type: "GET",
-        url: base_url + '/print_purchase_challan/' + $(this).attr('id') + '?send_sms=' + send_sms,
+        url: base_url + '/print_purchase_challan/' + $('#purchase_challan_id').val() + '?send_sms=' + send_sms,
         success: function(data) {
             var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
             printWindow.onunload = function() {
-                location.reload();
+                
             };
         }
     });
