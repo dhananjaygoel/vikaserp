@@ -499,10 +499,12 @@ $('.print_delivery_order').click(function() {
     $('#print_challan').modal('hide');
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
+    
     if ($("#checksms").is(':checked'))
         send_sms = true;  // checked
     else
         send_sms = false;  // unchecked
+    
     $.ajax({
         type: "GET",
         url: base_url + '/print_delivery_order/' + $(this).val() + '?send_sms=' + send_sms,
