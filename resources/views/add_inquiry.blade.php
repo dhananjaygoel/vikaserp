@@ -69,6 +69,16 @@ use Illuminate\Support\Facades\Session;
                                         </div>
                                     </div>
                                 </div>
+                                <div class="customer_select" style="<?= $style ?>" >
+                                    <div class="col-md-4">
+                                        <div class="form-group searchproduct">
+                                            <input class="form-control" placeholder="Enter Tally Name" type="text" id="existing_customer_name1" autocomplete="off">
+                                            <input type="hidden" id="existing_customer_id" name="existing_customer_name">
+                                            <input type="hidden" id="customer_default_location">
+                                            <i class="fa fa-search search-icon"></i>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="clearfix"></div>
                             </div>
                             <?php
@@ -265,4 +275,30 @@ use Illuminate\Support\Facades\Session;
         </div>
     </div>
 </div>
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<!-- jQuery UI -->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+
+<script>
+
+      $(document).ready(function(){
+//          var val;
+//          $('#existing_customer_name1').keyup(function(){
+//             val = $('#existing_customer_name1').val();
+//          });
+          
+          {!! FormAutocomplete::selector('#existing_customer_name1')->source(function(){
+            return \App\Customer::where('customer_status', '=', 'permanent')
+                ->orderBy('tally_name', 'ASC')
+                ->lists('tally_name');  // You need to return array values.
+
+        }) !!}
+          
+        // Using Table and column
+   });
+</script>
 @stop
