@@ -91,6 +91,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('update_difference', 'ProductsubController@update_difference');
     Route::get('fetch_product_size', 'ProductsubController@fetch_product_size');
     Route::get('fetch_product_name', 'ProductsubController@fetch_product_name');
+    Route::post('delivery_order/{id}-delete','DeliveryOrderController@destroy');
     Route::resource('delivery_order', 'DeliveryOrderController');
     Route::resource('pending_delivery_order', 'DeliveryOrderController@pending_delivery_order');
     Route::resource('purchase_order_daybook', 'PurchaseDaybookController');
