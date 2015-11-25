@@ -510,19 +510,13 @@ $('.print_delivery_order').click(function() {
         url: base_url + '/print_delivery_order/' + $(this).val() + '?send_sms=' + send_sms,
         success: function(data) {
             var printWindow = window.open('about:blank');
-//            printWindow.document.open();
-//            printWindow.document.write(data);
-//            printWindow.print();
-//            printWindow.close();
-////            printWindow.onunload = function() {
-////                
-////            };
-            with(printWindow.document)
-            {
-              open();
-              write(data);
-              close();
-            }
+            printWindow.document.open();
+            printWindow.document.write(data);
+            printWindow.print();
+            printWindow.close();
+            printWindow.onunload = function() {
+                
+            };
         }
     });
 });
