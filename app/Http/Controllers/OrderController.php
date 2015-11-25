@@ -84,11 +84,15 @@ class OrderController extends Controller {
         if (isset($_GET['size_filter']) && $_GET['size_filter'] != '') {
             $size = $_GET['size_filter'];
             $subquerytest=ProductSubCategory::select('id')->where('size','=',$size)->first();
-            $product_category_id=$subquerytest->id;
-            $q->whereHas('all_order_products.product_sub_category', function($query) use ($product_category_id) {
-                                 $query->where('id', '=', $product_category_id);
-            });
-                   
+            if(isset($subquerytest)){
+                $product_category_id=$subquerytest->id;
+                $q->whereHas('all_order_products.product_sub_category', function($query) use ($product_category_id) {
+                                     $query->where('id', '=', $product_category_id);
+                });
+            }
+            else{
+                return Redirect::back()->withInput()->with('flash_message', 'Please Enter Valid Size Name');
+            }
                     
         } else {
             $q->with('all_order_products');
