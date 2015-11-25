@@ -855,3 +855,58 @@ $('.cancel_orders_modal_submit').click(function() {
     }, 'json'); //done 
    
 });
+/*
+ * set delete delivery order id and action to model form from page delivery order
+ * @param {integer} deliver_order_id
+ * @returns {none}
+ */
+function delete_delivery_order(deliver_order_id)
+{
+    
+   $("#delete_delivery_order").attr('action',baseurl+'/delivery_order/'+deliver_order_id+'-delete');
+   $('#user_id').val(deliver_order_id);
+   
+}
+
+/*
+ * Delete delivery order from delivery order page
+ */
+$('.delete_delivery_order_submit').click(function() {
+     $('#myModalDeleteDeliveryOrder').modal('hide');
+    /*Form token set up*/
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        }});
+    
+    /* Mail setting form id object*/
+    $form = $('#delete_delivery_order');
+    /*Mail setting form data*/
+    $data = $form.serialize();
+    /*Mail setting from url*/
+    url =$form.attr('action');
+   
+   var posting = $.post(url, {formData: $data});
+    posting.done(function(data) {
+        $("#pwdr").val('');
+        if(data['message']=='success')
+        {
+            $("#delivery_order_row_"+$('#user_id').val()).remove();
+            $('#flash_message').html("Order Deleted Successfully");
+            $('#flash_message').removeClass('alert-danger');
+            $('#flash_message').addClass('alert-success');
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
+        }
+       else{
+           
+            $('#flash_message').html("Delete Opration Failed");
+            $('#flash_message').removeClass('alert-success');
+            $('#flash_message').addClass('alert-danger');
+            $('#flash_message').fadeIn();
+            $('#flash_message').fadeOut(5000);
+       }
+
+    }, 'json'); //done 
+   
+});

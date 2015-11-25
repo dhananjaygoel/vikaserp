@@ -483,7 +483,20 @@ $('body').delegate(".btn_edit_purchase_advice", "click", function() {
         $(this).parents('form').submit();
     }
 });
+
+/*
+ * Print challan on the page delivery order
+ * @param {type} delivery_order_id
+ * @returns {undefined}
+ */
+function print_challan(delivery_order_id){
+    $('#print_delivery_order').val(delivery_order_id);
+}
+/*
+ * print challan to new page on delivery order 
+ */
 $('.print_delivery_order').click(function() {
+    $('#print_challan').modal('hide');
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
     if ($("#checksms").is(':checked'))
@@ -492,14 +505,14 @@ $('.print_delivery_order').click(function() {
         send_sms = false;  // unchecked
     $.ajax({
         type: "GET",
-        url: base_url + '/print_delivery_order/' + $(this).attr('id') + '?send_sms=' + send_sms,
+        url: base_url + '/print_delivery_order/' + $(this).val() + '?send_sms=' + send_sms,
         success: function(data) {
             var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
             printWindow.onunload = function() {
-                location.reload();
+                
             };
         }
     });

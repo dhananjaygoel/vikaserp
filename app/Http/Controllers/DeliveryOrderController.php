@@ -355,14 +355,17 @@ class DeliveryOrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('delivery_order')->with('error', 'You do not have permission.');
         }
-        $order_sort_type = Input::get('order_sort_type');
-
-        if (Hash::check(Input::get('model_pass'), Auth::user()->password)) {
-            DeliveryOrder::find($id)->delete();
-            Session::put('order-sort-type', $order_sort_type);
-            return redirect('delivery_order')->with('success', 'Delivery order details successfully deleted.');
+        $inputData = Input::get('formData');
+         parse_str($inputData, $formFields);
+            $password = $formFields['password'];
+            $order_sort_type =$formFields['order_sort_type'];
+            
+        if (Hash::check($password, Auth::user()->password)) {
+//            DeliveryOrder::find($id)->delete();
+//            Session::put('order-sort-type', $order_sort_type);
+            return array('message'=>'success');
         } else {
-            return redirect('delivery_order')->with('wrong', 'You have entered wrong credentials');
+           return array('message'=> 'failed');
         }
     }
 

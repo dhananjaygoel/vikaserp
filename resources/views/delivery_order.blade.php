@@ -48,6 +48,7 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
+                        <div id="flash_message" class="alert no_data_msg_container"></div>
                         @if(Session::has('error'))
                         <div class="clearfix"> &nbsp;</div>
                         <div class="alert alert-danger alert-dismissible" role="alert">
@@ -95,7 +96,7 @@
                                 <tbody>
                                     <?php $i = ($delivery_data->currentPage() - 1 ) * $delivery_data->perPage() + 1; ?>
                                     @foreach($delivery_data as $delivery)
-                                    <tr>
+                                    <tr id="delivery_order_row_{{$delivery->id}}">
                                         <td>{{ $i++ }}</td>
                                         <td>{{date("F jS, Y", strtotime($delivery->created_at)) }}</td>
                                         <td>
@@ -174,7 +175,7 @@
 
 
                                             @if($delivery->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                            <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan_{{$delivery->id}}">
+                                            <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_challan({{$delivery->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
@@ -189,7 +190,7 @@
                                             </span>
                                             @endif
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal{{$delivery->id}}" title="delete">
+                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModalDeleteDeliveryOrder" title="delete" onclick='delete_delivery_order({{$delivery->id}})'>
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -198,44 +199,49 @@
                                             @endif
                                         </td>
                                     </tr>
-                                <div class="modal fade" id="myModal{{$delivery->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                
+                                
+                                @endforeach
+                                <div class="modal fade" id="myModalDeleteDeliveryOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
-                                            {!! Form::open(array('route' => array('delivery_order.destroy', $delivery->id), 'method' => 'delete')) !!}
-                                            <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                            <div class="modal-body">
-                                                <div class="delete">
-                                                    <?php
-                                                    $us = Auth::user();
-                                                    $us['mobile_number']
-                                                    ?>
-                                                    <div><b>Mobile:</b>
-                                                        {{$us['mobile_number']}}
-                                                        <input type="hidden" name="mobile" value="{{$us['mobile_number']}}"/>
-                                                        <input type="hidden" name="user_id" value="<?php echo $delivery->id; ?>"/>
+                                            
+                                            <form method="POST" accept-charset="UTF-8" id="delete_delivery_order">
+                                                <input name="_token" type="hidden" value="{{ csrf_token() }}">
+                                                <div class="modal-body">
+                                                    <div class="delete">
+                                                        <?php
+                                                        $us = Auth::user();
+                                                        $us['mobile_number']
+                                                        ?>
+                                                        <div><b>Mobile:</b>
+                                                            {{$us['mobile_number']}}
+                                                            <input type="hidden" name="mobile" value="{{$us['mobile_number']}}"/>
+                                                            <input type="hidden" name="user_id" id="user_id"/>
+                                                        </div>
+                                                        <div class="pwd">
+                                                            <div class="pwdl"><b>Password:</b></div>
+                                                            <div class="pwdr"><input class="form-control" name="password" placeholder="" id="pwdr" required="required" type="password"></div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                        <div class="delp">Are you sure you want to <b>delete </b>?</div>
                                                     </div>
-                                                    <div class="pwd">
-                                                        <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" id="model_pass<?php echo $delivery->id; ?>" name="model_pass" placeholder="" required="required" type="password"></div>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                    <div class="delp">Are you sure you want to <b>delete </b>?</div>
                                                 </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-default">Yes</button>
-                                            </div>
-                                            {!! Form::close() !!}
+                                                <div class="modal-footer">
+                                                    
+                                                    <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                                    <button type="button" class="btn btn-default delete_delivery_order_submit">Yes</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal fade" id="print_challan_{{$delivery->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="print_challan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -254,16 +260,15 @@
                                                 <div class="clearfix"></div>
                                                 <hr>
                                                 <div >
-                                                    <button type="button" class="btn btn-primary form_button_footer print_delivery_order" id="{{$delivery->id}}">Print</button>
+                                                    <button type="button" class="btn btn-primary form_button_footer print_delivery_order" id="print_delivery_order" >Print</button>
 
-                                                    <a href="{{url('delivery_order')}}" class="btn btn-default form_button_footer">Cancel</a>
+                                                    <a  class="btn btn-default form_button_footer">Cancel</a>
                                                 </div>
                                                 <div class="clearfix"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                @endforeach
                                 </tbody>
                             </table>
                             <span class="pull-right">
