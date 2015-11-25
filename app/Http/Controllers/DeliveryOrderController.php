@@ -361,8 +361,8 @@ class DeliveryOrderController extends Controller {
             $order_sort_type =$formFields['order_sort_type'];
             
         if (Hash::check($password, Auth::user()->password)) {
-//            DeliveryOrder::find($id)->delete();
-//            Session::put('order-sort-type', $order_sort_type);
+            DeliveryOrder::find($id)->delete();
+            Session::put('order-sort-type', $order_sort_type);
             return array('message'=>'success');
         } else {
            return array('message'=> 'failed');
