@@ -216,7 +216,7 @@ class PurchaseChallanController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (Hash::check($password, Auth::user()->password)) {
-//            $delete_purchase_challan = PurchaseChallan::find($id)->delete();
+            $delete_purchase_challan = PurchaseChallan::find($id)->delete();
             return array('message'=>'success');
         } else {
             return array('message'=> 'failed');

@@ -117,7 +117,8 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
-                                                <form method="POST" id="delete_purchase_challan">
+                                                <form method="POST" id="delete_purchase_challan_form">
+                                                    <input type="hidden" name="_token" value="{{csrf_token()}}">
                                                 <div class="delete">
                                                     <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                     <div class="pwd">
@@ -130,7 +131,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-default delete_purchase_challan_submit" id="delete_purchase_challan_submit">Yes</button>
+                                                <button type="button" class="btn btn-default delete_purchase_challan_submit" id="delete_purchase_challan_submit">Yes</button>
                                             </div>
                                             </form>
                                         </div>
@@ -145,7 +146,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                                <input type="hidden" name="purchase_challan_id"/>
+                                                <input type="hidden" name="purchase_challan_id" id="purchase_challan_id"/>
                                                 <div class="row print_time">
                                                     <div class="col-md-12"> Print By <br>
                                                         <span class="current_time"></span>
@@ -157,8 +158,8 @@
                                                 <div class="clearfix"></div>
                                                 <hr>
                                                 <div >
-                                                    <button type="button" class="btn btn-primary form_button_footer print_purchase_challan" >Generate Challan</button>
-                                                    <a href="#" class="btn btn-default form_button_footer">Cancel</a>
+                                                    <button type="button" class="btn btn-primary form_button_footer print_purchase_challan" data-dismiss="modal" >Generate Challan</button>
+                                                    <a class="btn btn-default form_button_footer" data-dismiss="modal">Cancel</a>
                                                 </div>
                                                 <div class="clearfix"></div>
                                             </div>

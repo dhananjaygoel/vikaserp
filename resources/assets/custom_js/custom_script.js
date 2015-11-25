@@ -1141,7 +1141,7 @@ $('.delete_purchase_challan_submit').click(function() {
         }});
     
     /* Mail setting form id object*/
-    $form = $('#delete_purchase_challan');
+    $form = $('#delete_purchase_challan_form');
     /*Mail setting form data*/
     $data = $form.serialize();
     /*Mail setting from url*/
