@@ -146,7 +146,7 @@ return [
 		'App\Providers\ConfigServiceProvider',
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
-                
+                'Sukohi\FormAutocomplete\FormAutocompleteServiceProvider',
 
 	],
 
@@ -198,6 +198,7 @@ return [
                 'Form'      => 'Illuminate\Html\FormFacade',
                 'HTML'      => 'Illuminate\Html\HtmlFacade',
                 'Excel' => 'Maatwebsite\Excel\Facades\Excel',
+                'FormAutocomplete'   => 'Sukohi\FormAutocomplete\Facades\FormAutocomplete',
 
 	],
 
