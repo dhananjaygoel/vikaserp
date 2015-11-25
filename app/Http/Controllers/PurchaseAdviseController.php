@@ -281,12 +281,15 @@ class PurchaseAdviseController extends Controller {
      */
     public function destroy($id) {
 
-        $order_sort_type = Input::get('order_sort_type');
+        $inputData = Input::get('formData');
+         parse_str($inputData, $formFields);
+            $password = $formFields['password'];
+            $order_sort_type = $formFields['order_sort_type'];
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
-        $password = Input::get('password');
+        
         if ($password == '') {
             return Redirect::to('purchaseorder_advise')->with('error', 'Please enter your password');
         }
@@ -294,12 +297,12 @@ class PurchaseAdviseController extends Controller {
         $current_user = User::find(Auth::id());
 
         if (Hash::check($password, $current_user->password)) {
-            $purchase_advise = PurchaseAdvise::find($id);
-            $purchase_advise->delete();
+//            $purchase_advise = PurchaseAdvise::find($id);
+//            $purchase_advise->delete();
             Session::put('order-sort-type', $order_sort_type);
-            return Redirect::to('purchaseorder_advise')->with('success', 'Purchase advise Successfully deleted');
+            return array('message'=>'success');
         } else {
-            return Redirect::to('purchaseorder_advise')->with('error', 'Invalid password');
+            return array('message'=> 'failed');
         }
     }
 
