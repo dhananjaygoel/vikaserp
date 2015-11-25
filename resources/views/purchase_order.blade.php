@@ -74,6 +74,7 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
+                        <div id="flash_message" class="alert no_data_msg_container"></div>
                         @if(sizeof($purchase_orders) ==0)
                         <div class="alert alert-info no_data_msg_container">
                             Currently no purchase orders have been added.
@@ -105,7 +106,7 @@
                                 <tbody>
                                     <?php $i = ($purchase_orders->currentPage() - 1) * $purchase_orders->perPage() + 1; ?>
                                     @foreach($purchase_orders as $purchase_order)
-                                    <tr>
+                                    <tr id="purchase_order_row_{{$purchase_order->id}}">
                                         <td>{{$i++}}</td>
                                         <td>{{$purchase_order['customer']->owner_name}}</td>
                                         <td>{{$purchase_order['customer']->phone_number1}}</td>
@@ -147,14 +148,14 @@
                                             </a>
                                             @endif
 
-                                            <a class="table-link" title="manually complete" data-toggle="modal" data-target="#manual_complete_{{$purchase_order->id}}">
+                                            <a class="table-link" title="manually complete" data-toggle="modal" data-target="#manual_complete" onclick="manual_complete({{$purchase_order->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
 
-                                            <a class="table-link danger" data-toggle="modal" data-target="#delete_purchase_order_{{$purchase_order->id}}">
+                                            <a class="table-link danger" data-toggle="modal" data-target="#delete_purchase_order" onclick="delete_purchase_order({{$purchase_order->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -163,7 +164,8 @@
                                             @endif
                                         </td>
                                     </tr>
-                                <div class="modal fade" id="delete_purchase_order_{{$purchase_order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                @endforeach
+                                <div class="modal fade" id="delete_purchase_order" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -171,12 +173,14 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
-                                                {!! Form::open(array('method'=>'DELETE','url'=>url('purchase_orders',$purchase_order->id), 'id'=>'delete_purchase_order_form'))!!}
+<!--                                                {!! Form::open(array('method'=>'DELETE','url'=>url('purchase_orders',$purchase_order->id), 'id'=>'delete_purchase_order_form'))!!}-->
+                                                <form method="post" class="delete_purchase_order" >
+                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                 <div class="delete">
                                                     <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                     <div class="pwd">
                                                         <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" placeholder="" type="password" name="password" required=""></div>
+                                                        <div class="pwdr"><input class="form-control" placeholder="" type="password" name="password" id="pwdr" required=""></div>
                                                     </div>
                                                     <div class="clearfix"></div>
                                                     <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
@@ -185,13 +189,13 @@
                                             <div class="modal-footer">
                                                 <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-default" id="yes">Yes</button>
-                                                {!! Form::close() !!}
+                                                <button type="button" class="btn btn-default delete_purchase_order_submit" id="delete_purchase_order_submit">Yes</button>
+                                            </form>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal fade" id="manual_complete_{{$purchase_order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="manual_complete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -199,10 +203,10 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="{{url('manual_complete')}}" method="POST">
+                                                <form action="{{url('manual_complete')}}" method="POST" class="manual_complete_purchase_order">
                                                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                                                     <input type="hidden" name="module_name" value="purchase_order">
-                                                    <input type="hidden" name="purchase_order_id" value="{{$purchase_order->id}}">
+                                                    <input type="hidden" name="purchase_order_id" id="purchase_order_id">
                                                     <p>Are you sure to complete the Order? </p>
                                                     <div class="form-group">
                                                         <label for="reason"><b>Reason</b></label>
@@ -215,13 +219,12 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-default" id="yes">Yes</button>
+                                                <button type="button" class="btn btn-default manual_complete_purchase_order_submit">Yes</button>
                                             </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
-                                @endforeach
                                 </tbody>
                             </table>
                             <span class="pull-right">
