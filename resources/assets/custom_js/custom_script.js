@@ -166,9 +166,9 @@ $(document).ready(function() {
         select: function() {
             var term = $('#existing_supplier_name').val();
             $.ajax({
-                beforeSend: function() {
-                    $.blockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
-                },
+//                beforeSend: function() {
+//                    $.blockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
+//                },
                 url: baseurl + '/fetch_existing_customer',
                 data: {"term": term},
                 cache: true,
@@ -177,7 +177,7 @@ $(document).ready(function() {
                     $("#existing_supplier_id").val(obj.data_array[0].id);
                     $("#customer_default_location").val(obj.data_array[0].delivery_location_id);
                     default_delivery_location();
-                    $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
+//                    $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
                 },
             });
         }
