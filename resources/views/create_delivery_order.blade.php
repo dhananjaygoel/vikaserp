@@ -137,7 +137,7 @@
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
                                                     {{$product['order_product_details']->alias_name }}
-                                                    <input class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['order_product_details']['product_category']->product_category_name}}" readonly="readonly" >
+                                                    <input class="form-control each_product_detail" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{$product['order_product_details']['product_category']->product_category_name}}" readonly="readonly" >
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}"  value="{{$product->product_category_id}}" readonly="readonly">
                                                     <input type="hidden" name="product[{{$key}}][order]" value="{{$product->id}}">
                                                 </div>
@@ -294,4 +294,5 @@
         </div>
     </div>
 </div>
+@include('autocomplete_tally_product_name')
 @stop

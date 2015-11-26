@@ -84,124 +84,124 @@ $(document).ready(function () {
         autoclose: false
     });
 
-    $("#add_product_row_delivery_challan").on("click", function () {
-        var current_row_count = $(".add_product_row").length + 1;
-        $.ajax({
-            type: "GET",
-            url: baseurl + '/get_units'
-        }).done(function (data) {
-            var main_array = JSON.parse(data);
-            var arr1 = main_array['units'];
-            var html = '';
-            for (var key in arr1) {
-                html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
-            }
-            $("#units_" + current_row_count).html(html);
-        });
-        var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row">' +
-                '<td class="col-md-2">' +
-                '<div class="form-group searchproduct">' +
-                '<input class="form-control each_product_detail" data-productid="'+ current_row_count +'" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +
-                '<input type="hidden" id="product_weight_' + current_row_count + '" value="">' +
-                '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
-                '<i class="fa fa-search search-icon"></i>' +
-                '</div>' +
-                '</td>' +
-                '<td class="col-md-1">' +
-                '<div class="form-group">' +
-                '<input id="actual_quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="fetch_price();">' +
-                '</div>' +
-                '</td>' +
-                '<td class="col-md-2">' +
-                '<div class="form-group">' +
-                '<input id="actual_pieces_' + current_row_count + '" class="form-control calc_actual_quantity" placeholder="Actual Pieces" name="product[' + current_row_count + '][actual_pieces]" value="" type="text" onblur="fetch_price();">' +
-                '</div>' +
-                '</td>' +
-                '<td class="col-md-2">' +
-                '<div class="form-group">' +
-                '<input id="present_shipping_' + current_row_count + '" class="form-control text-center" placeholder="Present Shipping" name="product[' + current_row_count + '][present_shipping]" value="" type="text">' +
-                '</div>' +
-                '</td>' +
-                '<td class="col-md-2">' +
-                '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
-                '</div>' +
-                '</td>' +
-                '<td class="col-md-2">' +
-                '<div class="form-group ">' +
-                '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
-                '</select>' +
-                '</div>' +
-                '</td>' +
-                '<td class="col-md-2">' +
-                '<div class="form-group">' +
-                '<div id="amount_' + current_row_count + '">0</div>' +
-                '</div>' +
-                '</td>' +
-                '<input type="hidden" name="product[' + current_row_count + '][order]" value="">' +
-                '</tr>';
-        $("#add_product_table_delivery_challan").children("tbody").append(html);
-    });
+//    $("#add_product_row_delivery_challan").on("click", function () {
+//        var current_row_count = $(".add_product_row").length + 1;
+//        $.ajax({
+//            type: "GET",
+//            url: baseurl + '/get_units'
+//        }).done(function (data) {
+//            var main_array = JSON.parse(data);
+//            var arr1 = main_array['units'];
+//            var html = '';
+//            for (var key in arr1) {
+//                html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
+//            }
+//            $("#units_" + current_row_count).html(html);
+//        });
+//        var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row">' +
+//                '<td class="col-md-2">' +
+//                '<div class="form-group searchproduct">' +
+//                '<input class="form-control each_product_detail" data-productid="'+ current_row_count +'" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +
+//                '<input type="hidden" id="product_weight_' + current_row_count + '" value="">' +
+//                '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
+//                '<i class="fa fa-search search-icon"></i>' +
+//                '</div>' +
+//                '</td>' +
+//                '<td class="col-md-1">' +
+//                '<div class="form-group">' +
+//                '<input id="actual_quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="fetch_price();">' +
+//                '</div>' +
+//                '</td>' +
+//                '<td class="col-md-2">' +
+//                '<div class="form-group">' +
+//                '<input id="actual_pieces_' + current_row_count + '" class="form-control calc_actual_quantity" placeholder="Actual Pieces" name="product[' + current_row_count + '][actual_pieces]" value="" type="text" onblur="fetch_price();">' +
+//                '</div>' +
+//                '</td>' +
+//                '<td class="col-md-2">' +
+//                '<div class="form-group">' +
+//                '<input id="present_shipping_' + current_row_count + '" class="form-control text-center" placeholder="Present Shipping" name="product[' + current_row_count + '][present_shipping]" value="" type="text">' +
+//                '</div>' +
+//                '</td>' +
+//                '<td class="col-md-2">' +
+//                '<div class="form-group">' +
+//                '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+//                '</div>' +
+//                '</td>' +
+//                '<td class="col-md-2">' +
+//                '<div class="form-group ">' +
+//                '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
+//                '</select>' +
+//                '</div>' +
+//                '</td>' +
+//                '<td class="col-md-2">' +
+//                '<div class="form-group">' +
+//                '<div id="amount_' + current_row_count + '">0</div>' +
+//                '</div>' +
+//                '</td>' +
+//                '<input type="hidden" name="product[' + current_row_count + '][order]" value="">' +
+//                '</tr>';
+//        $("#add_product_table_delivery_challan").children("tbody").append(html);
+//    });
 
-    $("#add_product_row_delivery_order").on("click", function () {
-        var current_row_count = $(".add_product_row").length + 2;
-        $.ajax({
-            type: "GET",
-            url: baseurl + '/get_units'
-        }).done(function (data) {
-            var main_array = JSON.parse(data);
-            var arr1 = main_array['units'];
-            var html = '';
-            for (var key in arr1) {
-                html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
-            }
-            $("#units_" + current_row_count).html(html);
-        });
-        var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
-                '<td class="col-md-2">' +
-                '<div class="form-group searchproduct">' +
-                '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +
-                '<input type="hidden" name="product[' + current_row_count + '][product_category_id]" id="add_product_id_' + current_row_count + '">' +
-                '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
-                '<i class="fa fa-search search-icon"></i>' +
-                '</div>' +
-                '</td>' +
-                '<td class="col-md-1">' +
-                '<div class="form-group">' +
-                '<input id="quantity_' + current_row_count + '" class="form-control dileep" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="create_delivery_order_PS(' + current_row_count + ');">' +
-                '</div>' +
-                '</td>' +
-                '<td class="col-md-2">' +
-                '<div class="form-group ">' +
-                '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
-                '</select>' +
-                '</div>' +
-                '</td>' +
-                '<td class="col-md-1">' +
-                '<div class="form-group">' +
-                '<input id="present_shipping_' + current_row_count + '" class="form-control" placeholder="Present Shipping" name="product[' + current_row_count + '][present_shipping]" value="" type="text" onblur="change_quantity(' + current_row_count + ');">' +
-                '</div>' +
-                '</td>' +
-                '<td class="col-md-2">' +
-                '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]" onblur="grand_total_delivery_order();">' +
-                '</div>' +
-                '</td>' +
-                '<td class="col-md-1">' +
-                '<div class="form-group">' +
-                '<input id="pending_qunatity_value_' + current_row_count + '" class="form-control text-center" name="product[' + current_row_count + '][pending_quantity]" value="" type="hidden">' +
-                '<div id="pending_qunatity_' + current_row_count + '"></div>' +
-                '</div>' +
-                '</td>' +
-                '<td class="col-md-2">' +
-                '<div class="form-group">' +
-                '<input id="remark" class="form-control" placeholder="Remark" name="product[' + current_row_count + '][remark]" value="" type="text">' +
-                '</div>' +
-                '</td>' +
-                '<input type="hidden" name="product[' + current_row_count + '][order]" value="">' +
-                '</tr>';
-        $("#add_product_table_delivery_order").children("tbody").append(html);
-    });
+//    $("#add_product_row_delivery_order").on("click", function () {
+//        var current_row_count = $(".add_product_row").length + 2;
+//        $.ajax({
+//            type: "GET",
+//            url: baseurl + '/get_units'
+//        }).done(function (data) {
+//            var main_array = JSON.parse(data);
+//            var arr1 = main_array['units'];
+//            var html = '';
+//            for (var key in arr1) {
+//                html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
+//            }
+//            $("#units_" + current_row_count).html(html);
+//        });
+//        var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
+//                '<td class="col-md-2">' +
+//                '<div class="form-group searchproduct">' +
+//                '<input class="form-control" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +
+//                '<input type="hidden" name="product[' + current_row_count + '][product_category_id]" id="add_product_id_' + current_row_count + '">' +
+//                '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
+//                '<i class="fa fa-search search-icon"></i>' +
+//                '</div>' +
+//                '</td>' +
+//                '<td class="col-md-1">' +
+//                '<div class="form-group">' +
+//                '<input id="quantity_' + current_row_count + '" class="form-control dileep" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="create_delivery_order_PS(' + current_row_count + ');">' +
+//                '</div>' +
+//                '</td>' +
+//                '<td class="col-md-2">' +
+//                '<div class="form-group ">' +
+//                '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
+//                '</select>' +
+//                '</div>' +
+//                '</td>' +
+//                '<td class="col-md-1">' +
+//                '<div class="form-group">' +
+//                '<input id="present_shipping_' + current_row_count + '" class="form-control" placeholder="Present Shipping" name="product[' + current_row_count + '][present_shipping]" value="" type="text" onblur="change_quantity(' + current_row_count + ');">' +
+//                '</div>' +
+//                '</td>' +
+//                '<td class="col-md-2">' +
+//                '<div class="form-group">' +
+//                '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]" onblur="grand_total_delivery_order();">' +
+//                '</div>' +
+//                '</td>' +
+//                '<td class="col-md-1">' +
+//                '<div class="form-group">' +
+//                '<input id="pending_qunatity_value_' + current_row_count + '" class="form-control text-center" name="product[' + current_row_count + '][pending_quantity]" value="" type="hidden">' +
+//                '<div id="pending_qunatity_' + current_row_count + '"></div>' +
+//                '</div>' +
+//                '</td>' +
+//                '<td class="col-md-2">' +
+//                '<div class="form-group">' +
+//                '<input id="remark" class="form-control" placeholder="Remark" name="product[' + current_row_count + '][remark]" value="" type="text">' +
+//                '</div>' +
+//                '</td>' +
+//                '<input type="hidden" name="product[' + current_row_count + '][order]" value="">' +
+//                '</tr>';
+//        $("#add_product_table_delivery_order").children("tbody").append(html);
+//    });
 
     challan_ids = [];
 
@@ -621,49 +621,65 @@ function get_default_location() {
 function product_autocomplete_purchase(id) {
 
     $("#add_purchase_product_name_" + id).autocomplete({
-        minLength: 1,
-        dataType: 'json',
-        type: 'GET',
-        autoFocus: true,
-        autoselect: 'first',
-        source: function (request, response) {
-            $("#add_purchase_product_name_" + id).addClass('loadinggif');
+        select: function (event, ui) {
+            var term = $("#add_purchase_product_name_" + id).val();
             $.ajax({
                 url: baseurl + '/fetch_products',
-                data: {"term": request.term},
+                data: {"term": term},
                 success: function (data) {
-                    var main_array = JSON.parse(data);
-                    var arr1 = main_array['data_array'];
-                    response(arr1);
-                    $("#add_purchase_product_name_" + id).removeClass('loadinggif');
+                    var obj = jQuery.parseJSON(data);
+                    $("#add_product_id_" + id).val(obj.data_array[0].id);
                 },
             });
-        },
-        open: function (event, ui) {
-            var $input = $(event.target);
-            var $results = $input.autocomplete("widget");
-            var scrollTop = $(window).scrollTop();
-            var top = $results.position().top;
-            var height = $results.outerHeight();
-            if (top + height > $(window).innerHeight() + scrollTop) {
-                newTop = top - height - $input.outerHeight();
-                if (newTop > scrollTop)
-                    $results.css("top", newTop + "px");
-            }
-        },
-        select: function (event, ui) {
-            $("#add_product_id_" + id).val(ui.item.id);
         }
     });
-
-    $(window).scroll(function (event) {
-        $('.ui-autocomplete.ui-menu').position({
-            my: 'left bottom',
-            at: 'left top',
-            of: '#tags'
-        });
-    });
 }
+//function product_autocomplete_purchase1(id) {
+//
+//    $("#add_purchase_product_name_" + id).autocomplete({
+//        minLength: 1,
+//        dataType: 'json',
+//        type: 'GET',
+//        autoFocus: true,
+//        autoselect: 'first',
+//        source: function (request, response) {
+//            $("#add_purchase_product_name_" + id).addClass('loadinggif');
+//            $.ajax({
+//                url: baseurl + '/fetch_products',
+//                data: {"term": request.term},
+//                success: function (data) {
+//                    var main_array = JSON.parse(data);
+//                    var arr1 = main_array['data_array'];
+//                    response(arr1);
+//                    $("#add_purchase_product_name_" + id).removeClass('loadinggif');
+//                },
+//            });
+//        },
+//        open: function (event, ui) {
+//            var $input = $(event.target);
+//            var $results = $input.autocomplete("widget");
+//            var scrollTop = $(window).scrollTop();
+//            var top = $results.position().top;
+//            var height = $results.outerHeight();
+//            if (top + height > $(window).innerHeight() + scrollTop) {
+//                newTop = top - height - $input.outerHeight();
+//                if (newTop > scrollTop)
+//                    $results.css("top", newTop + "px");
+//            }
+//        },
+//        select: function (event, ui) {
+//            $("#add_product_id_" + id).val(ui.item.id);
+//        }
+//    });
+//
+//    $(window).scroll(function (event) {
+//        $('.ui-autocomplete.ui-menu').position({
+//            my: 'left bottom',
+//            at: 'left top',
+//            of: '#tags'
+//        });
+//    });
+//}
 
 function create_delivery_order_PS(row_id) {
     grand_total_delivery_order();
