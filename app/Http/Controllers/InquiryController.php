@@ -577,26 +577,14 @@ class InquiryController extends Controller {
 
         $term = Input::get('term');
         
-        if (Cache::has('product-sub-category')) {
-            $products =  Cache::rememberForever('product-sub-category', function () {
-                    return ProductSubCategory::where('alias_name', 'like', '%' . $term . '%')->with('product_category')->get();
-                });
-        } else{
+        
         $products = ProductSubCategory::where('alias_name', 'like', '%' . $term . '%')->with('product_category')->get();
-        }
         if (count($products) > 0) {
             foreach ($products as $product) {
                 $cust = 0;
                 if ($customer_id > 0) {
-                    if (Cache::has('product-customer')) {
-                        $customer = Cache::rememberForever('product-customer', function () {
-                                    return CustomerProductDifference::where('customer_id', $customer_id)
-                                                    ->where('product_category_id', $product['product_category']->id)->first();
-                                });
-                    } else {
                        $customer = CustomerProductDifference::where('customer_id', $customer_id)
                                         ->where('product_category_id', $product['product_category']->id)->first();
-                    }
                     if (count($customer) > 0) {
                         $cust = $customer->difference_amount;
                     }
