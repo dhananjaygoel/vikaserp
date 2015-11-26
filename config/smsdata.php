@@ -17,7 +17,7 @@ return [
 //      'send_sms_to' => '8983886688', //Changed on 25-11-2015
     'emailData' => array(
 //        'email' => 'deepakw@agstechnologies.com', 'abhimanipal@gmail.com',
-        'email' => 'mpravin@agstechnologies.com',
+        'email' => 'abhimanipal@gmail.com',
         'name' => 'Abhishekh'
     )
 ];
