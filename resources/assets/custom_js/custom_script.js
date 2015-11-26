@@ -162,61 +162,61 @@ $(document).ready(function() {
 //
 //    });
    
-        $("#existing_supplier_name").autocomplete({
-        select: function() {
-            var term = $('#existing_supplier_name').val();
-            $.ajax({
-                beforeSend: function() {
-                    $.blockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
-                },
-                url: baseurl + '/fetch_existing_customer',
-                data: {"term": term},
-                cache: true,
-                success: function(data) {
-                    var obj = jQuery.parseJSON(data);
-                    $("#existing_customer_id").val(obj.data_array[0].id);
-                    $("#customer_default_location").val(obj.data_array[0].delivery_location_id);
-                    $("#location_difference").val(obj.data_array[0].location_difference);
-                    default_delivery_location();
-                    $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
-                },
-            });
-        }
-    });
-    
-//    $("#existing_supplier_name").autocomplete({
-//        minLength: 1,
-//        dataType: 'json',
-//        type: 'GET',
-//        source: function(request, response) {
-//            $("#existing_supplier_name").addClass('loadinggif');
-//            var supplier = request.term; 
-//                    if ( supplier in cache_supplier ) { 
-//                      response( cache_supplier[ supplier ] );
-//                      $("#existing_supplier_name").removeClass('loadinggif');
-//                      return;
-//                    }
-//                    else{
-//                        $.ajax({
-//                            url: baseurl + '/fetch_existing_customer',
-//                            data: {"term": request.term},
-//                            cache: true,
-//                            success: function(data) {
-//                                var main_array = JSON.parse(data);
-//                                cache_supplier[ supplier ] = main_array['data_array']; 
-//                                response(main_array['data_array']); 
-//                                $("#existing_supplier_name").removeClass('loadinggif');
-//                            },
-//                        });
-//                    }
-//                    
-//        },
-//        select: function(event, ui) {
-//            $("#existing_supplier_id").val(ui.item.id);
-//            $("#customer_default_location").val(ui.item.delivery_location_id);
-//            default_delivery_location();
+//        $("#existing_supplier_name").autocomplete({
+//        select: function() {
+//            var term = $('#existing_supplier_name').val();
+//            $.ajax({
+//                beforeSend: function() {
+//                    $.blockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
+//                },
+//                url: baseurl + '/fetch_existing_customer',
+//                data: {"term": term},
+//                cache: true,
+//                success: function(data) {
+//                    var obj = jQuery.parseJSON(data);
+//                    $("#existing_customer_id").val(obj.data_array[0].id);
+//                    $("#customer_default_location").val(obj.data_array[0].delivery_location_id);
+//                    $("#location_difference").val(obj.data_array[0].location_difference);
+//                    default_delivery_location();
+//                    $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
+//                },
+//            });
 //        }
 //    });
+    
+    $("#existing_supplier_name").autocomplete({
+        minLength: 1,
+        dataType: 'json',
+        type: 'GET',
+        source: function(request, response) {
+            $("#existing_supplier_name").addClass('loadinggif');
+            var supplier = request.term; 
+                    if ( supplier in cache_supplier ) { 
+                      response( cache_supplier[ supplier ] );
+                      $("#existing_supplier_name").removeClass('loadinggif');
+                      return;
+                    }
+                    else{
+                        $.ajax({
+                            url: baseurl + '/fetch_existing_customer',
+                            data: {"term": request.term},
+                            cache: true,
+                            success: function(data) {
+                                var main_array = JSON.parse(data);
+                                cache_supplier[ supplier ] = main_array['data_array']; 
+                                response(main_array['data_array']); 
+                                $("#existing_supplier_name").removeClass('loadinggif');
+                            },
+                        });
+                    }
+                    
+        },
+        select: function(event, ui) {
+            $("#existing_supplier_id").val(ui.item.id);
+            $("#customer_default_location").val(ui.item.delivery_location_id);
+            default_delivery_location();
+        }
+    });
 
     $('#expected_delivery_date').datepicker({
         startDate: new Date(),
