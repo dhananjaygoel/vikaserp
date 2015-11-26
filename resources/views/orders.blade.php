@@ -408,7 +408,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-<!--                                                <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>-->
+                                                <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="button" class="btn btn-default delete_orders_modal_submit">Yes</button>
                                             </div>

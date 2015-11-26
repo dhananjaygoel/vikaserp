@@ -719,13 +719,12 @@ $('.delete_inquiry_form_submit').click(function() {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }});
     inquiry_id=$('.delete_inquiry_form_submit').val();
-    /* Mail setting form id object*/
+    /*Delete Inquiry form id object*/
     $form = $('.delete_inquiry_form');
-    /*Mail setting form data*/
+    /*Delete Inquiry form data*/
     $data = $form.serialize();
-    /*Mail setting from url*/
+    /*Delete Inquiry from url*/
     url =baseurl+'/inquiry/'+inquiry_id+'-delete';
-  //alert(baseurl+'/inquiry/'+inquiry_id+'-delete');
    
     var posting = $.post(url, {formData: $data});
     posting.done(function(data) {
@@ -773,11 +772,11 @@ $('.delete_orders_modal_submit').click(function() {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }});
     order_id=$('.delete_orders_modal_submit').val();
-    /* Mail setting form id object*/
+    /* Delete order form id object*/
     $form = $('.delete_order_form');
-    /*Mail setting form data*/
+    /*Delete order form data*/
     $data = $form.serialize();
-    /*Mail setting from url*/
+    /*Delete order url*/
     url =baseurl+'/order/'+order_id+'-delete';
    
    var posting = $.post(url, {formData: $data});
@@ -824,11 +823,11 @@ $('.cancel_orders_modal_submit').click(function() {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }});
     
-    /* Mail setting form id object*/
+    /* Cancel order form id object*/
     $form = $('#cancel_order_form');
-    /*Mail setting form data*/
+    /*Cancel order form data*/
     $data = $form.serialize();
-    /*Mail setting from url*/
+    /*Cancel order from url*/
     url =$form.attr('action');
   
    var posting = $.post(url, {formData: $data});
@@ -879,11 +878,11 @@ $('.delete_delivery_order_submit').click(function() {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }});
     
-    /* Mail setting form id object*/
+    /* Delivery order form id object*/
     $form = $('#delete_delivery_order');
-    /*Mail setting form data*/
+    /*Delivery order form data*/
     $data = $form.serialize();
-    /*Mail setting from url*/
+    /*MDelivery order from url*/
     url =$form.attr('action');
    
    var posting = $.post(url, {formData: $data});
@@ -931,11 +930,11 @@ $('.delete_challan_submit').click(function() {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }});
     
-    /* Mail setting form id object*/
+    /* Delete Challan form id object*/
     $form = $('#delete_delivery_challan');
-    /*Mail setting form data*/
+    /*Delete Challan form data*/
     $data = $form.serialize();
-    /*Mail setting from url*/
+    /*Delete Challan url*/
     url =baseurl+'/delivery_challan/'+$('#delete_challan_submit').val()+'-delete';
 
    var posting = $.post(url, {formData: $data});
@@ -978,11 +977,11 @@ $('.delete_purchase_order_submit').click(function() {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }});
     purchase_order_id=$('#delete_purchase_order_submit').val();
-    /* Mail setting form id object*/
+    /*Purchase Order form id object*/
     $form = $('.delete_purchase_order');
-    /*Mail setting form data*/
+    /*Purchase Order form data*/
     $data = $form.serialize();
-    /*Mail setting from url*/
+    /*Purchase Order from url*/
     url =baseurl+'/purchase_orders/'+purchase_order_id+'-delete';
    
    var posting = $.post(url, {formData: $data});
@@ -1032,11 +1031,11 @@ $('.manual_complete_purchase_order_submit').click(function() {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }});
     
-    /* Mail setting form id object*/
+    /*Manual complete purchase form id object*/
     $form = $('.manual_complete_purchase_order');
-    /*Mail setting form data*/
+    /*Manual complete purchase form data*/
     $data = $form.serialize();
-    /*Mail setting from url*/
+    /*Manual complete purchase from url*/
     url =$form.attr('action');
   
    var posting = $.post(url, {formData: $data});
@@ -1088,11 +1087,11 @@ $('.delete_purchase_advice_submit').click(function() {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }});
     
-    /* Mail setting form id object*/
+    /* Purchase advice id object*/
     $form = $('#delete_purchase_advice');
-    /*Mail setting form data*/
+    /*Purchase advice form data*/
     $data = $form.serialize();
-    /*Mail setting from url*/
+    /*Purchase advice from url*/
     url =$form.attr('action');
    
    var posting = $.post(url, {formData: $data});
@@ -1140,11 +1139,11 @@ $('.delete_purchase_challan_submit').click(function() {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }});
     
-    /* Mail setting form id object*/
+    /* Purchase Challan form id object*/
     $form = $('#delete_purchase_challan_form');
-    /*Mail setting form data*/
+    /*Purchase Challan form data*/
     $data = $form.serialize();
-    /*Mail setting from url*/
+    /*Purchase Challan url*/
     url =baseurl+'/purchase_challan/'+$('#delete_purchase_challan_submit').val()+'-delete';
 
    var posting = $.post(url, {formData: $data});
