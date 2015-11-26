@@ -163,7 +163,7 @@
                     return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
                 }) !!} 
     });
-    
+//  --------------------------------------Dynamic add product delevery chalan name---------------------------------------------     
     $("#add_product_row_delivery_challan").on("click", function () {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
@@ -223,6 +223,201 @@
         $("#add_product_table_delivery_challan").children("tbody").append(html);
         //  --------------------------------------Enter product name---------------------------------------------              
                 {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
+                    return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
+                }) !!}
+    });
+    
+    $("#add_purchase_advise_product_row").on("click", function() {
+        var current_row_count = $(".add_product_row").length + 1;
+        $.ajax({
+            type: "GET",
+            url: baseurl + '/get_units'
+        }).done(function(data) {
+            var main_array = JSON.parse(data);
+            var arr1 = main_array['units'];
+            var html = '';
+            for (var key in arr1) {
+                html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
+            }
+            $("#units_" + current_row_count).html(html);
+        });
+        var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
+                '<td class="col-md-3">' +
+                '<div class="form-group searchproduct">' +
+                '<input class="form-control each_product_detail" data-productid="'+ current_row_count +'" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="purchase_order_advise_product_autocomplete(' + current_row_count + ');">' +
+                '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
+                '<i class="fa fa-search search-icon"></i>' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-1">' +
+                '<div class="form-group">' +
+                '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-2">' +
+                '<div class="form-group ">' +
+                '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
+                '</select>' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-2">' +
+                '<div class="form-group">' +
+                '<input type="tel" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-4">' +
+                '<div class="form-group">' +
+                '<input id="remark" class="form-control" placeholder="Remark" name="product[' + current_row_count + '][remark]" value="" type="text">' +
+                '</div>' +
+                '</td>' +
+                '<input type="hidden" name="product[' + current_row_count + '][order]" value="">' +
+                '</tr>';
+        $("#add_product_table").children("tbody").append(html);
+        var purchase_html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
+                '<td class="col-md-3">' +
+                '<div class="form-group searchproduct">' +
+                '<input class="form-control each_product_detail" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_purchase_product_name_' + current_row_count + '" onfocus="product_autocomplete_purchase(' + current_row_count + ');">' +
+                '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
+                '<i class="fa fa-search search-icon"></i>' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-1">' +
+                '<div class="form-group">' +
+                '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-2">' +
+                '<div class="form-group ">' +
+                '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
+                '</select>' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-2">' +
+                '<div class="form-group">' +
+                '<input type="tel" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-4">' +
+                '<div class="form-group">' +
+                '<input id="remark" class="form-control" placeholder="Remark" name="product[' + current_row_count + '][remark]" value="" type="text">' +
+                '</div>' +
+                '</td>' +
+                '</tr>';
+        $("#add_product_table_purchase").children("tbody").append(purchase_html);
+         //  --------------------------------------Enter product name---------------------------------------------              
+                {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
+                    return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
+                }) !!}
+    });
+    
+    
+      $("#add_purchase_advice_product_row").on("click", function() {
+        var current_row_count = $(".add_product_row").length + 1;
+        $.ajax({
+            type: "GET",
+            url: baseurl + '/get_units'
+        }).done(function(data) {
+            var main_array = JSON.parse(data);
+            var arr1 = main_array['units'];
+            var html = '';
+            for (var key in arr1) {
+                html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
+            }
+            $("#units_" + current_row_count).html(html);
+        });
+        var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
+                '<td class="col-md-3">' +
+                '<div class="form-group searchproduct">' +
+                '<input class="form-control each_product_detail" data-productid="'+ current_row_count +'" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="purchase_order_advise_product_autocomplete(' + current_row_count + ');">' +
+                '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
+                '<i class="fa fa-search search-icon"></i>' +
+                '</div>' +
+                '<input type="hidden" name="product[' + current_row_count + '][purchase]" value="">' +
+                '</td>' +
+                '<td class="col-md-1">' +
+                '<div class="form-group">' +
+                '<select class="form-control units_dropdown" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
+                '</select>' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-1">' +
+                '<div class="form-group">' +
+                '<input type="text" class="form-control" placeholder="actual_pieces" id="actual_pieces' + current_row_count + '" name="product[' + current_row_count + '][actual_pieces]">' +
+                '</div>' +
+                '</td>' +
+                '<td>' +
+                '<div class="form-group" >' +
+                '<input id="quantity_' + current_row_count + '" readonly="" class="form-control each_product_qty" placeholder="" name="product[' + current_row_count + '][quantity]" value="" type="tel">' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-2">' +
+                '<div class="form-group" style="width:100%;">' +
+                '<input type="text" class="form-control pshipping" placeholder="Present Shipping" id="present_shipping' + current_row_count + '" name="product[' + current_row_count + '][present_shipping]">' +
+                '</div><div class="clearfix"></div>' +
+                '</td>' +
+                '<td class="col-md-1">' +
+                '<div class="form-group">' +
+                '<input type="tel" class="form-control units_dropdown" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-2">' +
+                '<div class="form-group">' +
+                '<input id="remark" class="form-control" placeholder="Remark" name="product[' + current_row_count + '][remark]" value="" type="text">' +
+                '</div>' +
+                '</td>' +
+                '</tr>';
+        $("#create_purchase_advise_table").children("tbody").append(html);
+        {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
+                    return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
+                }) !!}
+    });
+
+    $("#add_editadvice_product_row").on("click", function() {
+        var current_row_count = $(".add_product_row").length + 1;
+        $.ajax({
+            type: "GET",
+            url: baseurl + '/get_units'
+        }).done(function(data) {
+            var main_array = JSON.parse(data);
+            var arr1 = main_array['units'];
+            var html = '';
+            for (var key in arr1) {
+                html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
+            }
+            $("#units_" + current_row_count).html(html);
+        });
+        var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
+                '<td class="col-md-3">' +
+                '<div class="form-group searchproduct">' +
+                '<input class="form-control each_product_detail" data-productid="'+ current_row_count +'" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +
+                '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
+                '<i class="fa fa-search search-icon"></i>' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-2">' +
+                '<div class="form-group ">' +
+                '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
+                '</select>' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-1">' +
+                '<div class="form-group">' +
+                '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Present shipping" name="product[' + current_row_count + '][present_shipping]" value="" type="tel">' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-2">' +
+                '<div class="form-group">' +
+                '<input type="tel" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+                '</div>' +
+                '</td><td></td>' +
+                '<td class="col-md-4">' +
+                '<div class="form-group">' +
+                '<input id="remark" class="form-control" placeholder="Remark" name="product[' + current_row_count + '][remark]" value="" type="text">' +
+                '</div>' +
+                '</td>' +
+                '</tr>';
+        $("#add_product_table").children("tbody").append(html);
+        {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
                     return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
                 }) !!}
     });
