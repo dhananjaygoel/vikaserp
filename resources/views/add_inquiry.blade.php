@@ -167,11 +167,6 @@ use Illuminate\Support\Facades\Session;
                                                             <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
                                                             <i class="fa fa-search search-icon"></i>
                                                         </div>
-<!--                                                        <div class="form-group searchproduct">
-                                                            <input class="form-control each_product_detail" data-productid="{{$i}}" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>">
-                                                            <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
-                                                            <i class="fa fa-search search-icon"></i>
-                                                        </div>-->
                                                     </td>
                                                     <td class="col-md-1">
                                                         <div class="form-group">
@@ -286,10 +281,10 @@ use Illuminate\Support\Facades\Session;
 <script>
 
       $(document).ready(function(){
-          {!! FormAutocomplete::selector('#existing_customer_name1')->source(function(){
-            return \App\Customer::where('customer_status', '=', 'permanent')
-                ->orderBy('tally_name', 'ASC')
-                ->lists('tally_name');  // You need to return array values.
+            {!! FormAutocomplete::selector('#existing_customer_name1')->source(function(){
+                return \App\Customer::where('customer_status', '=', 'permanent')
+                    ->orderBy('tally_name', 'ASC')
+                    ->lists('tally_name');  // You need to return array values.
             }) !!}
 
             $("#existing_customer_name1").autocomplete({
@@ -309,6 +304,12 @@ use Illuminate\Support\Facades\Session;
                        });
                  }
                 });
+//  -----------------------------------------------------------------------------------              
+//                Enter product name
+                {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
+                    return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
+                }) !!} 
    });
+    
 </script>
 @stop

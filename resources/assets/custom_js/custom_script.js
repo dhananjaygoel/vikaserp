@@ -522,65 +522,89 @@ function product_autocomplete(id) {
     }
     var location_difference = 0;
     location_difference = $('#location_difference').val();
-
-
     $("#add_product_name_" + id).autocomplete({
-        minLength: 1,
-        dataType: 'json',
-        type: 'GET',
-        autoFocus: true,
-        autoselect: 'first',
-        source: function(request, response) {
-            $("#add_product_name_" + id).addClass('loadinggif');
-            var product = request.term;
-                    if ( product in cache_product ) {
-                      response( cache_product[ product ] );
-                      $("#add_product_name_" + id).removeClass('loadinggif');
-                      return;
-                    }
-                    else{
-                        $.ajax({
-                            url: baseurl + '/fetch_products',
-                            cache: true,
-                            data: {"term": request.term, 'customer_id': customer_id, 'location_difference': location_difference},
-                            success: function(data) {
-                                var main_array = JSON.parse(data);
-                                cache_product[ product ] = main_array['data_array'];
-                                response(main_array['data_array']);
-                                $("#add_product_name_" + id).removeClass('loadinggif');
-
-                            },
-                        });
-                    }
-            
-        },
-        open: function(event, ui) {
-            var $input = $(event.target);
-            var $results = $input.autocomplete("widget");
-            var scrollTop = $(window).scrollTop();
-            var top = $results.position().top;
-            var height = $results.outerHeight();
-            if (top + height > $(window).innerHeight() + scrollTop) {
-                newTop = top - height - $input.outerHeight();
-                if (newTop > scrollTop)
-                    $results.css("top", newTop + "px");
-            }
-        },
-        select: function(event, ui) {
-            $("#product_price_" + id).val(ui.item.product_price); // to add price in the textbox
-            $("#add_product_id_" + id).val(ui.item.id);
-            $("#add_product_id_" + id).attr('data-curname', ui.item.value);
+        select: function() {
+            var term = $("#add_product_name_" + id).val();
+            $.ajax({
+                url: baseurl + '/fetch_products',
+                cache: true,
+                data: {"term": term, 'customer_id': customer_id, 'location_difference': location_difference},
+                success: function(data) {
+                    var obj = jQuery.parseJSON(data);
+                    $("#product_price_" + id).val(obj.data_array[0].product_price); // to add price in the textbox
+                    $("#add_product_id_" + id).val(obj.data_array[0].id);
+                    $("#add_product_id_" + id).attr('data-curname', obj.data_array[0].value);
+                },
+            });
         }
     });
-
-    $(window).scroll(function(event) {
-        $('.ui-autocomplete.ui-menu').position({
-            my: 'left bottom',
-            at: 'left top',
-            of: '#tags'
-        });
-    });
 }
+//function product_autocomplete1(id) {
+//    var customer_id = $('#existing_customer_id').val();
+//    if (customer_id == "") {
+//        customer_id = 0;
+//    }
+//    var location_difference = 0;
+//    location_difference = $('#location_difference').val();
+//
+//
+//    $("#add_product_name_" + id).autocomplete({
+//        minLength: 1,
+//        dataType: 'json',
+//        type: 'GET',
+//        autoFocus: true,
+//        autoselect: 'first',
+//        source: function(request, response) {
+//            $("#add_product_name_" + id).addClass('loadinggif');
+//            var product = request.term;
+//                    if ( product in cache_product ) {
+//                      response( cache_product[ product ] );
+//                      $("#add_product_name_" + id).removeClass('loadinggif');
+//                      return;
+//                    }
+//                    else{
+//                        $.ajax({
+//                            url: baseurl + '/fetch_products',
+//                            cache: true,
+//                            data: {"term": request.term, 'customer_id': customer_id, 'location_difference': location_difference},
+//                            success: function(data) {
+//                                var main_array = JSON.parse(data);
+//                                cache_product[ product ] = main_array['data_array'];
+//                                response(main_array['data_array']);
+//                                $("#add_product_name_" + id).removeClass('loadinggif');
+//
+//                            },
+//                        });
+//                    }
+//            
+//        },
+//        open: function(event, ui) {
+//            var $input = $(event.target);
+//            var $results = $input.autocomplete("widget");
+//            var scrollTop = $(window).scrollTop();
+//            var top = $results.position().top;
+//            var height = $results.outerHeight();
+//            if (top + height > $(window).innerHeight() + scrollTop) {
+//                newTop = top - height - $input.outerHeight();
+//                if (newTop > scrollTop)
+//                    $results.css("top", newTop + "px");
+//            }
+//        },
+//        select: function(event, ui) {
+//            $("#product_price_" + id).val(ui.item.product_price); // to add price in the textbox
+//            $("#add_product_id_" + id).val(ui.item.id);
+//            $("#add_product_id_" + id).attr('data-curname', ui.item.value);
+//        }
+//    });
+//
+//    $(window).scroll(function(event) {
+//        $('.ui-autocomplete.ui-menu').position({
+//            my: 'left bottom',
+//            at: 'left top',
+//            of: '#tags'
+//        });
+//    });
+//}
 
 /** purchase order advise product auto autocomplete */
 function purchase_order_advise_product_autocomplete(id) {
