@@ -69,7 +69,7 @@ use Illuminate\Support\Facades\Session;
                                         </div>
                                     </div>
                                 </div>
-                                <div class="customer_select" style="<?= $style ?>" >
+<!--                                <div class="customer_select" style="<?= $style ?>" >
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
                                             <input class="form-control" placeholder="Enter Tally Name" type="text" id="existing_customer_name1" autocomplete="off">
@@ -78,7 +78,7 @@ use Illuminate\Support\Facades\Session;
                                             <i class="fa fa-search search-icon"></i>
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="clearfix"></div>
                             </div>
                             <?php
@@ -167,6 +167,11 @@ use Illuminate\Support\Facades\Session;
                                                             <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
                                                             <i class="fa fa-search search-icon"></i>
                                                         </div>
+<!--                                                        <div class="form-group searchproduct">
+                                                            <input class="form-control each_product_detail" data-productid="{{$i}}" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>">
+                                                            <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
+                                                            <i class="fa fa-search search-icon"></i>
+                                                        </div>-->
                                                     </td>
                                                     <td class="col-md-1">
                                                         <div class="form-group">
@@ -278,11 +283,6 @@ use Illuminate\Support\Facades\Session;
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
-<!-- jQuery UI -->
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-
-
 <script>
 
       $(document).ready(function(){
@@ -291,6 +291,8 @@ use Illuminate\Support\Facades\Session;
 //             val = $('#existing_customer_name1').val();
 //          });
           
+
+            
           {!! FormAutocomplete::selector('#existing_customer_name1')->source(function(){
             return \App\Customer::where('customer_status', '=', 'permanent')
                 ->orderBy('tally_name', 'ASC')
