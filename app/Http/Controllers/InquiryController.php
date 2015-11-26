@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+Use Cache;
 use Illuminate\Http\Request;
 use App\Customer;
 use Input;
@@ -506,30 +507,31 @@ class InquiryController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy($id) {
-        
+
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $inputData = Input::get('formData');
-        
-            parse_str($inputData, $formFields);
+
+        parse_str($inputData, $formFields);
 
         if (Hash::check($formFields['password'], Auth::user()->password)) {
             $delete_inquiry = Inquiry::find($id)->delete();
             $delete_inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->delete();
-            return array('message'=>'success');
+            return array('message' => 'success');
         } else {
-         
-            return array('message'=> 'failed');
+
+            return array('message' => 'failed');
         }
     }
 
     /*
      * Fetch Exsisting customer
      */
+
     public function fetch_existing_customer() {
 
-        $term = '%' . Input::get('term') . '%'; 
+        $term = '%' . Input::get('term') . '%';
 
         $customers = Customer::where(function($query) use($term) {
                     $query->whereHas('city', function($q) use ($term) {
@@ -559,7 +561,7 @@ class InquiryController extends Controller {
         }
         echo json_encode(array('data_array' => $data_array));
     }
-    
+
     /*
      * find the product list base on the user inputs
      */
@@ -574,13 +576,27 @@ class InquiryController extends Controller {
         $location_diff = Input::get('location_difference');
 
         $term = Input::get('term');
+        
+        if (Cache::has('product-sub-category')) {
+            $products =  Cache::rememberForever('product-sub-category', function () {
+                    return ProductSubCategory::where('alias_name', 'like', '%' . $term . '%')->with('product_category')->get();
+                });
+        } else{
         $products = ProductSubCategory::where('alias_name', 'like', '%' . $term . '%')->with('product_category')->get();
+        }
         if (count($products) > 0) {
             foreach ($products as $product) {
                 $cust = 0;
                 if ($customer_id > 0) {
-                    $customer = CustomerProductDifference::where('customer_id', $customer_id)
-                                    ->where('product_category_id', $product['product_category']->id)->first();
+                    if (Cache::has('product-customer')) {
+                        $customer = Cache::rememberForever('product-customer', function () {
+                                    return CustomerProductDifference::where('customer_id', $customer_id)
+                                                    ->where('product_category_id', $product['product_category']->id)->first();
+                                });
+                    } else {
+                       $customer = CustomerProductDifference::where('customer_id', $customer_id)
+                                        ->where('product_category_id', $product['product_category']->id)->first();
+                    }
                     if (count($customer) > 0) {
                         $cust = $customer->difference_amount;
                     }
