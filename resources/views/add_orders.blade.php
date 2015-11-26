@@ -291,4 +291,19 @@ use Illuminate\Support\Facades\Session;
         </div>
     </div>
 </div>
+<!-- form-autocomplete maintained by sukohi -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script>
+      $(document).ready(function(){
+            {!! FormAutocomplete::selector('#existing_customer_name')->source(function(){
+                return \App\Customer::where('customer_status', '=', 'permanent')
+                    ->orderBy('tally_name', 'ASC')
+                    ->lists('tally_name');  // You need to return array values.
+            }) !!}
+//  --------------------------------------Enter product name---------------------------------------------              
+                {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
+                    return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
+                }) !!} 
+   });
+</script>
 @stop

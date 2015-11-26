@@ -59,20 +59,10 @@ use Illuminate\Support\Facades\Session;
                                     $style = 'display:block;';
                                 }
                                 ?>
-<!--                                <div class="customer_select" style="<?= $style ?>" >
-                                    <div class="col-md-4">
-                                        <div class="form-group searchproduct">
-                                            <input class="form-control" placeholder="Enter Tally Name" type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
-                                            <input type="hidden" id="existing_customer_id" name="existing_customer_name">
-                                            <input type="hidden" id="customer_default_location">
-                                            <i class="fa fa-search search-icon"></i>
-                                        </div>
-                                    </div>
-                                </div>-->
                                 <div class="customer_select" style="<?= $style ?>" >
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
-                                            <input class="form-control" placeholder="Enter Tally Name" type="text" id="existing_customer_name1" autocomplete="off">
+                                            <input class="form-control" placeholder="Enter Tally Name" type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
                                             <input type="hidden" id="existing_customer_id" name="existing_customer_name">
                                             <input type="hidden" id="customer_default_location">
                                             <i class="fa fa-search search-icon"></i>
@@ -275,41 +265,19 @@ use Illuminate\Support\Facades\Session;
         </div>
     </div>
 </div>
-<!-- jQuery -->
+<!-- form-autocomplete maintained by sukohi -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-
 <script>
-
       $(document).ready(function(){
-            {!! FormAutocomplete::selector('#existing_customer_name1')->source(function(){
+            {!! FormAutocomplete::selector('#existing_customer_name')->source(function(){
                 return \App\Customer::where('customer_status', '=', 'permanent')
                     ->orderBy('tally_name', 'ASC')
                     ->lists('tally_name');  // You need to return array values.
             }) !!}
-
-            $("#existing_customer_name1").autocomplete({
-                select: function() {
-                  var term = $('#existing_customer_name1').val();
-                  $.ajax({
-                        url: baseurl + '/fetch_existing_customer',
-                        data: {"term": term},
-                        cache: true,
-                        success: function(data) {
-                        var obj = jQuery.parseJSON(data);
-                        $("#existing_customer_id").val(obj.data_array[0].id);
-                        $("#customer_default_location").val(obj.data_array[0].delivery_location_id);
-                        $("#location_difference").val(obj.data_array[0].location_difference);
-                        default_delivery_location();    
-                        },
-                       });
-                 }
-                });
-//  -----------------------------------------------------------------------------------              
-//                Enter product name
+//  --------------------------------------Enter product name---------------------------------------------              
                 {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
                     return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
                 }) !!} 
    });
-    
 </script>
 @stop

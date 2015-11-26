@@ -93,53 +93,74 @@ $(document).ready(function() {
  * autocomplete 
  */
     $("#existing_customer_name").autocomplete({
-        minLength: 1,
-        dataType: 'json',
-        type: 'GET',
-        open: function(event) {
-            $('.ui-autocomplete').css('height', 'auto');
-            var $input = $(event.target),
-                    inputTop = $input.offset().top,
-                    inputHeight = $input.height(),
-                    autocompleteHeight = $('.ui-autocomplete').height(),
-                    windowHeight = $(window).height();
-            if ((inputHeight + inputTop + autocompleteHeight) > windowHeight) {
-                $('.ui-autocomplete').css('height', (windowHeight - inputHeight - inputTop - 20) + 'px');
-            }
-        },
-        source: function(request, response) {
-            $("#existing_customer_name").addClass('loadinggif');
-            var customer = request.term;
-                    if ( customer in cache_customer ) {
-                      response( cache_customer[ customer ] );
-                      $("#existing_customer_name").removeClass('loadinggif');
-                      return;
-                    }
-                    else{
-                        $.ajax({
-                        url: baseurl + '/fetch_existing_customer',
-                        data: {"term": request.term},
-                        cache: true,
-                        success: function(data) {
-                            var main_array = JSON.parse(data);
-                            cache_customer[ customer ] = main_array['data_array'];
-                            response(main_array['data_array']);
-                            $("#existing_customer_name").removeClass('loadinggif');
-//                             var data_cache=JSON.parse(cache);
-//                            setCookie('cache',data_cache,1);
-                        },
-                       });
-                    }
-                   
-        },
-        select: function(event, ui) {
-            $("#existing_customer_id").val(ui.item.id);
-            $("#customer_default_location").val(ui.item.delivery_location_id);
-            $("#location_difference").val(ui.item.location_difference);
-            default_delivery_location();
+        select: function() {
+            var term = $('#existing_customer_name1').val();
+            $.ajax({
+                beforeSend: function() {
+                    $.blockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
+                },
+                url: baseurl + '/fetch_existing_customer',
+                data: {"term": term},
+                cache: true,
+                success: function(data) {
+                    var obj = jQuery.parseJSON(data);
+                    $("#existing_customer_id").val(obj.data_array[0].id);
+                    $("#customer_default_location").val(obj.data_array[0].delivery_location_id);
+                    $("#location_difference").val(obj.data_array[0].location_difference);
+                    default_delivery_location();
+                    $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
+                },
+            });
         }
-
     });
+//    $("#existing_customer_name").autocomplete({
+//        minLength: 1,
+//        dataType: 'json',
+//        type: 'GET',
+//        open: function(event) {
+//            $('.ui-autocomplete').css('height', 'auto');
+//            var $input = $(event.target),
+//                    inputTop = $input.offset().top,
+//                    inputHeight = $input.height(),
+//                    autocompleteHeight = $('.ui-autocomplete').height(),
+//                    windowHeight = $(window).height();
+//            if ((inputHeight + inputTop + autocompleteHeight) > windowHeight) {
+//                $('.ui-autocomplete').css('height', (windowHeight - inputHeight - inputTop - 20) + 'px');
+//            }
+//        },
+//        source: function(request, response) {
+//            $("#existing_customer_name").addClass('loadinggif');
+//            var customer = request.term;
+//                    if ( customer in cache_customer ) {
+//                      response( cache_customer[ customer ] );
+//                      $("#existing_customer_name").removeClass('loadinggif');
+//                      return;
+//                    }
+//                    else{
+//                        $.ajax({
+//                        url: baseurl + '/fetch_existing_customer',
+//                        data: {"term": request.term},
+//                        cache: true,
+//                        success: function(data) {
+//                            var main_array = JSON.parse(data);
+//                            cache_customer[ customer ] = main_array['data_array'];
+//                            response(main_array['data_array']);
+//                            $("#existing_customer_name").removeClass('loadinggif');
+////                             var data_cache=JSON.parse(cache);
+////                            setCookie('cache',data_cache,1);
+//                        },
+//                       });
+//                    }
+//                   
+//        },
+//        select: function(event, ui) {
+//            $("#existing_customer_id").val(ui.item.id);
+//            $("#customer_default_location").val(ui.item.delivery_location_id);
+//            $("#location_difference").val(ui.item.location_difference);
+//            default_delivery_location();
+//        }
+//
+//    });
    
     
     $("#existing_supplier_name").autocomplete({
@@ -526,6 +547,9 @@ function product_autocomplete(id) {
         select: function() {
             var term = $("#add_product_name_" + id).val();
             $.ajax({
+                beforeSend: function() {
+                    $.blockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
+                },
                 url: baseurl + '/fetch_products',
                 cache: true,
                 data: {"term": term, 'customer_id': customer_id, 'location_difference': location_difference},
@@ -534,6 +558,7 @@ function product_autocomplete(id) {
                     $("#product_price_" + id).val(obj.data_array[0].product_price); // to add price in the textbox
                     $("#add_product_id_" + id).val(obj.data_array[0].id);
                     $("#add_product_id_" + id).attr('data-curname', obj.data_array[0].value);
+                    $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
                 },
             });
         }

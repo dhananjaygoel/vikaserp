@@ -91,6 +91,7 @@
 
         <!-- Bootbox Js -->
         {!! HTML::script('/resources/assets/js/bootbox.min.js') !!}
+        {!! HTML::script('/resources/assets/js/jquery_block_UI.js') !!}
 
         <!-- Bootstrap spinner Js -->
         {!! HTML::script('/resources/assets/js/bootstrap-datepicker.js') !!}
