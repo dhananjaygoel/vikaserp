@@ -265,5 +265,5 @@ use Illuminate\Support\Facades\Session;
         </div>
     </div>
 </div>
-@include('autocomplete_tally_product_name')
+
 @stop
