@@ -71,7 +71,8 @@
                             </select>
                         </div>
                         <div class="input-group col-md-2 pull-right">
-                            <input class="form-control order_filter ui-autocomplete-input" placeholder="Size" value="{{Input::get('size_filter')}}" id="order_size" autocomplete="off" name="size_filter" type="text">
+                            <input class="form-control order_filter ui-autocomplete-input" placeholder="Size" value="{{Input::get('size_filter')}}" id="order_size" autocomplete="off"  type="text">
+                            <input type='hidden' placeholder="Size" value="{{Input::get('size_filter')}}" id="order_size_temp" autocomplete="off" name="size_filter" type="text">
                             <span class="input-group-btn">
                                 <button class="btn btn-primary" onclick="javascript:document.getElementById('orderForm').submit();">
                                     <i class="fa fa-search" id="search_icon"></i>

@@ -337,7 +337,8 @@ class ProductsubController extends Controller {
         if (count($product) > 0) {
             foreach ($product as $prod) {
                 $data_array[] = [
-                    'value' => $prod->size //. " - " . $prod->alias_name
+                    'value' => $prod->size . " - " . $prod->alias_name,
+                    'id'=> $prod->size
                 ];
             }
         } else {
