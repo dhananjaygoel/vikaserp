@@ -174,9 +174,8 @@ $(document).ready(function() {
                 cache: true,
                 success: function(data) {
                     var obj = jQuery.parseJSON(data);
-                    $("#existing_customer_id").val(obj.data_array[0].id);
+                    $("#existing_supplier_id").val(obj.data_array[0].id);
                     $("#customer_default_location").val(obj.data_array[0].delivery_location_id);
-                    $("#location_difference").val(obj.data_array[0].location_difference);
                     default_delivery_location();
                     $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
                 },
