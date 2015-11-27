@@ -338,4 +338,5 @@
         </div>
     </div>
 </div>
+@include('autocomplete_tally_product_name')
 @stop
