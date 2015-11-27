@@ -96,9 +96,9 @@ $(document).ready(function() {
         select: function() {
             var term = $('#existing_customer_name').val();
             $.ajax({
-                beforeSend: function() {
-                    $.blockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
-                },
+//                beforeSend: function() {
+//                    $.blockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
+//                },
                 url: baseurl + '/fetch_existing_customer',
                 data: {"term": term},
                 cache: true,
@@ -108,7 +108,7 @@ $(document).ready(function() {
                     $("#customer_default_location").val(obj.data_array[0].delivery_location_id);
                     $("#location_difference").val(obj.data_array[0].location_difference);
                     default_delivery_location();
-                    $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
+//                    $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
                 },
             });
         }
@@ -567,9 +567,9 @@ function product_autocomplete(id) {
         select: function() {
             var term = $("#add_product_name_" + id).val();
             $.ajax({
-                beforeSend: function() {
-                    $.blockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
-                },
+//                beforeSend: function() {
+//                    $.blockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
+//                },
                 url: baseurl + '/fetch_products',
                 cache: true,
                 data: {"term": term, 'customer_id': customer_id, 'location_difference': location_difference},
@@ -578,7 +578,7 @@ function product_autocomplete(id) {
                     $("#product_price_" + id).val(obj.data_array[0].product_price); // to add price in the textbox
                     $("#add_product_id_" + id).val(obj.data_array[0].id);
                     $("#add_product_id_" + id).attr('data-curname', obj.data_array[0].value);
-                    $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
+//                    $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
                 },
             });
         }
