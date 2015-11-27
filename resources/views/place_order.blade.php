@@ -46,7 +46,7 @@
                                 @if(count($customers)>0)
                                 @foreach($customers as $customer)
                                 @if($customer->customer_status == 'permanent')
-                                <option value="{{$customer->id}}" >{{$customer->owner_name}}</option>
+                                <option value="{{$customer->id}}" >{{$inquiry['customer']->tally_name}}</option>
                                 @endif
                                 @endforeach
                                 @endif
@@ -105,7 +105,7 @@
                             <div class="customer_select" >
                                 <div class="col-md-4">
                                     <div class="form-group searchproduct">
-                                        <input class="form-control" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->owner_name}}" id="existing_customer_name">
+                                        <input class="form-control" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name">
                                         <input id="existing_customer_id" class="form-control" name="existing_customer_name" value="{{$inquiry['customer']->id}}" type="hidden">
                                         <i class="fa fa-search search-icon"></i>
                                     </div>
