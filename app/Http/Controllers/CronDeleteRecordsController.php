@@ -166,6 +166,8 @@ class CronDeleteRecordsController extends Controller {
                 $purchase_challan[$key]->delete();
             }
         }
+        
+        echo 'success';
     }
 
 }
