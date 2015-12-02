@@ -93,8 +93,8 @@ $(document).ready(function() {
  * autocomplete 
  */
     $("#existing_customer_name").autocomplete({
-        select: function() {
-            var term = $('#existing_customer_name').val();
+        select: function(event, ui) {
+            var term = ui.item.value;
             $.ajax({
 //                beforeSend: function() {
 //                    $.blockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
@@ -161,10 +161,59 @@ $(document).ready(function() {
 //        }
 //
 //    });
+//    $("#existing_customer_name").autocomplete({
+//        minLength: 1,
+//        dataType: 'json',
+//        type: 'GET',
+//        open: function(event) {
+//            $('.ui-autocomplete').css('height', 'auto');
+//            var $input = $(event.target),
+//                    inputTop = $input.offset().top,
+//                    inputHeight = $input.height(),
+//                    autocompleteHeight = $('.ui-autocomplete').height(),
+//                    windowHeight = $(window).height();
+//            if ((inputHeight + inputTop + autocompleteHeight) > windowHeight) {
+//                $('.ui-autocomplete').css('height', (windowHeight - inputHeight - inputTop - 20) + 'px');
+//            }
+//        },
+//        source: function(request, response) {
+//            $("#existing_customer_name").addClass('loadinggif');
+//            var customer = request.term;
+//                    if ( customer in cache_customer ) {
+//                      response( cache_customer[ customer ] );
+//                      $("#existing_customer_name").removeClass('loadinggif');
+//                      return;
+//                    }
+//                    else{
+//                        $.ajax({
+//                        url: baseurl + '/fetch_existing_customer',
+//                        data: {"term": request.term},
+//                        cache: true,
+//                        success: function(data) {
+//                            var main_array = JSON.parse(data);
+//                            cache_customer[ customer ] = main_array['data_array'];
+//                            response(main_array['data_array']);
+//                            $("#existing_customer_name").removeClass('loadinggif');
+////                             var data_cache=JSON.parse(cache);
+////                            setCookie('cache',data_cache,1);
+//                        },
+//                       });
+//                    }
+//                   
+//        },
+//        select: function(event, ui) {
+//            alert(ui.item.id);
+//            $("#existing_customer_id").val(ui.item.id);
+//            $("#customer_default_location").val(ui.item.delivery_location_id);
+//            $("#location_difference").val(ui.item.location_difference);
+//            default_delivery_location();
+//        }
+//
+//    });
    
         $("#existing_supplier_name").autocomplete({
-        select: function() {
-            var term = $('#existing_supplier_name').val();
+        select: function(event,ui) {
+            var term = ui.item.value;
             $.ajax({
 //                beforeSend: function() {
 //                    $.blockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
@@ -219,6 +268,11 @@ $(document).ready(function() {
 
     $('#expected_delivery_date').datepicker({
         startDate: new Date(),
+        autoclose: true
+    });
+    $('#expected_date').datepicker({
+//        startDate: new Date(),
+        'format' : 'yyyy-mm-dd',
         autoclose: true
     });
 
@@ -564,8 +618,8 @@ function product_autocomplete(id) {
     var location_difference = 0;
     location_difference = $('#location_difference').val();
     $("#add_product_name_" + id).autocomplete({
-        select: function() {
-            var term = $("#add_product_name_" + id).val();
+        select: function(event, ui) {
+            var term = ui.item.value;
             $.ajax({
 //                beforeSend: function() {
 //                    $.blockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
@@ -674,8 +728,8 @@ function purchase_order_advise_product_autocomplete(id) {
         minLength: 1,
         dataType: 'json',
         type: 'GET',
-        select: function(request, response) {
-        var term = $("#add_product_name_" + id).val();
+        select: function(event, ui) {
+        var term = ui.item.value;
             $.ajax({
                 url: baseurl + '/fetch_products',
                 data: {"term": term, 'customer_id': customer_id, 'delivery_location': location, 'location_difference': location_difference},
