@@ -252,7 +252,7 @@ class BulkDeleteController extends Controller {
                     else
                         $result_data[$key][0] = $temp['customer']->owner_name;
                     $result_data[$key][1] = $temp->serial_number;
-                    $result_data[$key][2] = round($temp->present_shipping, 2);
+                    $result_data[$key][2] = round($temp->total_quantity, 2);
                 }
                 break;
 //----------------------------------------------------            
@@ -394,14 +394,29 @@ class BulkDeleteController extends Controller {
                 }
                  foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;
-                    $result_data[$key][0] = date("F jS, Y", strtotime($temp['purchase_advice']->purchase_advice_date));
+                    
                     if ($temp['supplier']->tally_name != '')
-                        $result_data[$key][1] = $temp['supplier']->tally_name;
+                        $result_data[$key][0] = $temp['supplier']->tally_name;
                     else
-                        $result_data[$key][1] = $temp['supplier']->owner_name;
-                    $result_data[$key][2] = $temp->vehicle_number;
-                    $result_data[$key][3] = round($temp->total_quantity, 2);
-                    $result_data[$key][4] = $temp->serial_number;
+                        $result_data[$key][0] = $temp['supplier']->owner_name;
+                    
+                    $result_data[$key][1] = $temp->serial_number;
+                    $result_data[$key][2] = $temp->bill_number;
+                    $result_data[$key][3] = date("F jS, Y", strtotime($temp['purchase_advice']->purchase_advice_date));
+                     $total_qty = 0;
+                    foreach ($temp['all_purchase_products'] as $pc) {
+                        if ($pc->unit_id == 1) {
+                            $total_qty += $pc->quantity;
+                        }
+                        if ($pc->unit_id == 2) {
+                            $total_qty += ($pc->quantity * $pc['purchase_product_details']->weight);
+                        }
+                        if ($pc->unit_id == 3) {
+                            $total_qty += (($pc->quantity / $pc['purchase_product_details']->standard_length ) * $pc['purchase_product_details']->weight);
+                        }
+                    }
+                    $result_data[$key][4] = round($temp['all_purchase_products']->sum('quantity'), 2);
+                    
                 }
                 break;
 //----------------------------------------------------            
