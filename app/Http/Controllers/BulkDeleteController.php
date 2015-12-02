@@ -129,11 +129,11 @@ class BulkDeleteController extends Controller {
                     $result_temp = Order::where('order_status', '=', 'completed')
                                     ->where('created_at','like',Input::get('expected_date').'%')
                                     ->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')
-                                    ->orderBy('created_at', 'desc')->Paginate(1);
+                                    ->orderBy('created_at', 'desc')->Paginate(20);
                 } else {
                     $result_temp = Order::with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')
                                     ->where('order_status', 'completed')
-                                    ->orderBy('created_at', 'desc')->Paginate(1);
+                                    ->orderBy('created_at', 'desc')->Paginate(20);
                 }
 
                 foreach ($result_temp as $key => $temp) {
