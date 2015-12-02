@@ -117,6 +117,7 @@ class BulkDeleteController extends Controller {
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
                         $inqiry_obj =Order::find($delete_module);
+                        if(isset($inqiry_obj))
                         $inqiry_obj->delete();
                     }
                 }
