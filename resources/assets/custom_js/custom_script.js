@@ -161,55 +161,6 @@ $(document).ready(function() {
 //        }
 //
 //    });
-//    $("#existing_customer_name").autocomplete({
-//        minLength: 1,
-//        dataType: 'json',
-//        type: 'GET',
-//        open: function(event) {
-//            $('.ui-autocomplete').css('height', 'auto');
-//            var $input = $(event.target),
-//                    inputTop = $input.offset().top,
-//                    inputHeight = $input.height(),
-//                    autocompleteHeight = $('.ui-autocomplete').height(),
-//                    windowHeight = $(window).height();
-//            if ((inputHeight + inputTop + autocompleteHeight) > windowHeight) {
-//                $('.ui-autocomplete').css('height', (windowHeight - inputHeight - inputTop - 20) + 'px');
-//            }
-//        },
-//        source: function(request, response) {
-//            $("#existing_customer_name").addClass('loadinggif');
-//            var customer = request.term;
-//                    if ( customer in cache_customer ) {
-//                      response( cache_customer[ customer ] );
-//                      $("#existing_customer_name").removeClass('loadinggif');
-//                      return;
-//                    }
-//                    else{
-//                        $.ajax({
-//                        url: baseurl + '/fetch_existing_customer',
-//                        data: {"term": request.term},
-//                        cache: true,
-//                        success: function(data) {
-//                            var main_array = JSON.parse(data);
-//                            cache_customer[ customer ] = main_array['data_array'];
-//                            response(main_array['data_array']);
-//                            $("#existing_customer_name").removeClass('loadinggif');
-////                             var data_cache=JSON.parse(cache);
-////                            setCookie('cache',data_cache,1);
-//                        },
-//                       });
-//                    }
-//                   
-//        },
-//        select: function(event, ui) {
-//            alert(ui.item.id);
-//            $("#existing_customer_id").val(ui.item.id);
-//            $("#customer_default_location").val(ui.item.delivery_location_id);
-//            $("#location_difference").val(ui.item.location_difference);
-//            default_delivery_location();
-//        }
-//
-//    });
    
         $("#existing_supplier_name").autocomplete({
         select: function(event,ui) {

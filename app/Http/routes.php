@@ -60,7 +60,12 @@ Route::group(['middleware' => ['auth']], function() {
 //    Route::group(['middleware' => 'super_admin_mw'], function() {
 //        Route::resource('customers', 'CustomerController');
 //    });
+    Route::resource('bulk-delete', 'BulkDeleteController');
+    Route::get('bulk-delete', 'BulkDeleteController@show_result');
+//    Route::post('bulk-delete', 'BulkDeleteController@show_result');
+    
     Route::resource('security', 'SecurityController');
+    Route::get('dashboard', 'DashboardController@index');
     Route::get('dashboard', 'DashboardController@index');
     Route::get('home', 'DashboardController@homeredirect');
     Route::resource('unit', 'UnitController');
