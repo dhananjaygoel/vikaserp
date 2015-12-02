@@ -354,7 +354,7 @@ class BulkDeleteController extends Controller {
                     else
                         $result_data[$key][1] = $temp['supplier']->owner_name;
                     $result_data[$key][2] = $temp->vehicle_number;
-                    $result_data[$key][3] = round($temp->total_quantity, 2);
+                    $result_data[$key][3] = $temp[$key]['total_quantity'];
                     $result_data[$key][4] = $temp->serial_number;
                 }
                 
