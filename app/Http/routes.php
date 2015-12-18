@@ -11,7 +11,7 @@
   |
  */
 
-
+Route::get('delete_reports','WelcomeController@delete_reports');
 Route::get('updatedata', 'HomeController@updatedata');
 Route::get('phpversion', 'WelcomeController@phpversion');
 Route::get('showupdatedata', 'HomeController@showupdatedata');
@@ -43,7 +43,7 @@ Route::get('dataSeeding', function () {
 
 Route::get('rollback', function() {
     define('STDIN', fopen("php://stdin", "r"));
-    Artisan::call('migrate:refresh', ['--quiet' => true, '--force' => true]);
+    Artisan::call('migrate:rollback', ['--quiet' => true, '--force' => true]);
 });
 
 

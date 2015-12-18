@@ -818,5 +818,20 @@ class WelcomeController extends Controller {
         DB::table('user_roles')->where('role_id', '1')->update(array('role_id' => 0));
         DB::table('users')->where('role_id', '1')->update(array('role_id' => 0));
     }
+    
+    public function delete_reports(){
+         DB::table('inquiry')->truncate();
+         DB::table('orders')->truncate();
+         DB::table('delivery_order')->truncate();
+         DB::table('delivery_challan')->truncate();
+         DB::table('delivery_order')->truncate();
+         DB::table('purchase_order')->truncate();
+         DB::table('purchase_advice')->truncate();
+         DB::table('purchase_challan')->truncate();
+         DB::table('purchase_order_canceled')->truncate();
+         DB::table('order_cancelled')->truncate();
+         
+         echo 'truncate all data';
+    }
 
 }
