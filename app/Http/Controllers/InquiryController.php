@@ -570,21 +570,17 @@ class InquiryController extends Controller {
 
         $delivery_location = Input::get('delivery_location');
         $customer_id = Input::get('customer_id');
-
         $location_diff = 0;
-
         $location_diff = Input::get('location_difference');
-
         $term = Input::get('term');
-        
-        
+
         $products = ProductSubCategory::where('alias_name', 'like', '%' . $term . '%')->with('product_category')->get();
         if (count($products) > 0) {
             foreach ($products as $product) {
                 $cust = 0;
                 if ($customer_id > 0) {
-                       $customer = CustomerProductDifference::where('customer_id', $customer_id)
-                                        ->where('product_category_id', $product['product_category']->id)->first();
+                    $customer = CustomerProductDifference::where('customer_id', $customer_id)
+                                    ->where('product_category_id', $product['product_category']->id)->first();
                     if (count($customer) > 0) {
                         $cust = $customer->difference_amount;
                     }
