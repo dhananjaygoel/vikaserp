@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIndexPriceOnProductProductCategory extends Migration {
+class CreateIndexPriceOnProductCategory extends Migration {
 
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateIndexPriceOnProductProductCategory extends Migration {
      */
     public function up() {
         Schema::table('product_category', function(Blueprint $table) {
-            $table->index('prodyct_category_price_index');
+            $table->index('price');
         });
     }
 
@@ -23,7 +23,7 @@ class CreateIndexPriceOnProductProductCategory extends Migration {
      */
     public function down() {
         Schema::table('product_category', function(Blueprint $table) {
-            $table->dropIndex('prodyct_category_price_index');
+            $table->dropIndex('price');
         });
     }
 
