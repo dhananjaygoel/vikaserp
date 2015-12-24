@@ -561,12 +561,11 @@ class InquiryController extends Controller {
                 ->orWhere('tally_name', 'like', $term)
                 ->with('deliverylocation')
                 ->orderBy('owner_name', 'ASC')
-                ->remember(5)
                 ->get();
 
 
 
-        if (isset($customers) && count($customers) > 0) {
+        if (count($customers) > 0) {
             foreach ($customers as $customer) {
                 $data_array[] = [
                     'value' => $customer->owner_name . '-' . $customer->tally_name,
