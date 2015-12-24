@@ -533,19 +533,40 @@ class InquiryController extends Controller {
 
         $term = '%' . Input::get('term') . '%';
 
+
+//        $allcustomers = Customer::where('customer_status', '=', 'permanent')
+//                ->with('deliverylocation')
+//                ->orderBy('owner_name', 'ASC')
+//                ->get();
+//
+//        foreach ($allcustomers as $key => $value) {
+//
+//            $data_array[] = [
+//                'name' => $value->owner_name . '-' . $value->tally_name,
+//                'id' => $value->id,
+//                'delivery_location_id' => $value->delivery_location_id,
+//                'location_difference' => $value['deliverylocation']->difference,
+//            ];
+//
+//            Cache::put($value->tally_name, $data_array, 60);
+//        }
+
         $customers = Customer::where(function($query) use($term) {
                     $query->whereHas('city', function($q) use ($term) {
-                        $q->where('city_name', 'like' . $term)
-                        ->orWhere('company_name', $term);
+                        $q->where('city_name', 'like', $term);
                     });
                 })
-                ->orWhere('tally_name', 'like', $term)
                 ->where('customer_status', '=', 'permanent')
+                ->orWhere('company_name', $term)
+                ->orWhere('tally_name', 'like', $term)
                 ->with('deliverylocation')
                 ->orderBy('owner_name', 'ASC')
+                ->remember(5)
                 ->get();
 
-        if (count($customers) > 0) {
+
+
+        if (isset($customers) && count($customers) > 0) {
             foreach ($customers as $customer) {
                 $data_array[] = [
                     'value' => $customer->owner_name . '-' . $customer->tally_name,
