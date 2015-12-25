@@ -65,6 +65,20 @@ class InquiryController extends Controller {
 
         $inquiries->setPath('inquiry');
 
+        $sql = "CREATE or REPLACE VIEW product_list AS
+                SELECT  c.id,
+                    c.tally_name,
+                    c.company_name,
+                    c.owner_name,
+                    c.delivery_location_id,
+                    d.difference
+                FROM    customers c
+                    INNER JOIN city t
+                        ON c.city = t.id
+                    INNER JOIN delivery_locations d
+                        ON c.delivery_location_id = d.id
+                    where c.customer_status = 'permanent'";
+        DB::statement($sql);
         return view('inquiry', compact('inquiries'));
     }
 
@@ -180,7 +194,7 @@ class InquiryController extends Controller {
          */
         $input = Input::all();
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+            $customer = Customer::where('id', ' = ', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nyour inq. has been logged for foll. ";
@@ -245,7 +259,7 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
+        $inquiry = Inquiry::where('id', ' = ', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
         if (count($inquiry) < 1) {
             return redirect('inquiry')->with('flash_message', 'Enquiry does not exist.');
         }
@@ -262,7 +276,7 @@ class InquiryController extends Controller {
         $str = "";
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             $customer_id = $inquiry->customer_id;
-            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+            $customer = Customer::where('id', ' = ', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nPrices for your inq. are as follows\n";
@@ -301,7 +315,7 @@ class InquiryController extends Controller {
                     curl_close($ch);
                 }
             }
-            Inquiry::where('id', '=', $id)->update(array(
+            Inquiry::where('id', ' = ', $id)->update(array(
                 'sms_count' => ($inquiry->sms_count + 1),
             ));
             $flash_message = "Message sent successfully";
@@ -309,7 +323,7 @@ class InquiryController extends Controller {
             return redirect('inquiry')->with('flash_success_message', 'Message sent successfully');
         }
 
-//        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
+//        $inquiry = Inquiry::where('id', ' = ', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
         return View::make('inquiry_details', array('inquiry' => $inquiry, 'delivery_location' => $delivery_location, 'message' => $flash_message));
 //        return redirect('inquiry')->with('flash_success_message', 'Message sent successfully');
     }
@@ -321,7 +335,7 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
+        $inquiry = Inquiry::where('id', ' = ', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
         if (count($inquiry) < 1) {
             return redirect('inquiry')->with('flash_message', 'Enquiry does not exist.');
         }
@@ -432,7 +446,7 @@ class InquiryController extends Controller {
             ]);
         }
         $inquiry_products = array();
-        $delete_old_inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->delete();
+        $delete_old_inquiry_products = InquiryProducts::where('inquiry_id', ' = ', $id)->delete();
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
                 $inquiry_products = [
@@ -454,7 +468,7 @@ class InquiryController extends Controller {
          */
         $input = Input::all();
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+            $customer = Customer::where('id', ' = ', $customer_id)->with('manager')->first();
             if (count($customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour inq. has been edited for foll. ";
@@ -489,7 +503,7 @@ class InquiryController extends Controller {
                     }
 
                     $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    $url = SMS_URL . "?user = " . PROFILE_ID . "&pwd = " . PASS . "&senderid = " . SENDER_ID . "&mobileno = " . $phone_number . "&msgtext = " . $msg . "&smstype = 0";
                     if (SEND_SMS === true) {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -550,28 +564,40 @@ class InquiryController extends Controller {
 //
 //            Cache::put($value->tally_name, $data_array, 60);
 //        }
-
-        $customers = Customer::where(function($query) use($term) {
-                    $query->whereHas('city', function($q) use ($term) {
-                        $q->where('city_name', 'like', $term);
-                    });
-                })
-                ->where('customer_status', '=', 'permanent')
-                ->orWhere('company_name', $term)
-                ->orWhere('tally_name', 'like', $term)
-                ->with('deliverylocation')
+//        $customers = Customer::where(function($query) use($term) {
+//                    $query->whereHas('city', function($q) use ($term) {
+//                        $q->where('city_name', 'like', $term);
+//                    });
+//                })
+//                ->where('customer_status', '=', 'permanent')
+//                ->orWhere('company_name', $term)
+//                ->orWhere('tally_name', 'like', $term)
+//                ->with('deliverylocation')
+//                ->orderBy('owner_name', 'ASC')
+//                ->get();
+        $customers = DB::table('product_list')
+                ->orwhere('tally_name', 'like', $term)
+                ->orwhere('company_name', 'like', $term)
+                ->orwhere('owner_name', 'like', $term)
                 ->orderBy('owner_name', 'ASC')
                 ->get();
 
-
-
         if (count($customers) > 0) {
+//            foreach ($customers as $customer) {
+//                $data_array[] = [
+//                    'value' => $customer->owner_name . '-' . $customer->tally_name,
+//                    'id' => $customer->id,
+//                    'delivery_location_id' => $customer->delivery_location_id,
+//                    'location_difference' => $customer['deliverylocation']->difference,
+//                ];
+//            }
             foreach ($customers as $customer) {
+
                 $data_array[] = [
                     'value' => $customer->owner_name . '-' . $customer->tally_name,
                     'id' => $customer->id,
                     'delivery_location_id' => $customer->delivery_location_id,
-                    'location_difference' => $customer['deliverylocation']->difference,
+                    'location_difference' => $customer->difference,
                 ];
             }
         } else {
@@ -798,7 +824,7 @@ class InquiryController extends Controller {
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $product = ProductSubCategory::find($product_data['id']);
-                        $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
+                        $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", \n";
                         if ($product_data['units'] == 1) {
                             $total_quantity = $total_quantity + $product_data['quantity'];
                         }
@@ -817,7 +843,7 @@ class InquiryController extends Controller {
                     $phone_number = $customer->phone_number1;
                 }
                 $msg = urlencode($str);
-                $url = SMS_URL . "?user = " . PROFILE_ID . "&pwd = " . PASS . "&senderid = " . SENDER_ID . "&mobileno = " . $phone_number . "&msgtext = " . $msg . "&smstype=0";
+                $url = SMS_URL . "?user = " . PROFILE_ID . "&pwd = " . PASS . "&senderid = " . SENDER_ID . "&mobileno = " . $phone_number . "&msgtext = " . $msg . "&smstype = 0";
                 if (SEND_SMS === true) {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -832,7 +858,7 @@ class InquiryController extends Controller {
                         $phone_number = $customer['manager']->mobile_number;
                     }
                     $msg = urlencode($str);
-                    $url = SMS_URL . "?user = " . PROFILE_ID . "&pwd = " . PASS . "&senderid = " . SENDER_ID . "&mobileno = " . $phone_number . "&msgtext = " . $msg . "&smstype=0";
+                    $url = SMS_URL . "?user = " . PROFILE_ID . "&pwd = " . PASS . "&senderid = " . SENDER_ID . "&mobileno = " . $phone_number . "&msgtext = " . $msg . "&smstype = 0";
                     if (SEND_SMS === true) {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
