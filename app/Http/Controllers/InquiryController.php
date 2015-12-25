@@ -65,20 +65,6 @@ class InquiryController extends Controller {
 
         $inquiries->setPath('inquiry');
 
-        $sql = "CREATE or REPLACE VIEW product_list AS
-                SELECT  c.id,
-                    c.tally_name,
-                    c.company_name,
-                    c.owner_name,
-                    c.delivery_location_id,
-                    d.difference
-                FROM    customers c
-                    INNER JOIN city t
-                        ON c.city = t.id
-                    INNER JOIN delivery_locations d
-                        ON c.delivery_location_id = d.id
-                    where c.customer_status = 'permanent'";
-        DB::statement($sql);
         return view('inquiry', compact('inquiries'));
     }
 
@@ -564,42 +550,49 @@ class InquiryController extends Controller {
 //
 //            Cache::put($value->tally_name, $data_array, 60);
 //        }
-//        $customers = Customer::where(function($query) use($term) {
-//                    $query->whereHas('city', function($q) use ($term) {
-//                        $q->where('city_name', 'like', $term);
-//                    });
-//                })
-//                ->where('customer_status', '=', 'permanent')
-//                ->orWhere('company_name', $term)
-//                ->orWhere('tally_name', 'like', $term)
-//                ->with('deliverylocation')
-//                ->orderBy('owner_name', 'ASC')
-//                ->get();
-        $customers = DB::table('product_list')
-                ->orwhere('tally_name', 'like', $term)
-                ->orwhere('company_name', 'like', $term)
-                ->orwhere('owner_name', 'like', $term)
+        $customers = Customer::where(function($query) use($term) {
+                    $query->whereHas('city', function($q) use ($term) {
+                        $q->where('city_name', 'like', $term);
+                    });
+                })
+                ->where('customer_status', '=', 'permanent')
+                ->orWhere('company_name', $term)
+                ->orWhere('tally_name', 'like', $term)
+                ->with('deliverylocation')
                 ->orderBy('owner_name', 'ASC')
                 ->get();
 
-        if (count($customers) > 0) {
-//            foreach ($customers as $customer) {
-//                $data_array[] = [
-//                    'value' => $customer->owner_name . '-' . $customer->tally_name,
-//                    'id' => $customer->id,
-//                    'delivery_location_id' => $customer->delivery_location_id,
-//                    'location_difference' => $customer['deliverylocation']->difference,
-//                ];
-//            }
-            foreach ($customers as $customer) {
 
+
+
+        //Getting view data
+//        $customers = DB::table('product_list')
+//                ->orwhere('tally_name', 'like', $term)
+//                ->orwhere('company_name', 'like', $term)
+//                ->orwhere('owner_name', 'like', $term)
+//                ->orderBy('owner_name', 'ASC')
+//                ->get();
+
+        if (count($customers) > 0) {
+            foreach ($customers as $customer) {
                 $data_array[] = [
                     'value' => $customer->owner_name . '-' . $customer->tally_name,
                     'id' => $customer->id,
                     'delivery_location_id' => $customer->delivery_location_id,
-                    'location_difference' => $customer->difference,
+                    'location_difference' => $customer['deliverylocation']->difference,
                 ];
             }
+            /* Code commented of getting from view */
+
+//            foreach ($customers as $customer) {
+//
+//                $data_array[] = [
+//                    'value' => $customer->owner_name . '-' . $customer->tally_name,
+//                    'id' => $customer->id,
+//                    'delivery_location_id' => $customer->delivery_location_id,
+//                    'location_difference' => $customer->difference,
+//                ];
+//            }
         } else {
             $data_array[] = [
                 'value' => 'No Customers',
