@@ -770,7 +770,7 @@ class WelcomeController extends Controller {
      */
     public function emptydata($table_name) {
 	$pdo = DB::table($table_name)->truncate();
-	echo $table_name.' - Table truncated successfully';
+	echo $table_name . ' - Table truncated successfully';
     }
 
     /**
