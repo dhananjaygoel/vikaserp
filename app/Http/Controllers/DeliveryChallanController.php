@@ -206,11 +206,7 @@ class DeliveryChallanController extends Controller {
 
             $order = DeliveryChallan::find($id);
 
-            $all_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan');
-
-            foreach ($all_order_products as $products) {
-                $products->delete();
-            }
+            AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
             $order->delete();
             Session::put('order-sort-type', $order_sort_type);
           return array('message'=>'success');
