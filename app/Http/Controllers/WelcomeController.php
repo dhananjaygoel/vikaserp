@@ -756,10 +756,19 @@ class WelcomeController extends Controller {
 
     /**
      * Written by : AMit GupTA
-     * This function takes tablename as argument and deletes all the records of that table
+     * This function takes tablename as argument and deletes that table
      */
     public function removedata($table_name) {
         $pdo = DB::table($table_name)->delete();
+        print('<pre>');
+        print_r($pdo);
+    }
+    /**
+     * Written by : AMit GupTA
+     * This function takes tablename as argument and truncates that table data
+     */
+    public function emptydata($table_name) {
+        $pdo = DB::table($table_name)->truncate();
         print('<pre>');
         print_r($pdo);
     }
