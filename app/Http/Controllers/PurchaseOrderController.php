@@ -566,8 +566,7 @@ class PurchaseOrderController extends Controller {
         }
         if (Hash::check($password, Auth::user()->password)) {
             $delete_purchase_order = PurchaseOrder::find($id)->delete();
-            $delete_purchase_products = PurchaseProducts::where('purchase_order_id', '=', $id)->delete();
-
+            $delete_purchase_products = PurchaseProducts::where('purchase_order_id', '=', $id)->where('order_type', '=', 'purchase_order')->delete();
             Session::put('order-sort-type', $order_sort_type);
             return array('message'=>'success');
         } else {
