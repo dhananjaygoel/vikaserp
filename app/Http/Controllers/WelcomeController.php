@@ -830,15 +830,18 @@ class WelcomeController extends Controller {
 
     public function delete_reports() {
 	DB::table('inquiry')->truncate();
+	DB::table('inquiry_products')->truncate();
 	DB::table('orders')->truncate();
+	DB::table('all_order_products')->truncate();
+	DB::table('order_cancelled')->truncate();
 	DB::table('delivery_order')->truncate();
 	DB::table('delivery_challan')->truncate();
 	DB::table('delivery_order')->truncate();
 	DB::table('purchase_order')->truncate();
+	DB::table('all_purchase_products')->truncate();
+	DB::table('purchase_order_canceled')->truncate();
 	DB::table('purchase_advice')->truncate();
 	DB::table('purchase_challan')->truncate();
-	DB::table('purchase_order_canceled')->truncate();
-	DB::table('order_cancelled')->truncate();
 
 
 	echo 'truncate all data';

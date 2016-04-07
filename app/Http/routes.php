@@ -11,27 +11,10 @@
   |
  */
 
-Route::get('delete_reports','WelcomeController@delete_reports');
 Route::get('updatedata', 'HomeController@updatedata');
 Route::get('phpversion', 'WelcomeController@phpversion');
 Route::get('showupdatedata', 'HomeController@showupdatedata');
 Route::get('update_delivery_location', 'HomeController@update_delivery_location');
-
-Route::get('show_delivery_location_table', function() {
-    $pdo = DB::table('delivery_locations')->get();
-    print('<pre>');
-    print_r($pdo);
-});
-Route::get('show_users_table', function() {
-    $pdo = DB::table('users')->get();
-    print('<pre>');
-    print_r($pdo);
-});
-Route::get('showdata/{tablename}', 'WelcomeController@showdata');
-Route::get('showtableinfo/{tablename}', 'WelcomeController@showtableinfo');
-Route::get('removedata/{tablename}', 'WelcomeController@removedata');
-Route::get('emptydata/{tablename}', 'WelcomeController@emptydata');
-Route::get('updatecolumndata/{tablename}/{column}/{value}', 'WelcomeController@updatecolumndata');
 
 Route::get('doMigrate', function () {
     define('STDIN', fopen("php://stdin", "r"));
@@ -64,7 +47,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('bulk-delete', 'BulkDeleteController');
     Route::get('bulk-delete', 'BulkDeleteController@show_result');
 //    Route::post('bulk-delete', 'BulkDeleteController@show_result');
-    
+
     Route::resource('security', 'SecurityController');
     Route::get('dashboard', 'DashboardController@index');
     Route::get('dashboard', 'DashboardController@index');
@@ -97,7 +80,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('update_difference', 'ProductsubController@update_difference');
     Route::get('fetch_product_size', 'ProductsubController@fetch_product_size');
     Route::get('fetch_product_name', 'ProductsubController@fetch_product_name');
-    Route::post('delivery_order/{id}-delete','DeliveryOrderController@destroy');
+    Route::post('delivery_order/{id}-delete', 'DeliveryOrderController@destroy');
     Route::resource('delivery_order', 'DeliveryOrderController');
     Route::resource('pending_delivery_order', 'DeliveryOrderController@pending_delivery_order');
     Route::resource('purchase_order_daybook', 'PurchaseDaybookController');
@@ -107,9 +90,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('print_purchase_daybook', 'PurchaseDaybookController@print_purchase_daybook');
     Route::get('change_password', 'PasswordController@getPassword');
     Route::post('change_password', 'PasswordController@postPassword');
-    Route::post('inquiry/{id}-delete','InquiryController@destroy');
+    Route::post('inquiry/{id}-delete', 'InquiryController@destroy');
     Route::resource('inquiry', 'InquiryController');
-    
+
 //    Route::get('fetch_existing_supplier', 'InquiryController@fetch_existing_supplier');
     Route::get('fetch_existing_customer', 'InquiryController@fetch_existing_customer');
     Route::get('fetch_products', 'InquiryController@fetch_products');
@@ -123,7 +106,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('purchaseorder_advise', 'PurchaseAdviseController');
     Route::get('print_purchase_advise/{id}', 'PurchaseAdviseController@print_purchase_advise');
     Route::get('pending_purchase_advice', 'PurchaseAdviseController@pending_purchase_advice');
-    Route::post('order/{id}-delete','OrderController@destroy');
+    Route::post('order/{id}-delete', 'OrderController@destroy');
     Route::resource('orders', 'OrderController');
     Route::post('manual_complete_order', 'OrderController@manual_complete_order');
     Route::get('fetch_order_size', 'ProductsubController@fetch_order_size');
@@ -162,6 +145,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('upload_customer_excel', 'WelcomeController@upload_customer_excel');
     Route::resource('import_delivery_location', 'WelcomeController@import_delivery_location');
     Route::post('process_import_delivery_location', 'WelcomeController@process_import_delivery_location');
+    /* Helpful routes for developers */
+    Route::get('delete_reports', 'WelcomeController@delete_reports');
+    Route::get('removedata/{tablename}', 'WelcomeController@removedata');
+    Route::get('emptydata/{tablename}', 'WelcomeController@emptydata');
+    Route::get('showdata/{tablename}', 'WelcomeController@showdata');
+    Route::get('showtableinfo/{tablename}', 'WelcomeController@showtableinfo');
+    Route::get('updatecolumndata/{tablename}/{column}/{value}', 'WelcomeController@updatecolumndata');
+    /* Helpful routes for developers ends here */
     Route::any('database_backup_test', 'HomeController@database_backup_test');
     Route::any('database_backup_live', 'HomeController@database_backup_live');
     Route::any('database_backup_local', 'HomeController@database_backup_local');
