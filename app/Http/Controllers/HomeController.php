@@ -50,13 +50,59 @@ class HomeController extends Controller {
         }
     }
 
+    public function phonetesting() {
+        $agent = new Agent();
+        if ($agent->isPhone()) {
+            return json_encode(array(
+                'result' => true,
+                'message' => 'This is phone device'), 200
+            );
+        } else {
+            return json_encode(array(
+                'result' => true,
+                'message' => 'This is not a phone device'), 200
+            );
+        }
+    }
+
+    public function robottesting() {
+        $agent = new Agent();
+        if ($agent->isRobot()) {
+            return json_encode(array(
+                'result' => true,
+                'message' => 'This is robot device'), 200
+            );
+        } else {
+            return json_encode(array(
+                'result' => true,
+                'message' => 'This is not a robot device'), 200
+            );
+        }
+    }
+
+    public function platformname() {
+        $agent = new Agent();
+        $platform = $agent->platform();
+        return json_encode($platform);
+    }
+
+    public function platformversion() {
+        $agent = new Agent();
+        $platform = $agent->platform();
+        $version = $agent->version($platform);
+        return json_encode($version);
+    }
+    public function browserversion() {
+        $agent = new Agent();
+        $browser = $agent->browser();
+        $version = $agent->version($browser);
+        return json_encode($version);
+    }
+
     public function devicename() {
         $agent = new Agent();
         $device = $agent->device();
-        return json_encode(array(
-            'result' => true,
-            'message' => 'This device name is : ' . $device), 200
-        );
+        return json_encode($device);
     }
 
     public function androidtesting() {
