@@ -72,10 +72,15 @@ trait AuthenticatesAndRegistersUsers {
         $agent = new Agent();
         if ($agent->isAndroidOS()) {
             $credentials = json_decode($login_info);
-            if ($this->auth->attempt($credentials, $request->has('remember'))) {
+            if ($this->auth->attempt($credentials)) {
                 return json_encode(array(
                     'result' => true,
                     'message' => 'Login Sucessfully Done'), 200
+                );
+            }else{
+                return json_encode(array(
+                    'result' => false,
+                    'message' => 'Login failed'), 200
                 );
             }
         } else {

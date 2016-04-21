@@ -26,6 +26,13 @@ class HomeController extends Controller {
         $this->middleware('auth');
     }
 
+    public function demorouteandroid() {
+        return json_encode(array(
+            'result' => true,
+            'message' => 'Login Sucessfully Done'), 200
+        );
+    }
+
     /**
      * Show the application dashboard to the user.
      */
