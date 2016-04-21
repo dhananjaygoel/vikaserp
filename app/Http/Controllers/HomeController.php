@@ -83,26 +83,39 @@ class HomeController extends Controller {
     public function platformname() {
         $agent = new Agent();
         $platform = $agent->platform();
-        return json_encode($platform);
+
+        $result = [];
+        $result[] = $platform;
+        return json_encode($result);
     }
 
     public function platformversion() {
         $agent = new Agent();
         $platform = $agent->platform();
         $version = $agent->version($platform);
-        return json_encode($version);
+
+
+        $result = [];
+        $result[] = $version;
+        return json_encode($result);
     }
+
     public function browserversion() {
         $agent = new Agent();
         $browser = $agent->browser();
         $version = $agent->version($browser);
-        return json_encode($version);
+        $result = [];
+        $result[] = $version;
+        return json_encode($result);
     }
 
     public function devicename() {
         $agent = new Agent();
         $device = $agent->device();
-        return json_encode($device);
+
+        $result = [];
+        $result[] = $device;
+        return json_encode($result);
     }
 
     public function androidtesting() {
