@@ -30,8 +30,8 @@ class Kernel extends HttpKernel {
         'auth' => 'App\Http\Middleware\Authenticate',
         'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
         'guest' => 'App\Http\Middleware\RedirectIfAuthenticated',
-        'loggedin' => 'App\Http\Middleware\LoggedinMiddleware',
-        'validIP' => 'App\Http\Middleware\validIpMiddleware',
+//        'loggedin' => 'App\Http\Middleware\LoggedinMiddleware',
+//        'validIP' => 'App\Http\Middleware\validIpMiddleware',
     ];
 
 }
