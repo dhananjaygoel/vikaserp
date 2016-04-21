@@ -6,6 +6,7 @@ use App\City;
 use App\DeliveryLocation;
 use App\States;
 use App\Customer;
+use Jenssegers\Agent\Agent;
 
 class HomeController extends Controller {
     /*
@@ -29,8 +30,23 @@ class HomeController extends Controller {
     public function demorouteandroid() {
         return json_encode(array(
             'result' => true,
-            'message' => 'Login Sucessfully Done'), 200
+            'message' => 'Thank you for visiting'), 200
         );
+    }
+
+    public function androidtesting() {
+        $agent = new Agent();
+        if ($agent->isAndroidOS()) {
+            return json_encode(array(
+                'result' => true,
+                'message' => 'This is android device'), 200
+            );
+        } else {
+            return json_encode(array(
+                'result' => true,
+                'message' => 'This is not an android device'), 200
+            );
+        }
     }
 
     /**
