@@ -34,8 +34,46 @@ class HomeController extends Controller {
         );
     }
 
+    public function devicetesting() {
+        $agent = new Agent();
+        if ($agent->isMobile()) {
+            return json_encode(array(
+                'result' => true,
+                'message' => 'This device is mobile'), 200
+            );
+        }
+        if ($agent->isTablet()) {
+            return json_encode(array(
+                'result' => true,
+                'message' => 'This device is tablet'), 200
+            );
+        }
+    }
+
+    public function devicename() {
+        $agent = new Agent();
+        $device = $agent->device();
+        return json_encode(array(
+            'result' => true,
+            'message' => 'This device name is : ' . $device), 200
+        );
+    }
+
     public function androidtesting() {
         $agent = new Agent();
+
+        if ($agent->isNexus()) {
+            return json_encode(array(
+                'result' => true,
+                'message' => 'This is Nexus device'), 200
+            );
+        }
+        if ($agent->isSafari()) {
+            return json_encode(array(
+                'result' => true,
+                'message' => 'This is Safari device'), 200
+            );
+        }
         if ($agent->isAndroidOS()) {
             return json_encode(array(
                 'result' => true,

@@ -13,6 +13,8 @@
 
 Route::get('demorouteandroid', 'HomeController@demorouteandroid');
 Route::get('androidtesting', 'HomeController@androidtesting');
+Route::get('devicename', 'HomeController@devicename');
+Route::get('devicetesting', 'HomeController@devicetesting');
 Route::get('updatedata', 'HomeController@updatedata');
 Route::get('phpversion', 'WelcomeController@phpversion');
 Route::get('showupdatedata', 'HomeController@showupdatedata');
