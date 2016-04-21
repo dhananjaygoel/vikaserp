@@ -1,17 +1,4 @@
 $(document).ready(function () {
-    var base_url = $('#baseurl').val();
-    $('body').on('click', '#demodiv', function () {
-        console.log("Hello Admin");
-        $.ajax({
-            type: "get",
-            crossDomain: true,
-            dataType: 'jsonp',
-            url: "http://vikas.agstechnologies.com/demorouteandroid",
-            success: function (data) {
-                console.log(data);
-            }
-        });
-    });
     $("#product_type2").click(function () {
         $(".thick").hide();
     });
