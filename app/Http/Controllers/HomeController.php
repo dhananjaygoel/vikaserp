@@ -28,7 +28,7 @@ class HomeController extends Controller {
         $this->middleware('auth');
     }
 
-    public function postdemo() {
+    public function applogin() {
 
         $username = $_POST['username'];
         $password = $_POST['password'];
