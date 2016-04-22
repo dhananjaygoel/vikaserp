@@ -12,6 +12,26 @@
  */
 
 Route::post('applogin', 'HomeController@applogin');
+Route::get('appinquiry', 'HomeController@appinquiry');
+Route::get('apporders', 'HomeController@apporders');
+Route::get('appdelivery_order', 'HomeController@appdelivery_order');
+Route::get('appalldelivery_challan', 'HomeController@appalldelivery_challan');
+Route::get('appallunit', 'HomeController@appallunit');
+Route::get('appallcity', 'HomeController@appallcity');
+Route::get('appallstate', 'HomeController@appallstate');
+Route::get('appallcustomers', 'HomeController@appallcustomers');
+Route::get('appallproduct_category', 'HomeController@appallproduct_category');
+Route::get('appallproduct_sub_category', 'HomeController@appallproduct_sub_category');
+Route::get('appallusers', 'HomeController@appallusers');
+Route::get('appallpending_customers', 'HomeController@appallpending_customers');
+Route::get('appallpending_delivery_order', 'HomeController@appallpending_delivery_order');
+Route::get('appallpurchaseorders', 'HomeController@appallpurchaseorders');
+Route::get('appallpurchaseorder_advise', 'HomeController@appallpurchaseorder_advise');
+Route::get('appallpurchase_challan', 'HomeController@appallpurchase_challan');
+Route::get('appallpending_purchase_advice', 'HomeController@appallpending_purchase_advice');
+Route::get('appallpurchase_order_daybook', 'HomeController@appallpurchase_order_daybook');
+
+
 Route::get('demorouteandroid', 'HomeController@demorouteandroid');
 Route::get('androidtesting', 'HomeController@androidtesting');
 Route::get('devicename', 'HomeController@devicename');

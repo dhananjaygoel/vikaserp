@@ -6,7 +6,23 @@ use App\City;
 use App\DeliveryLocation;
 use App\States;
 use App\Customer;
+use App\User;
+use App\ProductCategory;
+use App\ProductSubCategory;
+use App\ProductType;
+use App\PurchaseOrder;
+use App\PurchaseAdvise;
+use App\PurchaseChallan;
+use App\PurchaseOrderCanceled;
+use App\PurchaseProducts;
+use App\Inquiry;
+use App\Order;
+use App\Units;
+use App\DeliveryOrder;
+use App\DeliveryChallan;
+use App\Http\Controllers\DeliveryOrderController;
 use Jenssegers\Agent\Agent;
+use App\Http\Controllers\Input;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller {
@@ -28,6 +44,153 @@ class HomeController extends Controller {
         $this->middleware('auth');
     }
 
+    // All Functions added by user 157 for app //
+    public function appinquiry() {
+
+        if ((isset($_GET['inquiry_filter'])) && $_GET['inquiry_filter'] != '') {
+
+            $inquiries = Inquiry::where('inquiry_status', '=', $_GET['inquiry_filter'])
+                            ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')
+                            ->orderBy('created_at', 'desc')->get();
+        } else {
+
+            $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')
+                            ->where('inquiry_status', 'pending')
+                            ->orderBy('created_at', 'desc')->get();
+        }
+        return json_encode($inquiries);
+    }
+
+    public function apporders() {
+        $q = Order::query();
+        if (isset($_GET['order_filter']) && $_GET['order_filter'] != '') {
+            $q->where('order_status', '=', $_GET['order_filter']);
+        } else {
+            $q->where('order_status', '=', 'pending');
+        }
+        $allorders = $q->with('all_order_products')
+                        ->with('customer', 'delivery_location', 'order_cancelled')
+                        ->orderBy('created_at', 'desc')->get();
+
+        return json_encode($allorders);
+    }
+
+    public function appdelivery_order() {
+
+        $delivery_data = 0;
+        $delivery_data = DeliveryOrder::orderBy('created_at', 'desc')
+                        ->where('order_status', 'pending')
+                        ->with('delivery_product', 'customer')->get();
+
+        $do_obj = new DeliveryOrderController();
+        $delivery_data = $do_obj->checkpending_quantity($delivery_data);
+        $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
+
+        $data = [];
+        $data['delivery_details'] = $delivery_data;
+        $data['delivery_location'] = $delivery_locations;
+        return json_encode($data);
+    }
+
+    public function appalldelivery_challan() {
+        $allorders = DeliveryChallan::where('challan_status', '=', 'pending')
+                        ->with('customer', 'delivery_challan_products', 'delivery_order')
+                        ->orderBy('created_at', 'desc')->get();
+        return json_encode($allorders);
+    }
+
+    public function appallunit() {
+        $units = Units::orderBy('created_at', 'desc')->get();
+        return json_encode($units);
+    }
+
+    public function appallcity() {
+        $cities = City::with('states')->orderBy('created_at', 'desc')->get();
+        return json_encode($cities);
+    }
+
+    public function appallstate() {
+        $states = States::orderBy('created_at', 'desc')->get();
+        return json_encode($states);
+    }
+
+    public function appallcustomers() {
+        $customers = Customer::orderBy('tally_name', 'asc')
+                ->where('customer_status', '=', 'permanent')
+                ->get();
+        return json_encode($customers);
+    }
+
+    public function appallproduct_category() {
+        $product_cat = ProductCategory::orderBy('created_at', 'desc')->get();
+        return json_encode($product_cat);
+    }
+
+    public function appallproduct_sub_category() {
+        $product_type = ProductType::all();
+        $units = Units::all();
+        $product_sub_cat = "";
+        $q = ProductSubCategory::query();
+        $q->with('product_category');
+        $product_sub_cat = $q->orderBy('created_at', 'desc')->get();
+        return json_encode($product_sub_cat);
+    }
+
+    public function appallusers() {
+        $users_data = User::where('role_id', '!=', 0)->with('user_role')->orderBy('created_at', 'desc')->get();
+        return json_encode($users_data);
+    }
+
+    public function appallpending_customers() {
+        $customers = Customer::orderBy('created_at', 'desc')->where('customer_status', '=', 'pending')->get();
+        return json_encode($customers);
+    }
+
+    public function appallpending_delivery_order() {
+        $delivery_data = DeliveryOrder::
+                where('order_status', 'pending')
+                ->with('user', 'customer')
+                ->get();
+        return json_encode($delivery_data);
+    }
+
+    public function appallpurchaseorders() {
+        $q = PurchaseOrder::query();
+        $purchase_orders = $q->orderBy('created_at', 'desc')
+                        ->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')->get();
+        return json_encode($purchase_orders);
+    }
+
+    public function appallpurchaseorder_advise() {
+        $q = PurchaseAdvise::query()->with('supplier', 'purchase_products');
+        $purchase_advise = $q->orderBy('created_at', 'desc')->get();
+        return json_encode($purchase_advise);
+    }
+
+    public function appallpending_purchase_advice() {
+        $q = PurchaseAdvise::query()->with('supplier', 'purchase_products');
+        $q->where('advice_status', '=', 'in_process');
+        $purchase_advise = $q->orderBy('created_at', 'desc')->get();
+        return json_encode($purchase_advise);
+    }
+
+    public function appallpurchase_challan() {
+        $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
+                ->where('order_status', 'pending')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        return json_encode($purchase_challan);
+    }
+
+    public function appallpurchase_order_daybook() {
+        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
+                ->where('order_status', 'completed')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        return json_encode($purchase_daybook);
+    }
+
+    // All Functions added by user 157 for app ends here //
     public function applogin() {
 
         $username = $_POST['username'];
