@@ -28,6 +28,9 @@ class HomeController extends Controller {
     }
 
     public function postdemo() {
+        
+        return json_encode($_POST);
+        
         return json_encode(array(
             'result' => true,
             'message' => 'This is post request')
