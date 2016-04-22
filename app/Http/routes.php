@@ -11,7 +11,7 @@
   |
  */
 
-Route::post('postdemo', 'HomeController@postdemo');
+Route::post('applogin', 'HomeController@applogin');
 Route::get('demorouteandroid', 'HomeController@demorouteandroid');
 Route::get('androidtesting', 'HomeController@androidtesting');
 Route::get('devicename', 'HomeController@devicename');
