@@ -27,6 +27,13 @@ class HomeController extends Controller {
         $this->middleware('auth');
     }
 
+    public function postdemo() {
+        return json_encode(array(
+            'result' => true,
+            'message' => 'This is post request')
+        );
+    }
+
     public function demorouteandroid() {
         return json_encode(array(
             'result' => true,

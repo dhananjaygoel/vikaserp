@@ -1,4 +1,20 @@
 $(document).ready(function () {
+
+
+    $('body').on('click', '#demodiv', function () {
+        var baseurl = $('#baseurl').attr('name');
+        console.log(baseurl + "/postdemo");
+        $.ajax({
+            type: "POST",
+             headers: { 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content') },
+            dataType: 'jsonp',
+            url: baseurl + "/postdemo",
+            success: function (data) {
+                console.log(data);
+            }
+        });
+    });
+
     $("#product_type2").click(function () {
         $(".thick").hide();
     });
