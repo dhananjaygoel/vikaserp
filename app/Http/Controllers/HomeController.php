@@ -7,6 +7,7 @@ use App\DeliveryLocation;
 use App\States;
 use App\Customer;
 use Jenssegers\Agent\Agent;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller {
     /*
@@ -28,13 +29,21 @@ class HomeController extends Controller {
     }
 
     public function postdemo() {
-        
-        return json_encode($_POST);
-        
-        return json_encode(array(
-            'result' => true,
-            'message' => 'This is post request')
-        );
+
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
+        if (Auth::validate(['mobile_number' => $username, 'password' => $password])) {
+            return json_encode(array(
+                'result' => true,
+                'message' => 'Login Successfully Done')
+            );
+        } else {
+            return json_encode(array(
+                'result' => false,
+                'message' => 'Login Failed.')
+            );
+        }
     }
 
     public function demorouteandroid() {
