@@ -69,8 +69,8 @@ trait AuthenticatesAndRegistersUsers {
      */
     public function postLogin(Request $request) {
 
-        $agent = new Agent();
-        if ($agent->isAndroidOS()) {
+//        $agent = new Agent();
+//        if ($agent->isAndroidOS()) {
             $credentials = json_decode($login_info);
             if ($this->auth->attempt($credentials)) {
                 return json_encode(array(
@@ -83,21 +83,22 @@ trait AuthenticatesAndRegistersUsers {
                     'message' => 'Login failed'), 200
                 );
             }
-        } else {
-            $this->validate($request, [
-                'email' => 'required|email', 'password' => 'required',
-            ]);
-            $credentials = $request->only('email', 'password');
-
-            if ($this->auth->attempt($credentials, $request->has('remember'))) {
-                return redirect()->intended($this->redirectPath());
-            }
-            return redirect($this->loginPath())
-                            ->withInput($request->only('email', 'remember'))
-                            ->withErrors([
-                                'email' => $this->getFailedLoginMessage(),
-            ]);
-        }
+//        } 
+//        else {
+//            $this->validate($request, [
+//                'email' => 'required|email', 'password' => 'required',
+//            ]);
+//            $credentials = $request->only('email', 'password');
+//
+//            if ($this->auth->attempt($credentials, $request->has('remember'))) {
+//                return redirect()->intended($this->redirectPath());
+//            }
+//            return redirect($this->loginPath())
+//                            ->withInput($request->only('email', 'remember'))
+//                            ->withErrors([
+//                                'email' => $this->getFailedLoginMessage(),
+//            ]);
+//        }
     }
 
     /**
