@@ -12,6 +12,7 @@
  */
 
 Route::post('applogin', 'HomeController@applogin');
+Route::get('appcount', 'HomeController@appcount');
 Route::get('appinquiry', 'HomeController@appinquiry');
 Route::get('apporders', 'HomeController@apporders');
 Route::get('appdelivery_order', 'HomeController@appdelivery_order');

@@ -45,6 +45,64 @@ class HomeController extends Controller {
     }
 
     // All Functions added by user 157 for app //
+    public function appcount() {
+        $order = Order::all()->count();
+        $pending_order = Order::where('order_status', 'pending')->count();
+        $inquiry = Inquiry::all()->count();
+        $pending_inquiry = Inquiry::where('inquiry_status', 'pending')->count();
+
+        $delivery_order = DeliveryOrder::with('delivery_product')->get();
+
+        $deliver_sum = 0;
+        $deliver_pending_sum = 0;
+        foreach ($delivery_order as $qty) {
+            if ($qty->order_status == 'pending') {
+                foreach ($qty['delivery_product'] as $qty_val) {
+                    $deliver_pending_sum += $qty_val->quantity;
+                }
+            } else if ($qty->order_status == 'completed') {
+                foreach ($qty['delivery_product'] as $qty_val) {
+                    $deliver_sum += $qty_val->quantity;
+                }
+            }
+        }
+        $deliver_sum = $deliver_sum / 100;
+        $deliver_pending_sum = $deliver_pending_sum / 100;
+
+        $pur_challan = PurchaseChallan::with('purchase_product')->get();
+        $challan_sum = 0;
+        foreach ($pur_challan as $qty) {
+
+            foreach ($qty['purchase_product'] as $qty_val) {
+                $challan_sum += $qty_val->quantity;
+            }
+        }
+
+        $challan_sum = $challan_sum / 100;
+
+        $purc_order_sum = 0;
+        $pur_challan = PurchaseOrder::with('purchase_products')->get();
+        foreach ($pur_challan as $qty) {
+
+            foreach ($qty['purchase_products'] as $qty_val) {
+                $purc_order_sum += $qty_val->quantity;
+            }
+        }
+
+        $purc_order_sum = $purc_order_sum / 100;
+
+        $allcounts = [];
+        $allcounts['order_counts'] = $order;
+        $allcounts['pending_counts'] = $pending_order;
+        $allcounts['inquiry_counts'] = $inquiry;
+        $allcounts['pending_inquiry_counts'] = $pending_inquiry;
+        $allcounts['deliver_sum'] = $deliver_sum;
+        $allcounts['deliver_pending_sum'] = $deliver_pending_sum;
+        $allcounts['challan_sum'] = $challan_sum;
+        $allcounts['purc_order_sum'] = $challan_sum;
+        return json_encode($allcounts);
+    }
+
     public function appinquiry() {
 
         if ((isset($_GET['inquiry_filter'])) && $_GET['inquiry_filter'] != '') {
