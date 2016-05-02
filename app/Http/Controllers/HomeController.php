@@ -248,6 +248,13 @@ class HomeController extends Controller {
         return json_encode($purchase_daybook);
     }
 
+    public function applocation() {
+        $delivery_location = DeliveryLocation::where('status', '=', 'permanent')
+                        ->with('city.states')
+                        ->orderBy('created_at', 'desc')->get();
+        return json_encode($delivery_location);
+    }
+
     // All Functions added by user 157 for app ends here //
     public function applogin() {
 

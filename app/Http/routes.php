@@ -32,6 +32,8 @@ Route::get('appallpurchase_challan', 'HomeController@appallpurchase_challan');
 Route::get('appallpending_purchase_advice', 'HomeController@appallpending_purchase_advice');
 Route::get('appallpurchase_order_daybook', 'HomeController@appallpurchase_order_daybook');
 
+Route::get('applocation', 'HomeController@applocation');
+
 
 Route::get('demorouteandroid', 'HomeController@demorouteandroid');
 Route::get('androidtesting', 'HomeController@androidtesting');
