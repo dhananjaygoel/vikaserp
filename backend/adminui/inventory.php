@@ -72,16 +72,16 @@
 												<table class="table">
 													<thead>
 														<tr>
-															<th><span>Size</span></th>
+															<th class="inventory-size"><span>Size</span></th>
 															<th><span>Opening</span></th>
-															<th><span>Sales Chalan</span></th>
-															<th><span>Purchase Chalan</span></th>
-															<th><span>Physical Closing</span></th>
-                                                            <th><span>Pending SO</span></th>
+															<th><span>Sales<br />Chalan</span></th>
+															<th><span>Purchase<br />Chalan</span></th>
+															<th><span>Physical<br />Closing</span></th>
+                                                            <th><span>P SO</span></th>
                                                             <th><span>P DO</span></th>
 															<th><span>P PO</span></th>
 															<th><span>P PA</span></th>
-															<th><span>Virtual Stock</span></th>
+															<th><span>Virtual<br />Stock</span></th>
 														</tr>
 													</thead>
 													<tbody>
