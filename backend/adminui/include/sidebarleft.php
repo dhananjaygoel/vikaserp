@@ -171,7 +171,7 @@
                                     <li class="<?php echo ($page_name=='pendingcustomers.php') || ($page_name=='edit_pendingcustomer.php') ?'active':'';?>">
 										<a href="inventory.php">
 											<i class="fa fa-cubes" aria-hidden="true"></i>
-											<span>Pending customers</span>
+											<span>Inventory</span>
 											<span class="label label-info label-circle pull-right"></span>
 										</a>
 									</li>
