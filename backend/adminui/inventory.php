@@ -73,7 +73,7 @@
 													<thead>
 														<tr>
 															<th class="inventory-size"><span>Size</span></th>
-															<th><span>Opening</span></th>
+															<th class="opening"><span>Opening</span></th>
 															<th><span>Sales<br />Chalan</span></th>
 															<th><span>Purchase<br />Chalan</span></th>
 															<th><span>Physical<br />Closing</span></th>
@@ -92,7 +92,7 @@
 															<td>
                                                             	<form>
                                                                 	<div class="form-group">
-																		<input type="text" placeholder="10" class="form-control opening" />
+																		<input type="text" placeholder="10" class="form-control " />
                                                                     </div>
                                                                 </form>
 															</td>
@@ -128,7 +128,7 @@
 															<td>
 																<form>
                                                                 	<div class="form-group">
-																		<input type="text" placeholder="10" class="form-control opening" />
+																		<input type="text" placeholder="10" class="form-control " />
                                                                     </div>
                                                                 </form>
 															</td>
@@ -164,7 +164,7 @@
 															<td>
 																<form>
                                                                 	<div class="form-group">
-																		<input type="text" placeholder="10" class="form-control opening" />
+																		<input type="text" placeholder="10" class="form-control " />
                                                                     </div>
                                                                 </form>
 															</td>
@@ -200,7 +200,7 @@
 															<td>
 																<form>
                                                                 	<div class="form-group">
-																		<input type="text" placeholder="10" class="form-control opening" />
+																		<input type="text" placeholder="10" class="form-control " />
                                                                     </div>
                                                                 </form>
 															</td>
@@ -236,7 +236,547 @@
 															<td>
 																<form>
                                                                 	<div class="form-group">
-																		<input type="text" placeholder="10" class="form-control opening" />
+																		<input type="text" placeholder="10" class="form-control " />
+                                                                    </div>
+                                                                </form>
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																90
+															</td>
+                                                            <td>
+																20
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																5
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																65
+															</td>
+														</tr>
+                                                        <tr>
+															<td>
+																2 mm 26 K
+															</td>
+															<td>
+                                                            	<form>
+                                                                	<div class="form-group">
+																		<input type="text" placeholder="10" class="form-control " />
+                                                                    </div>
+                                                                </form>
+															</td>
+															<td>
+																25
+															</td>
+															<td >
+																15
+															</td>
+															<td>
+																90
+															</td>
+                                                            <td>
+																20
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																5
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																65
+															</td>
+														</tr>
+														<tr>
+															<td>
+																2 mm 26 K
+															</td>
+															<td>
+																<form>
+                                                                	<div class="form-group">
+																		<input type="text" placeholder="10" class="form-control " />
+                                                                    </div>
+                                                                </form>
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																90
+															</td>
+                                                            <td>
+																20
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																5
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																65
+															</td>
+														</tr>
+														<tr>
+															<td>
+																2 mm 26 K
+															</td>
+															<td>
+																<form>
+                                                                	<div class="form-group">
+																		<input type="text" placeholder="10" class="form-control " />
+                                                                    </div>
+                                                                </form>
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																15
+															</td>
+															<td >
+																90
+															</td>
+                                                            <td>
+																20
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																5
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																65
+															</td>
+														</tr>
+														<tr>
+															<td>
+																2 mm 26 K
+															</td>
+															<td>
+																<form>
+                                                                	<div class="form-group">
+																		<input type="text" placeholder="10" class="form-control " />
+                                                                    </div>
+                                                                </form>
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																90
+															</td>
+                                                            <td>
+																20
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																5
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																65
+															</td>
+														</tr>
+														<tr>
+															<td>
+																2 mm 26 K
+															</td>
+															<td>
+																<form>
+                                                                	<div class="form-group">
+																		<input type="text" placeholder="10" class="form-control " />
+                                                                    </div>
+                                                                </form>
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																90
+															</td>
+                                                            <td>
+																20
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																5
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																65
+															</td>
+														</tr>
+                                                        <tr>
+															<td>
+																2 mm 26 K
+															</td>
+															<td>
+                                                            	<form>
+                                                                	<div class="form-group">
+																		<input type="text" placeholder="10" class="form-control " />
+                                                                    </div>
+                                                                </form>
+															</td>
+															<td>
+																25
+															</td>
+															<td >
+																15
+															</td>
+															<td>
+																90
+															</td>
+                                                            <td>
+																20
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																5
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																65
+															</td>
+														</tr>
+														<tr>
+															<td>
+																2 mm 26 K
+															</td>
+															<td>
+																<form>
+                                                                	<div class="form-group">
+																		<input type="text" placeholder="10" class="form-control " />
+                                                                    </div>
+                                                                </form>
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																90
+															</td>
+                                                            <td>
+																20
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																5
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																65
+															</td>
+														</tr>
+														<tr>
+															<td>
+																2 mm 26 K
+															</td>
+															<td>
+																<form>
+                                                                	<div class="form-group">
+																		<input type="text" placeholder="10" class="form-control " />
+                                                                    </div>
+                                                                </form>
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																15
+															</td>
+															<td >
+																90
+															</td>
+                                                            <td>
+																20
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																5
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																65
+															</td>
+														</tr>
+														<tr>
+															<td>
+																2 mm 26 K
+															</td>
+															<td>
+																<form>
+                                                                	<div class="form-group">
+																		<input type="text" placeholder="10" class="form-control " />
+                                                                    </div>
+                                                                </form>
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																90
+															</td>
+                                                            <td>
+																20
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																5
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																65
+															</td>
+														</tr>
+														<tr>
+															<td>
+																2 mm 26 K
+															</td>
+															<td>
+																<form>
+                                                                	<div class="form-group">
+																		<input type="text" placeholder="10" class="form-control " />
+                                                                    </div>
+                                                                </form>
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																90
+															</td>
+                                                            <td>
+																20
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																5
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																65
+															</td>
+														</tr>
+                                                        <tr>
+															<td>
+																2 mm 26 K
+															</td>
+															<td>
+                                                            	<form>
+                                                                	<div class="form-group">
+																		<input type="text" placeholder="10" class="form-control " />
+                                                                    </div>
+                                                                </form>
+															</td>
+															<td>
+																25
+															</td>
+															<td >
+																15
+															</td>
+															<td>
+																90
+															</td>
+                                                            <td>
+																20
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																5
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																65
+															</td>
+														</tr>
+														<tr>
+															<td>
+																2 mm 26 K
+															</td>
+															<td>
+																<form>
+                                                                	<div class="form-group">
+																		<input type="text" placeholder="10" class="form-control " />
+                                                                    </div>
+                                                                </form>
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																90
+															</td>
+                                                            <td>
+																20
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																5
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																65
+															</td>
+														</tr>
+														<tr>
+															<td>
+																2 mm 26 K
+															</td>
+															<td>
+																<form>
+                                                                	<div class="form-group">
+																		<input type="text" placeholder="10" class="form-control " />
+                                                                    </div>
+                                                                </form>
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																15
+															</td>
+															<td >
+																90
+															</td>
+                                                            <td>
+																20
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																5
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																65
+															</td>
+														</tr>
+														<tr>
+															<td>
+																2 mm 26 K
+															</td>
+															<td>
+																<form>
+                                                                	<div class="form-group">
+																		<input type="text" placeholder="10" class="form-control " />
+                                                                    </div>
+                                                                </form>
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																90
+															</td>
+                                                            <td>
+																20
+															</td>
+															<td>
+																25
+															</td>
+															<td>
+																5
+															</td>
+															<td>
+																15
+															</td>
+															<td>
+																65
+															</td>
+														</tr>
+														<tr>
+															<td>
+																2 mm 26 K
+															</td>
+															<td>
+																<form>
+                                                                	<div class="form-group">
+																		<input type="text" placeholder="10" class="form-control " />
                                                                     </div>
                                                                 </form>
 															</td>
