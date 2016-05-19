@@ -72,8 +72,8 @@
 												<table class="table">
 													<thead>
 														<tr>
-															<th class="inventory-size"><span>Size</span></th>
-															<th class="opening"><span>Opening</span></th>
+															<th class="opening"><span>Size</span></th>
+															<th class="inventory-size"><span>Opening</span></th>
 															<th><span>Sales<br />Chalan</span></th>
 															<th><span>Purchase<br />Chalan</span></th>
 															<th><span>Physical<br />Closing</span></th>
