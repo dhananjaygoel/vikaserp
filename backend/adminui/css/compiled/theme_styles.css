@@ -8038,6 +8038,7 @@ h1.printwrapper{margin:20px 0px;color:#000}
 .deletebutton{margin:20px 0}
 
 .pcshipping{margin-bottom: 20px!important;width:71%!important}
-.opening, .invventory-size {
+.opening { width: 200px; }
+.invventory-size {
 			width: 150px;
 		}
