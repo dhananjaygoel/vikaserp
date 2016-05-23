@@ -62,10 +62,10 @@
 									<div class="clearfix">
                                         <h1 class="pull-left">Inventory</h1>
                                         <div class=" row col-md-8 pull-right top-page-ui">
-                                                <div class="filter-block col-md-8 productsub_filter">       
+                                                <div class="filter-block productsub_filter">       
                                                                                         
-                                                    <div class="form-group  col-md-5">
-                                                        <input class="form-control" placeholder="Enter Product Name " type="text">
+                                                    <div class="form-group  col-md-5 pull-right">
+                                                        <input class="form-control" placeholder="Enter Product Size " type="text">
                                                         <i class="fa fa-search search-icon"></i>
                                                     </div>	
                                                                                          </div>
