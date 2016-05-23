@@ -59,8 +59,19 @@
 										<li><a href="#">Home</a></li>
 										<li class="active"><span>Tables</span></li>
 									</ol>
-									
-									<h1>Inventory</h1>
+									<div class="clearfix">
+									<h1 class="pull-left">Inventory</h1>
+                                    <div class=" row col-md-8 pull-right top-page-ui">
+										    <div class="filter-block col-md-8 productsub_filter">       
+                                                                                    
+                                                                                    <div class="form-group  col-md-12">
+													<input class="form-control" placeholder="Enter Product Name " type="text">
+													<i class="fa fa-search search-icon"></i>
+												</div>	
+                                                                                     </div>
+                                                                                     
+										</div>
+                                    </div>
 								</div>
 							</div>
 							
