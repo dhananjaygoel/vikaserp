@@ -264,6 +264,13 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="{{ (Request::is('inventory*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Inventory">
+                        <a href="{{url("inventory")}}">
+                            <i class="fa fa-cubes" aria-hidden="true"></i>
+                            <span>Inventory</span>
+                            <span class="label label-info label-circle pull-right"></span>
+                        </a>
+                    </li>
                     @endif
                     @endif
                     @if(Auth::user()->role_id == 0)

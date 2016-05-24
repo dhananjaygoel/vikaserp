@@ -3,10 +3,9 @@ $(document).ready(function () {
 
     $('body').on('click', '#demodiv', function () {
         var baseurl = $('#baseurl').attr('name');
-        console.log(baseurl + "/postdemo");
         $.ajax({
             type: "POST",
-             headers: { 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content') },
+            headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')},
             dataType: 'jsonp',
             url: baseurl + "/postdemo",
             success: function (data) {
@@ -1572,6 +1571,27 @@ function update_difference(e) {
         success: function (data) {
 //            $('.custom_alert_success').fadeOut(5000);
             $('.alert-success1').show();
+            $('html, body').animate({
+                scrollTop: $('.navbar-brand').offset().top
+            }, 1000);
+        }
+    });
+}
+function update_inventory(e) {
+    var opening_stock = $(e).parent().parent().parent().parent().children().find("input[type=text]").val();
+    var id = $(e).parent().parent().parent().parent().children().find("input[type=hidden]").val();
+    $.ajax({
+        type: 'get',
+        url: baseurl + '/update_inventory',
+        data: {opening_stock: opening_stock, id: id},
+        success: function (data) {
+            if (data == 'yes') {
+                $('.inventory_update').css('display', 'block');
+            }
+            window.setTimeout(function () {
+                $(".inventory_update").fadeTo(1500, 0).slideUp(500, function () {
+                });
+            }, 5000);
             $('html, body').animate({
                 scrollTop: $('.navbar-brand').offset().top
             }, 1000);

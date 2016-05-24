@@ -32,7 +32,15 @@
 .custom_alert_success{
     display:none;
 }
-
+.smallinput td:nth-child(1){
+    width: 20% !important;
+}
+.smallinput td:nth-child(2){
+    width: 10% !important;
+}
+.inventory_update{
+    display: none;
+}
 @media (min-width:995px) and (max-width:1030px) {
 
     .ui-autocomplete{

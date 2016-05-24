@@ -20,6 +20,7 @@ return array(
     'CreateIndexPriceOnProductCategory' => $baseDir . '/database/migrations/2015_12_22_102347_create_index_price_on_product_category.php',
     'CreateInquiriesTable' => $baseDir . '/database/migrations/2015_06_09_103725_create_inquiries_table.php',
     'CreateInquiryProductsTable' => $baseDir . '/database/migrations/2015_06_10_084310_create_inquiry_products_table.php',
+    'CreateInventoryTable' => $baseDir . '/database/migrations/2016_05_23_075056_create_inventory_table.php',
     'CreateOrderCancelledTable' => $baseDir . '/database/migrations/2015_06_05_131035_create_order_cancelled_table.php',
     'CreateOrderTable' => $baseDir . '/database/migrations/2015_06_05_130823_create_order_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',

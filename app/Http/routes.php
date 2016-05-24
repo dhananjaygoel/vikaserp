@@ -110,7 +110,11 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::resource('product_sub_category', 'ProductsubController');
     Route::get('get_product_category', 'ProductsubController@get_product_category');
+    Route::resource('inventory', 'InventoryController');
+    Route::get('fillInventoryList', 'InventoryController@fillInventoryList');
     Route::post('update_difference', 'ProductsubController@update_difference');
+    Route::get('update_inventory', 'InventoryController@update_inventory');
+    Route::get('export_inventory', 'InventoryController@export_inventory');
     Route::get('fetch_product_size', 'ProductsubController@fetch_product_size');
     Route::get('fetch_product_name', 'ProductsubController@fetch_product_name');
     Route::post('delivery_order/{id}-delete', 'DeliveryOrderController@destroy');
