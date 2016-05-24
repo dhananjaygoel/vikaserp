@@ -112,6 +112,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('get_product_category', 'ProductsubController@get_product_category');
     Route::resource('inventory', 'InventoryController');
     Route::get('fillInventoryList', 'InventoryController@fillInventoryList');
+    Route::get('fetch_inventory_product_name', 'InventoryController@fetchInventoryProductName');
     Route::post('update_difference', 'ProductsubController@update_difference');
     Route::get('update_inventory', 'InventoryController@update_inventory');
     Route::get('export_inventory', 'InventoryController@export_inventory');

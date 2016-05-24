@@ -1,7 +1,6 @@
 <html>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     {!! HTML::style('/resources/assets/css/custom_style/excel-export-table.css') !!}
-
     <table>
         <tr>
             <td class="heading1">Alias Name</td>

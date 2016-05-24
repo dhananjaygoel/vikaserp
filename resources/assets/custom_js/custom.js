@@ -1372,6 +1372,28 @@ $('#save_all_price_btn').click(function () {
     });
 });
 
+$("#search_inventory").autocomplete({
+    minLength: 1,
+    dataType: 'json',
+    type: 'GET',
+    source: function (request, response) {
+        $("#search_inventory").addClass('loadinggif');
+        $.ajax({
+            url: baseurl + '/fetch_inventory_product_name',
+            data: {"term": request.term},
+            success: function (data) {
+                var main_array = JSON.parse(data);
+                var arr1 = main_array['data_array'];
+                response(arr1);
+                $("#search_inventory").removeClass('loadinggif');
+            },
+        });
+    },
+    select: function (event, ui) {
+        $("#search_inventory").val(ui.item.label);
+    }
+});
+
 function isNumber(evt, element) {
 
     var charCode = (evt.which) ? evt.which : event.keyCode

@@ -24,6 +24,23 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryController extends Controller {
 
+    public function fetchInventoryProductName() {
+        $term = '%' . Input::get('term') . '%';
+        $product = ProductSubCategory::where('alias_name', 'like', $term)->get();
+        if (count($product) > 0) {
+            foreach ($product as $prod) {
+                $data_array[] = [
+                    'value' => $prod->alias_name
+                ];
+            }
+        } else {
+            $data_array[] = [
+                'value' => 'No Product found',
+            ];
+        }
+        echo json_encode(array('data_array' => $data_array));
+    }
+
     public function update_inventory() {
         $inventory_details = Inventory::find(Input::get('id'));
         $inventory_details->opening_qty = Input::get('opening_stock');
@@ -38,9 +55,15 @@ class InventoryController extends Controller {
      */
     public function index() {
 
+        $q = Inventory::query();
+        if (Input::get('search_inventory') != "") {
+            $q->whereHas('product_sub_category', function($query) {
+                $query->where('alias_name', Input::get('search_inventory'));
+            });
+        }
 
+        $inventory_list = $q->with('product_sub_category')->paginate(5);
 
-        $inventory_list = Inventory::with('product_sub_category')->paginate(5);
         foreach ($inventory_list as $inventory) {
 
             $order_qty = 0;
@@ -153,31 +176,6 @@ class InventoryController extends Controller {
             }
 
             $physical_closing = ($inventory->opening_qty + $purchase_challan_qty ) - $sales_challan_qty;
-
-//            $inventory['sales_challan_qty'] = $sales_challan_qty;
-//            $inventory['purchase_challan_qty'] = $purchase_challan_qty;
-//            $inventory['physical_closing'] = $physical_closing;
-//
-//            $inventory['order_qty'] = $order_qty - $pending_delivery_order_qty;
-//            $inventory['pending_delivery_order_qty'] = $pending_delivery_order_qty - $sales_challan_qty;
-//            $inventory['pending_purchase_order_qty'] = $pending_purchase_order_qty - $pending_purchase_advice_qty;
-//            $inventory['pending_purchase_advice_qty'] = $pending_purchase_advice_qty - $purchase_challan_qty;
-//            $inventory['virtual_stock_qty'] = ($physical_closing + $inventory['pending_purchase_order_qty'] + $inventory['pending_purchase_advice_qty']) - ($inventory['order_qty'] + $inventory['pending_delivery_order_qty']);
-//            echo "<pre>";
-//            print_r($sales_challan_qty);
-//            echo "<pre>";
-//            exit();
-//            $inventory_array = [
-//                'sales_challan_qty' => $sales_challan_qty,
-//                'purchase_challan_qty' => $purchase_challan_qty,
-//                'physical_closing_qty' => $physical_closing,
-//                'pending_sales_order_qty' => $order_qty - $pending_delivery_order_qty,
-//                'pending_delivery_order_qty' => $pending_delivery_order_qty - $sales_challan_qty,
-//                'pending_purchase_order_qty' => $pending_purchase_order_qty - $pending_purchase_advice_qty,
-//                'pending_purchase_advise_qty' => $pending_purchase_advice_qty - $purchase_challan_qty,
-//                'virtual_qty' => ($physical_closing + $inventory['pending_purchase_order_qty'] + $inventory['pending_purchase_advice_qty']) - ($inventory['order_qty'] + $inventory['pending_delivery_order_qty']),
-//            ];
-
             $inventory_details = Inventory::where('product_sub_category_id', '=', $inventory->product_sub_category_id)->first();
             $inventory_details->opening_qty = $inventory->opening_qty;
             $inventory_details->sales_challan_qty = $sales_challan_qty;
@@ -190,32 +188,15 @@ class InventoryController extends Controller {
             $inventory_details->virtual_qty = ($physical_closing + $inventory_details->pending_purchase_order_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
             $inventory_details->save();
         }
-        $inventory_newlist = Inventory::with('product_sub_category')->paginate(5);
-//        echo "<pre>";
-//        print_r($inventory_newlist->toArray());
-//        echo "<pre>";
-//        exit();
-//        echo "<pre>";
-//        print_r($inventory_list->toArray());
-//        echo "<pre>";
-//        exit();
-//        echo "<pre>";
-//        print_r($purchase_challan_qty);
-//        echo "<pre>";
-//        echo "<pre>";
-//        print_r($pending_purchase_advice_qty);
-//        echo "<pre>";
-//        echo "<pre>";
-//        print_r($pending_delivery_order_qty);
-//        echo "<pre>";
-//        echo "<pre>";
-//        print_r($pending_purchase_order_qty);
-//        echo "<pre>";
-//        echo "<pre>";
-//        print_r($sales_challan_qty);
-//        echo "<pre>";
-//        exit();
 
+        $query = Inventory::query();
+        if (Input::get('search_inventory') != "") {
+            $query->whereHas('product_sub_category', function($querydetails) {
+                $querydetails->where('alias_name', Input::get('search_inventory'));
+            });
+        }
+
+        $inventory_newlist = $query->with('product_sub_category')->paginate(50);
         return view('add_inventory')->with(['inventory_list' => $inventory_newlist]);
     }
 
@@ -244,7 +225,10 @@ class InventoryController extends Controller {
      * @return Response
      */
     public function show($id) {
-//
+        echo "<pre>";
+        print_r("45");
+        echo "<pre>";
+        exit();
     }
 
     /**

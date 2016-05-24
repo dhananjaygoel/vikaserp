@@ -13,11 +13,10 @@
                     <h1 class="pull-left">Inventory</h1>
                     <div class="row col-md-8 pull-right top-page-ui">
                         <div class="filter-block productsub_filter">
-                            <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search">
+                            <form method="GET" action="{{url('inventory')}}" id="filter_search">
                                 <div class="form-group  col-md-5 pull-right">
-                                    <input class="form-control" placeholder="Enter Product Size" autocomplete="off" type="text" value=""
-                                           name="search_text" id="search_text" type="text" onblur="this.form.submit();">
-                                    <a onclick="this.form.submit()" style="cursor: pointer;">
+                                    <input class="form-control" placeholder="Enter Product Size" autocomplete="off" type="text" name="search_inventory" id="search_inventory" type="text" value="{{(Input::get('search_inventory') != '' )? Input::get('search_inventory'): ''}}" onblur="this.form.submit();">
+                                    <a onclick="this.form.submit();" style="cursor: pointer;">
                                         <i class="fa fa-search search-icon"></i>
                                     </a>
                                 </div>
