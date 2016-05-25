@@ -35,6 +35,14 @@
                             <i class="fa fa-check-circle fa-fw fa-lg"></i>
                             <strong>Well done!</strong> Inventory details successfully updated.
                         </div>
+                        <div class="alert alert-danger inventory_update_min">
+                            <i class="fa fa-check-circle fa-fw fa-lg"></i>
+                            <strong>Error!</strong> Negatives values are not allowed in opening stock.
+                        </div>
+                        <div class="alert alert-danger inventory_update_max">
+                            <i class="fa fa-check-circle fa-fw fa-lg"></i>
+                            <strong>Error!</strong> Maximum 6 digits allowed.
+                        </div>
                         <br/>
                         <div class="table-responsive">
                             <table class="table">
@@ -54,18 +62,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
-//                                    echo "<pre>";
-//                                    print_r($inventory_list->toArray());
-//                                    echo "<pre>";
-//                                    exit();
-                                    ?>
                                     @foreach($inventory_list as $inventory)
                                     <tr class="smallinput">
                                         <td>{{$inventory->product_sub_category->alias_name}}</td>
                                         <td>
                                             <div class="form-group">
-                                                <input type="text" placeholder="Stock in(kg)" value="{{$inventory->opening_qty}}" class="form-control" />
+                                                <input type="text" placeholder="Stock in(kg)" value="{{$inventory->opening_qty}}" maxlength="9" class="form-control" />
                                                 <input type="hidden" value="{{$inventory->id}}"/>
                                             </div>
                                         </td>

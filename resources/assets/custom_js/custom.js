@@ -11,7 +11,6 @@ $(document).ready(function () {
             }
         });
     });
-
     $("#product_type2").click(function () {
         $(".thick").hide();
     });
@@ -105,7 +104,6 @@ $(document).ready(function () {
         $(".row11").hide();
         $(".row12").show();
     });
-
     $("#add_product_row_delivery_challan").on("click", function () {
         var current_row_count = $(".add_product_row").length + 1;
         var baseurl = $('#baseurl').attr('name');
@@ -1612,23 +1610,45 @@ function update_difference(e) {
     });
 }
 function update_inventory(e) {
-    var opening_stock = $(e).parent().parent().parent().parent().children().find("input[type=text]").val();
+    $('.inventory_update_min,.inventory_update_max,.inventory_update').css('display', 'none');
+    var opening_stock = $(e).parent().parent().parent().parent().children().find("input[type=text]").val().trim();
     var id = $(e).parent().parent().parent().parent().children().find("input[type=hidden]").val();
-    $.ajax({
-        type: 'get',
-        url: baseurl + '/update_inventory',
-        data: {opening_stock: opening_stock, id: id},
-        success: function (data) {
-            if (data == 'yes') {
-                $('.inventory_update').css('display', 'block');
-            }
+    if (opening_stock > 0) {
+        var result = opening_stock.split(".");
+        if (result[0].length > 6) {
+            $('.inventory_update_max').css('display', 'block');
+            $('.inventory_update_max').css('opacity', 1);
             window.setTimeout(function () {
-                $(".inventory_update").fadeTo(1500, 0).slideUp(500, function () {
+                $(".inventory_update_max").fadeTo(1500, 0).slideUp(500, function () {
                 });
             }, 5000);
-            $('html, body').animate({
-                scrollTop: $('.navbar-brand').offset().top
-            }, 1000);
+        } else {
+            $.ajax({
+                type: 'get',
+                url: baseurl + '/update_inventory',
+                data: {opening_stock: opening_stock, id: id},
+                success: function (data) {
+                    if (data == 'yes') {
+                        $('.inventory_update').css('display', 'block');
+                        $('.inventory_update').css('opacity', 1);
+                        window.setTimeout(function () {
+                            $(".inventory_update").fadeTo(1500, 0).slideUp(500, function () {
+                            });
+                        }, 5000);
+                    }
+                }
+            });
         }
-    });
+    } else {
+        $('.inventory_update_min').css('display', 'block');
+        $('.inventory_update_min').css('opacity', 1);
+        window.setTimeout(function () {
+            $(".inventory_update_min").fadeTo(1500, 0).slideUp(500, function () {
+            });
+        }, 5000);
+
+    }
+    $('html, body').animate({
+        scrollTop: $('.navbar-brand').offset().top
+    }, 1000);
 }
