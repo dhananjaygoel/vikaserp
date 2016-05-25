@@ -39,7 +39,6 @@ class PurchaseOrderController extends Controller {
 
     /*
      * Show purchase order list
-     *
      */
 
     public function index() {
@@ -58,7 +57,6 @@ class PurchaseOrderController extends Controller {
         } elseif ((isset($_GET['order_for_filter'])) && $_GET['order_for_filter'] == 'direct') {
             $q->where('order_for', '!=', 0)->get();
         }
-
 
         if (Auth::user()->role_id > 2) {
             if ((isset($_GET['purchase_order_filter'])) && $_GET['purchase_order_filter'] != '') {
@@ -556,10 +554,10 @@ class PurchaseOrderController extends Controller {
      */
     public function destroy($id) {
 
-         $inputData = Input::get('formData');
-         parse_str($inputData, $formFields);
-            $password = $formFields['password'];
-            $order_sort_type = $formFields['order_sort_type'];
+        $inputData = Input::get('formData');
+        parse_str($inputData, $formFields);
+        $password = $formFields['password'];
+        $order_sort_type = $formFields['order_sort_type'];
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -568,9 +566,9 @@ class PurchaseOrderController extends Controller {
             $delete_purchase_order = PurchaseOrder::find($id)->delete();
             $delete_purchase_products = PurchaseProducts::where('purchase_order_id', '=', $id)->where('order_type', '=', 'purchase_order')->delete();
             Session::put('order-sort-type', $order_sort_type);
-            return array('message'=>'success');
+            return array('message' => 'success');
         } else {
-            return array('message'=> 'failed');
+            return array('message' => 'failed');
         }
     }
 
@@ -594,7 +592,7 @@ class PurchaseOrderController extends Controller {
 
     public function manual_complete() {
         $inputData = Input::get('formData');
-         parse_str($inputData, $input_data);
+        parse_str($inputData, $input_data);
         $purchase_order_id = $input_data['purchase_order_id'];
         $purchase_order = PurchaseOrder::where('id', '=', $purchase_order_id)->with('purchase_products.purchase_product_details', 'purchase_products.unit', 'customer')->first();
 
@@ -604,7 +602,7 @@ class PurchaseOrderController extends Controller {
           | -------------------------------------------------------------
          */
         $inputData = Input::get('formData');
-          parse_str($inputData, $input);
+        parse_str($inputData, $input);
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             $customer = Customer::where('id', '=', $purchase_order['customer']->id)->with('manager')->first();
             if (count($customer) > 0) {
@@ -677,7 +675,7 @@ class PurchaseOrderController extends Controller {
             'order_status' => 'canceled'
         ));
 
-         return array('message'=>'success');
+        return array('message' => 'success');
     }
 
     public function purchase_order_report() {
