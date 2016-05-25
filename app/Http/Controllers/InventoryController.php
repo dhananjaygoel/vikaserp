@@ -42,8 +42,12 @@ class InventoryController extends Controller {
     }
 
     public function update_inventory() {
+
+        $qty = Input::get('opening_stock');
         $inventory_details = Inventory::find(Input::get('id'));
-        $inventory_details->opening_qty = Input::get('opening_stock');
+        $inventory_details->opening_qty = $qty;
+        $inventory_details->physical_closing_qty = ($qty + $inventory_details->purchase_challan_qty) - $inventory_details->sales_challan_qty;
+        $inventory_details->virtual_qty = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_order_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
         $inventory_details->save();
         echo 'yes';
     }

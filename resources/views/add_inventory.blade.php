@@ -33,14 +33,12 @@
                     <div class="main-box-body clearfix">
                         <div class="alert alert-success inventory_update">
                             <i class="fa fa-check-circle fa-fw fa-lg"></i>
-                            <strong>Well done!</strong> Inventory details successfully updated.
+                            <strong>Great!</strong> Inventory details successfully updated.
                         </div>
                         <div class="alert alert-danger inventory_update_min">
-                            <i class="fa fa-check-circle fa-fw fa-lg"></i>
                             <strong>Error!</strong> Negatives values are not allowed in opening stock.
                         </div>
                         <div class="alert alert-danger inventory_update_max">
-                            <i class="fa fa-check-circle fa-fw fa-lg"></i>
                             <strong>Error!</strong> Maximum 6 digits allowed.
                         </div>
                         <br/>

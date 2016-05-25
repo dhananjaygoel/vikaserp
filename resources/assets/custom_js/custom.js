@@ -1633,6 +1633,7 @@ function update_inventory(e) {
                         $('.inventory_update').css('opacity', 1);
                         window.setTimeout(function () {
                             $(".inventory_update").fadeTo(1500, 0).slideUp(500, function () {
+                                window.location = baseurl + "/inventory";
                             });
                         }, 5000);
                     }
