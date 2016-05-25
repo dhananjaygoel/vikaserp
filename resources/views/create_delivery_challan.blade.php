@@ -227,7 +227,6 @@
                             <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="text">
                         </div>
                         @endif
-
                         <div class="form-group">
                             <label for="challan_vehicle_number"><b class="challan">Vehicle Number</b></label>
                             <input id="challan_vehicle_number" class="form-control" name="challan_vehicle_number" readonly="" value="{{isset($delivery_data->vehicle_number)?$delivery_data->vehicle_number:''}}" type="text">
@@ -238,7 +237,7 @@
                         </div>
                         <div class="form-group">
                             <label for="challan_remark"><b class="challan">Remark</b></label>
-                            <textarea class="form-control" id="challan_remark" name="challan_remark"  rows="3"></textarea>
+                            <textarea class="form-control" id="challan_remark" name="challan_remark" rows="3">{{isset($delivery_data->remarks)?$delivery_data->remarks:''}}</textarea>
                         </div>
                         <hr>
                         <div >
