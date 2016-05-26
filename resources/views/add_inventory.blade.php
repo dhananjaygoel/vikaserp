@@ -27,6 +27,10 @@
                 </div>                
             </div>
         </div>
+        <!--        <form method="POST" action="{{url('inventory')}}" id="frm_inventory_update">
+                    <input type="hidden" name="input_product_stock" id="input_product_stock">
+                    <input type="hidden" name="input_product" id="input_product">
+                </form>-->
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
@@ -61,7 +65,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach($inventory_list as $inventory)
-                                    <tr class="smallinput">
+                                    <tr class="smallinput datadisplay_{{$inventory->id}}">
                                         <td>{{$inventory->product_sub_category->alias_name}}</td>
                                         <td>
                                             <div class="form-group">
@@ -69,14 +73,14 @@
                                                 <input type="hidden" value="{{$inventory->id}}"/>
                                             </div>
                                         </td>
-                                        <td>{{$inventory->sales_challan_qty}}</td>
-                                        <td>{{$inventory->purchase_challan_qty}}</td>
-                                        <td>{{$inventory->physical_closing_qty}}</td>
-                                        <td>{{$inventory->pending_sales_order_qty}}</td>
-                                        <td>{{$inventory->pending_delivery_order_qty}}</td>
-                                        <td>{{$inventory->pending_purchase_order_qty}}</td>
-                                        <td>{{$inventory->pending_purchase_advise_qty}}</td>
-                                        <td>{{$inventory->virtual_qty}}</td>
+                                        <td id="sales_challan_{{$inventory->id}}">{{$inventory->sales_challan_qty}}</td>
+                                        <td id="purchase_challan_{{$inventory->id}}">{{$inventory->purchase_challan_qty}}</td>
+                                        <td id="physical_closing_{{$inventory->id}}">{{$inventory->physical_closing_qty}}</td>
+                                        <td id="pending_order_{{$inventory->id}}">{{$inventory->pending_sales_order_qty}}</td>
+                                        <td id="pending_deliver_order_{{$inventory->id}}">{{$inventory->pending_delivery_order_qty}}</td>
+                                        <td id="pending_purchase_order_{{$inventory->id}}">{{$inventory->pending_purchase_order_qty}}</td>
+                                        <td id="pending_purchase_advise_{{$inventory->id}}">{{$inventory->pending_purchase_advise_qty}}</td>
+                                        <td id="virtual_qty_{{$inventory->id}}">{{$inventory->virtual_qty}}</td>
                                         <td>
                                             <div class="row product-price">                                                
                                                 <div class="form-group col-md-2 difference_form">

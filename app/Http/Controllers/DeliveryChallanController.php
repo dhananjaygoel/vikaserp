@@ -57,11 +57,11 @@ class DeliveryChallanController extends Controller {
         if ((isset($qstring_sort_type_order)) && ($qstring_sort_type_order != '')) {
             $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
                             ->with('customer', 'delivery_challan_products', 'delivery_order')
-                            ->orderBy('created_at', 'desc')->Paginate(20);
+                            ->orderBy('updated_at', 'desc')->Paginate(20);
         } else {
             $allorders = DeliveryChallan::where('challan_status', '=', 'pending')
                             ->with('customer', 'delivery_challan_products', 'delivery_order')
-                            ->orderBy('created_at', 'desc')->Paginate(20);
+                            ->orderBy('updated_at', 'desc')->Paginate(20);
         }
 
         if (count($allorders) > 0) {
@@ -188,13 +188,13 @@ class DeliveryChallanController extends Controller {
      */
     public function destroy($id) {
         $inputData = Input::get('formData');
-         parse_str($inputData, $formFields);
-            $password = $formFields['password'];
-            $order_sort_type = $formFields['order_sort_type'];
+        parse_str($inputData, $formFields);
+        $password = $formFields['password'];
+        $order_sort_type = $formFields['order_sort_type'];
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
         }
-       
+
 
         if ($password == '') {
             return Redirect::to('delivery_challan')->with('error', 'Please enter your password');
@@ -209,9 +209,9 @@ class DeliveryChallanController extends Controller {
             AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
             $order->delete();
             Session::put('order-sort-type', $order_sort_type);
-          return array('message'=>'success');
+            return array('message' => 'success');
         } else {
-            return array('message'=> 'failed');
+            return array('message' => 'failed');
         }
     }
 

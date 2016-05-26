@@ -599,15 +599,13 @@ function delivery_challan_product_autocomplete(id) {
     var location_difference = 0;
     location_difference = $('#location_difference').val();
     var baseurl = $('#baseurl').attr('name');
-
-
     $("#delivery_challan_product_name_" + id).autocomplete({
-        minLength: 1,
         dataType: 'json',
         type: 'GET',
         source: function (request, response) {
             $.ajax({
                 url: baseurl + '/fetch_products',
+                cache: true,
                 data: {"term": request.term, 'customer_id': customer_id, 'location_difference': location_difference},
                 success: function (data) {
                     var obj = jQuery.parseJSON(data);
@@ -979,17 +977,14 @@ $('.cancel_orders_modal_submit').click(function () {
     var posting = $.post(url, {formData: $data});
     posting.done(function (data) {
         $("#pwdr").val('');
-        if (data['message'] == 'success')
-        {
+        if (data['message'] == 'success') {
             $("#order_row_" + $('#order_id').val()).remove();
             $('#flash_message').html("Order Cancel Successfully");
             $('#flash_message').removeClass('alert-danger');
             $('#flash_message').addClass('alert-success');
             $('#flash_message').fadeIn();
             $('#flash_message').fadeOut(5000);
-        }
-        else {
-
+        } else {
             $('#flash_message').html("Order Cancel Failed");
             $('#flash_message').removeClass('alert-success');
             $('#flash_message').addClass('alert-danger');
@@ -1007,10 +1002,8 @@ $('.cancel_orders_modal_submit').click(function () {
  */
 function delete_delivery_order(deliver_order_id)
 {
-
     $("#delete_delivery_order").attr('action', baseurl + '/delivery_order/' + deliver_order_id + '-delete');
     $('#user_id').val(deliver_order_id);
-
 }
 
 /*

@@ -67,12 +67,12 @@ class DeliveryOrderController extends Controller {
         if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
 
             if ($qstring_sort_type_order == 'Inprocess') {
-                $delivery_data = DeliveryOrder::orderBy('created_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer')->paginate(20);
+                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer')->paginate(20);
             } elseif ($qstring_sort_type_order == 'Delivered') {
-                $delivery_data = DeliveryOrder::orderBy('created_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer')->paginate(20);
+                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer')->paginate(20);
             }
         } else {
-            $delivery_data = DeliveryOrder::orderBy('created_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer')->paginate(20);
+            $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer')->paginate(20);
         }
 
         $delivery_data = $this->checkpending_quantity($delivery_data);
@@ -431,7 +431,6 @@ class DeliveryOrderController extends Controller {
         if (count($delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
         }
-
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();

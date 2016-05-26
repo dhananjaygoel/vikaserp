@@ -36,10 +36,9 @@ class SalesDaybookController extends Controller {
         if (Input::get('challan_date') != "") {
             $date = date('Y-m-d', strtotime(Input::get('challan_date')));
             $date = '%' . $date . '%';
-            $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->where('updated_at', 'like', $date)->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order.location', 'user')->orderBy('created_at', 'desc')->Paginate(20);
+            $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->where('updated_at', 'like', $date)->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order.location', 'user')->orderBy('updated_at', 'desc')->Paginate(20);
         } else {
-
-            $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order.location', 'user')->orderBy('created_at', 'desc')->Paginate(20);
+            $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order.location', 'user')->orderBy('updated_at', 'desc')->Paginate(20);
         }
         $supplier = Customer::all();
         $challan_date = array('challan_date' => Input::get('challan_date'));
