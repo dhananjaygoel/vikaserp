@@ -1613,7 +1613,14 @@ function update_inventory(e) {
     $('.inventory_update_min,.inventory_update_max,.inventory_update').css('display', 'none');
     var opening_stock = $(e).parent().parent().parent().parent().children().find("input[type=text]").val().trim();
     var id = $(e).parent().parent().parent().parent().children().find("input[type=hidden]").val();
-    if (opening_stock > 0) {
+    if (opening_stock < 0) {
+        $('.inventory_update_min').css('display', 'block');
+        $('.inventory_update_min').css('opacity', 1);
+        window.setTimeout(function () {
+            $(".inventory_update_min").fadeTo(1500, 0).slideUp(500, function () {
+            });
+        }, 5000);
+    } else {
         var result = opening_stock.split(".");
         if (result[0].length > 6) {
             $('.inventory_update_max').css('display', 'block');
@@ -1648,13 +1655,6 @@ function update_inventory(e) {
                 }
             });
         }
-    } else {
-        $('.inventory_update_min').css('display', 'block');
-        $('.inventory_update_min').css('opacity', 1);
-        window.setTimeout(function () {
-            $(".inventory_update_min").fadeTo(1500, 0).slideUp(500, function () {
-            });
-        }, 5000);
 
     }
     $('html, body').animate({
