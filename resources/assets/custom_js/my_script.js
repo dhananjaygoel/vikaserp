@@ -1,12 +1,12 @@
-$(document).ready(function() {
-    $("#checkbox-inl-1").click(function() {
+$(document).ready(function () {
+    $("#checkbox-inl-1").click(function () {
 
         $(".category_div").toggle("slow");
 
     });
 });
 
-$('.deleteCustomer').click(function() {
+$('.deleteCustomer').click(function () {
     $(this).parents('.modal').find('form').submit();
 });
 
@@ -20,68 +20,68 @@ $('#bill_date').datepicker({
     autoclose: true
 });
 
-$('#search').keypress(function(e) {
+$('#search').keypress(function (e) {
     if (e.keyCode == 13)
     {
         $('#searchCustomerForm').submit();
     }
 });
 
-$("#optionsRadios1").click(function() {
+$("#optionsRadios1").click(function () {
     $(".exist_field").hide();
     $(".customer_select").show();
 });
-$("#optionsRadios3").click(function() {
+$("#optionsRadios3").click(function () {
     $(".exist_field").show();
     $(".customer_select").hide();
 });
-$("#optionsRadios1").click(function() {
+$("#optionsRadios1").click(function () {
     $(".supplier").show();
 
 });
-$("#optionsRadios3").click(function() {
+$("#optionsRadios3").click(function () {
     $(".supplier").hide();
 
 });
-$("#optionsRadios6").click(function() {
+$("#optionsRadios6").click(function () {
     $(".plusvat").show();
 
 });
-$("#optionsRadios5").click(function() {
+$("#optionsRadios5").click(function () {
     $(".plusvat").hide();
 
 });
 
-$(document).ready(function() {
-    $("#addmore1").click(function() {
+$(document).ready(function () {
+    $("#addmore1").click(function () {
         $(".row5").hide();
         $(".row6").show();
         $(".row7").show();
     });
-    $("#addmore2").click(function() {
+    $("#addmore2").click(function () {
         $(".row7").hide();
         $(".row8").show();
         $(".row9").show();
     });
-    $("#addmore3").click(function() {
+    $("#addmore3").click(function () {
         $(".row9").hide();
         $(".row10").show();
         $(".row11").show();
     });
-    $("#addmore4").click(function() {
+    $("#addmore4").click(function () {
         $(".row11").hide();
         $(".row12").show();
 
     });
 
-    $('#loc1').change(function() {
+    $('#loc1').change(function () {
         if ($('#loc1').val() == '3') {
             $('.locationtext').toggle();
 
         }
     });
 
-    $('#loc1').change(function() {
+    $('#loc1').change(function () {
         if ($('#loc1').val() == 'other') {
             $('.locationtext').toggle();
 
@@ -93,17 +93,17 @@ $(document).ready(function() {
 
 });
 
-$('#purchaseaAdviseFilter').on('change', function() {
+$('#purchaseaAdviseFilter').on('change', function () {
     $('#purchaseaAdviseFilterForm').submit();
 });
 
-$('#sendSMS').click(function() {
+$('#sendSMS').click(function () {
     var action = $(this).parents('form').attr('action');
     $(this).parents('form').attr('action', action + '?sendsms=true');
     $(this).parents('form').submit();
 });
 
-$('body').delegate("#sendSMSEditPurchaseOrder", "click", function() {
+$('body').delegate("#sendSMSEditPurchaseOrder", "click", function () {
 
     var status_form = 0;
     if ($('input[name=supplier_status]:checked').val() == 'new_supplier') {
@@ -203,7 +203,7 @@ $('body').delegate("#sendSMSEditPurchaseOrder", "click", function() {
     }
 });
 
-$('body').delegate("#sendSMSPurchaseOrder", "click", function() {
+$('body').delegate("#sendSMSPurchaseOrder", "click", function () {
     var status_form = 0;
 
     if ($('#datepickerDate').val() == "") {
@@ -313,7 +313,7 @@ $('body').delegate("#sendSMSPurchaseOrder", "click", function() {
     }
 });
 
-$('body').delegate(".btn_add_purchase_advice", "click", function() {
+$('body').delegate(".btn_add_purchase_advice", "click", function () {
     var status_form = 0;
 
     if ($('#bill_date').val() == "") {
@@ -443,7 +443,7 @@ $('body').delegate(".btn_add_purchase_advice", "click", function() {
     }
 });
 
-$('body').delegate(".btn_edit_purchase_advice", "click", function() {
+$('body').delegate(".btn_edit_purchase_advice", "click", function () {
 
     var status_form = 0;
 
@@ -489,41 +489,41 @@ $('body').delegate(".btn_edit_purchase_advice", "click", function() {
  * @param {type} delivery_order_id
  * @returns {undefined}
  */
-function print_challan(delivery_order_id){
+function print_challan(delivery_order_id) {
     $('#print_delivery_order').val(delivery_order_id);
 }
 /*
  * print challan to new page on delivery order  
  */
-$('.print_delivery_order').click(function() {
+$('.print_delivery_order').click(function () {
     $('#print_challan').modal('hide');
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
-    
+
     if ($("#checksms").is(':checked'))
         send_sms = true;  // checked
     else
         send_sms = false;  // unchecked
-    
+
     $.ajax({
         type: "GET",
         url: base_url + '/print_delivery_order/' + $(this).val() + '?send_sms=' + send_sms,
-        success: function(data) {
+        success: function (data) {
             var printWindow = window.open('about:blank');
             printWindow.document.open();
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            printWindow.onunload = function() {
-                
+            printWindow.onunload = function () {
+                location.reload();
             };
         }
     });
 });
-function print_delivery_challan(challan_id){
-     $('#print_delivery_challan').val(challan_id);
+function print_delivery_challan(challan_id) {
+    $('#print_delivery_challan').val(challan_id);
 }
-$('.print_delivery_challan').click(function() {
+$('.print_delivery_challan').click(function () {
     $('#print_challan').modal('hide');
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
@@ -534,37 +534,37 @@ $('.print_delivery_challan').click(function() {
     $.ajax({
         type: "GET",
         url: base_url + '/print_delivery_challan/' + $('#print_delivery_challan').val() + '?send_sms=' + send_sms,
-        success: function(data) {
+        success: function (data) {
             var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            printWindow.onunload = function() {
-               
-            };
-        }
-    });
-});
-$('.print_sales_order_daybook').click(function() {
-    var base_url = $('#baseurl').attr('name');
-    $.ajax({
-        type: "GET",
-        url: base_url + '/print_sales_order_daybook',
-        success: function(data) {
-            var printWindow = window.open('', '');
-            printWindow.document.write(data);
-            printWindow.print();
-            printWindow.close();
-            printWindow.onunload = function() {
+            printWindow.onunload = function () {
                 location.reload();
             };
         }
     });
 });
-function print_purchase_challan(purchase_challan_id){
-     $('#purchase_challan_id').val(purchase_challan_id);
+$('.print_sales_order_daybook').click(function () {
+    var base_url = $('#baseurl').attr('name');
+    $.ajax({
+        type: "GET",
+        url: base_url + '/print_sales_order_daybook',
+        success: function (data) {
+            var printWindow = window.open('', '');
+            printWindow.document.write(data);
+            printWindow.print();
+            printWindow.close();
+            printWindow.onunload = function () {
+                location.reload();
+            };
+        }
+    });
+});
+function print_purchase_challan(purchase_challan_id) {
+    $('#purchase_challan_id').val(purchase_challan_id);
 }
-$('.print_purchase_challan').click(function() {
+$('.print_purchase_challan').click(function () {
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
     if ($("#checksms").is(':checked'))
@@ -574,13 +574,13 @@ $('.print_purchase_challan').click(function() {
     $.ajax({
         type: "GET",
         url: base_url + '/print_purchase_challan/' + $('#purchase_challan_id').val() + '?send_sms=' + send_sms,
-        success: function(data) {
+        success: function (data) {
             var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            printWindow.onunload = function() {
-                
+            printWindow.onunload = function () {
+                location.reload();
             };
         }
     });
@@ -590,13 +590,13 @@ $('.print_purchase_challan').click(function() {
  * @param {type} purchase_advice_id
  * @returns {integer}
  */
-function print_purchase_advice(purchase_advice_id){
-     $('#pa_id').val(purchase_advice_id);
+function print_purchase_advice(purchase_advice_id) {
+    $('#pa_id').val(purchase_advice_id);
 }
 /*
  * print purchase advice
  */
-$('.print_purchase_advise').click(function() {
+$('.print_purchase_advise').click(function () {
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
     if ($("#checksms").is(':checked'))
@@ -606,29 +606,29 @@ $('.print_purchase_advise').click(function() {
     $.ajax({
         type: "GET",
         url: base_url + '/print_purchase_advise/' + $('#pa_id').val() + '?send_sms=' + send_sms,
-        success: function(data) {
+        success: function (data) {
             var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            printWindow.onunload = function() {
-                
+            printWindow.onunload = function () {
+                location.reload();
             };
         }
     });
 });
 
-$('.print_purchase_daybook').click(function() {
+$('.print_purchase_daybook').click(function () {
     var base_url = $('#baseurl').attr('name');
     $.ajax({
         type: "GET",
         url: base_url + '/print_purchase_daybook',
-        success: function(data) {
+        success: function (data) {
             var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            printWindow.onunload = function() {
+            printWindow.onunload = function () {
                 location.reload();
             };
         }
@@ -659,7 +659,7 @@ $('.print_purchase_daybook').click(function() {
 //});
 
 
-$(document).ready(function() {
+$(document).ready(function () {
     $('#onenter_prevent').confirmExit('Go away?');
 });
 
