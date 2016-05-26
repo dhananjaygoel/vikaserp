@@ -322,17 +322,20 @@
                         </div>
                         <div class="label">&nbsp; Round Off</div>
                         <div class="value">
-                            @if($allorder->round_off != "")
-                            {{round($allorder->round_off,2)}}
-                            @else
-                            0
-                            @endif
+                            <?php
+                            if (isset($allorder->round_off) && ($allorder->round_off != "")) {
+                                $roundoff = round($allorder->round_off, 2);
+                            } else {
+                                $roundoff = 0;
+                            }
+                            ?>                            
+                            {{$roundoff}}
                             &nbsp;
                         </div>
                         <div class="label">&nbsp; GT</div>
                         <div class="value">
                             <?php
-                            $gt = $with_total + $vat
+                            $gt = $with_total + $vat + $roundoff
                             ?>
                             {{ round($gt, 2) }}
                             &nbsp;
