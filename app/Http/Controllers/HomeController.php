@@ -41,7 +41,7 @@ class HomeController extends Controller {
      * Create a new controller instance.
      */
     public function __construct() {
-        $this->middleware('auth');
+        
     }
 
     // All Functions added by user 157 for app //
@@ -482,10 +482,6 @@ class HomeController extends Controller {
         $cmd = "mysqldump -u $DBUSER --password=$DBPASSWD $DATABASE | gzip --best";
         passthru($cmd);
         exit(0);
-    }
-
-    public function updatecity_delievrylocation() {
-        $city_data = City::where('state_id', 4)->update(array('state_id' => 1));
     }
 
 }

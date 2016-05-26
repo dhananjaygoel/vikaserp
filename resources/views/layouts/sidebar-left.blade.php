@@ -36,6 +36,7 @@
                     $count = count($name_array);
                     $page_name = $name_array[$count - 1];
                     ?>
+                    @if(Auth::user())
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 2)
                     <li class="{{ (Request::is('*dashboard*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Dashboard">
                         <a href="{{url('dashboard')}}">
@@ -304,6 +305,7 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
+                    @endif
                     @endif
                 </ul>
             </div>

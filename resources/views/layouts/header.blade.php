@@ -1,6 +1,6 @@
 <header class="navbar" id="header-navbar">
     <div class="container">
-        <a href="{{url('')}}" id="logo" class="navbar-brand">
+        <a href="{{url('/')}}" id="logo" class="navbar-brand">
             {!! HTML::image('/resources/assets/img/logo1.png' , 'Logo', array('class' => 'normal-logo logo-white')) !!}
             {!! HTML::image('/resources/assets/img/logo-black.png' , 'Logo', array('class' => 'normal-logo logo-black')) !!}
             {!! HTML::image('/resources/assets/img/logo-small.png' , 'Logo', array('class' => 'small-logo hidden-xs hidden-sm hidden')) !!}
@@ -24,7 +24,8 @@
                     <li class="dropdown profile-dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="{{asset('/resources/assets/img/samples/scarlet-159.png')}}" alt=""/>
-                            <span class="hidden-xs"> {{Auth::user()->first_name}}&nbsp;{{Auth::user()->last_name}}</span> <b class="caret"></b>
+                            <span class="hidden-xs"> {{(Auth::user()) ? Auth::user()->first_name : ''}}&nbsp;{{(Auth::user())?Auth::user()->last_name:''}}</span>
+                            <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ url('change_password') }}"><i class="fa fa-envelope-o"></i>Change Password</a></li>
