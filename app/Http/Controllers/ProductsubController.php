@@ -73,7 +73,7 @@ class ProductsubController extends Controller {
             }
         }
 
-        $product_sub_cat = $q->orderBy('created_at', 'desc')->paginate(20);
+        $product_sub_cat = $q->orderBy('id', 'asc')->paginate(20);
 
         $filter = array(Input::get('product_size'), Input::get('search_text'), Input::get('product_filter'));
         $product_sub_cat->setPath('product_sub_category');
