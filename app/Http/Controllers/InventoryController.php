@@ -24,6 +24,9 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryController extends Controller {
 
+    /**
+     * Product search in inventory module
+     */
     public function fetchInventoryProductName() {
         $term = '%' . Input::get('term') . '%';
         $product = ProductSubCategory::where('alias_name', 'like', $term)->get();
@@ -41,6 +44,9 @@ class InventoryController extends Controller {
         echo json_encode(array('data_array' => $data_array));
     }
 
+    /**
+     * Update Product's opening stock from inventory
+     */
     public function update_inventory() {
 
         $qty = Input::get('opening_stock');
@@ -229,7 +235,7 @@ class InventoryController extends Controller {
      * @return Response
      */
     public function show($id) {
-
+        
     }
 
     /**
@@ -263,7 +269,22 @@ class InventoryController extends Controller {
     }
 
     /*
-     * Fill product sub category reference in inventory table with 0.00 opening stock
+     * Cron for updating physical stock to opening stock(Cron will run at 7 pm everyday)
+     */
+
+    public function updateOpeningStock() {
+        $inventory_list = Inventory::all();
+        if (count($inventory_list) > 0) {
+            foreach ($inventory_list as $inventory) {
+                $inventory->opening_qty = $inventory->physical_closing_qty;
+                $inventory->physical_closing_qty = 0;
+                $inventory->save();
+            }
+        }
+    }
+
+    /*
+     * Export inventory details in excel file
      */
 
     public function export_inventory() {
@@ -275,6 +296,10 @@ class InventoryController extends Controller {
         })->export('xls');
         exit();
     }
+
+    /*
+     * Fill product sub category reference in inventory table with 0.00 opening stock
+     */
 
     public function fillInventoryList() {
 
