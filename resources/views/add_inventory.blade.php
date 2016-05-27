@@ -73,13 +73,13 @@
                                                 <input type="hidden" value="{{$inventory->id}}"/>
                                             </div>
                                         </td>
-                                        <td id="sales_challan_{{$inventory->id}}">{{$inventory->sales_challan_qty}}</td>
-                                        <td id="purchase_challan_{{$inventory->id}}">{{$inventory->purchase_challan_qty}}</td>
+                                        <td id="sales_challan_{{$inventory->id}}">{{($inventory->sales_challan_qty <= 0 )? 0: $inventory->sales_challan_qty}}</td>
+                                        <td id="purchase_challan_{{$inventory->id}}">{{($inventory->purchase_challan_qty <= 0) ? 0 : $inventory->purchase_challan_qty}}</td>
                                         <td id="physical_closing_{{$inventory->id}}">{{$inventory->physical_closing_qty}}</td>
-                                        <td id="pending_order_{{$inventory->id}}">{{$inventory->pending_sales_order_qty}}</td>
-                                        <td id="pending_deliver_order_{{$inventory->id}}">{{$inventory->pending_delivery_order_qty}}</td>
-                                        <td id="pending_purchase_order_{{$inventory->id}}">{{$inventory->pending_purchase_order_qty}}</td>
-                                        <td id="pending_purchase_advise_{{$inventory->id}}">{{$inventory->pending_purchase_advise_qty}}</td>
+                                        <td id="pending_order_{{$inventory->id}}">{{($inventory->pending_sales_order_qty <= 0) ? 0 : $inventory->pending_sales_order_qty}}</td>
+                                        <td id="pending_deliver_order_{{$inventory->id}}">{{($inventory->pending_delivery_order_qty <= 0) ? 0 : $inventory->pending_delivery_order_qty}}</td>
+                                        <td id="pending_purchase_order_{{$inventory->id}}">{{($inventory->pending_purchase_order_qty <= 0) ? 0 : $inventory->pending_purchase_order_qty }}</td>
+                                        <td id="pending_purchase_advise_{{$inventory->id}}">{{($inventory->pending_purchase_advise_qty <= 0) ? 0 : $inventory->pending_purchase_advise_qty}}</td>
                                         <td id="virtual_qty_{{$inventory->id}}">{{$inventory->virtual_qty}}</td>
                                         <td>
                                             <div class="row product-price">                                                
