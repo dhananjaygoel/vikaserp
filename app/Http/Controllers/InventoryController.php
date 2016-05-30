@@ -128,9 +128,10 @@ class InventoryController extends Controller {
 
             /* ===================== Pending delivery order details ===================== */
 
-            $delivery_orders = DeliveryOrder::with(['delivery_product' => function($q) use($product_sub_id) {
-                            $q->where('product_category_id', '=', $product_sub_id);
-                        }])->get();
+            $delivery_orders = DeliveryOrder::where('order_status', '=', 'pending')
+                            ->with(['delivery_product' => function($q) use($product_sub_id) {
+                                    $q->where('product_category_id', '=', $product_sub_id);
+                                }])->get();
 
             if (isset($delivery_orders) && count($delivery_orders) > 0) {
                 foreach ($delivery_orders as $delivery_orders_details) {
@@ -184,9 +185,10 @@ class InventoryController extends Controller {
 
             /* ===================== Purchase advice details ===================== */
 
-            $purchase_advice = PurchaseAdvise::with(['purchase_products' => function($q) use($product_sub_id) {
-                            $q->where('product_category_id', '=', $product_sub_id);
-                        }])->get();
+            $purchase_advice = PurchaseAdvise::where('advice_status', '=', 'in_process')
+                            ->with(['purchase_products' => function($q) use($product_sub_id) {
+                                    $q->where('product_category_id', '=', $product_sub_id);
+                                }])->get();
 
             if (isset($purchase_advice) && count($purchase_advice) > 0) {
                 foreach ($purchase_advice as $purchase_advice_details) {
@@ -249,10 +251,10 @@ class InventoryController extends Controller {
             $inventory_details->sales_challan_qty = $sales_challan_qty;
             $inventory_details->purchase_challan_qty = $purchase_challan_qty;
             $inventory_details->physical_closing_qty = $physical_closing;
-            $inventory_details->pending_sales_order_qty = $order_qty - $pending_delivery_order_qty;
-            $inventory_details->pending_delivery_order_qty = $pending_delivery_order_qty - $sales_challan_qty;
-            $inventory_details->pending_purchase_order_qty = $pending_purchase_order_qty - $pending_purchase_advice_qty;
-            $inventory_details->pending_purchase_advise_qty = $pending_purchase_advice_qty - $purchase_challan_qty;
+            $inventory_details->pending_sales_order_qty = $order_qty;
+            $inventory_details->pending_delivery_order_qty = $pending_delivery_order_qty;
+            $inventory_details->pending_purchase_order_qty = $pending_purchase_order_qty;
+            $inventory_details->pending_purchase_advise_qty = $pending_purchase_advice_qty;
             $virtual_qty = ($physical_closing + $inventory_details->pending_purchase_order_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
             $inventory_details->virtual_qty = $virtual_qty;
             $inventory_details->save();

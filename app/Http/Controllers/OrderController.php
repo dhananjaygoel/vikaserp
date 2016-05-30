@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ManualCompleteOrderRequest;
 use App\DeliveryOrder;
 use App\DeliveryChallan;
+use App\Inventory;
 use App\ProductSubCategory;
 use DateTime;
 use Session;
@@ -924,7 +925,7 @@ class OrderController extends Controller {
                     $present_shipping = $present_shipping + $product_data['present_shipping'];
 
                     $add_order_products = AllOrderProducts::create($order_products);
-                }
+                    }
                 if ($product_data['name'] != "" && $product_data['order'] == '') {
                     $order_products = [
                         'order_id' => $order_id,
@@ -937,8 +938,8 @@ class OrderController extends Controller {
                         'remarks' => $product_data['remark']
                     ];
                     $add_order_products = AllOrderProducts::create($order_products);
+                    }
                 }
-            }
             //If pending quantity is Zero complete the order
             if ($present_shipping == $total_qty || $present_shipping >= $total_qty) {
                 Order::where('id', '=', $id)->update(array('order_status' => 'completed'));
