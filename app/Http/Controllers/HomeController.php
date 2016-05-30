@@ -47,81 +47,83 @@ class HomeController extends Controller {
     // All Functions added by user 157 for android request //
     public function appsync() {
         $data = Input::all();
-        echo "<pre>";
-        print_r($data['userdata']);
-        echo "<pre>";
-        exit();
+//        echo "<pre>";
+//        print_r($data['userdata']);
+//        echo "<pre>";
+//        exit();
+        return json_encode($data);
+        
 
-        $sync_details = array(
-            "Inquiry" => array(
-                0 => array(
-                    "serverid" => '',
-                    "localidid" => 10,
-                    "customer_id" => 1233,
-                    "created_by" => 1,
-                    "delivery_location_id" => 444,
-                    "other_location" => '',
-                    "location_difference" => 0.5,
-                    "vat_percentage" => 10,
-                    "expected_delivery_date" => '2015-12-23',
-                    "sms_count" => 0,
-                    "remarks" => 'This is just demo of synch',
-                    "inquiry_status" => 'pending'
-                ),
-                1 => array(
-                    "serverid" => '',
-                    "localidid" => 11,
-                    "customer_id" => 1233,
-                    "created_by" => 1,
-                    "delivery_location_id" => 344,
-                    "other_location" => '',
-                    "location_difference" => 0.5,
-                    "vat_percentage" => 5,
-                    "expected_delivery_date" => '2015-12-23',
-                    "sms_count" => 0,
-                    "remarks" => 'This is just demo of synch',
-                    "inquiry_status" => 'pending'
-                )
-            ),
-            "Order" => array(
-                0 => array(
-                    "serverid" => '',
-                    "localidid" => 10,
-                    "order_source" => 'warehouse',
-                    "supplier_id" => 0,
-                    "customer_id" => 773,
-                    "created_by" => 1,
-                    "delivery_location_id" => 444,
-                    "vat_percentage" => 10,
-                    "estimated_delivery_date" => '2015-12-23',
-                    "expected_delivery_date" => '2015-12-23',
-                    "order_status" => 'pending',
-                    "other_location" => '',
-                    "location_difference" => 0.5
-                ),
-                1 => array(
-                    "serverid" => '',
-                    "localidid" => 12,
-                    "order_source" => 'warehouse',
-                    "supplier_id" => 0,
-                    "customer_id" => 773,
-                    "created_by" => 1,
-                    "delivery_location_id" => 344,
-                    "vat_percentage" => 20,
-                    "estimated_delivery_date" => '2015-12-24',
-                    "expected_delivery_date" => '2015-12-24',
-                    "order_status" => 'pending',
-                    "other_location" => '',
-                    "location_difference" => 0.8
-                )
-            )
-        );
-        if (!empty($sync_details)) {
-            echo "<pre>";
-            print_r($sync_details);
-            echo "<pre>";
-            exit();
-        }
+//        $sync_details = array(
+//            "Inquiry" => array(
+//                0 => array(
+//                    "serverid" => '',
+//                    "localidid" => 10,
+//                    "customer_id" => 1233,
+//                    "created_by" => 1,
+//                    "delivery_location_id" => 444,
+//                    "other_location" => '',
+//                    "location_difference" => 0.5,
+//                    "vat_percentage" => 10,
+//                    "expected_delivery_date" => '2015-12-23',
+//                    "sms_count" => 0,
+//                    "remarks" => 'This is just demo of synch',
+//                    "inquiry_status" => 'pending'
+//                ),
+//                1 => array(
+//                    "serverid" => '',
+//                    "localidid" => 11,
+//                    "customer_id" => 1233,
+//                    "created_by" => 1,
+//                    "delivery_location_id" => 344,
+//                    "other_location" => '',
+//                    "location_difference" => 0.5,
+//                    "vat_percentage" => 5,
+//                    "expected_delivery_date" => '2015-12-23',
+//                    "sms_count" => 0,
+//                    "remarks" => 'This is just demo of synch',
+//                    "inquiry_status" => 'pending'
+//                )
+//            ),
+//            "Order" => array(
+//                0 => array(
+//                    "serverid" => '',
+//                    "localidid" => 10,
+//                    "order_source" => 'warehouse',
+//                    "supplier_id" => 0,
+//                    "customer_id" => 773,
+//                    "created_by" => 1,
+//                    "delivery_location_id" => 444,
+//                    "vat_percentage" => 10,
+//                    "estimated_delivery_date" => '2015-12-23',
+//                    "expected_delivery_date" => '2015-12-23',
+//                    "order_status" => 'pending',
+//                    "other_location" => '',
+//                    "location_difference" => 0.5
+//                ),
+//                1 => array(
+//                    "serverid" => '',
+//                    "localidid" => 12,
+//                    "order_source" => 'warehouse',
+//                    "supplier_id" => 0,
+//                    "customer_id" => 773,
+//                    "created_by" => 1,
+//                    "delivery_location_id" => 344,
+//                    "vat_percentage" => 20,
+//                    "estimated_delivery_date" => '2015-12-24',
+//                    "expected_delivery_date" => '2015-12-24',
+//                    "order_status" => 'pending',
+//                    "other_location" => '',
+//                    "location_difference" => 0.8
+//                )
+//            )
+//        );
+//        if (!empty($sync_details)) {
+//            echo "<pre>";
+//            print_r($sync_details);
+//            echo "<pre>";
+//            exit();
+//        }
     }
 
     public function appcount() {
