@@ -52,7 +52,7 @@ class HomeController extends Controller {
 //        echo "<pre>";
 //        exit();
         return json_encode($data);
-        
+
 
 //        $sync_details = array(
 //            "Inquiry" => array(
@@ -531,9 +531,13 @@ class HomeController extends Controller {
      * This function takes backup of whole datbase of test server machine
      */
     public function database_backup_test() {
-        $DBUSER = "agstechn_vauser";
-        $DBPASSWD = "vikasuser23210";
-        $DATABASE = "agstechn_vaoas";
+//        $DBUSER = "agstechn_vauser";
+//        $DBPASSWD = "vikasuser23210";
+//        $DATABASE = "agstechn_vaoas";
+
+        $DBUSER = "hsagstec_hsuser";
+        $DBPASSWD = "rru_aJaN^NTD";
+        $DATABASE = "hsagstec_hsapp";
 
         $filename = "backup-" . date("d-m-Y") . ".sql.gz";
         $mime = "application/x-gzip";
