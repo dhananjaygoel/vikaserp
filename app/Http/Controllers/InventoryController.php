@@ -125,7 +125,6 @@ class InventoryController extends Controller {
                     }
                 }
             }
-
             /* ===================== Pending delivery order details ===================== */
 
             $delivery_orders = DeliveryOrder::where('order_status', '=', 'pending')
@@ -223,30 +222,9 @@ class InventoryController extends Controller {
 
             /* ===================== Query ends here ===================== */
 
-            if ($purchase_challan_qty < 0) {
-                $purchase_challan_qty = 0;
-            }
-            if ($sales_challan_qty < 0) {
-                $sales_challan_qty = 0;
-            }
-
             $physical_closing = ($inventory->opening_qty + $purchase_challan_qty ) - $sales_challan_qty;
 
-            if ($order_qty < 0) {
-                $order_qty = 0;
-            }
-            if ($pending_delivery_order_qty < 0) {
-                $pending_delivery_order_qty = 0;
-            }
-
-            if ($pending_purchase_advice_qty < 0) {
-                $pending_purchase_advice_qty = 0;
-            }
-            if ($pending_purchase_order_qty < 0) {
-                $pending_purchase_order_qty = 0;
-            }
-
-            $inventory_details = Inventory::where('product_sub_category_id', '=', $inventory->product_sub_category_id)->first();
+            $inventory_details = Inventory::where('product_sub_category_id', '=', $product_sub_id)->first();
             $inventory_details->opening_qty = $inventory->opening_qty;
             $inventory_details->sales_challan_qty = $sales_challan_qty;
             $inventory_details->purchase_challan_qty = $purchase_challan_qty;
