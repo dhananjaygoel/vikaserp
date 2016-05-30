@@ -17,10 +17,8 @@ use Illuminate\Support\Facades\Session;
                     <h1 class="pull-left"></h1>
                 </div>
             </div>
-        </div>
-        
-        <div id="demodiv">Demo div</div>
-        
+        </div>        
+        <div id="demodiv">Demo div</div>        
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box">
@@ -103,20 +101,20 @@ use Illuminate\Support\Facades\Session;
                             <div class="new_customer_details" style="<?= $style ?>">
                                 <div class="form-group">
                                     <label for="name">Customer Name<span class="mandatory">*</span></label>
-                                    <input id="name" required class="form-control" placeholder="Name" name="customer_name" value="{{old('customer_name')}}" type="text">
+                                    <input id="name" class="form-control" placeholder="Name" name="customer_name" value="{{old('customer_name')}}" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Contact Person<span class="mandatory">*</span></label>
-                                    <input id="contact_person" class="form-control" placeholder="Contact Person" required name="contact_person" value="{{old('contact_person')}}" type="text">
+                                    <input id="contact_person" class="form-control" placeholder="Contact Person" name="contact_person" value="{{old('contact_person')}}" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
-                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number" required name="mobile_number" value="{{old('mobile_number')}}" type="tel">
+                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number" name="mobile_number" value="{{old('mobile_number')}}" type="tel">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
-                                    <input id="period" class="form-control" placeholder="Credit Period" required name="credit_period" value="{{old('credit_period')}}" type="tel">
+                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{old('credit_period')}}" type="tel">
                                 </div>
                             </div>
                             <div class="row col-md-12">
