@@ -93,6 +93,9 @@ use Illuminate\Support\Facades\Session;
                         <strong>Well done!</strong> User details successfully added.
                     </div> <br/>
                     @endif
+                    @if (Session::has('flash_message_error'))
+                    <div id="flash_error" class="alert alert-danger no_data_msg_container">{{ Session::get('flash_message_error') }}</div>
+                    @endif
                     @if (Session::has('success'))
                     <div class="alert alert-success alert-success1">
                         {{Session::get('success')}}                            

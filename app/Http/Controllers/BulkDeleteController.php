@@ -45,7 +45,7 @@ class BulkDeleteController extends Controller {
         }
         if (count($delete_seletected_module) > 0) {
             if (!Hash::check($password, Auth::user()->password)) {
-                return view('bulk_delete')->with('flash_message', 'You have entered wrong password.');
+                return back()->with('flash_message_error', 'You have entered wrong password. Please provide correct password.');
             }
         }
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
