@@ -163,6 +163,57 @@ $(document).ready(function () {
                 '</tr>';
         $("#add_product_table_delivery_challan").children("tbody").append(html);
     });
+
+    $('.delete_completed').on('click', function () {
+        if (this.checked) {
+            $('.checkBoxClass').each(function () {
+                this.checked = true;
+            });
+        } else {
+            $('.checkBoxClass').each(function () {
+                this.checked = false;
+            });
+        }
+    });
+
+    $('.checkBoxClass').on('click', function () {
+        if ($('.checkBoxClass:checked').length == $('.checkBoxClass').length) {
+            $('.delete_completed').prop('checked', true);
+        } else {
+            $('.delete_completed').prop('checked', false);
+        }
+    });
+
+    $('.submit_delete_all').on("click", function (e) {
+        e.preventDefault();
+        var checkedAtLeastOne = false;
+        $('.checkBoxClass').each(function () {
+            if ($(this).is(":checked")) {
+                checkedAtLeastOne = true;
+            }
+        });
+        if ($('#password_delete_completetd').val().trim().length == 0) {
+            $('#empty_select_completed').text("Please enter you password");
+            $('#empty_select_completed').css("display", "block");
+            $('#empty_select_completed').css("opacity", "1");
+            $('#password_delete_completetd').focus();
+            window.setTimeout(function () {
+                $('#empty_select_completed').fadeTo(1500, 0).slideUp(500, function () {
+                });
+            }, 5000);
+        } else if (checkedAtLeastOne) {
+            $(this).closest("form").unbind("submit");
+            $(this).closest("form").submit();
+        } else {
+            $('#empty_select_completed').text("Please select atleast one record from the list");
+            $('#empty_select_completed').css("display", "block");
+            $('#empty_select_completed').css("opacity", "1");
+            window.setTimeout(function () {
+                $('#empty_select_completed').fadeTo(1500, 0).slideUp(500, function () {
+                });
+            }, 5000);
+        }
+    });
     $('#add_more_product').on("click", function () {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({

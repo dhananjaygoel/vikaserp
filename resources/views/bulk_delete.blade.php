@@ -22,6 +22,9 @@ use Illuminate\Support\Facades\Session;
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
+                        @if(isset($msg)&&(!empty($msg)))
+                        <div id="flash_error" class="alert alert-success no_data_msg_container">{{ucfirst(str_replace('_',' ',$msg))}}</div>
+                        @endif
                         <form id="" name="" method="GET" action="{{URL::action('BulkDeleteController@show_result')}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             @if (count($errors) > 0)
@@ -51,7 +54,7 @@ use Illuminate\Support\Facades\Session;
                                             <option id="other_location" {{(isset($module) && $module == "purchase_challan")?'selected':''}} value="purchase_challan">Purchase Challan</option>
                                         </select>
                                     </div>
-                                    
+
                                     <div class="form-group col-md-4 targetdate">
                                         <label for="date">Select Date: </label>
                                         <div class="input-group">
@@ -62,7 +65,7 @@ use Illuminate\Support\Facades\Session;
                                     <div class="form-group col-md-2 targetdate">
                                         <label for="date"></label>
                                         <div class="input-group">
-                                            <input type="submit" class="btn btn-primary " value="Search">
+                                            <input type="submit" class="btn btn-primary" value="Search">
                                         </div>
                                     </div>
                                 </div>
@@ -80,76 +83,83 @@ use Illuminate\Support\Facades\Session;
     <div class="col-lg-12">
         <div class="main-box clearfix">
             <div class="main-box-body main_contents clearfix">
+                <div id="empty_select_completed" class="alert alert-danger">
+                </div>
                 <form id="" name="" method="GET" action="{{URL::action('BulkDeleteController@show_result')}}">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                @if (Session::has('flash_message'))
-                <div class="alert alert-success alert-success1">
-                    <i class="fa fa-check-circle fa-fw fa-lg"></i>
-                    <strong>Well done!</strong> User details successfully added.
-                </div> <br/>
-                @endif
-                @if (Session::has('success'))
-                <div class="alert alert-success alert-success1">
-                    {{Session::get('success')}}                            
-                </div>
-                @endif
-
-                @if (Session::has('wrong'))
-                <div class="alert alert-danger alert-success1">
-                    {{Session::get('wrong')}}                            
-                </div>
-                @endif
-
-                @if(isset($result_temp) && !$result_temp->isEmpty() && $result_temp->count())                        
-                <div class="table-responsive">
-                    <table id="table-example" class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th class="col-md-1">#</th>
-                                @foreach($head as $header)
-                                <th class="{{($header=='ACTION')?'text-center':''}}">{{$header}}</th>
-                                @endforeach
-                                <th class="col-md-1"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $i = ($result_temp->currentPage() - 1) * $result_temp->perPage() + 1; ?>
-                            @foreach($result_data as $trkey=>$tr)
-                            <tr id="inquiry_row_{{$tr_id[$trkey]}}">
-                                <td class="">{{$i++}}</td>
-                                @foreach($tr as $tdkey=>$td)
-                                <td class="">{{$td}}</td>
-                                @endforeach
-                                <td><input type="checkbox" id="{{$tr_id[$trkey]}}" value="{{$tr_id[$trkey]}}" name="delete_seletected_module[{{$tr_id[$trkey]}}]"></td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    <input type="hidden" name="select_module" value="{{isset($module)?$module:''}}">
-                    <input type="hidden" name="expected_date" value="{{isset($expected_date)?$expected_date:''}}">
-                    <input type="hidden" name="page" value="{{(Input::get('page'))?Input::get('page'):''}}">
-                    <span class="pull-right">
-                        <ul class="pagination pull-right">
-                            <?php echo $result_temp->appends(Input::except('page'))->render(); ?>
-                        </ul>
-                    </span>
-                    <div class="clearfix"></div>  
-                </div>
-                <div class="form-group pull-right targetdate">
-                    <label for="date"></label>
-                    <div class="input-group">
-                        <input type="submit" class="btn btn-primary " value="Submit">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    @if (Session::has('flash_message'))
+                    <div class="alert alert-success alert-success1">
+                        <i class="fa fa-check-circle fa-fw fa-lg"></i>
+                        <strong>Well done!</strong> User details successfully added.
+                    </div> <br/>
+                    @endif
+                    @if (Session::has('success'))
+                    <div class="alert alert-success alert-success1">
+                        {{Session::get('success')}}                            
                     </div>
-                </div>
-                @else
-                <div class="alert alert-info no_data_msg_container">
-                    Currently no records available.
-                </div>
-                @endif
-                
-            </form>
+                    @endif
+
+                    @if (Session::has('wrong'))
+                    <div class="alert alert-danger alert-success1">
+                        {{Session::get('wrong')}}                            
+                    </div>
+                    @endif
+
+                    @if(isset($result_temp) && !$result_temp->isEmpty() && $result_temp->count())                        
+                    <div class="table-responsive">
+                        <table id="table-example" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-1">#</th>
+                                    @foreach($head as $header)
+                                    <th class="{{($header=='ACTION')?'text-center':''}}">{{$header}}</th>
+                                    @endforeach
+                                    <th class="delete_completed_heading">
+                                        <input type="checkbox" class="delete_completed"> Select All
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $i = ($result_temp->currentPage() - 1) * $result_temp->perPage() + 1; ?>
+                                @foreach($result_data as $trkey=>$tr)
+                                <tr id="inquiry_row_{{$tr_id[$trkey]}}">
+                                    <td class="">{{$i++}}</td>
+                                    @foreach($tr as $tdkey=>$td)
+                                    <td class="">{{$td}}</td>
+                                    @endforeach
+                                    <td><input type="checkbox" class="checkBoxClass" id="{{$tr_id[$trkey]}}" value="{{$tr_id[$trkey]}}" name="delete_seletected_module[{{$tr_id[$trkey]}}]"></td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <input type="hidden" name="select_module" value="{{isset($module)?$module:''}}">
+                        <input type="hidden" name="expected_date" value="{{isset($expected_date)?$expected_date:''}}">
+                        <input type="hidden" name="page" value="{{(Input::get('page'))?Input::get('page'):''}}">
+                        <span class="pull-right">
+                            <ul class="pagination pull-right">
+                                <?php echo $result_temp->appends(Input::except('page'))->render(); ?>
+                            </ul>
+                        </span>
+                        <div class="clearfix"></div>  
+                    </div>
+                    <div class="form-group pull-right targetdate">
+                        <label for="date"></label>
+                        <!--<div class="input-group">-->
+                        <div class="col-md-12">
+                            <input type="password" class="form-control" placeholder="Enter your password here" name="password_delete_completetd" id="password_delete_completetd">
+                        </div>
+                        <div class="col-md-12">
+                            <input type="submit" class="btn btn-primary submit_delete_all" value="Submit">
+                        </div>
+                        <!--</div>-->
+                    </div>
+                    @else
+                    <div class="alert alert-info no_data_msg_container">
+                        Currently no records available.
+                    </div>
+                    @endif
+                </form>
             </div>
-            
         </div>
     </div>
 </div>

@@ -29,8 +29,20 @@
     max-height: 250px;
 }
 
-.custom_alert_success{
+.custom_alert_success, #empty_select_completed{
     display:none;
+}
+#password_delete_completetd{
+    margin-bottom: 10px;
+}
+.delete_completed_heading{
+    cursor: pointer;
+}
+.delete_completed{
+    margin-right: 5px;
+}
+.delete_completed_heading input{
+    height: 13px !important;
 }
 .smallinput td:nth-child(1){
     width: 20% !important;
