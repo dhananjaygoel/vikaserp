@@ -1,4 +1,10 @@
 $(document).ready(function () {
+
+    window.setTimeout(function () {
+        $(".alert-autohide").fadeTo(1500, 0).slideUp(500, function () {
+        });
+    }, 5000);
+
     $('body').on('click', '#demodiv', function () {
         var baseurl = $('#baseurl').attr('name');
         $.ajax({
@@ -184,6 +190,9 @@ $(document).ready(function () {
         }
     });
 
+    $('.save_all_inventory').on("click", function (e) {
+        $('#frm_inventory_save_all').submit();
+    });
     $('.submit_delete_all').on("click", function (e) {
         e.preventDefault();
         var checkedAtLeastOne = false;
@@ -1663,7 +1672,7 @@ function update_difference(e) {
 function update_inventory(e) {
     $('.inventory_update_min,.inventory_update_max,.inventory_update').css('display', 'none');
     var opening_stock = $(e).parent().parent().parent().parent().children().find("input[type=text]").val().trim();
-    var id = $(e).parent().parent().parent().parent().children().find("input[type=hidden]").val();
+    var id = $(e).parent().parent().parent().parent().children().find("input[type=text]").attr('name');
     if (opening_stock < 0) {
         $('.inventory_update_min').css('display', 'block');
         $('.inventory_update_min').css('opacity', 1);
@@ -1708,6 +1717,9 @@ function update_inventory(e) {
         }
 
     }
+
+
+
     $('html, body').animate({
         scrollTop: $('.navbar-brand').offset().top
     }, 1000);

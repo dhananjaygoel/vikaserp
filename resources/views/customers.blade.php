@@ -27,9 +27,6 @@
                     </a>
                     @endif
                     <form method="GET" id="searchCustomerForm">
-
-
-
                         <div class="input-group col-md-3 pull-right">
                             <input type="text" class="form-control" name="search" id="search" placeholder="Tally Name, City, Delivery Location" value="{{Request::get('search')}}">
                             <span class="input-group-btn">

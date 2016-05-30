@@ -22,6 +22,7 @@
                                 </div>
                             </form>
                             <a href="{{url('export_inventory')}}" class="btn btn-primary form_button_footer">Export Inventory List</a>
+                            <a class="btn btn-primary save_all_inventory">Save all</a>
                         </div>
                     </div>
                 </div>                
@@ -35,6 +36,11 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body clearfix">
+                        @if (Session::has('success'))
+                        <div class="alert alert-success alert-autohide">
+                            {{Session::get('success')}}                            
+                        </div>
+                        @endif
                         <div class="alert alert-success inventory_update">
                             <i class="fa fa-check-circle fa-fw fa-lg"></i>
                             <strong>Great!</strong> Inventory details successfully updated.
@@ -63,40 +69,49 @@
                                         <th><span>Action</span></th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @foreach($inventory_list as $inventory)
-                                    <tr class="smallinput datadisplay_{{$inventory->id}}">
-                                        <td>{{$inventory->product_sub_category->alias_name}}</td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input type="text" placeholder="Stock in(kg)" value="{{$inventory->opening_qty}}" maxlength="9" class="form-control" />
-                                                <input type="hidden" value="{{$inventory->id}}"/>
-                                            </div>
-                                        </td>
-                                        <td id="sales_challan_{{$inventory->id}}">{{($inventory->sales_challan_qty <= 0 )? 0: $inventory->sales_challan_qty}}</td>
-                                        <td id="purchase_challan_{{$inventory->id}}">{{($inventory->purchase_challan_qty <= 0) ? 0 : $inventory->purchase_challan_qty}}</td>
-                                        <td id="physical_closing_{{$inventory->id}}">{{$inventory->physical_closing_qty}}</td>
-                                        <td id="pending_order_{{$inventory->id}}">{{($inventory->pending_sales_order_qty <= 0) ? 0 : $inventory->pending_sales_order_qty}}</td>
-                                        <td id="pending_deliver_order_{{$inventory->id}}">{{($inventory->pending_delivery_order_qty <= 0) ? 0 : $inventory->pending_delivery_order_qty}}</td>
-                                        <td id="pending_purchase_order_{{$inventory->id}}">{{($inventory->pending_purchase_order_qty <= 0) ? 0 : $inventory->pending_purchase_order_qty }}</td>
-                                        <td id="pending_purchase_advise_{{$inventory->id}}">{{($inventory->pending_purchase_advise_qty <= 0) ? 0 : $inventory->pending_purchase_advise_qty}}</td>
-                                        <td id="virtual_qty_{{$inventory->id}}">{{$inventory->virtual_qty}}</td>
-                                        <td>
-                                            <div class="row product-price">                                                
-                                                <div class="form-group col-md-2 difference_form">
-                                                    <input class="btn btn-primary" type="button" value="save" onclick="update_inventory(this);">
+                                <form method="POST" action="{{url('inventory')}}" id="frm_inventory_save_all">
+                                    <input type="hidden" name="pagenumber" value="{{(Input::get('page')!= '')?Input::get('page') : 1 }}"  />
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <tbody>
+                                        <?php
+                                        $i = 1;
+                                        ?>
+                                        @foreach($inventory_list as $inventory)
+                                        <tr class="smallinput datadisplay_{{$inventory->id}}">
+                                            <td>{{$inventory->product_sub_category->alias_name}}</td>
+                                            <td>
+                                                <div class="form-group">                                                    
+                                                    <input type="text" name="{{$inventory->id}}" placeholder="Stock in(kg)" value="{{$inventory->opening_qty}}" maxlength="9" class="form-control" />
+
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
+                                            </td>
+                                            <td id="sales_challan_{{$inventory->id}}">{{($inventory->sales_challan_qty <= 0 )? 0: $inventory->sales_challan_qty}}</td>
+                                            <td id="purchase_challan_{{$inventory->id}}">{{($inventory->purchase_challan_qty <= 0) ? 0 : $inventory->purchase_challan_qty}}</td>
+                                            <td id="physical_closing_{{$inventory->id}}">{{$inventory->physical_closing_qty}}</td>
+                                            <td id="pending_order_{{$inventory->id}}">{{($inventory->pending_sales_order_qty <= 0) ? 0 : $inventory->pending_sales_order_qty}}</td>
+                                            <td id="pending_deliver_order_{{$inventory->id}}">{{($inventory->pending_delivery_order_qty <= 0) ? 0 : $inventory->pending_delivery_order_qty}}</td>
+                                            <td id="pending_purchase_order_{{$inventory->id}}">{{($inventory->pending_purchase_order_qty <= 0) ? 0 : $inventory->pending_purchase_order_qty }}</td>
+                                            <td id="pending_purchase_advise_{{$inventory->id}}">{{($inventory->pending_purchase_advise_qty <= 0) ? 0 : $inventory->pending_purchase_advise_qty}}</td>
+                                            <td id="virtual_qty_{{$inventory->id}}">{{$inventory->virtual_qty}}</td>
+                                            <td>
+                                                <div class="row product-price">                                                
+                                                    <div class="form-group col-md-2 difference_form">
+                                                        <input class="btn btn-primary" type="button" value="save" onclick="update_inventory(this);">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                        $i++;
+                                        ?>
+                                        @endforeach
+
+                                    </tbody>
+                                </form>
                             </table>
                         </div>
                         <ul class="pagination pull-right">
-                            <?php
-                            echo $inventory_list->render();
-                            ?>
+                            {!! $inventory_list->render() !!}
                         </ul>
                     </div>
                 </div>
