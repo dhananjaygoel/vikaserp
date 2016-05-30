@@ -48,7 +48,7 @@ class HomeController extends Controller {
     public function appsync() {
         $data = Input::all();
         echo "<pre>";
-        print_r(json_decode($data['userdata']));
+        print_r(json_encode($data['userdata']));
         echo "<pre>";
         exit();
 
