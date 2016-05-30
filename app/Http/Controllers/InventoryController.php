@@ -52,6 +52,25 @@ class InventoryController extends Controller {
         $qty = Input::get('opening_stock');
         $inventory_details = Inventory::find(Input::get('id'));
 
+        if ($inventory_details->sales_challan_qty < 0) {
+            $inventory_details->sales_challan_qty = 0;
+        }
+        if ($inventory_details->purchase_challan_qty < 0) {
+            $inventory_details->purchase_challan_qty = 0;
+        }
+        if ($inventory_details->pending_purchase_order_qty < 0) {
+            $inventory_details->pending_purchase_order_qty = 0;
+        }
+        if ($inventory_details->pending_purchase_advise_qty < 0) {
+            $inventory_details->pending_purchase_advise_qty = 0;
+        }
+        if ($inventory_details->pending_sales_order_qty < 0) {
+            $inventory_details->pending_sales_order_qty = 0;
+        }
+        if ($inventory_details->pending_delivery_order_qty < 0) {
+            $inventory_details->pending_delivery_order_qty = 0;
+        }
+
         $inventory_details->opening_qty = $qty;
         $physical_qty = ($qty + $inventory_details->purchase_challan_qty) - $inventory_details->sales_challan_qty;
         $inventory_details->physical_closing_qty = $physical_qty;
@@ -234,7 +253,8 @@ class InventoryController extends Controller {
             $inventory_details->pending_delivery_order_qty = $pending_delivery_order_qty - $sales_challan_qty;
             $inventory_details->pending_purchase_order_qty = $pending_purchase_order_qty - $pending_purchase_advice_qty;
             $inventory_details->pending_purchase_advise_qty = $pending_purchase_advice_qty - $purchase_challan_qty;
-            $inventory_details->virtual_qty = ($physical_closing + $inventory_details->pending_purchase_order_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
+            $virtual_qty = ($physical_closing + $inventory_details->pending_purchase_order_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
+            $inventory_details->virtual_qty = $virtual_qty;
             $inventory_details->save();
         }
 
@@ -245,7 +265,7 @@ class InventoryController extends Controller {
             });
         }
 
-        $inventory_newlist = $query->with('product_sub_category')->paginate(5);
+        $inventory_newlist = $query->with('product_sub_category')->paginate(50);
         $inventory_newlist->setPath('inventory');
         return view('add_inventory')->with(['inventory_list' => $inventory_newlist]);
     }
@@ -278,7 +298,7 @@ class InventoryController extends Controller {
             $inventory_details->virtual_qty = $virtual_qty;
             $inventory_details->save();
         }
-        $inventory_newlist = Inventory::with('product_sub_category')->paginate(5);
+        $inventory_newlist = Inventory::with('product_sub_category')->paginate(50);
         $appendurl = ($currentpage > 1) ? "?page=" . $currentpage : '';
         return redirect('inventory' . $appendurl)->with(['inventory_list' => $inventory_newlist, 'success' => 'Inventory details successfully updated.']);
     }
