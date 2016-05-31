@@ -1533,6 +1533,10 @@ $('#labour').on('keyup', function (e) {
             self.value = parseInt(self.value, 10);
     }, 0);
 });
+$('#delete_records_modal').on('hidden.bs.modal', function () {
+    $('#password_delete_completetd').val();
+    $('.delete_records_empty').css('display', 'none');
+});
 $('#save_all_size_btn').click(function () {
     var token = $('#_token').val();
     var pageid = $(this).attr('data-pageid');
