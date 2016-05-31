@@ -143,7 +143,6 @@ class InventoryController extends Controller {
                     }
                 }
             }
-
             /* ===================== Pending Delievry Challan details ===================== */
 
             $delivery_challan = DeliveryChallan::where('challan_status', '=', 'pending')

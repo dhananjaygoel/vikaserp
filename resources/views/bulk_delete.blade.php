@@ -85,7 +85,7 @@ use Illuminate\Support\Facades\Session;
             <div class="main-box-body main_contents clearfix">
                 <div id="empty_select_completed" class="alert alert-danger">
                 </div>
-                <form id="" name="" method="GET" action="{{URL::action('BulkDeleteController@show_result')}}">
+                <form id="frmdeleterecords" name="" method="GET" action="{{URL::action('BulkDeleteController@show_result')}}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     @if (Session::has('flash_message'))
                     <div class="alert alert-success alert-success1">
@@ -145,16 +145,15 @@ use Illuminate\Support\Facades\Session;
                         </span>
                         <div class="clearfix"></div>  
                     </div>
-                    <div class="form-group pull-right targetdate">
+                    <div class="pull-right targetdate">
                         <label for="date"></label>
-                        <!--<div class="input-group">-->
+                        <!--                        <div class="col-md-12">
+                                                    Password <input type="password" class="form-control" placeholder="Enter your password here" name="password_delete_completetd" id="password_delete_completetd">
+                                                </div>-->
                         <div class="col-md-12">
-                            <input type="password" class="form-control" placeholder="Enter your password here" name="password_delete_completetd" id="password_delete_completetd">
+                            <input type="submit" class="btn btn-primary submit_delete_all" value="Delete Records">
                         </div>
-                        <div class="col-md-12">
-                            <input type="submit" class="btn btn-primary submit_delete_all" value="Submit">
-                        </div>
-                        <!--</div>-->
+                        <input type="hidden" name="password_delete" id="password_delete">
                     </div>
                     @else
                     <div class="alert alert-info no_data_msg_container">
@@ -162,9 +161,44 @@ use Illuminate\Support\Facades\Session;
                     </div>
                     @endif
                 </form>
+
+
+                <div class="modal fade" id="delete_records_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">Bulk Delete</h4>
+                            </div>                            
+                            <div class="modal-body">
+                                <div class="alert alert-danger alert-dismissable delete_records_empty">
+                                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                    Please Enter Password Here
+                                </div>
+                                <div class="delete">
+                                    <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
+                                    <div class="pwd">
+                                        <div class="pwdl"><b>Password:</b></div>
+                                        <div class="pwdr" id="pwdr">
+                                            <input class="form-control" id="password_delete_completetd" placeholder="" name="password_delete_completetd" type="password">
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="delp">Are you sure you want to <b>delete this </b> records?</div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                <button type="button" class="btn btn-default delete_records_modal">Yes</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
-</div>
-@endif
-@stop
+    @endif
+    @stop

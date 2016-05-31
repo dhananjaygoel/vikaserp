@@ -34,9 +34,8 @@ class BulkDeleteController extends Controller {
     }
 
     public function show_result() {
-
         $module = Input::get('select_module');
-        $password = Input::get('password_delete_completetd');
+        $password = Input::get('password_delete');
         $expected_date = Input::get('expected_date');
         $delete_seletected_module = Input::get('delete_seletected_module');
 

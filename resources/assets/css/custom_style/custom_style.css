@@ -29,7 +29,7 @@
     max-height: 250px;
 }
 
-.custom_alert_success, #empty_select_completed{
+.custom_alert_success, #empty_select_completed, .delete_records_empty{
     display:none;
 }
 #password_delete_completetd{

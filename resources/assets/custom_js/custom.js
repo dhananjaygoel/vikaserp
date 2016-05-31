@@ -193,6 +193,21 @@ $(document).ready(function () {
     $('.save_all_inventory').on("click", function (e) {
         $('#frm_inventory_save_all').submit();
     });
+    $('.delete_records_modal').on("click", function (e) {
+        if ($('#password_delete_completetd').val().trim().length == 0) {
+            $('.delete_records_empty').text("Please enter you password");
+            $('.delete_records_empty').css("display", "block");
+            $('.delete_records_empty').css("opacity", "1");
+            $('.delete_records_empty').focus();
+            window.setTimeout(function () {
+                $('.delete_records_empty').fadeTo(1500, 0).slideUp(500, function () {
+                });
+            }, 5000);
+        } else {
+            $('#password_delete').val($('#password_delete_completetd').val());
+            $('#frmdeleterecords').submit();
+        }
+    });
     $('.submit_delete_all').on("click", function (e) {
         e.preventDefault();
         var checkedAtLeastOne = false;
@@ -201,18 +216,20 @@ $(document).ready(function () {
                 checkedAtLeastOne = true;
             }
         });
-        if ($('#password_delete_completetd').val().trim().length == 0) {
-            $('#empty_select_completed').text("Please enter you password");
-            $('#empty_select_completed').css("display", "block");
-            $('#empty_select_completed').css("opacity", "1");
-            $('#password_delete_completetd').focus();
-            window.setTimeout(function () {
-                $('#empty_select_completed').fadeTo(1500, 0).slideUp(500, function () {
-                });
-            }, 5000);
-        } else if (checkedAtLeastOne) {
-            $(this).closest("form").unbind("submit");
-            $(this).closest("form").submit();
+//        $('#password_delete_completetd').val().trim().length
+//            $('#empty_select_completed').text("Please enter you password");
+//            $('#empty_select_completed').css("display", "block");
+//            $('#empty_select_completed').css("opacity", "1");
+//            $('#password_delete_completetd').focus();
+//            window.setTimeout(function () {
+//                $('#empty_select_completed').fadeTo(1500, 0).slideUp(500, function () {
+//                });
+//            }, 5000);
+//        } 
+        if (checkedAtLeastOne) {
+            $('#delete_records_modal').modal('show');
+//            $(this).closest("form").unbind("submit");
+//            $(this).closest("form").submit();
         } else {
             $('#empty_select_completed').text("Please select atleast one record from the list");
             $('#empty_select_completed').css("display", "block");
