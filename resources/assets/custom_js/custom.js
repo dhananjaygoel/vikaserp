@@ -195,7 +195,7 @@ $(document).ready(function () {
     });
     $('.delete_records_modal').on("click", function (e) {
         if ($('#password_delete_completetd').val().trim().length == 0) {
-            $('.delete_records_empty').text("Please enter you password");
+            $('.delete_records_empty').text("Please enter your password");
             $('.delete_records_empty').css("display", "block");
             $('.delete_records_empty').css("opacity", "1");
             $('.delete_records_empty').focus();
@@ -213,7 +213,7 @@ $(document).ready(function () {
             }
         });
 //        $('#password_delete_completetd').val().trim().length
-//            $('#empty_select_completed').text("Please enter you password");
+//            $('#empty_select_completed').text("Please enter your password");
 //            $('#empty_select_completed').css("display", "block");
 //            $('#empty_select_completed').css("opacity", "1");
 //            $('#password_delete_completetd').focus();
