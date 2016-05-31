@@ -132,8 +132,8 @@ class InventoryController extends Controller {
                             }
                         }
                     }
-                    $order_qty = $order_qty - $orders_pending_delivery_order_qty;
                 }
+                $order_qty = $order_qty - $orders_pending_delivery_order_qty;
             }
             /* ===================== Pending delivery order details ===================== */
 
@@ -206,8 +206,8 @@ class InventoryController extends Controller {
                             }
                         }
                     }
-                    $pending_purchase_order_qty = $pending_purchase_order_qty - $purchase_orders_pending_purchase_advice_qty;
                 }
+                $pending_purchase_order_qty = $pending_purchase_order_qty - $purchase_orders_pending_purchase_advice_qty;
             }
 
             /* ===================== Purchase advice details ===================== */
