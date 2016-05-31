@@ -1996,7 +1996,8 @@ blockquote.pull-right:before {
     font-size: 0.875em;
     vertical-align: middle;
     border-top: 1px solid #e7ebee;
-    padding: 12px 8px;
+    /*padding: 12px 8px;*/
+    padding: 12px 8px 6px 8px;
 }
 /*.table tbody > tr > td:first-child {
   font-size: 1em;
@@ -2206,7 +2207,8 @@ blockquote.pull-right:before {
 
 /* FORMS */
 .form-group {
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
+    margin-bottom: 10px;
 }
 
 label {

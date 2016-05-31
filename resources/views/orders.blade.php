@@ -53,11 +53,11 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-2 pull-right">
+                        <div class="col-md-2 pull-right">                            
                             <select class="form-control" id="user_filter3" name="fulfilled_filter" onchange="this.form.submit();">
                                 <option value="" selected="">--Fulfilled by--</option>
-                                <option <?php if (Input::get('fulfilled_filter') == '0') echo 'selected=""'; ?>value="0" >Warehouse</option>
-                                <option <?php if (Input::get('fulfilled_filter') == 'all') echo 'selected=""'; ?>value="all" >Direct</option>
+                                <option {{(Input::get('fulfilled_filter') != 'all') ? 'selected' :'' }} value="0" >Warehouse</option>
+                                <option {{(Input::get('fulfilled_filter') == 'all') ? 'selected' :'' }} value="all" >Direct</option>
                             </select>
                         </div>
                         <div class="col-md-2 pull-right">
@@ -140,25 +140,25 @@
                                         @elseif($order->delivery_location_id ==0 )
                                         <td class="text">{{$order['other_location']}}</td>
                                         @endif
-                                         
+
                                         @if($product_category_id==0)
-                                            <td>{{ round($order->total_quantity, 2) }}</td>
-                                            <td>{{ round($order->pending_quantity, 2) }}</td>
+                                        <td>{{ round($order->total_quantity, 2) }}</td>
+                                        <td>{{ round($order->pending_quantity, 2) }}</td>
                                         @else
-                                               <?php $total_size_quantity=0;?>
-                                               <?php $substract_size_quantity=0;?>
-                                               @foreach($order->all_order_products as $order_product_array)
-                                                        @if($order_product_array->product_category_id==$product_category_id)
-                                                            @foreach($delivery_order as $remaining_delivery)
-                                                                @if($remaining_delivery->parent==$order_product_array->id)
-                                                                    <?php $substract_size_quantity+=$remaining_delivery->quantity?>
-                                                                @endif
-                                                            @endforeach
-                                                            <?php $total_size_quantity+=$order_product_array->quantity?>
-                                                        @endif
-                                               @endforeach
-                                               <td>{{ round($total_size_quantity, 2) }}</td>
-                                               <td>{{ round($total_size_quantity-$substract_size_quantity, 2) }}</td>
+                                        <?php $total_size_quantity = 0; ?>
+                                        <?php $substract_size_quantity = 0; ?>
+                                        @foreach($order->all_order_products as $order_product_array)
+                                        @if($order_product_array->product_category_id==$product_category_id)
+                                        @foreach($delivery_order as $remaining_delivery)
+                                        @if($remaining_delivery->parent==$order_product_array->id)
+                                        <?php $substract_size_quantity+=$remaining_delivery->quantity ?>
+                                        @endif
+                                        @endforeach
+                                        <?php $total_size_quantity+=$order_product_array->quantity ?>
+                                        @endif
+                                        @endforeach
+                                        <td>{{ round($total_size_quantity, 2) }}</td>
+                                        <td>{{ round($total_size_quantity-$substract_size_quantity, 2) }}</td>
                                         @endif
                                         <td class="text-center">
                                             <a href="{{url('create_delivery_order/'.$order->id)}}" class="table-link" title="Create Delivery order">
@@ -199,9 +199,9 @@
                                             @endif
                                         </td>
                                     </tr>
-                                @endif
-                                @if($order->order_status == 'completed')
-                                @if($k==1)
+                                    @endif
+                                    @if($order->order_status == 'completed')
+                                    @if($k==1)
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -263,7 +263,7 @@
                                         @endif
                                     </td>
                                 </tr>
-                                
+
                                 @endif
                                 @if($order->order_status == 'cancelled')
                                 @if($k==1)
@@ -339,64 +339,64 @@
                                             @endif
                                         </td>
                                     </tr>
-                               
-                                @endif
-                                @endforeach
-                                
+
+                                    @endif
+                                    @endforeach
+
                                 </tbody>
                             </table>
                             <div class="modal fade" id="cancel_order_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                                <h4 class="modal-title" id="myModalLabel"></h4>
-                                            </div>
-                                            {!! Form::open(array('method'=>'POST','url'=>url('manual_complete_order'), 'id'=>'cancel_order_form'))!!}
-                                           
-                                            <input type="hidden" name="order_id" id="order_id">
-                                            <div class="modal-body">
-                                                <p> Are you sure to complete the Order?</p>
-                                                <div class="radio">
-                                                    <input  id="overprice" value="overprice" name="reason_type" type="radio">
-                                                    <label for="overprice">Over Pricing</label>
-                                                </div>
-                                                <div class="radio">
-                                                    <input  id="delivery" value="delivery" name="reason_type" type="radio">
-                                                    <label for="delivery">Late Delivery</label>
-                                                </div>
-                                                <div class="radio">
-                                                    <input  id="quality" value="quality" name="reason_type" type="radio">
-                                                    <label for="quality">Undesired Quality</label>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="reason"><b>Reason</b></label>
-                                                    <textarea class="form-control" id="inquiry_remark" name="reason"  rows="2" placeholder="Reason"></textarea>
-                                                </div>
-                                                <div class="checkbox">
-                                                    <label class="marginsms"><input type="checkbox" name="send_email" value="true"><span class="checksms">Send Email to Party</span></label>
-                                                    <label><input type="checkbox" value="true" name="sendsms"><span title="SMS would be sent to Party" class="checksms smstooltip">SMS</span></label>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="button" class="btn btn-default cancel_orders_modal_submit" >Yes</button>
-                                            </div>
-                                            {!! Form::close() !!}
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                            <h4 class="modal-title" id="myModalLabel"></h4>
                                         </div>
+                                        {!! Form::open(array('method'=>'POST','url'=>url('manual_complete_order'), 'id'=>'cancel_order_form'))!!}
+
+                                        <input type="hidden" name="order_id" id="order_id">
+                                        <div class="modal-body">
+                                            <p> Are you sure to complete the Order?</p>
+                                            <div class="radio">
+                                                <input  id="overprice" value="overprice" name="reason_type" type="radio">
+                                                <label for="overprice">Over Pricing</label>
+                                            </div>
+                                            <div class="radio">
+                                                <input  id="delivery" value="delivery" name="reason_type" type="radio">
+                                                <label for="delivery">Late Delivery</label>
+                                            </div>
+                                            <div class="radio">
+                                                <input  id="quality" value="quality" name="reason_type" type="radio">
+                                                <label for="quality">Undesired Quality</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="reason"><b>Reason</b></label>
+                                                <textarea class="form-control" id="inquiry_remark" name="reason"  rows="2" placeholder="Reason"></textarea>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label class="marginsms"><input type="checkbox" name="send_email" value="true"><span class="checksms">Send Email to Party</span></label>
+                                                <label><input type="checkbox" value="true" name="sendsms"><span title="SMS would be sent to Party" class="checksms smstooltip">SMS</span></label>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                            <button type="button" class="btn btn-default cancel_orders_modal_submit" >Yes</button>
+                                        </div>
+                                        {!! Form::close() !!}
                                     </div>
                                 </div>
+                            </div>
                             <div class="modal fade" id="delete_orders_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                <h4 class="modal-title" id="myModalLabel"></h4>
-                                            </div>
-                                            <form method="post" class="delete_order_form" >
-                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                            <h4 class="modal-title" id="myModalLabel"></h4>
+                                        </div>
+                                        <form method="post" class="delete_order_form" >
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
 <!--                                            <input name="_method" type="hidden" value="DELETE">-->
-                                            
+
                                             <div class="modal-body">
                                                 <div class="delete">
                                                     <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
@@ -414,33 +414,33 @@
                                                 <button type="button" class="btn btn-default delete_orders_modal_submit">Yes</button>
                                             </div>
                                             <form>
-                                        </div>
-                                    </div>
-                                </div>
-                            <span class="pull-right">
-                                <?php echo $allorders->render(); ?>
-                            </span>
-                            <div class="clearfix"></div>
-                            @if($allorders->lastPage() > 1)
-                            <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
-                                <form class="form-inline" method="GET" action="{{url('orders')}}" id="filter_search">
-                                    <div class="form-group">
-                                        <label for="exampleInputName2"><b>Go To</b></label>
-                                        &nbsp;
-                                        <input style="width: 50px;" type="text" class="form-control" placeholder="" value="{{Input::get('page')}}" name="page" type="text">
-                                        &nbsp;
-                                        <label for="exampleInputName2"><b>of {{ $allorders->lastPage()}} </b></label>
-                                        <a onclick="this.form.submit()"></a>
-                                    </div>
-                                </form>
-                            </span>
-                            @endif
-                        </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@stop
+                                                </div>
+                                                </div>
+                                                </div>
+                                                <span class="pull-right">
+                                                    <?php echo $allorders->render(); ?>
+                                                </span>
+                                                <div class="clearfix"></div>
+                                                @if($allorders->lastPage() > 1)
+                                                <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                                    <form class="form-inline" method="GET" action="{{url('orders')}}" id="filter_search">
+                                                        <div class="form-group">
+                                                            <label for="exampleInputName2"><b>Go To</b></label>
+                                                            &nbsp;
+                                                            <input style="width: 50px;" type="text" class="form-control" placeholder="" value="{{Input::get('page')}}" name="page" type="text">
+                                                            &nbsp;
+                                                            <label for="exampleInputName2"><b>of {{ $allorders->lastPage()}} </b></label>
+                                                            <a onclick="this.form.submit()"></a>
+                                                        </div>
+                                                    </form>
+                                                </span>
+                                                @endif
+                                                </div>
+                                                @endif
+                                                </div>
+                                                </div>
+                                                </div>
+                                                </div>
+                                                </div>
+                                                </div>
+                                                @stop
