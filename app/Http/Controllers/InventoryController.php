@@ -16,6 +16,7 @@ use App\DeliveryOrder;
 use App\PurchaseOrder;
 use App\DeliveryChallan;
 use App\Order;
+use App\AllOrderProducts;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use Input;
@@ -94,6 +95,8 @@ class InventoryController extends Controller {
             $pending_purchase_advice_qty = 0;
             $virtual_stock_qty = 0;
             $physical_closing = 0;
+            $orders_pending_delivery_order_qty = 0;
+            $purchase_orders_pending_purchase_advice_qty = 0;
 
             $product_sub_id = $inventory->product_sub_category_id;
             /* ===================== Pending order details ===================== */
@@ -102,7 +105,6 @@ class InventoryController extends Controller {
                             ->with(['all_order_products' => function($q) use($product_sub_id) {
                                     $q->where('product_category_id', '=', $product_sub_id);
                                 }])->get();
-
             if (isset($orders) && count($orders) > 0) {
                 foreach ($orders as $orders_details) {
                     if (isset($orders_details->all_order_products) && count($orders_details->all_order_products) > 0) {
@@ -112,6 +114,25 @@ class InventoryController extends Controller {
                             }
                         }
                     }
+
+                    $order_delivery_orders = DeliveryOrder::where('order_id', '=', $orders_details->id)
+                                    ->where('order_status', '=', 'pending')
+                                    ->with(['delivery_product' => function($q) use($product_sub_id) {
+                                            $q->where('product_category_id', '=', $product_sub_id);
+                                        }])->get();
+
+                    if (isset($order_delivery_orders) && count($order_delivery_orders) > 0) {
+                        foreach ($order_delivery_orders as $delivery_orders_details) {
+                            if (isset($delivery_orders_details->delivery_product) && count($delivery_orders_details->delivery_product) > 0) {
+                                foreach ($delivery_orders_details->delivery_product as $delivery_orders_product_details) {
+                                    if (isset($delivery_orders_product_details) && $delivery_orders_product_details->quantity != '') {
+                                        $orders_pending_delivery_order_qty = $pending_delivery_order_qty + $delivery_orders_product_details->quantity;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    $order_qty = $order_qty - $orders_pending_delivery_order_qty;
                 }
             }
             /* ===================== Pending delivery order details ===================== */
@@ -167,6 +188,25 @@ class InventoryController extends Controller {
                             }
                         }
                     }
+
+                    $purchase_orders_purchase_advice = PurchaseAdvise::where('advice_status', '=', 'in_process')
+                                    ->where('purchase_order_id', '=', $purchase_orders_details->id)
+                                    ->with(['purchase_products' => function($q) use($product_sub_id) {
+                                            $q->where('product_category_id', '=', $product_sub_id);
+                                        }])->get();
+
+                    if (isset($purchase_orders_purchase_advice) && count($purchase_orders_purchase_advice) > 0) {
+                        foreach ($purchase_orders_purchase_advice as $purchase_advice_details) {
+                            if (isset($purchase_advice_details->purchase_products) && count($purchase_advice_details->purchase_products) > 0) {
+                                foreach ($purchase_advice_details->purchase_products as $purchase_advice_product_details) {
+                                    if (isset($purchase_advice_product_details) && $purchase_advice_product_details->quantity != '') {
+                                        $purchase_orders_pending_purchase_advice_qty = $pending_purchase_advice_qty + $purchase_advice_product_details->quantity;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    $pending_purchase_order_qty = $pending_purchase_order_qty - $purchase_orders_pending_purchase_advice_qty;
                 }
             }
 
