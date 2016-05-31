@@ -199,10 +199,6 @@ $(document).ready(function () {
             $('.delete_records_empty').css("display", "block");
             $('.delete_records_empty').css("opacity", "1");
             $('.delete_records_empty').focus();
-            window.setTimeout(function () {
-                $('.delete_records_empty').fadeTo(1500, 0).slideUp(500, function () {
-                });
-            }, 5000);
         } else {
             $('#password_delete').val($('#password_delete_completetd').val());
             $('#frmdeleterecords').submit();
@@ -1539,10 +1535,11 @@ $('#labour').on('keyup', function (e) {
 });
 $('#save_all_size_btn').click(function () {
     var token = $('#_token').val();
+    var pageid = $(this).attr('data-pageid');
     $.ajax({
         type: 'POST',
         url: baseurl + '/update_all_sizes',
-        data: {form_data: $('#save_all_product_sizes').serialize(), _token: token},
+        data: {form_data: $('#save_all_product_sizes').serialize(), _token: token, pageid: pageid},
         success: function (data) {
             $('.alert-success1').show();
             $('html, body').animate({

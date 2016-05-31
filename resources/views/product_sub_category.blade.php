@@ -204,7 +204,7 @@
                                     @endforeach
                                     </tbody>
                                 </table>
-                                <button name="submit" class="btn btn-primary" id="save_all_size_btn" type="button">Save All Sizes</button>
+                                <button name="submit" class="btn btn-primary" data-pageid="{{(Input::get('page')!= '')?Input::get('page') : 1 }}" id="save_all_size_btn" type="button">Save All Sizes</button>
                             </form>
                             <span class="pull-right">
                                 <ul class="pagination pull-right">

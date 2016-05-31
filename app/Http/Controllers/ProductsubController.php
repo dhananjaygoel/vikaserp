@@ -376,7 +376,11 @@ class ProductsubController extends Controller {
     public function update_all_sizes_difference() {
         $data = Input::get('form_data');
         $unserialized_data = parse_str(Input::get('form_data'), $formfields);
-        for ($i = 1; $i < sizeof($formfields); $i++) {
+
+        $currentpage = Input::get('pageid');
+        $startrow = (20 * $currentpage) - 19;
+        $endrow = 20 * $currentpage;
+        for ($i = $startrow; $i <= $endrow; $i++) {
             if (isset($formfields['difference_' . $i])) {
                 ProductSubCategory::where('id', $formfields['id_' . $i])->update(array('difference' => $formfields['difference_' . $i]));
             }

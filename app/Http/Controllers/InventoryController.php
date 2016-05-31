@@ -92,10 +92,8 @@ class InventoryController extends Controller {
             });
         }
 
-        $inventory_list = $q->with('product_sub_category')->paginate(5);
-
+        $inventory_list = $q->with('product_sub_category')->paginate(50);
         foreach ($inventory_list as $inventory) {
-
             $order_qty = 0;
             $sales_challan_qty = 0;
             $purchase_challan_qty = 0;
