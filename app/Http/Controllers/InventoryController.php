@@ -126,7 +126,7 @@ class InventoryController extends Controller {
                             if (isset($delivery_orders_details->delivery_product) && count($delivery_orders_details->delivery_product) > 0) {
                                 foreach ($delivery_orders_details->delivery_product as $delivery_orders_product_details) {
                                     if (isset($delivery_orders_product_details) && $delivery_orders_product_details->quantity != '') {
-                                        $orders_pending_delivery_order_qty = $pending_delivery_order_qty + $delivery_orders_product_details->quantity;
+                                        $orders_pending_delivery_order_qty = $orders_pending_delivery_order_qty + $delivery_orders_product_details->quantity;
                                     }
                                 }
                             }
@@ -200,7 +200,7 @@ class InventoryController extends Controller {
                             if (isset($purchase_advice_details->purchase_products) && count($purchase_advice_details->purchase_products) > 0) {
                                 foreach ($purchase_advice_details->purchase_products as $purchase_advice_product_details) {
                                     if (isset($purchase_advice_product_details) && $purchase_advice_product_details->quantity != '') {
-                                        $purchase_orders_pending_purchase_advice_qty = $pending_purchase_advice_qty + $purchase_advice_product_details->quantity;
+                                        $purchase_orders_pending_purchase_advice_qty = $purchase_orders_pending_purchase_advice_qty + $purchase_advice_product_details->quantity;
                                     }
                                 }
                             }
