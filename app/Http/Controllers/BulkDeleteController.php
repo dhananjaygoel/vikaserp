@@ -71,7 +71,8 @@ class BulkDeleteController extends Controller {
                  */
 
                 if (Input::get('expected_date') != '') {
-                    $result_temp = Inquiry::where('inquiry_status', '=', Input::get('expected_date'))
+                    $result_temp = Inquiry::where('inquiry_status', '=', 'completed')
+                                    ->where('created_at', 'like', Input::get('expected_date') . '%')
                                     ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')
                                     ->orderBy('created_at', 'desc')->Paginate(20);
                 } else {
@@ -190,9 +191,14 @@ class BulkDeleteController extends Controller {
                  */
 
                 if (Input::get('expected_date') != '') {
-                    $result_temp = DeliveryOrder::orderBy('created_at', 'desc')->where('created_at', 'like', Input::get('expected_date') . '%')->where('order_status', 'completed')->with('delivery_product', 'customer')->paginate(20);
+                    $result_temp = DeliveryOrder::orderBy('created_at', 'desc')
+                                    ->where('created_at', 'like', Input::get('expected_date') . '%')
+                                    ->where('order_status', 'completed')
+                                    ->with('delivery_product', 'customer')->paginate(20);
                 } else {
-                    $result_temp = DeliveryOrder::orderBy('created_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer')->paginate(20);
+                    $result_temp = DeliveryOrder::orderBy('created_at', 'desc')
+                                    ->where('order_status', 'completed')
+                                    ->with('delivery_product', 'customer')->paginate(20);
                 }
                 $result_temp = $this->checkpending_quantity($result_temp);
 
@@ -284,7 +290,9 @@ class BulkDeleteController extends Controller {
                  */
 
                 if (Input::get('expected_date') != '') {
-                    $purchase_orders = PurchaseOrder::where('order_status', '=', 'completed')->where('created_at', 'like', Input::get('expected_date') . '%')->orderBy('created_at', 'desc')
+                    $purchase_orders = PurchaseOrder::where('order_status', '=', 'completed')
+                            ->where('created_at', 'like', Input::get('expected_date') . '%')
+                            ->orderBy('created_at', 'desc')
                             ->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')
                             ->Paginate(20);
                 } else {

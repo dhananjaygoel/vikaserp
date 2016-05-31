@@ -14,6 +14,7 @@ class CreateInventoryTable extends Migration {
         Schema::create('inventory', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('product_sub_category_id');
+            $table->double('minimal', 8, 2);
             $table->double('opening_qty', 8, 2);
             $table->double('sales_challan_qty', 8, 2);
             $table->double('purchase_challan_qty', 8, 2);

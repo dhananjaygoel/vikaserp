@@ -56,7 +56,8 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th class="opening"><span>Size</span></th>
+                                        <th class="opening"><span>Alias Name</span></th>
+                                        <th class="opening"><span>Minimal</span></th>
                                         <th class="inventory-size"><span>Opening</span></th>
                                         <th><span>Sales<br/>Challan</span></th>
                                         <th><span>Purchase<br/>Challan</span></th>
@@ -79,10 +80,17 @@
                                         @foreach($inventory_list as $inventory)
                                         <tr class="smallinput datadisplay_{{$inventory->id}}">
                                             <td>{{$inventory->product_sub_category->alias_name}}</td>
+                                            <?php
+                                            $total = ($inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty) - ($inventory->pending_sales_order_qty + $inventory->pending_delivery_order_qty);
+                                            ?>
+                                            <td class="{{ ($total < $inventory->minimal) ?'minimum_reach': '' }}">
+                                                <div class="form-group">                                                    
+                                                    <input type="text" name="minimal_{{$inventory->id}}" id="minimal_{{$inventory->id}}" value="{{$inventory->minimal}}" maxlength="9" class="form-control" />
+                                                </div>
+                                            </td>
                                             <td>
                                                 <div class="form-group">                                                    
                                                     <input type="text" name="{{$inventory->id}}" placeholder="Stock in(kg)" value="{{$inventory->opening_qty}}" maxlength="9" class="form-control" />
-
                                                 </div>
                                             </td>
                                             <td id="sales_challan_{{$inventory->id}}">{{($inventory->sales_challan_qty <= 0 )? 0: $inventory->sales_challan_qty}}</td>
@@ -96,7 +104,7 @@
                                             <td>
                                                 <div class="row product-price">                                                
                                                     <div class="form-group col-md-2 difference_form">
-                                                        <input class="btn btn-primary" type="button" value="save" onclick="update_inventory(this);">
+                                                        <input class="btn btn-primary" type="button" value="save" data-id="{{$inventory->id}}" onclick="update_inventory(this,{{$inventory->id}});">
                                                     </div>
                                                 </div>
                                             </td>

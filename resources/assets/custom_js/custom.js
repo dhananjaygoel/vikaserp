@@ -4,7 +4,6 @@ $(document).ready(function () {
         $(".alert-autohide").fadeTo(1500, 0).slideUp(500, function () {
         });
     }, 5000);
-
     $('body').on('click', '#demodiv', function () {
         var baseurl = $('#baseurl').attr('name');
         $.ajax({
@@ -169,7 +168,6 @@ $(document).ready(function () {
                 '</tr>';
         $("#add_product_table_delivery_challan").children("tbody").append(html);
     });
-
     $('.delete_completed').on('click', function () {
         if (this.checked) {
             $('.checkBoxClass').each(function () {
@@ -181,7 +179,6 @@ $(document).ready(function () {
             });
         }
     });
-
     $('.checkBoxClass').on('click', function () {
         if ($('.checkBoxClass:checked').length == $('.checkBoxClass').length) {
             $('.delete_completed').prop('checked', true);
@@ -189,7 +186,6 @@ $(document).ready(function () {
             $('.delete_completed').prop('checked', false);
         }
     });
-
     $('.save_all_inventory').on("click", function (e) {
         $('#frm_inventory_save_all').submit();
     });
@@ -1687,11 +1683,20 @@ function update_difference(e) {
         }
     });
 }
-function update_inventory(e) {
+function update_inventory(e, value) {
     $('.inventory_update_min,.inventory_update_max,.inventory_update').css('display', 'none');
-    var opening_stock = $(e).parent().parent().parent().parent().children().find("input[type=text]").val().trim();
-    var id = $(e).parent().parent().parent().parent().children().find("input[type=text]").attr('name');
+    var id = value;
+    var opening_stock = $("input[name=" + id + "]").val();
+    var minimal = $('#minimal_' + id).val();
     if (opening_stock < 0) {
+        $('.inventory_update_min').css('display', 'block');
+        $('.inventory_update_min').css('opacity', 1);
+        window.setTimeout(function () {
+            $(".inventory_update_min").fadeTo(1500, 0).slideUp(500, function () {
+            });
+        }, 5000);
+    } else if (minimal < 0) {
+        $('.inventory_update_min').html('<strong>Error!</strong> Negatives values are not allowed in Minimum stock.');
         $('.inventory_update_min').css('display', 'block');
         $('.inventory_update_min').css('opacity', 1);
         window.setTimeout(function () {
@@ -1711,10 +1716,15 @@ function update_inventory(e) {
             $.ajax({
                 type: 'get',
                 url: baseurl + '/update_inventory',
-                data: {opening_stock: opening_stock, id: id},
+                data: {opening_stock: opening_stock, minimal: minimal, id: id},
                 success: function (data) {
                     var response_array = data;
                     var response_array = JSON.parse(data);
+                    if (response_array['class'] == 'yes') {
+                        $('#minimal_' + id).parent().parent().addClass('minimum_reach');
+                    } else {
+                        $('#minimal_' + id).parent().parent().removeClass('minimum_reach');
+                    }
                     $('#sales_challan_' + id).text(response_array['sales_challan_qty']);
                     $('#purchase_challan_' + id).text(response_array['purchase_challan_qty']);
                     $('#physical_closing_' + id).text(response_array['physical_closing_qty']);

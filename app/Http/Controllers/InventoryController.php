@@ -50,33 +50,24 @@ class InventoryController extends Controller {
     public function update_inventory() {
 
         $qty = Input::get('opening_stock');
+        $minimal = Input::get('minimal');
         $inventory_details = Inventory::find(Input::get('id'));
 
-        if ($inventory_details->sales_challan_qty < 0) {
-            $inventory_details->sales_challan_qty = 0;
-        }
-        if ($inventory_details->purchase_challan_qty < 0) {
-            $inventory_details->purchase_challan_qty = 0;
-        }
-        if ($inventory_details->pending_purchase_order_qty < 0) {
-            $inventory_details->pending_purchase_order_qty = 0;
-        }
-        if ($inventory_details->pending_purchase_advise_qty < 0) {
-            $inventory_details->pending_purchase_advise_qty = 0;
-        }
-        if ($inventory_details->pending_sales_order_qty < 0) {
-            $inventory_details->pending_sales_order_qty = 0;
-        }
-        if ($inventory_details->pending_delivery_order_qty < 0) {
-            $inventory_details->pending_delivery_order_qty = 0;
-        }
-
         $inventory_details->opening_qty = $qty;
+        $inventory_details->minimal = $minimal;
         $physical_qty = ($qty + $inventory_details->purchase_challan_qty) - $inventory_details->sales_challan_qty;
         $inventory_details->physical_closing_qty = $physical_qty;
         $virtual_qty = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_order_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
         $inventory_details->virtual_qty = $virtual_qty;
         $inventory_details->save();
+
+
+        $total = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
+        if ($total < $inventory_details->minimal) {
+            $inventory_details['class'] = 'yes';
+        } else {
+            $inventory_details['class'] = 'no';
+        }
         return json_encode($inventory_details);
     }
 
