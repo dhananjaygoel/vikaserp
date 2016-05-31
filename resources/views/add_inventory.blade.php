@@ -41,6 +41,11 @@
                             {{Session::get('success')}}                            
                         </div>
                         @endif
+                        @if (Session::has('error'))
+                        <div class="alert alert-danger alert-autohide">
+                            {{Session::get('error')}}                            
+                        </div>
+                        @endif
                         <div class="alert alert-success inventory_update">
                             <i class="fa fa-check-circle fa-fw fa-lg"></i>
                             <strong>Great!</strong> Inventory details successfully updated.
@@ -86,12 +91,12 @@
                                             ?>
                                             <td class="{{ ($inventory->minimal < $total) ?'minimum_reach': '' }}">
                                                 <div class="form-group">                                                    
-                                                    <input type="text" name="minimal_{{$inventory->id}}" id="minimal_{{$inventory->id}}" value="{{$inventory->minimal}}" maxlength="9" class="form-control" />
+                                                    <input type="text" name="minimal_{{$inventory->id}}" id="minimal_{{$inventory->id}}" value="{{$inventory->minimal}}" maxlength="9" class="form-control no_alphabets" />
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-group">                                                    
-                                                    <input type="text" name="{{$inventory->id}}" placeholder="Stock in(kg)" value="{{$inventory->opening_qty}}" maxlength="9" class="form-control" />
+                                                    <input type="text" name="{{$inventory->id}}" placeholder="Stock in(kg)" value="{{$inventory->opening_qty}}" maxlength="9" class="form-control no_alphabets" />
                                                 </div>
                                             </td>
                                             <td id="sales_challan_{{$inventory->id}}">{{($inventory->sales_challan_qty <= 0 )? 0: $inventory->sales_challan_qty}}</td>

@@ -295,7 +295,19 @@ class InventoryController extends Controller {
         $data_dup = Input::all();
         $token = array_pull($data, '_token');
         $currentpage = array_pull($data, 'pagenumber');
+
         $i = 1;
+        $j = 1;
+
+        foreach ($data as $key => $value) {
+            if (($j % 2) != 0) {
+                if ($value < 0) {
+                    return back()->with('error', 'Negative values are not allowed in minimal stock.');
+                }
+            }
+            $j++;
+        }
+
         foreach ($data as $key => $value) {
             if (($i % 2) != 0) {
                 $minimal_value = $value;

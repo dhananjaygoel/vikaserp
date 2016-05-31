@@ -1636,6 +1636,11 @@ $('body').delegate(".each_product_detail", "blur", function () {
         }
     }
 });
+$(".no_alphabets").keydown(function (event) {
+    if ((event.keyCode >= 65) && (event.keyCode <= 90)) {
+        return false;
+    }
+});
 $('body').delegate(".each_product_detail_edit", "blur", function () {
     var current_product = $(this).val()
     var cur_product_id = $(this).attr("data-productid");
