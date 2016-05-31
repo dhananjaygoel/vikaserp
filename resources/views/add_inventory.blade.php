@@ -78,12 +78,13 @@
                                         $i = 1;
                                         ?>
                                         @foreach($inventory_list as $inventory)
+
                                         <tr class="smallinput datadisplay_{{$inventory->id}}">
                                             <td>{{$inventory->product_sub_category->alias_name}}</td>
                                             <?php
-                                            $total = ($inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty) - ($inventory->pending_sales_order_qty + $inventory->pending_delivery_order_qty);
+                                            $total = ($inventory->physical_closing_qty - $inventory->pending_delivery_order_qty - $inventory->pending_sales_order_qty + $inventory->pending_purchase_advise_qty);
                                             ?>
-                                            <td class="{{ ($total < $inventory->minimal) ?'minimum_reach': '' }}">
+                                            <td class="{{ ($inventory->minimal < $total) ?'minimum_reach': '' }}">
                                                 <div class="form-group">                                                    
                                                     <input type="text" name="minimal_{{$inventory->id}}" id="minimal_{{$inventory->id}}" value="{{$inventory->minimal}}" maxlength="9" class="form-control" />
                                                 </div>

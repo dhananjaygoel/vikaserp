@@ -288,23 +288,29 @@ class InventoryController extends Controller {
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
+     * Update all inventory list
      */
     public function store() {
         $data = Input::all();
+        $data_dup = Input::all();
         $token = array_pull($data, '_token');
         $currentpage = array_pull($data, 'pagenumber');
-
+        $i = 1;
         foreach ($data as $key => $value) {
-            $inventory_details = Inventory::find($key);
-            $inventory_details->opening_qty = $value;
-            $physical_qty = ($value + $inventory_details->purchase_challan_qty) - $inventory_details->sales_challan_qty;
-            $inventory_details->physical_closing_qty = $physical_qty;
-            $virtual_qty = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_order_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
-            $inventory_details->virtual_qty = $virtual_qty;
-            $inventory_details->save();
+            if (($i % 2) != 0) {
+                $minimal_value = $value;
+                $myarray = explode("_", $key);
+                $opening_qty_value = $myarray[1];
+                $inventory_details = Inventory::find($myarray[1]);
+                $inventory_details->minimal = $minimal_value;
+                $inventory_details->opening_qty = $data_dup[$opening_qty_value];
+                $physical_qty = ($data_dup[$opening_qty_value] + $inventory_details->purchase_challan_qty) - $inventory_details->sales_challan_qty;
+                $inventory_details->physical_closing_qty = $physical_qty;
+                $virtual_qty = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_order_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
+                $inventory_details->virtual_qty = $virtual_qty;
+                $inventory_details->save();
+            }
+            $i++;
         }
         $inventory_newlist = Inventory::with('product_sub_category')->paginate(50);
         $appendurl = ($currentpage > 1) ? "?page=" . $currentpage : '';
