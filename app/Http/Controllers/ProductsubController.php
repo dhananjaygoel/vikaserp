@@ -368,7 +368,6 @@ class ProductsubController extends Controller {
 
     /*
      * ------------------- -------------------------
-     * Created By : Amit Gupta
      * Description : UPDATE ALL PRODUCT SIZE
      * ---------------------------------------------
      */

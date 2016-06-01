@@ -322,7 +322,7 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $inquiry = Inquiry::find($id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
+        $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->find($id);
         if (count($inquiry) < 1) {
             return redirect('inquiry')->with('flash_message', 'Enquiry does not exist.');
         }

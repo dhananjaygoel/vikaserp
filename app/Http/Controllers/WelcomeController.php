@@ -325,9 +325,7 @@ class WelcomeController extends Controller {
     }
 
     /*
-     * Code added by Amit Gupta
      * Show export form for customer import
-     *
      */
 
     public function excel_import_customer() {
@@ -335,9 +333,7 @@ class WelcomeController extends Controller {
     }
 
     /*
-     * Code added by Amit Gupta
      * Import customer list into database from excel file
-     *
      */
 
     public function upload_customer_excel() {
@@ -383,7 +379,6 @@ class WelcomeController extends Controller {
     }
 
     /**
-     * Code added by Amit Gupta
      * Functionality: Check validation of excel file before importing customers
      */
     public function checkvalidation($rowData) {
@@ -520,7 +515,6 @@ class WelcomeController extends Controller {
     }
 
     /**
-     * Code added by Amit Gupta
      * Functionality: Save imported customer data into database
      */
     public function savecustomer($row) {
@@ -724,7 +718,6 @@ class WelcomeController extends Controller {
     }
 
     /**
-     * Code added by Amit Gupta
      * Functionality: Export exisitng customer list into excel file
      */
     public function excel_export_customer() {
@@ -737,7 +730,6 @@ class WelcomeController extends Controller {
     }
 
     /**
-     * Written by : AMit GupTA
      * This function displays all the php configuration info
      */
     public function phpversion() {
@@ -745,18 +737,15 @@ class WelcomeController extends Controller {
     }
 
     /**
-     * Written by : AMit GupTA
      * This function takes table name as argument and displays all the data of that table
      */
     public function showdata($table_name) {
-//        $pdo = DB::table($table_name)->get();
         $pdo = DB::table($table_name)->get();
         print('<pre>');
         print_r($pdo);
     }
 
     /**
-     * Written by : AMit GupTA
      * This function takes tablename as argument and deletes that table
      */
     public function removedata($table_name) {
@@ -766,7 +755,6 @@ class WelcomeController extends Controller {
     }
 
     /**
-     * Written by : AMit GupTA
      * This function takes tablename as argument and truncates that table data
      */
     public function emptydata($table_name) {
@@ -775,7 +763,6 @@ class WelcomeController extends Controller {
     }
 
     /**
-     * Written by : AMit GupTA
      * This function takes tablename, columnname, and column values as argument and updates the data accordingly
      */
     public function updatecolumndata($table_name, $column, $cvalue) {
@@ -789,7 +776,6 @@ class WelcomeController extends Controller {
     }
 
     /**
-     * Written by : AMit GupTA
      * This function takes tablename as argument and displays all the column along with data type of that column
      */
     public function showtableinfo($tablename) {

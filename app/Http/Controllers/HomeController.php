@@ -504,7 +504,6 @@ class HomeController extends Controller {
     }
 
     /**
-     * Written by : AMit GupTA
      * This function takes backup of whole datbase of local machine
      * Note : just change the $DBUSER, $DBPASSWD, $DATABASE values as per your need and you can use this for any project
      */
@@ -527,7 +526,6 @@ class HomeController extends Controller {
     }
 
     /**
-     * Written by : AMit GupTA
      * This function takes backup of whole datbase of test server machine
      */
     public function database_backup_test() {
@@ -548,7 +546,6 @@ class HomeController extends Controller {
     }
 
     /**
-     * Written by : AMit GupTA
      * This function takes backup of whole datbase of production server machine
      */
     public function database_backup_live() {

@@ -44,7 +44,6 @@ class OrderController extends Controller {
     }
 
     /**
-     * Added by : Amit Gupta
      * Functioanlity: Display order details
      */
     public function index() {
@@ -116,7 +115,6 @@ class OrderController extends Controller {
     }
 
     /**
-     * Added by : Amit Gupta
      * Functioanlity: Add new order page display
      */
     public function create() {
@@ -130,7 +128,6 @@ class OrderController extends Controller {
     }
 
     /**
-     * Added by : Amit Gupta
      * Functioanlity: Save order details
      */
     public function store(PlaceOrderRequest $request) {
@@ -367,11 +364,10 @@ class OrderController extends Controller {
     }
 
     /**
-     * Added by : Amit Gupta
      * Functioanlity: Display order details of particulat order
      */
     public function show($id) {
-        $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->first();
+        $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }
@@ -383,7 +379,6 @@ class OrderController extends Controller {
     }
 
     /**
-     * Added by : Amit Gupta
      * Functioanlity: Show edit order details page
      */
     public function edit($id) {
@@ -391,7 +386,7 @@ class OrderController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
-        $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->first();
+        $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }
@@ -403,7 +398,6 @@ class OrderController extends Controller {
     }
 
     /**
-     * Added by : Amit Gupta
      * Functioanlity: Update order details
      */
     public function update($id, PlaceOrderRequest $request) {
@@ -653,7 +647,6 @@ class OrderController extends Controller {
     }
 
     /**
-     * Added by : Amit Gupta
      * Functioanlity: Delete individual order details
      */
     public function destroy($id) {
@@ -786,6 +779,10 @@ class OrderController extends Controller {
         return array('message' => 'success');
     }
 
+    /*
+     * Functioanlity: Create New Delivery Order
+     */
+
     public function create_delivery_order($id) {
 
         $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->first();
@@ -873,6 +870,10 @@ class OrderController extends Controller {
         return $pending_orders;
     }
 
+    /*
+     * Functioanlity: Store Delivery Order
+     */
+
     public function store_delivery_order($id) {
 
         $input_data = Input::all();
@@ -925,7 +926,7 @@ class OrderController extends Controller {
                     $present_shipping = $present_shipping + $product_data['present_shipping'];
 
                     $add_order_products = AllOrderProducts::create($order_products);
-                    }
+                }
                 if ($product_data['name'] != "" && $product_data['order'] == '') {
                     $order_products = [
                         'order_id' => $order_id,
@@ -938,8 +939,8 @@ class OrderController extends Controller {
                         'remarks' => $product_data['remark']
                     ];
                     $add_order_products = AllOrderProducts::create($order_products);
-                    }
                 }
+            }
             //If pending quantity is Zero complete the order
             if ($present_shipping == $total_qty || $present_shipping >= $total_qty) {
                 Order::where('id', '=', $id)->update(array('order_status' => 'completed'));
@@ -1009,6 +1010,10 @@ class OrderController extends Controller {
         }
         return $allorders;
     }
+
+    /*
+     * Functioanlity: Get size from product name
+     */
 
     public function fetch_order_size() {
         $term = '%' . Input::get('term') . '%';
