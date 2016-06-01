@@ -156,9 +156,19 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="form-group">
-                            <label for="total"><b class="challan">Total</b><span class="gtotal"><input type="text" class="form-control" id="total_price" name="total_price" placeholder="" readonly="readonly"></span></label>
+                            <label for="total">
+                                <b class="challan">Total</b>
+                                <span class="gtotal">
+                                    <input type="text" class="form-control" id="total_price" name="total_price" placeholder="" readonly="readonly">
+                                </span>
+                            </label>
                             &nbsp;&nbsp;
-                            <label for="total"><b class="challan">Total Actual Quantity</b><span class="gtotal"><input type="text" class="form-control" id="total_actual_quantity" name="total_actual_quantity" placeholder="" readonly="readonly"></span></label>
+                            <label for="total">
+                                <b class="challan">Total Actual Quantity</b>
+                                <span class="gtotal">
+                                    <input type="text" class="form-control" id="total_actual_quantity" name="total_actual_quantity" placeholder="" readonly="readonly">
+                                </span>
+                            </label>
                         </div>
                         <div class="form-group">
                             <label for="driver_contact"><b class="challan">Loading</b></label>

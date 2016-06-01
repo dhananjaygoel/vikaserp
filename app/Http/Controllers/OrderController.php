@@ -96,9 +96,9 @@ class OrderController extends Controller {
             $q->with('all_order_products');
         }
 
-        $allorders = $q->with('all_order_products')->with('customer', 'delivery_location', 'order_cancelled')
+        $allorders = $q->with('all_order_products')
+                        ->with('customer', 'delivery_location', 'order_cancelled')
                         ->orderBy('created_at', 'desc')->paginate(20);
-
 
         $users = User::all();
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
@@ -969,7 +969,13 @@ class OrderController extends Controller {
         foreach ($allorders as $key => $order) {
             $order_quantity = 0;
             $delivery_order_quantity = 0;
-            $delivery_order_products = AllOrderProducts::where('from', '=', $order->id)->get();
+            $delievry_order_details = DeliveryOrder::where('order_id', '=', $order->id)->first();
+            if (!empty($delievry_order_details)) {
+                $delivery_order_products = AllOrderProducts::where('order_id', '=', $delievry_order_details->id)->where('order_type', '=', 'delivery_order')->get();
+            } else {
+                $delivery_order_products = NULL;
+            }
+
             if (count($delivery_order_products) > 0) {
 
                 foreach ($delivery_order_products as $dopk => $dopv) {

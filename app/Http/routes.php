@@ -71,6 +71,7 @@ Route::controllers([
 ]);
 Route::get('/', 'Auth\AuthController@getLogin');
 Route::get('logout', 'Auth\AuthController@getLogout');
+Route::get('update_opening_stock', 'InventoryController@updateOpeningStock');
 Route::group(['middleware' => ['auth']], function() {
 //        Route::group(['middleware' => ['admin_mw','super_admin_mw']], function() {
 //        Route::get('customers', 'CustomerController',['only' => ['index','show','edit']]);
@@ -113,7 +114,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('get_product_category', 'ProductsubController@get_product_category');
     Route::resource('inventory', 'InventoryController');
     Route::get('fillinventorylist', 'InventoryController@fillInventoryList');
-    Route::get('update_opening_stock', 'InventoryController@updateOpeningStock');
     Route::get('fetch_inventory_product_name', 'InventoryController@fetchInventoryProductName');
     Route::post('update_difference', 'ProductsubController@update_difference');
     Route::get('update_inventory', 'InventoryController@update_inventory');

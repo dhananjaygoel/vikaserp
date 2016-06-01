@@ -82,6 +82,14 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @if(Auth::user()->role_id == 0)
+                                            <a href="{{URL::action('DeliveryChallanController@edit', ['id'=> $challan->id])}}" class="table-link" title="edit">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                            @endif
                                             @if( Auth::user()->role_id != 4)
                                             <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_delivery_challan({{$challan->id}})">
                                                 <span class="fa-stack">
@@ -100,52 +108,52 @@
                                             @endif
                                         </td>
                                     </tr>
-                                
-                                
-                                @elseif($challan->challan_status == 'completed')
-                                <tr id="challan_order_row_{{$challan->id}}">
-                                    <td class="text-center">{{$k++}}</td>
-                                    <td class="text-center">{{ ($challan['customer']->tally_name != "") ? $challan['customer']->tally_name : $challan['customer']->owner_name }}</td>
-                                    <td class="text-center">
-                                        @if($challan->serial_number == '')
-                                        @elseif(isset($challan->serial_number) && $challan->serial_number != '')
-                                        {{$challan->serial_number}}
-                                        @endif
-                                    </td>
-                                    <td class="text-center">{{round($challan->total_quantity, 2)}}</td>
-                                    <td class="text-center">
-                                        <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-search fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                        </a>
 
-                                        @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                        <!--                                        <a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
-                                                                                    <span class="fa-stack">
-                                                                                        <i class="fa fa-square fa-stack-2x"></i>
-                                                                                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                                                    </span>
-                                                                                </a>
-                                        -->
-                                        <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_delivery_challan({{$challan->id}})">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-print fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                        </a>
-                                        <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan" title="delete" onclick="delete_challan({{$challan->id}})">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                        </a>
-                                        @endif
-                                    </td>
-                                </tr>
-                                @endif
-                                @endforeach
+
+                                    @elseif($challan->challan_status == 'completed')
+                                    <tr id="challan_order_row_{{$challan->id}}">
+                                        <td class="text-center">{{$k++}}</td>
+                                        <td class="text-center">{{ ($challan['customer']->tally_name != "") ? $challan['customer']->tally_name : $challan['customer']->owner_name }}</td>
+                                        <td class="text-center">
+                                            @if($challan->serial_number == '')
+                                            @elseif(isset($challan->serial_number) && $challan->serial_number != '')
+                                            {{$challan->serial_number}}
+                                            @endif
+                                        </td>
+                                        <td class="text-center">{{round($challan->total_quantity, 2)}}</td>
+                                        <td class="text-center">
+                                            <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+
+                                            @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+                                            <!--                                        <a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
+                                                                                        <span class="fa-stack">
+                                                                                            <i class="fa fa-square fa-stack-2x"></i>
+                                                                                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                                                        </span>
+                                                                                    </a>
+                                            -->
+                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_delivery_challan({{$challan->id}})">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-print fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan" title="delete" onclick="delete_challan({{$challan->id}})">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @endif
+                                    @endforeach
                                 <div class="modal fade" id="delete_challan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -153,28 +161,28 @@
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
-                                            
-                                            <form method="POST" id="delete_delivery_challan">
-                                            <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                            <input type="hidden" id="challan_id">
-                                            <div class="modal-body">
-                                                <div class="delete">
-                                                    <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
-                                                    <div class="pwd">
-                                                        <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" placeholder="" name="password" id="pwdr" type="password"></div>
 
+                                            <form method="POST" id="delete_delivery_challan">
+                                                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                                <input type="hidden" id="challan_id">
+                                                <div class="modal-body">
+                                                    <div class="delete">
+                                                        <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
+                                                        <div class="pwd">
+                                                            <div class="pwdl"><b>Password:</b></div>
+                                                            <div class="pwdr"><input class="form-control" placeholder="" name="password" id="pwdr" type="password"></div>
+
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                        <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
                                                     </div>
-                                                    <div class="clearfix"></div>
-                                                    <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
                                                 </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <input type="hidden" name="order_sort_type" value="{{ ($qstring_sort_type_order!="") ? $qstring_sort_type_order : "" }}"/>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="button" class="btn btn-default delete_challan_submit" id="delete_challan_submit" data-dismiss="modal">Yes</button>
-                                            </div>
-                                          </form>
+                                                <div class="modal-footer">
+                                                    <input type="hidden" name="order_sort_type" value="{{ ($qstring_sort_type_order!="") ? $qstring_sort_type_order : "" }}"/>
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                                    <button type="button" class="btn btn-default delete_challan_submit" id="delete_challan_submit" data-dismiss="modal">Yes</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

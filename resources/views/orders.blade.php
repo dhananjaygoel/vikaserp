@@ -100,12 +100,6 @@
                             <table id="table-example" class="table table-hover">
 
                                 <?php
-//                                echo '<pre>';
-//                                print_r($allorders->toArray());
-//                                echo '</pre>';
-//                                exit();
-
-
                                 $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
                                 ?>
                                 @foreach($allorders as $order)
