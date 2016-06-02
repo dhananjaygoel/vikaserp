@@ -196,8 +196,9 @@
                             @else
                             <div class="form-group">
                                 <label for="vatp"><b class="challan">VAT Percentage : </b>
-                                    {{$delivery_data->vat_percentage}}
-                                    <input type="hidden" name="vat_percentage" id="vat_percentage" value="{{$delivery_data->vat_percentage}}" readonly="readonly"></label>
+                                    {{($delivery_data->vat_percentage != '') ? $delivery_data->vat_percentage : ''}}
+                                    <input type="hidden" name="vat_percentage" id="vat_percentage" value="{{($delivery_data->vat_percentage>0) ? $delivery_data->vat_percentage :''}}" readonly="readonly">
+                                </label>
                             </div>
                             <div class="form-group">
                                 <label for="vatp"><b class="challan">VAT Value : </b>
