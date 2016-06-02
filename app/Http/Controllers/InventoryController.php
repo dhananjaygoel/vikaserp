@@ -76,7 +76,7 @@ class InventoryController extends Controller {
      * Display a all product inventory with stock details
      */
     public function index() {
-        $this->updateOpeningStock();
+//        $this->updateOpeningStock();
         $q = Inventory::query();
         if (Input::get('search_inventory') != "") {
             $q->whereHas('product_sub_category', function($query) {
