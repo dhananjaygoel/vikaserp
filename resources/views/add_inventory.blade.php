@@ -15,7 +15,7 @@
                         <div class="filter-block productsub_filter">
                             <form method="GET" action="{{url('inventory')}}" id="filter_search">
                                 <div class="form-group  col-md-5 pull-right">
-                                    <input class="form-control" placeholder="Enter Product Size" autocomplete="off" type="text" name="search_inventory" id="search_inventory" type="text" value="{{(Input::get('search_inventory') != '' )? Input::get('search_inventory'): ''}}" onblur="this.form.submit();">
+                                    <input class="form-control" placeholder="Enter Product Alias Name" autocomplete="off" type="text" name="search_inventory" id="search_inventory" type="text" value="{{(Input::get('search_inventory') != '' )? Input::get('search_inventory'): ''}}" onblur="this.form.submit();">
                                     <a onclick="this.form.submit();" style="cursor: pointer;">
                                         <i class="fa fa-search search-icon"></i>
                                     </a>
@@ -59,7 +59,7 @@
                         <br/>
                         <div class="table-responsive">
                             <table class="table">
-                                <thead>
+                                <thead class="inventory_table_head">
                                     <tr>
                                         <th class="opening"><span>Alias Name</span></th>
                                         <th class="opening"><span>Minimal</span></th>
@@ -96,7 +96,7 @@
                                             </td>
                                             <td>
                                                 <div class="form-group">                                                    
-                                                    <input type="text" name="{{$inventory->id}}" placeholder="Stock in(kg)" value="{{$inventory->opening_qty}}" maxlength="9" class="form-control no_alphabets" />
+                                                    <input type="text" name="{{$inventory->id}}" placeholder="Stock in(kg)" value="{{$inventory->opening_qty}}" maxlength="9" class="form-control no_alphabets txt_open_stock" />
                                                 </div>
                                             </td>
                                             <td id="sales_challan_{{$inventory->id}}">{{($inventory->sales_challan_qty <= 0 )? 0: $inventory->sales_challan_qty}}</td>
