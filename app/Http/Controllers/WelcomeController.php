@@ -775,6 +775,10 @@ class WelcomeController extends Controller {
         echo "Table name - " . $table_name . " Values are update for column name - " . $column . " to new value - " . $cvalue;
     }
 
+    public function updatecolumndatavalue($table_name, $column, $cvalue, $wherekey, $wherevalue) {
+        DB::table($table_name)->where($wherekey, $wherevalue)->update(array($column => $cvalue));
+    }
+
     /**
      * This function takes tablename as argument and displays all the column along with data type of that column
      */
