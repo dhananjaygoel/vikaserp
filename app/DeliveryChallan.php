@@ -41,7 +41,7 @@ class DeliveryChallan extends Model {
     }
 
     public function delivery_challan_products() {
-        return $this->hasMany('App\AllOrderProducts', 'order_id', 'id')->where('order_type', '=', 'delivery_challan');
+        return $this->hasMany('App\AllOrderProducts', 'order_id', 'id')->where('order_type', '=', 'delivery_challan')->where('product_category_id', '>', '0');
     }
 
     public function user() {

@@ -24,6 +24,7 @@ use App\Units;
 use App\AllOrderProducts;
 use App\PurchaseProducts;
 use App\InquiryProducts;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductsubController extends Controller {
 
@@ -34,6 +35,20 @@ class ProductsubController extends Controller {
         define('SMS_URL', Config::get('smsdata.url'));
         define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
+    }
+
+    /*
+     * Export Product size list
+     */
+
+    public function exportProductSize() {
+        $product_size_list = ProductSubCategory::with('product_category', 'product_unit')->get();
+        Excel::create('Product Sizes', function($excel) use($product_size_list) {
+            $excel->sheet('Product-Sizes-List', function($sheet) use($product_size_list) {
+                $sheet->loadView('excelView.productsize', array('product_size_list' => $product_size_list));
+            });
+        })->export('xls');
+        exit();
     }
 
     public function index() {

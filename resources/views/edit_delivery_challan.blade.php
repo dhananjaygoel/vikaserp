@@ -31,12 +31,16 @@
                             @endif
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input name="_method" type="hidden" value="PUT">
+                            <input type="hidden" name="order" value="{{$allorder->order_id}}">
+                            <input type="hidden" name="order_id" value="{{$allorder->delivery_order_id}}">
+                            <input type="hidden" id="customer_id" name="customer_id" value="{{$allorder->customer_id}}">
+                            <input type="hidden" name="existing_customer_id" value="{{$allorder->customer_id}}" id="existing_customer_id">
                             <div class="form-group">
-                                <label><b>Party Name:</b> {{$allorder['customer']->owner_name}}</label>
+                                <label><b>Party Name:</b> {{$allorder->customer->owner_name}}</label>
                             </div>
                             <hr>
                             <div class="form-group">
-                                <label><b>Serial Number:</b> {{$allorder['delivery_order']->serial_no}}</label>
+                                <label><b>Serial Number:</b> {{$allorder->delivery_order->serial_no}}</label>
                             </div>
                             <hr>
                             <div class="table-responsive">
@@ -53,12 +57,12 @@
                                         </tr>
                                         <?php $key = 1; ?>
                                         @foreach($allorder['all_order_products'] as $product)
-                                        @if($product->order_type =='delivery_challan')
+                                        @if($product->order_type == 'delivery_challan')
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-2">
                                                 <div class="form-group searchproduct">
-                                                    <input value="{{ $product['product_category']->product_category_name}}" class="form-control" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});">
-                                                    <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['product_category']->id}}">
+                                                    <input type="text" class="form-control" placeholder="Enter Product name" autocomplete="off" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{ $product['order_product_details']->alias_name}}" onfocus="delivery_challan_product_autocomplete({{$key}});">
+                                                    <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']->id}}" data-curname="{{ $product['order_product_details']->alias_name}}">
                                                     <i class="fa fa-search search-icon"></i>
                                                 </div>
                                             </td>
@@ -66,9 +70,9 @@
                                                 <div class="form-group">
                                                     <input id="quantity_{{$key}}" type="hidden" value="{{ $product->quantity}}" name="product[{{$key}}][quantity]">
                                                     @if($product->present_shipping >=0)
-                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="" type="tel" onblur="fetch_price();">
+                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{ $product->quantity}}" type="tel" onblur="fetch_price();">
                                                     @elseif($product->present_shipping <0)
-                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="" type="tel">
+                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{ $product->quantity}}" type="tel">
                                                     @endif
                                                 </div>
                                             </td>
@@ -85,19 +89,12 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    @foreach($price_delivery_order as $rate)
-                                                    @if($rate['product_id'] == $product['product_category']->id)
-                                                    <?php $product_price = $rate['total_rate']; ?>
-                                                    @endif
-                                                    @endforeach
-                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="{{$product_price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="change_amount({{$key}})">
+                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="change_amount({{$key}})">
                                                 </div>
 
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group ">
-
-
                                                     @foreach($units as $unit)
                                                     @if($unit->id == $product->unit_id)
                                                     <input class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" value="{{$unit->id}}" type="hidden">
@@ -118,7 +115,6 @@
                                         <?php $key++ ?>
                                         @endif
                                         @endforeach
-
                                     </tbody>
                                 </table>
                                 <table>
@@ -135,7 +131,6 @@
                                                                 <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
                                                             </span>
                                                         </a>
-
                                                     </div>
                                                 </div>
                                             </td>
@@ -148,11 +143,20 @@
                                     </tbody>
                                 </table>
                             </div>
-
-
                             <div class="form-group">
-                                <label for="total"><b class="challan">Total</b><span class="gtotal"><input type="text" id="total_price" name="total_price" placeholder="" readonly="readonly"></span></label>
-
+                                <label for="total">
+                                    <b class="challan">Total</b>
+                                    <span class="gtotal">
+                                        <input type="text" class="form-control" id="total_price" name="total_price" placeholder="" readonly="readonly">
+                                    </span>
+                                </label>
+                                &nbsp;&nbsp;
+                                <label for="total">
+                                    <b class="challan">Total Actual Quantity</b>
+                                    <span class="gtotal">
+                                        <input type="text" class="form-control" id="total_actual_quantity" name="total_actual_quantity" placeholder="" readonly="readonly">
+                                    </span>
+                                </label>
                             </div>
                             <div class="form-group">
                                 <label for="billno"><b class="challan">Bill Number</b></label>
@@ -160,74 +164,70 @@
                             </div>
                             <div class="form-group">
                                 <label for="driver_contact"><b class="challan">Loading</b></label>
-                                <input id="loading_charge" class="form-control" placeholder="loading" name="loading"  value="{{$allorder->loading_charge}}" type="text" onblur="grand_total_delivery_order();">
+                                <input id="loading_charge" class="form-control" placeholder="loading" name="loading"  value="{{$allorder->loading_charge}}" type="text" onblur="grand_total_challan();">
                             </div>
                             <div class="form-group">
                                 <label for="vehicle_name"><b class="challan">Discount</b></label>
-                                <input id="discount_value" class="form-control" placeholder="Discount" name="discount"  value="{{$allorder->discount}}" type="text" onblur="grand_total_delivery_order();">
+                                <input id="discount_value" class="form-control" placeholder="Discount" name="discount"  value="{{$allorder->discount}}" type="text" onblur="grand_total_challan();">
                             </div>
                             <div class="form-group">
                                 <label for="driver_name"><b class="challan">Freight</b></label>
-                                <input id="freight_value" class="form-control" placeholder="Freight " name="freight"  value="{{$allorder->freight}}" type="text" onblur="grand_total_delivery_order();">
+                                <input id="freight_value" class="form-control" placeholder="Freight " name="freight"  value="{{$allorder->freight}}" type="text" onblur="grand_total_challan();">
                             </div>
 
                             <div class="form-group">
-                                <label for="driver_contact"><b class="challan">Total</b></label>
-                                <span id="total_l_d_f"></span>
+                                <label for="driver_contact"><b class="challan">Total : </b></label>
+                                <div id="total_l_d_f"></div>
                             </div>
 
                             <div class="form-group">
                                 <label for="loadedby"><b class="challan">Loaded By</b></label>
-                                <input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby"  value="{{$allorder->loaded_by}}" type="text">
+                                <input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby"  value="{{($allorder->loaded_by != '')?$allorder->loaded_by:''}}" type="text">
                             </div>
                             <div class="form-group">
-                                <label for="labour"><b class="challan">Labour </b></label>
-                                <input id="labour" class="form-control" placeholder="Labour" name="labour" v value="{{$allorder->labours}}" type="text">
+                                <label for="roundoff"><b class="challan">Round Off</b></label>
+                                <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="{{($allorder->round_off != '')?$allorder->round_off:''}}" type="tel" onblur="grand_total_challan();">
                             </div>
-
-
-                            @if($allorder->vat_percentage > 0)
+                            @if($allorder->vat_percentage==0 || $allorder->vat_percentage=='')
                             <div class="form-group">
-                                <label for="driver_contact"><b class="challan">VAT Percentage</b> <input type="text" name="vat_percentage" id="vat_percentage" value="{{$allorder->vat_percentage}}" readonly="readonly"></label>
+                                <label for="Plusvat"><b class="challan">Plus VAT : </b> No
+                                </label>
+                            </div>
+                            @else
+                            <div class="form-group">
+                                <label for="vatp"><b class="challan">VAT Percentage : </b>
+                                    {{$delivery_data->vat_percentage}}
+                                    <input type="hidden" name="vat_percentage" id="vat_percentage" value="{{$delivery_data->vat_percentage}}" readonly="readonly"></label>
                             </div>
                             <div class="form-group">
                                 <label for="vatp"><b class="challan">VAT Value : </b>
                                     <span id="vat_val"></span>
                                 </label>
                             </div>
-                            @else
-                            <div class="form-group">
-                                <label for="Plusvat"><b class="challan">VAT</b> No</label>
-                            </div>
                             @endif
-
-
                             <div class="form-group">
-                                <label for="total"><b class="challan">Grand Total</b><span class="gtotal"><input type="text" class="form-group" name="grand_total" id="grand_total" readonly="readonly"  value="{{$allorder->grand_total}}"></span></label>
-
+                                <label for="total"><b class="challan">Grand Total : </b>
+                                    <span class="gtotal">
+                                        <input type="text" class="form-control" name="grand_total" id="grand_total" readonly="readonly">
+                                    </span>
+                                </label>
                             </div>
-
                             <div class="form-group">
                                 <label for="challan_remark"><b class="challan">Remark</b></label>
                                 <textarea class="form-control" id="challan_remark" name="challan_remark"  rows="3"> {{$allorder->remarks}}</textarea>
                             </div>
-
                             <!--  <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> -->
-
                             <hr>
-
                             <div>
                                 <button type="submit" class="btn btn-primary" >Submit</button>
 
                             </div>
-
                             <div class="clearfix"></div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 

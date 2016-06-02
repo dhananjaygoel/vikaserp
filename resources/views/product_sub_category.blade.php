@@ -15,10 +15,11 @@
                             <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search">
                                 <div class="col-md-12 pull-right">
                                     @if( Auth::user()->role_id == 0 )
-                                    <div class="col-md-2 form-group pull-right">
+                                    <div class="col-md-3 form-group pull-right">
                                         <a href="{{URL::action('ProductsubController@create')}}" class="btn btn-primary pull-right">
                                             <i class="fa fa-plus-circle fa-lg" style="cursor: pointer;"></i> Add Product Size
                                         </a>
+                                        <a href="{{url('export_product_size')}}" class="btn btn-primary form_button_footer">Export</a>
                                     </div>
                                     @endif
                                     <div class="form-group col-md-3  pull-right">
@@ -128,7 +129,6 @@
                                                 @else
                                                 {{ $produ_sub['product_category']->price + $produ_sub->difference }}
                                                 @endif
-
                                             </td>
                                             <td>
                                                 @if(Auth::user()->role_id == 0)

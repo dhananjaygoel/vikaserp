@@ -766,12 +766,7 @@ class WelcomeController extends Controller {
      * This function takes tablename, columnname, and column values as argument and updates the data accordingly
      */
     public function updatecolumndata($table_name, $column, $cvalue) {
-
-        $customer_list = Customer::all();
-        foreach ($customer_list as $eachcustomer) {
-            $eachcustomer->$column = $cvalue;
-            $eachcustomer->save();
-        }
+        DB::table($table_name)->update(array($column => $cvalue));
         echo "Table name - " . $table_name . " Values are update for column name - " . $column . " to new value - " . $cvalue;
     }
 

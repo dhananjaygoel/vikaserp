@@ -76,7 +76,7 @@ class InventoryController extends Controller {
      * Display a all product inventory with stock details
      */
     public function index() {
-
+        $this->updateOpeningStock();
         $q = Inventory::query();
         if (Input::get('search_inventory') != "") {
             $q->whereHas('product_sub_category', function($query) {
@@ -455,12 +455,29 @@ class InventoryController extends Controller {
      */
 
     public function updateOpeningStock() {
-        $inventory_list = Inventory::all();
-        if (count($inventory_list) > 0) {
-            foreach ($inventory_list as $inventory) {
-                $inventory->opening_qty = $inventory->physical_closing_qty;
-                $inventory->physical_closing_qty = 0;
-                $inventory->save();
+
+        $inventory_list = Inventory::first();
+        $current = \Carbon\Carbon::now();
+        if ($current->hour > 7) {
+            if ($inventory_list->opening_qty_date != NULL) {
+                $last_updated = explode(' ', $inventory_list->opening_qty_date);
+                $last_updated_date = $last_updated[0];
+                $last_updated_time = explode(':', $last_updated[1]);
+                $current_date = $current->toDateString();
+                $current_hour = $current->hour;
+
+                if ($last_updated_date < $current_date) {
+                    $inventory = new Inventory();
+                    $inventory->update_opening_stock();
+                } else if ($last_updated_date == $current_date) {
+                    if ($current_hour > 7 && $last_updated_time[0] < 7) {
+                        $inventory = new Inventory();
+                        $inventory->update_opening_stock();
+                    }
+                }
+            } else {
+                $inventory = new Inventory();
+                $inventory->update_opening_stock();
             }
         }
     }
