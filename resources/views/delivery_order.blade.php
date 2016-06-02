@@ -105,19 +105,13 @@
                                             @else
                                             {{$delivery['customer']->owner_name}}
                                             @endif
-
                                         </td>
                                         <td>
-                                            @if($delivery->delivery_location_id!=0)
-                                            @foreach($delivery_locations as $location)
-                                            @if($location->id == $delivery->delivery_location_id)
-                                            {{$location->area_name}}
-                                            @endif
-                                            @endforeach
+                                            @if($delivery->delivery_location_id > 0)
+                                            {{$delivery->location->area_name}}
                                             @else
                                             {{$delivery->other_location}}
                                             @endif
-
                                         </td>
                                         <td>
                                             {{ round($delivery->total_quantity, 2) }}
@@ -199,9 +193,9 @@
                                             @endif
                                         </td>
                                     </tr>
-                                
-                                
-                                @endforeach
+
+
+                                    @endforeach
                                 <div class="modal fade" id="myModalDeleteDeliveryOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -209,7 +203,7 @@
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
-                                            
+
                                             <form method="POST" accept-charset="UTF-8" id="delete_delivery_order">
                                                 <input name="_token" type="hidden" value="{{ csrf_token() }}">
                                                 <div class="modal-body">
@@ -232,7 +226,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    
+
                                                     <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                     <button type="button" class="btn btn-default delete_delivery_order_submit">Yes</button>

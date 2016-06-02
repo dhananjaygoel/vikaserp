@@ -29,7 +29,7 @@ class PurchaseProducts extends Model {
     }
 
     public function product_sub_category() {
-        return $this->hasOne('App\ProductSubCategory', 'product_category_id', 'product_category_id');
+        return $this->hasOne('App\ProductSubCategory', 'id', 'product_category_id');
     }
 
     public function purchase_product_details() {

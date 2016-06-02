@@ -189,8 +189,8 @@ class DeliveryOrderController extends Controller {
                 ];
 
                 $add_order_products = AllOrderProducts::create($order_products);
-                }
             }
+        }
         return redirect('delivery_order')->with('validation_message', 'Delivery order details successfully added.');
     }
 
