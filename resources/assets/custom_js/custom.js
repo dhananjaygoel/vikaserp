@@ -1408,8 +1408,10 @@ $("#product_size").autocomplete({
     },
     select: function (event, ui) {
         $("#product_size").val(ui.item.id);
+    },
+    close: function (event, ui) {
+        $(this).closest("form").submit();
     }
-
 });
 $("#order_size").autocomplete({
     minLength: 1,
@@ -1431,8 +1433,10 @@ $("#order_size").autocomplete({
     select: function (event, ui) {
         $("#order_size").val(ui.item.value);
         $("#order_size_temp").val(ui.item.id);
+    },
+    close: function (event, ui) {
+        $(this).closest("form").submit();
     }
-
 });
 $("#search_text").autocomplete({
     minLength: 1,
@@ -1453,6 +1457,9 @@ $("#search_text").autocomplete({
     },
     select: function (event, ui) {
         $("#search_text").val(ui.item.id);
+    },
+    close: function (event, ui) {
+        $(this).closest("form").submit();
     }
 });
 $('#save_all_price_btn').click(function () {
@@ -1485,6 +1492,9 @@ $("#search_inventory").autocomplete({
     },
     select: function (event, ui) {
         $("#search_inventory").val(ui.item.label);
+    },
+    close: function (event, ui) {
+        $(this).closest("form").submit();
     }
 });
 function isNumber(evt, element) {
