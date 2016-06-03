@@ -165,14 +165,14 @@ class DeliveryChallanController extends Controller {
 //            $delivery_challan->update([
 //                "bill_number" => $input_data['billno']]);
 //        }
-
+        
         $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)
                 ->where('order_type', '=', 'delivery_challan')
                 ->delete();
         if ($j != 0) {
             $order_products = array();
             foreach ($input_data['product'] as $product_data) {
-                if ($product_data['name'] != "" && $product_data['quantity'] != "") {
+                if ($product_data['name'] != "" && $product_data['actual_quantity'] != "") {
                     $order_products = [
                         'order_id' => $id,
                         'order_type' => 'delivery_challan',
@@ -181,7 +181,7 @@ class DeliveryChallanController extends Controller {
                         'actual_pieces' => $product_data['actual_pieces'],
                         'actual_quantity' => $product_data['actual_quantity'],
                         'quantity' => $product_data['actual_quantity'],
-                        'present_shipping' => $product_data['present_shipping'],
+                        'present_shipping' => $product_data['actual_quantity'],
                         'price' => $product_data['price'],
                         'from' => $input_data['order_id'],
                         'parent' => $input_data['order'],
