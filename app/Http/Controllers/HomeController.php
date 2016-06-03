@@ -15,6 +15,7 @@ use App\PurchaseAdvise;
 use App\PurchaseChallan;
 use App\PurchaseOrderCanceled;
 use App\PurchaseProducts;
+use App\Inventory;
 use App\Inquiry;
 use App\Order;
 use App\Units;
@@ -209,6 +210,12 @@ class HomeController extends Controller {
                         ->with('customer', 'delivery_location', 'order_cancelled')
                         ->orderBy('created_at', 'desc')->get();
         return json_encode($allorders);
+    }
+
+    public function appinventory() {
+
+        $allinventory = Inventory::with('product_sub_category')->get();
+        return json_encode($allinventory);
     }
 
     public function appdelivery_order() {
