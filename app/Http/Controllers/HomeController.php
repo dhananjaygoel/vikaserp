@@ -204,13 +204,10 @@ class HomeController extends Controller {
         $q = Order::query();
         if (isset($_GET['order_filter']) && $_GET['order_filter'] != '') {
             $q->where('order_status', '=', $_GET['order_filter']);
-        } else {
-            $q->where('order_status', '=', 'pending');
         }
         $allorders = $q->with('all_order_products')
                         ->with('customer', 'delivery_location', 'order_cancelled')
                         ->orderBy('created_at', 'desc')->get();
-
         return json_encode($allorders);
     }
 
