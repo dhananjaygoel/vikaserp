@@ -135,7 +135,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-1">' +
                 '<div class="form-group">' +
-                '<input id="actual_quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="fetch_price();">' +
+                '<input id="actual_quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][actual_quantity]" value="" type="text" onblur="fetch_price();">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
