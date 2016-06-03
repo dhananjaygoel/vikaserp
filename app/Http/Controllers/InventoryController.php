@@ -458,7 +458,7 @@ class InventoryController extends Controller {
 
         $inventory_list = Inventory::first();
         $current = \Carbon\Carbon::now();
-        if ($current->hour > 7) {
+        if ($current->hour > 11) {
             if ($inventory_list->opening_qty_date != NULL) {
                 $last_updated = explode(' ', $inventory_list->opening_qty_date);
                 $last_updated_date = $last_updated[0];
@@ -470,7 +470,7 @@ class InventoryController extends Controller {
                     $inventory = new Inventory();
                     $inventory->update_opening_stock();
                 } else if ($last_updated_date == $current_date) {
-                    if ($current_hour > 7 && $last_updated_time[0] < 7) {
+                    if ($current_hour > 11 && $last_updated_time[0] < 11) {
                         $inventory = new Inventory();
                         $inventory->update_opening_stock();
                     }
