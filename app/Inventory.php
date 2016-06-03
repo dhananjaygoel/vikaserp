@@ -18,6 +18,7 @@ class Inventory extends Model {
     public function update_opening_stock() {
         $inventory_list = Inventory::all();
         if (count($inventory_list) > 0) {
+
             foreach ($inventory_list as $inventory) {
                 $inventory->opening_qty = $inventory->physical_closing_qty;
                 $inventory->purchase_challan_qty = 0;
