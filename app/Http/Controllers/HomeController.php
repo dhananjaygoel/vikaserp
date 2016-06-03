@@ -195,7 +195,7 @@ class HomeController extends Controller {
         } else {
 
             $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')
-                            ->where('inquiry_status', 'pending')
+//                            ->where('inquiry_status', 'pending')
                             ->orderBy('created_at', 'desc')->get();
         }
         return json_encode($inquiries);
@@ -222,7 +222,7 @@ class HomeController extends Controller {
 
         $delivery_data = 0;
         $delivery_data = DeliveryOrder::orderBy('created_at', 'desc')
-                        ->where('order_status', 'pending')
+//                        ->where('order_status', 'pending')
                         ->with('delivery_product', 'customer')->get();
 
         $do_obj = new DeliveryOrderController();
@@ -236,8 +236,8 @@ class HomeController extends Controller {
     }
 
     public function appalldelivery_challan() {
-        $allorders = DeliveryChallan::where('challan_status', '=', 'pending')
-                        ->with('customer', 'delivery_challan_products', 'delivery_order')
+        $allorders = DeliveryChallan::with('customer', 'delivery_challan_products', 'delivery_order')
+//                        ->where('challan_status', '=', 'pending')
                         ->orderBy('created_at', 'desc')->get();
         return json_encode($allorders);
     }
@@ -290,8 +290,7 @@ class HomeController extends Controller {
     }
 
     public function appallpending_delivery_order() {
-        $delivery_data = DeliveryOrder::
-                where('order_status', 'pending')
+        $delivery_data = DeliveryOrder::where('order_status', 'pending')
                 ->with('user', 'customer')
                 ->get();
         return json_encode($delivery_data);
@@ -319,7 +318,7 @@ class HomeController extends Controller {
 
     public function appallpurchase_challan() {
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
-                ->where('order_status', 'pending')
+//                ->where('order_status', 'pending')
                 ->orderBy('created_at', 'desc')
                 ->get();
         return json_encode($purchase_challan);
