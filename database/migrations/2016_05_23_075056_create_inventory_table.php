@@ -24,6 +24,7 @@ class CreateInventoryTable extends Migration {
             $table->double('pending_purchase_order_qty', 8, 2);
             $table->double('pending_purchase_advise_qty', 8, 2);
             $table->double('virtual_qty', 8, 2);
+            $table->dateTime('opening_qty_date');
             $table->timestamps();
             $table->softDeletes();
         });
