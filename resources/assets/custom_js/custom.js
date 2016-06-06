@@ -12,7 +12,6 @@ $(document).ready(function () {
             dataType: 'jsonp',
             url: baseurl + "/postdemo",
             success: function (data) {
-                console.log(data);
             }
         });
     });
@@ -1393,6 +1392,10 @@ $("#product_size").autocomplete({
     minLength: 1,
     dataType: 'json',
     type: 'GET',
+    position: {
+        my: "left bottom",
+        at: "left top"
+    },
     source: function (request, response) {
         $("#product_size").addClass('loadinggif');
         $.ajax({
@@ -1417,6 +1420,10 @@ $("#order_size").autocomplete({
     minLength: 1,
     dataType: 'json',
     type: 'GET',
+    position: {
+        my: "left bottom",
+        at: "left top"
+    },
     source: function (request, response) {
         $("#order_size").addClass('loadinggif');
         $.ajax({
@@ -1442,6 +1449,10 @@ $("#search_text").autocomplete({
     minLength: 1,
     dataType: 'json',
     type: 'GET',
+    position: {
+        my: "left bottom",
+        at: "left top"
+    },
     source: function (request, response) {
         $("#search_text").addClass('loadinggif');
         $.ajax({
@@ -1477,6 +1488,10 @@ $("#search_inventory").autocomplete({
     minLength: 1,
     dataType: 'json',
     type: 'GET',
+    position: {
+        my: "left bottom",
+        at: "left top"
+    },
     source: function (request, response) {
         $("#search_inventory").addClass('loadinggif');
         $.ajax({

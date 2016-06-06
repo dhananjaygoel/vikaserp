@@ -621,6 +621,10 @@ function get_default_location() {
 function product_autocomplete_purchase(id) {
 
     $("#add_purchase_product_name_" + id).autocomplete({
+        position: {
+            my: "left bottom",
+            at: "left top"
+        },
         select: function (event, ui) {
             var term = $("#add_purchase_product_name_" + id).val();
             $.ajax({

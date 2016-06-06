@@ -3,7 +3,6 @@ var _token = $('#csrf_token').attr('content');
 var cache_customer = {};
 var cache_product = {};
 var cache_supplier = {};
-
 /*
  * Setting new Cookie
  * @param {type} cname
@@ -51,49 +50,43 @@ function deleteCookie(cname)
 $(document).ready(function () {
 
     var current_time = moment().format("h:mm a");
-
     $(".current_time").text(current_time);
-
     $("#existing_customer").click(function () {
         $(".exist_field").hide();
         $(".customer_select").show();
     });
-
     $("#new_customer").click(function () {
         $(".exist_field").show();
         $(".customer_select").hide();
     });
-
     $("#optionsRadios4").click(function () {
         $(".plusvat").show();
     });
-
     $("#optionsRadios3").click(function () {
         $(".plusvat").hide();
     });
-
     $("#existing_supplier").click(function () {
         $(".exist_field").hide();
         $(".customer_select").show();
     });
-
     $("#new_supplier").click(function () {
         $(".exist_field").show();
         $(".customer_select").hide();
     });
-
     $("#exclusive_of_vat").click(function () {
         $(".plusvat").show();
     });
-
     $("#inclusive_of_vat").click(function () {
         $(".plusvat").hide();
     });
-
     /*
      * autocomplete 
      */
     $("#existing_customer_name").autocomplete({
+        position: {
+            my: "left bottom",
+            at: "left top"
+        },
         select: function (event, ui) {
             var term = ui.item.value;
             $.ajax({
@@ -164,6 +157,10 @@ $(document).ready(function () {
 //    });
 
     $("#existing_supplier_name").autocomplete({
+        position: {
+            my: "left bottom",
+            at: "left top"
+        },
         select: function (event, ui) {
             var term = ui.item.value;
             $.ajax({
@@ -183,7 +180,6 @@ $(document).ready(function () {
             });
         }
     });
-
 //    $("#existing_supplier_name").autocomplete({
 //        minLength: 1,
 //        dataType: 'json',
@@ -227,9 +223,7 @@ $(document).ready(function () {
         'format': 'yyyy-mm-dd',
         autoclose: true
     });
-
     $('#datepickerDateComponent').datepicker();
-
 //    $("#add_product_row").on("click", function() {
 //        var current_row_count = $(".add_product_row").length + 1;
 //        $.ajax({
@@ -510,7 +504,6 @@ $(document).ready(function () {
     //flash message should be hide 
     $('#flash_message').hide();
 });
-
 function save_price_inquiry_view(id, inq_id) {
 
     var id = $("#hidden_inquiry_product_id_" + id).val();
@@ -570,6 +563,10 @@ function product_autocomplete(id) {
     var location_difference = 0;
     location_difference = $('#location_difference').val();
     $("#add_product_name_" + id).autocomplete({
+        position: {
+            my: "left bottom",
+            at: "left top"
+        },
         select: function (event, ui) {
             var term = ui.item.value;
             $.ajax({
@@ -602,6 +599,10 @@ function delivery_challan_product_autocomplete(id) {
     $("#delivery_challan_product_name_" + id).autocomplete({
         dataType: 'json',
         type: 'GET',
+        position: {
+            my: "left bottom",
+            at: "left top"
+        },
         source: function (request, response) {
             $.ajax({
                 url: baseurl + '/fetch_products',
@@ -609,7 +610,6 @@ function delivery_challan_product_autocomplete(id) {
                 data: {"term": request.term, 'customer_id': customer_id, 'location_difference': location_difference},
                 success: function (data) {
                     var obj = jQuery.parseJSON(data);
-                    console.log(obj);
                     var arr1 = obj['data_array'];
                     response(arr1);
                 },
@@ -749,6 +749,10 @@ function purchase_order_advise_product_autocomplete(id) {
         minLength: 1,
         dataType: 'json',
         type: 'GET',
+        position: {
+            my: "left bottom",
+            at: "left top"
+        },
         source: function (request, response) {
 
             $("#add_product_name_" + id).addClass('loadinggif');
@@ -778,7 +782,6 @@ $('#location_difference').on('keyup', function () {
         var location_difference = 0;
         location_difference = $('#location_difference').val();
         var rowId = $(this).attr('data-row-id');
-        console.log(rowId);
         var product = $(this).find('#add_product_name_' + rowId).val();
         if (product != '') {
             var product_id = $(this).find('#add_product_id_' + rowId).val();
@@ -794,7 +797,6 @@ $('#location_difference').on('keyup', function () {
         }
     });
 });
-
 $('#add_order_location').on('change', function () {
     var location_difference = $('option:selected', this).attr('data-location-difference');
     $('#location_difference').val(location_difference);
@@ -805,7 +807,6 @@ $('#add_order_location').on('change', function () {
         }
         location_difference = $('#location_difference').val();
         var rowId = $(this).attr('data-row-id');
-        console.log(rowId);
         var product = $(this).find('#add_product_name_' + rowId).val();
         if (product != '') {
             var product_id = $(this).find('#add_product_id_' + rowId).val();
@@ -821,7 +822,6 @@ $('#add_order_location').on('change', function () {
         }
     });
 });
-
 /**
  * Fetch cities of particular state from state id
  */
@@ -849,7 +849,6 @@ function fetch_city() {
 function delete_inquiry_row(inquiry_id)
 {
     $form = $('.delete_inquiry_form');
-
     $('.delete_inquiry_form_submit').val(inquiry_id);
 }
 
@@ -869,7 +868,6 @@ $('.delete_inquiry_form_submit').click(function () {
     $data = $form.serialize();
     /*Delete Inquiry from url*/
     url = baseurl + '/inquiry/' + inquiry_id + '-delete';
-
     var posting = $.post(url, {formData: $data});
     posting.done(function (data) {
         $("#pwdr").val('');
@@ -895,7 +893,6 @@ $('.delete_inquiry_form_submit').click(function () {
 
 
 });
-
 /*
  * Delete Order Form set orderId to order_id
  * @param {type} order_id
@@ -922,7 +919,6 @@ $('.delete_orders_modal_submit').click(function () {
     $data = $form.serialize();
     /*Delete order url*/
     url = baseurl + '/order/' + order_id + '-delete';
-
     var posting = $.post(url, {formData: $data});
     posting.done(function (data) {
         $("#pwdr").val('');
@@ -966,14 +962,12 @@ $('.cancel_orders_modal_submit').click(function () {
         headers: {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }});
-
     /* Cancel order form id object*/
     $form = $('#cancel_order_form');
     /*Cancel order form data*/
     $data = $form.serialize();
     /*Cancel order from url*/
     url = $form.attr('action');
-
     var posting = $.post(url, {formData: $data});
     posting.done(function (data) {
         $("#pwdr").val('');
@@ -1016,14 +1010,12 @@ $('.delete_delivery_order_submit').click(function () {
         headers: {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }});
-
     /* Delivery order form id object*/
     $form = $('#delete_delivery_order');
     /*Delivery order form data*/
     $data = $form.serialize();
     /*MDelivery order from url*/
     url = $form.attr('action');
-
     var posting = $.post(url, {formData: $data});
     posting.done(function (data) {
         $("#pwdr").val('');
@@ -1048,7 +1040,6 @@ $('.delete_delivery_order_submit').click(function () {
     }, 'json'); //done 
 
 });
-
 /*
  * set challan id to the form model 
  * @param {type} challan_id
@@ -1068,14 +1059,12 @@ $('.delete_challan_submit').click(function () {
         headers: {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }});
-
     /* Delete Challan form id object*/
     $form = $('#delete_delivery_challan');
     /*Delete Challan form data*/
     $data = $form.serialize();
     /*Delete Challan url*/
     url = baseurl + '/delivery_challan/' + $('#delete_challan_submit').val() + '-delete';
-
     var posting = $.post(url, {formData: $data});
     posting.done(function (data) {
         $("#pwdr").val('');
@@ -1100,7 +1089,6 @@ $('.delete_challan_submit').click(function () {
     }, 'json'); //done 
 
 });
-
 function delete_purchase_order(purchase_order_id)
 {
     $('#delete_purchase_order_submit').val(purchase_order_id);
@@ -1122,7 +1110,6 @@ $('.delete_purchase_order_submit').click(function () {
     $data = $form.serialize();
     /*Purchase Order from url*/
     url = baseurl + '/purchase_orders/' + purchase_order_id + '-delete';
-
     var posting = $.post(url, {formData: $data});
     posting.done(function (data) {
         $("#pwdr").val('');
@@ -1147,7 +1134,6 @@ $('.delete_purchase_order_submit').click(function () {
     }, 'json'); //done 
 
 });
-
 /*
  * set Purchase order id for manual complete
  * @param {type} purchase_order_id
@@ -1169,14 +1155,12 @@ $('.manual_complete_purchase_order_submit').click(function () {
         headers: {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }});
-
     /*Manual complete purchase form id object*/
     $form = $('.manual_complete_purchase_order');
     /*Manual complete purchase form data*/
     $data = $form.serialize();
     /*Manual complete purchase from url*/
     url = $form.attr('action');
-
     var posting = $.post(url, {formData: $data});
     posting.done(function (data) {
 
@@ -1201,7 +1185,6 @@ $('.manual_complete_purchase_order_submit').click(function () {
     }, 'json'); //done 
 
 });
-
 /*
  * set purchase advice id to form model
  * @param {type} purchase_advice_id
@@ -1223,14 +1206,12 @@ $('.delete_purchase_advice_submit').click(function () {
         headers: {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }});
-
     /* Purchase advice id object*/
     $form = $('#delete_purchase_advice');
     /*Purchase advice form data*/
     $data = $form.serialize();
     /*Purchase advice from url*/
     url = $form.attr('action');
-
     var posting = $.post(url, {formData: $data});
     posting.done(function (data) {
         $("#pwdr").val('');
@@ -1255,7 +1236,6 @@ $('.delete_purchase_advice_submit').click(function () {
     }, 'json'); //done 
 
 });
-
 /*
  * set purchase challan id to the form model 
  * @param {type} challan_id
@@ -1275,14 +1255,12 @@ $('.delete_purchase_challan_submit').click(function () {
         headers: {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }});
-
     /* Purchase Challan form id object*/
     $form = $('#delete_purchase_challan_form');
     /*Purchase Challan form data*/
     $data = $form.serialize();
     /*Purchase Challan url*/
     url = baseurl + '/purchase_challan/' + $('#delete_purchase_challan_submit').val() + '-delete';
-
     var posting = $.post(url, {formData: $data});
     posting.done(function (data) {
         $("#pwdr").val('');
@@ -1296,7 +1274,6 @@ $('.delete_purchase_challan_submit').click(function () {
             $('#flash_message').fadeOut(5000);
         }
         else {
-
             $('#flash_message').html("Purchase challan delete opration failed");
             $('#flash_message').removeClass('alert-success');
             $('#flash_message').addClass('alert-danger');
