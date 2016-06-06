@@ -17,7 +17,6 @@ use App\ProductCategory;
 use App\CustomerProductDifference;
 use App\Customer;
 use Input;
-use App\URLAccess;
 use App\States;
 use App\City;
 use App\Inquiry;
@@ -53,7 +52,7 @@ class CustomerController extends Controller {
         $customers = '';
         if (Input::get('search') != '') {
             $term = '%' . Input::get('search') . '%';
-           
+
             $customers = Customer::orderBy('tally_name', 'asc')
                     ->where(function($query) use($term) {
                         $query->whereHas('city', function($q) use ($term) {
@@ -70,7 +69,7 @@ class CustomerController extends Controller {
                             $q->where('first_name', 'like', $term);
                         });
                     })
-                    ->orWhere('tally_name','like',$term)
+                    ->orWhere('tally_name', 'like', $term)
                     ->where('customer_status', '=', 'permanent')
                     ->paginate(20);
         } else {
@@ -474,7 +473,7 @@ class CustomerController extends Controller {
                 return Redirect::to('customers')->with('error', $cust_msg);
             } else {
                 $customer->delete();
-                return Redirect::to('customers')->with('success', 'Customer Successfully deleted');
+                return Redirect::to('customers')->with('success', 'Customer deleted successfully.');
             }
         } else {
             return Redirect::to('customers')->with('error', 'Invalid password');

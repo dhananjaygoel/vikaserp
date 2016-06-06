@@ -20,7 +20,7 @@ class CronDeleteRecordsController extends Controller {
      */
     public function index() {
 
-//        \App\Units::create(['unit_name' => 'tons']);
+//        Units::create(['unit_name' => 'tons']);
 //        exit();
         $date = date('Y-m-d H:i:s', strtotime('-7 days'));
 

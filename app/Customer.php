@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\DeliveryLocation;
 
 class Customer extends Model {
 
@@ -14,11 +13,6 @@ class Customer extends Model {
      */
     protected $table = 'customers';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
 //    protected $fillable = ['state_id', 'city_id', 'area_name'];
 
     public function deliverylocation() {

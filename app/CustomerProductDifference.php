@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\DeliveryLocation;
 
 class CustomerProductDifference extends Model {
 
@@ -20,5 +19,4 @@ class CustomerProductDifference extends Model {
      * @var array
      */
 //    protected $fillable = ['state_id', 'city_id', 'area_name'];
-
 }

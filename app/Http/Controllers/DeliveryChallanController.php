@@ -18,7 +18,6 @@ use Auth;
 use App;
 use Hash;
 use Config;
-use App\CustomerProductDifference;
 use App\Units;
 use App\DeliveryLocation;
 use App\Customer;
@@ -165,7 +164,7 @@ class DeliveryChallanController extends Controller {
 //            $delivery_challan->update([
 //                "bill_number" => $input_data['billno']]);
 //        }
-        
+
         $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)
                 ->where('order_type', '=', 'delivery_challan')
                 ->delete();
@@ -204,18 +203,12 @@ class DeliveryChallanController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
         }
-
-
         if ($password == '') {
             return Redirect::to('delivery_challan')->with('error', 'Please enter your password');
         }
-
         $current_user = User::find(Auth::id());
-
         if (Hash::check($password, $current_user->password)) {
-
             $order = DeliveryChallan::find($id);
-
             AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
             $order->delete();
             Session::put('order-sort-type', $order_sort_type);

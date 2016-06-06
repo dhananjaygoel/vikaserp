@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\City;
-use App\States;
 use App\Order;
 use App\DeliveryOrder;
 use App\DeliveryLocation;
@@ -595,12 +593,11 @@ class DeliveryOrderController extends Controller {
         $customer_id = Input::get("customer_id");
         $delivery_location_id = Input::get("delivery_location_id");
 
-        $product_category = \App\ProductCategory::where('id', $input_data)->first();
+        $product_category = ProductCategory::find($input_data);
         $product_price = $product_category->price;
-        $product_sub_category = \App\ProductSubCategory::where('product_category_id', $input_data)->first();
+        $product_sub_category = ProductSubCategory::where('product_category_id', $input_data)->first();
         $product_difference = $product_sub_category['difference'];
-        $customer_product = CustomerProductDifference::where('customer_id', $customer_id)
-                        ->where('product_category_id', $input_data)->first();
+        $customer_product = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $input_data)->first();
         $customer_difference = 0;
         if (count($customer_product) > 0) {
             $customer_difference = $customer_product->difference_amount;

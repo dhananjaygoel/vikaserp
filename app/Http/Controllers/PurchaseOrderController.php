@@ -21,7 +21,6 @@ use Hash;
 use Mail;
 use Config;
 use App\PurchaseOrderCanceled;
-use App\PurchaseAdvise;
 use DateTime;
 use App\ProductSubCategory;
 use Session;

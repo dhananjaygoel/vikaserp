@@ -13,8 +13,6 @@ use App\ProductType;
 use App\PurchaseOrder;
 use App\PurchaseAdvise;
 use App\PurchaseChallan;
-use App\PurchaseOrderCanceled;
-use App\PurchaseProducts;
 use App\Inventory;
 use App\Inquiry;
 use App\Order;
@@ -132,9 +130,7 @@ class HomeController extends Controller {
         $pending_order = Order::where('order_status', 'pending')->count();
         $inquiry = Inquiry::all()->count();
         $pending_inquiry = Inquiry::where('inquiry_status', 'pending')->count();
-
         $delivery_order = DeliveryOrder::with('delivery_product')->get();
-
         $deliver_sum = 0;
         $deliver_pending_sum = 0;
         foreach ($delivery_order as $qty) {
@@ -188,7 +184,6 @@ class HomeController extends Controller {
     public function appinquiry() {
 
         if ((isset($_GET['inquiry_filter'])) && $_GET['inquiry_filter'] != '') {
-
             $inquiries = Inquiry::where('inquiry_status', '=', $_GET['inquiry_filter'])
                             ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')
                             ->orderBy('created_at', 'desc')->get();
@@ -206,9 +201,7 @@ class HomeController extends Controller {
         if (isset($_GET['order_filter']) && $_GET['order_filter'] != '') {
             $q->where('order_status', '=', $_GET['order_filter']);
         }
-        $allorders = $q->with('all_order_products')
-                        ->with('customer', 'delivery_location', 'order_cancelled')
-                        ->orderBy('created_at', 'desc')->get();
+        $allorders = $q->with('all_order_products')->with('customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->get();
         return json_encode($allorders);
     }
 
@@ -258,9 +251,7 @@ class HomeController extends Controller {
     }
 
     public function appallcustomers() {
-        $customers = Customer::orderBy('tally_name', 'asc')
-                ->where('customer_status', '=', 'permanent')
-                ->get();
+        $customers = Customer::orderBy('tally_name', 'asc')->where('customer_status', '=', 'permanent')->get();
         return json_encode($customers);
     }
 
@@ -290,16 +281,13 @@ class HomeController extends Controller {
     }
 
     public function appallpending_delivery_order() {
-        $delivery_data = DeliveryOrder::where('order_status', 'pending')
-                ->with('user', 'customer')
-                ->get();
+        $delivery_data = DeliveryOrder::where('order_status', 'pending')->with('user', 'customer')->get();
         return json_encode($delivery_data);
     }
 
     public function appallpurchaseorders() {
         $q = PurchaseOrder::query();
-        $purchase_orders = $q->orderBy('created_at', 'desc')
-                        ->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')->get();
+        $purchase_orders = $q->orderBy('created_at', 'desc')->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')->get();
         return json_encode($purchase_orders);
     }
 
@@ -319,23 +307,18 @@ class HomeController extends Controller {
     public function appallpurchase_challan() {
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
 //                ->where('order_status', 'pending')
-                ->orderBy('created_at', 'desc')
-                ->get();
+                        ->orderBy('created_at', 'desc')->get();
         return json_encode($purchase_challan);
     }
 
     public function appallpurchase_order_daybook() {
         $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
-                ->where('order_status', 'completed')
-                ->orderBy('created_at', 'desc')
-                ->get();
+                        ->where('order_status', 'completed')->orderBy('created_at', 'desc')->get();
         return json_encode($purchase_daybook);
     }
 
     public function applocation() {
-        $delivery_location = DeliveryLocation::where('status', '=', 'permanent')
-                        ->with('city.states')
-                        ->orderBy('created_at', 'desc')->get();
+        $delivery_location = DeliveryLocation::where('status', '=', 'permanent')->with('city.states')->orderBy('created_at', 'desc')->get();
         return json_encode($delivery_location);
     }
 
@@ -424,8 +407,6 @@ class HomeController extends Controller {
         $agent = new Agent();
         $platform = $agent->platform();
         $version = $agent->version($platform);
-
-
         $result = [];
         $result[] = $version;
         return json_encode($result);
@@ -485,16 +466,16 @@ class HomeController extends Controller {
     }
 
     public function updatedata() {
-        $product_data = \App\ProductCategory::all();
+        $product_data = ProductCategory::all();
         foreach ($product_data as $value) {
-            $product = \App\ProductCategory::find($value->id);
+            $product = ProductCategory::find($value->id);
             $product->price_new = $product->price;
             $product->save();
         }
     }
 
     public function showupdatedata() {
-        $product_data = \App\ProductCategory::all();
+        $product_data = ProductCategory::all();
         echo "<table>";
         foreach ($product_data as $value) {
             echo "<tr><td>" . $value->id . "</td><td>" . $value->product_type_id . "</td><td>" . $value->product_category_name . "</td><td>" . $value->price . "</td><td>" . $value->price_new . "</td></tr>";
@@ -503,7 +484,7 @@ class HomeController extends Controller {
     }
 
     public function update_delivery_location() {
-        $product_data = \App\Customer::where('delivery_location_id', '=', 0)->update(['delivery_location_id' => 32]);
+        $product_data = Customer::where('delivery_location_id', '=', 0)->update(['delivery_location_id' => 32]);
     }
 
     /**

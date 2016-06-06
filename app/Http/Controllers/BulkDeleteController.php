@@ -18,7 +18,6 @@ use App\PurchaseOrder;
 use App\PurchaseProducts;
 use App\PurchaseChallan;
 use App\PurchaseAdvise;
-use App\Session;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -447,7 +446,7 @@ class BulkDeleteController extends Controller {
         $bulk_searched_result = 'bulk_searched_result';
 
         if (count($delete_seletected_module) > 0) {
-            return redirect('bulk-delete?select_module='.$module.'&expected_date='.$expected_date)->with('result_data', 'result_temp', 'bulk_searched_result', 'head', 'module', 'expected_date', 'tr_id', 'msg');
+            return redirect('bulk-delete?select_module=' . $module . '&expected_date=' . $expected_date)->with('result_data', 'result_temp', 'bulk_searched_result', 'head', 'module', 'expected_date', 'tr_id', 'msg');
         } else {
             return view('bulk_delete', compact('result_data', 'result_temp', 'bulk_searched_result', 'head', 'module', 'expected_date', 'tr_id', 'msg'));
         }

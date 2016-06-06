@@ -12,7 +12,6 @@ use App\DeliveryLocation;
 use App\Order;
 use App\AllOrderProducts;
 use App\Http\Requests\PlaceOrderRequest;
-use App\ProductCategory;
 use Input;
 use DB;
 use Auth;
@@ -24,10 +23,7 @@ use Config;
 use App\OrderCancelled;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
-use App\Http\Requests\ManualCompleteOrderRequest;
 use App\DeliveryOrder;
-use App\DeliveryChallan;
-use App\Inventory;
 use App\ProductSubCategory;
 use DateTime;
 use Session;
@@ -429,22 +425,16 @@ class OrderController extends Controller {
         if (isset($input_data['customer_status']) && $input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
-
                 if (isset($input_data['pending_user_id']) && $input_data['pending_user_id'] > 0) {
-
                     $pending_cust = array(
                         'owner_name' => $input_data['customer_name'],
                         'contact_person' => $input_data['contact_person'],
                         'phone_number1' => $input_data['mobile_number'],
                         'credit_period' => $input_data['credit_period']
                     );
-
-                    Customer::where('id', $input_data['pending_user_id'])
-                            ->update($pending_cust);
-
+                    Customer::where('id', $input_data['pending_user_id'])->update($pending_cust);
                     $customer_id = $input_data['pending_user_id'];
                 } else {
-
                     $customers = new Customer();
                     $customers->owner_name = $input_data['customer_name'];
                     $customers->contact_person = $input_data['contact_person'];
@@ -461,7 +451,6 @@ class OrderController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         } elseif (isset($input_data['customer_status']) && $input_data['customer_status'] == "existing_customer") {
-
             //mail
             $validator = Validator::make($input_data, Customer::$existing_customer_order_rules);
             if ($validator->passes()) {
@@ -473,28 +462,23 @@ class OrderController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
-
         if ($input_data['status'] == 'warehouse') {
             $order_status = 'warehouse';
             $supplier_id = 0;
         }
-
         if ($input_data['status'] == 'supplier') {
             $order_status = 'supplier';
             $supplier_id = $input_data['supplier_id'];
         }
-
         if ($input_data['vat_status'] == 'include_vat') {
             $vat_price = '';
         }
-
         if ($input_data['vat_status'] == 'exclude_vat') {
             $vat_price = $input_data['vat_percentage'];
         }
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
         $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
-
         $order = Order::find($id);
         $update_order = $order->update([
             'order_source' => $order_status,
@@ -517,7 +501,6 @@ class OrderController extends Controller {
                 'location_difference' => $input_data['location_difference']
             ]);
         }
-
         $order_products = array();
         foreach ($input_data['product'] as $product_data) {
             if (($product_data['name'] != "") && ($product_data['order'] != '') && ($product_data['id'] != '') && ($product_data['id'] != 0)) {

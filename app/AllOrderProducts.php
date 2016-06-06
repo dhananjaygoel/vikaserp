@@ -9,18 +9,7 @@ class AllOrderProducts extends Model {
 
     use SoftDeletes;
 
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
     protected $table = 'all_order_products';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = ['order_id', 'order_type', 'from', 'product_category_id', 'unit_id', 'quantity', 'actual_pieces', 'price', 'present_shipping', 'remarks', 'parent', 'actual_quantity'];
     protected $dates = ['deleted_at'];
 
@@ -32,9 +21,10 @@ class AllOrderProducts extends Model {
         return $this->hasOne('App\ProductCategory', 'id', 'product_category_id');
     }
 
-    public function product_sub_category(){
-         return $this->hasOne('App\ProductSubCategory', 'id', 'product_category_id');
+    public function product_sub_category() {
+        return $this->hasOne('App\ProductSubCategory', 'id', 'product_category_id');
     }
+
     public function order_product_details() {
         return $this->hasOne('App\ProductSubCategory', 'id', 'product_category_id')->with('product_category');
     }
