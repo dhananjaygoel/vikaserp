@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Session;
                     <div class="main-box-body clearfix">
                         <form id="onenter_prevent" name="add_inquiry_form" method="POST" action="{{URL::action('InquiryController@store')}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
+                            <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                             @if (count($errors) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <ul>
@@ -92,7 +93,6 @@ use Illuminate\Support\Facades\Session;
                                     <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
                                     <input id="mobile_number" class="form-control" placeholder="Mobile Number" name="mobile_number" value="{{ old('mobile_number') }}" type="tel">
                                 </div>
-
                                 <div class="form-group">
                                     <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
                                     <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ old('credit_period') }}" type="tel">
@@ -184,7 +184,7 @@ use Illuminate\Support\Facades\Session;
                                                     </td>
                                                 </tr>
                                             <?php } ?>
-                                            <?php Session::put('input_data', ''); ?>
+                                            <?php Session::forget('input_data'); ?>
                                         </tbody>
                                     </table>
                                     <table>
@@ -193,7 +193,6 @@ use Illuminate\Support\Facades\Session;
                                                 <td>
                                                     <div class="add_button1">
                                                         <div class="form-group pull-left">
-
                                                             <label for="addmore"></label>
                                                             <a class="table-link" title="add more" id="add_product_row">
                                                                 <span class="fa-stack more_button" >
@@ -201,7 +200,6 @@ use Illuminate\Support\Facades\Session;
                                                                     <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
                                                                 </span>
                                                             </a>
-
                                                         </div>
                                                     </div>
                                                 </td>
@@ -217,7 +215,6 @@ use Illuminate\Support\Facades\Session;
                             </div>
                             <div class="clearfix"></div>
                             <div class="form-group">
-
                                 <div class="radio">
                                     <input checked="" value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
                                     <label for="optionsRadios3">All Inclusive</label>
@@ -225,7 +222,6 @@ use Illuminate\Support\Facades\Session;
                                     <label for="optionsRadios4">Plus VAT</label>
                                 </div>
                             </div>
-
                             <div class="plusvat " style="display: none">
                                 <div class="form-group">
                                     <table id="table-example" class="table ">

@@ -45,9 +45,7 @@ class PurchaseOrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-
         $q = PurchaseOrder::query();
-
         if ((isset($_GET['pending_purchase_order'])) && $_GET['pending_purchase_order'] != '') {
             $q->where('supplier_id', '=', $_GET['pending_purchase_order'])->get();
         }
@@ -56,7 +54,6 @@ class PurchaseOrderController extends Controller {
         } elseif ((isset($_GET['order_for_filter'])) && $_GET['order_for_filter'] == 'direct') {
             $q->where('order_for', '!=', 0)->get();
         }
-
         if (Auth::user()->role_id > 2) {
             if ((isset($_GET['purchase_order_filter'])) && $_GET['purchase_order_filter'] != '') {
                 $q = $q->where('order_status', '=', $_GET['purchase_order_filter'])
@@ -65,10 +62,8 @@ class PurchaseOrderController extends Controller {
                 $q = $q->where('order_status', '=', 'pending')->where('is_view_all', '=', 0);
             }
         }
-
 //        $session_sort_type_order = Session::get('order-sort-type');
 //        $qstring_sort_type_order = $_GET['purchase_order_filter'];
-
         $session_sort_type_order = Session::get('order-sort-type');
         if (isset($_GET['purchase_order_filter']))
             $qstring_sort_type_order = $_GET['purchase_order_filter'];
@@ -81,7 +76,6 @@ class PurchaseOrderController extends Controller {
                 $qstring_sort_type_order = "";
             }
         }
-
         if (Auth::user()->role_id < 2) {
             if ((isset($qstring_sort_type_order)) && $qstring_sort_type_order != '') {
                 $q = $q->where('order_status', '=', $qstring_sort_type_order);
@@ -89,16 +83,13 @@ class PurchaseOrderController extends Controller {
                 $q = $q->where('order_status', '=', 'pending');
             }
         }
-
         $purchase_orders = $q->orderBy('created_at', 'desc')
                 ->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')
                 ->Paginate(20);
-
         $purchase_orders = $this->quantity_calculation($purchase_orders);
 
         $all_customers = Customer::where('customer_status', '=', 'permanent')->orderBy('tally_name', 'ASC')->get();
         $purchase_orders->setPath('purchase_orders');
-
         return view('purchase_order', compact('purchase_orders', 'all_customers'));
     }
 
@@ -120,6 +111,21 @@ class PurchaseOrderController extends Controller {
      */
     public function store(PurchaseOrderRequest $request) {
         $input_data = Input::all();
+        if (Session::has('forms_purchase_order')) {
+            $session_array = Session::get('forms_purchase_order');
+            if (count($session_array) > 0) {
+                if (in_array($input_data['form_key'], $session_array)) {
+                    return Redirect::back()->with('flash_message', 'This purchase order is already saved. Please refresh the page');
+                } else {
+                    array_push($session_array, $input_data['form_key']);
+                    Session::put('forms_purchase_order', $session_array);
+                }
+            }
+        } else {
+            $forms_array = [];
+            array_push($forms_array, $input_data['form_key']);
+            Session::put('forms_purchase_order', $forms_array);
+        }
         $rules = array(
             'purchase_order_location' => 'required',
         );
@@ -130,11 +136,9 @@ class PurchaseOrderController extends Controller {
             Session::put('input_data', $input_data);
             return Redirect::back()->withErrors($validator)->withInput();
         }
-
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-
         $i = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
@@ -142,7 +146,6 @@ class PurchaseOrderController extends Controller {
                 $i++;
             }
         }
-
         if ($i == $j) {
             return Redirect::back()->withInput()->with('flash_message', 'Please insert product details');
         }
@@ -354,9 +357,22 @@ class PurchaseOrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-
         $input_data = Input::all();
-
+        if (Session::has('forms_edit_purchase_order')) {
+            $session_array = Session::get('forms_edit_purchase_order');
+            if (count($session_array) > 0) {
+                if (in_array($input_data['form_key'], $session_array)) {
+                    return Redirect::back()->with('flash_message_error', 'This purchase order is already updated. Please refresh the page');
+                } else {
+                    array_push($session_array, $input_data['form_key']);
+                    Session::put('forms_edit_purchase_order', $session_array);
+                }
+            }
+        } else {
+            $forms_array = [];
+            array_push($forms_array, $input_data['form_key']);
+            Session::put('forms_edit_purchase_order', $forms_array);
+        }
         $customer_id = 0;
         $i = 0;
         $j = count($input_data['product']);
@@ -365,7 +381,6 @@ class PurchaseOrderController extends Controller {
                 $i++;
             }
         }
-
         if ($i == $j) {
             return Redirect::back()->with('flash_message', 'Please insert product details');
         }
@@ -374,22 +389,16 @@ class PurchaseOrderController extends Controller {
         if ($input_data['supplier_status'] == "new_supplier") {
             $validator = Validator::make($input_data, Customer::$new_supplier_inquiry_rules);
             if ($validator->passes()) {
-
                 if (isset($input_data['pending_user_id']) && $input_data['pending_user_id'] > 0) {
-
                     $pending_cust = array(
                         'owner_name' => $input_data['supplier_name'],
                         'phone_number1' => $input_data['mobile_number'],
                         'credit_period' => $input_data['credit_period'],
                         'customer_status' => 'pending'
                     );
-
-                    Customer::where('id', $input_data['pending_user_id'])
-                            ->update($pending_cust);
-
+                    Customer::where('id', $input_data['pending_user_id'])->update($pending_cust);
                     $customer_id = $input_data['pending_user_id'];
                 } else {
-
                     $customers = new Customer();
                     $customers->owner_name = $input_data['supplier_name'];
                     $customers->phone_number1 = $input_data['mobile_number'];
@@ -417,19 +426,15 @@ class PurchaseOrderController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
-
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_delivery_date']);
         $date = date("Y-m-d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
-
-
         $purchase_order = PurchaseOrder::find($id);
         if ($input_data['vat_status'] == 'include_vat') {
             $vat_percentage = '';
         } else {
             $vat_percentage = $input_data['vat_percentage'];
         }
-
         $add_purchase_order_array = [
             'is_view_all' => $input_data['viewable_by'],
             'supplier_id' => $customer_id,
@@ -490,7 +495,6 @@ class PurchaseOrderController extends Controller {
                 'other_location_difference' => '',
             ]);
         }
-
         $purchase_order_products = array();
         $delete_old_purchase_products = PurchaseProducts::where('purchase_order_id', '=', $id)->delete();
         foreach ($input_data['product'] as $product_data) {
@@ -557,13 +561,12 @@ class PurchaseOrderController extends Controller {
         parse_str($inputData, $formFields);
         $password = $formFields['password'];
         $order_sort_type = $formFields['order_sort_type'];
-
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (Hash::check($password, Auth::user()->password)) {
-            $delete_purchase_order = PurchaseOrder::find($id)->delete();
-            $delete_purchase_products = PurchaseProducts::where('purchase_order_id', '=', $id)->where('order_type', '=', 'purchase_order')->delete();
+            PurchaseOrder::find($id)->delete();
+            PurchaseProducts::where('purchase_order_id', '=', $id)->where('order_type', '=', 'purchase_order')->delete();
             Session::put('order-sort-type', $order_sort_type);
             return array('message' => 'success');
         } else {
@@ -679,9 +682,7 @@ class PurchaseOrderController extends Controller {
 
     public function purchase_order_report() {
         $q = PurchaseOrder::query();
-        $q->where('order_status', '=', 'pending')
-                ->orderBy('created_at', 'desc')
-                ->with('customer', 'delivery_location', 'user', 'purchase_products');
+        $q->where('order_status', '=', 'pending')->orderBy('created_at', 'desc')->with('customer', 'delivery_location', 'user', 'purchase_products');
         if ((isset($_GET['pending_purchase_order'])) && $_GET['pending_purchase_order'] != '') {
             $q->where('supplier_id', '=', $_GET['pending_purchase_order'])->get();
         }
@@ -706,8 +707,6 @@ class PurchaseOrderController extends Controller {
      * else take order details in pending order
      * 2 if delivery order is generated then take those products only
      * which has there in order rest skip
-     *
-     *
      */
 
     function quantity_calculation($purchase_orders) {

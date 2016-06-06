@@ -18,11 +18,9 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
-
                         @if (Session::has('validation_message'))
                         <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('validation_message') }}</div>
                         @endif
-
                         @if (count($errors) > 0)
                         <div role="alert" class="alert alert-warning">
                             @foreach ($errors->all() as $error)
@@ -30,13 +28,12 @@
                             @endforeach
                         </div>
                         @endif
-
                         <div class="form-group">
                             Date: {{date('d F, Y')}}
-
                         </div>
                         <form id="onenter_prevent" method="POST" action="{{URL::action('DeliveryOrderController@store')}}" accept-charset="UTF-8" >
-                            <input type="hidden" name="_token" value="{{csrf_token()}}">
+                            <input type="hidden" name="_token" value="{{csrf_token()}}">                                                        
+                            <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                             <div class="form-group">
                                 <label>Customer<span class="mandatory">*</span></label>
                                 <div class="radio">

@@ -1209,10 +1209,8 @@ $('.manual_complete_purchase_order_submit').click(function () {
  */
 function delete_purchase_advice(purchase_advice_id)
 {
-
     $("#delete_purchase_advice").attr('action', baseurl + '/purchaseorder_advise/' + purchase_advice_id + '-delete');
     $('#delete_purchase_advice_submit').val(purchase_advice_id);
-
 }
 
 /*

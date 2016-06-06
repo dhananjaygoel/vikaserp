@@ -74,11 +74,8 @@ class PurchaseAdviseController extends Controller {
      */
     public function create() {
         $customers = Customer::where('customer_status', '=', 'permanent')->orderBy('tally_name', 'ASC')->get();
-
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
-
         $units = Units::all();
-
         return View::make('add_purchase_advise', array('customers' => $customers, 'delivery_locations' => $delivery_locations, 'units' => $units));
     }
 
@@ -88,6 +85,21 @@ class PurchaseAdviseController extends Controller {
     public function store(StorePurchaseAdvise $request) {
 
         $input_data = Input::all();
+        if (Session::has('forms_purchase_advise')) {
+            $session_array = Session::get('forms_purchase_advise');
+            if (count($session_array) > 0) {
+                if (in_array($input_data['form_key'], $session_array)) {
+                    return Redirect::back()->with('flash_message_error', 'This purchase advise is already saved. Please refresh the page');
+                } else {
+                    array_push($session_array, $input_data['form_key']);
+                    Session::put('forms_purchase_advise', $session_array);
+                }
+            }
+        } else {
+            $forms_array = [];
+            array_push($forms_array, $input_data['form_key']);
+            Session::put('forms_purchase_advise', $forms_array);
+        }
         $rules = array(
             'bill_date' => 'required',
             'vehicle_number' => 'required',
@@ -105,11 +117,9 @@ class PurchaseAdviseController extends Controller {
                 $i++;
             }
         }
-
         if ($i == $j) {
             return Redirect::back()->withInput()->with('error', 'Please insert product details');
         }
-
         if ($input_data['supplier_status'] == "new") {
             $validator = Validator::make($input_data, Customer::$new_supplier_rules);
             if ($validator->passes()) {
@@ -137,15 +147,12 @@ class PurchaseAdviseController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
-
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['bill_date']);
         $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
-
         $date_string2 = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_delivery_date']);
         $date2 = date("Y/m/d", strtotime(str_replace('-', '/', $date_string2)));
         $datetime2 = new DateTime($date2);
-
         $purchase_advise_array = array();
         $purchase_advise_array['purchase_advice_date'] = $datetime->format('Y-m-d');
         $purchase_advise_array['supplier_id'] = $customer_id;
@@ -156,11 +163,9 @@ class PurchaseAdviseController extends Controller {
         $purchase_advise_array['vehicle_number'] = $input_data['vehicle_number'];
         $purchase_advise_array['order_for'] = $input_data['order_for'];
         $purchase_advise_array['advice_status'] = 'in_process';
-
         if (isset($input_data['is_vat']) && $input_data['is_vat'] == "exclude_vat") {
             $purchase_advise_array['vat_percentage'] = $input_data['vat_percentage'];
         }
-
         if (isset($input_data['delivery_location_id']) && $input_data['delivery_location_id'] == "-1") {
             $purchase_advise_array['delivery_location_id'] = 0;
             $purchase_advise_array['other_location'] = $input_data['other_location_name'];
@@ -170,11 +175,8 @@ class PurchaseAdviseController extends Controller {
             $purchase_advise_array['other_location'] = '';
             $purchase_advise_array['other_location_difference'] = '';
         }
-
         $purchase_advise = PurchaseAdvise::create($purchase_advise_array);
-
         $purchase_advise_id = $purchase_advise->id;
-
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
                 $purchase_advise_products = [
@@ -215,7 +217,6 @@ class PurchaseAdviseController extends Controller {
         }
         $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $units = Units::all();
-
         return View::make('edit_purchase_advise', array('locations' => $locations, 'units' => $units, 'purchase_advise' => $purchase_advise));
     }
 
@@ -225,6 +226,21 @@ class PurchaseAdviseController extends Controller {
     public function update($id) {
 
         $input_data = Input::all();
+        if (Session::has('forms_edit_purchase_advise')) {
+            $session_array = Session::get('forms_edit_purchase_advise');
+            if (count($session_array) > 0) {
+                if (in_array($input_data['form_key'], $session_array)) {
+                    return Redirect::back()->with('flash_message_error', 'This purchase advise is already updated. Please refresh the page');
+                } else {
+                    array_push($session_array, $input_data['form_key']);
+                    Session::put('forms_edit_purchase_advise', $session_array);
+                }
+            }
+        } else {
+            $forms_array = [];
+            array_push($forms_array, $input_data['form_key']);
+            Session::put('forms_edit_purchase_advise', $forms_array);
+        }
         $rules = array(
             'vehicle_number' => 'required',
         );
@@ -232,17 +248,14 @@ class PurchaseAdviseController extends Controller {
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
         }
-
         $purchase_advise = PurchaseAdvise::find($id);
         $purchase_advise->update(
                 array(
                     'remarks' => $input_data['remarks'],
                     'vehicle_number' => $input_data['vehicle_number']
         ));
-
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
-
                 if (isset($product_data['purchase_product_id']) && $product_data['purchase_product_id'] != '') {
                     $purchase_product = PurchaseProducts::where('id', '=', $product_data['purchase_product_id'])->first();
                     $purchase_product->update(
@@ -282,27 +295,23 @@ class PurchaseAdviseController extends Controller {
     public function destroy($id) {
 
         $inputData = Input::get('formData');
-         parse_str($inputData, $formFields);
-            $password = $formFields['password'];
-            $order_sort_type = $formFields['order_sort_type'];
+        parse_str($inputData, $formFields);
+        $password = $formFields['password'];
+        $order_sort_type = $formFields['order_sort_type'];
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-
-        
         if ($password == '') {
             return Redirect::to('purchaseorder_advise')->with('error', 'Please enter your password');
         }
-
         $current_user = User::find(Auth::id());
-
         if (Hash::check($password, $current_user->password)) {
-//            $purchase_advise = PurchaseAdvise::find($id);
-//            $purchase_advise->delete();
+            PurchaseAdvise::find($id)->delete();
+            PurchaseProducts::where('purchase_order_id', '=', $id)->where('order_type', '=', 'purchase_advice')->delete();
             Session::put('order-sort-type', $order_sort_type);
-            return array('message'=>'success');
+            return array('message' => 'success');
         } else {
-            return array('message'=> 'failed');
+            return array('message' => 'failed');
         }
     }
 
@@ -314,14 +323,27 @@ class PurchaseAdviseController extends Controller {
     public function store_advise() {
 
         $input_data = Input::all();
+        if (Session::has('forms_purchase_advise')) {
+            $session_array = Session::get('forms_purchase_advise');
+            if (count($session_array) > 0) {
+                if (in_array($input_data['form_key'], $session_array)) {
+                    return Redirect::back()->with('flash_message_error', 'This purchase advise is already saved. Please refresh the page');
+                } else {
+                    array_push($session_array, $input_data['form_key']);
+                    Session::put('forms_purchase_advise', $session_array);
+                }
+            }
+        } else {
+            $forms_array = [];
+            array_push($forms_array, $input_data['form_key']);
+            Session::put('forms_purchase_advise', $forms_array);
+        }
         $validator = Validator::make($input_data, PurchaseAdvise::$store_purchase_validation);
         if ($validator->passes()) {
-
             $date_string = preg_replace('~\x{00a0}~u', '', $input_data['bill_date']);
             $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
             $datetime = new DateTime($date);
             $bill_date = $datetime->format('Y-m-d');
-
             $add_purchase_advice_array = [
                 'supplier_id' => $input_data['supplier_id'],
                 'created_by' => Auth::id(),
@@ -336,19 +358,15 @@ class PurchaseAdviseController extends Controller {
                 'vehicle_number' => $input_data['vehicle_number'],
                 'purchase_order_id' => $input_data['id']
             ];
-
             $add_purchase_advice = PurchaseAdvise::create($add_purchase_advice_array);
             $purchase_advice_id = DB::getPdo()->lastInsertId();
             $purchase_advice_products = array();
-
             $total_quantity = '';
             $total_present_shipping = '';
             foreach ($input_data['product'] as $product_data) {
                 if (($product_data['id'] != "")) {
                     if (isset($product_data['purchase']) && $product_data['purchase'] != "") {
-
                         if ($product_data['present_shipping'] != "") {
-
                             $purchase_advice_products = [
                                 'purchase_order_id' => $purchase_advice_id,
                                 'product_category_id' => $product_data['id'],
@@ -363,7 +381,6 @@ class PurchaseAdviseController extends Controller {
                                 'parent' => $product_data['key']
                             ];
                         } elseif ($product_data['present_shipping'] == "") {
-
                             $purchase_advice_products = [
                                 'purchase_order_id' => $purchase_advice_id,
                                 'product_category_id' => $product_data['id'],
@@ -390,7 +407,6 @@ class PurchaseAdviseController extends Controller {
                                 'present_shipping' => $product_data['present_shipping']
                             ];
                         } elseif ($product_data['present_shipping'] == "") {
-
                             $purchase_advice_products = [
                                 'purchase_order_id' => $purchase_advice_id,
                                 'product_category_id' => $product_data['id'],
@@ -402,25 +418,20 @@ class PurchaseAdviseController extends Controller {
                             ];
                         }
                     }
-
                     if (isset($product_data['purchase']) && $product_data['purchase'] == 'purchase_order') {
                         $total_quantity = $total_quantity + $product_data['quantity'];
                         $total_present_shipping = $total_present_shipping + $product_data['present_shipping'];
                     }
-
                     $add_purchase_advice_products = PurchaseProducts::create($purchase_advice_products);
                 }
             }
-
             if ($total_present_shipping == $total_quantity || $total_present_shipping > $total_quantity) {
                 PurchaseOrder::where('id', '=', $input_data['id'])->update(array(
                     'order_status' => 'completed'
                 ));
             }
-
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advice details successfully added.');
         } else {
-
             $error_msg = $validator->messages();
             return Redirect::back()->withInput()->withErrors($validator);
         }
@@ -437,18 +448,13 @@ class PurchaseAdviseController extends Controller {
         $filterby = "";
         $filteron = Input::get('filteron');
         $filterby = Input::get('filterby');
-
         if ((isset($filteron) && ($filteron != "")) && (isset($filterby) && ($filterby != ""))) {
             $pending_advise = PurchaseAdvise::where('advice_status', '=', "in_process")
-                    ->orderby($filteron, $filterby)
-                    ->with('purchase_products', 'supplier', 'party')
-                    ->paginate(20);
+                            ->orderby($filteron, $filterby)->with('purchase_products', 'supplier', 'party')->paginate(20);
         } else {
             $pending_advise = PurchaseAdvise::where('advice_status', '=', "in_process")
-                    ->with('purchase_products', 'supplier', 'party')
-                    ->paginate(20);
+                            ->with('purchase_products', 'supplier', 'party')->paginate(20);
         }
-
         $pending_advise->setPath('pending_purchase_advice');
         return View::make('pending_purchase_advice', array('pending_advise' => $pending_advise));
     }

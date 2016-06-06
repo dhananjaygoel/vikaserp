@@ -19,7 +19,8 @@
                 <div class="main-box">
                     <div class="main-box-body clearfix">
                         <form id="onenter_prevent" method="POST" action="{{URL::action('PurchaseAdviseController@store_advise')}}">
-                            <input type="hidden" name="_token" value="{{csrf_token()}}">
+                            <input type="hidden" name="_token" value="{{csrf_token()}}">                                                        
+                            <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                             <input type="hidden" name="id" value="{{$purchase_orders->id}}">
                             @if (count($errors) > 0)
                             <div role="alert" class="alert alert-warning">
@@ -32,6 +33,9 @@
                             @endif
                             @if (Session::has('flash_message'))
                             <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
+                            @endif
+                            @if (Session::has('flash_message_error'))
+                            <div class="alert alert-danger">{{ Session::get('flash_message_error') }}</div>
                             @endif
                             <div class="inquiry_table col-md-12">
                                 <div class="table-responsive">

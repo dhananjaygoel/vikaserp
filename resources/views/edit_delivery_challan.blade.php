@@ -30,6 +30,7 @@
                             </div>
                             @endif
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
+                            <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                             <input name="_method" type="hidden" value="PUT">
                             <input type="hidden" name="order" value="{{$allorder->order_id}}">
                             <input type="hidden" name="order_id" value="{{$allorder->delivery_order_id}}">

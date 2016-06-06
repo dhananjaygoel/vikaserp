@@ -32,6 +32,7 @@
                         <hr>
                         {!!Form::open(array('method'=>'POST','url'=>url('create_delivery_challan/'.$delivery_data['id']),'id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="order_id" value="{{$delivery_data->id}}">
+                        <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                         <input type="hidden" id="customer_id" name="customer_id" value="{{$delivery_data['customer']->id}}">
                         <div class="form-group">
                             <span>Serial Number: </span>
@@ -194,18 +195,16 @@
                             <label for="labour"><b class="challan">Labour </b></label>
                             <input id="labour" class="form-control" placeholder="Labour" name="labour" value="" type="tel">
                         </div>
-
                         @if($delivery_data->vat_percentage==0)
                         <div class="form-group">
-
-                            <label for="Plusvat"><b class="challan">Plus VAT : </b> No
-                            </label>
+                            <label for="Plusvat"><b class="challan">Plus VAT : </b> No</label>
                         </div>
                         @else
                         <div class="form-group">
                             <label for="vatp"><b class="challan">VAT Percentage : </b>
                                 {{$delivery_data->vat_percentage}}
-                                <input type="hidden" name="vat_percentage" id="vat_percentage" value="{{$delivery_data->vat_percentage}}" readonly="readonly"></label>
+                                <input type="hidden" name="vat_percentage" id="vat_percentage" value="{{$delivery_data->vat_percentage}}" readonly="readonly">
+                            </label>
                         </div>
                         <div class="form-group">
                             <label for="vatp"><b class="challan">VAT Value : </b>

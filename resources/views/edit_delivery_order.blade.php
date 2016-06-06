@@ -21,7 +21,6 @@
                         @if (Session::has('validation_message'))
                         <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('validation_message') }}</div>
                         @endif
-
                         @if (count($errors) > 0)
                         <div role="alert" class="alert alert-warning">
                             @foreach ($errors->all() as $error)
@@ -29,13 +28,12 @@
                             @endforeach
                         </div>
                         @endif
-
                         <div class="form-group">
                             Date : {{date('d F, Y')}}
                         </div>
                         {!!Form::open(array('method'=>'PUT','url'=>url('delivery_order/'.$delivery_data['id']),'id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
-
+                        <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                         @if($delivery_data['customer']->customer_status =="pending")
                         <div class="form-group">
                             <label>Customer<span class="mandatory">*</span></label>

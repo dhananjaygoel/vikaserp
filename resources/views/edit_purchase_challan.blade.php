@@ -18,7 +18,6 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
-
                         @if (count($errors) > 0)
                         <div class="alert alert-warning">
                             @foreach ($errors->all() as $error)
@@ -26,9 +25,9 @@
                             @endforeach
                         </div>
                         @endif
-
                         {!!Form::open(array('method'=>'PUT','url'=>url('purchase_challan/'.$purchase_challan['id']),'id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
+                        <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                         <div class="form-group">
                             <label><b>Bill Date:</b> {{$purchase_challan['purchase_advice']->purchase_advice_date}} </label>
                         </div>
@@ -54,7 +53,6 @@
                                         <td class="col-md-2"><span>Rate</span></td>
                                         <td class="col-md-2"><span>Amount</span></td>
                                     </tr>
-
                                     <?php $total_price = 0; ?>
                                     @foreach($purchase_challan['purchase_product'] as $key=>$products)
                                     <tr id="add_row_{{$key}}" class="add_product_row">
@@ -95,9 +93,7 @@
                                             </div>
                                         </td>
                                     </tr>
-
                                     @endforeach
-
                                 </tbody>
                             </table>
                             <table>

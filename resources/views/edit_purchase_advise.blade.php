@@ -14,12 +14,13 @@
                 </div>
             </div>
         </div>
-        <div  class="row">
+        <div class="row">
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
                         <form id="onenter_prevent" method="POST" action="{{url('purchaseorder_advise/'.$purchase_advise->id)}}" accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
+                            <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                             <input name="_method" type="hidden" value="PUT">
                             @if (count($errors) > 0)
                             <div role="alert" class="alert alert-warning">
@@ -44,6 +45,9 @@
                                 <strong> {{ Session::get('error') }} </strong>
                             </div>
                             @endif
+                            @if (Session::has('flash_message_error'))
+                            <div class="alert alert-danger">{{ Session::get('flash_message_error') }}</div>
+                            @endif
                             <div class="form-group">
                                 <label for="billdate"><b>Bill Date:</b> {{date("jS F, Y", strtotime($purchase_advise->purchase_advice_date))}}</label>
                             </div>
@@ -67,9 +71,7 @@
                                                 <td><span>Remark</span></td>
                                             </tr>
                                             @foreach($purchase_advise['purchase_products'] as $key=>$product)
-
                                         <input type="hidden" value="{{$product->from}}" name="product[{{$key}}][purchase]">
-
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
@@ -89,7 +91,6 @@
                                                     <input type="tel" class="form-control" value="{{$product->actual_pieces}}" name="product[{{$key}}][actual_pieces]">
                                                 </div>
                                             </td>
-
                                             <td class="col-md-1">
                                                 <div class="form-group">
                                                     <?php $pending_quantity = $product->quantity - $product->present_shipping; ?>

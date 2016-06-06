@@ -53,7 +53,6 @@ class OrderController extends Controller {
             $_GET['order_filter'] = $order_sorttype;
         }
 
-
         $q = Order::query();
 
         if (isset($_GET['order_filter']) && $_GET['order_filter'] != '') {
@@ -128,17 +127,30 @@ class OrderController extends Controller {
      */
     public function store(PlaceOrderRequest $request) {
         $input_data = Input::all();
+        if (Session::has('forms_order')) {
+            $session_array = Session::get('forms_order');
+            if (count($session_array) > 0) {
+                if (in_array($input_data['form_key'], $session_array)) {
+                    return Redirect::back()->with('flash_message', 'This order is already saved. Please refresh the page');
+                } else {
+                    array_push($session_array, $input_data['form_key']);
+                    Session::put('forms_order', $session_array);
+                }
+            }
+        } else {
+            $forms_array = [];
+            array_push($forms_array, $input_data['form_key']);
+            Session::put('forms_order', $forms_array);
+        }
         $rules = array(
             'status' => 'required',
         );
         $validator = Validator::make($input_data, $rules);
-
         if ($validator->fails()) {
             Session::forget('product');
             Session::put('input_data', $input_data);
             return Redirect::back()->withErrors($validator)->withInput();
         }
-
         if ($input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
@@ -203,26 +215,20 @@ class OrderController extends Controller {
         if ($input_data['status1'] == 'exclude_vat') {
             $vat_price = $input_data['vat_price'];
         }
-
         if ($input_data['customer_status'] == "new_customer") {
             $customers->save();
             $customer_id = $customers->id;
         }
-
         $order = new Order();
         $order->order_source = $order_status;
         $order->supplier_id = $supplier_id;
         $order->customer_id = $customer_id;
         $order->created_by = Auth::id();
-
         $order->vat_percentage = $vat_price;
-
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
         $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
-
         $order->expected_delivery_date = $datetime->format('Y-m-d');
-
         $order->remarks = $input_data['order_remark'];
         $order->order_status = "Pending";
         if (isset($input_data['location']) && ($input_data['location'] != "")) {
@@ -295,9 +301,7 @@ class OrderController extends Controller {
                 }
             }
         }
-
         $order->save();
-
         $order_id = DB::getPdo()->lastInsertId();
         $order_products = array();
         foreach ($input_data['product'] as $product_data) {
@@ -322,9 +326,7 @@ class OrderController extends Controller {
          */
         if (isset($input_data['send_email'])) {
             $customers = Customer::find($customer_id);
-
 //            if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
-
             $order = Order::where('id', '=', $order_id)->with('all_order_products.order_product_details', 'delivery_location')->first();
             if (count($order) > 0) {
                 if (count($order['delivery_location']) > 0) {
@@ -340,7 +342,6 @@ class OrderController extends Controller {
                     'order_product' => $order['all_order_products'],
                     'source' => 'create_order'
                 );
-
                 $receipent = array();
                 if (App::environment('development')) {
                     $receipent['email'] = Config::get('smsdata.emailData.email');
@@ -349,7 +350,6 @@ class OrderController extends Controller {
                     $receipent['email'] = $customers->email;
                     $receipent['name'] = $customers->owner_name;
                 }
-
                 Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($receipent) {
                     $message->to($receipent['email'], $receipent['name'])->subject('Vikash Associates: New Order');
                 });
@@ -370,7 +370,6 @@ class OrderController extends Controller {
         $units = Units::all();
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
-
         return View::make('order_detail', compact('order', 'delivery_location', 'units', 'customers'));
     }
 
@@ -381,7 +380,6 @@ class OrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-
         $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
@@ -389,7 +387,6 @@ class OrderController extends Controller {
         $units = Units::all();
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $customers = Customer::where('customer_status', 'permanent')->get();
-
         return View::make('edit_order', compact('order', 'delivery_location', 'units', 'customers'));
     }
 
@@ -399,18 +396,31 @@ class OrderController extends Controller {
     public function update($id, PlaceOrderRequest $request) {
 
         $input_data = Input::all();
+        if (Session::has('forms_edit_order')) {
+            $session_array = Session::get('forms_edit_order');
+            if (count($session_array) > 0) {
+                if (in_array($input_data['form_key'], $session_array)) {
+                    return Redirect::back()->with('flash_message', 'This order is already updated. Please refresh the page');
+                } else {
+                    array_push($session_array, $input_data['form_key']);
+                    Session::put('forms_edit_order', $session_array);
+                }
+            }
+        } else {
+            $forms_array = [];
+            array_push($forms_array, $input_data['form_key']);
+            Session::put('forms_edit_order', $forms_array);
+        }
         $rules = array(
             'status' => 'required',
         );
         $validator = Validator::make($input_data, $rules);
-
         if ($validator->fails()) {
             Session::forget('product');
             Session::put('input_data', $input_data);
             return Redirect::back()->withErrors($validator)->withInput();
         }
         $i = 0;
-
         $customer_id = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
@@ -421,7 +431,6 @@ class OrderController extends Controller {
         if ($i == $j) {
             return Redirect::back()->with('flash_message', 'Please insert product details');
         }
-
         if (isset($input_data['customer_status']) && $input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
@@ -667,14 +676,10 @@ class OrderController extends Controller {
         }
 
         $formFields = Input::get('formData');
-
         parse_str($formFields, $input);
-
         $order_id = $input['order_id'];
         $reason_type = $input['reason_type'];
-
         $reason = $input['reason'];
-
         $order = Order::where('id', '=', $order_id)->with('all_order_products.order_product_details', 'all_order_products.unit', 'customer')->first();
 
         /*
@@ -730,7 +735,6 @@ class OrderController extends Controller {
                     'delivery_location' => $delivery_location,
                     'order_product' => $order['all_order_products']
                 );
-
                 $receipent = array();
                 if (App::environment('development')) {
                     $receipent['email'] = Config::get('smsdata.emailData.email');
@@ -746,11 +750,9 @@ class OrderController extends Controller {
             }
 //            }
         }
-
         $update_order = $order->update([
             'order_status' => "Cancelled"
         ]);
-
         $cancel_order = OrderCancelled::create([
                     'order_id' => $order_id,
                     'order_type' => 'Order',
@@ -758,7 +760,6 @@ class OrderController extends Controller {
                     'reason' => $reason,
                     'cancelled_by' => Auth::id()
         ]);
-
         return array('message' => 'success');
     }
 
@@ -860,6 +861,21 @@ class OrderController extends Controller {
     public function store_delivery_order($id) {
 
         $input_data = Input::all();
+        if (Session::has('forms_delivery_order')) {
+            $session_array = Session::get('forms_delivery_order');
+            if (count($session_array) > 0) {
+                if (in_array($input_data['form_key'], $session_array)) {
+                    return Redirect::back()->with('flash_message', 'This delivry order is already saved. Please refresh the page');
+                } else {
+                    array_push($session_array, $input_data['form_key']);
+                    Session::put('forms_delivery_order', $session_array);
+                }
+            }
+        } else {
+            $forms_array = [];
+            array_push($forms_array, $input_data['form_key']);
+            Session::put('forms_delivery_order', $forms_array);
+        }
         $validator = Validator::make($input_data, Order::$order_to_delivery_order_rules);
         if ($validator->passes()) {
 

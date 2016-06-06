@@ -20,8 +20,8 @@
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="order_id" value="{{$order->id}}">
                         <input type="hidden" name="customer_id" value="{{$order['customer']->id}}" id="hidden_cutomer_id">
-                        <input type="hidden" name="existing_customer_id" value="{{$order['customer']->id}}" id="existing_customer_id">
-
+                        <input type="hidden" name="existing_customer_id" value="{{$order['customer']->id}}" id="existing_customer_id">                                                    
+                        <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                         @if (count($errors) > 0)
                         <div role="alert" class="alert alert-warning">
                             <ul>

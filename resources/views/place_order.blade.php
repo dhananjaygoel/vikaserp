@@ -32,7 +32,8 @@
                         <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
                         @endif
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
-                        <input type="hidden" name="inquiry_id" value="{{$inquiry->id}}">
+                        <input type="hidden" name="inquiry_id" value="{{$inquiry->id}}">                                                        
+                        <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                         <input type="hidden" name="customer_id" value="{{$inquiry['customer']->id}}" id="hidden_cutomer_id">
                         <div class="radio">
                             <input checked="" value="warehouse" id="warehouse_radio" name="status" type="radio">
@@ -87,7 +88,6 @@
                                 <label for="mobile_number">Phone Number </label>
                                 <input id="mobile_number" class="form-control" placeholder="Phone Number " name="mobile_number" value="{{$inquiry['customer']->phone_number1}}" type="tel">
                             </div>
-
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)</label>
                                 <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$inquiry['customer']->credit_period}}" type="tel">
@@ -127,7 +127,6 @@
                                 <label for="mobile_number">Mobile Number </label>
                                 <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" type="tel">
                             </div>
-
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)</label>
                                 <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="tel">
@@ -184,7 +183,6 @@
                                             </td>
                                         </tr>
                                         @endforeach
-
                                     </tbody>
                                 </table>
                                 <table>
@@ -193,7 +191,6 @@
                                             <td>
                                                 <div class="add_button1">
                                                     <div class="form-group pull-left">
-
                                                         <label for="addmore"></label>
                                                         <a class="table-link" title="add more" id="add_product_row">
                                                             <span class="fa-stack more_button" >
@@ -201,7 +198,6 @@
                                                                 <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
                                                             </span>
                                                         </a>
-
                                                     </div>
                                                 </div>
                                             </td>
@@ -272,7 +268,6 @@
                                 <label for="optionsRadios4">Plus VAT</label>
                             </div>
                         </div>
-
                         <div class="plusvat " style="display: none">
                             <div class="form-group">
                                 <table id="table-example" class="table ">
@@ -294,7 +289,6 @@
                                 <label for="optionsRadios4">Plus VAT</label>
                             </div>
                         </div>
-
                         <div class="plusvat">
                             <div class="form-group">
                                 <table id="table-example" class="table ">

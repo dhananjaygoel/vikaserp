@@ -37,16 +37,11 @@ class PurchaseChallanController extends Controller {
 
         if (isset($_GET['order_filter']) && $_GET['order_filter'] != '') {
             $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
-                    ->where('order_status', $_GET['order_filter'])
-                    ->orderBy('created_at', 'desc')
-                    ->Paginate(20);
+                            ->where('order_status', $_GET['order_filter'])->orderBy('created_at', 'desc')->Paginate(20);
         } else {
             $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
-                    ->where('order_status', 'pending')
-                    ->orderBy('created_at', 'desc')
-                    ->Paginate(20);
+                            ->where('order_status', 'pending')->orderBy('created_at', 'desc')->Paginate(20);
         }
-
         $purchase_challan->setPath('purchase_challan');
         return view('purchase_challan', compact('purchase_challan'));
     }
@@ -57,6 +52,21 @@ class PurchaseChallanController extends Controller {
     public function store(PurchaseChallanRequest $request) {
 
         $input_data = Input::all();
+        if (Session::has('forms_purchase_challan')) {
+            $session_array = Session::get('forms_purchase_challan');
+            if (count($session_array) > 0) {
+                if (in_array($input_data['form_key'], $session_array)) {
+                    return Redirect::back()->with('flash_message', 'This order is already saved. Please refresh the page');
+                } else {
+                    array_push($session_array, $input_data['form_key']);
+                    Session::put('forms_purchase_challan', $session_array);
+                }
+            }
+        } else {
+            $forms_array = [];
+            array_push($forms_array, $input_data['form_key']);
+            Session::put('forms_purchase_challan', $forms_array);
+        }
         $add_challan = new PurchaseChallan();
         $add_challan->expected_delivery_date = $request->input('bill_date');
         $add_challan->purchase_advice_id = $request->input('purchase_advice_id');
@@ -106,7 +116,6 @@ class PurchaseChallanController extends Controller {
                     'price' => $product_data['price'],
                     'parent' => $product_data['id'],
                 ];
-
                 $add_order_products = PurchaseProducts::create($order_products);
             } else {
                 $order_products = [
@@ -118,11 +127,9 @@ class PurchaseChallanController extends Controller {
                     'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price']
                 ];
-
                 $add_order_products = PurchaseProducts::create($order_products);
             }
         }
-
         return redirect('purchase_challan')->with('success', 'Challan details successfully added.');
     }
 
@@ -135,7 +142,6 @@ class PurchaseChallanController extends Controller {
         if (count($purchase_challan) < 1) {
             return redirect('purchase_challan')->with('flash_message', 'Challan not found');
         }
-
         return view('view_purchase_challan', compact('purchase_challan'));
     }
 
@@ -208,12 +214,12 @@ class PurchaseChallanController extends Controller {
         $inputData = Input::get('formData');
         parse_str($inputData, $formFields);
         $password = $formFields['password'];
-
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (Hash::check($password, Auth::user()->password)) {
-            $delete_purchase_challan = PurchaseChallan::find($id)->delete();
+            PurchaseChallan::find($id)->delete();
+            PurchaseProducts::where('purchase_order_id', '=', $id)->where('order_type', '=', 'purchase_challan')->delete();
             return array('message' => 'success');
         } else {
             return array('message' => 'failed');
@@ -223,13 +229,11 @@ class PurchaseChallanController extends Controller {
     public function print_purchase_challan($id) {
 
         $current_date = date("m/d");
-
         $date_letter = 'PC/' . $current_date . "/" . $id;
         PurchaseChallan::where('id', $id)->update(array(
             'serial_number' => $date_letter,
             'order_status' => "Completed"
         ));
-
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'all_purchase_products.purchase_product_details', 'all_purchase_products.unit')->where('id', $id)->first();
 
         /*

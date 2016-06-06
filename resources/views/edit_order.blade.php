@@ -17,6 +17,7 @@
                     <div class="main-box-body clearfix">
                         {!! Form::open(array('method'=>'PUT','url'=>url('orders',$order->id), 'id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
+                        <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                         <input type="hidden" name="order_id" value="{{$order->id}}">
                         <input type="hidden" name="customer_id" value="{{$order['customer']->id}}" id="hidden_cutomer_id">
                         @if (count($errors) > 0)

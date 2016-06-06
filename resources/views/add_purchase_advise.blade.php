@@ -23,7 +23,8 @@ use Illuminate\Support\Facades\Session;
                 <div class="main-box">
                     <div class="main-box-body clearfix">
                         <form id="onenter_prevent" method="POST" action="{{url('purchaseorder_advise')}}" accept-charset="UTF-8" >
-                            <input type="hidden" name="_token" value="{{csrf_token()}}">
+                            <input type="hidden" name="_token" value="{{csrf_token()}}">                                                        
+                            <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                             @if (count($errors) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <ul>
@@ -46,6 +47,9 @@ use Illuminate\Support\Facades\Session;
                                 <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                 <strong> {{ Session::get('error') }} </strong>
                             </div>
+                            @endif
+                            @if (Session::has('flash_message_error'))
+                            <div class="alert alert-danger">{{ Session::get('flash_message_error') }}</div>
                             @endif
                             <table id="table-example" class="table ">
                                 <tbody>
@@ -194,7 +198,6 @@ use Illuminate\Support\Facades\Session;
                                                                     <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
                                                                 </span>
                                                             </a>
-
                                                         </div>
                                                     </div>
                                                 </td>
@@ -223,7 +226,6 @@ use Illuminate\Support\Facades\Session;
                                 </div>
                             </div>
                             <div class="clearfix"></div>
-
                             <div class="locationtext" id="other_location_input_wrapper">
                                 <div class="row">
                                     <div class="form-group col-md-4">
@@ -274,15 +276,12 @@ use Illuminate\Support\Facades\Session;
                                 </div>
                             </div>
                             <!--<div class="form-group">-->
-
                             <!--<label for="price">Total Price</label>-->
                             <input id="price" class="form-control" placeholder="Total Price" name="total_price" value="" type="hidden">
-
                             <!--</div>-->
                             <div class="form-group">
                                 <label for="cp">Vehicle Number <span class="mandatory">*</span></label>
                                 <input id="cp" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{ Input::old('vehicle_number') }}" type="text">
-
                             </div>
                             <div class="form-group col-md-4 targetdate">
 
@@ -311,7 +310,6 @@ use Illuminate\Support\Facades\Session;
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 @include('autocomplete_tally_product_name')

@@ -31,7 +31,11 @@
                         @if (Session::has('flash_message'))
                         <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
                         @endif
+                        @if (Session::has('flash_message_error'))
+                        <div class="alert alert-danger">{{ Session::get('flash_message_error') }}</div>
+                        @endif
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
+                        <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                         <input type="hidden" name="purchase_order_id" value="{{$purchase_order->id}}">
                         <input type="hidden" name="supplier_id" value="{{$purchase_order['customer']->id}}" id="hidden_supplier_id">
                         <div class="form-group ">
@@ -221,7 +225,6 @@
                                         <td>
                                             <div class="add_button1">
                                                 <div class="form-group pull-left">
-
                                                     <label for="addmore"></label>
                                                     <a class="table-link" title="add more" id="add_product_row">
                                                         <span class="fa-stack more_button" >
@@ -229,7 +232,6 @@
                                                             <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
                                                         </span>
                                                     </a>
-
                                                 </div>
                                             </div>
                                         </td>
@@ -248,17 +250,13 @@
                             <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                             <select class="form-control" name="purchase_order_location" id="purchase_other_location">
                                 <option value="0" selected="">--Delivery Location--</option>
-
                                 @foreach($delivery_locations as $delivery_location)
-
                                 @if($delivery_location->status == 'permanent')
-
                                 @if($purchase_order->delivery_location_id == $delivery_location->id)
                                 <option value="{{$delivery_location->id}}" selected="">{{$delivery_location->area_name}}</option>
                                 @else
                                 <option value="{{$delivery_location->id}}">{{$delivery_location->area_name}}</option>
                                 @endif
-
                                 @endif
                                 @endforeach
                                 @if( $purchase_order->delivery_location_id == 0)
@@ -266,8 +264,6 @@
                                 @else
                                 <option value="-1">Other </option>
                                 @endif
-
-
                             </select>
                         </div>
                     </div>
@@ -284,7 +280,6 @@
                                 <input id="location_difference" class="form-control" placeholder="Location " name="other_location_difference" value="{{$purchase_order->other_location_difference}}" type="tel">
                             </div>
                         </div>
-
                     </div>
                     @else
                     <div class="locationtext" id="other_location_input_wrapper">
@@ -326,7 +321,6 @@
                             <label for="optionsRadios4">Plus VAT</label>
                         </div>
                     </div>
-
                     <div class="plusvat " style="display: none">
                         <div class="form-group">
                             <table id="table-example" class="table ">
@@ -348,7 +342,6 @@
                             <label for="optionsRadios4">Plus VAT</label>
                         </div>
                     </div>
-
                     <div class="plusvat">
                         <div class="form-group">
                             <table id="table-example" class="table ">
@@ -362,7 +355,6 @@
                         </div>
                     </div>
                     @endif
-
                     <div class="form-group col-md-4 targetdate">
                         <label for="date">Expected Delivery Date: <span class="mandatory">*</span></label>
                         <div class="input-group">
@@ -371,7 +363,6 @@
                         </div>
                     </div>
                     <div class="clearfix"></div>
-
                     <div class="form-group">
                         <label for="inquiry_remark">Remark</label>
                         <textarea class="form-control" id="inquiry_remark" name="purchase_order_remark"  rows="3">{{$purchase_order->remarks}}</textarea>
@@ -391,7 +382,6 @@
             </div>
         </div>
     </div>
-
 </div>
 </div>
 @include('autocomplete_tally_product_name')
