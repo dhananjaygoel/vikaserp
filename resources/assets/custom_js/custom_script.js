@@ -83,10 +83,6 @@ $(document).ready(function () {
      * autocomplete 
      */
     $("#existing_customer_name").autocomplete({
-        position: {
-            my: "left bottom",
-            at: "left top"
-        },
         select: function (event, ui) {
             var term = ui.item.value;
             $.ajax({
@@ -157,10 +153,6 @@ $(document).ready(function () {
 //    });
 
     $("#existing_supplier_name").autocomplete({
-        position: {
-            my: "left bottom",
-            at: "left top"
-        },
         select: function (event, ui) {
             var term = ui.item.value;
             $.ajax({
