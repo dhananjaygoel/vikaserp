@@ -25,6 +25,7 @@
                 @endif
                 <form method="POST" action="{{URL::action('PurchaseChallanController@store')}}" accept-charset="UTF-8" id="onenter_prevent">
                     <input type="hidden" name="_token" value="{{csrf_token()}}">
+                    <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                     <input type="hidden" name="purchase_advice_id" value="{{$purchase_advise->id}}"/>
                     <input type="hidden" name="purchase_order_id" value="{{$purchase_advise->purchase_order_id}}"/>
                     <input type="hidden" name="delivery_location_id" value="{{$purchase_advise->delivery_location_id}}"/>

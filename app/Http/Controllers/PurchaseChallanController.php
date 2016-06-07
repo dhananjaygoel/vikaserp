@@ -18,6 +18,7 @@ use Config;
 use App\Customer;
 use App\ProductSubCategory;
 use App\PurchaseAdvise;
+use Illuminate\Support\Facades\Session;
 
 class PurchaseChallanController extends Controller {
 
