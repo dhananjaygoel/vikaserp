@@ -593,7 +593,8 @@ function delivery_challan_product_autocomplete(id) {
         type: 'GET',
         position: {
             my: "left bottom",
-            at: "left top"
+            at: "left top",
+            collision: "flip"
         },
         source: function (request, response) {
             $.ajax({
