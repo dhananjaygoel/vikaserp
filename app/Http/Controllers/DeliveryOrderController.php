@@ -427,7 +427,7 @@ class DeliveryOrderController extends Controller {
 
     public function create_delivery_challan($id) {
 
-        $delivery_data = DeliveryOrder::with('custopmer', 'delivery_product.order_product_details')->where('id', $id)->first();
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->where('id', $id)->first();
         if (count($delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
         }
