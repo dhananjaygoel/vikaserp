@@ -444,11 +444,20 @@ class DeliveryOrderController extends Controller {
     public function store_delivery_challan($id) {
 
         $input_data = Input::all();
+
+        $delivery_order_details = DeliveryOrder::find($id);
+        if (!empty($delivery_order_details)) {
+            if ($delivery_order_details->order_status == 'completed') {
+                return Redirect::back()->with('validation_message', 'This delivry order is already converted to delivry challan. Please refresh the page');
+            }
+        }
+
+
         if (Session::has('forms_delivery_challan')) {
             $session_array = Session::get('forms_delivery_challan');
             if (count($session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
-                    return Redirect::back()->with('flash_message', 'This delivery challan is already saved. Please refresh the page');
+                    return Redirect::back()->with('validation_message', 'This delivery challan is already saved. Please refresh the page');
                 } else {
                     array_push($session_array, $input_data['form_key']);
                     Session::put('forms_delivery_challan', $session_array);
