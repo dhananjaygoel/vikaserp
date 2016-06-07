@@ -23,6 +23,9 @@
                     @endforeach
                 </div>
                 @endif
+                @if (Session::has('validation_message'))
+                <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('validation_message') }}</div>
+                @endif
                 <form method="POST" action="{{URL::action('PurchaseChallanController@store')}}" accept-charset="UTF-8" id="onenter_prevent">
                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                     <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">

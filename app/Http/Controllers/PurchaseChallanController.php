@@ -19,6 +19,7 @@ use App\Customer;
 use App\ProductSubCategory;
 use App\PurchaseAdvise;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 
 class PurchaseChallanController extends Controller {
 
@@ -53,6 +54,11 @@ class PurchaseChallanController extends Controller {
     public function store(PurchaseChallanRequest $request) {
 
         $input_data = Input::all();
+
+        $purchase_advise_details = PurchaseAdvise::find($request->input('purchase_advice_id'));
+        if ($purchase_advise_details->advice_status == 'delivered') {
+            return Redirect::back()->with('validation_message', 'This purchase advise is already converted to purchase challan. Please refresh the page');
+        }
         if (Session::has('forms_purchase_challan')) {
             $session_array = Session::get('forms_purchase_challan');
             if (count($session_array) > 0) {
