@@ -868,9 +868,6 @@ class OrderController extends Controller {
                 return Redirect::back()->with('flash_message', 'This delivry order is already saved. Please refresh the page');
             }
         }
-        if (in_array($input_data['form_key'], $session_array)) {
-            return Redirect::back()->with('flash_message', 'This delivry order is already saved. Please refresh the page');
-        }
 
         if (Session::has('forms_delivery_order')) {
             $session_array = Session::get('forms_delivery_order');
