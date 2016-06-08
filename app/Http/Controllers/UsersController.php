@@ -17,6 +17,7 @@ use Input;
 use DB;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UpdateUser;
+use Jenssegers\Agent\Agent;
 
 class UsersController extends Controller {
 
