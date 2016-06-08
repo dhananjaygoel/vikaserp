@@ -36,6 +36,10 @@ class DeliveryChallan extends Model {
         return $this->hasOne('App\DeliveryOrder', 'id', 'delivery_order_id')->withTrashed();
     }
 
+    public function order_details() {
+        return $this->belongsTo('App\Order', 'order_id', 'id')->withTrashed();
+    }
+
     public function all_order_products() {
         return $this->hasMany('App\AllOrderProducts', 'order_id', 'id')->where('product_category_id', '>', '0');
     }
@@ -45,7 +49,7 @@ class DeliveryChallan extends Model {
     }
 
     public function user() {
-        return $this->hasMany('App\User', 'id', 'created_by');
+        return $this->belongsTo('App\User', 'created_by', 'id');
     }
 
     public function delivery_location() {

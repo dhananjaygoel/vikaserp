@@ -44,10 +44,11 @@
                                                 @else
                                                 {{$inquiry['customer']->owner_name}}
                                                 @endif
-
                                             </td>
                                         </tr>
-                                        <tr><td><span>Contact Person: </span>{{$inquiry['customer']->contact_person}}</td></tr>
+                                        <tr>
+                                            <td><span>Contact Person: </span>{{$inquiry['customer']->contact_person}}</td>
+                                        </tr>
                                         <tr>
                                             <td><span>Phone Number: </span>{{$inquiry['customer']->phone_number1}}</td>
                                         </tr>

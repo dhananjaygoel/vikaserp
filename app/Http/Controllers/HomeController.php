@@ -183,8 +183,9 @@ class HomeController extends Controller {
 
     public function appinquiry() {
 
-        if ((isset($_GET['inquiry_filter'])) && $_GET['inquiry_filter'] != '') {
-            $inquiries = Inquiry::where('inquiry_status', '=', $_GET['inquiry_filter'])
+        $data = Input::all();
+        if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
+            $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])
                             ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')
                             ->orderBy('created_at', 'desc')->get();
         } else {
@@ -197,9 +198,10 @@ class HomeController extends Controller {
     }
 
     public function apporders() {
+        $data = Input::all();
         $q = Order::query();
-        if (isset($_GET['order_filter']) && $_GET['order_filter'] != '') {
-            $q->where('order_status', '=', $_GET['order_filter']);
+        if (isset($data['order_filter']) && $data['order_filter'] != '') {
+            $q->where('order_status', '=', $data['order_filter']);
         }
         $allorders = $q->with('all_order_products')->with('customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->get();
         return json_encode($allorders);
@@ -324,9 +326,9 @@ class HomeController extends Controller {
 
     // All Functions added by user 157 for app ends here //
     public function applogin() {
-
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+        $data = Input::all();
+        $username = $data['username'];
+        $password = $data['password'];
 
         if (Auth::validate(['mobile_number' => $username, 'password' => $password])) {
             return json_encode(array(

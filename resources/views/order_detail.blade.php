@@ -160,9 +160,14 @@
                                         <tr>
                                             <td><span>Expected Delivery Date: </span>{{date("F jS, Y", strtotime($order->expected_delivery_date)) }}</td>
                                         </tr>
-
                                         <tr>
                                             <td><span>Remark: </span>{{$order->remarks}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span>Order By : </span>{{$order->createdby->first_name." ".$order->createdby->last_name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span>Order Time/Date : </span>{{$order->updated_at}}</td>
                                         </tr>
                                     </tbody>
                                 </table>

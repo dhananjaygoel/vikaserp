@@ -40,9 +40,10 @@ class DeliveryChallanController extends Controller {
      */
     public function index() {
 
+        $data = Input::all();
         $session_sort_type_order = Session::get('order-sort-type');
-        if (isset($_GET['status_filter']))
-            $qstring_sort_type_order = $_GET['status_filter'];
+        if (isset($data['status_filter']))
+            $qstring_sort_type_order = $data['status_filter'];
         if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
             $qstring_sort_type_order = $qstring_sort_type_order;
         } else {
@@ -77,7 +78,7 @@ class DeliveryChallanController extends Controller {
      */
     public function show($id) {
 
-        $allorder = DeliveryChallan::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order')->first();
+        $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')->find($id);
         if (count($allorder) < 1) {
             return redirect('delivery_challan')->with('success', 'Invalid challan or challan not found');
         }

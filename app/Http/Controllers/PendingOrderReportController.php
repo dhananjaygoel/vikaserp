@@ -33,34 +33,35 @@ class PendingOrderReportController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-        if ((isset($_GET['party_filter'])) && $_GET['party_filter'] != '') {
+        $data = Input::all();
+        if ((isset($data['party_filter'])) && $data['party_filter'] != '') {
 
-            $allorders = Order::where('customer_id', '=', $_GET['party_filter'])->where('order_status', '=', 'pending')
+            $allorders = Order::where('customer_id', '=', $data['party_filter'])->where('order_status', '=', 'pending')
                             ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(20);
-        } elseif ((isset($_GET['fulfilled_filter'])) && $_GET['fulfilled_filter'] != '') {
-            if ($_GET['fulfilled_filter'] == '0') {
+        } elseif ((isset($data['fulfilled_filter'])) && $data['fulfilled_filter'] != '') {
+            if ($data['fulfilled_filter'] == '0') {
                 $allorders = Order::where('order_status', '=', 'pending')->where('order_source', '=', 'warehouse')
                                 ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(20);
             } else {
-                if ($_GET['fulfilled_filter'] == 'all') {
+                if ($data['fulfilled_filter'] == 'all') {
                     $allorders = $allorders = Order::where('order_status', '=', 'pending')->where('order_source', '=', 'supplier')
                                     ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(20);
                 } else {
                     $allorders = Order::where('order_status', '=', 'pending')->where('order_source', '=', 'supplier')
-                                    ->where('supplier_id', '=', $_GET['fulfilled_filter'])
+                                    ->where('supplier_id', '=', $data['fulfilled_filter'])
                                     ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(20);
                 }
             }
-        } elseif ((isset($_GET['location_filter'])) && $_GET['location_filter'] != '') {
-            if ($_GET['location_filter'] != '0') {
-                $allorders = Order::where('order_status', '=', 'pending')->where('delivery_location_id', '=', $_GET['location_filter'])
+        } elseif ((isset($data['location_filter'])) && $data['location_filter'] != '') {
+            if ($data['location_filter'] != '0') {
+                $allorders = Order::where('order_status', '=', 'pending')->where('delivery_location_id', '=', $data['location_filter'])
                                 ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(20);
             } else {
-                $allorders = Order::where('order_status', '=', 'pending')->where('other_location', '=', $_GET['location_filter'])
+                $allorders = Order::where('order_status', '=', 'pending')->where('other_location', '=', $data['location_filter'])
                                 ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(20);
             }
-        } elseif ((isset($_GET['size_filter'])) && $_GET['size_filter'] != '') {
-            $size = $_GET['size_filter'];
+        } elseif ((isset($data['size_filter'])) && $data['size_filter'] != '') {
+            $size = $data['size_filter'];
             $allorders = Order::where('order_status', '=', 'pending')
                             ->with(array('customer', 'delivery_location', 'all_order_products' =>
                                 function($q) use($size) {

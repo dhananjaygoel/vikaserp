@@ -185,6 +185,41 @@
                         </div>
                         <hr>
                         @endif
+
+
+                        @if($allorder->order_id > 0)
+                        <div class="form-group">
+                            <label for="orderby"><b class="challan">Order By : </b></label>
+                            {{$allorder->order_details->createdby['first_name']." ".$allorder->order_details->createdby['last_name']}}
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="orderdatetime"><b class="challan">Order Time/Date : </b></label>
+                            {{$allorder->order_details['updated_at']}}
+                        </div>
+                        <hr>
+                        @else
+                        <div class="form-group">
+                            <label for="deliveryorderby"><b class="challan">Delivery Order By : </b></label>
+                            {{$allorder->delivery_order->user['first_name']." ".$allorder->delivery_order->user['last_name']}}
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="deliveryorderdatetime"><b class="challan">Delivery Order Time/Date : </b></label>
+                            {{$allorder->delivery_order['updated_at']}}
+                        </div>
+                        <hr>
+                        @endif
+                        <div class="form-group">
+                            <label for="deliveryorderby"><b class="challan">Delivery Challan By : </b></label>
+                            {{$allorder->user['first_name']." ".$allorder->user['last_name']}}
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="deliveryorderdatetime"><b class="challan">Delivery Challan Time/Date : </b></label>
+                            {{$allorder->updated_at}}
+                        </div>
+                        <hr>
                         <div class="form-group">
                             <label for="challan_remark"><b class="challan">Remark: </b></label>
                             <textarea class="form-control" id="challan_remark" name="challan_remark"  rows="3" readonly="readonly"> {{$allorder->remarks}}</textarea>

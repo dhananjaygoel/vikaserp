@@ -37,9 +37,10 @@ class PurchaseChallanController extends Controller {
      */
     public function index() {
 
-        if (isset($_GET['order_filter']) && $_GET['order_filter'] != '') {
+        $data = Input::all();
+        if (isset($data['order_filter']) && $data['order_filter'] != '') {
             $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
-                            ->where('order_status', $_GET['order_filter'])->orderBy('created_at', 'desc')->Paginate(20);
+                            ->where('order_status', $data['order_filter'])->orderBy('created_at', 'desc')->Paginate(20);
         } else {
             $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
                             ->where('order_status', 'pending')->orderBy('created_at', 'desc')->Paginate(20);

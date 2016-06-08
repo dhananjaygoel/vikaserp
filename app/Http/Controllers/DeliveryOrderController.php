@@ -211,14 +211,13 @@ class DeliveryOrderController extends Controller {
      * Display the specified resource.
      */
     public function show($id) {
-        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->where('id', $id)->first();
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'user', 'order_details','order_details.createdby')->where('id', $id)->first();
         if (count($delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
         }
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
-
         return view('view_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
     }
 
@@ -451,8 +450,6 @@ class DeliveryOrderController extends Controller {
                 return Redirect::back()->with('validation_message', 'This delivry order is already converted to delivry challan. Please refresh the page');
             }
         }
-
-
         if (Session::has('forms_delivery_challan')) {
             $session_array = Session::get('forms_delivery_challan');
             if (count($session_array) > 0) {

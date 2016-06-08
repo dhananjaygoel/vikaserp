@@ -45,12 +45,12 @@ class InquiryController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-
+        $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        if ((isset($_GET['inquiry_filter'])) && $_GET['inquiry_filter'] != '') {
-            $inquiries = Inquiry::where('inquiry_status', '=', $_GET['inquiry_filter'])
+        if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
+            $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])
                             ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')
                             ->orderBy('created_at', 'desc')->Paginate(20);
         } else {
@@ -253,7 +253,7 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->find($id);
+        $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->find($id);
 
         if (count($inquiry) < 1) {
             return redirect('inquiry')->with('flash_message', 'Enquiry does not exist.');

@@ -58,10 +58,8 @@
                                             <td class="widthtable"><span>Remark</span></td>
                                         </tr>
                                         <?php $total = 0; ?>
-
                                         @foreach($purchase_orders['purchase_products'] as $product_data)
                                         @if($product_data->order_type == 'purchase_order')
-
                                         <tr>
                                             <td>{{$product_data['purchase_product_details']->alias_name}}</td>
                                             <td>{{$product_data->quantity}}</td>
@@ -72,7 +70,6 @@
                                         <?php
                                         $total += $product_data->quantity * $product_data->price;
                                         ?>
-
                                         @endif
                                         @endforeach
                                     </tbody>
@@ -96,7 +93,12 @@
                                         <tr><td><span>Other Delivery Location Difference: </span>{{$purchase_orders->other_location_difference}}</td></tr>
                                         @endif
                                         <tr><td><span>Remark: </span>{{$purchase_orders['remarks']}}</td></tr>
-
+                                        <tr>
+                                            <td><span>Purchase Order By: </span>{{$purchase_orders->user->first_name." ".$purchase_orders->user->last_name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span>Purchase order Time/Date : </span>{{$purchase_orders->updated_at}}</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                                 <a href="{{url('purchase_orders')}}" class="btn btn-default form_button_footer">Back</a>

@@ -44,40 +44,41 @@ class OrderController extends Controller {
      */
     public function index() {
 
+        $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
         }
 
         $order_sorttype = Session::get('order-sort-type');
         if (isset($order_sorttype) && ($order_sorttype != "")) {
-            $_GET['order_filter'] = $order_sorttype;
+            $data['order_filter'] = $order_sorttype;
         }
 
         $q = Order::query();
 
-        if (isset($_GET['order_filter']) && $_GET['order_filter'] != '') {
-            $q->where('order_status', '=', $_GET['order_filter']);
+        if (isset($data['order_filter']) && $data['order_filter'] != '') {
+            $q->where('order_status', '=', $data['order_filter']);
         } else {
             $q->where('order_status', '=', 'pending');
         }
-        if (isset($_GET['party_filter']) && $_GET['party_filter'] != '') {
-            $q->where('customer_id', '=', $_GET['party_filter']);
+        if (isset($data['party_filter']) && $data['party_filter'] != '') {
+            $q->where('customer_id', '=', $data['party_filter']);
         }
-        if (isset($_GET['fulfilled_filter']) && $_GET['fulfilled_filter'] != '') {
+        if (isset($data['fulfilled_filter']) && $data['fulfilled_filter'] != '') {
 
-            if ($_GET['fulfilled_filter'] == '0') {
+            if ($data['fulfilled_filter'] == '0') {
                 $q->where('order_source', '=', 'warehouse');
             }
-            if ($_GET['fulfilled_filter'] == 'all') {
+            if ($data['fulfilled_filter'] == 'all') {
                 $q->where('order_source', '=', 'supplier');
             }
         }
-        if ((isset($_GET['location_filter'])) && $_GET['location_filter'] != '') {
-            $q->where('delivery_location_id', '=', $_GET['location_filter']);
+        if ((isset($data['location_filter'])) && $data['location_filter'] != '') {
+            $q->where('delivery_location_id', '=', $data['location_filter']);
         }
         $product_category_id = 0;
-        if (isset($_GET['size_filter']) && $_GET['size_filter'] != '') {
-            $size = $_GET['size_filter'];
+        if (isset($data['size_filter']) && $data['size_filter'] != '') {
+            $size = $data['size_filter'];
             $subquerytest = ProductSubCategory::select('id')->where('size', '=', $size)->first();
             if (isset($subquerytest)) {
                 $product_category_id = $subquerytest->id;
@@ -363,7 +364,7 @@ class OrderController extends Controller {
      * Functioanlity: Display order details of particulat order
      */
     public function show($id) {
-        $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);
+        $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->find($id);
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }

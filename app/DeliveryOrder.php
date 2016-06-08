@@ -35,6 +35,10 @@ class DeliveryOrder extends Model implements AuthenticatableContract, CanResetPa
         return $this->hasOne('App\Customer', 'id', 'customer_id');
     }
 
+    public function order_details() {
+        return $this->belongsTo('App\Order', 'order_id', 'id');
+    }
+
     public function user() {
         return $this->hasOne('App\User', 'id', 'created_by');
     }

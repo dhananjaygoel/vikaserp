@@ -35,28 +35,23 @@
                                             @else
                                             {{ $delivery_data['customer']->owner_name }}
                                             @endif
-
                                         </td>
                                     </tr>
                                     <tr><td><span>Contact Person: </span>{{ $delivery_data['customer']->contact_person }}</td></tr>
                                     <tr>
                                         <td><span>Date:</span> {{ date('F jS, Y', strtotime ($delivery_data['created_at'])) }}</td>
                                     </tr>
-                                    <tr><td><span>Serial Number: </span>
-                                            @if($delivery_data->serial_no != "")
-                                            {{$delivery_data->serial_no}}
-                                            @else
-                                            {{'--'}}
-                                            @endif
+                                    <tr>
+                                        <td><span>Serial Number: </span>
+                                            {{($delivery_data->serial_no != "") ? $delivery_data->serial_no : '--'}}
                                         </td>
                                     </tr>
                                     <tr>
                                         <td><span>Mobile Number: </span>{{$delivery_data['customer']->phone_number1}}</td>
                                     </tr>
-
                                     <tr>
-                                        <td><span>Delivery Location: </span>
-
+                                        <td>
+                                            <span>Delivery Location: </span>
                                             @if($delivery_data->delivery_location_id == 0)
                                             {{$delivery_data->other_location}}
                                             @else
@@ -66,7 +61,6 @@
                                             @endif
                                             @endforeach
                                             @endif
-
                                         </td>
                                     </tr>
                                     <tr>
@@ -74,7 +68,6 @@
                                             {{$delivery_data->location_difference}}
                                         </td>
                                     </tr>
-
                                     <tr>
                                         <td><span class="underline"> Product Details </span></td>
                                     </tr>
@@ -95,8 +88,7 @@
                                         <td>
                                             <span>Price</span>
                                         </td>
-
-                                        <td><span>Remark</span></td>
+                                        <td><span>Remark</span></td>                                    
                                     </tr>
                                     <?php $grand = 0; ?>
                                     @foreach($delivery_data['delivery_product'] as $product)
@@ -140,14 +132,22 @@
                                         </td>
                                     </tr>
                                     @endif
-
-
                                     <tr><td><b>Vehicle Name:</b> {{ $delivery_data->vehicle_number }} </td> </tr>
-
                                     <tr><td><b>Driver Contact:</b> {{ $delivery_data->driver_contact_no }} </td> </tr>
-
+                                    <tr><td><span>Remark: </span>{{ $delivery_data->remarks }}</td></tr>
+                                    @if($delivery_data->order_id > 0)
                                     <tr>
-                                        <td><span>Remark: </span>{{ $delivery_data->remarks }}</td>
+                                        <td><span>Order By : </span>{{$delivery_data->order_details->createdby->first_name." ".$delivery_data->order_details->createdby->last_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span>Order Time/Date : </span>{{$delivery_data->order_details->updated_at}}</td>
+                                    </tr>
+                                    @endif                                    
+                                    <tr>
+                                        <td><span>Delivery Order By : </span>{{$delivery_data->user->first_name." ".$delivery_data->user->last_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span>Delivery Order Time/Date : </span>{{$delivery_data->updated_at}}</td>
                                     </tr>
                                 </tbody>
                             </table>

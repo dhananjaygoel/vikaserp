@@ -13,6 +13,7 @@ class Inquiry extends Model {
      * @var string
      */
     protected $table = 'inquiry';
+
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
@@ -26,6 +27,10 @@ class Inquiry extends Model {
 
     public function customer() {
         return $this->hasOne('App\Customer', 'id', 'customer_id');
+    }
+
+    public function createdby() {
+        return $this->hasOne('App\User', 'id', 'created_by');
     }
 
     public function inquiry_products() {

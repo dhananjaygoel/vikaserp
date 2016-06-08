@@ -42,31 +42,32 @@ class PurchaseOrderController extends Controller {
 
     public function index() {
 
+        $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $q = PurchaseOrder::query();
-        if ((isset($_GET['pending_purchase_order'])) && $_GET['pending_purchase_order'] != '') {
-            $q->where('supplier_id', '=', $_GET['pending_purchase_order'])->get();
+        if ((isset($data['pending_purchase_order'])) && $data['pending_purchase_order'] != '') {
+            $q->where('supplier_id', '=', $data['pending_purchase_order'])->get();
         }
-        if ((isset($_GET['order_for_filter'])) && $_GET['order_for_filter'] == 'warehouse') {
+        if ((isset($data['order_for_filter'])) && $data['order_for_filter'] == 'warehouse') {
             $q->where('order_for', '=', 0)->get();
-        } elseif ((isset($_GET['order_for_filter'])) && $_GET['order_for_filter'] == 'direct') {
+        } elseif ((isset($data['order_for_filter'])) && $data['order_for_filter'] == 'direct') {
             $q->where('order_for', '!=', 0)->get();
         }
         if (Auth::user()->role_id > 2) {
-            if ((isset($_GET['purchase_order_filter'])) && $_GET['purchase_order_filter'] != '') {
-                $q = $q->where('order_status', '=', $_GET['purchase_order_filter'])
+            if ((isset($data['purchase_order_filter'])) && $data['purchase_order_filter'] != '') {
+                $q = $q->where('order_status', '=', $data['purchase_order_filter'])
                         ->where('is_view_all', '=', 0);
             } else {
                 $q = $q->where('order_status', '=', 'pending')->where('is_view_all', '=', 0);
             }
         }
 //        $session_sort_type_order = Session::get('order-sort-type');
-//        $qstring_sort_type_order = $_GET['purchase_order_filter'];
+//        $qstring_sort_type_order = $data['purchase_order_filter'];
         $session_sort_type_order = Session::get('order-sort-type');
-        if (isset($_GET['purchase_order_filter']))
-            $qstring_sort_type_order = $_GET['purchase_order_filter'];
+        if (isset($data['purchase_order_filter']))
+            $qstring_sort_type_order = $data['purchase_order_filter'];
         if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
             $qstring_sort_type_order = $qstring_sort_type_order;
         } else {
@@ -321,8 +322,7 @@ class PurchaseOrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-
-        $purchase_orders = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'delivery_location', 'purchase_products.purchase_product_details', 'customer')->first();
+        $purchase_orders = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'delivery_location', 'purchase_products.purchase_product_details', 'customer', 'user')->first();
         if (count($purchase_orders) < 1) {
             return redirect('purchase_orders')->with('flash_message', 'Purchase order not found');
         }
@@ -681,14 +681,16 @@ class PurchaseOrderController extends Controller {
     }
 
     public function purchase_order_report() {
+
+        $data = Input::all();
         $q = PurchaseOrder::query();
         $q->where('order_status', '=', 'pending')->orderBy('created_at', 'desc')->with('customer', 'delivery_location', 'user', 'purchase_products');
-        if ((isset($_GET['pending_purchase_order'])) && $_GET['pending_purchase_order'] != '') {
-            $q->where('supplier_id', '=', $_GET['pending_purchase_order'])->get();
+        if ((isset($data['pending_purchase_order'])) && $data['pending_purchase_order'] != '') {
+            $q->where('supplier_id', '=', $data['pending_purchase_order'])->get();
         }
-        if ((isset($_GET['order_for_filter'])) && $_GET['order_for_filter'] == 'warehouse') {
+        if ((isset($data['order_for_filter'])) && $data['order_for_filter'] == 'warehouse') {
             $q->where('order_for', '=', 0)->get();
-        } elseif ((isset($_GET['order_for_filter'])) && $_GET['order_for_filter'] == 'direct') {
+        } elseif ((isset($data['order_for_filter'])) && $data['order_for_filter'] == 'direct') {
             $q->where('order_for', '!=', 0)->get();
         }
         if (Auth::user()->role_id > 1) {
