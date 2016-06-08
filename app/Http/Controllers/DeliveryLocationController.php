@@ -9,7 +9,6 @@ use App\City;
 use App\States;
 use App\DeliveryLocation;
 use Input;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\LocationRequest;
 use App\Http\Requests\EditLocationRequest;
 use Hash;
@@ -59,7 +58,6 @@ class DeliveryLocationController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('location')->with('error', 'You do not have permission.');
         }
-
         $location = new DeliveryLocation();
         $location->area_name = $request->input('area_name');
         $location->state_id = $request->input('state');
@@ -67,7 +65,6 @@ class DeliveryLocationController extends Controller {
         $location->difference = $request->input('difference');
         $location->status = 'permanent';
         $location->save();
-
         return redirect('location')->with('flash_success_message', 'Location details successfully added.');
     }
 
@@ -114,12 +111,9 @@ class DeliveryLocationController extends Controller {
         }
         if (Hash::check(Input::get('password'), Auth::user()->password)) {
             $delete_location = DeliveryLocation::find($id);
-
-
             $delivery_location_inquiry_count = Inquiry::where('delivery_location_id', $delete_location->id)->count();
-            $delivery_location_order_count = order::where('delivery_location_id', $delete_location->id)->count();
+            $delivery_location_order_count = Order::where('delivery_location_id', $delete_location->id)->count();
             $delivery_location_delivery_order_count = DeliveryOrder::where('delivery_location_id', $delete_location->id)->count();
-
             $delivery_location_purchase_order_count = PurchaseOrder::where('delivery_location_id', $delete_location->id)->count();
             $delivery_location_purchase_advice_count = PurchaseAdvise::where('delivery_location_id', $delete_location->id)->count();
             $delivery_location_purchase_challan_count = PurchaseChallan::where('delivery_location_id', $delete_location->id)->count();
@@ -147,7 +141,6 @@ class DeliveryLocationController extends Controller {
                 return redirect('location')->with('flash_message', 'Delivery Location can not be deleted as it is associated with one more Customer');
 
             $delete_location->delete();
-
             return redirect('location')->with('flash_success_message', 'Location details successfully deleted.');
         } else
             return redirect('location')->with('flash_message', 'Please enter a correct password');
@@ -160,11 +153,8 @@ class DeliveryLocationController extends Controller {
 
     public function delivery_difference() {
         $data = Input::all();
-
         if ($data['difference'] != "") {
-            $del = DeliveryLocation::where('id', '=', $data['id'])->update([
-                'difference' => $data['difference']
-            ]);
+            $del = DeliveryLocation::where('id', '=', $data['id'])->update(['difference' => $data['difference']]);
             return redirect('location')->with('flash_success_message', 'Location difference successfully modified.');
         } else
             return redirect('location')->with('flash_message', 'Unable to update the delivery location');

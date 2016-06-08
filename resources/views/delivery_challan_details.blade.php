@@ -185,8 +185,6 @@
                         </div>
                         <hr>
                         @endif
-
-
                         @if($allorder->order_id > 0)
                         <div class="form-group">
                             <label for="orderby"><b class="challan">Order By : </b></label>

@@ -210,7 +210,7 @@ class PurchaseOrderController extends Controller {
 
         $input = Input::all();
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+            $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour purchase order has been logged for following \n";
@@ -278,7 +278,7 @@ class PurchaseOrderController extends Controller {
             if (isset($input_data['send_email'])) {
                 $customers = Customer::find($customer_id);
 //                if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
-                $purchase_order = PurchaseOrder::where('id', '=', $purchase_order_id)->with('purchase_products.purchase_product_details', 'delivery_location')->first();
+                $purchase_order = PurchaseOrder::with('purchase_products.purchase_product_details', 'delivery_location')->find($purchase_order_id);
 
                 if (count($purchase_order) > 0) {
                     if (count($purchase_order['delivery_location']) > 0) {
@@ -322,7 +322,7 @@ class PurchaseOrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $purchase_orders = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'delivery_location', 'purchase_products.purchase_product_details', 'customer', 'user')->first();
+        $purchase_orders = PurchaseOrder::with('purchase_products.unit', 'delivery_location', 'purchase_products.purchase_product_details', 'customer', 'user')->find($id);
         if (count($purchase_orders) < 1) {
             return redirect('purchase_orders')->with('flash_message', 'Purchase order not found');
         }
@@ -338,8 +338,7 @@ class PurchaseOrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-
-        $purchase_order = PurchaseOrder::where('id', '=', $id)->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')->first();
+        $purchase_order = PurchaseOrder::with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')->find($id);
         if (count($purchase_order) < 1) {
             return redirect('purchase_orders')->with('flash_message', 'Purchase order not found');
         }
@@ -452,7 +451,7 @@ class PurchaseOrderController extends Controller {
          */
         $input = Input::all();
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+            $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour purchase order has been edited and changed as follows \n";
@@ -518,7 +517,7 @@ class PurchaseOrderController extends Controller {
         if (isset($input_data['send_email'])) {
             $customers = Customer::find($customer_id);
 //            if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
-            $purchase_order = PurchaseOrder::where('id', '=', $id)->with('purchase_products.purchase_product_details', 'delivery_location')->first();
+            $purchase_order = PurchaseOrder::with('purchase_products.purchase_product_details', 'delivery_location')->find($id);
             if (count($purchase_order) > 0) {
                 if (count($purchase_order['delivery_location']) > 0) {
                     $delivery_location = $purchase_order['delivery_location']->area_name;
@@ -576,7 +575,7 @@ class PurchaseOrderController extends Controller {
 
     public function create_purchase_advice($order_id) {
 
-        $purchase_orders = PurchaseOrder::where('id', '=', $order_id)->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer', 'purchase_advice.purchase_products')->first();
+        $purchase_orders = PurchaseOrder::with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer', 'purchase_advice.purchase_products')->find($order_id);
         foreach ($purchase_orders['purchase_products'] as $key => $value) {
             $purchase_advise_products = PurchaseProducts::where('parent', '=', $value->id)->get();
             $total_advise_product_quantity = $purchase_advise_products->sum('quantity');
@@ -596,7 +595,7 @@ class PurchaseOrderController extends Controller {
         $inputData = Input::get('formData');
         parse_str($inputData, $input_data);
         $purchase_order_id = $input_data['purchase_order_id'];
-        $purchase_order = PurchaseOrder::where('id', '=', $purchase_order_id)->with('purchase_products.purchase_product_details', 'purchase_products.unit', 'customer')->first();
+        $purchase_order = PurchaseOrder::with('purchase_products.purchase_product_details', 'purchase_products.unit', 'customer')->find($purchase_order_id);
 
         /*
           | ------------------- -----------------------------------------
@@ -606,7 +605,7 @@ class PurchaseOrderController extends Controller {
         $inputData = Input::get('formData');
         parse_str($inputData, $input);
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-            $customer = Customer::where('id', '=', $purchase_order['customer']->id)->with('manager')->first();
+            $customer = Customer::with('manager')->find($purchase_order['customer']->id);
             if (count($customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear '" . $customer->owner_name . "'\n your purchase order has been completed for following \n";
@@ -637,7 +636,7 @@ class PurchaseOrderController extends Controller {
          */
         if (isset($input_data['send_email']) && $input_data['send_email'] == 'true' && $purchase_order['customer']->email != "") {
             $customers = $purchase_order['customer'];
-            $purchase_order = PurchaseOrder::where('id', '=', $purchase_order_id)->with('purchase_products.purchase_product_details', 'purchase_products.unit', 'customer')->first();
+            $purchase_order = PurchaseOrder::with('purchase_products.purchase_product_details', 'purchase_products.unit', 'customer')->find($purchase_order_id);
             if (count($purchase_order) > 0) {
                 if (count($purchase_order['delivery_location']) > 0) {
                     $delivery_location = $purchase_order['delivery_location']->area_name;

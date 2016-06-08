@@ -49,7 +49,6 @@ class InventoryController extends Controller {
         $qty = Input::get('opening_stock');
         $minimal = Input::get('minimal');
         $inventory_details = Inventory::find(Input::get('id'));
-
         $inventory_details->opening_qty = $qty;
         $inventory_details->minimal = $minimal;
         $physical_qty = ($qty + $inventory_details->purchase_challan_qty) - $inventory_details->sales_challan_qty;
@@ -57,8 +56,6 @@ class InventoryController extends Controller {
         $virtual_qty = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_order_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
         $inventory_details->virtual_qty = $virtual_qty;
         $inventory_details->save();
-
-
         $total = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
         if ($total < $inventory_details->minimal) {
             $inventory_details['class'] = 'yes';
@@ -72,6 +69,7 @@ class InventoryController extends Controller {
      * Display a all product inventory with stock details
      */
     public function index() {
+
         $this->updateOpeningStock();
         $q = Inventory::query();
         if (Input::get('search_inventory') != "") {
@@ -278,8 +276,6 @@ class InventoryController extends Controller {
                         foreach ($purchase_advice_details->purchase_products as $purchase_advice_product_details) {
                             if (isset($purchase_advice_product_details) && $purchase_advice_product_details->quantity != '') {
 //                                $pending_purchase_advice_qty = $pending_purchase_advice_qty + $purchase_advice_product_details->quantity;
-
-
                                 if ($purchase_advice_product_details->unit_id == 1) {
                                     $pending_purchase_advice_qty = $pending_purchase_advice_qty + $purchase_advice_product_details->quantity;
                                 }
@@ -308,8 +304,6 @@ class InventoryController extends Controller {
                         foreach ($purchase_challan_details->all_purchase_products as $purchase_challan_product_details) {
                             if (isset($purchase_challan_product_details) && $purchase_challan_product_details->quantity != '') {
 //                                $purchase_challan_qty = $purchase_challan_qty + $purchase_challan_product_details->quantity;
-
-
                                 if ($purchase_challan_product_details->unit_id == 1) {
                                     $purchase_challan_qty = $purchase_challan_qty + $purchase_challan_product_details->quantity;
                                 }
@@ -328,7 +322,6 @@ class InventoryController extends Controller {
             /* ===================== Query ends here ===================== */
 
             $physical_closing = ($inventory->opening_qty + $purchase_challan_qty ) - $sales_challan_qty;
-
             $inventory_details = Inventory::where('product_sub_category_id', '=', $product_sub_id)->first();
             $inventory_details->opening_qty = $inventory->opening_qty;
             $inventory_details->sales_challan_qty = $sales_challan_qty;
@@ -349,7 +342,6 @@ class InventoryController extends Controller {
                 $querydetails->where('alias_name', Input::get('search_inventory'));
             });
         }
-
         $inventory_newlist = $query->with('product_sub_category')->paginate(50);
         $inventory_newlist->setPath('inventory');
         return view('add_inventory')->with(['inventory_list' => $inventory_newlist]);
@@ -372,10 +364,8 @@ class InventoryController extends Controller {
         $data_dup = Input::all();
         $token = array_pull($data, '_token');
         $currentpage = array_pull($data, 'pagenumber');
-
         $i = 1;
         $j = 1;
-
         foreach ($data as $key => $value) {
             if (($j % 2) != 0) {
                 if ($value < 0) {
@@ -384,7 +374,6 @@ class InventoryController extends Controller {
             }
             $j++;
         }
-
         foreach ($data as $key => $value) {
             if (($i % 2) != 0) {
                 $minimal_value = $value;
@@ -461,7 +450,6 @@ class InventoryController extends Controller {
                 $last_updated_time = explode(':', $last_updated[1]);
                 $current_date = $current->toDateString();
                 $current_hour = $current->hour;
-
                 if ($last_updated_date < $current_date) {
                     $inventory = new Inventory();
                     $inventory->update_opening_stock();
@@ -500,7 +488,6 @@ class InventoryController extends Controller {
 
         $subcategory_list = ProductSubCategory::all();
         $inventory_list = Inventory::all();
-
         if (count($subcategory_list) > 0 && count($inventory_list) == 0) {
             foreach ($subcategory_list as $subcategory) {
                 $newinventory = new Inventory();

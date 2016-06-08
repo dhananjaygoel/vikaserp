@@ -73,11 +73,8 @@ class CustomerController extends Controller {
                     ->where('customer_status', '=', 'permanent')
                     ->paginate(20);
         } else {
-            $customers = Customer::orderBy('tally_name', 'asc')
-                    ->where('customer_status', '=', 'permanent')
-                    ->paginate(20);
+            $customers = Customer::orderBy('tally_name', 'asc')->where('customer_status', '=', 'permanent')->paginate(20);
         }
-
         $customers->setPath('customers');
         $city = City::all();
         return View::make('customers', array('customers' => $customers, 'city' => $city));
@@ -90,15 +87,11 @@ class CustomerController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-
         $managers = User::where('role_id', '=', 1)->get();
-
         $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $states = States::orderBy('state_name', 'ASC')->get();
         $cities = City::orderBy('city_name', 'ASC')->get();
-
         $product_category = ProductCategory::all();
-
         return View::make('add_customers', array('managers' => $managers, 'locations' => $locations, 'product_category' => $product_category, 'states' => $states, 'cities' => $cities));
     }
 
@@ -111,7 +104,6 @@ class CustomerController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $customer = new Customer();
-
         $customer->owner_name = Input::get('owner_name');
         if (Input::has('company_name')) {
             $customer->company_name = Input::get('company_name');
@@ -133,10 +125,8 @@ class CustomerController extends Controller {
         if (Input::has('email')) {
             $customer->email = Input::get('email');
         }
-
         $customer->tally_name = Input::get('tally_name');
         $customer->phone_number1 = Input::get('phone_number1');
-
         if (Input::has('username')) {
             $customer->username = Input::get('username');
         }
@@ -146,17 +136,13 @@ class CustomerController extends Controller {
         if (Input::has('relationship_manager')) {
             $customer->relationship_manager = Input::get('relationship_manager');
         }
-
         $customer->delivery_location_id = Input::get('delivery_location');
 
         if (Input::has('password') && Input::get('password') != '') {
             $customer->password = Hash::make(Input::get('relationship_manager'));
         }
-
         $customer->customer_status = 'permanent';
-
         if ($customer->save()) {
-
             $product_category_id = Input::get('product_category_id');
             if (isset($product_category_id)) {
                 foreach ($product_category_id as $key => $value) {
@@ -180,7 +166,6 @@ class CustomerController extends Controller {
                 foreach ($admins as $key => $admin) {
                     $product_type = ProductType::find($request->input('product_type'));
                     $str = "Dear '" . $admin->first_name . "'\n" . "DT " . date("j M, Y") . "\n'" . Auth::user()->first_name . "' has created a new customer as '" . Input::get('owner_name') . "' kindly chk. \nVIKAS ASSOCIATES";
-
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -196,7 +181,6 @@ class CustomerController extends Controller {
                     }
                 }
             }
-
             return redirect('customers')->with('success', 'Customer Succesfully added');
         } else {
             return Redirect::back()->withInput()->with('error', 'Some error occoured while saving customer');
@@ -211,13 +195,10 @@ class CustomerController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-
         $customer = Customer::with('deliverylocation', 'customerproduct', 'manager')->find($id);
         $states = States::all();
         $cities = City::all();
-
         $product_category = ProductCategory::all();
-
         return View::make('customer_details', array('customer' => $customer, 'states' => $states, 'cities' => $cities, 'product_category' => $product_category));
     }
 
@@ -227,22 +208,16 @@ class CustomerController extends Controller {
     public function edit($id) {
         $states = States::all();
         $cities = City::all();
-
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-
-        $customer = Customer::where('id', '=', $id)->with('customerproduct')->first();
+        $customer = Customer::with('customerproduct')->find($id);
         if (count($customer) < 1) {
             return redirect('customers/')->with('error', 'Trying to access an invalid customer');
         }
-
         $managers = User::where('role_id', '=', 1)->get();
-
         $locations = DeliveryLocation::all();
-
         $product_category = ProductCategory::all();
-
         return View::make('edit_customers', array('customer' => $customer, 'managers' => $managers, 'locations' => $locations, 'product_category' => $product_category, 'states' => $states, 'cities' => $cities));
     }
 

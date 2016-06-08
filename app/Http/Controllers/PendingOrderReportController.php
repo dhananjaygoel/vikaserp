@@ -35,7 +35,6 @@ class PendingOrderReportController extends Controller {
     public function index() {
         $data = Input::all();
         if ((isset($data['party_filter'])) && $data['party_filter'] != '') {
-
             $allorders = Order::where('customer_id', '=', $data['party_filter'])->where('order_status', '=', 'pending')
                             ->with('customer', 'delivery_location', 'all_order_products')->orderBy('created_at', 'desc')->Paginate(20);
         } elseif ((isset($data['fulfilled_filter'])) && $data['fulfilled_filter'] != '') {

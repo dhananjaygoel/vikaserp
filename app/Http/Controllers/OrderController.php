@@ -248,7 +248,7 @@ class OrderController extends Controller {
          */
         $input = Input::all();
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+            $customer = Customer::with('manager')->find($customer_id);
             if ($customer->phone_number1 != "") {
                 if (count($customer) > 0) {
                     $total_quantity = '';
@@ -328,7 +328,7 @@ class OrderController extends Controller {
         if (isset($input_data['send_email'])) {
             $customers = Customer::find($customer_id);
 //            if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
-            $order = Order::where('id', '=', $order_id)->with('all_order_products.order_product_details', 'delivery_location')->first();
+            $order = Order::with('all_order_products.order_product_details', 'delivery_location')->find($order_id);
             if (count($order) > 0) {
                 if (count($order['delivery_location']) > 0) {
                     $delivery_location = $order['delivery_location']->area_name;
@@ -538,7 +538,6 @@ class OrderController extends Controller {
             }
         }
 
-
         /*
          * ------------------- --------------
          * SEND SMS TO CUSTOMER FOR NEW ORDER
@@ -546,7 +545,7 @@ class OrderController extends Controller {
          */
         $input = Input::all();
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+            $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . strtoupper($customer->owner_name) . "\nDT " . date("j M, Y") . "\nYour order has been edited and changed as following \n";
@@ -606,7 +605,7 @@ class OrderController extends Controller {
         if (isset($input_data['send_email'])) {
             $customers = Customer::find($customer_id);
 
-            $order = Order::where('id', '=', $id)->with('all_order_products.order_product_details', 'delivery_location')->first();
+            $order = Order::with('all_order_products.order_product_details', 'delivery_location')->find($id);
             if (count($order) > 0) {
                 if (count($order['delivery_location']) > 0) {
                     $delivery_location = $order['delivery_location']->area_name;
@@ -672,16 +671,16 @@ class OrderController extends Controller {
      */
 
     public function manual_complete_order() {
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-
         $formFields = Input::get('formData');
         parse_str($formFields, $input);
         $order_id = $input['order_id'];
         $reason_type = $input['reason_type'];
         $reason = $input['reason'];
-        $order = Order::where('id', '=', $order_id)->with('all_order_products.order_product_details', 'all_order_products.unit', 'customer')->first();
+        $order = Order::with('all_order_products.order_product_details', 'all_order_products.unit', 'customer')->find($order_id);
 
         /*
           | ------------------- ---------------------------------
@@ -690,7 +689,7 @@ class OrderController extends Controller {
          */
 
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-            $customer = Customer::where('id', '=', $order['customer']->id)->with('manager')->first();
+            $customer = Customer::with('manager')->find($order['customer']->id);
             if (count($customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear '" . $customer->owner_name . "'\n your order has been completed for following \n";
@@ -722,7 +721,7 @@ class OrderController extends Controller {
         if (isset($input_data['send_email']) && $input_data['send_email'] == 'true' && $order['customer']->email != "") {
             $customers = $order['customer'];
 //            if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
-            $order = Order::where('id', '=', $order_id)->with('all_order_products.order_product_details', 'delivery_location')->first();
+            $order = Order::with('all_order_products.order_product_details', 'delivery_location')->find($order_id);
             if (count($order) > 0) {
                 if (count($order['delivery_location']) > 0) {
                     $delivery_location = $order['delivery_location']->area_name;
@@ -770,7 +769,7 @@ class OrderController extends Controller {
 
     public function create_delivery_order($id) {
 
-        $order = Order::where('id', '=', $id)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->first();
+        $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }
@@ -794,19 +793,13 @@ class OrderController extends Controller {
         $pending_orders = array();
 
         $delivery_orders = DeliveryOrder::where('order_id', $id)->get();
-        $order_products = AllOrderProducts::where('order_id', $id)
-                        ->where('order_type', 'order')->get();
-
+        $order_products = AllOrderProducts::where('order_id', $id)->where('order_type', 'order')->get();
         $pending_qty = 0;
         $total_qty = 0;
         $temp_array = array();
-
         foreach ($delivery_orders as $del_order) {
-            $all_order_products = AllOrderProducts::where('order_id', $del_order->id)
-                            ->where('from', '!=', '')->where('order_type', 'delivery_order')->get();
-
+            $all_order_products = AllOrderProducts::where('order_id', $del_order->id)->where('from', '!=', '')->where('order_type', 'delivery_order')->get();
             foreach ($all_order_products as $products) {
-
                 $temp = array();
                 $temp['order_id'] = $id;
                 $temp['from'] = $products['from'];
@@ -831,7 +824,6 @@ class OrderController extends Controller {
             }
         }
         $order_all_order_products = AllOrderProducts::where('order_id', $id)->where('order_type', 'order')->get();
-
         $total_quantity_ord = 0;
         $tot_pend_qty = 0;
         foreach ($order_all_order_products as $ordes_products) {
@@ -862,7 +854,6 @@ class OrderController extends Controller {
     public function store_delivery_order($id) {
 
         $input_data = Input::all();
-
         $order_details = Order::find($input_data['order_id']);
         if (!empty($order_details)) {
             if ($order_details->order_status == 'completed') {
@@ -887,9 +878,8 @@ class OrderController extends Controller {
         }
         $validator = Validator::make($input_data, Order::$order_to_delivery_order_rules);
         if ($validator->passes()) {
-
             $user = Auth::user();
-            $order = Order::where('id', '=', $id)->with('all_order_products')->first();
+            $order = Order::with('all_order_products')->find($id);
             $delivery_order = new DeliveryOrder();
             $delivery_order->order_id = $id;
             $delivery_order->customer_id = $input_data['customer_id'];
@@ -911,7 +901,6 @@ class OrderController extends Controller {
                 $delivery_order->location_difference = $order->location_difference;
             }
             $delivery_order->save();
-
             $order_products = array();
             $order_id = DB::getPdo()->lastInsertId();
             $total_qty = 0;
@@ -932,7 +921,6 @@ class OrderController extends Controller {
                     ];
                     $total_qty = $total_qty + $product_data['quantity'];
                     $present_shipping = $present_shipping + $product_data['present_shipping'];
-
                     $add_order_products = AllOrderProducts::create($order_products);
                 }
                 if ($product_data['name'] != "" && $product_data['order'] == '') {
@@ -953,7 +941,6 @@ class OrderController extends Controller {
             if ($present_shipping == $total_qty || $present_shipping >= $total_qty) {
                 Order::where('id', '=', $id)->update(array('order_status' => 'completed'));
             }
-
             return redirect('orders')->with('flash_message', 'One order converted to Delivery order.');
         } else {
             $error_msg = $validator->messages();
@@ -977,15 +964,13 @@ class OrderController extends Controller {
         foreach ($allorders as $key => $order) {
             $order_quantity = 0;
             $delivery_order_quantity = 0;
-            $delievry_order_details = DeliveryOrder::where('order_id', '=', $order->id)->first();
+            $delievry_order_details = DeliveryOrder::find($order->id);
             if (!empty($delievry_order_details)) {
                 $delivery_order_products = AllOrderProducts::where('order_id', '=', $delievry_order_details->id)->where('order_type', '=', 'delivery_order')->get();
             } else {
                 $delivery_order_products = NULL;
             }
-
             if (count($delivery_order_products) > 0) {
-
                 foreach ($delivery_order_products as $dopk => $dopv) {
                     $product_size = ProductSubCategory::find($dopv->product_category_id);
                     if ($dopv->unit_id == 1) {
@@ -999,9 +984,7 @@ class OrderController extends Controller {
                     }
                 }
             }
-
             if (count($order['all_order_products']) > 0) {
-
                 foreach ($order['all_order_products'] as $opk => $opv) {
                     $product_size = ProductSubCategory::find($opv->product_category_id);
                     if ($opv->unit_id == 1) {
@@ -1032,7 +1015,6 @@ class OrderController extends Controller {
     public function fetch_order_size() {
         $term = '%' . Input::get('term') . '%';
         $product = ProductSubCategory::where('size', 'like', $term)->get();
-
         if (count($product) > 0) {
             foreach ($product as $prod) {
                 $data_array[] = [

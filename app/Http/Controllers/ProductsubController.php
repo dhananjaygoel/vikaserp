@@ -103,7 +103,6 @@ class ProductsubController extends Controller {
         }
         $product_type = ProductType::all();
         $units = Units::first();
-
         return view('add_product_sub_category', compact('product_type', 'units'));
     }
 
@@ -115,7 +114,6 @@ class ProductsubController extends Controller {
     public function get_product_category() {
 
         $product_cat = ProductCategory::where('product_type_id', Input::get('product_type_id'))->orderby('product_category_name', 'ASC')->get();
-
         $prod = array();
         $i = 0;
         foreach ($product_cat as $key => $val) {
@@ -157,7 +155,7 @@ class ProductsubController extends Controller {
             $admins = User::where('role_id', '=', 1)->get();
             if (count($admins) > 0) {
                 foreach ($admins as $key => $admin) {
-                    $product_category = ProductCategory::where('id', '=', $request->input('select_product_categroy'))->with('product_type')->first();
+                    $product_category = ProductCategory::with('product_type')->find($request->input('select_product_categroy'));
                     $str = "Dear " . $admin->first_name . " \n" .
                             "DT " . date("j M, Y") . "\n" .
                             Auth::user()->first_name . " has created a new size as "
@@ -203,9 +201,7 @@ class ProductsubController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
-
-            $product_cat = ProductSubCategory::where('id', $id)->first();
-
+            $product_cat = ProductSubCategory::find($id);
             $order_count = AllOrderProducts::where('product_category_id', $id)->count();
             $purchase_count = PurchaseProducts::where('product_category_id', $id)->count();
             $inquery_count = InquiryProducts::where('product_category_id', $id)->count();
@@ -230,16 +226,13 @@ class ProductsubController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('product_sub_category')->with('error', 'You do not have permission.');
         }
-
-        $prod_sub_cat = ProductSubCategory::with('product_category', 'product_unit')->where('id', $id)->first();
+        $prod_sub_cat = ProductSubCategory::with('product_category', 'product_unit')->find($id);
         if (count($prod_sub_cat) < 1) {
             return redirect('product_sub_category')->with('success', 'Product sub category does not exist.');
         }
-
         $product_type = ProductType::all();
         $prod_category = ProductCategory::all();
         $units = Units::first();
-
         return view('edit_product_sub_category', compact('product_type', 'prod_sub_cat', 'prod_category', 'units'));
     }
 
@@ -251,7 +244,6 @@ class ProductsubController extends Controller {
     public function update($id) {
 
         $validator = Validator::make(Input::all(), ProductSubCategory::$product_sub_category_rules);
-
         if ($validator->passes()) {
             $data = Input::all();
             $pro_sub_cat = array(
@@ -263,20 +255,13 @@ class ProductsubController extends Controller {
                 'standard_length' => $data['standard_length'],
                 'difference' => $data['difference']
             );
-
-            $alias_count = ProductSubCategory::where('id', '!=', $id)
-                    ->where('alias_name', '=', $data['alias_name'])
-                    ->count();
-
+            $alias_count = ProductSubCategory::where('id', '!=', $id)->where('alias_name', '=', $data['alias_name'])->count();
             if ($alias_count > 0) {
                 return Redirect::back()->withInput()->with('alias', 'Alias name already taken.');
             } else {
                 $pro_sub_cat['alias_name'] = Input::get('alias_name');
             }
-
-            ProductSubCategory::where('id', $id)
-                    ->update($pro_sub_cat);
-
+            ProductSubCategory::where('id', $id)->update($pro_sub_cat);
             /*
              * ------------------- -------------------------
              * SEND SMS TO ALL ADMINS ON UPDATE PRODUCT SIZE
@@ -287,7 +272,7 @@ class ProductsubController extends Controller {
                 $admins = User::where('role_id', '=', 1)->get();
                 if (count($admins) > 0) {
                     foreach ($admins as $key => $admin) {
-                        $product_category = ProductCategory::where('id', '=', $data['select_product_categroy'])->with('product_type')->first();
+                        $product_category = ProductCategory::with('product_type')->find($data['select_product_categroy']);
                         $str = "Dear "
                                 . "'" . $admin->first_name . "'\nDT " . date("j M, Y") . "\n"
                                 . "'" . Auth::user()->first_name . "'"
@@ -327,15 +312,13 @@ class ProductsubController extends Controller {
     }
 
     public function update_difference() {
-
-        ProductSubCategory::where('id', Input::get('id'))
-                ->update(array('difference' => Input::get('difference')));
+        ProductSubCategory::where('id', Input::get('id'))->update(array('difference' => Input::get('difference')));
         return redirect('product_sub_category')->with('success', 'Product sub category difference successfully updated.');
     }
 
     public function get_product_weight() {
         $product_id = Input::get('product_id');
-        $product_cat = ProductSubCategory::where('product_category_id', $product_id)->first();
+        $product_cat = ProductSubCategory::find($product_id);
         $product_weight = $product_cat['weight'];
         return $product_weight;
     }
@@ -387,7 +370,6 @@ class ProductsubController extends Controller {
     public function update_all_sizes_difference() {
         $data = Input::get('form_data');
         $unserialized_data = parse_str(Input::get('form_data'), $formfields);
-
         $currentpage = Input::get('pageid');
         $startrow = (20 * $currentpage) - 19;
         $endrow = 20 * $currentpage;

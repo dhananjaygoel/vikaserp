@@ -211,7 +211,7 @@ class DeliveryOrderController extends Controller {
      * Display the specified resource.
      */
     public function show($id) {
-        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'user', 'order_details','order_details.createdby')->where('id', $id)->first();
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')->find($id);
         if (count($delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
         }
@@ -227,7 +227,7 @@ class DeliveryOrderController extends Controller {
     public function edit($id) {
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
-        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->where('id', $id)->first();
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
         if (count($delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
         }
@@ -426,7 +426,7 @@ class DeliveryOrderController extends Controller {
 
     public function create_delivery_challan($id) {
 
-        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->where('id', $id)->first();
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
         if (count($delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
         }
@@ -443,7 +443,6 @@ class DeliveryOrderController extends Controller {
     public function store_delivery_challan($id) {
 
         $input_data = Input::all();
-
         $delivery_order_details = DeliveryOrder::find($id);
         if (!empty($delivery_order_details)) {
             if ($delivery_order_details->order_status == 'completed') {
@@ -486,7 +485,7 @@ class DeliveryOrderController extends Controller {
         $delivery_challan->remarks = $input_data['challan_remark'];
         $delivery_challan->challan_status = "Pending";
         $delivery_challan->save();
-        $delivery_challan_id = DB::getPdo()->lastInsertId();
+        $delivery_challan_id = $delivery_challan->id;
         $order_products = array();
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "" && $product_data['order'] != "") {
@@ -520,7 +519,7 @@ class DeliveryOrderController extends Controller {
                 $add_order_products = AllOrderProducts::create($order_products);
             }
         }
-        DeliveryOrder::where('id', '=', $input_data['order_id'])->update(array(
+        DeliveryOrder::where('id', '=', $id)->update(array(
             'order_status' => 'completed'
         ));
         return redirect('delivery_order')->with('success', 'One Delivery Challan is successfully created.');
@@ -538,8 +537,7 @@ class DeliveryOrderController extends Controller {
         DeliveryOrder::where('id', $id)->update(array(
             'serial_no' => $date_letter,
         ));
-
-        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'unit', 'location')->where('id', $id)->first();
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'unit', 'location')->find($id);
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
@@ -552,7 +550,7 @@ class DeliveryOrderController extends Controller {
         $send_sms = Input::get('send_sms');
         if ($send_sms == 'true') {
             $customer_id = $delivery_data->customer_id;
-            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+            $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear '" . $customer->owner_name . "'\nDT" . date("j M, Y") . "\nYour DO has been created as follows ";

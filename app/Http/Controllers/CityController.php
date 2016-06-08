@@ -90,6 +90,7 @@ class CityController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy($id) {
+
         if (Auth::user()->role_id != 0) {
             return Redirect::to('city')->with('error', 'You do not have permission.');
         }

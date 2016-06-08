@@ -146,7 +146,7 @@ class PurchaseChallanController extends Controller {
      */
     public function show($id) {
 
-        $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'purchase_product.purchase_product_details', 'purchase_product.unit')->where('id', $id)->first();
+        $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'purchase_product.purchase_product_details', 'purchase_product.unit')->find($id);
         if (count($purchase_challan) < 1) {
             return redirect('purchase_challan')->with('flash_message', 'Challan not found');
         }
@@ -161,7 +161,7 @@ class PurchaseChallanController extends Controller {
      */
 //    public function edit($id) {
 //
-//        $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'purchase_product.product_sub_category', 'purchase_product.unit')->where('id', $id)->first();
+//        $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'purchase_product.product_sub_category', 'purchase_product.unit')->find($id);
 //        if (count($purchase_challan) < 1) {
 //            return redirect('purchase_challan')->with('flash_message', 'Challan not found');
 //        }
@@ -242,7 +242,7 @@ class PurchaseChallanController extends Controller {
             'serial_number' => $date_letter,
             'order_status' => "Completed"
         ));
-        $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'all_purchase_products.purchase_product_details', 'all_purchase_products.unit')->where('id', $id)->first();
+        $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'all_purchase_products.purchase_product_details', 'all_purchase_products.unit')->find($id);
 
         /*
          * ------------------- -----------------------
@@ -253,7 +253,7 @@ class PurchaseChallanController extends Controller {
         $send_sms = Input::get('send_sms');
         if ($send_sms == 'true') {
             $customer_id = $purchase_challan->supplier_id;
-            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+            $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour meterial has been desp as follows ";

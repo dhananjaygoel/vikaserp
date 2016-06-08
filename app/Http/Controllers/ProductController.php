@@ -17,16 +17,10 @@ use Auth;
 use App\ProductCategory;
 use App\ProductSubCategory;
 use App\ProductType;
-use App\AllOrderProducts;
-use App\PurchaseProducts;
 use App\Http\Requests\ProductCategoryRequest;
-use App\Http\Requests\UserValidation;
 use Input;
-use DB;
 use App;
 use Config;
-use Maatwebsite\Excel\Facades\Excel;
-use App\InquiryProducts;
 
 class ProductController extends Controller {
 
@@ -44,7 +38,6 @@ class ProductController extends Controller {
      */
 
     public function index() {
-
         $product_cat = ProductCategory::orderBy('created_at', 'desc')->Paginate(20);
         $product_cat->setPath('product_category');
         return view('product_category', compact('product_cat'));
@@ -105,7 +98,6 @@ class ProductController extends Controller {
                 }
             }
         }
-
         return redirect('product_category')->with('success', 'Product category successfully added.');
     }
 
@@ -114,15 +106,11 @@ class ProductController extends Controller {
      */
 
     public function show($id) {
-
-        $product_cat = ProductCategory::where('id', $id)->with('product_sub_category', 'product_type')->first();
+        $product_cat = ProductCategory::with('product_sub_category', 'product_type')->find($id);
         if (count($product_cat) < 1) {
             return redirect('product_category')->with('success', 'Product category does not exist.');
         }
-
-
-        $product_cat = ProductCategory::where('id', $id)->with('product_sub_category', 'product_type')->first();
-
+        $product_cat = ProductCategory::with('product_sub_category', 'product_type')->find($id);
         return view('view_product_category', compact('product_cat'));
     }
 
@@ -135,13 +123,9 @@ class ProductController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-
         if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
-
             $cat = ProductSubCategory::where('product_category_id', $id)->count();
-
             if ($cat == 0) {
-
                 ProductCategory::destroy($id);
                 return redirect('product_category')->with('success', 'Product details successfully deleted.');
             } else {
@@ -184,10 +168,7 @@ class ProductController extends Controller {
             'product_category_name' => $request->input('product_category_name'),
             'price' => $request->input('price'),
         );
-
-        ProductCategory::where('id', $id)
-                ->update($product_data);
-
+        ProductCategory::where('id', $id)->update($product_data);
         return redirect('product_category')->with('success', 'Product category successfully updated.');
     }
 
@@ -198,9 +179,7 @@ class ProductController extends Controller {
     public function update_price() {
         $val = Input::get('price');
         $key = Input::get('product_id');
-
-        ProductCategory::where('id', $key)
-                ->update(array('price' => $val));
+        ProductCategory::where('id', $key)->update(array('price' => $val));
     }
 
     /*
@@ -212,8 +191,7 @@ class ProductController extends Controller {
         $price = Input::get('price');
         foreach ($price as $key => $value) {
             foreach ($value as $val) {
-                ProductCategory::where('id', $key)
-                        ->update(array('price' => $val));
+                ProductCategory::where('id', $key)->update(array('price' => $val));
             }
         }
     }

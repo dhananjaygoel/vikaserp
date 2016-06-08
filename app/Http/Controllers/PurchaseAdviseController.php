@@ -257,7 +257,7 @@ class PurchaseAdviseController extends Controller {
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
                 if (isset($product_data['purchase_product_id']) && $product_data['purchase_product_id'] != '') {
-                    $purchase_product = PurchaseProducts::where('id', '=', $product_data['purchase_product_id'])->first();
+                    $purchase_product = PurchaseProducts::find($product_data['purchase_product_id']);
                     $purchase_product->update(
                             [
                                 'present_shipping' => $product_data['present_shipping'],
@@ -477,7 +477,7 @@ class PurchaseAdviseController extends Controller {
         PurchaseAdvise::where('id', '=', $id)->update(array(
             'serial_number' => $date_letter
         ));
-        $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products.purchase_product_details', 'purchase_products.unit', 'location')->where('id', $id)->first();
+        $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products.purchase_product_details', 'purchase_products.unit', 'location')->find($id);
 
         /*
          * ------------------- ------------------------
@@ -488,7 +488,7 @@ class PurchaseAdviseController extends Controller {
         $send_sms = Input::get('send_sms');
         if ($send_sms == 'true') {
             $customer_id = $purchase_advise->supplier_id;
-            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+            $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour purchase Advise has been created as follows ";

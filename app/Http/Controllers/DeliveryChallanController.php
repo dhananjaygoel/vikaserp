@@ -11,7 +11,6 @@ use App\Order;
 use App\AllOrderProducts;
 use App\DeliveryOrder;
 use Input;
-use Validator;
 use Redirect;
 use App\User;
 use Auth;
@@ -257,7 +256,7 @@ class DeliveryChallanController extends Controller {
         $send_sms = Input::get('send_sms');
         if ($send_sms == 'true') {
             $customer_id = $allorder->customer_id;
-            $customer = Customer::where('id', '=', $customer_id)->with('manager')->first();
+            $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour meterial has been desp as follows ";
@@ -529,7 +528,6 @@ class DeliveryChallanController extends Controller {
         $allorder_new = [];
         foreach ($allorders as $order) {
             $delivery_orders = DeliveryOrder::where('order_id', $order->id)->get();
-
             $gen_dc = 1;
             $pending_quantity = 0;
             foreach ($delivery_orders as $del_order) {
@@ -544,7 +542,6 @@ class DeliveryChallanController extends Controller {
                 }
             }
             if ($gen_dc != 1 && $pending_quantity == 0 && $order->order_status != 'completed') {
-
                 Order::where('id', $order->id)->update(array(
                     'order_status' => "completed"
                 ));

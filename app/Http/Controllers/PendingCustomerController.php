@@ -42,7 +42,6 @@ class PendingCustomerController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-
         $customers = Customer::orderBy('created_at', 'desc')->where('customer_status', '=', 'pending')->paginate(20);
         $customers->setPath('pending_customers');
         return View::make('pending_customers', array('customers' => $customers));
@@ -55,7 +54,7 @@ class PendingCustomerController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $customer = Customer::where('id', '=', $id)->first();
+        $customer = Customer::find($id);
         if (count($customer) < 1) {
             return redirect('pending_customers/')->with('error', 'Trying to access an invalid customer');
         }
@@ -152,7 +151,6 @@ class PendingCustomerController extends Controller {
         if (count($customer) < 1) {
             return redirect('pending_customers/')->with('error', 'Trying to access an invalid customer');
         }
-
         $customer->owner_name = Input::get('owner_name');
         if (Input::has('company_name')) {
             $customer->company_name = Input::get('company_name');
@@ -175,19 +173,16 @@ class PendingCustomerController extends Controller {
         if (Input::has('state')) {
             $customer->state = Input::get('state');
         }
-
         if (Input::has('zip')) {
             $customer->zip = Input::get('zip');
         }
         if (Input::has('email')) {
             $customer->email = Input::get('email');
         }
-
         $customer->tally_name = Input::get('tally_name');
         $customer->tally_category = Input::get('tally_category');
         $customer->tally_sub_category = Input::get('tally_sub_category');
         $customer->phone_number1 = Input::get('phone_number1');
-
         if (Input::has('vat_tin_number')) {
             $customer->vat_tin_number = Input::get('vat_tin_number');
         }
@@ -203,13 +198,11 @@ class PendingCustomerController extends Controller {
         if (Input::has('relationship_manager')) {
             $customer->relationship_manager = Input::get('relationship_manager');
         }
-
         $customer->delivery_location_id = Input::get('delivery_location');
 
         if (Input::has('password') && Input::get('password') != '') {
             $customer->password = Hash::make(Input::get('relationship_manager'));
         }
-
         $customer->customer_status = 'permanent';
         if ($customer->save()) {
             //set price difference of the category
