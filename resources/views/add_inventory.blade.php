@@ -22,7 +22,9 @@
                                 </div>
                             </form>
                             <a href="{{url('export_inventory')}}" class="btn btn-primary form_button_footer">Export Inventory List</a>
+                            @if(auth()->user()->role_id == 0)
                             <a class="btn btn-primary save_all_inventory">Save all</a>
+                            @endif
                         </div>
                     </div>
                 </div>                
@@ -90,7 +92,6 @@
                                             <?php
                                             $total = ($inventory->physical_closing_qty - $inventory->pending_delivery_order_qty - $inventory->pending_sales_order_qty + $inventory->pending_purchase_advise_qty);
                                             ?>
-
                                             @if(auth()->user()->role_id == 0)
                                             <td class="{{ ($inventory->minimal < $total) ?'minimum_reach': '' }}">
                                                 <div class="form-group">                                                    
