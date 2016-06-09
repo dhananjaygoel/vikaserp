@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title','Add Inquiry')
 @section('content')
-<?php
-
-use Illuminate\Support\Facades\Session;
-?>
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
