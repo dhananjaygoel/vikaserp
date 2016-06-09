@@ -29,7 +29,6 @@ use DateTime;
 use App\CustomerProductDifference;
 use Session;
 use Illuminate\Support\Facades\Event;
-use Memcached;
 
 class InquiryController extends Controller {
 
@@ -68,37 +67,6 @@ class InquiryController extends Controller {
     public function create() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
-        }
-        $mem_var = new Memcached();
-        $mem_var->addServer("127.0.0.1", 11211);
-        if (count($mem_var->get('customers')) > 0) {
-            
-        } else {
-            $customers = Customer::where('customer_status', '=', 'permanent')
-                    ->with('only_city', 'delivery_location')
-                    ->orderBy('owner_name', 'ASC')
-                    ->get();
-
-            echo "<pre>";
-            print_r($customers->toArray());
-            echo "<pre>";
-            exit();
-
-            if (count($customers) > 0) {
-                foreach ($customers as $customer) {
-                    $data_array[] = [
-                        'value' => $customer->owner_name . '-' . $customer->tally_name,
-                        'id' => $customer->id,
-                        'delivery_location_id' => $customer->delivery_location_id,
-                        'location_difference' => $customer['deliverylocation']->difference,
-                    ];
-                }
-            } else {
-                $data_array[] = [
-                    'value' => 'No Customers',
-                ];
-            }
-            $mem_var->set('customers', $data_array);
         }
         $units = Units::all();
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
@@ -577,31 +545,26 @@ class InquiryController extends Controller {
     public function fetch_existing_customer() {
 
         $term = '%' . Input::get('term') . '%';
-        $mem_var = new Memcached();
-        $mem_var->addServer("127.0.0.1", 11211);
-        if (count($mem_var->get('customers')) > 0) {
-            $data_array = $mem_var->get('customers');
-        } else {
-            $customers = Customer::where(function($query) use($term) {
-                                $query->whereHas('only_city', function($q) use ($term) {
-                                    $q->where('city_name', 'like', $term);
-                                });
-                            })
-                            ->where('customer_status', '=', 'permanent')
-                            ->orWhere('company_name', $term)
-                            ->orWhere('tally_name', 'like', $term)
-                            ->with('delivery_location')->orderBy('owner_name', 'ASC')->get();
+        $customers = Customer::where(function($query) use($term) {
+                            $query->whereHas('only_city', function($q) use ($term) {
+                                $q->where('city_name', 'like', $term);
+                            });
+                        })
+                        ->where('customer_status', '=', 'permanent')
+                        ->orWhere('company_name', $term)
+                        ->orWhere('tally_name', 'like', $term)
+                        ->with('delivery_location')->orderBy('owner_name', 'ASC')->get();
 
-            if (count($customers) > 0) {
-                foreach ($customers as $customer) {
-                    $data_array[] = [
-                        'value' => $customer->owner_name . '-' . $customer->tally_name,
-                        'id' => $customer->id,
-                        'delivery_location_id' => $customer->delivery_location_id,
-                        'location_difference' => $customer['deliverylocation']->difference,
-                    ];
-                }
-                /* Code commented of getting from view */
+        if (count($customers) > 0) {
+            foreach ($customers as $customer) {
+                $data_array[] = [
+                    'value' => $customer->owner_name . '-' . $customer->tally_name,
+                    'id' => $customer->id,
+                    'delivery_location_id' => $customer->delivery_location_id,
+                    'location_difference' => $customer['deliverylocation']->difference,
+                ];
+            }
+            /* Code commented of getting from view */
 //            foreach ($customers as $customer) {
 //                $data_array[] = [
 //                    'value' => $customer->owner_name . '-' . $customer->tally_name,
@@ -610,11 +573,10 @@ class InquiryController extends Controller {
 //                    'location_difference' => $customer->difference,
 //                ];
 //            }
-            } else {
-                $data_array[] = [
-                    'value' => 'No Customers',
-                ];
-            }
+        } else {
+            $data_array[] = [
+                'value' => 'No Customers',
+            ];
         }
         echo json_encode(array('data_array' => $data_array));
     }
