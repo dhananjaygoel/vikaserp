@@ -88,17 +88,16 @@
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
                         <div id="flash_message" class="alert no_data_msg_container"></div>
+                        @if (Session::has('flash_message'))
+                        <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
+                        @endif
                         @if(sizeof($allorders)==0)
                         <div class="alert alert-info no_data_msg_container">
                             Currently no orders have been added.
                         </div>
-                        @else
-                        @if (Session::has('flash_message'))
-                        <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
-                        @endif
+                        @else                        
                         <div class="table-responsive tablepending">
                             <table id="table-example" class="table table-hover">
-
                                 <?php
                                 $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
                                 ?>
@@ -121,13 +120,7 @@
                                     @endif
                                     <tr id="order_row_{{$order->id}}">
                                         <td>{{$k++}}</td>
-                                        <td>
-                                            @if($order["customer"]->tally_name != "")
-                                            {{$order["customer"]->tally_name}}
-                                            @else
-                                            {{$order["customer"]->owner_name}}
-                                            @endif
-                                        </td>
+                                        <td>{{($order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}</td>
                                         <td>{{$order['customer']['phone_number1']}}</td>
                                         @if($order->delivery_location_id !=0)
                                         <td class="text">{{$order['delivery_location']['area_name']}}</td>
@@ -191,15 +184,8 @@
                                 </thead>
                                 @endif
                                 <tr id="order_row_{{$order->id}}">
-                                    <td>{{$k++}}</td>
-
-                                    <td>
-                                        @if($order["customer"]->tally_name != "")
-                                        {{$order["customer"]->tally_name}}
-                                        @else
-                                        {{$order["customer"]->owner_name}}
-                                        @endif
-                                    </td>
+                                    <td>{{$k++}}</td>                                    
+                                    <td>{{($order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}</td>
                                     @if(count($pending_orders) > 0)
                                     @foreach($pending_orders as $porder)
                                     @if($porder['id'] == $order->id)
@@ -210,9 +196,9 @@
                                     <td></td>
                                     @endif
                                     <td>{{$order['customer']['phone_number1']}}</td>
-                                    @if($order['delivery_location']['area_name'] !="")
+                                    @if(isset($order['delivery_location']) && $order['delivery_location']['area_name'] !="")
                                     <td class="text">{{$order['delivery_location']['area_name']}}</td>
-                                    @elseif($order['delivery_location']['area_name'] =="")
+                                    @else
                                     <td class="text">{{$order['other_location']}}</td>
                                     @endif
                                     <td class="text"><?php
@@ -260,13 +246,7 @@
                                     @endif
                                     <tr id="order_row_{{$order->id}}">
                                         <td>{{$k++}}</td>
-                                        <td>
-                                            @if($order["customer"]->tally_name != "")
-                                            {{$order["customer"]->tally_name}}
-                                            @else
-                                            {{$order["customer"]->owner_name}}
-                                            @endif
-                                        </td>
+                                        <td>{{($order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}</td>
                                         <td><?php
 //                                            $total_quantity = 0;
 //                                            foreach ($order['all_order_products'] as $key => $product) {
@@ -282,21 +262,24 @@
                                         @elseif($order['delivery_location']['area_name'] =="")
                                         <td class="text-center">{{$order['other_location']}}</td>
                                         @endif
-                                        <td><?php
+                                        <td>
+                                            <?php
                                             foreach ($users as $u) {
                                                 if ($u['id'] == $order['created_by']) {
                                                     echo $u['first_name'];
                                                 }
                                             }
-                                            ?></td>
-                                        <td><?php
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?php
                                             foreach ($users as $canceluser) {
                                                 if ($canceluser['id'] == $order['order_cancelled']['cancelled_by']) {
                                                     echo $canceluser['first_name'];
                                                 }
                                             }
-                                            ?></td>
-
+                                            ?>
+                                        </td>
                                         <td>{{$order['order_cancelled']['reason']}}</td>
                                         <td class="text-center">
                                             <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
@@ -315,10 +298,8 @@
                                             @endif
                                         </td>
                                     </tr>
-
                                     @endif
                                     @endforeach
-
                                 </tbody>
                             </table>
                             <div class="modal fade" id="cancel_order_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -329,7 +310,6 @@
                                             <h4 class="modal-title" id="myModalLabel"></h4>
                                         </div>
                                         {!! Form::open(array('method'=>'POST','url'=>url('manual_complete_order'), 'id'=>'cancel_order_form'))!!}
-
                                         <input type="hidden" name="order_id" id="order_id">
                                         <div class="modal-body">
                                             <p> Are you sure to complete the Order?</p>
@@ -372,7 +352,6 @@
                                         <form method="post" class="delete_order_form" >
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 <!--                                            <input name="_method" type="hidden" value="DELETE">-->
-
                                             <div class="modal-body">
                                                 <div class="delete">
                                                     <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
@@ -389,34 +368,51 @@
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="button" class="btn btn-default delete_orders_modal_submit">Yes</button>
                                             </div>
-                                            <form>
-                                                </div>
-                                                </div>
-                                                </div>
-                                                <span class="pull-right">
-                                                    <?php echo $allorders->render(); ?>
-                                                </span>
-                                                <div class="clearfix"></div>
-                                                @if($allorders->lastPage() > 1)
-                                                <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
-                                                    <form class="form-inline" method="GET" action="{{url('orders')}}" id="filter_search">
-                                                        <div class="form-group">
-                                                            <label for="exampleInputName2"><b>Go To</b></label>
-                                                            &nbsp;
-                                                            <input style="width: 50px;" type="text" class="form-control" placeholder="" value="{{Input::get('page')}}" name="page" type="text">
-                                                            &nbsp;
-                                                            <label for="exampleInputName2"><b>of {{ $allorders->lastPage()}} </b></label>
-                                                            <a onclick="this.form.submit()"></a>
-                                                        </div>
-                                                    </form>
-                                                </span>
-                                                @endif
-                                                </div>
-                                                @endif
-                                                </div>
-                                                </div>
-                                                </div>
-                                                </div>
-                                                </div>
-                                                </div>
-                                                @stop
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="pull-right">
+                                <?php
+                                if (Input::get('order_filter') != '') {
+                                    $allorders->appends(array('order_filter' => Input::get('order_filter')))->render();
+                                }
+                                if (Input::get('location_filter') != '') {
+                                    $allorders->appends(array('location_filter' => Input::get('location_filter')))->render();
+                                }
+                                if (Input::get('party_filter') != '') {
+                                    $allorders->appends(array('party_filter' => Input::get('party_filter')))->render();
+                                }
+                                if (Input::get('fulfilled_filter') != '') {
+                                    $allorders->appends(array('fulfilled_filter' => Input::get('fulfilled_filter')))->render();
+                                }
+                                if (Input::get('size_filter') != '') {
+                                    $allorders->appends(array('size_filter' => Input::get('size_filter')))->render();
+                                }
+                                echo $allorders->render();
+                                ?>
+                            </span>
+                            <div class="clearfix"></div>
+                            @if($allorders->lastPage() > 1)
+                            <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                <form class="form-inline" method="GET" action="{{url('orders')}}" id="filter_search">
+                                    <div class="form-group">
+                                        <label for="exampleInputName2"><b>Go To</b></label>
+                                        &nbsp;
+                                        <input style="width: 50px;" type="text" class="form-control" placeholder="" value="{{Input::get('page')}}" name="page" type="text">
+                                        &nbsp;
+                                        <label for="exampleInputName2"><b>of {{ $allorders->lastPage()}} </b></label>
+                                        <a onclick="this.form.submit()"></a>
+                                    </div>
+                                </form>
+                            </span>
+                            @endif
+                        </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@stop
