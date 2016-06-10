@@ -62,7 +62,7 @@
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-2">
                                                 <div class="form-group searchproduct">
-                                                    <input type="text" class="form-control" placeholder="Enter Product name" autocomplete="off" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{ $product['order_product_details']->alias_name}}" onfocus="delivery_challan_product_autocomplete({{$key}});">
+                                                    <input type="text" class="form-control each_product_detail ui-autocomplete-input" placeholder="Enter Product name" autocomplete="off" name="product[{{$key}}][name]" id="delivery_challan_product_name_{{$key}}" value="{{ $product['order_product_details']->alias_name}}" onfocus="delivery_challan_product_autocomplete({{$key}});">
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']->id}}" data-curname="{{ $product['order_product_details']->alias_name}}">
                                                     <i class="fa fa-search search-icon"></i>
                                                 </div>
@@ -71,9 +71,9 @@
                                                 <div class="form-group">
                                                     <input id="quantity_{{$key}}" type="hidden" value="{{ $product->quantity}}" name="product[{{$key}}][quantity]">
                                                     @if($product->present_shipping >=0)
-                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{ $product->quantity}}" type="tel" onblur="fetch_price();">
+                                                    <input id="actual_quantity_{{$key}}" class="form-control delivery_challan_qty" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{ $product->quantity}}" type="tel" onblur="fetch_price();">
                                                     @elseif($product->present_shipping <0)
-                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{ $product->quantity}}" type="tel">
+                                                    <input id="actual_quantity_{{$key}}" class="form-control delivery_challan_qty" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{ $product->quantity}}" type="tel" onblur="fetch_price();">
                                                     @endif
                                                 </div>
                                             </td>
@@ -92,7 +92,6 @@
                                                 <div class="form-group">
                                                     <input type="tel" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="change_amount({{$key}})">
                                                 </div>
-
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group ">
@@ -107,15 +106,57 @@
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
-                                                <div class="form-group">
-                                                    <div id="amount_{{$key}}"></div>
-                                                </div>
+                                                <div class="form-group"><div id="amount_{{$key}}"></div></div>
                                             </td>
-
                                         </tr>
                                         <?php $key++ ?>
                                         @endif
                                         @endforeach
+                                        <tr id="add_row_{{$key}}" class="add_product_row">
+                                            <td class="col-md-2">
+                                                <div class="form-group searchproduct">
+                                                    <input type="text" class="form-control each_product_detail ui-autocomplete-input" placeholder="Enter Product name" autocomplete="off" name="product[{{$key}}][name]" id="delivery_challan_product_name_{{$key}}" data-productid="{{$key}}" onfocus="delivery_challan_product_autocomplete({{$key}});">
+                                                    <i class="fa fa-search search-icon"></i>
+                                                </div>
+                                            </td>
+                                            <td class="col-md-1">
+                                                <div class="form-group">
+                                                    <input id="quantity_{{$key}}" type="hidden" value="" name="product[{{$key}}][quantity]">
+                                                    <input id="actual_quantity_{{$key}}" class="form-control delivery_challan_qty" placeholder="Qnty" name="product[{{$key}}][actual_quantity]" value="" type="tel" onblur="fetch_price();">
+                                                </div>
+                                            </td>
+                                            <td class="col-md-2">
+                                                <div class="form-group">
+                                                    <input id="actual_pieces_{{$key}}" class="form-control" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="" type="tel" onblur="fetch_price();">
+                                                </div>
+                                            </td>
+                                            <td class="col-md-2">
+                                                <div class="form-group">
+                                                    <input id="present_shipping_{{$key}}" class="form-control text-center" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="" type="input" >
+                                                </div>
+                                            </td>
+                                            <td class="col-md-2">
+                                                <div class="form-group">
+                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="" name="product[{{$key}}][price]" placeholder="Price" onblur="change_amount({{$key}})">
+                                                </div>
+                                            </td>
+                                            <td class="col-md-1">
+                                                <div class="form-group ">
+                                                    @foreach($units as $unit)
+                                                    @if($unit->id == $product->unit_id)
+                                                    <input class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" value="{{$unit->id}}" type="hidden">
+                                                    {{$unit->unit_name}}
+                                                    <input type="hidden" id="unit_name_{{$key}}" value="{{$unit->unit_name}}">
+                                                    @endif
+                                                    @endforeach
+                                                </div>
+                                            </td>
+                                            <td class="col-md-2">
+                                                <div class="form-group">
+                                                    <div id="amount_{{$key}}"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                                 <table>

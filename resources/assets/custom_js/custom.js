@@ -134,7 +134,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-1">' +
                 '<div class="form-group">' +
-                '<input id="actual_quantity_' + current_row_count + '" class="form-control" placeholder="Qnty" name="product[' + current_row_count + '][actual_quantity]" value="" type="text" onblur="fetch_price();">' +
+                '<input id="actual_quantity_' + current_row_count + '" class="form-control delivery_challan_qty" placeholder="Qnty" name="product[' + current_row_count + '][actual_quantity]" value="" type="text" onblur="fetch_price();">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
@@ -296,7 +296,6 @@ $(function () {
  * Comment
  */
 function create_purchase_challan_function() {
-
     var current_row_count = $(".add_product_row").length + 1;
     $.ajax({
         type: "GET",

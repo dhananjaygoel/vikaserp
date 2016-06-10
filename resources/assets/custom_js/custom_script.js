@@ -613,6 +613,10 @@ function delivery_challan_product_autocomplete(id) {
             $("#product_price_" + id).val(ui.item.product_price);
             $("#add_product_id_" + id).val(ui.item.id);
             $("#add_product_id_" + id).attr('data-curname', ui.item.value);
+            var current_qty_row = $(".add_product_row").length;
+            if (($('#delivery_challan_product_name_' + current_qty_row).val().length > 0)) {
+                $("#add_product_row_delivery_challan").trigger("click");
+            }
         }
     });
 }

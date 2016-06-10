@@ -28,7 +28,7 @@
     overflow-y: scroll !important;
     max-height: 250px;
 }
-.custom_alert_success, #empty_select_completed, .delete_records_empty{
+.custom_alert_success, #empty_select_completed, .delete_records_empty, #add_product_row_delivery_challan{
     display:none;
 }
 #password_delete_completetd{
