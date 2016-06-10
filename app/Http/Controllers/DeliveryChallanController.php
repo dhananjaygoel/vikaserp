@@ -223,6 +223,7 @@ class DeliveryChallanController extends Controller {
      */
 
     public function print_delivery_challan($id) {
+
         $serial_number_delivery_order = Input::get('serial_number');
         $current_date = date("m/d/");
         $date_letter = 'DC/' . $current_date . $id;
