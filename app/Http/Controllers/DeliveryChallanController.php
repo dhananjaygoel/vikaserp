@@ -167,9 +167,7 @@ class DeliveryChallanController extends Controller {
 //                "bill_number" => $input_data['billno']]);
 //        }
 
-        $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)
-                ->where('order_type', '=', 'delivery_challan')
-                ->delete();
+        $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
         if ($j != 0) {
             $order_products = array();
             foreach ($input_data['product'] as $product_data) {
