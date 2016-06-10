@@ -116,6 +116,7 @@
                                             <td class="col-md-2">
                                                 <div class="form-group searchproduct">
                                                     <input type="text" class="form-control each_product_detail ui-autocomplete-input" placeholder="Enter Product name" autocomplete="off" name="product[{{$key}}][name]" id="delivery_challan_product_name_{{$key}}" data-productid="{{$key}}" onfocus="delivery_challan_product_autocomplete({{$key}});">
+                                                    <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}">
                                                     <i class="fa fa-search search-icon"></i>
                                                 </div>
                                             </td>
@@ -165,7 +166,6 @@
                                             <td>
                                                 <div class="add_button1">
                                                     <div class="form-group pull-left">
-
                                                         <label for="addmore"></label>
                                                         <a class="table-link" title="add more" id="add_product_row_delivery_challan">
                                                             <span class="fa-stack more_button" >
