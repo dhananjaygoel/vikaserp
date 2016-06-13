@@ -45,7 +45,7 @@
                     </div>
                     <div class="form-group">
                         <label><b>Created By:</b> {{$purchase_advise['supplier']->owner_name }}
-                            <input type="hidden" name="supplier_id" value="{{$purchase_advise['supplier']->id }}"/>
+                            <input type="hidden" name="supplier_id" id="supplier_id" value="{{$purchase_advise['supplier']->id }}"/>
                             <input type="hidden" name="created_by" value="{{$purchase_advise->created_by }}"/>
                         </label>
                     </div>

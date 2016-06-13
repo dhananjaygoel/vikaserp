@@ -46,10 +46,6 @@ class HomeController extends Controller {
     // All Functions added by user 157 for android request //
     public function appsync() {
         $data = Input::all();
-//        echo "<pre>";
-//        print_r($data['userdata']);
-//        echo "<pre>";
-//        exit();
         return json_encode($data);
 
 
@@ -117,12 +113,6 @@ class HomeController extends Controller {
 //                )
 //            )
 //        );
-//        if (!empty($sync_details)) {
-//            echo "<pre>";
-//            print_r($sync_details);
-//            echo "<pre>";
-//            exit();
-//        }
     }
 
     public function appcount() {

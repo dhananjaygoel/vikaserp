@@ -19,6 +19,14 @@ class Customer extends Model {
         return $this->hasOne('App\DeliveryLocation', 'id', 'delivery_location_id')->with('city', 'state');
     }
 
+    public function delivery_location() {
+        return $this->hasOne('App\DeliveryLocation', 'id', 'delivery_location_id')->select(array('id', 'difference'));
+    }
+
+    public function only_city() {
+        return $this->hasOne('App\City', 'id', 'city')->select(array('id', 'city_name'));
+    }
+
     public function manager() {
         return $this->hasOne('App\User', 'id', 'relationship_manager');
     }

@@ -573,6 +573,8 @@ function product_autocomplete(id) {
                     $("#product_price_" + id).val(obj.data_array[0].product_price); // to add price in the textbox
                     $("#add_product_id_" + id).val(obj.data_array[0].id);
                     $("#add_product_id_" + id).attr('data-curname', obj.data_array[0].value);
+                    $('#quantity_' + id).focus();
+                    $('.more_button').parent().trigger('click');
 //                    $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
                 },
             });

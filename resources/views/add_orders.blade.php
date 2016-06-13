@@ -168,7 +168,7 @@ use Illuminate\Support\Facades\Session;
                                             if (isset($total_products_added) && ($total_products_added > 10)) {
                                                 $j = $total_products_added;
                                             } else {
-                                                $j = 10;
+                                                $j = 1;
                                             }
                                             for ($i = 1; $i <= $j; $i++) {
                                                 ?>
