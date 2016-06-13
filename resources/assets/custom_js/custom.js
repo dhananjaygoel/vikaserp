@@ -1221,16 +1221,16 @@ $('body').delegate(".btn_delorderto_delchallan", "click", function () {
     }
 });
 $('body').delegate(".existing_customer_order", "click", function () {
-    if ($(this).attr('checked') == true) {
+    if ($(this).attr('checked') == 'checked') {
     } else {
-        $('.existing_customer_order').attr('checked', 'false');
+        $('.existing_customer_order').attr('checked', '');
         $(this).attr('checked', 'checked');
     }
 });
 $('body').delegate(".new_customer_order", "click", function () {
-    if ($(this).attr('checked') == true) {
+    if ($(this).attr('checked') == 'checked') {
     } else {
-        $('.existing_customer_order').attr('checked', 'false');
+        $('.existing_customer_order').attr('checked', '');
         $(this).attr('checked', 'checked');
     }
 });
@@ -1658,7 +1658,6 @@ $('body').delegate(".each_product_detail", "blur", function () {
         $('#add_product_id_' + cur_product_id).val('');
         $('#add_product_id_' + cur_product_id).attr('data-curname', '');
     } else {
-
         var related_cur_product_id = $('#add_product_id_' + cur_product_id).val();
         if (related_cur_product_id == "") {
             $(this).focus();
