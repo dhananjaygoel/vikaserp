@@ -1215,6 +1215,20 @@ $('body').delegate(".btn_delorderto_delchallan", "click", function () {
         $('#onenter_prevent').submit();
     }
 });
+$('body').delegate(".existing_customer_order", "click", function () {
+    if ($(this).attr('checked') == true) {
+    } else {
+        $('.existing_customer_order').attr('checked', 'false');
+        $(this).attr('checked', 'checked');
+    }
+});
+$('body').delegate(".new_customer_order", "click", function () {
+    if ($(this).attr('checked') == true) {
+    } else {
+        $('.existing_customer_order').attr('checked', 'false');
+        $(this).attr('checked', 'checked');
+    }
+});
 $('body').delegate(".btn_order_to_delorder", "click", function () {
 
     var status_form = 0;
