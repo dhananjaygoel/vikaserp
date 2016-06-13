@@ -60,17 +60,13 @@ use Illuminate\Support\Facades\Session;
                                 <br/>
                                 <label>Customer<span class="mandatory">*</span></label>
                                 <div class="radio">
-                                    <input checked="" value="existing_customer" id="existing_customer" name="customer_status" type="radio" <?php
-                                    if (Input::old('customer_status') == "existing_customer") {
-                                        echo 'checked="checked"';
-                                    }
-                                    ?>>
+                                    <input checked="" value="existing_customer" id="existing_customer" name="customer_status" type="radio" class="existing_customer_order"
+                                           {{(Input::old('customer_status') == "existing_customer") ? 'checked = checked' : ''}}
+                                           >
                                     <label for="existing_customer">Existing</label>
-                                    <input  value="new_customer" id="new_customer" name="customer_status" type="radio" <?php
-                                    if (Input::old('customer_status') == "new_customer") {
-                                        echo 'checked="checked"';
-                                    }
-                                    ?>>
+                                    <input value="new_customer" id="new_customer" class="new_customer_order" name="customer_status" type="radio"
+                                    {{(Input::old('customer_status') == "new_customer") ? 'checked = checked' : ''}}
+                                    >
                                     <label for="new_customer">New</label>
                                 </div>
                                 <?php
