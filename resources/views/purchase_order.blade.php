@@ -146,15 +146,13 @@
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @endif
-
-<!--                                            <a class="table-link" title="manually complete" data-toggle="modal" data-target="#manual_complete" onclick="manual_complete({{$purchase_order->id}})">
+                                            <a class="table-link" title="manually complete" data-toggle="modal" data-target="#manual_complete" onclick="manual_complete({{$purchase_order->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a>-->
-
+                                            </a>
+                                            @endif
                                             <a class="table-link danger" data-toggle="modal" data-target="#delete_purchase_order" onclick="delete_purchase_order({{$purchase_order->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
