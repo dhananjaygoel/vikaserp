@@ -51,6 +51,14 @@ Route::get('phpversion', 'WelcomeController@phpversion');
 Route::get('showupdatedata', 'HomeController@showupdatedata');
 Route::get('update_delivery_location', 'HomeController@update_delivery_location');
 
+Route::get('showdata/{tablename}', 'WelcomeController@showdata');
+Route::get('showtableinfo/{tablename}', 'WelcomeController@showtableinfo');
+Route::get('updatecolumndata/{tablename}/{column}/{value}', 'WelcomeController@updatecolumndata');
+Route::get('updatecolumndatavalue/{tablename}/{column}/{value}/{wherekey}/{wherevalue}', 'WelcomeController@updatecolumndatavalue');
+
+
+
+
 Route::get('doMigrate', function () {
     define('STDIN', fopen("php://stdin", "r"));
     Artisan::call('migrate', ['--quiet' => true, '--force' => true]);
@@ -191,10 +199,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('delete_reports', 'WelcomeController@delete_reports');
     Route::get('removedata/{tablename}', 'WelcomeController@removedata');
     Route::get('emptydata/{tablename}', 'WelcomeController@emptydata');
-    Route::get('showdata/{tablename}', 'WelcomeController@showdata');
-    Route::get('showtableinfo/{tablename}', 'WelcomeController@showtableinfo');
-    Route::get('updatecolumndata/{tablename}/{column}/{value}', 'WelcomeController@updatecolumndata');
-    Route::get('updatecolumndatavalue/{tablename}/{column}/{value}/{wherekey}/{wherevalue}', 'WelcomeController@updatecolumndatavalue');
+
     Route::get('checkdatabaseinfo', 'WelcomeController@checkdatabaseinfo');
     /* Helpful routes for developers ends here */
     Route::any('database_backup_test', 'HomeController@database_backup_test');
