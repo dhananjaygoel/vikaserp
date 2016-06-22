@@ -44,6 +44,11 @@ class HomeController extends Controller {
     }
 
     // All Functions added by user 157 for android request //
+    public function appsync1() {
+        $data = (json_decode(Input::get('inquiry_info'), true));
+        return json_encode($data);
+    }
+
     public function appsync() {
 
 //        $data = Input::all();

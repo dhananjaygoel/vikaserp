@@ -13,6 +13,7 @@
 
 Route::post('applogin', 'HomeController@applogin');
 Route::post('appsync', 'HomeController@appsync');
+Route::get('appsync1', 'HomeController@appsync1');
 Route::get('appcount', 'HomeController@appcount');
 Route::get('appinquiry', 'HomeController@appinquiry');
 Route::get('apporders', 'HomeController@apporders');
