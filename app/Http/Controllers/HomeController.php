@@ -46,7 +46,45 @@ class HomeController extends Controller {
     // All Functions added by user 157 for android request //
     public function appsync() {
 
-        $data = Input::all();
+//        $data = Input::all();
+//        $inquiry_date = Inquiry::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        $order_date = Order::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        $delivery_order_date = DeliveryOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        $delivery_challan_date = DeliveryChallan::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        $purchase_order_date = PurchaseOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        $purchase_advice_date = PurchaseAdvise::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        $purchase_challan_date = PurchaseChallan::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        $customer_date = Customer::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        $user_date = User::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        $product_category = ProductCategory::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        $product_subcategory_date = ProductSubCategory::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        $location_date = DeliveryLocation::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        $city_date = City::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        $state_date = States::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        $inventory_date = Inventory::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        $syncdata = json_decode($data['sync_info']);
+//        $sync = [];
+//                $sync['inquiry'] = [$syncdata['inquiry'], $inquiry_date->updated_at->toDateTimeString()];
+//                $sync['order'] = [$syncdata['order'], $order_date->updated_at->toDateTimeString()];
+//                $sync['delivery_order'] = [$syncdata['delivery_order'], $delivery_order_date->updated_at->toDateTimeString()];
+//                $sync['delivery_challan'] = [$syncdata['delivery_challan'], $delivery_challan_date->updated_at->toDateTimeString()];
+//                $sync['purchase_order'] = [$syncdata['purchase_order'], $purchase_order_date->updated_at->toDateTimeString()];
+//                $sync['purchase_advice'] = [$syncdata['purchase_advice'], $purchase_advice_date->updated_at->toDateTimeString()];
+//                $sync['purchase_challan'] = [$syncdata['purchase_challan'], $purchase_challan_date->updated_at->toDateTimeString()];
+//                $sync['customer'] = [$syncdata['customer'], $customer_date->updated_at->toDateTimeString()];
+//                $sync['user'] = [$syncdata['user'], $user_date->updated_at->toDateTimeString()];
+//                $sync['product_cat'] = [$syncdata['product_cat'], $product_category->updated_at->toDateTimeString()];
+//                $sync['product_sub_cat'] = [$syncdata['product_sub_cat'], $product_subcategory_date->updated_at->toDateTimeString()];
+//                $sync['location'] = [$syncdata['location'], $location_date->updated_at->toDateTimeString()];
+//                $sync['city'] = [$syncdata['city'], $city_date->updated_at->toDateTimeString()];
+//                $sync['state'] = [$syncdata['state'], $state_date->updated_at->toDateTimeString()];
+//                $sync['inventory'] = [$syncdata['inventory'], $inventory_date->updated_at->toDateTimeString()];
+//        return json_encode($sync);
+
+
+
+
+
         $inquiry_date = Inquiry::select('updated_at')->orderby('updated_at', 'DESC')->first();
         $order_date = Order::select('updated_at')->orderby('updated_at', 'DESC')->first();
         $delivery_order_date = DeliveryOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
@@ -62,88 +100,42 @@ class HomeController extends Controller {
         $city_date = City::select('updated_at')->orderby('updated_at', 'DESC')->first();
         $state_date = States::select('updated_at')->orderby('updated_at', 'DESC')->first();
         $inventory_date = Inventory::select('updated_at')->orderby('updated_at', 'DESC')->first();
-        $syncdata = json_decode($data['sync_info']);
+
         $sync = [];
-                $sync['inquiry'] = [$syncdata['inquiry'], $inquiry_date->updated_at->toDateTimeString()];
-                $sync['order'] = [$syncdata['order'], $order_date->updated_at->toDateTimeString()];
-                $sync['delivery_order'] = [$syncdata['delivery_order'], $delivery_order_date->updated_at->toDateTimeString()];
-                $sync['delivery_challan'] = [$syncdata['delivery_challan'], $delivery_challan_date->updated_at->toDateTimeString()];
-                $sync['purchase_order'] = [$syncdata['purchase_order'], $purchase_order_date->updated_at->toDateTimeString()];
-                $sync['purchase_advice'] = [$syncdata['purchase_advice'], $purchase_advice_date->updated_at->toDateTimeString()];
-                $sync['purchase_challan'] = [$syncdata['purchase_challan'], $purchase_challan_date->updated_at->toDateTimeString()];
-                $sync['customer'] = [$syncdata['customer'], $customer_date->updated_at->toDateTimeString()];
-                $sync['user'] = [$syncdata['user'], $user_date->updated_at->toDateTimeString()];
-                $sync['product_cat'] = [$syncdata['product_cat'], $product_category->updated_at->toDateTimeString()];
-                $sync['product_sub_cat'] = [$syncdata['product_sub_cat'], $product_subcategory_date->updated_at->toDateTimeString()];
-                $sync['location'] = [$syncdata['location'], $location_date->updated_at->toDateTimeString()];
-                $sync['city'] = [$syncdata['city'], $city_date->updated_at->toDateTimeString()];
-                $sync['state'] = [$syncdata['state'], $state_date->updated_at->toDateTimeString()];
-                $sync['inventory'] = [$syncdata['inventory'], $inventory_date->updated_at->toDateTimeString()];
+        $syncdata = (json_decode(Input::get('sync_info'), true));
+        foreach ($syncdata as $synckey => $syncvalue) {
+            if ($synckey == 'inquiry')
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $inquiry_date->updated_at->toDateTimeString()];
+            if ($synckey == 'order')
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $order_date->updated_at->toDateTimeString()];
+            if ($synckey == 'delivery_order')
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $delivery_order_date->updated_at->toDateTimeString()];
+            if ($synckey == 'delivery_challan')
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $delivery_challan_date->updated_at->toDateTimeString()];
+            if ($synckey == 'purchase_order')
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $purchase_order_date->updated_at->toDateTimeString()];
+            if ($synckey == 'purchase_advice')
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $purchase_advice_date->updated_at->toDateTimeString()];
+            if ($synckey == 'purchase_challan')
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $purchase_challan_date->updated_at->toDateTimeString()];
+            if ($synckey == 'customer')
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $customer_date->updated_at->toDateTimeString()];
+            if ($synckey == 'user')
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $user_date->updated_at->toDateTimeString()];
+            if ($synckey == 'product_cat')
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $product_category->updated_at->toDateTimeString()];
+            if ($synckey == 'product_sub_cat')
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $product_subcategory_date->updated_at->toDateTimeString()];
+            if ($synckey == 'location')
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $location_date->updated_at->toDateTimeString()];
+            if ($synckey == 'city')
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $city_date->updated_at->toDateTimeString()];
+            if ($synckey == 'state')
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $state_date->updated_at->toDateTimeString()];
+            if ($synckey == 'inventory')
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $inventory_date->updated_at->toDateTimeString()];
+        }
         return json_encode($sync);
-//        $sync_details = array(
-//            "Inquiry" => array(
-//                0 => array(
-//                    "serverid" => '',
-//                    "localidid" => 10,
-//                    "customer_id" => 1233,
-//                    "created_by" => 1,
-//                    "delivery_location_id" => 444,
-//                    "other_location" => '',
-//                    "location_difference" => 0.5,
-//                    "vat_percentage" => 10,
-//                    "expected_delivery_date" => '2015-12-23',
-//                    "sms_count" => 0,
-//                    "remarks" => 'This is just demo of synch',
-//                    "inquiry_status" => 'pending'
-//                ),
-//                1 => array(
-//                    "serverid" => '',
-//                    "localidid" => 11,
-//                    "customer_id" => 1233,
-//                    "created_by" => 1,
-//                    "delivery_location_id" => 344,
-//                    "other_location" => '',
-//                    "location_difference" => 0.5,
-//                    "vat_percentage" => 5,
-//                    "expected_delivery_date" => '2015-12-23',
-//                    "sms_count" => 0,
-//                    "remarks" => 'This is just demo of synch',
-//                    "inquiry_status" => 'pending'
-//                )
-//            ),
-//            "Order" => array(
-//                0 => array(
-//                    "serverid" => '',
-//                    "localidid" => 10,
-//                    "order_source" => 'warehouse',
-//                    "supplier_id" => 0,
-//                    "customer_id" => 773,
-//                    "created_by" => 1,
-//                    "delivery_location_id" => 444,
-//                    "vat_percentage" => 10,
-//                    "estimated_delivery_date" => '2015-12-23',
-//                    "expected_delivery_date" => '2015-12-23',
-//                    "order_status" => 'pending',
-//                    "other_location" => '',
-//                    "location_difference" => 0.5
-//                ),
-//                1 => array(
-//                    "serverid" => '',
-//                    "localidid" => 12,
-//                    "order_source" => 'warehouse',
-//                    "supplier_id" => 0,
-//                    "customer_id" => 773,
-//                    "created_by" => 1,
-//                    "delivery_location_id" => 344,
-//                    "vat_percentage" => 20,
-//                    "estimated_delivery_date" => '2015-12-24',
-//                    "expected_delivery_date" => '2015-12-24',
-//                    "order_status" => 'pending',
-//                    "other_location" => '',
-//                    "location_difference" => 0.8
-//                )
-//            )
-//        );
     }
 
     public function appcount() {

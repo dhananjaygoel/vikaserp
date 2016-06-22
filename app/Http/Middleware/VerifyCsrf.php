@@ -15,6 +15,7 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
     protected $routes = [
         'auth/login',
         'applogin',
+        'appsync',
     ];
 
     /**
