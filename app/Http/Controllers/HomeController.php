@@ -64,38 +64,21 @@ class HomeController extends Controller {
         $inventory_date = Inventory::select('updated_at')->orderby('updated_at', 'DESC')->first();
         $syncdata = json_decode($data['sync_info']);
         $sync = [];
-        foreach ($syncdata as $synckey => $syncvalue) {
-            if ($synckey == 'inquiry')
-                $sync[$synckey] = [$syncvalue, $inquiry_date->updated_at->toDateTimeString()];
-            if ($synckey == 'order')
-                $sync[$synckey] = [$syncvalue, $order_date->updated_at->toDateTimeString()];
-            if ($synckey == 'delivery_order')
-                $sync[$synckey] = [$syncvalue, $delivery_order_date->updated_at->toDateTimeString()];
-            if ($synckey == 'delivery_challan')
-                $sync[$synckey] = [$syncvalue, $delivery_challan_date->updated_at->toDateTimeString()];
-            if ($synckey == 'purchase_order')
-                $sync[$synckey] = [$syncvalue, $purchase_order_date->updated_at->toDateTimeString()];
-            if ($synckey == 'purchase_advice')
-                $sync[$synckey] = [$syncvalue, $purchase_advice_date->updated_at->toDateTimeString()];
-            if ($synckey == 'purchase_challan')
-                $sync[$synckey] = [$syncvalue, $purchase_challan_date->updated_at->toDateTimeString()];
-            if ($synckey == 'customer')
-                $sync[$synckey] = [$syncvalue, $customer_date->updated_at->toDateTimeString()];
-            if ($synckey == 'user')
-                $sync[$synckey] = [$syncvalue, $user_date->updated_at->toDateTimeString()];
-            if ($synckey == 'product_cat')
-                $sync[$synckey] = [$syncvalue, $product_category->updated_at->toDateTimeString()];
-            if ($synckey == 'product_sub_cat')
-                $sync[$synckey] = [$syncvalue, $product_subcategory_date->updated_at->toDateTimeString()];
-            if ($synckey == 'location')
-                $sync[$synckey] = [$syncvalue, $location_date->updated_at->toDateTimeString()];
-            if ($synckey == 'city')
-                $sync[$synckey] = [$syncvalue, $city_date->updated_at->toDateTimeString()];
-            if ($synckey == 'state')
-                $sync[$synckey] = [$syncvalue, $state_date->updated_at->toDateTimeString()];
-            if ($synckey == 'inventory')
-                $sync[$synckey] = [$syncvalue, $inventory_date->updated_at->toDateTimeString()];
-        }
+                $sync['inquiry'] = [$syncdata['inquiry'], $inquiry_date->updated_at->toDateTimeString()];
+                $sync['order'] = [$syncdata['order'], $order_date->updated_at->toDateTimeString()];
+                $sync['delivery_order'] = [$syncdata['delivery_order'], $delivery_order_date->updated_at->toDateTimeString()];
+                $sync['delivery_challan'] = [$syncdata['delivery_challan'], $delivery_challan_date->updated_at->toDateTimeString()];
+                $sync['purchase_order'] = [$syncdata['purchase_order'], $purchase_order_date->updated_at->toDateTimeString()];
+                $sync['purchase_advice'] = [$syncdata['purchase_advice'], $purchase_advice_date->updated_at->toDateTimeString()];
+                $sync['purchase_challan'] = [$syncdata['purchase_challan'], $purchase_challan_date->updated_at->toDateTimeString()];
+                $sync['customer'] = [$syncdata['customer'], $customer_date->updated_at->toDateTimeString()];
+                $sync['user'] = [$syncdata['user'], $user_date->updated_at->toDateTimeString()];
+                $sync['product_cat'] = [$syncdata['product_cat'], $product_category->updated_at->toDateTimeString()];
+                $sync['product_sub_cat'] = [$syncdata['product_sub_cat'], $product_subcategory_date->updated_at->toDateTimeString()];
+                $sync['location'] = [$syncdata['location'], $location_date->updated_at->toDateTimeString()];
+                $sync['city'] = [$syncdata['city'], $city_date->updated_at->toDateTimeString()];
+                $sync['state'] = [$syncdata['state'], $state_date->updated_at->toDateTimeString()];
+                $sync['inventory'] = [$syncdata['inventory'], $inventory_date->updated_at->toDateTimeString()];
         return json_encode($sync);
 //        $sync_details = array(
 //            "Inquiry" => array(
