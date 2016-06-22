@@ -45,10 +45,58 @@ class HomeController extends Controller {
 
     // All Functions added by user 157 for android request //
     public function appsync() {
+
         $data = Input::all();
-        return json_encode($data);
-
-
+        $inquiry_date = Inquiry::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $order_date = Order::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $delivery_order_date = DeliveryOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $delivery_challan_date = DeliveryChallan::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $purchase_order_date = PurchaseOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $purchase_advice_date = PurchaseAdvise::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $purchase_challan_date = PurchaseChallan::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $customer_date = Customer::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $user_date = User::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $product_category = ProductCategory::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $product_subcategory_date = ProductSubCategory::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $location_date = DeliveryLocation::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $city_date = City::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $state_date = States::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $inventory_date = Inventory::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $syncdata = json_decode($data['sync_info']);
+        $sync = [];
+        foreach ($syncdata as $synckey => $syncvalue) {
+            if ($synckey == 'inquiry')
+                $sync[$synckey] = [$syncvalue, $inquiry_date->updated_at->toDateTimeString()];
+            if ($synckey == 'order')
+                $sync[$synckey] = [$syncvalue, $order_date->updated_at->toDateTimeString()];
+            if ($synckey == 'delivery_order')
+                $sync[$synckey] = [$syncvalue, $delivery_order_date->updated_at->toDateTimeString()];
+            if ($synckey == 'delivery_challan')
+                $sync[$synckey] = [$syncvalue, $delivery_challan_date->updated_at->toDateTimeString()];
+            if ($synckey == 'purchase_order')
+                $sync[$synckey] = [$syncvalue, $purchase_order_date->updated_at->toDateTimeString()];
+            if ($synckey == 'purchase_advice')
+                $sync[$synckey] = [$syncvalue, $purchase_advice_date->updated_at->toDateTimeString()];
+            if ($synckey == 'purchase_challan')
+                $sync[$synckey] = [$syncvalue, $purchase_challan_date->updated_at->toDateTimeString()];
+            if ($synckey == 'customer')
+                $sync[$synckey] = [$syncvalue, $customer_date->updated_at->toDateTimeString()];
+            if ($synckey == 'user')
+                $sync[$synckey] = [$syncvalue, $user_date->updated_at->toDateTimeString()];
+            if ($synckey == 'product_cat')
+                $sync[$synckey] = [$syncvalue, $product_category->updated_at->toDateTimeString()];
+            if ($synckey == 'product_sub_cat')
+                $sync[$synckey] = [$syncvalue, $product_subcategory_date->updated_at->toDateTimeString()];
+            if ($synckey == 'location')
+                $sync[$synckey] = [$syncvalue, $location_date->updated_at->toDateTimeString()];
+            if ($synckey == 'city')
+                $sync[$synckey] = [$syncvalue, $city_date->updated_at->toDateTimeString()];
+            if ($synckey == 'state')
+                $sync[$synckey] = [$syncvalue, $state_date->updated_at->toDateTimeString()];
+            if ($synckey == 'inventory')
+                $sync[$synckey] = [$syncvalue, $inventory_date->updated_at->toDateTimeString()];
+        }
+        return json_encode($sync);
 //        $sync_details = array(
 //            "Inquiry" => array(
 //                0 => array(
