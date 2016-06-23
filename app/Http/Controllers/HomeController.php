@@ -45,7 +45,10 @@ class HomeController extends Controller {
 
     // All Functions added by user 157 for android request //
     public function appsync1() {
-        $data = (json_decode(Input::get('inquiry'), true));
+
+        $data['inquiry'] = (json_decode(Input::get('inquiry'), true));
+        $data['customer'] = (json_decode(Input::get('customer'), true));
+        $data['inquiry_product'] = (json_decode(Input::get('inquiry_product'), true));
         return json_encode($data);
     }
 
