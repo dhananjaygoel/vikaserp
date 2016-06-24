@@ -408,7 +408,7 @@ class HomeController extends Controller {
     }
 
     public function applocation() {
-        $delivery_location = DeliveryLocation::where('status', '=', 'permanent')->with('city', 'state')->orderBy('created_at', 'desc')->get();
+        $delivery_location = DeliveryLocation::where('status', '=', 'permanent')->with('city', 'states')->orderBy('created_at', 'desc')->get();
         return json_encode($delivery_location);
     }
 
