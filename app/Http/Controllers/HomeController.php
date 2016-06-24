@@ -56,24 +56,21 @@ class HomeController extends Controller {
         $inquiryproduct = (json_decode($data['inquiry_product']));
 
         $inquiry_response = [];
-//        $customer_list = [];
+        $customer_list = [];
 //
         foreach ($inquiries as $key => $value) {
-            
-//            if (isset($customers) && count($customers) > 0) {
-//                foreach ($customers as $key => $value) {
-//                    $customers = new Customer();
-//                    $customers->owner_name = $value->customerName;
-//                    $customers->contact_person = $value->contactPerson;
-//                    $customers->phone_number1 = $value->customerMobile;
-//                    $customers->credit_period = $value->creditPeriod;
-//                    $customers->customer_status = 'pending';
-//                    $customers->save();
-//                    $customer_list[$value->customerId] = DB::getPdo()->lastInsertId();
-//                }
-//            }
 
-        $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expDelDate);
+            if (!empty($value->custTallyname) && !empty($value->customerMobile) && !empty($value->contact_person) && !empty($value->credit_period)) {
+                $customers = new Customer();
+                $customers->owner_name = $value->custTallyname;
+                $customers->contact_person = $value->contact_person;
+                $customers->phone_number1 = $value->customerMobile;
+                $customers->credit_period = $value->credit_period;
+                $customers->customer_status = 'pending';
+                $customers->save();
+                $customer_list[$value->customerId] = DB::getPdo()->lastInsertId();
+            }
+            $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expDelDate);
             $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
             $datetime = new DateTime($date);
             $add_inquiry = new Inquiry();
@@ -116,6 +113,7 @@ class HomeController extends Controller {
 
             $inquiry_response[$value->id] = $inquiry_id;
         }
+        $inquiry_response['customer_new'] = $customer_list;
         return json_encode($inquiry_response);
     }
 
