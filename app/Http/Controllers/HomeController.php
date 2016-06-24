@@ -56,13 +56,30 @@ class HomeController extends Controller {
         $inquiryproduct = (json_decode($data['inquiry_product']));
 
         $inquiry_response = [];
-        foreach ($inquiries as $key => $value) {
+//        $customer_list = [];
+//
+//        foreach ($inquiries as $key => $value) {
+//
+//
+//            if (isset($customers) && count($customers) > 0) {
+//                foreach ($customers as $key => $value) {
+//                    $customers = new Customer();
+//                    $customers->owner_name = $value->customerName;
+//                    $customers->contact_person = $value->contactPerson;
+//                    $customers->phone_number1 = $value->customerMobile;
+//                    $customers->credit_period = $value->creditPeriod;
+//                    $customers->customer_status = 'pending';
+//                    $customers->save();
+//                    $customer_list[$value->customerId] = DB::getPdo()->lastInsertId();
+//                }
+//            }
 
-            $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expDelDate);
+        $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expDelDate);
             $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
             $datetime = new DateTime($date);
             $add_inquiry = new Inquiry();
-            $add_inquiry->customer_id = $value->customerId;
+//            $add_inquiry->customer_id = (!empty($value->custServId)) ? $value->custServId : $customer_list[$value->customerId];
+            $add_inquiry->customer_id = $value->custServId;
             $add_inquiry->created_by = 1;
 
             if (($value->otherLocation == "") || empty($value->otherLocation)) {
@@ -257,7 +274,7 @@ class HomeController extends Controller {
 
         $data = Input::all();
         if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
-            $inquiries = Inquiry::where('inquiry_status', ' = ', $data['inquiry_filter'])
+            $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])
                             ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')
                             ->orderBy('created_at', 'desc')->get();
         } else {
@@ -273,7 +290,7 @@ class HomeController extends Controller {
         $data = Input::all();
         $q = Order::query();
         if (isset($data['order_filter']) && $data['order_filter'] != '') {
-            $q->where('order_status', ' = ', $data['order_filter']);
+            $q->where('order_status', '=', $data['order_filter']);
         }
         $allorders = $q->with('all_order_products')->with('customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->get();
         return json_encode($allorders);
@@ -304,7 +321,7 @@ class HomeController extends Controller {
 
     public function appalldelivery_challan() {
         $allorders = DeliveryChallan::with('customer', 'delivery_challan_products', 'delivery_order')
-//                        ->where('challan_status', ' = ', 'pending')
+//                        ->where('challan_status', '=', 'pending')
                         ->orderBy('created_at', 'desc')->get();
         return json_encode($allorders);
     }
@@ -325,7 +342,7 @@ class HomeController extends Controller {
     }
 
     public function appallcustomers() {
-        $customers = Customer::orderBy('tally_name', 'asc')->where('customer_status', ' = ', 'permanent')->get();
+        $customers = Customer::orderBy('tally_name', 'asc')->where('customer_status', '=', 'permanent')->get();
         return json_encode($customers);
     }
 
@@ -350,7 +367,7 @@ class HomeController extends Controller {
     }
 
     public function appallpending_customers() {
-        $customers = Customer::orderBy('created_at', 'desc')->where('customer_status', ' = ', 'pending')->get();
+        $customers = Customer::orderBy('created_at', 'desc')->where('customer_status', '=', 'pending')->get();
         return json_encode($customers);
     }
 
@@ -373,7 +390,7 @@ class HomeController extends Controller {
 
     public function appallpending_purchase_advice() {
         $q = PurchaseAdvise::query()->with('supplier', 'purchase_products');
-        $q->where('advice_status', ' = ', 'in_process');
+        $q->where('advice_status', '=', 'in_process');
         $purchase_advise = $q->orderBy('created_at', 'desc')->get();
         return json_encode($purchase_advise);
     }
@@ -392,7 +409,7 @@ class HomeController extends Controller {
     }
 
     public function applocation() {
-        $delivery_location = DeliveryLocation::where('status', ' = ', 'permanent')->with('city.states')->orderBy('created_at', 'desc')->get();
+        $delivery_location = DeliveryLocation::with('city', 'state')->where('status', '=', 'permanent')->orderBy('created_at', 'desc')->get();
         return json_encode($delivery_location);
     }
 
@@ -558,7 +575,7 @@ class HomeController extends Controller {
     }
 
     public function update_delivery_location() {
-        $product_data = Customer::where('delivery_location_id', ' = ', 0)->update(['delivery_location_id' => 32]);
+        $product_data = Customer::where('delivery_location_id', '=', 0)->update(['delivery_location_id' => 32]);
     }
 
     /**
