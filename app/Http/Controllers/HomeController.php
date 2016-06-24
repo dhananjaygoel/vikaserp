@@ -58,9 +58,7 @@ class HomeController extends Controller {
         $inquiry_response = [];
 //        $customer_list = [];
 //
-//        foreach ($inquiries as $key => $value) {
-//
-//
+        foreach ($inquiries as $key => $value) {
 //            if (isset($customers) && count($customers) > 0) {
 //                foreach ($customers as $key => $value) {
 //                    $customers = new Customer();
@@ -409,7 +407,7 @@ class HomeController extends Controller {
     }
 
     public function applocation() {
-        $delivery_location = DeliveryLocation::with('city', 'state')->where('status', '=', 'permanent')->orderBy('created_at', 'desc')->get();
+        $delivery_location = DeliveryLocation::where('status', '=', 'permanent')->with('city', 'state')->orderBy('created_at', 'desc')->get();
         return json_encode($delivery_location);
     }
 
