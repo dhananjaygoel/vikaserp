@@ -23,6 +23,9 @@ use App\Http\Controllers\DeliveryOrderController;
 use Jenssegers\Agent\Agent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+use DateTime;
+use Illuminate\Support\Facades\DB;
+use App\InquiryProducts;
 
 class HomeController extends Controller {
     /*
@@ -46,58 +49,56 @@ class HomeController extends Controller {
     // All Functions added by user 157 for android request //
     public function appsync1() {
 
-        $data['inquiry'] = (json_decode(Input::get('inquiry'), true));
-        $data['customer'] = (json_decode(Input::get('customer'), true));
-        $data['inquiry_product'] = (json_decode(Input::get('inquiry_product'), true));
+        $data = Input::all();
 
+        $inquiries = (json_decode($data['inquiry']));
+        $customers = (json_decode($data['customer']));
+        $inquiryproduct = (json_decode($data['inquiry_product']));
 
         $inquiry_response = [];
+        foreach ($inquiries as $key => $value) {
 
-        foreach ($data['inquiry'] as $key => $value) {
-
-            $date_string = preg_replace('~\x{00a0}~u', ' ', $value['expDelDate']);
+            $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expDelDate);
             $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
             $datetime = new DateTime($date);
-
-
-            $add_inquiry = new Inquiry(); //::create($add_inquiry_array);
-            $add_inquiry->customer_id = $value['customerId'];
+            $add_inquiry = new Inquiry();
+            $add_inquiry->customer_id = $value->customerId;
             $add_inquiry->created_by = 1;
 
-            if (($value['otherLocation'] == "") || empty('other' == $value['otherLocation'])) {
-                $add_inquiry->delivery_location_id = 0;
-                $add_inquiry->other_location = $value['otherLocation'];
-                $add_inquiry->location_difference = $value['otherLocationDifference'];
+            if (($value->otherLocation == "") || empty($value->otherLocation)) {
+                $add_inquiry->delivery_location_id = $value->delLocId;
+                $add_inquiry->location_difference = $value->delLocDiff;
             } else {
-                $add_inquiry->delivery_location_id = $value['delLocId'];
-                $add_inquiry->location_difference = $value['delLocDiff'];
+                $add_inquiry->delivery_location_id = 0;
+                $add_inquiry->other_location = $value->otherLocation;
+                $add_inquiry->location_difference = $value->otherLocationDifference;
             }
-            if ($value['vatPerc'] == "" || empty($value['vatPerc']))
+            if ($value->vatPerc == "" || empty($value->vatPerc))
                 $add_inquiry->vat_percentage = 0;
             else
-                $add_inquiry->vat_percentage = $value['vat_percentage'];
+                $add_inquiry->vat_percentage = $value->vatPerc;
             $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
-            $add_inquiry->remarks = $value['remark'];
+            $add_inquiry->remarks = $value->remark;
             $add_inquiry->inquiry_status = "Pending";
             $add_inquiry->save();
 
             $inquiry_id = DB::getPdo()->lastInsertId();
             $inquiry_products = array();
-            foreach ($data['inquiry_product'] as $product_data) {
-                if ($product_data['maxInqId'] == $value['id']) {
+            foreach ($inquiryproduct as $product_data) {
+                if ($product_data->maxInqId == $value->id) {
                     $inquiry_products = [
-                        'inquiry_id' => $value['id'],
-                        'product_category_id' => $product_data['productCatId'],
-                        'unit_id' => $product_data['unitId'],
-                        'quantity' => $product_data['qty'],
-                        'price' => $product_data['price'],
+                        'inquiry_id' => $inquiry_id,
+                        'product_category_id' => $product_data->inqProId,
+                        'unit_id' => $product_data->unitId,
+                        'quantity' => $product_data->qty,
+                        'price' => $product_data->price,
                         'remarks' => '',
                     ];
                 }
                 $add_inquiry_products = InquiryProducts::create($inquiry_products);
             }
 
-            $inquiry_response[$value['id']] = $inquiry_id;
+            $inquiry_response[$value->id] = $inquiry_id;
         }
         return json_encode($inquiry_response);
     }
@@ -256,7 +257,7 @@ class HomeController extends Controller {
 
         $data = Input::all();
         if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
-            $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])
+            $inquiries = Inquiry::where('inquiry_status', ' = ', $data['inquiry_filter'])
                             ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')
                             ->orderBy('created_at', 'desc')->get();
         } else {
@@ -272,7 +273,7 @@ class HomeController extends Controller {
         $data = Input::all();
         $q = Order::query();
         if (isset($data['order_filter']) && $data['order_filter'] != '') {
-            $q->where('order_status', '=', $data['order_filter']);
+            $q->where('order_status', ' = ', $data['order_filter']);
         }
         $allorders = $q->with('all_order_products')->with('customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->get();
         return json_encode($allorders);
@@ -303,7 +304,7 @@ class HomeController extends Controller {
 
     public function appalldelivery_challan() {
         $allorders = DeliveryChallan::with('customer', 'delivery_challan_products', 'delivery_order')
-//                        ->where('challan_status', '=', 'pending')
+//                        ->where('challan_status', ' = ', 'pending')
                         ->orderBy('created_at', 'desc')->get();
         return json_encode($allorders);
     }
@@ -324,7 +325,7 @@ class HomeController extends Controller {
     }
 
     public function appallcustomers() {
-        $customers = Customer::orderBy('tally_name', 'asc')->where('customer_status', '=', 'permanent')->get();
+        $customers = Customer::orderBy('tally_name', 'asc')->where('customer_status', ' = ', 'permanent')->get();
         return json_encode($customers);
     }
 
@@ -349,7 +350,7 @@ class HomeController extends Controller {
     }
 
     public function appallpending_customers() {
-        $customers = Customer::orderBy('created_at', 'desc')->where('customer_status', '=', 'pending')->get();
+        $customers = Customer::orderBy('created_at', 'desc')->where('customer_status', ' = ', 'pending')->get();
         return json_encode($customers);
     }
 
@@ -372,7 +373,7 @@ class HomeController extends Controller {
 
     public function appallpending_purchase_advice() {
         $q = PurchaseAdvise::query()->with('supplier', 'purchase_products');
-        $q->where('advice_status', '=', 'in_process');
+        $q->where('advice_status', ' = ', 'in_process');
         $purchase_advise = $q->orderBy('created_at', 'desc')->get();
         return json_encode($purchase_advise);
     }
@@ -391,7 +392,7 @@ class HomeController extends Controller {
     }
 
     public function applocation() {
-        $delivery_location = DeliveryLocation::where('status', '=', 'permanent')->with('city.states')->orderBy('created_at', 'desc')->get();
+        $delivery_location = DeliveryLocation::where('status', ' = ', 'permanent')->with('city.states')->orderBy('created_at', 'desc')->get();
         return json_encode($delivery_location);
     }
 
@@ -557,7 +558,7 @@ class HomeController extends Controller {
     }
 
     public function update_delivery_location() {
-        $product_data = Customer::where('delivery_location_id', '=', 0)->update(['delivery_location_id' => 32]);
+        $product_data = Customer::where('delivery_location_id', ' = ', 0)->update(['delivery_location_id' => 32]);
     }
 
     /**
@@ -573,7 +574,8 @@ class HomeController extends Controller {
         $mime = "application/x-gzip";
 
         header("Content-Type: " . $mime);
-        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Content-Disposition: attachment;
+        filename = "' . $filename . '"');
 
         $cmd = "mysqldump -u $DBUSER --password=$DBPASSWD $DATABASE | gzip --best";
 
@@ -593,7 +595,8 @@ class HomeController extends Controller {
         $mime = "application/x-gzip";
 
         header("Content-Type: " . $mime);
-        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Content-Disposition: attachment;
+        filename = "' . $filename . '"');
 
         $cmd = "mysqldump -u $DBUSER --password=$DBPASSWD $DATABASE | gzip --best";
 
@@ -612,7 +615,8 @@ class HomeController extends Controller {
         $filename = "backup-" . date("d-m-Y") . ".sql.gz";
         $mime = "application/x-gzip";
         header("Content-Type: " . $mime);
-        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Content-Disposition: attachment;
+        filename = "' . $filename . '"');
         $cmd = "mysqldump -u $DBUSER --password=$DBPASSWD $DATABASE | gzip --best";
         passthru($cmd);
         exit(0);
