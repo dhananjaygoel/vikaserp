@@ -59,17 +59,16 @@ class HomeController extends Controller {
         $customer_list = [];
 //
         foreach ($inquiries as $key => $value) {
-
-            if (!empty($value->custTallyname) && !empty($value->customerMobile) && !empty($value->contact_person) && !empty($value->credit_period)) {
-                $customers = new Customer();
-                $customers->owner_name = $value->custTallyname;
-                $customers->contact_person = $value->contact_person;
-                $customers->phone_number1 = $value->customerMobile;
-                $customers->credit_period = $value->credit_period;
-                $customers->customer_status = 'pending';
-                $customers->save();
-                $customer_list[$value->customerId] = DB::getPdo()->lastInsertId();
-            }
+//            if (!empty($value->custTallyname) && !empty($value->customerMobile) && !empty($value->custContactPeron) && !empty($value->custCredit)) {
+            $add_customers = new Customer();
+            $add_customers->owner_name = $value->custTallyname;
+            $add_customers->contact_person = $value->custContactPeron;
+            $add_customers->phone_number1 = $value->customerMobile;
+            $add_customers->credit_period = $value->custCredit;
+            $add_customers->customer_status = 'pending';
+            $add_customers->save();
+            $customer_list[$value->id] = DB::getPdo()->lastInsertId();
+//            }
             $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expDelDate);
             $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
             $datetime = new DateTime($date);
