@@ -59,6 +59,7 @@ class HomeController extends Controller {
 //        $customer_list = [];
 //
         foreach ($inquiries as $key => $value) {
+            
 //            if (isset($customers) && count($customers) > 0) {
 //                foreach ($customers as $key => $value) {
 //                    $customers = new Customer();
