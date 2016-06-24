@@ -49,7 +49,57 @@ class HomeController extends Controller {
         $data['inquiry'] = (json_decode(Input::get('inquiry'), true));
         $data['customer'] = (json_decode(Input::get('customer'), true));
         $data['inquiry_product'] = (json_decode(Input::get('inquiry_product'), true));
-        return json_encode($data);
+
+
+        $inquiry_response = [];
+
+        foreach ($data['inquiry'] as $key => $value) {
+
+            $date_string = preg_replace('~\x{00a0}~u', ' ', $value['expDelDate']);
+            $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+            $datetime = new DateTime($date);
+
+
+            $add_inquiry = new Inquiry(); //::create($add_inquiry_array);
+            $add_inquiry->customer_id = $value['customerId'];
+            $add_inquiry->created_by = 1;
+
+            if (($value['otherLocation'] == "") || empty('other' == $value['otherLocation'])) {
+                $add_inquiry->delivery_location_id = 0;
+                $add_inquiry->other_location = $value['otherLocation'];
+                $add_inquiry->location_difference = $value['otherLocationDifference'];
+            } else {
+                $add_inquiry->delivery_location_id = $value['delLocId'];
+                $add_inquiry->location_difference = $value['delLocDiff'];
+            }
+            if ($value['vatPerc'] == "" || empty($value['vatPerc']))
+                $add_inquiry->vat_percentage = 0;
+            else
+                $add_inquiry->vat_percentage = $value['vat_percentage'];
+            $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
+            $add_inquiry->remarks = $value['remark'];
+            $add_inquiry->inquiry_status = "Pending";
+            $add_inquiry->save();
+
+            $inquiry_id = DB::getPdo()->lastInsertId();
+            $inquiry_products = array();
+            foreach ($data['inquiry_product'] as $product_data) {
+                if ($product_data['maxInqId'] == $value['id']) {
+                    $inquiry_products = [
+                        'inquiry_id' => $value['id'],
+                        'product_category_id' => $product_data['productCatId'],
+                        'unit_id' => $product_data['unitId'],
+                        'quantity' => $product_data['qty'],
+                        'price' => $product_data['price'],
+                        'remarks' => '',
+                    ];
+                }
+                $add_inquiry_products = InquiryProducts::create($inquiry_products);
+            }
+
+            $inquiry_response[$value['id']] = $inquiry_id;
+        }
+        return json_encode($inquiry_response);
     }
 
     public function appsync() {
