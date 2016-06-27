@@ -176,35 +176,35 @@ class HomeController extends Controller {
         $sync = [];
         $syncdata = (json_decode(Input::get('sync_info'), true));
         foreach ($syncdata as $synckey => $syncvalue) {
-            if ($synckey == 'inquiry')
+            if ($synckey == 'inquiry' && !empty($inquiry_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $inquiry_date->updated_at->toDateTimeString()];
-            if ($synckey == 'order')
+            if ($synckey == 'order' && !empty($order_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $order_date->updated_at->toDateTimeString()];
-            if ($synckey == 'delivery_order')
+            if ($synckey == 'delivery_order' && !empty($delivery_order_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $delivery_order_date->updated_at->toDateTimeString()];
-            if ($synckey == 'delivery_challan')
+            if ($synckey == 'delivery_challan' && !empty($delivery_challan_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $delivery_challan_date->updated_at->toDateTimeString()];
-            if ($synckey == 'purchase_order')
+            if ($synckey == 'purchase_order' && !empty($purchase_order_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $purchase_order_date->updated_at->toDateTimeString()];
-            if ($synckey == 'purchase_advice')
+            if ($synckey == 'purchase_advice' && !empty($purchase_advice_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $purchase_advice_date->updated_at->toDateTimeString()];
-            if ($synckey == 'purchase_challan')
+            if ($synckey == 'purchase_challan' && !empty($purchase_challan_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $purchase_challan_date->updated_at->toDateTimeString()];
-            if ($synckey == 'customer')
+            if ($synckey == 'customer' && !empty($customer_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $customer_date->updated_at->toDateTimeString()];
-            if ($synckey == 'user')
+            if ($synckey == 'user' && !empty($user_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $user_date->updated_at->toDateTimeString()];
-            if ($synckey == 'product_cat')
+            if ($synckey == 'product_cat' && !empty($product_category))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $product_category->updated_at->toDateTimeString()];
-            if ($synckey == 'product_sub_cat')
+            if ($synckey == 'product_sub_cat' && !empty($product_subcategory_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $product_subcategory_date->updated_at->toDateTimeString()];
-            if ($synckey == 'location')
+            if ($synckey == 'location' && !empty($location_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $location_date->updated_at->toDateTimeString()];
-            if ($synckey == 'city')
+            if ($synckey == 'city' && !empty($city_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $city_date->updated_at->toDateTimeString()];
-            if ($synckey == 'state')
+            if ($synckey == 'state' && !empty($state_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $state_date->updated_at->toDateTimeString()];
-            if ($synckey == 'inventory')
+            if ($synckey == 'inventory' && !empty($inventory_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $inventory_date->updated_at->toDateTimeString()];
         }
         return json_encode($sync);
