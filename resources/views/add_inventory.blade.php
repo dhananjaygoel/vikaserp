@@ -104,7 +104,7 @@
                                                 </div>
                                             </td>
                                             @else
-                                            <td>{{$inventory->minimal}}</td>
+                                            <td class="{{ ($inventory->minimal < $total) ?'minimum_reach': '' }}">{{$inventory->minimal}}</td>
                                             <td>{{$inventory->opening_qty}}</td>                                            
                                             @endif
                                             <td id="sales_challan_{{$inventory->id}}">{{($inventory->sales_challan_qty <= 0 )? 0: $inventory->sales_challan_qty}}</td>
@@ -129,7 +129,6 @@
                                         $i++;
                                         ?>
                                         @endforeach
-
                                     </tbody>
                                 </form>
                             </table>
