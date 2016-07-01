@@ -16,7 +16,7 @@ class Customer extends Model {
 //    protected $fillable = ['state_id', 'city_id', 'area_name'];
 
     public function deliverylocation() {
-        return $this->hasOne('App\DeliveryLocation', 'id', 'delivery_location_id')->with('city', 'state');
+        return $this->hasOne('App\DeliveryLocation', 'id', 'delivery_location_id')->with('city', 'states');
     }
 
     public function delivery_location() {
