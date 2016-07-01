@@ -178,6 +178,8 @@ class HomeController extends Controller {
         foreach ($syncdata as $synckey => $syncvalue) {
             if ($synckey == 'inquiry' && !empty($inquiry_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $inquiry_date->updated_at->toDateTimeString()];
+            else
+                $sync[$synckey] = [];
             if ($synckey == 'order' && !empty($order_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $order_date->updated_at->toDateTimeString()];
             if ($synckey == 'delivery_order' && !empty($delivery_order_date))
