@@ -60,7 +60,7 @@ use Illuminate\Support\Facades\Session;
                                 <br/>
                                 <label>Customer<span class="mandatory">*</span></label>
                                 <div class="radio">
-                                    <input value="existing_customer" id="existing_customer" name="customer_status" type="radio" class="existing_customer_order">
+                                    <input checked value="existing_customer" id="existing_customer" name="customer_status" type="radio" class="existing_customer_order">
                                     <label for="existing_customer">Existing</label>
                                     <input value="new_customer" id="new_customer" class="new_customer_order" name="customer_status" type="radio"> 
                                     <label for="new_customer">New</label>
