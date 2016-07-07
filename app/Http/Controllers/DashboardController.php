@@ -54,13 +54,12 @@ class DashboardController extends Controller {
                     elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
                         $deliver_pending_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
                 }
-            } else if ($delivery_order_info->order_status == 'completed') {
-                foreach ($delivery_order_info->delivery_product as $delivery_order_productinfo) {
-                    if ($delivery_order_productinfo->unit_id == 1)
-                        $deliver_sum += $delivery_order_productinfo->quantity;
-                    elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
-                        $deliver_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
-                }
+            }
+            foreach ($delivery_order_info->delivery_product as $delivery_order_productinfo) {
+                if ($delivery_order_productinfo->unit_id == 1)
+                    $deliver_sum += $delivery_order_productinfo->quantity;
+                elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
+                    $deliver_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
             }
         }
         $deliver_sum = $deliver_sum / 1000;
