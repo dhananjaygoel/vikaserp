@@ -101,7 +101,7 @@
                         <span class="headline">Total Challan</span>
                         <span class="value">
                             <span class="timer" data-from="120" data-to="2562" data-speed="1000" data-refresh-interval="50">
-                                {{$challan_sum}}Ton
+                                {{$delivery_challan_sum}}Ton
                             </span>
                         </span>
                     </div>

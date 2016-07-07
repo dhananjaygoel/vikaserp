@@ -53,9 +53,7 @@ class OrderController extends Controller {
         if (isset($order_sorttype) && ($order_sorttype != "")) {
             $data['order_filter'] = $order_sorttype;
         }
-
         $q = Order::query();
-
         if (isset($data['order_filter']) && $data['order_filter'] != '') {
             $q->where('order_status', '=', $data['order_filter']);
         } else {
@@ -65,7 +63,6 @@ class OrderController extends Controller {
             $q->where('customer_id', '=', $data['party_filter']);
         }
         if (isset($data['fulfilled_filter']) && $data['fulfilled_filter'] != '') {
-
             if ($data['fulfilled_filter'] == '0') {
                 $q->where('order_source', '=', 'warehouse');
             }
@@ -91,10 +88,7 @@ class OrderController extends Controller {
         } else {
             $q->with('all_order_products');
         }
-
-        $allorders = $q->with('all_order_products')
-                        ->with('customer', 'delivery_location', 'order_cancelled')
-                        ->orderBy('created_at', 'desc')->paginate(20);
+        $allorders = $q->with('all_order_products')->with('customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->paginate(20);
 
         $users = User::all();
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
@@ -102,11 +96,9 @@ class OrderController extends Controller {
 //        $delivery_order = DeliveryOrder::all();
         $delivery_order = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('product_category_id', '=', $product_category_id)->get();
         $product_size = ProductSubCategory::all();
-
         $users = User::all();
         $pending_orders = $this->checkpending_quantity($allorders);
         $allorders->setPath('orders');
-
         return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id'));
     }
 
