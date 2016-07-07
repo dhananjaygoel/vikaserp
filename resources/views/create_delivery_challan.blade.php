@@ -65,7 +65,7 @@
                                             <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
                                             <td><span>Actual Quantity</span></td>
                                             <td><span>Actual Pieces</span></td>
-                                            <td><span>Presenting Shipping</span></td>
+                                            <td><span>Present Shipping</span></td>
                                             <td><span>Rate</span></td>
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
                                             <td><span>Amount</span></td>

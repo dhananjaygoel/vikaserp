@@ -51,7 +51,7 @@
                                             <td><span>Select Product</span></td>
                                             <td><span>Actual Quantity</span></td>
                                             <td><span>Actual Pieces</span></td>
-                                            <td><span>Presenting Shipping</span></td>
+                                            <td><span>Present Shipping</span></td>
                                             <td><span>Rate</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Amount</span></td>
