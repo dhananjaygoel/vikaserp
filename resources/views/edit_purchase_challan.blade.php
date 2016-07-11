@@ -37,7 +37,7 @@
                         </div>
                         @endif
                         <div class="form-group">
-                            <label><b>Party Name:</b> {{  $purchase_challan['supplier']->owner_name }}{{'-'.$purchase_challan['supplier']->owner_name }} </label>
+                            <label><b>Party Name:</b> {{  $purchase_challan['supplier']->owner_name '-'.$purchase_challan['supplier']->owner_name }} </label>
                         </div>
                         <div class="form-group">
                             <label><b>Serial Number:</b> {{ $purchase_challan->serial_number }} </label>

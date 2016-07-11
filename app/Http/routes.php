@@ -12,6 +12,7 @@
  */
 
 Route::post('applogin', 'HomeController@applogin');
+Route::post('app_customer_login', 'HomeController@appCustomerLogin');
 Route::post('appsync', 'HomeController@appsync');
 Route::post('appsync1', 'HomeController@appsync1');
 Route::get('appcount', 'HomeController@appcount');

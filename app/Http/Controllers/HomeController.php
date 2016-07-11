@@ -430,6 +430,23 @@ class HomeController extends Controller {
         }
     }
 
+    public function appCustomerLogin() {
+
+        $username = Input::get('username');
+        $password = Input::get('password');
+        if (Auth::validate(['mobile_number' => $username, 'password' => $password])) {
+            return json_encode(array(
+                'status' => true,
+                'message' => 'Login Successfully Done')
+            );
+        } else {
+            return json_encode(array(
+                'result' => false,
+                'message' => 'Login Failed.')
+            );
+        }
+    }
+
     public function demorouteandroid() {
         return json_encode(array(
             'result' => true,
