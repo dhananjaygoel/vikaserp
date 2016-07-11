@@ -139,7 +139,7 @@ class CustomerController extends Controller {
         $customer->delivery_location_id = Input::get('delivery_location');
 
         if (Input::has('password') && Input::get('password') != '') {
-            $customer->password = Hash::make(Input::get('relationship_manager'));
+            $customer->password = Hash::make(Input::get('password'));
         }
         $customer->customer_status = 'permanent';
         if ($customer->save()) {
