@@ -47,11 +47,8 @@ class DeliveryOrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
         }
-
         $session_sort_type_order = Session::get('order-sort-type');
-
         $qstring_sort_type_order = Input::get('order_status');
-
         if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
             $qstring_sort_type_order = $qstring_sort_type_order;
         } else {
@@ -72,7 +69,6 @@ class DeliveryOrderController extends Controller {
         } else {
             $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer')->paginate(20);
         }
-
         $delivery_data = $this->checkpending_quantity($delivery_data);
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_data->setPath('delivery_order');

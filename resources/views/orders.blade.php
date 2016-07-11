@@ -23,7 +23,6 @@
                             <?php
                             $session_sort_type_order = Session::get('order-sort-type');
                             $qstring_sort_type_order = Input::get('order_filter');
-
                             if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
                                 $qstring_sort_type_order = $qstring_sort_type_order;
                             } else {
@@ -41,7 +40,6 @@
                                 Session::put('order-sort-type', "");
                             }
                             ?>
-
                         </div>
                         <div class="col-md-2 pull-right">
                             <select class="form-control" id="user_filter3" name="party_filter" onchange="this.form.submit();">
@@ -225,7 +223,6 @@
                                         @endif
                                     </td>
                                 </tr>
-
                                 @endif
                                 @if($order->order_status == 'cancelled')
                                 @if($k==1)

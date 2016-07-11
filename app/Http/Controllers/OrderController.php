@@ -48,7 +48,6 @@ class OrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
         }
-
         $order_sorttype = Session::get('order-sort-type');
         if (isset($order_sorttype) && ($order_sorttype != "")) {
             $data['order_filter'] = $order_sorttype;
@@ -956,7 +955,7 @@ class OrderController extends Controller {
         foreach ($allorders as $key => $order) {
             $order_quantity = 0;
             $delivery_order_quantity = 0;
-            $delievry_order_details = DeliveryOrder::find($order->id);
+            $delievry_order_details = DeliveryOrder::where('order_id', '=', $order->id)->first();
             if (!empty($delievry_order_details)) {
                 $delivery_order_products = AllOrderProducts::where('order_id', '=', $delievry_order_details->id)->where('order_type', '=', 'delivery_order')->get();
             } else {
