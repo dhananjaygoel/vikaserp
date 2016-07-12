@@ -96,6 +96,7 @@ class HomeController extends Controller {
         Mail::send('emails.contact_mail_admin', ['dynamictext' => $dynamictext], function($message) {
             $message->to("gamit@agstechnologies.com", "Test User")->subject('Contact from website');
         });
+        return json_encode(array('result' => true, 'message' => 'Email send successfully'));
     }
 
     // All Functions added by user 157 for android request //
