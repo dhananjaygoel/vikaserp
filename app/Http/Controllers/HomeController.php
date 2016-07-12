@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Input;
 use DateTime;
 use Illuminate\Support\Facades\DB;
 use App\InquiryProducts;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller {
     /*
@@ -44,6 +45,20 @@ class HomeController extends Controller {
      */
     public function __construct() {
         
+    }
+
+    public function appCustomerLogin() {
+
+        $customer = Customer::where('phone_number1', '=', Input::get('username'))->first();
+        if ($customer) {
+            if (Hash::check(Input::get('password'), $customer->password)) {
+                return json_encode(array('status' => true, 'message' => 'Login Successfully Done'));
+            } else {
+                return json_encode(array('result' => false, 'reason' => 'Password does not match', 'message' => 'Login Failed.'));
+            }
+        } else {
+            return json_encode(array('result' => false, 'reason' => 'Customer not found', 'message' => 'Login Failed.'));
+        }
     }
 
     // All Functions added by user 157 for android request //
@@ -420,23 +435,6 @@ class HomeController extends Controller {
         if (Auth::validate(['mobile_number' => $username, 'password' => $password])) {
             return json_encode(array(
                 'result' => true,
-                'message' => 'Login Successfully Done')
-            );
-        } else {
-            return json_encode(array(
-                'result' => false,
-                'message' => 'Login Failed.')
-            );
-        }
-    }
-
-    public function appCustomerLogin() {
-
-        $username = Input::get('username');
-        $password = Input::get('password');
-        if (Auth::validate(['mobile_number' => $username, 'password' => $password])) {
-            return json_encode(array(
-                'status' => true,
                 'message' => 'Login Successfully Done')
             );
         } else {
