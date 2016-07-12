@@ -43,6 +43,7 @@ Route::get('app_track_order/{id}', 'HomeController@trackOrder');
 Route::get('app_track_inquiry/{id}', 'HomeController@trackInquiry');
 Route::get('app_customer_orders/{id}', 'HomeController@customerOrders');
 Route::get('app_customer_inquiry/{id}', 'HomeController@customerInquiry');
+Route::post('app_contactus', 'HomeController@appContactUs');
 /* All customer app routes ends here */
 Route::get('demorouteandroid', 'HomeController@demorouteandroid');
 Route::get('androidtesting', 'HomeController@androidtesting');

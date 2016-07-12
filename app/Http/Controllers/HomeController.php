@@ -27,6 +27,7 @@ use DateTime;
 use Illuminate\Support\Facades\DB;
 use App\InquiryProducts;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller {
     /*
@@ -84,6 +85,19 @@ class HomeController extends Controller {
         $inquiry_details = Inquiry::where('customer_id', '=', $id)->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')->orderBy('created_at', 'desc')->get();
         return json_encode($inquiry_details);
     }
+
+    public function appContactUs() {
+
+        $data = Input::all();
+        $dynamictext['name'] = $data['name'];
+        $dynamictext['email'] = $data['email'];
+        $dynamictext['subject'] = $data['subject'];
+        $dynamictext['message'] = $data['message'];
+        Mail::send('emails.contact_mail_admin', ['dynamictext' => $dynamictext], function($message) {
+            $message->to("gamit@agstechnologies.com", "Test User")->subject('Vikash Associates Contact Mail from website');
+        });
+    }
+
     // All Functions added by user 157 for android request //
     public function appsync1() {
 
