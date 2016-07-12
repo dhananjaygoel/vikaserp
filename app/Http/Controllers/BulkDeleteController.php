@@ -33,11 +33,11 @@ class BulkDeleteController extends Controller {
     }
 
     public function show_result() {
+
         $module = Input::get('select_module');
         $password = Input::get('password_delete');
         $expected_date = Input::get('expected_date');
         $delete_seletected_module = Input::get('delete_seletected_module');
-
         if ($module == "") {
             return view('bulk_delete');
         }
@@ -68,16 +68,14 @@ class BulkDeleteController extends Controller {
                 /*
                  * Delete selected inquiries end.
                  */
-
                 if (Input::get('expected_date') != '') {
                     $result_temp = Inquiry::where('inquiry_status', '=', 'completed')
-                                    ->where('created_at', 'like', Input::get('expected_date') . '%')
                                     ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')
+                                    ->where('created_at', '<=', Input::get('expected_date') . '23:59:59')
                                     ->orderBy('created_at', 'desc')->Paginate(20);
                 } else {
                     $result_temp = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')
-                                    ->where('inquiry_status', 'completed')
-                                    ->orderBy('created_at', 'desc')->Paginate(20);
+                                    ->where('inquiry_status', 'completed')->orderBy('created_at', 'desc')->Paginate(20);
                 }
 
                 foreach ($result_temp as $key => $temp) {
@@ -106,8 +104,6 @@ class BulkDeleteController extends Controller {
                     if (isset($temp['delivery_location']))
                         $result_data[$key][3] = $temp['delivery_location']->area_name;
                 }
-
-
                 break;
 //----------------------------------------------------
             case 'order':
@@ -116,9 +112,8 @@ class BulkDeleteController extends Controller {
                 $head[2] = 'MOBILE';
                 $head[3] = 'DELIVERY LOCATION';
                 $head[4] = 'ORDER BY';
-
                 /*
-                 * Delete selected inquiries.
+                 * Delete selected orders.
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
@@ -128,23 +123,19 @@ class BulkDeleteController extends Controller {
                     }
                 }
                 /*
-                 * Delete selected inquiries end.
+                 * Delete selected orders end.
                  */
-
                 if (Input::get('expected_date') != '') {
                     $result_temp = Order::where('order_status', '=', 'completed')
-                                    ->where('created_at', 'like', Input::get('expected_date') . '%')
+                                    ->where('created_at', '<=', Input::get('expected_date') . '23:59:59')
                                     ->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')
                                     ->orderBy('created_at', 'desc')->Paginate(20);
                 } else {
                     $result_temp = Order::with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')
-                                    ->where('order_status', 'completed')
-                                    ->orderBy('created_at', 'desc')->Paginate(20);
+                                    ->where('order_status', 'completed')->orderBy('created_at', 'desc')->Paginate(20);
                 }
-
                 foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;
-
                     if ($temp['customer']->tally_name != '')
                         $result_data[$key][0] = $temp['customer']->tally_name;
                     else
@@ -175,9 +166,8 @@ class BulkDeleteController extends Controller {
                 $head[3] = 'QUANTITY';
                 $head[4] = 'PRESENT SHIPPING';
                 $head[5] = 'VEHICLE NUMBER';
-
                 /*
-                 * Delete selected inquiries.
+                 * Delete selected delivery orders.
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
@@ -186,31 +176,24 @@ class BulkDeleteController extends Controller {
                     }
                 }
                 /*
-                 * Delete selected inquiries end.
+                 * Delete selected delivery orders end.
                  */
-
                 if (Input::get('expected_date') != '') {
                     $result_temp = DeliveryOrder::orderBy('created_at', 'desc')
-                                    ->where('created_at', 'like', Input::get('expected_date') . '%')
-                                    ->where('order_status', 'completed')
-                                    ->with('delivery_product', 'customer')->paginate(20);
+                                    ->where('created_at', '<=', Input::get('expected_date') . '23:59:59')
+                                    ->where('order_status', 'completed')->with('delivery_product', 'customer')->paginate(20);
                 } else {
                     $result_temp = DeliveryOrder::orderBy('created_at', 'desc')
-                                    ->where('order_status', 'completed')
-                                    ->with('delivery_product', 'customer')->paginate(20);
+                                    ->where('order_status', 'completed')->with('delivery_product', 'customer')->paginate(20);
                 }
                 $result_temp = $this->checkpending_quantity($result_temp);
-
-
                 foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;
-
                     $result_data[$key][0] = date("F jS, Y", strtotime($temp->created_at));
                     if ($temp['customer']->tally_name != '')
                         $result_data[$key][1] = $temp['customer']->tally_name;
                     else
                         $result_data[$key][1] = $temp['customer']->owner_name;
-
                     if ($temp->delivery_location_id != 0) {
                         foreach ($delivery_locations as $location) {
                             if ($location->id == $temp->delivery_location_id) {
@@ -220,7 +203,6 @@ class BulkDeleteController extends Controller {
                     } else {
                         $result_data[$key][2] = $temp->other_location;
                     }
-
                     $result_data[$key][3] = round($temp->total_quantity, 2);
                     $result_data[$key][4] = round($temp->present_shipping, 2);
                     $result_data[$key][5] = $temp->vehicle_number;
@@ -228,13 +210,11 @@ class BulkDeleteController extends Controller {
                 break;
 //----------------------------------------------------            
             case 'delivery_challan':
-
                 $head[0] = 'TALLY NAME';
                 $head[1] = 'SERIAL NUMBER';
                 $head[2] = 'PRESENT SHIPPING';
-
                 /*
-                 * Delete selected inquiries.
+                 * Delete selected delivery challan.
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
@@ -243,18 +223,15 @@ class BulkDeleteController extends Controller {
                     }
                 }
                 /*
-                 * Delete selected inquiries end.
+                 * Delete selected delivery challan end.
                  */
-
                 if (Input::get('expected_date') != '') {
                     $result_temp = DeliveryChallan::where('challan_status', '=', 'completed')
-                                    ->where('created_at', 'like', Input::get('expected_date') . '%')
-                                    ->with('customer', 'delivery_challan_products', 'delivery_order')
-                                    ->orderBy('created_at', 'desc')->Paginate(20);
+                                    ->where('created_at', '<=', Input::get('expected_date') . '23:59:59')
+                                    ->with('customer', 'delivery_challan_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(20);
                 } else {
                     $result_temp = DeliveryChallan::where('challan_status', '=', 'completed')
-                                    ->with('customer', 'delivery_challan_products', 'delivery_order')
-                                    ->orderBy('created_at', 'desc')->Paginate(20);
+                                    ->with('customer', 'delivery_challan_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(20);
                 }
                 foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;
@@ -274,9 +251,8 @@ class BulkDeleteController extends Controller {
                 $head[3] = 'ORDER BY';
                 $head[4] = 'TOTAL QUANTITY';
                 $head[5] = 'PENDING QUANTITY';
-
                 /*
-                 * Delete selected inquiries.
+                 * Delete selected purchase orders.
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
@@ -285,21 +261,16 @@ class BulkDeleteController extends Controller {
                     }
                 }
                 /*
-                 * Delete selected inquiries end.
+                 * Delete selected purchase orders end.
                  */
-
                 if (Input::get('expected_date') != '') {
-                    $purchase_orders = PurchaseOrder::where('order_status', '=', 'completed')
-                            ->where('created_at', 'like', Input::get('expected_date') . '%')
-                            ->orderBy('created_at', 'desc')
-                            ->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')
-                            ->Paginate(20);
+                    $purchase_orders = PurchaseOrder::with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')
+                                    ->where('created_at', '<=', Input::get('expected_date') . '23:59:59')
+                                    ->where('order_status', '=', 'completed')->orderBy('created_at', 'desc')->Paginate(20);
                 } else {
                     $purchase_orders = PurchaseOrder::where('order_status', '=', 'completed')->orderBy('created_at', 'desc')
-                            ->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')
-                            ->Paginate(20);
+                                    ->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')->Paginate(20);
                 }
-
                 $result_temp = $this->quantity_calculation($purchase_orders);
 
                 foreach ($result_temp as $key => $temp) {
@@ -309,7 +280,6 @@ class BulkDeleteController extends Controller {
                     else
                         $result_data[$key][0] = $temp['customer']->owner_name;
                     $result_data[$key][1] = $temp['customer']->phone_number1;
-
                     if ($temp->delivery_location_id != 0) {
                         foreach ($delivery_locations as $location) {
                             if ($location->id == $temp->delivery_location_id) {
@@ -319,7 +289,6 @@ class BulkDeleteController extends Controller {
                     } else {
                         $result_data[$key][2] = $temp->other_location;
                     }
-
                     $result_data[$key][3] = $temp['user']->first_name;
                     $result_data[$key][4] = round($temp->total_quantity, 2);
                     $result_data[$key][5] = round($temp->pending_quantity, 2);
@@ -333,9 +302,8 @@ class BulkDeleteController extends Controller {
                 $head[2] = 'VECHILE NUMBER';
                 $head[3] = 'QUANTITY';
                 $head[4] = 'SERIAL NUMBER';
-
                 /*
-                 * Delete selected inquiries.
+                 * Delete selected purchase advice.
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
@@ -344,21 +312,17 @@ class BulkDeleteController extends Controller {
                     }
                 }
                 /*
-                 * Delete selected inquiries end.
+                 * Delete selected purchase advice end.
                  */
-
                 if (Input::get('expected_date') != '') {
                     $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products')
-                                    ->where('created_at', 'like', Input::get('expected_date') . '%')
-                                    ->where('advice_status', '=', 'delivered')
-                                    ->orderBy('created_at', 'desc')->paginate(20);
+                                    ->where('created_at', '<=', Input::get('expected_date') . '23:59:59')
+                                    ->where('advice_status', '=', 'delivered')->orderBy('created_at', 'desc')->paginate(20);
                 } else {
                     $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products')
-                                    ->where('advice_status', '=', 'delivered')
-                                    ->orderBy('created_at', 'desc')->paginate(20);
+                                    ->where('advice_status', '=', 'delivered')->orderBy('created_at', 'desc')->paginate(20);
                 }
                 $result_temp = $this->checkpending_quantity($purchase_advise);
-
                 foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;
                     $result_data[$key][0] = date("F jS, Y", strtotime($temp->purchase_advice_date));
@@ -379,9 +343,8 @@ class BulkDeleteController extends Controller {
                 $head[2] = 'BILL NUMBER';
                 $head[3] = 'BILL DATE';
                 $head[4] = 'TOTAL QUANTITY';
-
                 /*
-                 * Delete selected inquiries.
+                 * Delete selected purchase challan.
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
@@ -390,29 +353,22 @@ class BulkDeleteController extends Controller {
                     }
                 }
                 /*
-                 * Delete selected inquiries end.
+                 * Delete selected purchase challan end.
                  */
-
                 if (Input::get('expected_date') != '') {
                     $result_temp = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
-                            ->where('created_at', 'like', Input::get('expected_date') . '%')
-                            ->where('order_status', 'completed')
-                            ->orderBy('created_at', 'desc')
-                            ->Paginate(20);
+                                    ->where('created_at', '<=', Input::get('expected_date') . '23:59:59')
+                                    ->where('order_status', 'completed')->orderBy('created_at', 'desc')->Paginate(20);
                 } else {
                     $result_temp = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
-                            ->where('order_status', 'completed')
-                            ->orderBy('created_at', 'desc')
-                            ->Paginate(20);
+                                    ->where('order_status', 'completed')->orderBy('created_at', 'desc')->Paginate(20);
                 }
                 foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;
-
                     if ($temp['supplier']->tally_name != '')
                         $result_data[$key][0] = $temp['supplier']->tally_name;
                     else
                         $result_data[$key][0] = $temp['supplier']->owner_name;
-
                     $result_data[$key][1] = $temp->serial_number;
                     $result_data[$key][2] = $temp->bill_number;
                     $result_data[$key][3] = date("F jS, Y", strtotime($temp['purchase_advice']->purchase_advice_date));
@@ -439,7 +395,6 @@ class BulkDeleteController extends Controller {
         } else {
             $msg = '';
         }
-
         if (isset($result_temp)) {
             $result_temp->setPath('bulk-delete');
         }
