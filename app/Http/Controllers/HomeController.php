@@ -81,7 +81,7 @@ class HomeController extends Controller {
 
     public function customerInquiry($id) {
 
-        $inquiry_details = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')->orderBy('created_at', 'desc')->get();
+        $inquiry_details = Inquiry::where('customer_id', '=', $id)->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')->orderBy('created_at', 'desc')->get();
         return json_encode($inquiry_details);
     }
     // All Functions added by user 157 for android request //
