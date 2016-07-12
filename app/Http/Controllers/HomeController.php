@@ -86,6 +86,51 @@ class HomeController extends Controller {
         return json_encode($inquiry_details);
     }
 
+    public function customerInfo($id) {
+
+        $customer_details = Customer::with('deliverylocation', 'customerproduct', 'manager')->find($id);
+        return json_encode($customer_details);
+    }
+
+    public function appCustomerProfile() {
+        if (isset($_FILES["myfile"])) {
+            $ret = array();
+            $output_dir = getcwd() . '/upload/';
+            $fileName = $_FILES["myfile"]["name"];
+            move_uploaded_file($_FILES["myfile"]["tmp_name"], $output_dir . $fileName);
+            $ret[] = $fileName;
+            $image_path = $output_dir . $fileName;
+            chmod($image_path, 0777);
+        }
+        return json_encode(array('result' => true, 'message' => 'User profile picture added successfully'));
+    }
+
+    public function addCustomer() {
+
+        $customer = new Customer();
+        $customer->owner_name = Input::get('owner_name');
+        $customer->contact_person = (Input::has('contact_person')) ? Input::get('contact_person') : '';
+        $customer->address1 = Input::get('address1');
+        $customer->phone_number1 = (Input::has('phone_number1')) ? Input::get('phone_number1') : '';
+        $customer->password = Hash::make(Input::get('password'));
+        $customer->customer_status = 'permanent';
+        $customer->company_name = (Input::has('company_name')) ? Input::get('company_name') : '';
+        $customer->address2 = (Input::has('address2')) ? Input::get('address2') : '';
+        $customer->city = (Input::has('city')) ? Input::get('city') : '';
+        $customer->state = (Input::has('state')) ? Input::get('state') : '';
+        $customer->zip = (Input::has('zip')) ? Input::get('zip') : '';
+        $customer->email = (Input::has('email')) ? Input::get('email') : '';
+        $customer->tally_name = (Input::has('tally_name')) ? Input::get('tally_name') : '';
+        $customer->phone_number2 = (Input::has('phone_number2')) ? Input::get('phone_number2') : '';
+        $customer->username = (Input::has('username')) ? Input::get('username') : '';
+        $customer->credit_period = (Input::has('credit_period')) ? Input::get('credit_period') : 0;
+        $customer->relationship_manager = (Input::has('relationship_manager')) ? Input::get('relationship_manager') : '';
+        $customer->delivery_location_id = (Input::has('delivery_location')) ? Input::get('delivery_location') : '';
+        if ($customer->save())
+            return json_encode(array('result' => true, 'message' => 'Customer added successfully'));
+        else
+            return json_encode(array('false' => true, 'message' => 'Some error occured. Please try again'));
+    }
     public function appContactUs() {
 
         $data = Input::all();

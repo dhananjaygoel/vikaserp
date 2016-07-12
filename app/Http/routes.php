@@ -39,11 +39,14 @@ Route::get('app_export_inventory', 'InventoryController@export_inventory');
 Route::get('applocation', 'HomeController@applocation');
 /* All customer app routes */
 Route::post('app_customer_login', 'HomeController@appCustomerLogin');
+Route::post('app_contactus', 'HomeController@appContactUs');
+Route::post('app_addcustomer', 'HomeController@addCustomer');
+Route::post('app_customer_profile', 'HomeController@appCustomerProfile');
 Route::get('app_track_order/{id}', 'HomeController@trackOrder');
 Route::get('app_track_inquiry/{id}', 'HomeController@trackInquiry');
-Route::get('app_customer_orders/{id}', 'HomeController@customerOrders');
+Route::get('app_customer_info/{id}', 'HomeController@customerInfo');
 Route::get('app_customer_inquiry/{id}', 'HomeController@customerInquiry');
-Route::post('app_contactus', 'HomeController@appContactUs');
+Route::get('app_customer_orders/{id}', 'HomeController@customerOrders');
 /* All customer app routes ends here */
 Route::get('demorouteandroid', 'HomeController@demorouteandroid');
 Route::get('androidtesting', 'HomeController@androidtesting');
