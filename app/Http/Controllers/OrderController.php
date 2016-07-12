@@ -87,7 +87,7 @@ class OrderController extends Controller {
         } else {
             $q->with('all_order_products');
         }
-        $allorders = $q->with('all_order_products')->with('customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->paginate(20);
+        $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->paginate(20);
 
         $users = User::all();
         $customers = Customer::orderBy('tally_name', 'ASC')->get();

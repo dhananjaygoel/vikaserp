@@ -12,7 +12,6 @@
  */
 
 Route::post('applogin', 'HomeController@applogin');
-Route::post('app_customer_login', 'HomeController@appCustomerLogin');
 Route::post('appsync', 'HomeController@appsync');
 Route::post('appsync1', 'HomeController@appsync1');
 Route::get('appcount', 'HomeController@appcount');
@@ -38,8 +37,13 @@ Route::get('appinventory', 'HomeController@appinventory');
 Route::get('app_export_inventory', 'InventoryController@export_inventory');
 
 Route::get('applocation', 'HomeController@applocation');
-
-
+/* All customer app routes */
+Route::post('app_customer_login', 'HomeController@appCustomerLogin');
+Route::get('app_track_order/{id}', 'HomeController@trackOrder');
+Route::get('app_track_inquiry/{id}', 'HomeController@trackInquiry');
+Route::get('app_customer_orders/{id}', 'HomeController@customerOrders');
+Route::get('app_customer_inquiry/{id}', 'HomeController@customerInquiry');
+/* All customer app routes ends here */
 Route::get('demorouteandroid', 'HomeController@demorouteandroid');
 Route::get('androidtesting', 'HomeController@androidtesting');
 Route::get('devicename', 'HomeController@devicename');
