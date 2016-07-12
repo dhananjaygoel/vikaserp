@@ -232,7 +232,6 @@ class CustomerController extends Controller {
         if (count($customer) < 1) {
             return redirect('customers/')->with('error', 'Trying to access an invalid customer');
         }
-
         $customer->owner_name = Input::get('owner_name');
         if (Input::has('company_name')) {
             $customer->company_name = Input::get('company_name');

@@ -70,25 +70,22 @@ use Illuminate\Support\Facades\Session;
                                 <div class="radio">
                                     <input checked="" value="existing" id="optionsRadios1" name="supplier_status" type="radio"
                                     <?php
-                                    if (Input::old('supplier_status') == "existing") {
+                                    if (Input::old('supplier_status') == "existing")
                                         echo 'checked="checked"';
-                                    }
                                     ?>>
                                     <label for="optionsRadios1">Existing Supplier</label>
-                                    <input  value="new" id="optionsRadios3" name="supplier_status" type="radio"
+                                    <input value="new" id="supplier_radio" name="supplier_status" type="radio"
                                     <?php
-                                    if (Input::old('supplier_status') == "new") {
+                                    if (Input::old('supplier_status') == "new")
                                         echo 'checked="checked"';
-                                    }
                                     ?>>
                                     <label for="optionsRadios3">New Supplier</label>
                                 </div>
                                 <?php
-                                if (Input::old('supplier_status') == "new") {
+                                if (Input::old('supplier_status') == "new")
                                     $style = 'style="display: none"';
-                                } else {
+                                else
                                     $style = 'style="display: block"';
-                                }
                                 ?>
                                 <div class="supplier" <?= $style ?>>
                                     <select class="form-control" name="supplier_id" id="supplier_select" onchange="get_default_location();">
@@ -103,11 +100,10 @@ use Illuminate\Support\Facades\Session;
                                 </div>
                             </div>
                             <?php
-                            if (Input::old('supplier_status') == "new") {
+                            if (Input::old('supplier_status') == "new")
                                 $style = 'style="display: block"';
-                            } else {
+                            else
                                 $style = 'style="display: none"';
-                            }
                             ?>
                             <div class="exist_field" <?= $style ?>>
                                 <div class="form-group">

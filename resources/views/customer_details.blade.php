@@ -29,19 +29,19 @@
                             <table id="table-example" class="table customerview_table">
                                 <tbody>
                                     <tr>
-                                        <td><span>Owner Name:</span> {{$customer->owner_name}}</td>
+                                        <td><span>Owner Name:</span> {{($customer->owner_name)?$customer->owner_name:''}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Company Name:</span> {{$customer->company_name}}</td>
+                                        <td><span>Company Name:</span> {{($customer->company_name)?$customer->company_name:''}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Contact Person:</span> {{$customer->contact_person}}</td>
+                                        <td><span>Contact Person:</span> {{($customer->contact_person)?$customer->contact_person:''}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Address1: </span> {{$customer->address1}}</td>
+                                        <td><span>Address1: </span> {{($customer->address1)?$customer->address1:''}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Address2: </span> {{$customer->address2}}</td>
+                                        <td><span>Address2: </span> {{($customer->address2)?$customer->address2:''}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>State:</span>
@@ -61,7 +61,6 @@
                                             @endforeach
                                         </td>
                                     </tr>
-
                                     <tr>
                                         <td><span>Zip:</span> {{$customer->zip}}</td>
                                     </tr>
@@ -73,14 +72,13 @@
                                     </tr>
 
                                     <tr>
-                                        <td><span>Phone Number1:</span> {{$customer->phone_number1}}</td>
+                                        <td><span>Phone Number1:</span> {{($customer->phone_number1)?$customer->phone_number1:''}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Phone Number2:</span> {{$customer->phone_number2}}</td>
+                                        <td><span>Phone Number2:</span> {{($customer->phone_number2)?$customer->phone_number2:''}}</td>
                                     </tr>
-
                                     <tr>
-                                        <td><span>Delivery Location:</span> {{$customer['deliverylocation']->area_name}} <em>({{$customer['deliverylocation']['city']->city_name}}, {{$customer['deliverylocation']['state']->state_name}})</em></td>
+                                        <td><span>Delivery Location:</span> {{$customer->deliverylocation->area_name}} <em>({{$customer->deliverylocation->city->city_name}}, {{$customer->deliverylocation->states->state_name}})</em></td>
                                     </tr>
                                     <tr>
                                         <td><span>Username:</span> {{($customer->username != '' )?$customer->username: 'N/A'}}</td>
