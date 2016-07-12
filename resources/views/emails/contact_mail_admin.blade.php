@@ -7,7 +7,6 @@
     <p>message: {{$dynamictext['message']}} </p>
 </div>
 <div style="font-size: 12px;">
-    <br>
     <p>--</p>
     <p>Thank you, </p>
     <p>Vikas Associates</p>

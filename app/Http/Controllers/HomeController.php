@@ -94,7 +94,7 @@ class HomeController extends Controller {
         $dynamictext['subject'] = $data['subject'];
         $dynamictext['message'] = $data['message'];
         Mail::send('emails.contact_mail_admin', ['dynamictext' => $dynamictext], function($message) {
-            $message->to("gamit@agstechnologies.com", "Test User")->subject('Vikash Associates Contact Mail from website');
+            $message->to("gamit@agstechnologies.com", "Test User")->subject('Contact from website');
         });
     }
 
