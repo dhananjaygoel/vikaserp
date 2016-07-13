@@ -213,7 +213,7 @@ class HomeController extends Controller {
                 $inquiry_products = array();
                 $delete_old_inquiry_products = InquiryProducts::where('inquiry_id', '=', $value->serverId)->delete();
                 foreach ($inquiryproduct as $product_data) {
-                    if ($product_data->maxInqId == $value->serverId) {
+                    if ($product_data->maxInqId == $value->id) {
                         $inquiry_products = [
                             'inquiry_id' => $value->serverId,
                             'product_category_id' => $product_data->inqProId,
