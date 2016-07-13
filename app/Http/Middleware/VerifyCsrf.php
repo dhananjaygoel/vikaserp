@@ -21,6 +21,7 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
         'app_contactus',
         'app_addcustomer',
         'app_customer_profile',
+        'generate_otp',
     ];
 
     /**

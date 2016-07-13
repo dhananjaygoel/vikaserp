@@ -62,6 +62,28 @@ class HomeController extends Controller {
         }
     }
 
+    public function customerResetPassword() {
+
+        $customer = Customer::where('phone_number1', '=', Input::get('username'))->first();
+        if ($customer) {
+            $customer = Hash::make(Input::get('password'));
+            $customer->save();
+            return json_encode(array('result' => true, 'message' => 'Password reset successfuly.'));
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Customer not found'));
+        }
+    }
+
+    public function generateOtp() {
+
+        $customer = Customer::where('phone_number1', '=', Input::get('username'))->first();
+        if ($customer) {
+            return json_encode(array('result' => true, 'mobile_status' => true));
+        } else {
+            return json_encode(array('result' => true, 'mobile_status' => false));
+        }
+    }
+
     public function trackOrder($id) {
 
         $order_details = Order::find($id);
