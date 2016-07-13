@@ -171,10 +171,15 @@ class HomeController extends Controller {
     public function appsync1() {
 
         $data = Input::all();
-
-        $inquiries = (json_decode($data['inquiry']));
-        $customers = (json_decode($data['customer']));
-        $inquiryproduct = (json_decode($data['inquiry_product']));
+        if (Input::has('inquiry')) {
+            $inquiries = (json_decode($data['inquiry']));
+        }
+        if (Input::has('customer')) {
+            $customers = (json_decode($data['customer']));
+        }
+        if (Input::has('inquiry_product')) {
+            $inquiryproduct = (json_decode($data['inquiry_product']));
+        }
 
         $inquiry_response = [];
         $customer_list = [];
