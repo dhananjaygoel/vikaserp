@@ -53,7 +53,7 @@ class HomeController extends Controller {
         $customer = Customer::where('phone_number1', '=', Input::get('username'))->first();
         if ($customer) {
             if (Hash::check(Input::get('password'), $customer->password)) {
-                return json_encode(array('status' => true,
+                return json_encode(array('result' => true,
                     'customer_id' => $customer->id,
                     'mobile_status' => true,
                     'message' => 'Login Successfully Done'));
@@ -67,13 +67,17 @@ class HomeController extends Controller {
 
     public function customerResetPassword() {
 
-        $customer = Customer::where('phone_number1', '=', Input::get('username'))->first();
-        if ($customer) {
-            $customer = Hash::make(Input::get('password'));
-            $customer->save();
-            return json_encode(array('result' => true, 'message' => 'Password reset successfuly.'));
+        if (Input::get('otp') == '123456' || Input::get('otp') == 123456) {
+            $customer = Customer::where('phone_number1', '=', Input::get('username'))->first();
+            if ($customer) {
+                $customer = Hash::make(Input::get('password'));
+                $customer->save();
+                return json_encode(array('result' => true, 'customer_id' => $customer->id, 'mobile_status' => true, 'message' => 'Password reset successfuly.'));
+            } else {
+                return json_encode(array('result' => false, 'mobile_status' => false, 'message' => 'Customer not found'));
+            }
         } else {
-            return json_encode(array('result' => false, 'message' => 'Customer not found'));
+            return json_encode(array('result' => false, 'mobile_status' => false, 'message' => 'OTP does not match'));
         }
     }
 
@@ -81,9 +85,23 @@ class HomeController extends Controller {
 
         $customer = Customer::where('phone_number1', '=', Input::get('username'))->first();
         if ($customer) {
-            return json_encode(array('result' => true, 'mobile_status' => true));
+            return json_encode(array('result' => true, 'message' => 'Customer found'));
         } else {
-            return json_encode(array('result' => true, 'mobile_status' => false));
+            return json_encode(array('result' => true, 'message' => 'Customer not found'));
+        }
+    }
+
+    public function verifyOtp() {
+
+        if (Input::get('otp') == '123456' || Input::get('otp') == 123456) {
+            $customer = Customer::where('phone_number1', '=', Input::get('username'))->first();
+            if ($customer) {
+                return json_encode(array('result' => true, 'mobile_status' => true, 'message' => 'OTP Verifed'));
+            } else {
+                return json_encode(array('result' => true, 'mobile_status' => false, 'message' => 'Customer not found'));
+            }
+        } else {
+            return json_encode(array('result' => false, 'mobile_status' => false, 'message' => 'OTP does not match'));
         }
     }
 
@@ -284,6 +302,7 @@ class HomeController extends Controller {
         }
         if (count($customer_list) > 0)
             $inquiry_response['customer_new'] = $customer_list;
+
         return json_encode($inquiry_response);
     }
 
