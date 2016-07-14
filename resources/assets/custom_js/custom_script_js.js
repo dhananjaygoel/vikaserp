@@ -214,6 +214,7 @@ $(document).ready(function () {
  * Comment
  */
 function select_all_checkbox() {
+
     if ($('#select_all_button').attr('all_checked') == 'allunchecked') {
         $(':checkbox').each(function () {
             this.checked = true;
@@ -244,7 +245,6 @@ function change_quantity(key) {
     var present_shipping = $("#present_shipping_" + key).val();
     var tot_quty = $("#quantity_" + key).val(); //ok
     var total = parseInt(quantity) + parseInt(present_shipping);
-
     if (parseInt(present_shipping) > parseInt(tot_quty)) {
 //        alert('present Shipping is greater than the quantity');// Commented by amit on 29-09-2015 to allow shipping > actual quantity
 //        $("#present_shipping_" + key).val(tot_quty);
@@ -262,9 +262,7 @@ function change_quantity2(key) {
     var present_shipping = $("#present_shipping_" + key).val();
     var tot_quty = $("#quantity_" + key).val(); //ok
     var total = parseInt(quantity) + parseInt(present_shipping);
-
     $("#present_shipping_" + key).val(present_shipping);
-
     if ((parseInt(tot_quty) - parseInt(present_shipping) < 0)) {
         $("#pending_qunatity_" + key).html("<span>" + 0 + "</span");
     } else {
@@ -277,6 +275,7 @@ function change_quantity2(key) {
  * Change Amount
  */
 function product_rate(key) {
+
     var product_id = $("#add_product_id_" + key).val();
     var customer_id = $("#customer_id").val();
     $.ajax({
@@ -300,6 +299,7 @@ function product_rate(key) {
  */
 
 function grand_total_delivery_order() {
+
     var current_row_count = $(".add_product_row").length;
     var total_price = 0;
     for (var i = 0; i <= current_row_count + 1; i++) {
@@ -325,14 +325,12 @@ function grand_total_delivery_order() {
             var discount_value = (parseFloat($("#discount_value").val()) * total_price) / 100;
             grand_total = grand_total - discount_value;
         }
-
     }
     if ($("#freight_value").length > 0) {
         if ($("#freight_value").val() > 0) {
             var freight_value = $("#freight_value").val();
             total_price = total_price + freight_value;
         }
-
     }
     if ($("#loading_charge").length > 0) {
         if ($("#loading_charge").val() > 0) {
@@ -347,37 +345,29 @@ function grand_total_delivery_order() {
  * Fetch price of the product
  */
 function fetch_price() {
-    var current_row_count = $(".add_product_row").length;
 
+    var current_row_count = $(".add_product_row").length;
     for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseFloat($('#product_price_' + i).val())) {
-
             var quantity = $("#actual_quantity_" + i).val();
-
-
             if (quantity > 0) {
-
                 /*
                  * Calculate checking wih KG and other in
                  * quantity field
                  */
-
                 if ($("#actual_quantity_" + i).val() > 0 && $("#actual_quantity_" + i).val() != 0 || $("#actual_quantity_" + i).val() != '') {
                     quantity = parseFloat($("#actual_quantity_" + i).val());
                 }
             } else {
-
-
                 if ($("#actual_pieces_" + i).val() > 0 && $("#actual_quantity_" + i).val() == 0 || $("#actual_quantity_" + i).val() == '') {
                     quantity = parseFloat($("#actual_pieces_" + i).val());
                 }
-
             }
-
-
             var rate = $("#product_price_" + i).val();
             var amount = parseFloat(rate) * parseInt(quantity);
-            $("#amount_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
+            if (amount > 0) {
+                $("#amount_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
+            }
         }
     }
     grand_total_challan();
@@ -388,9 +378,7 @@ $("body").delegate(".calc_actual_quantity", "keyup", function (event) {
     rowId = rowId[1];
     var weight = $('#product_weight_' + rowId).val();
     var actual_pieces = $(this).val();
-
     if ($('#actual_quantity_' + rowId).val() < 0) {
-
         if (actual_pieces != '') {
             if (weight != '')
                 $('#actual_quantity_' + rowId).val((actual_pieces * weight).toFixed(2));
@@ -398,10 +386,7 @@ $("body").delegate(".calc_actual_quantity", "keyup", function (event) {
                 $('#actual_quantity_' + rowId).val(actual_pieces);
         }
     }
-
-
     fetch_price();
-
 });
 /**
  * Grand total for creating independent delivery order
@@ -458,7 +443,6 @@ function grand_total_challan() {
             total_actual_quantity = total_actual_quantity + quantity;
         }
     }
-
     var vat_val = 0;
     var total_price = total_price_products;
 
@@ -478,7 +462,6 @@ function grand_total_challan() {
         if (parseFloat($("#discount_value").val())) {
             discount_value = parseFloat($("#discount_value").val());
             $("#discount_value").val(discount_value.toFixed(2));
-
         }
     }
     total_price = parseFloat(total_price) + parseFloat(discount_value.toFixed(2));
@@ -498,24 +481,19 @@ function grand_total_challan() {
     }
     total_price = parseFloat(total_price) + parseFloat(freight_value.toFixed(2));
     total_price = total_price.toFixed(2);
-
     var vat_val = 0;
     $("#total_l_d_f").html("<span class='text-center'>" + total_price + "</span>");
     if (parseFloat($('#vat_percentage').val()) > 0) {
         vat_val = (total_price * parseFloat($('#vat_percentage').val())) / 100;
         $("#vat_val").html("" + vat_val + "")
     }
-
     var vat_total = parseFloat(total_price) + parseFloat(vat_val.toFixed(2));
     vat_total = vat_total.toFixed(2);
-
     $("#vat_tot_val").val(vat_total);
     var round_off = 0;
-
     if ($('#round_off').val() != '') {
         round_off = parseFloat($("#round_off").val());
     }
-
     var grand_total = parseFloat(vat_total) + parseFloat(round_off.toFixed(2));
     $('#grand_total').val(grand_total.toFixed(2));
 }
@@ -528,12 +506,9 @@ function purchase_challan_calculation() {
     var current_row_count = $(".add_product_row").length;
     var total_actual_quantity = 0;
     var total_amount_product = 0;
-
     for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseFloat($('#product_price_' + i).val())) {
-
             var quantity = parseFloat($("#actual_quantity_" + i).val());
-
             var rate = $("#product_price_" + i).val();
             var amount = parseFloat(rate) * parseFloat(quantity);
             $("#amount_" + i).html('' + amount + '');
@@ -541,7 +516,6 @@ function purchase_challan_calculation() {
             total_amount_product = total_amount_product + amount;
         }
     }
-
     $("#total_price2").html('' + total_amount_product.toFixed(2));
     $("#total_actual_quantity").html('' + total_actual_quantity);
     var discount_value = 0;
@@ -550,39 +524,30 @@ function purchase_challan_calculation() {
     if ($("#discount").val() != '') {
         discount_value = $("#discount").val();
     }
-
     discount_value = parseFloat(discount_value);
     var discount = discount_value.toFixed(2);
     $("#discount").val(discount);
-
     total_price = total_amount_product + parseFloat(discount);
     $("#total_price").html('' + total_price.toFixed(2));
-
     //**************freight
     var freight_amount = 0;
     if ($("#freight").val() != '') {
         freight_amount = $("#freight").val();
     }
-
     freight_amount = parseFloat(freight_amount);
     var fre = freight_amount.toFixed(2);
     $("#freight").val(fre);
-
     tot_frt = total_price + parseFloat(fre);
     $("#total_price").html('' + tot_frt.toFixed(2));
 
     //*********vat
     var vat_val = 0;
     if ($("#vat_percentage").val() > 0 && $("#vat_percentage").val() != '') {
-
         vat_val = (tot_frt * parseFloat($('#vat_percentage').val())) / 100;
         $("#vat_value").html('' + vat_val.toFixed(2));
     }
-
-    var vat_total = tot_frt + parseFloat(vat_val.toFixed(2));//    alert(vat_total);
-
+    var vat_total = tot_frt + parseFloat(vat_val.toFixed(2));
     $("#vat_tot_val").val(vat_total.toFixed(2));
-
     //round off
     var round_off = 0;
     var grand_total = vat_total;
@@ -590,10 +555,8 @@ function purchase_challan_calculation() {
         round_off = $("#round_off").val();
         grand_total += parseFloat(round_off);
     }
-
     $("#grand_total").html('' + grand_total.toFixed(2));
     $("#grand_total_val").val(grand_total.toFixed(2));
-
     //round up value for the textbox
     round_off = parseFloat(round_off);
     var r = round_off.toFixed(2);

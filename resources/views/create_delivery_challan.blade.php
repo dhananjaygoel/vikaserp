@@ -36,11 +36,7 @@
                         <input type="hidden" id="customer_id" name="customer_id" value="{{$delivery_data['customer']->id}}">
                         <div class="form-group">
                             <span>Serial Number: </span>
-                            @if($delivery_data->serial_no != "")
-                            {{$delivery_data->serial_no}}
-                            @else
-                            {{'--'}}
-                            @endif
+                            {{($delivery_data->serial_no != "")?$delivery_data->serial_no:'--'}}
                         </div>
                         <hr>
                         <input type="hidden" name="supplier_id" value="{{ $delivery_data->supplier_id }}"/>
@@ -87,9 +83,9 @@
                                                 <div class="form-group">
                                                     <input id="quantity_{{$key}}" type="hidden" value="{{ $product->present_shipping}}" name="product[{{$key}}][quantity]">
                                                     @if($product->present_shipping >=0)
-                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{ $product->present_shipping }}" type="text" onblur="fetch_price();">
+                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="" type="text" onblur="fetch_price();">
                                                     @elseif($product->present_shipping <0)
-                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="" type="text" >
+                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="" type="text" onblur="fetch_price();">
                                                     @endif
                                                 </div>
                                             </td>
