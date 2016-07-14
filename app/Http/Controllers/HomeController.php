@@ -191,7 +191,7 @@ class HomeController extends Controller {
 
             if ($value->serverId > 0) {
                 $add_inquiry = Inquiry::find($value->serverId);
-                $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expDelDate']);
+                $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expDelDate);
                 $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
                 $datetime = new DateTime($date);
                 if ($value->vatPerc == "" || empty($value->vatPerc))
