@@ -96,7 +96,7 @@ class HomeController extends Controller {
         if (Input::get('otp') == '123456' || Input::get('otp') == 123456) {
             $customer = Customer::where('phone_number1', '=', Input::get('username'))->first();
             if ($customer) {
-                return json_encode(array('result' => true, 'mobile_status' => true, 'message' => 'OTP Verifed'));
+                return json_encode(array('result' => true, 'customer_id' => $customer->id, 'mobile_status' => true, 'message' => 'OTP Verifed'));
             } else {
                 return json_encode(array('result' => true, 'mobile_status' => false, 'message' => 'Customer not found'));
             }
