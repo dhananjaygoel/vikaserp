@@ -230,7 +230,6 @@ class HomeController extends Controller {
                 }
                 $inquiry_response[$value->serverId] = Inquiry::find($value->serverId);
                 $inquiry_response[$value->serverId]['products'] = InquiryProducts::where('inquiry_id', '=', $value->serverId)->get();
-                return json_encode($inquiry_response);
             } else {
                 if ($value->custServId == 0 || $value->custServId == '0') {
                     $add_customers = new Customer();
@@ -283,7 +282,8 @@ class HomeController extends Controller {
                 $inquiry_response[$value->id] = $inquiry_id;
             }
         }
-        $inquiry_response['customer_new'] = $customer_list;
+        if (count($customer_list) > 0)
+            $inquiry_response['customer_new'] = $customer_list;
         return json_encode($inquiry_response);
     }
 
