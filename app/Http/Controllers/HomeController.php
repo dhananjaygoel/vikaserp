@@ -53,7 +53,10 @@ class HomeController extends Controller {
         $customer = Customer::where('phone_number1', '=', Input::get('username'))->first();
         if ($customer) {
             if (Hash::check(Input::get('password'), $customer->password)) {
-                return json_encode(array('status' => true, 'customer_id' => $customer->id, 'message' => 'Login Successfully Done'));
+                return json_encode(array('status' => true,
+                    'customer_id' => $customer->id,
+                    'mobile_status' => true,
+                    'message' => 'Login Successfully Done'));
             } else {
                 return json_encode(array('result' => false, 'reason' => 'Password does not match', 'message' => 'Login Failed.'));
             }
