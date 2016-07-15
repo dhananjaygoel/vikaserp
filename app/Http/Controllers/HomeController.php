@@ -177,7 +177,7 @@ class HomeController extends Controller {
         $customer->username = (Input::has('username')) ? Input::get('username') : '';
         $customer->credit_period = (Input::has('credit_period')) ? Input::get('credit_period') : 0;
         $customer->relationship_manager = (Input::has('relationship_manager')) ? Input::get('relationship_manager') : '';
-        $customer->delivery_location_id = (Input::has('delivery_location')) ? Input::get('delivery_location') : '';
+        $customer->delivery_location_id = (Input::has('delivery_location_id')) ? Input::get('delivery_location_id') : '';
         if ($customer->save())
             return json_encode(array('result' => true, 'customer_id' => $customer->id, 'message' => 'Customer added successfully'));
         else
