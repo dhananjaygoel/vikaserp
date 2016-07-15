@@ -19,6 +19,7 @@ use App\Order;
 use App\Units;
 use App\DeliveryOrder;
 use App\DeliveryChallan;
+use App\AllOrderProducts;
 use App\Http\Controllers\DeliveryOrderController;
 use Jenssegers\Agent\Agent;
 use Illuminate\Support\Facades\Auth;
@@ -239,6 +240,79 @@ class HomeController extends Controller {
             $message->to("gamit@agstechnologies.com", "Test User")->subject('Contact from website');
         });
         return json_encode(array('result' => true, 'message' => 'Email send successfully'));
+    }
+
+    public function appSyncOrder() {
+
+        $data = Input::all();
+        if (Input::has('order')) {
+            $orders = (json_decode($data['order']));
+        }
+        if (Input::has('customer')) {
+            $customers = (json_decode($data['customer']));
+        }
+        if (Input::has('order_product')) {
+            $orderproduct = (json_decode($data['order_product']));
+        }
+        $order_response = [];
+        $customer_list = [];
+        foreach ($orders as $key => $value) {
+
+            if ($value->serverId == 0) {
+                if ($value->custServerId == 0 || $value->custServerId == '0') {
+                    $add_customers = new Customer();
+                    /* Doubt - $value->customerName */
+                    /* Doubt - $value->custCreditPeriod */
+                    $add_customers->addNewCustomer($value->customerName, $value->customerName, $value->customerMobile, $value->custCreditPeriod);
+                    $customer_list[$value->id] = $add_customers->id;
+                }
+                if ($value->supplierId == 0) {
+                    $order_status = 'warehouse';
+                    $supplier_id = 0;
+                } else {
+                    $other_location_difference;
+                    $order_status = 'supplier';
+                    $supplier_id = $input_data['supplier_id'];
+                }
+                $order = new Order();
+                $order->order_source = $order_status;
+                $order->supplier_id = 0;
+                $order->customer_id = ($value->custServerId == 0) ? $customer_list[$value->id] : $value->custServerId;
+                $order->created_by = 1;
+                $order->vat_percentage = ($value->vatPerc == '') ? '' : $value->vatPerc;
+                $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expDelDate);
+                $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+                $datetime = new DateTime($date);
+                $order->expected_delivery_date = $datetime->format('Y-m-d');
+                $order->remarks = $value->remark;
+                $order->order_status = "Pending";
+                if ($value->otherLocation = "") {
+                    $order->delivery_location_id = 0;
+                    $order->other_location = $value->otherLocation;
+                    $order->location_difference = $value->otherLocationDifference;
+                } else {
+                    $order->delivery_location_id = $value->delLocId;
+                    $order->location_difference = $value->delLocDiff;
+                }
+                $order->save();
+                $order_id = $order->id;
+                $order_products = array();
+                foreach ($orderproduct as $product_data) {
+                    if ($product_data->maxOrderId == $value->id) {
+                        $order_products = [
+                            'order_id' => $order_id,
+                            'order_type' => 'order',
+                            'product_category_id' => $product_data->productCatId,
+                            'unit_id' => $product_data->unitId,
+                            'quantity' => $product_data->qty,
+                            'price' => $product_data->price,
+                            'remarks' => '',
+                        ];
+                        $add_order_products = AllOrderProducts::create($order_products);
+                    }
+                }
+            }
+        }
     }
 
     // All Functions added by user 157 for android request //
