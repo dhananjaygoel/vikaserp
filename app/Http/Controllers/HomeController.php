@@ -240,9 +240,10 @@ class HomeController extends Controller {
                 $add_inquiry->inquiry_status = $value->inquiryStatus;
                 $add_inquiry->save();
 
-                $inquiry_products = array();
+
                 $delete_old_inquiry_products = InquiryProducts::where('inquiry_id', '=', $value->serverId)->delete();
                 foreach ($inquiryproduct as $product_data) {
+                    $inquiry_products = array();
                     if ($product_data->maxInqId == $value->id) {
                         $inquiry_products = [
                             'inquiry_id' => $value->serverId,
@@ -291,8 +292,9 @@ class HomeController extends Controller {
                 $add_inquiry->inquiry_status = "Pending";
                 $add_inquiry->save();
                 $inquiry_id = $add_inquiry->id;
-                $inquiry_products = array();
+
                 foreach ($inquiryproduct as $product_data) {
+                    $inquiry_products = array();
                     if ($product_data->maxInqId == $value->id) {
                         $inquiry_products = [
                             'inquiry_id' => $inquiry_id,
