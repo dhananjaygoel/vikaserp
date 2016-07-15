@@ -234,7 +234,7 @@ class HomeController extends Controller {
                     $add_inquiry->other_location = $value->otherLocation;
                     $add_inquiry->location_difference = $value->otherLocationDifference;
                 }
-                if (isset($value->custServId))
+                if (isset($value->custServId) && (($value->custServId) > 0))
                     $add_inquiry->customer_id = $value->custServId;
                 $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
                 $add_inquiry->remarks = ($value->remark != '') ? $value->remark : '';
