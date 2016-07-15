@@ -12,6 +12,7 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
      *
      * @var array
      */
+    
     protected $routes = [
         'auth/login',
         'applogin',

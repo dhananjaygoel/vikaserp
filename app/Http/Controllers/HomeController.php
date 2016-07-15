@@ -315,6 +315,7 @@ class HomeController extends Controller {
             }
         }
     }
+    
 
     // All Functions added by user 157 for android request //
     public function appsync1() {

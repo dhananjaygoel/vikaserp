@@ -11,6 +11,7 @@
   |
  */
 
+
 Route::post('applogin', 'HomeController@applogin');
 Route::post('appsync', 'HomeController@appsync');
 Route::post('appsync1', 'HomeController@appsync1');
