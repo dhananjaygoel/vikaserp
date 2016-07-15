@@ -3,7 +3,7 @@
     <p>The details are as following. </p>
     <p>Name: {{$dynamictext['name']}} </p>
     <p>email: {{$dynamictext['email']}} </p>
-    <p>Number: {{$dynamictext['number']}} </p>
+    <p>Phone Number: {{$dynamictext['number']}} </p>
     <p>message: {{$dynamictext['message']}} </p>
 </div>
 <div style="font-size: 12px;">
