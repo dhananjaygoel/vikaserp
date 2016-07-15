@@ -252,8 +252,8 @@ class HomeController extends Controller {
                             'price' => $product_data->price,
                             'remarks' => '',
                         ];
+                        $add_inquiry_products = InquiryProducts::create($inquiry_products);
                     }
-                    $add_inquiry_products = InquiryProducts::create($inquiry_products);
                 }
                 $inquiry_response[$value->serverId] = Inquiry::find($value->serverId);
                 $inquiry_response[$value->serverId]['products'] = InquiryProducts::where('inquiry_id', '=', $value->serverId)->get();
@@ -273,7 +273,6 @@ class HomeController extends Controller {
                 $datetime = new DateTime($date);
                 $add_inquiry = new Inquiry();
                 $add_inquiry->customer_id = (!empty($value->custServId)) ? $value->custServId : $customer_list[$value->id];
-//                $add_inquiry->customer_id = $value->custServId;
                 $add_inquiry->created_by = 1;
                 if (($value->otherLocation == "") || empty($value->otherLocation)) {
                     $add_inquiry->delivery_location_id = $value->delLocId;
@@ -303,8 +302,8 @@ class HomeController extends Controller {
                             'price' => $product_data->price,
                             'remarks' => '',
                         ];
+                        $add_inquiry_products = InquiryProducts::create($inquiry_products);
                     }
-                    $add_inquiry_products = InquiryProducts::create($inquiry_products);
                 }
                 $inquiry_response[$value->id] = $inquiry_id;
             }
