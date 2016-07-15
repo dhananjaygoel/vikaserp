@@ -47,14 +47,17 @@ class HomeController extends Controller {
     public function __construct() {
         
     }
-
+    
+    
     public function appCustomerLogin() {
 
-        $customer = Customer::where('phone_number1', '=', Input::get('username'))->first();
+        $customer = Customer::with('manager')->where('phone_number1', '=', Input::get('username'))->first();
         if ($customer) {
             if (Hash::check(Input::get('password'), $customer->password)) {
                 return json_encode(array('result' => true,
                     'customer_id' => $customer->id,
+                    'manager_name' => $customer->manager->first_name . " " . $customer->manager->last_name,
+                    'manager_phone' => $customer->manager->mobile_number,
                     'mobile_status' => true,
                     'message' => 'Login Successfully Done'));
             } else {
