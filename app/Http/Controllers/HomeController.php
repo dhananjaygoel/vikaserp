@@ -136,6 +136,7 @@ class HomeController extends Controller {
     }
 
     public function appCustomerProfile() {
+
         if (isset($_FILES["myfile"])) {
             $ret = array();
             $output_dir = getcwd() . '/upload/';
@@ -150,12 +151,22 @@ class HomeController extends Controller {
 
     public function addCustomer() {
 
-        $customer = new Customer();
-        $customer->owner_name = Input::get('customer_name');
-        $customer->contact_person = Input::get('contact_person');
+        if (Input::has('mobile')) {
+            $customer = Customer::where('phone_number1', '=', Input::get('mobile'))->first();
+            if ($customer)
+                return json_encode(array('result' => false, 'customer_id' => $customer->id, 'message' => 'Customer already exist'));
+        } else {
+            $customer = new Customer();
+        }
+        if (Input::has('customer_name'))
+            $customer->owner_name = Input::get('customer_name');
+        if (Input::has('contact_person'))
+            $customer->contact_person = Input::get('contact_person');
         $customer->address1 = (Input::get('address1')) ? Input::get('address1') : '';
-        $customer->phone_number1 = Input::get('mobile');
-        $customer->password = Hash::make(Input::get('password'));
+        if (Input::has('mobile'))
+            $customer->phone_number1 = Input::get('mobile');
+        if (Input::has('password'))
+            $customer->password = Hash::make(Input::get('password'));
         $customer->customer_status = 'pending';
         $customer->company_name = (Input::has('company_name')) ? Input::get('company_name') : '';
         $customer->address2 = (Input::has('address2')) ? Input::get('address2') : '';
