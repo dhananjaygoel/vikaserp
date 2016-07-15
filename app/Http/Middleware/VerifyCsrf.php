@@ -24,6 +24,7 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
         'customer_resetpassword',
         'generate_otp',
         'verify_otp',
+        'app_updatecustomer',
     ];
 
     /**

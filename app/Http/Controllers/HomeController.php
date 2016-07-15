@@ -184,6 +184,44 @@ class HomeController extends Controller {
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
 
+    public function updateCustomer() {
+
+        $customer = Customer::find(Input::get('customer_id'));
+        if (!isset($customer->id)) {
+            return json_encode(array('result' => false, 'message' => 'Customer not found'));
+        }
+        if (Input::has('mobile') && !empty(Input::get('mobile'))) {
+            if ($customer->phone_number1 != Input::get('mobile'))
+                return json_encode(array('result' => false, 'message' => 'Username does not match'));
+        }
+        if (Input::has('customer_name') && !empty(Input::get('customer_name')))
+            $customer->owner_name = Input::get('customer_name');
+        if (Input::has('contact_person') && !empty(Input::get('contact_person')))
+            $customer->contact_person = Input::get('contact_person');
+        $customer->address1 = (Input::has('address1') && Input::get('address1')) ? Input::get('address1') : '';
+        if (Input::has('mobile') && !empty(Input::get('mobile')))
+            $customer->phone_number1 = Input::get('mobile');
+        if (Input::has('password') && !empty(Input::get('password')))
+            $customer->password = Hash::make(Input::get('password'));
+        $customer->customer_status = 'pending';
+        $customer->company_name = (Input::has('company_name') && !empty(Input::get('company_name'))) ? Input::get('company_name') : '';
+        $customer->address2 = (Input::has('address2') && !empty(Input::get('address2'))) ? Input::get('address2') : '';
+        $customer->city = (Input::has('city') && !empty(Input::get('city'))) ? Input::get('city') : '';
+        $customer->state = (Input::has('state') && !empty(Input::get('state'))) ? Input::get('state') : '';
+        $customer->zip = (Input::has('zip') && !empty(Input::get('zip'))) ? Input::get('zip') : '';
+        $customer->email = (Input::has('email') && !empty(Input::get('email'))) ? Input::get('email') : '';
+        $customer->tally_name = (Input::has('tally_name') && !empty(Input::get('tally_name'))) ? Input::get('tally_name') : '';
+        $customer->phone_number2 = (Input::has('phone_number2') && !empty(Input::get('phone_number2'))) ? Input::get('phone_number2') : '';
+        $customer->username = (Input::has('username') && !empty(Input::get('username'))) ? Input::get('username') : '';
+        $customer->credit_period = (Input::has('credit_period') && !empty(Input::get('credit_period'))) ? Input::get('credit_period') : 0;
+        $customer->relationship_manager = (Input::has('relationship_manager') && !empty(Input::get('delivery_location_id'))) ? Input::get('relationship_manager') : '';
+        $customer->delivery_location_id = (Input::has('delivery_location_id') && !empty(Input::get('delivery_location_id'))) ? Input::get('delivery_location_id') : '';
+        if ($customer->save())
+            return json_encode(array('result' => true, 'customer_id' => $customer->id, 'message' => 'Customer details updated successfully'));
+        else
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+    }
+
     public function appContactUs() {
 
         $data = Input::all();

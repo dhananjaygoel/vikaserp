@@ -41,6 +41,7 @@ Route::get('applocation', 'HomeController@applocation');
 Route::post('app_customer_login', 'HomeController@appCustomerLogin');
 Route::post('app_contactus', 'HomeController@appContactUs');
 Route::post('app_addcustomer', 'HomeController@addCustomer');
+Route::post('app_updatecustomer', 'HomeController@updateCustomer');
 Route::post('app_customer_profile', 'HomeController@appCustomerProfile');
 Route::post('customer_resetpassword', 'HomeController@customerResetPassword');
 Route::post('generate_otp', 'HomeController@generateOtp');
