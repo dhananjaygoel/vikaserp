@@ -151,13 +151,11 @@ class HomeController extends Controller {
 
     public function addCustomer() {
 
-        if (Input::has('mobile')) {
-            $customer = Customer::where('phone_number1', '=', Input::get('mobile'))->first();
-            if ($customer)
-                return json_encode(array('result' => false, 'customer_id' => $customer->id, 'message' => 'Customer already exist'));
-        } else {
-            $customer = new Customer();
+        $customer_check = Customer::where('phone_number1', '=', Input::get('mobile'))->first();
+        if (isset($customer_check->id)) {
+            return json_encode(array('result' => false, 'customer_id' => $customer_check->id, 'message' => 'Customer already exist'));
         }
+        $customer = new Customer();
         if (Input::has('customer_name'))
             $customer->owner_name = Input::get('customer_name');
         if (Input::has('contact_person'))
