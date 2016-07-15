@@ -105,6 +105,12 @@ class HomeController extends Controller {
         }
     }
 
+    public function appAllRelationshipManager() {
+
+        $managers = User::where('role_id', '=', 0)->select('id', 'first_name', 'last_name')->get();
+        return json_encode($managers);
+    }
+
     public function trackOrder($id) {
 
         $order_details = Order::find($id);

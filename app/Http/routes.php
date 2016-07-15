@@ -36,6 +36,7 @@ Route::get('appallpurchase_order_daybook', 'HomeController@appallpurchase_order_
 Route::get('appinventory', 'HomeController@appinventory');
 Route::get('app_export_inventory', 'InventoryController@export_inventory');
 
+Route::get('appall_relationship_manager', 'HomeController@appAllRelationshipManager');
 Route::get('applocation', 'HomeController@applocation');
 /* All customer app routes */
 Route::post('app_customer_login', 'HomeController@appCustomerLogin');
