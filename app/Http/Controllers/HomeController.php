@@ -234,12 +234,12 @@ class HomeController extends Controller {
                     $add_inquiry->other_location = $value->otherLocation;
                     $add_inquiry->location_difference = $value->otherLocationDifference;
                 }
-                $add_inquiry->customer_id = $value->custServId;
+                if (isset($value->custServId))
+                    $add_inquiry->customer_id = $value->custServId;
                 $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
                 $add_inquiry->remarks = ($value->remark != '') ? $value->remark : '';
                 $add_inquiry->inquiry_status = $value->inquiryStatus;
                 $add_inquiry->save();
-
 
                 $delete_old_inquiry_products = InquiryProducts::where('inquiry_id', '=', $value->serverId)->delete();
                 foreach ($inquiryproduct as $product_data) {
@@ -273,7 +273,7 @@ class HomeController extends Controller {
                 $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
                 $datetime = new DateTime($date);
                 $add_inquiry = new Inquiry();
-                $add_inquiry->customer_id = (!empty($value->custServId)) ? $value->custServId : $customer_list[$value->id];
+                $add_inquiry->customer_id = (!empty($value->custServId) && $value->custServId > 0) ? $value->custServId : $customer_list[$value->id];
                 $add_inquiry->created_by = 1;
                 if (($value->otherLocation == "") || empty($value->otherLocation)) {
                     $add_inquiry->delivery_location_id = $value->delLocId;
