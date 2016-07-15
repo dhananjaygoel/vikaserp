@@ -84,10 +84,11 @@ class CustomerController extends Controller {
      * Show the form for creating a new customer.
      */
     public function create() {
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $managers = User::where('role_id', '=', 1)->get();
+        $managers = User::where('role_id', '=', 0)->get();
         $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $states = States::orderBy('state_name', 'ASC')->get();
         $cities = City::orderBy('city_name', 'ASC')->get();
@@ -127,6 +128,9 @@ class CustomerController extends Controller {
         }
         $customer->tally_name = Input::get('tally_name');
         $customer->phone_number1 = Input::get('phone_number1');
+        if (Input::has('phone_number2')) {
+            $customer->phone_number2 = Input::get('phone_number2');
+        }
         if (Input::has('username')) {
             $customer->username = Input::get('username');
         }
@@ -206,6 +210,7 @@ class CustomerController extends Controller {
      * Show the form for editing the specific customer.
      */
     public function edit($id) {
+
         $states = States::all();
         $cities = City::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
@@ -215,7 +220,7 @@ class CustomerController extends Controller {
         if (count($customer) < 1) {
             return redirect('customers/')->with('error', 'Trying to access an invalid customer');
         }
-        $managers = User::where('role_id', '=', 1)->get();
+        $managers = User::where('role_id', '=', 0)->get();
         $locations = DeliveryLocation::all();
         $product_category = ProductCategory::all();
         return View::make('edit_customers', array('customer' => $customer, 'managers' => $managers, 'locations' => $locations, 'product_category' => $product_category, 'states' => $states, 'cities' => $cities));
@@ -258,7 +263,9 @@ class CustomerController extends Controller {
         $customer->tally_category = Input::get('tally_category');
         $customer->tally_sub_category = Input::get('tally_sub_category');
         $customer->phone_number1 = Input::get('phone_number1');
-
+        if (Input::has('phone_number2')) {
+            $customer->phone_number2 = Input::get('phone_number2');
+        }
         if (Input::has('vat_tin_number')) {
             $customer->vat_tin_number = Input::get('vat_tin_number');
         }

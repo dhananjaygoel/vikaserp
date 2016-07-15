@@ -39,6 +39,7 @@ class PendingCustomerController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -51,6 +52,7 @@ class PendingCustomerController extends Controller {
      * Display the specified resource.
      */
     public function show($id) {
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -58,13 +60,11 @@ class PendingCustomerController extends Controller {
         if (count($customer) < 1) {
             return redirect('pending_customers/')->with('error', 'Trying to access an invalid customer');
         }
-
-        $managers = User::where('role_id', '=', 1)->get();
+        $managers = User::where('role_id', '=', 0)->get();
         $locations = DeliveryLocation::all();
         $states = States::all();
         $cities = City::all();
         $product_category = ProductCategory::all();
-
         return View::make('add_pendingcustomers', array('customer' => $customer, 'locations' => $locations, 'managers' => $managers, 'states' => $states, 'cities' => $cities, 'product_category' => $product_category));
     }
 
@@ -72,6 +72,7 @@ class PendingCustomerController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit($id) {
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -84,6 +85,7 @@ class PendingCustomerController extends Controller {
      * Update the specified resource in storage.
      */
     public function update($id) {
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -91,7 +93,6 @@ class PendingCustomerController extends Controller {
         if (count($customer) < 1) {
             return redirect('pending_customers/')->with('error', 'Trying to access an invalid customer');
         }
-
         if (Input::has('owner_name')) {
             $customer->owner_name = Input::get('owner_name');
         }
@@ -101,13 +102,10 @@ class PendingCustomerController extends Controller {
         if (Input::has('phone_number1')) {
             $customer->phone_number1 = Input::get('phone_number1');
         }
-
         if (Input::has('delivery_location')) {
             $customer->delivery_location_id = Input::get('delivery_location');
         }
-
         $customer->customer_status = 'pending';
-
         if ($customer->save()) {
             return redirect('pending_customers')->with('success', 'Customer details updated successfully');
         } else {
@@ -161,15 +159,12 @@ class PendingCustomerController extends Controller {
         if (Input::has('address1')) {
             $customer->address1 = Input::get('address1');
         }
-
         if (Input::has('address2')) {
             $customer->address2 = Input::get('address2');
         }
-
         if (Input::has('city')) {
             $customer->city = Input::get('city');
         }
-
         if (Input::has('state')) {
             $customer->state = Input::get('state');
         }
@@ -183,6 +178,9 @@ class PendingCustomerController extends Controller {
         $customer->tally_category = Input::get('tally_category');
         $customer->tally_sub_category = Input::get('tally_sub_category');
         $customer->phone_number1 = Input::get('phone_number1');
+        if (Input::has('phone_number2')) {
+            $customer->phone_number2 = Input::get('phone_number2');
+        }
         if (Input::has('vat_tin_number')) {
             $customer->vat_tin_number = Input::get('vat_tin_number');
         }
