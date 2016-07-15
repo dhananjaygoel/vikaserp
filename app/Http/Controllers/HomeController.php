@@ -70,7 +70,7 @@ class HomeController extends Controller {
         if (Input::get('otp') == '123456' || Input::get('otp') == 123456) {
             $customer = Customer::where('phone_number1', '=', Input::get('username'))->first();
             if ($customer) {
-                $customer = Hash::make(Input::get('password'));
+                $customer->password = Hash::make(Input::get('password'));
                 $customer->save();
                 return json_encode(array('result' => true, 'customer_id' => $customer->id, 'mobile_status' => true, 'message' => 'Password reset successfuly.'));
             } else {
