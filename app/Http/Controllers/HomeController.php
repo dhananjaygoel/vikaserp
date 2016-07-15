@@ -48,8 +48,7 @@ class HomeController extends Controller {
     public function __construct() {
         
     }
-    
-    
+
     public function appCustomerLogin() {
 
         $customer = Customer::where('phone_number1', '=', Input::get('username'))->first();
@@ -312,10 +311,11 @@ class HomeController extends Controller {
                         $add_order_products = AllOrderProducts::create($order_products);
                     }
                 }
+                $order_response[$value->id] = $order_id;
             }
         }
+        return json_encode($order_response);
     }
-    
 
     // All Functions added by user 157 for android request //
     public function appsync1() {
