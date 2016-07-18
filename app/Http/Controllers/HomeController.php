@@ -264,16 +264,6 @@ class HomeController extends Controller {
                     $add_customers->addNewCustomer($value->customerName, $value->custContactPerson, $value->customerMobile, $value->custCredit);
                     $customer_list[$value->id] = $add_customers->id;
                 }
-                if ($value->custServId == 0 || $value->custServId == '0') {
-                    $add_customers = new Customer();
-                    $add_customers->owner_name = $value->custTallyname;
-                    $add_customers->contact_person = $value->custContactPeron;
-                    $add_customers->phone_number1 = $value->customerMobile;
-                    $add_customers->credit_period = $value->custCredit;
-                    $add_customers->customer_status = 'pending';
-                    $add_customers->save();
-                    $customer_list[$value->id] = $add_customers->id;
-                }
                 if ($value->supplierId == 0) {
                     $order_status = 'warehouse';
                     $supplier_id = 0;
@@ -351,7 +341,7 @@ class HomeController extends Controller {
                     $order->other_location = $value->otherLocation;
                     $order->location_difference = $value->otherLocationDifference;
                 }
-                $order->customer_id = ($value->custServId > 0)? $value->custServId : $customer_list[$value->id];
+                $order->customer_id = ($value->custServId > 0) ? $value->custServId : $customer_list[$value->id];
                 $order->expected_delivery_date = $datetime->format('Y-m-d');
                 $order->save();
                 AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->delete();
