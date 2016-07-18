@@ -351,7 +351,7 @@ class HomeController extends Controller {
                     $order->other_location = $value->otherLocation;
                     $order->location_difference = $value->otherLocationDifference;
                 }
-                $order->customer_id = ($value->custServId) > 0)?$value->custServId:$customer_list[$value->id];
+                $order->customer_id = ($value->custServId > 0)? $value->custServId : $customer_list[$value->id];
                 $order->expected_delivery_date = $datetime->format('Y-m-d');
                 $order->save();
                 AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->delete();
