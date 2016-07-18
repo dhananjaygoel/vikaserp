@@ -242,6 +242,12 @@ class HomeController extends Controller {
         return json_encode(array('result' => true, 'message' => 'Email send successfully'));
     }
 
+    public function appSyncDeliveryOrder() {
+        
+        $data = Input::all();
+        return json_encode($data);
+    }
+
     public function appSyncOrder() {
 
         $data = Input::all();
