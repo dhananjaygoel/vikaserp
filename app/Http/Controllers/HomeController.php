@@ -261,9 +261,17 @@ class HomeController extends Controller {
             if ($value->serverId == 0) {
                 if ($value->custServerId == 0 || $value->custServerId == '0') {
                     $add_customers = new Customer();
-                    /* Doubt - $value->customerName */
-                    /* Doubt - $value->custCreditPeriod */
-                    $add_customers->addNewCustomer($value->customerName, $value->customerName, $value->customerMobile, $value->custCreditPeriod);
+                    $add_customers->addNewCustomer($value->customerName, $value->custContactPerson, $value->customerMobile, $value->custCredit);
+                    $customer_list[$value->id] = $add_customers->id;
+                }
+                if ($value->custServId == 0 || $value->custServId == '0') {
+                    $add_customers = new Customer();
+                    $add_customers->owner_name = $value->custTallyname;
+                    $add_customers->contact_person = $value->custContactPeron;
+                    $add_customers->phone_number1 = $value->customerMobile;
+                    $add_customers->credit_period = $value->custCredit;
+                    $add_customers->customer_status = 'pending';
+                    $add_customers->save();
                     $customer_list[$value->id] = $add_customers->id;
                 }
                 if ($value->supplierId == 0) {
@@ -272,11 +280,11 @@ class HomeController extends Controller {
                 } else {
                     $other_location_difference;
                     $order_status = 'supplier';
-                    $supplier_id = $input_data['supplier_id'];
+                    $supplier_id = $value->supplierId;
                 }
                 $order = new Order();
                 $order->order_source = $order_status;
-                $order->supplier_id = 0;
+                $order->supplier_id = $supplier_id;
                 $order->customer_id = ($value->custServerId == 0) ? $customer_list[$value->id] : $value->custServerId;
                 $order->created_by = 1;
                 $order->vat_percentage = ($value->vatPerc == '') ? '' : $value->vatPerc;
@@ -286,13 +294,13 @@ class HomeController extends Controller {
                 $order->expected_delivery_date = $datetime->format('Y-m-d');
                 $order->remarks = $value->remark;
                 $order->order_status = "Pending";
-                if ($value->otherLocation = "") {
+                if ($value->delLocId > 0) {
+                    $order->delivery_location_id = $value->delLocId;
+                    $order->location_difference = $value->delLocDiff;
+                } else {
                     $order->delivery_location_id = 0;
                     $order->other_location = $value->otherLocation;
                     $order->location_difference = $value->otherLocationDifference;
-                } else {
-                    $order->delivery_location_id = $value->delLocId;
-                    $order->location_difference = $value->delLocDiff;
                 }
                 $order->save();
                 $order_id = $order->id;
@@ -314,6 +322,11 @@ class HomeController extends Controller {
                 $order_response[$value->id] = $order_id;
             } else {
                 $order = Order::find($value->serverId);
+                if ($value->custServerId == 0 || $value->custServerId == '0') {
+                    $add_customers = new Customer();
+                    $add_customers->addNewCustomer($value->customerName, $value->custContactPerson, $value->customerMobile, $value->custCredit);
+                    $customer_list[$value->id] = $add_customers->id;
+                }
                 $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expDelDate);
                 $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
                 $datetime = new DateTime($date);
@@ -329,7 +342,8 @@ class HomeController extends Controller {
                 $order->supplier_id = $supplier_id;
                 $order->remarks = ($value->remark != '') ? $value->remark : '';
                 $order->order_status = $value->orderStatus;
-                if ($value->otherLocation = "") {
+
+                if ($value->delLocId > 0) {
                     $order->delivery_location_id = $value->delLocId;
                     $order->location_difference = $value->delLocDiff;
                 } else {
@@ -337,8 +351,7 @@ class HomeController extends Controller {
                     $order->other_location = $value->otherLocation;
                     $order->location_difference = $value->otherLocationDifference;
                 }
-                if (isset($value->custServId) && (($value->custServId) > 0))
-                    $order->customer_id = $value->custServId;
+                $order->customer_id = ($value->custServId) > 0)?$value->custServId:$customer_list[$value->id];
                 $order->expected_delivery_date = $datetime->format('Y-m-d');
                 $order->save();
                 AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->delete();
