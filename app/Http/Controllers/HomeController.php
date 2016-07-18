@@ -305,8 +305,56 @@ class HomeController extends Controller {
                         AllOrderProducts::create($delivery_order_products);
                     }
                 }
+                $delivery_order_response[$value->id] = $delivery_order_id;
+            } else {
+                $delivery_order = DeliveryOrder::find($value->servId);
+                if ($value->custServerId == 0 || $value->custServerId == '0') {
+                    $add_customers = new Customer();
+                    $add_customers->addNewCustomer($value->customerName, $value->custContactPerson, $value->customerMobile, $value->custCredit);
+                    $customer_list[$value->id] = $add_customers->id;
+                }
+                if ($value->servOrdId == 0) {
+                    $delivery_order->order_id = 0;
+                }
+                $delivery_order->order_source = 'warehouse';
+                $delivery_order->customer_id = ($value->custServerId == 0) ? $customer_list[$value->id] : $value->custServerId;
+                $delivery_order->created_by = 1;
+                $delivery_order->vat_percentage = ($value->vatPercentage > 0 ) ? $value->vatPercentage : '';
+                $delivery_order->estimate_price = 0;
+                $delivery_order->expected_delivery_date = date_format(date_create(date("Y-m-d")), 'Y-m-d');
+                $delivery_order->remarks = $value->remarks;
+                $delivery_order->vehicle_number = ($value->vehicleNumber != '') ? $value->vehicleNumber : '';
+                $delivery_order->driver_contact_no = ($value->driverContact != '') ? $value->driverContact : '';
+                $delivery_order->order_status = "Pending";
+                if ($value->deliveryLocationId > 0) {
+                    $delivery_order->delivery_location_id = $value->deliveryLocationId;
+                    $delivery_order->location_difference = $value->locationDifference;
+                } else {
+                    $delivery_order->other_location = $value->otherLocation;
+                    $delivery_order->location_difference = $value->otherLocationDifference;
+                }
+                $delivery_order->save();
+                $delivery_order_id = $delivery_order->id;
+                $delivery_order_products = array();
+                AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $delivery_order->id)->delete();
+                foreach ($deliveryorderproducts as $product_data) {
+                    if ($product_data->delOrderId == $value->id) {
+                        $delivery_order_products = [
+                            'order_id' => $delivery_order_id,
+                            'order_type' => 'delivery_order',
+                            'product_category_id' => $product_data->productCategoryId,
+                            'unit_id' => $product_data->unitId,
+                            'quantity' => $product_data->qty,
+                            'present_shipping' => $product_data->presentShipping,
+                            'price' => $product_data->price,
+                            'remarks' => ''
+                        ];
+                        AllOrderProducts::create($delivery_order_products);
+                    }
+                }
+                $delivery_order_response[$value->servId] = DeliveryOrder::find($delivery_order->id);
+                $delivery_order_response[$value->servId]['products'] = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $delivery_order->id)->get();
             }
-            $delivery_order_response[$value->id] = $delivery_order_id;
         }
         return json_encode($delivery_order_response);
     }
