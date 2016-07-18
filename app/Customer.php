@@ -79,4 +79,15 @@ class Customer extends Model {
         'price' => 'required|max:6|min:1'
     );
 
+    public function addNewCustomer($owner_name, $contact_person, $phone_number1, $credit_period) {
+
+        $this->owner_name = $owner_name;
+        $this->contact_person = $contact_person;
+        $this->phone_number1 = $phone_number1;
+        $this->credit_period = $credit_period;
+        $this->customer_status = 'pending';
+        $this->save();
+        return $this;
+    }
+
 }
