@@ -330,12 +330,12 @@ class HomeController extends Controller {
                 $order->remarks = ($value->remark != '') ? $value->remark : '';
                 $order->order_status = $value->orderStatus;
                 if ($value->otherLocation = "") {
+                    $order->delivery_location_id = $value->delLocId;
+                    $order->location_difference = $value->delLocDiff;
+                } else {
                     $order->delivery_location_id = 0;
                     $order->other_location = $value->otherLocation;
                     $order->location_difference = $value->otherLocationDifference;
-                } else {
-                    $order->delivery_location_id = $value->delLocId;
-                    $order->location_difference = $value->delLocDiff;
                 }
                 if (isset($value->custServId) && (($value->custServId) > 0))
                     $order->customer_id = $value->custServId;
