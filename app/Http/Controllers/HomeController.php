@@ -299,7 +299,7 @@ class HomeController extends Controller {
                             'unit_id' => $product_data->unitId,
                             'quantity' => $product_data->qty,
                             'present_shipping' => $product_data->presentShipping,
-                            'price' => $product_data->price,
+                            'price' => $product_data->actualPrice,
                             'remarks' => ''
                         ];
                         AllOrderProducts::create($delivery_order_products);
@@ -346,7 +346,7 @@ class HomeController extends Controller {
                             'unit_id' => $product_data->unitId,
                             'quantity' => $product_data->qty,
                             'present_shipping' => $product_data->presentShipping,
-                            'price' => $product_data->price,
+                            'price' => $product_data->actualPrice,
                             'remarks' => ''
                         ];
                         AllOrderProducts::create($delivery_order_products);
