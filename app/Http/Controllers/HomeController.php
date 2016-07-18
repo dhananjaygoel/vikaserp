@@ -312,6 +312,52 @@ class HomeController extends Controller {
                     }
                 }
                 $order_response[$value->id] = $order_id;
+            } else {
+                $order = Order::find($value->serverId);
+                $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expDelDate);
+                $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+                $datetime = new DateTime($date);
+                $order->vat_percentage = ($value->vatPerc == '') ? '' : $value->vatPerc;
+                if ($value->supplierId == 0) {
+                    $order_status = 'warehouse';
+                    $supplier_id = 0;
+                } else {
+                    $other_location_difference;
+                    $order_status = 'supplier';
+                    $supplier_id = $value->supplier_id;
+                }
+                $order->supplier_id = $supplier_id;
+                $order->remarks = ($value->remark != '') ? $value->remark : '';
+                $order->order_status = $value->orderStatus;
+                if ($value->otherLocation = "") {
+                    $order->delivery_location_id = 0;
+                    $order->other_location = $value->otherLocation;
+                    $order->location_difference = $value->otherLocationDifference;
+                } else {
+                    $order->delivery_location_id = $value->delLocId;
+                    $order->location_difference = $value->delLocDiff;
+                }
+                if (isset($value->custServId) && (($value->custServId) > 0))
+                    $order->customer_id = $value->custServId;
+                $order->expected_delivery_date = $datetime->format('Y-m-d');
+                $order->save();
+                AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->delete();
+                foreach ($orderproduct as $product_data) {
+                    $order_products = array();
+                    if ($product_data->maxOrderId == $value->id) {
+                        $order_products = [
+                            'order_id' => $value->serverId,
+                            'product_category_id' => $product_data->productCatId,
+                            'unit_id' => $product_data->unitId,
+                            'quantity' => $product_data->qty,
+                            'price' => $product_data->price,
+                            'remarks' => '',
+                        ];
+                        $add_order_products = AllOrderProducts::create($order_products);
+                    }
+                }
+                $order_response[$value->serverId] = Order::find($value->serverId);
+                $order_response[$value->serverId]['products'] = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->get();
             }
         }
         return json_encode($order_response);
