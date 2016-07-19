@@ -243,6 +243,85 @@ class HomeController extends Controller {
         return json_encode(array('result' => true, 'message' => 'Email send successfully'));
     }
 
+    public function appSyncDeliveryChallan() {
+
+        $data = Input::all();
+        if (Input::has('delivery_challan')) {
+            $delivery_challans = (json_decode($data['delivery_challan']));
+        }
+        if (Input::has('customer')) {
+            $customers = (json_decode($data['customer']));
+        }
+        if (Input::has('delivery_challan_product')) {
+            $deliveryorderproducts = (json_decode($data['delivery_challan_product']));
+        }        
+        $delivery_challan_response = [];
+        $customer_list = [];
+        foreach ($delivery_challans as $key => $value) {
+            if ($value->servId == 0) {
+                $delivery_challan = new DeliveryChallan();
+                if ($value->custServerId == 0 || $value->custServerId == '0') {
+                    $add_customers = new Customer();
+                    $add_customers->addNewCustomer($value->customerName, $value->custContactPerson, $value->customerMobile, $value->custCreditPeriod);
+                    $customer_list[$value->id] = $add_customers->id;
+                }
+                if ($value->servOrdId == 0) {
+                    $delivery_challan->order_id = 0;
+                }
+                if ($value->servDOID == 0) {
+//                    DeliveryOrder::where('id', '=', $value->servDOID)->update(array(
+//                        'order_status' => 'completed'
+//                    ));
+                    $delivery_challan->delivery_order_id = 0;
+                }
+                $delivery_challan->customer_id = ($value->custServerId == 0) ? $customer_list[$value->id] : $value->custServerId;
+                $delivery_challan->created_by = 1;
+                if ($value->servDOID == 0) {
+                    $delivery_challan->delivery_order_id = 0;
+                }
+                if (isset($value->billno)) {
+                    $delivery_challan->bill_number = $value->billno;
+                }
+                $delivery_challan->discount = ($value->discount != '') ? $value->discount : '';
+                $delivery_challan->freight = ($value->freight != '') ? $value->freight : '';
+                $delivery_challan->loading_charge = ($value->loadingCharge != '') ? $value->loadingCharge : '';
+                $delivery_challan->round_off = ($value->roundOff != '') ? $value->roundOff : '';
+                $delivery_challan->loaded_by = ($value->loadedBy != '') ? $value->loadedBy : '';
+                $delivery_challan->labours = ($value->labours != '') ? $value->labours : '';
+                if (isset($value->vatPercentage) && $value->vatPercentage > 0) {
+                    $delivery_challan->vat_percentage = $value->vatPercentage;
+                }
+                $delivery_challan->grand_price = $value->grandPrice;
+                $delivery_challan->remarks = $value->remarks;
+                $delivery_challan->challan_status = "Pending";
+                $delivery_challan->save();
+                $delivery_challan_id = $delivery_challan->id;
+                $delivery_challan_products = array();
+                foreach ($deliveryorderproducts as $product_data) {
+                    if ($product_data->delChallanId == $value->id) {
+                        $delivery_challan_products = [
+                            'order_id' => $delivery_challan_id,
+                            'order_type' => 'delivery_challan',
+                            'product_category_id' => $product_data->productCategoryId,
+                            'unit_id' => $product_data->unitId,
+                            'quantity' => $product_data->qty,
+                            'price' => $product_data->actualPrice,
+                            'remarks' => '',
+                            'present_shipping' => $product_data->presentShipping,
+                            'actual_pieces' => $product_data->actualPieces,
+                            'actual_quantity' => $product_data->actualQty,
+                            'from' => 0, //Will need to check with app data
+                            'parent' => 0, //Will need to check with app data
+                        ];
+                        AllOrderProducts::create($delivery_challan_products);
+                    }
+                }
+                $delivery_challan_response[$value->id] = $delivery_challan_id;
+            }
+        }
+        return json_encode($delivery_challan_response);
+    }
+
     public function appSyncDeliveryOrder() {
 
         $data = Input::all();
