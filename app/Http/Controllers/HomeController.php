@@ -254,13 +254,13 @@ class HomeController extends Controller {
         }
         if (Input::has('delivery_challan_product')) {
             $deliveryorderproducts = (json_decode($data['delivery_challan_product']));
-        }        
+        }
         $delivery_challan_response = [];
         $customer_list = [];
         foreach ($delivery_challans as $key => $value) {
             if ($value->servId == 0) {
                 $delivery_challan = new DeliveryChallan();
-                if ($value->custServerId == 0 || $value->custServerId == '0') {
+                if ($value->custServId == 0 || $value->custServId == '0') {
                     $add_customers = new Customer();
                     $add_customers->addNewCustomer($value->customerName, $value->custContactPerson, $value->customerMobile, $value->custCreditPeriod);
                     $customer_list[$value->id] = $add_customers->id;
@@ -269,16 +269,14 @@ class HomeController extends Controller {
                     $delivery_challan->order_id = 0;
                 }
                 if ($value->servDOID == 0) {
-//                    DeliveryOrder::where('id', '=', $value->servDOID)->update(array(
-//                        'order_status' => 'completed'
-//                    ));
+                    DeliveryOrder::where('id', '=', $value->servDOID)->update(array(
+                        'order_status' => 'completed'
+                    ));
                     $delivery_challan->delivery_order_id = 0;
                 }
-                $delivery_challan->customer_id = ($value->custServerId == 0) ? $customer_list[$value->id] : $value->custServerId;
+                $delivery_challan->customer_id = ($value->custServId == 0) ? $customer_list[$value->id] : $value->custServId;
                 $delivery_challan->created_by = 1;
-                if ($value->servDOID == 0) {
-                    $delivery_challan->delivery_order_id = 0;
-                }
+
                 if (isset($value->billno)) {
                     $delivery_challan->bill_number = $value->billno;
                 }
