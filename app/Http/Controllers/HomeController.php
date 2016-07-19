@@ -243,6 +243,81 @@ class HomeController extends Controller {
         return json_encode(array('result' => true, 'message' => 'Email send successfully'));
     }
 
+    public function appSyncPurchaseAdvise() {
+        
+    }
+
+    public function appSyncPurchaseChallan() {
+        
+    }
+
+    public function appSyncPurchaseOrder() {
+        $data = Input::all();
+        if (Input::has('purchase_order')) {
+            $purchaseorders = (json_decode($data['purchase_order']));
+        }
+        if (Input::has('customer')) {
+            $customers = (json_decode($data['customer']));
+        }
+        if (Input::has('purchase_order_product')) {
+            $purchaseorderproducts = (json_decode($data['purchase_order_product']));
+        }
+        $purchase_order_response = [];
+        $customer_list = [];
+        foreach ($purchaseorders as $key => $value) {
+            if ($value->servId)
+                $purchase_order = new PurchaseOrder();
+            else
+                $purchase_order = PurchaseOrder::find($value->servId);
+            if ($value->servSupplierId == 0) {
+                $add_supplier = new Customer();
+                $add_supplier->addNewCustomer($value->customerName, $value->custContactPerson, $value->customerMobile, $value->custCreditPeriod);
+                $customer_list[$value->id] = $add_supplier->id;
+            }
+            $expected_delivery_date = explode('-', $value->expectedDeliveryDate);
+            $expected_delivery_date = $expected_delivery_date[2] . '-' . $expected_delivery_date[0] . '-' . $expected_delivery_date[1];
+            $expected_delivery_date = date("Y-m-d", strtotime($expected_delivery_date));
+            $purchase_order->supplier_id = ($value->servSupplierId > 0) ? $value->servSupplierId : $customer_list[$value->id];
+            $purchase_order->created_by = 1;
+            $purchase_order->order_for = ($value->custServerId > 0) ? $value->custServerId : 0;
+            $purchase_order->vat_percentage = ($value->vatPercentage > 0) ? $value->vatPercentage : 0;
+            $purchase_order->expected_delivery_date = $expected_delivery_date;
+            $purchase_order->remarks = $value->remark;
+            $purchase_order->order_status = $value->orderStatus;
+            if ($value->deliveryLocationId > 0) {
+                $purchase_order->delivery_location_id = $value->deliveryLocationId;
+            } else {
+                $purchase_order->other_location = $value->locationDiff;
+                $purchase_order->other_location_difference = $value->otherLocationDifference;
+            }
+            $purchase_order->save();
+            $purchase_order_id = $purchase_order->id;
+            $purchase_order_products = array();
+            if ($value->servId)
+                AllOrderProducts::where('order_type', '=', 'purchase_order')->where('order_id', '=', $value->servId)->delete();
+            foreach ($purchaseorderproducts as $product_data) {
+                if ($value->id == $product_data->purchaseOrderId) {
+                    $purchase_order_products = [
+                        'purchase_order_id' => $purchase_order_id,
+                        'product_category_id' => $product_data->productCategoryId,
+                        'unit_id' => $product_data->unitId,
+                        'quantity' => $product_data->qty,
+                        'price' => $product_data->price,
+                        'remarks' => '',
+                    ];
+                    PurchaseProducts::create($purchase_order_products);
+                }
+            }
+            if ($value->servId > 0) {
+                $purchase_order_response[$value->id] = PurchaseOrder::find($value->servId);
+                $purchase_order_response[$value->id]['products'] = PurchaseProducts::where('order_type', '=', 'purchase_order')->where('order_id', '=', $value->servId)->get();
+            } else {
+                $purchase_order_response[$value->id] = $purchase_order_id;
+            }
+        }
+        return json_encode($purchase_order_response);
+    }
+
     public function appSyncDeliveryChallan() {
 
         $data = Input::all();
@@ -293,10 +368,10 @@ class HomeController extends Controller {
             $delivery_challan->challan_status = "Pending";
             $delivery_challan->save();
             $delivery_challan_id = $delivery_challan->id;
-            $delivery_challan_products = array();            
+            $delivery_challan_products = array();
             if ($value->servId > 0)
                 AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->servId)->delete();
-            
+
             foreach ($deliveryorderproducts as $product_data) {
                 if ($product_data->delChallanId == $value->id) {
                     $delivery_challan_products = [
@@ -316,7 +391,12 @@ class HomeController extends Controller {
                     AllOrderProducts::create($delivery_challan_products);
                 }
             }
-            $delivery_challan_response[$value->id] = $delivery_challan_id;
+            if ($value->servId > 0) {
+                $delivery_challan_response[$value->id] = DeliveryChallan::find($value->servId);
+                $delivery_challan_response[$value->id]['products'] = AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->servId)->get();
+            } else {
+                $delivery_challan_response[$value->id] = $delivery_challan_id;
+            }
         }
         return json_encode($delivery_challan_response);
     }
@@ -561,7 +641,7 @@ class HomeController extends Controller {
         return json_encode($order_response);
     }
 
-    // All Functions added by user 157 for android request //
+// All Functions added by user 157 for android request //
     public function appsync1() {
 
         $data = Input::all();
@@ -975,7 +1055,7 @@ class HomeController extends Controller {
         return json_encode($delivery_location);
     }
 
-    // All Functions added by user 157 for app ends here //
+// All Functions added by user 157 for app ends here //
     public function applogin() {
         $data = Input::all();
         $username = $data['username'];
