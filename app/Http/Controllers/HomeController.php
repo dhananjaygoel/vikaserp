@@ -263,7 +263,7 @@ class HomeController extends Controller {
                 $delivery_order = new DeliveryOrder();
                 if ($value->custServerId == 0 || $value->custServerId == '0') {
                     $add_customers = new Customer();
-                    $add_customers->addNewCustomer($value->customerName, $value->custContactPerson, $value->customerMobile, $value->custCredit);
+                    $add_customers->addNewCustomer($value->customerName, $value->custContactPerson, $value->customerMobile, $value->custCreditPeriod);
                     $customer_list[$value->id] = $add_customers->id;
                 }
                 if ($value->servOrdId == 0) {
@@ -311,7 +311,7 @@ class HomeController extends Controller {
                 $delivery_order = DeliveryOrder::find($value->servId);
                 if ($value->custServerId == 0 || $value->custServerId == '0') {
                     $add_customers = new Customer();
-                    $add_customers->addNewCustomer($value->customerName, $value->custContactPerson, $value->customerMobile, $value->custCredit);
+                    $add_customers->addNewCustomer($value->customerName, $value->custContactPerson, $value->customerMobile, $value->custCreditPeriod);
                     $customer_list[$value->id] = $add_customers->id;
                 }
                 if ($value->servOrdId == 0) {
