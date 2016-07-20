@@ -56,6 +56,7 @@ class HomeController extends Controller {
             if (Hash::check(Input::get('password'), $customer->password)) {
                 return json_encode(array('result' => true,
                     'customer_id' => $customer->id,
+                    'customer_status' => $customer->customer_status,
                     'mobile_status' => true,
                     'manager' => $customer->manager,
                     'message' => 'Login Successfully Done'));
