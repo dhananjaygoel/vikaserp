@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Redirect;
 use Input;
 use App\Vendor\Phpoffice\Phpexcel\Classes;
 use Maatwebsite\Excel\Facades\Excel;
+use App\ProductCategory;
 
 class InventoryController extends Controller {
 
@@ -25,18 +26,15 @@ class InventoryController extends Controller {
      * Product search in inventory module
      */
     public function fetchInventoryProductName() {
+
         $term = '%' . Input::get('term') . '%';
         $product = ProductSubCategory::where('alias_name', 'like', $term)->get();
         if (count($product) > 0) {
             foreach ($product as $prod) {
-                $data_array[] = [
-                    'value' => $prod->alias_name
-                ];
+                $data_array[] = [ 'value' => $prod->alias_name];
             }
         } else {
-            $data_array[] = [
-                'value' => 'No Product found',
-            ];
+            $data_array[] = [ 'value' => 'No Product found'];
         }
         echo json_encode(array('data_array' => $data_array));
     }
@@ -57,11 +55,7 @@ class InventoryController extends Controller {
         $inventory_details->virtual_qty = $virtual_qty;
         $inventory_details->save();
         $total = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
-        if ($total < $inventory_details->minimal) {
-            $inventory_details['class'] = 'yes';
-        } else {
-            $inventory_details['class'] = 'no';
-        }
+        $inventory_details['class'] = ($total < $inventory_details->minimal) ? 'yes' : 'no';
         return json_encode($inventory_details);
     }
 
@@ -72,12 +66,6 @@ class InventoryController extends Controller {
 
         $this->updateOpeningStock();
         $q = Inventory::query();
-        if (Input::get('search_inventory') != "") {
-            $q->whereHas('product_sub_category', function($query) {
-                $query->where('alias_name', Input::get('search_inventory'));
-            });
-        }
-
         $inventory_list = $q->with('product_sub_category')->paginate(50);
         foreach ($inventory_list as $inventory) {
             $order_qty = 0;
@@ -129,7 +117,6 @@ class InventoryController extends Controller {
                                 foreach ($delivery_orders_details->delivery_product as $delivery_orders_product_details) {
                                     if (isset($delivery_orders_product_details) && $delivery_orders_product_details->quantity != '') {
 //                                        $orders_pending_delivery_order_qty = $orders_pending_delivery_order_qty + $delivery_orders_product_details->quantity;
-
                                         if ($delivery_orders_product_details->unit_id == 1) {
                                             $orders_pending_delivery_order_qty = $orders_pending_delivery_order_qty + $delivery_orders_product_details->quantity;
                                         }
@@ -160,7 +147,6 @@ class InventoryController extends Controller {
                         foreach ($delivery_orders_details->delivery_product as $delivery_orders_product_details) {
                             if (isset($delivery_orders_product_details) && $delivery_orders_product_details->quantity != '') {
 //                                $pending_delivery_order_qty = $pending_delivery_order_qty + $delivery_orders_product_details->quantity;
-
                                 if ($delivery_orders_product_details->unit_id == 1) {
                                     $pending_delivery_order_qty = $pending_delivery_order_qty + $delivery_orders_product_details->quantity;
                                 }
@@ -187,7 +173,6 @@ class InventoryController extends Controller {
                         foreach ($delivery_challan_details->delivery_challan_products as $delivery_challan_product_details) {
                             if (isset($delivery_challan_product_details) && $delivery_challan_product_details->quantity != '') {
 //                                $sales_challan_qty = $sales_challan_qty + $delivery_challan_product_details->quantity;
-
                                 if ($delivery_challan_product_details->unit_id == 1) {
                                     $sales_challan_qty = $sales_challan_qty + $delivery_challan_product_details->quantity;
                                 }
@@ -202,22 +187,17 @@ class InventoryController extends Controller {
                     }
                 }
             }
-
             /* ===================== Purchase order details ===================== */
-
             $purchase_orders = PurchaseOrder::where('order_status', '=', 'pending')
                             ->with(['purchase_products.product_sub_category', 'purchase_products' => function($q) use($product_sub_id) {
                                     $q->where('product_category_id', '=', $product_sub_id);
                                 }])->get();
-
             if (isset($purchase_orders) && count($purchase_orders) > 0) {
                 foreach ($purchase_orders as $purchase_orders_details) {
                     if (isset($purchase_orders_details->purchase_products) && count($purchase_orders_details->purchase_products) > 0) {
                         foreach ($purchase_orders_details->purchase_products as $purchase_orders_product_details) {
                             if (isset($purchase_orders_product_details) && $purchase_orders_product_details->quantity != '') {
 //                                $pending_purchase_order_qty = $pending_purchase_order_qty + $purchase_orders_product_details->quantity;
-
-
                                 if ($purchase_orders_product_details->unit_id == 1) {
                                     $pending_purchase_order_qty = $pending_purchase_order_qty + $purchase_orders_product_details->quantity;
                                 }
@@ -230,21 +210,17 @@ class InventoryController extends Controller {
                             }
                         }
                     }
-
                     $purchase_orders_purchase_advice = PurchaseAdvise::where('advice_status', '=', 'in_process')
                                     ->where('purchase_order_id', '=', $purchase_orders_details->id)
                                     ->with(['purchase_products.product_sub_category', 'purchase_products' => function($q) use($product_sub_id) {
                                             $q->where('product_category_id', '=', $product_sub_id);
                                         }])->get();
-
                     if (isset($purchase_orders_purchase_advice) && count($purchase_orders_purchase_advice) > 0) {
                         foreach ($purchase_orders_purchase_advice as $purchase_advice_details) {
                             if (isset($purchase_advice_details->purchase_products) && count($purchase_advice_details->purchase_products) > 0) {
                                 foreach ($purchase_advice_details->purchase_products as $purchase_advice_product_details) {
                                     if (isset($purchase_advice_product_details) && $purchase_advice_product_details->quantity != '') {
 //                                        $purchase_orders_pending_purchase_advice_qty = $purchase_orders_pending_purchase_advice_qty + $purchase_advice_product_details->quantity;
-
-
                                         if ($purchase_advice_product_details->unit_id == 1) {
                                             $purchase_orders_pending_purchase_advice_qty = $purchase_orders_pending_purchase_advice_qty + $purchase_advice_product_details->quantity;
                                         }
@@ -262,14 +238,11 @@ class InventoryController extends Controller {
                 }
                 $pending_purchase_order_qty = $pending_purchase_order_qty - $purchase_orders_pending_purchase_advice_qty;
             }
-
             /* ===================== Purchase advice details ===================== */
-
             $purchase_advice = PurchaseAdvise::where('advice_status', '=', 'in_process')
                             ->with(['purchase_products.product_sub_category', 'purchase_products' => function($q) use($product_sub_id) {
                                     $q->where('product_category_id', '=', $product_sub_id);
                                 }])->get();
-
             if (isset($purchase_advice) && count($purchase_advice) > 0) {
                 foreach ($purchase_advice as $purchase_advice_details) {
                     if (isset($purchase_advice_details->purchase_products) && count($purchase_advice_details->purchase_products) > 0) {
@@ -290,14 +263,11 @@ class InventoryController extends Controller {
                     }
                 }
             }
-
             /* ===================== Purchase Challan details ===================== */
-
             $purchase_challan = PurchaseChallan::where('order_status', '=', 'pending')
                             ->with(['all_purchase_products.product_sub_category', 'all_purchase_products' => function($q) use($product_sub_id) {
                                     $q->where('product_category_id', '=', $product_sub_id);
                                 }])->get();
-
             if (isset($purchase_challan) && count($purchase_challan) > 0) {
                 foreach ($purchase_challan as $purchase_challan_details) {
                     if (isset($purchase_challan_details->all_purchase_products) && count($purchase_challan_details->all_purchase_products) > 0) {
@@ -335,16 +305,22 @@ class InventoryController extends Controller {
             $inventory_details->virtual_qty = $virtual_qty;
             $inventory_details->save();
         }
-
         $query = Inventory::query();
-        if (Input::get('search_inventory') != "") {
+        if (Input::has('search_inventory') && Input::get('search_inventory') != "") {
             $query->whereHas('product_sub_category', function($querydetails) {
                 $querydetails->where('alias_name', Input::get('search_inventory'));
             });
         }
+        if (Input::has('product_category_filter') && Input::get('product_category_filter') != '') {
+            $categoryid = Input::get('product_category_filter');
+            $query->whereHas('product_sub_category', function($q) use($categoryid) {
+                $q->where('product_category_id', '=', $categoryid);
+            });
+        }
+        $product_category = ProductCategory::orderBy('created_at', 'desc')->get();
         $inventory_newlist = $query->with('product_sub_category')->paginate(50);
         $inventory_newlist->setPath('inventory');
-        return view('add_inventory')->with(['inventory_list' => $inventory_newlist]);
+        return view('add_inventory')->with(['inventory_list' => $inventory_newlist, 'product_category' => $product_category]);
     }
 
     /**
@@ -360,6 +336,7 @@ class InventoryController extends Controller {
      * Update all inventory list
      */
     public function store() {
+
         $data = Input::all();
         $data_dup = Input::all();
         $token = array_pull($data, '_token');
@@ -444,6 +421,7 @@ class InventoryController extends Controller {
         $inventory_list = Inventory::first();
         $current = \Carbon\Carbon::now();
         if ($current->hour > 1) {
+            $inventory = new Inventory();
             if ($inventory_list->opening_qty_date != NULL) {
                 $last_updated = explode(' ', $inventory_list->opening_qty_date);
                 $last_updated_date = $last_updated[0];
@@ -451,16 +429,13 @@ class InventoryController extends Controller {
                 $current_date = $current->toDateString();
                 $current_hour = $current->hour;
                 if ($last_updated_date < $current_date) {
-                    $inventory = new Inventory();
                     $inventory->update_opening_stock();
                 } else if ($last_updated_date == $current_date) {
                     if ($current_hour > 1 && $last_updated_time[0] < 1) {
-                        $inventory = new Inventory();
                         $inventory->update_opening_stock();
                     }
                 }
             } else {
-                $inventory = new Inventory();
                 $inventory->update_opening_stock();
             }
         }
@@ -471,6 +446,7 @@ class InventoryController extends Controller {
      */
 
     public function export_inventory() {
+
         $inventorys = Inventory::with('product_sub_category')->get();
         Excel::create('Inventory List', function($excel) use($inventorys) {
             $excel->sheet('Inventory-List', function($sheet) use($inventorys) {

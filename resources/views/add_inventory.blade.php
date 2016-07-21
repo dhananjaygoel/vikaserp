@@ -14,17 +14,38 @@
                     <div class="row col-md-8 pull-right top-page-ui">
                         <div class="filter-block productsub_filter">
                             <form method="GET" action="{{url('inventory')}}" id="filter_search">
-                                <div class="form-group  col-md-5 pull-right">
+                                <div class="form-group col-md-2 pull-right">
                                     <input class="form-control" placeholder="Enter Product Alias Name" autocomplete="off" type="text" name="search_inventory" id="search_inventory" type="text" value="{{(Input::get('search_inventory') != '' )? Input::get('search_inventory'): ''}}" onblur="this.form.submit();">
                                     <a onclick="this.form.submit();" style="cursor: pointer;">
                                         <i class="fa fa-search search-icon"></i>
                                     </a>
                                 </div>
+                                <div class="form-group col-md-2 pull-right">
+                                    <select class="form-control" name="inventory_filter" onchange="this.form.submit();">
+                                        <option value="all">All</option>
+                                        <option value="minimal" {{((Input::has('inventory_filter')) && (Input::get('inventory_filter')=='minimal'))? 'selected' : ''}}>Minimal Only</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4 pull-right">
+                                    <select class="form-control" name="product_category_filter" onchange="this.form.submit();">
+                                        <option value="">-- Select Product Category --</option>
+                                        @foreach($product_category as $category)
+                                        @if((Input::has('product_category_filter')) && (Input::get('product_category_filter')!=''))
+                                        <option value="{{$category->id}}" {{($category->id==Input::get('product_category_filter'))?'selected':''}} >{{$category->product_category_name}}</option>
+                                        @else                                        
+                                        <option value="{{$category->id}}">{{$category->product_category_name}}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4 pull-right">
+
+                                
+                                <a href="{{url('export_inventory')}}" class="btn btn-primary form_button_footer">Export Inventory List</a>
+                                @if(auth()->user()->role_id == 0)
+                                <a class="btn btn-primary save_all_inventory">Save all</a>
+                                @endif</div>
                             </form>
-                            <a href="{{url('export_inventory')}}" class="btn btn-primary form_button_footer">Export Inventory List</a>
-                            @if(auth()->user()->role_id == 0)
-                            <a class="btn btn-primary save_all_inventory">Save all</a>
-                            @endif
                         </div>
                     </div>
                 </div>                
@@ -87,11 +108,13 @@
                                         $i = 1;
                                         ?>
                                         @foreach($inventory_list as $inventory)
+                                        <?php
+                                        $total = ($inventory->physical_closing_qty - $inventory->pending_delivery_order_qty - $inventory->pending_sales_order_qty + $inventory->pending_purchase_advise_qty);
+                                        ?>
+                                        @if((Input::has('inventory_filter')) && (Input::get('inventory_filter')=='minimal'))
+                                        @if($inventory->minimal < $total)
                                         <tr class="smallinput datadisplay_{{$inventory->id}}">
                                             <td>{{$inventory->product_sub_category->alias_name}}</td>
-                                            <?php
-                                            $total = ($inventory->physical_closing_qty - $inventory->pending_delivery_order_qty - $inventory->pending_sales_order_qty + $inventory->pending_purchase_advise_qty);
-                                            ?>
                                             @if(auth()->user()->role_id == 0)
                                             <td class="{{ ($inventory->minimal < $total) ?'minimum_reach': '' }}">
                                                 <div class="form-group">                                                    
@@ -125,6 +148,45 @@
                                             </td>
                                             @endif
                                         </tr>
+                                        @endif
+                                        @else
+                                        <tr class="smallinput datadisplay_{{$inventory->id}}">
+                                            <td>{{$inventory->product_sub_category->alias_name}}</td>
+
+                                            @if(auth()->user()->role_id == 0)
+                                            <td class="{{ ($inventory->minimal < $total) ?'minimum_reach': '' }}">
+                                                <div class="form-group">                                                    
+                                                    <input type="text" name="minimal_{{$inventory->id}}" id="minimal_{{$inventory->id}}" value="{{$inventory->minimal}}" maxlength="9" class="form-control no_alphabets" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group">                                                    
+                                                    <input type="text" name="{{$inventory->id}}" placeholder="Stock in(kg)" value="{{$inventory->opening_qty}}" maxlength="9" class="form-control no_alphabets txt_open_stock" />
+                                                </div>
+                                            </td>
+                                            @else
+                                            <td class="{{ ($inventory->minimal < $total) ?'minimum_reach': '' }}">{{$inventory->minimal}}</td>
+                                            <td>{{$inventory->opening_qty}}</td>                                            
+                                            @endif
+                                            <td id="sales_challan_{{$inventory->id}}">{{($inventory->sales_challan_qty <= 0 )? 0: $inventory->sales_challan_qty}}</td>
+                                            <td id="purchase_challan_{{$inventory->id}}">{{($inventory->purchase_challan_qty <= 0) ? 0 : $inventory->purchase_challan_qty}}</td>
+                                            <td id="physical_closing_{{$inventory->id}}">{{$inventory->physical_closing_qty}}</td>
+                                            <td id="pending_order_{{$inventory->id}}">{{($inventory->pending_sales_order_qty <= 0) ? 0 : $inventory->pending_sales_order_qty}}</td>
+                                            <td id="pending_deliver_order_{{$inventory->id}}">{{($inventory->pending_delivery_order_qty <= 0) ? 0 : $inventory->pending_delivery_order_qty}}</td>
+                                            <td id="pending_purchase_order_{{$inventory->id}}">{{($inventory->pending_purchase_order_qty <= 0) ? 0 : $inventory->pending_purchase_order_qty }}</td>
+                                            <td id="pending_purchase_advise_{{$inventory->id}}">{{($inventory->pending_purchase_advise_qty <= 0) ? 0 : $inventory->pending_purchase_advise_qty}}</td>
+                                            <td id="virtual_qty_{{$inventory->id}}">{{$inventory->virtual_qty}}</td>
+                                            @if(auth()->user()->role_id == 0)
+                                            <td>
+                                                <div class="row product-price">                                                
+                                                    <div class="form-group col-md-2 difference_form">
+                                                        <input class="btn btn-primary" type="button" value="save" data-id="{{$inventory->id}}" onclick="update_inventory(this,{{$inventory->id}});">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            @endif
+                                        </tr>
+                                        @endif
                                         <?php
                                         $i++;
                                         ?>

@@ -1060,13 +1060,14 @@ class HomeController extends Controller {
 
 // All Functions added by user 157 for app ends here //
     public function applogin() {
+
         $data = Input::all();
         $username = $data['username'];
         $password = $data['password'];
-
-        if (Auth::validate(['mobile_number' => $username, 'password' => $password])) {
+        if (Auth::attempt(['mobile_number' => $username, 'password' => $password])) {
             return json_encode(array(
                 'result' => true,
+                'user' => auth()->user(),
                 'message' => 'Login Successfully Done')
             );
         } else {
