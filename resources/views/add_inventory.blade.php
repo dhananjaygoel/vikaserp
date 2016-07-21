@@ -11,40 +11,41 @@
                 </ol>
                 <div class="clearfix">
                     <h1 class="pull-left">Inventory</h1>
-                    <div class="row col-md-8 pull-right top-page-ui">
+                    <div class="row col-md-10 pull-right top-page-ui">
                         <div class="filter-block productsub_filter">
                             <form method="GET" action="{{url('inventory')}}" id="filter_search">
-                                <div class="form-group col-md-2 pull-right">
-                                    <input class="form-control" placeholder="Enter Product Alias Name" autocomplete="off" type="text" name="search_inventory" id="search_inventory" type="text" value="{{(Input::get('search_inventory') != '' )? Input::get('search_inventory'): ''}}" onblur="this.form.submit();">
-                                    <a onclick="this.form.submit();" style="cursor: pointer;">
-                                        <i class="fa fa-search search-icon"></i>
-                                    </a>
-                                </div>
-                                <div class="form-group col-md-2 pull-right">
-                                    <select class="form-control" name="inventory_filter" onchange="this.form.submit();">
-                                        <option value="all">All</option>
-                                        <option value="minimal" {{((Input::has('inventory_filter')) && (Input::get('inventory_filter')=='minimal'))? 'selected' : ''}}>Minimal Only</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-4 pull-right">
-                                    <select class="form-control" name="product_category_filter" onchange="this.form.submit();">
-                                        <option value="">-- Select Product Category --</option>
-                                        @foreach($product_category as $category)
-                                        @if((Input::has('product_category_filter')) && (Input::get('product_category_filter')!=''))
-                                        <option value="{{$category->id}}" {{($category->id==Input::get('product_category_filter'))?'selected':''}} >{{$category->product_category_name}}</option>
-                                        @else                                        
-                                        <option value="{{$category->id}}">{{$category->product_category_name}}</option>
+                                <div class="col-md-12">
+                                    <div class="form-group col-md-3">
+                                        <input class="form-control" placeholder="Enter Product Alias Name" autocomplete="off" type="text" name="search_inventory" id="search_inventory" type="text" value="{{(Input::get('search_inventory') != '' )? Input::get('search_inventory'): ''}}" onblur="this.form.submit();">
+                                        <a onclick="this.form.submit();" style="cursor: pointer;">
+                                            <i class="fa fa-search search-icon"></i>
+                                        </a>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <select class="form-control" name="inventory_filter" onchange="this.form.submit();">
+                                            <option value="all">All</option>
+                                            <option value="minimal" {{((Input::has('inventory_filter')) && (Input::get('inventory_filter')=='minimal'))? 'selected' : ''}}>Minimal Only</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <select class="form-control" name="product_category_filter" onchange="this.form.submit();">
+                                            <option value="">-- Select Product Category --</option>
+                                            @foreach($product_category as $category)
+                                            @if((Input::has('product_category_filter')) && (Input::get('product_category_filter')!=''))
+                                            <option value="{{$category->id}}" {{($category->id==Input::get('product_category_filter'))?'selected':''}} >{{$category->product_category_name}}</option>
+                                            @else                                        
+                                            <option value="{{$category->id}}">{{$category->product_category_name}}</option>
+                                            @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <a href="{{url('export_inventory')}}" class="btn btn-primary form_button_footer">Export Inventory List</a>
+                                        @if(auth()->user()->role_id == 0)
+                                        <a class="btn btn-primary save_all_inventory">Save all</a>
                                         @endif
-                                        @endforeach
-                                    </select>
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-4 pull-right">
-
-                                
-                                <a href="{{url('export_inventory')}}" class="btn btn-primary form_button_footer">Export Inventory List</a>
-                                @if(auth()->user()->role_id == 0)
-                                <a class="btn btn-primary save_all_inventory">Save all</a>
-                                @endif</div>
                             </form>
                         </div>
                     </div>
