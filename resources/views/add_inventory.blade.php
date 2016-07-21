@@ -15,8 +15,8 @@
                         <div class="filter-block productsub_filter">
                             <form method="GET" action="{{url('inventory')}}" id="filter_search">
                                 <div class="col-md-12">
-                                    <div class="form-group col-md-3">
-                                        <input class="form-control" placeholder="Enter Product Alias Name" autocomplete="off" type="text" name="search_inventory" id="search_inventory" type="text" value="{{(Input::get('search_inventory') != '' )? Input::get('search_inventory'): ''}}" onblur="this.form.submit();">
+                                    <div class="form-group col-md-2">
+                                        <input class="form-control" placeholder="Product Alias Name" autocomplete="off" type="text" name="search_inventory" id="search_inventory" type="text" value="{{(Input::get('search_inventory') != '' )? Input::get('search_inventory'): ''}}" onblur="this.form.submit();">
                                         <a onclick="this.form.submit();" style="cursor: pointer;">
                                             <i class="fa fa-search search-icon"></i>
                                         </a>
@@ -27,7 +27,7 @@
                                             <option value="minimal" {{((Input::has('inventory_filter')) && (Input::get('inventory_filter')=='minimal'))? 'selected' : ''}}>Minimal Only</option>
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-md-3">
                                         <select class="form-control" name="product_category_filter" onchange="this.form.submit();">
                                             <option value="">-- Select Product Category --</option>
                                             @foreach($product_category as $category)
