@@ -349,6 +349,8 @@ class HomeController extends Controller {
             if ($value->servDOID == 0) {
                 DeliveryOrder::where('id', '=', $value->servDOID)->update(array('order_status' => 'completed'));
                 $delivery_challan->delivery_order_id = 0;
+            } else {
+                $delivery_challan->delivery_order_id = $value->servDOID;
             }
             $delivery_challan->customer_id = ($value->custServId == 0) ? $customer_list[$value->id] : $value->custServId;
             $delivery_challan->created_by = 1;
