@@ -42,6 +42,8 @@ Route::get('appallpending_purchase_advice', 'HomeController@appallpending_purcha
 Route::get('appallpurchase_order_daybook', 'HomeController@appallpurchase_order_daybook');
 Route::get('appinventory', 'HomeController@appinventory');
 Route::get('app_export_inventory', 'InventoryController@export_inventory');
+Route::get('app_export_salesdaybook', 'SalesDaybookController@export_sales_daybook');
+Route::get('app_export_purchasedaybook', 'PurchaseDaybookController@expert_purchase_daybook');
 
 Route::get('appall_relationship_manager', 'HomeController@appAllRelationshipManager');
 Route::get('applocation', 'HomeController@applocation');
@@ -150,7 +152,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('purchase_order_daybook', 'PurchaseDaybookController');
     Route::post('purchase_order_daybook/{id}', 'PurchaseDaybookController@destroy');
     Route::post('delete_all_daybook', 'PurchaseDaybookController@delete_all_daybook');
-    Route::resource('expert_purchase_daybook', 'PurchaseDaybookController@expert_purchase_daybook');
+    Route::get('export_purchasedaybook', 'PurchaseDaybookController@expert_purchase_daybook');
     Route::get('print_purchase_daybook', 'PurchaseDaybookController@print_purchase_daybook');
     Route::get('change_password', 'PasswordController@getPassword');
     Route::post('change_password', 'PasswordController@postPassword');
@@ -189,7 +191,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('purchase_challan', 'PurchaseChallanController');
     Route::get('create_delivery_challan/{id}', 'DeliveryOrderController@create_delivery_challan');
     Route::post('create_delivery_challan/{id}', 'DeliveryOrderController@store_delivery_challan');
-    Route::resource('sales_daybook', 'SalesDaybookController@index');
+    Route::resource('sales_daybook', 'SalesDaybookController');
     Route::post('delete_sales_daybook/{id}', 'SalesDaybookController@delete_challan');
     Route::post('delete_multiple_challan', 'SalesDaybookController@delete_multiple_challan');
     Route::post('sales_daybook_date', 'SalesDaybookController@challan_date');
@@ -198,7 +200,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('print_delivery_challan/{id}', 'DeliveryChallanController@print_delivery_challan');
     Route::get('place_order/{id}', 'InquiryController@place_order');
     Route::post('store_order/{id}', 'InquiryController@store_place_order');
-    Route::resource('export_sales_daybook', 'SalesDaybookController@export_sales_daybook');
+    Route::get('export_sales_daybook', 'SalesDaybookController@export_sales_daybook');
     Route::get('export_product_size', 'ProductsubController@exportProductSize');
     Route::get('print_sales_order_daybook', 'SalesDaybookController@print_sales_order_daybook');
     Route::post('get_product_weight', 'ProductsubController@get_product_weight');
