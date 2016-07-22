@@ -386,6 +386,7 @@ class PurchaseAdviseController extends Controller {
                                 'product_category_id' => $product_data['id'],
                                 'unit_id' => $product_data['units'],
                                 'actual_pieces' => $product_data['actual_pieces'],
+                                'quantity' => $product_data['quantity'],
                                 'price' => $product_data['price'],
                                 'remarks' => $product_data['remark'],
                                 'order_type' => 'purchase_advice',
