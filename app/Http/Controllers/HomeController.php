@@ -65,7 +65,7 @@ class HomeController extends Controller {
             if ($user) {
                 $user->password = Hash::make(Input::get('password'));
                 $user->save();
-                return json_encode(array('result' => true, 'user_info' => $user, 'mobile_status' => true, 'message' => 'Password reset successfully.'));
+                return json_encode(array('result' => true, 'user' => $user, 'message' => 'Password reset successfully.'));
             } else {
                 return json_encode(array('result' => false, 'mobile_status' => false, 'message' => 'User not found'));
             }
@@ -108,16 +108,9 @@ class HomeController extends Controller {
         $username = $data['username'];
         $password = $data['password'];
         if (Auth::attempt(['mobile_number' => $username, 'password' => $password])) {
-            return json_encode(array(
-                'result' => true,
-                'user' => auth()->user(),
-                'message' => 'Login Successfully Done')
-            );
+            return json_encode(array('result' => true, 'user' => auth()->user(), 'message' => 'Login Successfully Done'));
         } else {
-            return json_encode(array(
-                'result' => false,
-                'message' => 'Login Failed.')
-            );
+            return json_encode(array('result' => false, 'message' => 'Login Failed.'));
         }
     }
 
@@ -145,10 +138,7 @@ class HomeController extends Controller {
         $customer = Customer::with('manager')->where('phone_number1', '=', Input::get('username'))->first();
         if ($customer) {
             if (Hash::check(Input::get('password'), $customer->password)) {
-                return json_encode(array('result' => true,
-                    'customer' => $customer,
-                    'mobile_status' => true,
-                    'message' => 'Login Successfully Done'));
+                return json_encode(array('result' => true, 'customer' => $customer, 'mobile_status' => true, 'message' => 'Login Successfully Done'));
             } else {
                 return json_encode(array('result' => false, 'reason' => 'Password does not match', 'message' => 'Login Failed.'));
             }
@@ -164,7 +154,7 @@ class HomeController extends Controller {
             if ($customer) {
                 $customer->password = Hash::make(Input::get('password'));
                 $customer->save();
-                return json_encode(array('result' => true, 'customer_info' => $customer, 'mobile_status' => true, 'message' => 'Password reset successfuly.'));
+                return json_encode(array('result' => true, 'customer' => $customer, 'mobile_status' => true, 'message' => 'Password reset successfuly.'));
             } else {
                 return json_encode(array('result' => false, 'mobile_status' => false, 'message' => 'Customer not found'));
             }
@@ -176,22 +166,20 @@ class HomeController extends Controller {
     public function generateOtp() {
 
         $customer = Customer::where('phone_number1', '=', Input::get('username'))->first();
-        if ($customer) {
+        if ($customer)
             return json_encode(array('result' => true, 'message' => 'Customer found'));
-        } else {
+        else
             return json_encode(array('result' => true, 'message' => 'Customer not found'));
-        }
     }
 
     public function verifyOtp() {
 
         if (Input::get('otp') == '123456' || Input::get('otp') == 123456) {
             $customer = Customer::where('phone_number1', '=', Input::get('username'))->first();
-            if ($customer) {
+            if ($customer)
                 return json_encode(array('result' => true, 'customer_id' => $customer->id, 'mobile_status' => true, 'message' => 'OTP Verifed'));
-            } else {
+            else
                 return json_encode(array('result' => true, 'mobile_status' => false, 'message' => 'Customer not found'));
-            }
         } else {
             return json_encode(array('result' => false, 'mobile_status' => false, 'message' => 'OTP does not match'));
         }
