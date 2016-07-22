@@ -65,7 +65,7 @@ class HomeController extends Controller {
             if ($user) {
                 $user->password = Hash::make(Input::get('password'));
                 $user->save();
-                return json_encode(array('result' => true, 'user_id' => $user->id, 'mobile_status' => true, 'message' => 'Password reset successfully.'));
+                return json_encode(array('result' => true, 'user_id' => $user, 'mobile_status' => true, 'message' => 'Password reset successfully.'));
             } else {
                 return json_encode(array('result' => false, 'mobile_status' => false, 'message' => 'User not found'));
             }
