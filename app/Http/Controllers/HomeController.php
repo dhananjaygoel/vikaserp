@@ -162,7 +162,7 @@ class HomeController extends Controller {
     public function customerResetPassword() {
 
         if (Input::get('otp') == '123456' || Input::get('otp') == 123456) {
-            $customer = Customer::where('phone_number1', '=', Input::get('username'))->first();
+            $customer = Customer::where('phone_number1', '=', Input::get('username'))->with('manager')->first();
             if ($customer) {
                 $customer->password = Hash::make(Input::get('password'));
                 $customer->save();

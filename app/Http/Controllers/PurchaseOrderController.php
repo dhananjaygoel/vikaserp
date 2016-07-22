@@ -98,7 +98,7 @@ class PurchaseOrderController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create() {
-        
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -112,7 +112,7 @@ class PurchaseOrderController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(PurchaseOrderRequest $request) {
-        
+
         $input_data = Input::all();
         if (Session::has('forms_purchase_order')) {
             $session_array = Session::get('forms_purchase_order');
@@ -188,6 +188,7 @@ class PurchaseOrderController extends Controller {
         $expected_delivery_date = date("Y-m-d", strtotime($expected_delivery_date));
 
         $add_purchase_order_array = [
+            'is_view_all' => $input_data['viewable_by'],
             'supplier_id' => $customer_id,
             'created_by' => Auth::id(),
             'order_for' => $input_data['order_for'],
@@ -594,7 +595,7 @@ class PurchaseOrderController extends Controller {
      */
 
     public function manual_complete() {
-        
+
         $inputData = Input::get('formData');
         parse_str($inputData, $input_data);
         $purchase_order_id = $input_data['purchase_order_id'];
