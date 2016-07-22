@@ -65,7 +65,7 @@ class HomeController extends Controller {
             if ($user) {
                 $user->password = Hash::make(Input::get('password'));
                 $user->save();
-                return json_encode(array('result' => true, 'user_id' => $user, 'mobile_status' => true, 'message' => 'Password reset successfully.'));
+                return json_encode(array('result' => true, 'user_info' => $user, 'mobile_status' => true, 'message' => 'Password reset successfully.'));
             } else {
                 return json_encode(array('result' => false, 'mobile_status' => false, 'message' => 'User not found'));
             }
@@ -166,7 +166,7 @@ class HomeController extends Controller {
             if ($customer) {
                 $customer->password = Hash::make(Input::get('password'));
                 $customer->save();
-                return json_encode(array('result' => true, 'customer_id' => $customer->id, 'mobile_status' => true, 'message' => 'Password reset successfuly.'));
+                return json_encode(array('result' => true, 'customer_info' => $customer, 'mobile_status' => true, 'message' => 'Password reset successfuly.'));
             } else {
                 return json_encode(array('result' => false, 'mobile_status' => false, 'message' => 'Customer not found'));
             }
