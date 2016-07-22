@@ -49,6 +49,16 @@ class HomeController extends Controller {
         
     }
 
+    public function generateUserOtp() {
+
+        $user = User::where('mobile_number', '=', Input::get('username'))->first();
+        if ($user) {
+            return json_encode(array('result' => true, 'message' => 'User found'));
+        } else {
+            return json_encode(array('result' => true, 'message' => 'User not found'));
+        }
+    }
+
     public function appUserResetPassword() {
 
         if (Input::get('otp') == '123456' || Input::get('otp') == 123456) {

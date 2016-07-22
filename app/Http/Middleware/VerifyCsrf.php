@@ -35,6 +35,7 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
         'appuserprofile',
         'appverifyuserotp',
         'appuserresetpassword',
+        'appgenerateuserotp',
     ];
 
     /**
