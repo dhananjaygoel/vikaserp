@@ -146,10 +146,8 @@ class HomeController extends Controller {
         if ($customer) {
             if (Hash::check(Input::get('password'), $customer->password)) {
                 return json_encode(array('result' => true,
-                    'customer_id' => $customer->id,
-                    'customer_status' => $customer->customer_status,
+                    'customer' => $customer,
                     'mobile_status' => true,
-                    'manager' => $customer->manager,
                     'message' => 'Login Successfully Done'));
             } else {
                 return json_encode(array('result' => false, 'reason' => 'Password does not match', 'message' => 'Login Failed.'));
