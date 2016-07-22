@@ -52,11 +52,10 @@ class HomeController extends Controller {
     public function generateUserOtp() {
 
         $user = User::where('mobile_number', '=', Input::get('username'))->first();
-        if ($user) {
+        if ($user)
             return json_encode(array('result' => true, 'message' => 'User found'));
-        } else {
-            return json_encode(array('result' => true, 'message' => 'User not found'));
-        }
+        else
+            return json_encode(array('result' => false, 'message' => 'User not found'));
     }
 
     public function appUserResetPassword() {
@@ -345,6 +344,7 @@ class HomeController extends Controller {
     }
 
     public function appSyncPurchaseOrder() {
+
         $data = Input::all();
         if (Input::has('purchase_order')) {
             $purchaseorders = (json_decode($data['purchase_order']));
@@ -636,7 +636,7 @@ class HomeController extends Controller {
         foreach ($orders as $key => $value) {
 
             if ($inquiryies != '' || $inquiryiesproduct != '') {
-                $this->appsync1();
+                $inquiry_details = $this->appsync1();
             }
             if ($value->serverId == 0) {
                 if ($value->custServerId == 0 || $value->custServerId == '0') {
@@ -842,16 +842,12 @@ class HomeController extends Controller {
                     $add_inquiry->other_location = $value->otherLocation;
                     $add_inquiry->location_difference = $value->otherLocationDifference;
                 }
-                if ($value->vatPerc == "" || empty($value->vatPerc))
-                    $add_inquiry->vat_percentage = 0;
-                else
-                    $add_inquiry->vat_percentage = $value->vatPerc;
+                $add_inquiry->vat_percentage = ($value->vatPerc != "") ? $value->vatPerc : 0;
                 $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
                 $add_inquiry->remarks = ($value->remark != '') ? $value->remark : '';
                 $add_inquiry->inquiry_status = "Pending";
                 $add_inquiry->save();
                 $inquiry_id = $add_inquiry->id;
-
                 foreach ($inquiryproduct as $product_data) {
                     $inquiry_products = array();
                     if ($product_data->maxInqId == $value->id) {
@@ -873,7 +869,7 @@ class HomeController extends Controller {
             $inquiry_response['customer_new'] = $customer_list;
 
 
-        if ($inquiryies == NULL || $inquiryiesproduct = NULL) {
+        if ($inquiryies != NULL || $inquiryiesproduct != NULL) {
             return $inquiry_response;
         } else {
             return json_encode($inquiry_response);
