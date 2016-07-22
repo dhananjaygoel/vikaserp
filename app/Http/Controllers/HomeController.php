@@ -49,6 +49,88 @@ class HomeController extends Controller {
         
     }
 
+    public function appUserResetPassword() {
+
+        if (Input::get('otp') == '123456' || Input::get('otp') == 123456) {
+            $user = User::where('mobile_number', '=', Input::get('username'))->first();
+            if ($user) {
+                $user->password = Hash::make(Input::get('password'));
+                $user->save();
+                return json_encode(array('result' => true, 'user_id' => $user->id, 'mobile_status' => true, 'message' => 'Password reset successfully.'));
+            } else {
+                return json_encode(array('result' => false, 'mobile_status' => false, 'message' => 'User not found'));
+            }
+        } else {
+            return json_encode(array('result' => false, 'mobile_status' => false, 'message' => 'OTP does not match'));
+        }
+    }
+
+    public function appVerifyUserOtp() {
+
+        if (Input::get('otp') == '123456' || Input::get('otp') == 123456) {
+            $user = User::where('mobile_number', '=', Input::get('username'))->first();
+            if ($user) {
+                return json_encode(array('result' => true, 'user_id' => $user->id, 'mobile_status' => true, 'message' => 'OTP Verifed'));
+            } else {
+                return json_encode(array('result' => true, 'mobile_status' => false, 'message' => 'User not found'));
+            }
+        } else {
+            return json_encode(array('result' => false, 'mobile_status' => false, 'message' => 'OTP does not match'));
+        }
+    }
+
+    public function appUserProfile() {
+
+        if (isset($_FILES["myfile"])) {
+            $ret = array();
+            $output_dir = getcwd() . '/upload/admin/';
+            $fileName = $_FILES["myfile"]["name"];
+            move_uploaded_file($_FILES["myfile"]["tmp_name"], $output_dir . $fileName);
+            $ret[] = $fileName;
+            $image_path = $output_dir . $fileName;
+            chmod($image_path, 0777);
+        }
+        return json_encode(array('result' => true, 'message' => 'User profile picture added successfully'));
+    }
+
+    public function applogin() {
+
+        $data = Input::all();
+        $username = $data['username'];
+        $password = $data['password'];
+        if (Auth::attempt(['mobile_number' => $username, 'password' => $password])) {
+            return json_encode(array(
+                'result' => true,
+                'user' => auth()->user(),
+                'message' => 'Login Successfully Done')
+            );
+        } else {
+            return json_encode(array(
+                'result' => false,
+                'message' => 'Login Failed.')
+            );
+        }
+    }
+
+    public function appUpdateUser() {
+
+        $user = User::find(Input::get('user_id'));
+        if (!isset($user->id)) {
+            return json_encode(array('result' => false, 'message' => 'User not found'));
+        }
+        if (Input::has('mobile_number') && (Input::get('mobile_number') != '') && ($user->mobile_number != Input::get('mobile_number'))) {
+            return json_encode(array('result' => false, 'message' => 'Sorry! Username does not match'));
+        }
+        $user->first_name = (Input::has('first_name') && Input::get('first_name') != '') ? Input::get('first_name') : '';
+        $user->last_name = (Input::has('last_name') && Input::get('last_name') != '') ? Input::get('last_name') : '';
+        $user->email = (Input::has('email') && Input::get('email') != '') ? Input::get('email') : '';
+        $user->phone_number = (Input::has('phone_number') && Input::get('phone_number') != '') ? Input::get('phone_number') : '';
+        if ($user->save())
+            return json_encode(array('result' => true, 'user_id' => $user->id, 'message' => 'User details updated successfully'));
+        else
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+    }
+
     public function appCustomerLogin() {
 
         $customer = Customer::with('manager')->where('phone_number1', '=', Input::get('username'))->first();
@@ -533,10 +615,19 @@ class HomeController extends Controller {
         if (Input::has('order_product')) {
             $orderproduct = (json_decode($data['order_product']));
         }
+        if (Input::has('inquiry')) {
+            $inquiry = (json_decode($data['inquiry']));
+        }
+        if (Input::has('inquiry_product')) {
+            $inquiryproduct = (json_decode($data['inquiry_product']));
+        }
         $order_response = [];
         $customer_list = [];
         foreach ($orders as $key => $value) {
 
+            if ($inquiryies != '' || $inquiryiesproduct != '') {
+                $this->appsync1();
+            }
             if ($value->serverId == 0) {
                 if ($value->custServerId == 0 || $value->custServerId == '0') {
                     $add_customers = new Customer();
@@ -645,19 +736,30 @@ class HomeController extends Controller {
     }
 
 // All Functions added by user 157 for android request //
-    public function appsync1() {
+    public function appsync1($inquiryies = NULL, $inquiry_customers = NULL, $inquiryiesproduct = NULL) {
 
         $data = Input::all();
         if (Input::has('inquiry')) {
             $inquiries = (json_decode($data['inquiry']));
+        } else {
+            if ($inquiryies != NULL) {
+                $inquiries = $inquiries;
+            }
         }
         if (Input::has('customer')) {
             $customers = (json_decode($data['customer']));
+        } else {
+            if ($inquiry_customers != NULL) {
+                $customers = $inquiry_customers;
+            }
         }
         if (Input::has('inquiry_product')) {
             $inquiryproduct = (json_decode($data['inquiry_product']));
+        } else {
+            if ($inquiryiesproduct != NULL) {
+                $inquiryproduct = $inquiryiesproduct;
+            }
         }
-
         $inquiry_response = [];
         $customer_list = [];
 
@@ -760,7 +862,12 @@ class HomeController extends Controller {
         if (count($customer_list) > 0)
             $inquiry_response['customer_new'] = $customer_list;
 
-        return json_encode($inquiry_response);
+
+        if ($inquiryies == NULL || $inquiryiesproduct = NULL) {
+            return $inquiry_response;
+        } else {
+            return json_encode($inquiry_response);
+        }
     }
 
     public function appsync() {
@@ -1059,24 +1166,7 @@ class HomeController extends Controller {
     }
 
 // All Functions added by user 157 for app ends here //
-    public function applogin() {
 
-        $data = Input::all();
-        $username = $data['username'];
-        $password = $data['password'];
-        if (Auth::attempt(['mobile_number' => $username, 'password' => $password])) {
-            return json_encode(array(
-                'result' => true,
-                'user' => auth()->user(),
-                'message' => 'Login Successfully Done')
-            );
-        } else {
-            return json_encode(array(
-                'result' => false,
-                'message' => 'Login Failed.')
-            );
-        }
-    }
 
     public function demorouteandroid() {
         return json_encode(array(

@@ -13,6 +13,10 @@
 
 
 Route::post('applogin', 'HomeController@applogin');
+Route::post('appuserresetpassword', 'HomeController@appUserResetPassword');
+Route::post('appverifyuserotp', 'HomeController@appVerifyUserOtp');
+Route::post('appuserprofile', 'HomeController@appUserProfile');
+Route::post('appupdateuser', 'HomeController@appUpdateUser');
 Route::post('appsync', 'HomeController@appsync');
 Route::post('appsync1', 'HomeController@appsync1');
 Route::post('appsyncorder', 'HomeController@appSyncOrder');
