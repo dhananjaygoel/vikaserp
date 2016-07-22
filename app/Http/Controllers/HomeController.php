@@ -625,19 +625,19 @@ class HomeController extends Controller {
         if (Input::has('order_product')) {
             $orderproduct = (json_decode($data['order_product']));
         }
-        if (Input::has('inquiry')) {
-            $inquiry = (json_decode($data['inquiry']));
-        }
-        if (Input::has('inquiry_product')) {
-            $inquiryproduct = (json_decode($data['inquiry_product']));
-        }
+//        if (Input::has('inquiry')) {
+//            $inquiry = (json_decode($data['inquiry']));
+//        }
+//        if (Input::has('inquiry_product')) {
+//            $inquiryproduct = (json_decode($data['inquiry_product']));
+//        }
         $order_response = [];
         $customer_list = [];
         foreach ($orders as $key => $value) {
 
-            if ($inquiryies != '' || $inquiryiesproduct != '') {
-                $inquiry_details = $this->appsync1();
-            }
+//            if ($inquiryies != '' || $inquiryiesproduct != '') {
+//                $inquiry_details = $this->appsync1();
+//            }
             if ($value->serverId == 0) {
                 if ($value->custServerId == 0 || $value->custServerId == '0') {
                     $add_customers = new Customer();
@@ -746,30 +746,35 @@ class HomeController extends Controller {
     }
 
 // All Functions added by user 157 for android request //
+//    public function appsync1($inquiryies = NULL, $inquiry_customers = NULL, $inquiryiesproduct = NULL) {
     public function appsync1($inquiryies = NULL, $inquiry_customers = NULL, $inquiryiesproduct = NULL) {
 
         $data = Input::all();
         if (Input::has('inquiry')) {
             $inquiries = (json_decode($data['inquiry']));
-        } else {
-            if ($inquiryies != NULL) {
-                $inquiries = $inquiries;
-            }
         }
+//        else {
+//            if ($inquiryies != NULL) {
+//                $inquiries = $inquiries;
+//            }
+//        }
         if (Input::has('customer')) {
             $customers = (json_decode($data['customer']));
-        } else {
-            if ($inquiry_customers != NULL) {
-                $customers = $inquiry_customers;
-            }
         }
+        /*
+          else {
+          if ($inquiry_customers != NULL) {
+          $customers = $inquiry_customers;
+          }
+          } */
         if (Input::has('inquiry_product')) {
             $inquiryproduct = (json_decode($data['inquiry_product']));
-        } else {
-            if ($inquiryiesproduct != NULL) {
-                $inquiryproduct = $inquiryiesproduct;
-            }
         }
+//        else {
+//            if ($inquiryiesproduct != NULL) {
+//                $inquiryproduct = $inquiryiesproduct;
+//            }
+//        }
         $inquiry_response = [];
         $customer_list = [];
 
@@ -869,11 +874,11 @@ class HomeController extends Controller {
             $inquiry_response['customer_new'] = $customer_list;
 
 
-        if ($inquiryies != NULL || $inquiryiesproduct != NULL) {
-            return $inquiry_response;
-        } else {
-            return json_encode($inquiry_response);
-        }
+//        if ($inquiryies != NULL || $inquiryiesproduct != NULL) {
+//            return $inquiry_response;
+//        } else {
+        return json_encode($inquiry_response);
+//        }
     }
 
     public function appsync() {
