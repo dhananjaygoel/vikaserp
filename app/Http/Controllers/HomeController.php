@@ -619,6 +619,16 @@ class HomeController extends Controller {
 //        }
         $order_response = [];
         $customer_list = [];
+
+        if (Input::has('order_sync_date') && Input::get('order_sync_date') != '') {
+            $last_sync_date = Input::get('order_sync_date');
+            $order_added_server = Order::where('created_at', '>', $last_sync_date)->with('all_order_products')->get();
+            $order_response['order_new'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : '';
+        } else {
+            $order_added_server = Order::with('all_order_products')->get();
+            $order_response['order_new'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : '';
+        }
+
         foreach ($orders as $key => $value) {
 
 //            if ($inquiryies != '' || $inquiryiesproduct != '') {
@@ -766,12 +776,10 @@ class HomeController extends Controller {
         if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '') {
             $last_sync_date = Input::get('inquiry_sync_date');
             $inquiry_added_server = Inquiry::where('created_at', '>', $last_sync_date)->with('inquiry_products')->get();
-            if ($inquiry_added_server && count($inquiry_added_server) > 0)
-                $inquiry_response['inquiry_new'] = $inquiry_added_server;
-            else
-                $inquiry_response['inquiry_new'] = '';
+            $inquiry_response['inquiry_new'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : '';
         } else {
-            $inquiry_response['inquiry_new'] = '';
+            $inquiry_added_server = Inquiry::with('inquiry_products')->get();
+            $inquiry_response['inquiry_new'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : '';
         }
         foreach ($inquiries as $key => $value) {
             if ($value->serverId > 0) {
