@@ -732,8 +732,8 @@ class HomeController extends Controller {
     }
 
 // All Functions added by user 157 for android request //
-//    public function appsync1($inquiryies = NULL, $inquiry_customers = NULL, $inquiryiesproduct = NULL) {
-    public function appsync1($inquiryies = NULL, $inquiry_customers = NULL, $inquiryiesproduct = NULL) {
+//    public function appsyncinquiry($inquiryies = NULL, $inquiry_customers = NULL, $inquiryiesproduct = NULL) {
+    public function appsyncinquiry() {
 
         $data = Input::all();
         if (Input::has('inquiry')) {
@@ -763,9 +763,17 @@ class HomeController extends Controller {
 //        }
         $inquiry_response = [];
         $customer_list = [];
-
+        if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '') {
+            $last_sync_date = Input::get('inquiry_sync_date');
+            $inquiry_added_server = Inquiry::where('created_at', '>', $last_sync_date)->with('inquiry_products')->get();
+            if ($inquiry_added_server && count($inquiry_added_server) > 0)
+                $inquiry_response['inquiry_new'] = $inquiry_added_server;
+            else
+                $inquiry_response['inquiry_new'] = '';
+        } else {
+            $inquiry_response['inquiry_new'] = '';
+        }
         foreach ($inquiries as $key => $value) {
-
             if ($value->serverId > 0) {
                 $add_inquiry = Inquiry::find($value->serverId);
                 $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expDelDate);
@@ -964,6 +972,7 @@ class HomeController extends Controller {
     }
 
     public function appcount() {
+
         $order = Order::all()->count();
         $pending_order = Order::where('order_status', 'pending')->count();
         $inquiry = Inquiry::all()->count();

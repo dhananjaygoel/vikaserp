@@ -19,7 +19,7 @@ Route::post('appuserprofile', 'HomeController@appUserProfile');
 Route::post('appupdateuser', 'HomeController@appUpdateUser');
 Route::post('appgenerateuserotp', 'HomeController@generateUserOtp');
 Route::post('appsync', 'HomeController@appsync');
-Route::post('appsyncinquiry', 'HomeController@appsync1');
+Route::post('appsyncinquiry', 'HomeController@appsyncinquiry');
 Route::post('appsyncorder', 'HomeController@appSyncOrder');
 Route::post('appsyncdeliveryorder', 'HomeController@appSyncDeliveryOrder');
 Route::post('appsyncdeliverychallan', 'HomeController@appSyncDeliveryChallan');
