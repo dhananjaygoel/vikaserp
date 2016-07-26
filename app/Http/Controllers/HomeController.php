@@ -815,7 +815,7 @@ class HomeController extends Controller {
                     }
                 }
                 $inquiry_response[$value->serverId] = Inquiry::find($value->serverId);
-                $inquiry_response[$value->serverId]['products'] = InquiryProducts::where('inquiry_id', '=', $value->serverId)->get();
+                $inquiry_response[$value->serverId]['inquiry_products'] = InquiryProducts::where('inquiry_id', '=', $value->serverId)->get();
             } else {
                 if ($value->custServId == 0 || $value->custServId == '0') {
                     $add_customers = new Customer();
