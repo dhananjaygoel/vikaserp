@@ -82,6 +82,25 @@ $(document).ready(function () {
     });
 });
 $(document).ready(function () {
+
+    $(".flags").click(function () {
+        if ($(this).hasClass('empty_star')) {
+            $(this).removeClass('empty_star');
+            $(this).addClass('filled_star');
+        } else {
+            $(this).removeClass('filled_star');
+            $(this).addClass('empty_star');
+        }
+        var baseurl = $('#baseurl').attr('name');
+        var order_id = $(this).attr('data-orderid');
+        $.ajax({
+            type: 'get',
+            url: baseurl + '/flag_order',
+            data: {order_id: order_id},
+            success: function (data) {
+            }
+        });
+    });
     $("#exist_customer").click(function () {
         $(".exist_field").hide();
         $(".customer_select").show();

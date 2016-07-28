@@ -56,4 +56,9 @@ class Order extends Model {
         return $this->product_category_id;
     }
 
+    public function flagOrder($order_details) {
+        $this->flaged = ($order_details->flaged == true) ? false : true;
+        $this->save();
+    }
+
 }

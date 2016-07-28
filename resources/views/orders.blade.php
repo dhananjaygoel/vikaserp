@@ -104,6 +104,11 @@
                                 @if($k==1)
                                 <thead>
                                     <tr>
+                                        @if(Input::has('flag') && Input::get('flag') == 'true')
+                                        <th><a href="{{url('orders?flag=false')}}">Flag</a></th>
+                                        @else
+                                        <th><a href="{{url('orders?flag=true')}}">Flag</a></th>
+                                        @endif
                                         <th>#</th>
                                         <th>Tally Name</th>
                                         <th>Mobile </th>
@@ -117,6 +122,9 @@
                                 <tbody>
                                     @endif
                                     <tr id="order_row_{{$order->id}}">
+                                        <td>
+                                            <span class="{{($order->flaged==true)?'filled_star flags':'empty_star flags'}}" data-orderid="{{$order->id}}" ></span>
+                                        </td>
                                         <td>{{$k++}}</td>
                                         <td>{{($order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}</td>
                                         <td>{{$order['customer']['phone_number1']}}</td>
@@ -385,6 +393,9 @@
                                 }
                                 if (Input::get('size_filter') != '') {
                                     $allorders->appends(array('size_filter' => Input::get('size_filter')))->render();
+                                }
+                                if (Input::has('flag') && Input::get('flag') == 'true') {
+                                    $allorders->appends(array('flag' => Input::get('flag')))->render();
                                 }
                                 echo $allorders->render();
                                 ?>

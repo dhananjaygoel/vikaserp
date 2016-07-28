@@ -88,8 +88,11 @@ class OrderController extends Controller {
         } else {
             $q->with('all_order_products');
         }
-        $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->paginate(20);
-
+        if (Input::has('flag') && Input::get('flag') == 'true') {
+            $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('flaged', 'desc')->paginate(5);
+        } else {
+            $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->paginate(5);
+        }
         $users = User::all();
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
@@ -106,6 +109,7 @@ class OrderController extends Controller {
      * Functioanlity: Add new order page display
      */
     public function create() {
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -116,9 +120,19 @@ class OrderController extends Controller {
     }
 
     /**
+     * Functioanlity: Flag order
+     */
+    public function flagOrder() {
+
+        $order_details = Order::find(Input::get('order_id'));
+        $order_details->flagOrder($order_details);
+    }
+
+    /**
      * Functioanlity: Save order details
      */
     public function store(PlaceOrderRequest $request) {
+
         $input_data = Input::all();
         if (Session::has('forms_order')) {
             $session_array = Session::get('forms_order');
@@ -135,9 +149,7 @@ class OrderController extends Controller {
             array_push($forms_array, $input_data['form_key']);
             Session::put('forms_order', $forms_array);
         }
-        $rules = array(
-            'status' => 'required',
-        );
+        $rules = ['status' => 'required'];
         $validator = Validator::make($input_data, $rules);
         if ($validator->fails()) {
             Session::forget('product');

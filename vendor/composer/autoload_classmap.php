@@ -8,7 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'AddIndexCustomer' => $baseDir . '/database/migrations/2015_08_14_084448_add_index_customer.php',
     'AddIndexProductSubCategory' => $baseDir . '/database/migrations/2015_08_14_074532_add_index_product_sub_category.php',
-    'AddOpeningStockDateToInventoryTable' => $baseDir . '/database/migrations/2016_06_02_140424_add_opening_stock_date_to_inventory_table.php',
+    'AlterOrderTable01' => $baseDir . '/database/migrations/2016_07_28_092217_alter_order_table_01.php',
     'CreateAllOrderProductsTable' => $baseDir . '/database/migrations/2015_06_13_063346_create_all_order_products_table.php',
     'CreateCityTable' => $baseDir . '/database/migrations/2015_06_04_073640_create_city_table.php',
     'CreateCustomerManagersTable' => $baseDir . '/database/migrations/2015_06_15_074605_create_customer_managers_table.php',

@@ -28,6 +28,21 @@
     overflow-y: scroll !important;
     max-height: 250px;
 }
+.empty_star{
+    background-image:url(../../img/stars.png);
+    background-repeat:no-repeat;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    background-position: -0px -16px;
+}
+.filled_star{
+    background-image:url(../../img/stars.png);
+    background-repeat:no-repeat;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+}
 .custom_alert_success, #empty_select_completed, .delete_records_empty, #add_product_row_delivery_challan, #add_product_row, #add_product_row_delivery_order{
     display:none;
 }

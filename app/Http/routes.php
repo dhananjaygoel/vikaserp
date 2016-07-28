@@ -103,6 +103,7 @@ Route::controllers([
 Route::get('/', 'Auth\AuthController@getLogin');
 Route::get('logout', 'Auth\AuthController@getLogout');
 Route::get('update_opening_stock', 'InventoryController@updateOpeningStock');
+Route::get('flag_order', 'OrderController@flagOrder');
 Route::group(['middleware' => ['auth']], function() {
 //        Route::group(['middleware' => ['admin_mw','super_admin_mw']], function() {
 //        Route::get('customers', 'CustomerController',['only' => ['index','show','edit']]);
