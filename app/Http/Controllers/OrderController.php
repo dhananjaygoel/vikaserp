@@ -89,9 +89,9 @@ class OrderController extends Controller {
             $q->with('all_order_products');
         }
         if (Input::has('flag') && Input::get('flag') == 'true') {
-            $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('flaged', 'desc')->paginate(5);
+            $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('flaged', 'desc')->paginate(20);
         } else {
-            $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->paginate(5);
+            $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->paginate(20);
         }
         $users = User::all();
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
