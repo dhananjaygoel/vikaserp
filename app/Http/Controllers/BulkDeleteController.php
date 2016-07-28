@@ -38,8 +38,8 @@ class BulkDeleteController extends Controller {
         $password = Input::get('password_delete');
         $expected_date = Input::get('expected_date');
         $delete_seletected_module = Input::get('delete_seletected_module');
-        if ($module == "") {
-            return view('bulk_delete');
+        if ($module == "0" || $module == "") {
+            return back()->with('flash_message_error', 'You have not selected any module.');
         }
         if (count($delete_seletected_module) > 0) {
             if (!Hash::check($password, Auth::user()->password)) {
@@ -65,30 +65,23 @@ class BulkDeleteController extends Controller {
                         $inqiry_obj->delete();
                     }
                 }
+                $newdate = ((strlen(Input::get('expected_date')) > 1) ? Input::get('expected_date') : date('Y-m-d')) . ' 23:59:59';
                 /*
                  * Delete selected inquiries end.
                  */
-                if (Input::get('expected_date') != '') {
-                    $result_temp = Inquiry::where('inquiry_status', '=', 'completed')
-                                    ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')
-                                    ->where('created_at', '<=', Input::get('expected_date') . '23:59:59')
-                                    ->orderBy('created_at', 'desc')->Paginate(20);
-                } else {
-                    $result_temp = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')
-                                    ->where('inquiry_status', 'completed')->orderBy('created_at', 'desc')->Paginate(20);
-                }
-
+                $result_temp = Inquiry::where('inquiry_status', '=', 'completed')
+                                ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')
+                                ->where('created_at', '<=', $newdate)
+                                ->orderBy('created_at', 'desc')->Paginate(20);
                 foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;
                     $qty = 0;
                     foreach ($temp['inquiry_products'] as $prod) {
                         if ($prod['unit']->unit_name == 'KG') {
                             $qty += $prod->quantity;
-                        }
-                        if ($prod['unit']->unit_name == 'Pieces') {
+                        } elseif ($prod['unit']->unit_name == 'Pieces') {
                             $qty += $prod->quantity * $prod['inquiry_product_details']->weight;
-                        }
-                        if ($prod['unit']->unit_name == 'Meter') {
+                        } elseif ($prod['unit']->unit_name == 'Meter') {
                             $qty += ($prod->quantity / $prod['inquiry_product_details']->standard_length) * $prod['inquiry_product_details']->weight;
                         }
                     }
@@ -307,8 +300,8 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        $inqiry_obj = PurchaseAdvise::find($delete_module);
-                        $inqiry_obj->delete();
+                        $purchase_advise_obj = PurchaseAdvise::find($delete_module);
+                        $purchase_advise_obj->delete();
                     }
                 }
                 /*
@@ -348,8 +341,8 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        $inqiry_obj = PurchaseChallan::find($delete_module);
-                        $inqiry_obj->delete();
+                        $purchase_challan_obj = PurchaseChallan::find($delete_module);
+                        $purchase_challan_obj->delete();
                     }
                 }
                 /*
@@ -369,10 +362,12 @@ class BulkDeleteController extends Controller {
                         $result_data[$key][0] = $temp['supplier']->tally_name;
                     else
                         $result_data[$key][0] = $temp['supplier']->owner_name;
+
                     $result_data[$key][1] = $temp->serial_number;
                     $result_data[$key][2] = $temp->bill_number;
                     $result_data[$key][3] = date("F jS, Y", strtotime($temp['purchase_advice']->purchase_advice_date));
                     $total_qty = 0;
+
                     foreach ($temp['all_purchase_products'] as $pc) {
                         if ($pc->unit_id == 1) {
                             $total_qty += $pc->quantity;
@@ -399,7 +394,6 @@ class BulkDeleteController extends Controller {
             $result_temp->setPath('bulk-delete');
         }
         $bulk_searched_result = 'bulk_searched_result';
-
         if (count($delete_seletected_module) > 0) {
             return redirect('bulk-delete?select_module=' . $module . '&expected_date=' . $expected_date)->with('result_data', 'result_temp', 'bulk_searched_result', 'head', 'module', 'expected_date', 'tr_id', 'msg');
         } else {
@@ -423,13 +417,6 @@ class BulkDeleteController extends Controller {
      */
     public function store() {
         //
-    }
-
-    public function delete_selected() {
-        echo'<pre>';
-        print_r(Input::all());
-        echo'</pre>';
-        exit;
     }
 
     /**
@@ -477,11 +464,8 @@ class BulkDeleteController extends Controller {
      */
 
     function checkpending_quantity($delivery_orders) {
-        $all_del_orders = array();
-        $pending_orders = array();
 
         if (count($delivery_orders) > 0) {
-
             foreach ($delivery_orders as $key => $del_order) {
                 $delivery_order_quantity = 0;
                 $delivery_order_present_shipping = 0;
@@ -491,12 +475,10 @@ class BulkDeleteController extends Controller {
                         if ($popv->unit_id == 1) {
                             $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
                             $delivery_order_present_shipping = $delivery_order_present_shipping + $popv->present_shipping;
-                        }
-                        if ($popv->unit_id == 2) {
+                        } elseif ($popv->unit_id == 2) {
                             $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight);
                             $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight);
-                        }
-                        if ($popv->unit_id == 3) {
+                        } elseif ($popv->unit_id == 3) {
                             $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
                             $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
                         }
@@ -515,42 +497,34 @@ class BulkDeleteController extends Controller {
             $purchase_order_quantity = 0;
             $purchase_order_advise_quantity = 0;
             $purchase_order_advise_products = PurchaseProducts::where('from', '=', $order->id)->get();
-
             if (count($purchase_order_advise_products) > 0) {
                 foreach ($purchase_order_advise_products as $poapk => $poapv) {
                     $product_size = ProductSubCategory::find($poapv->product_category_id);
                     if ($poapv->unit_id == 1) {
                         $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity;
-                    }
-                    if ($poapv->unit_id == 2) {
+                    } elseif ($poapv->unit_id == 2) {
                         $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity * $product_size->weight;
-                    }
-                    if ($poapv->unit_id == 3) {
+                    } elseif ($poapv->unit_id == 3) {
                         $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity / $product_size->standard_length ) * $product_size->weight;
                     }
                 }
             }
-
             if (count($order['purchase_products']) > 0) {
                 foreach ($order['purchase_products'] as $popk => $popv) {
                     $product_size = ProductSubCategory::find($popv->product_category_id);
                     if ($popv->unit_id == 1) {
                         $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
-                    }
-                    if ($popv->unit_id == 2) {
+                    } elseif ($popv->unit_id == 2) {
                         $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight);
-                    }
-                    if ($popv->unit_id == 3) {
+                    } elseif ($popv->unit_id == 3) {
                         $purchase_order_quantity = $purchase_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
                     }
                 }
             }
-
-            if ($purchase_order_advise_quantity >= $purchase_order_quantity) {
+            if ($purchase_order_advise_quantity >= $purchase_order_quantity)
                 $purchase_orders[$key]['pending_quantity'] = 0;
-            } else {
+            else
                 $purchase_orders[$key]['pending_quantity'] = ($purchase_order_quantity - $purchase_order_advise_quantity);
-            }
             $purchase_orders[$key]['total_quantity'] = $purchase_order_quantity;
         }
         return $purchase_orders;

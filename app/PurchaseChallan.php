@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PurchaseChallan extends Model {
 
@@ -12,6 +13,8 @@ class PurchaseChallan extends Model {
      * @var string
      */
     protected $table = 'purchase_challan';
+
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

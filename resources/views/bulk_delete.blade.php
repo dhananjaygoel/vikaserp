@@ -50,7 +50,7 @@ use Illuminate\Support\Facades\Session;
                                             <option id="other_location" {{(isset($module) && $module == "delivery_order")?'selected':''}} value="delivery_order">Delivery Orders</option>
                                             <option id="other_location" {{(isset($module) && $module == "delivery_challan")?'selected':''}} value="delivery_challan">Delivery Challan</option>
                                             <option id="other_location" {{(isset($module) && $module == "purchase_order")?'selected':''}} value="purchase_order">Purchase Orders</option>
-                                            <option id="other_location" {{(isset($module) && $module == "purchase_advice")?'selected':''}} value="purchase_advice">Purchase Advice</option>
+                                            <option id="other_location" {{(isset($module) && $module == "purchase_advice")?'selected':''}} value="purchase_advice">Purchase Advise</option>
                                             <option id="other_location" {{(isset($module) && $module == "purchase_challan")?'selected':''}} value="purchase_challan">Purchase Challan</option>
                                         </select>
                                     </div>
