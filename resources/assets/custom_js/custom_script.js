@@ -11,6 +11,7 @@ var cache_supplier = {};
  * @returns {undefined}
  */
 function setCookie(cname, cvalue, exdays) {
+
     var d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
     var expires = "expires=" + d.toUTCString();
@@ -23,6 +24,7 @@ function setCookie(cname, cvalue, exdays) {
  * @returns {String}
  */
 function getCookie(cname) {
+
     var name = cname + "=";
     var ca = document.cookie.split(';');
     for (var i = 0; i < ca.length; i++) {
@@ -41,8 +43,7 @@ function getCookie(cname) {
  * @param {type} cname
  * @returns {undefined}
  */
-function deleteCookie(cname)
-{
+function deleteCookie(cname) {
     document.cookie = cname + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 }
 
@@ -377,6 +378,7 @@ $(document).ready(function () {
 //    });
 
     $("#add_purchase_advice_product_row").on("click", function () {
+
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
             type: "GET",
@@ -482,6 +484,7 @@ $(document).ready(function () {
 //    });
 
     $("#add_order_location").on("change", function () {
+
         if ($('#add_order_location').val() == '0') {
             $('#add_order_location').addClass('error_validation');
             $("#add_order_location").focus();
@@ -534,6 +537,7 @@ function save_price_inquiry_view(id, inq_id) {
 }
 
 function show_hide_customer(status) {
+
     if (status == "Pending") {
         $(".exist_field").show();
         $(".customer_select").hide();
@@ -548,6 +552,7 @@ function show_hide_customer(status) {
 
 /** product_autocomplete  */
 function product_autocomplete(id) {
+
     var customer_id = $('#existing_customer_id').val();
     if (customer_id == "") {
         customer_id = 0;
@@ -583,6 +588,7 @@ function product_autocomplete(id) {
 }
 
 function delivery_challan_product_autocomplete(id) {
+
     var customer_id = $('#existing_customer_id').val();
     if (customer_id == "") {
         customer_id = 0;
@@ -727,23 +733,20 @@ function delivery_challan_product_autocomplete(id) {
 //    });
 //}
 function purchase_order_advise_product_autocomplete(id) {
+
     var customer_id = $('#existing_customer_id').val();
     if (customer_id == "") {
         customer_id = 0;
     }
-
     var delivery_location = $('#add_order_location').val();
     var location = 0;
     var location_difference = 0;
     if (delivery_location > 0) {
-
         location = $('#add_order_location').val();
     } else if (delivery_location == 'other') {
-
         location_difference = $('#location_difference').val();
         location = 0;
     }
-
     $("#add_product_name_" + id).autocomplete({
         minLength: 1,
         dataType: 'json',
@@ -753,7 +756,6 @@ function purchase_order_advise_product_autocomplete(id) {
             at: "left top"
         },
         source: function (request, response) {
-
             $("#add_product_name_" + id).addClass('loadinggif');
             $.ajax({
                 url: baseurl + '/fetch_products',
@@ -773,6 +775,7 @@ function purchase_order_advise_product_autocomplete(id) {
 }
 
 $('#location_difference').on('keyup', function () {
+
     $(".add_product_row").each(function (index) {
         var customer_id = $('#existing_customer_id').val();
         if (customer_id == "") {
@@ -797,6 +800,7 @@ $('#location_difference').on('keyup', function () {
     });
 });
 $('#add_order_location').on('change', function () {
+
     var location_difference = $('option:selected', this).attr('data-location-difference');
     $('#location_difference').val(location_difference);
     $(".add_product_row").each(function (index) {
@@ -825,6 +829,7 @@ $('#add_order_location').on('change', function () {
  * Fetch cities of particular state from state id
  */
 function fetch_city() {
+
     var state_id = $("#select_state").val();
     $.ajax({
         type: 'GET',
@@ -905,6 +910,7 @@ function delete_order_row(order_id)
  * Delete order by AJAX call
  */
 $('.delete_orders_modal_submit').click(function () {
+
     $('#delete_orders_modal').modal('hide');
     /*Form token set up*/
     $.ajaxSetup({
@@ -921,24 +927,20 @@ $('.delete_orders_modal_submit').click(function () {
     var posting = $.post(url, {formData: $data});
     posting.done(function (data) {
         $("#pwdr").val('');
-        if (data['message'] == 'success')
-        {
+        if (data['message'] == 'success') {
             $("#order_row_" + order_id).remove();
             $('#flash_message').html("Order Deleted Successfully");
             $('#flash_message').removeClass('alert-danger');
             $('#flash_message').addClass('alert-success');
             $('#flash_message').fadeIn();
             $('#flash_message').fadeOut(5000);
-        }
-        else {
-
+        } else {
             $('#flash_message').html("Delete Opration Failed");
             $('#flash_message').removeClass('alert-success');
             $('#flash_message').addClass('alert-danger');
             $('#flash_message').fadeIn();
             $('#flash_message').fadeOut(5000);
         }
-
     }, 'json'); //done 
 
 });
@@ -947,8 +949,7 @@ $('.delete_orders_modal_submit').click(function () {
  * @param {type} order_id
  * @returns {undefined}
  */
-function cancel_order_row(order_id)
-{
+function cancel_order_row(order_id) {
     $('#order_id').val(order_id);
 }
 /*
@@ -984,7 +985,6 @@ $('.cancel_orders_modal_submit').click(function () {
             $('#flash_message').fadeIn();
             $('#flash_message').fadeOut(5000);
         }
-
     }, 'json'); //done 
 
 });
@@ -993,8 +993,7 @@ $('.cancel_orders_modal_submit').click(function () {
  * @param {integer} deliver_order_id
  * @returns {none}
  */
-function delete_delivery_order(deliver_order_id)
-{
+function delete_delivery_order(deliver_order_id) {
     $("#delete_delivery_order").attr('action', baseurl + '/delivery_order/' + deliver_order_id + '-delete');
     $('#user_id').val(deliver_order_id);
 }
@@ -1044,8 +1043,7 @@ $('.delete_delivery_order_submit').click(function () {
  * @param {type} challan_id
  * @returns {undefined}
  */
-function delete_challan(challan_id)
-{
+function delete_challan(challan_id) {
     $('#delete_challan_submit').val(challan_id);
 }
 /*
@@ -1067,35 +1065,31 @@ $('.delete_challan_submit').click(function () {
     var posting = $.post(url, {formData: $data});
     posting.done(function (data) {
         $("#pwdr").val('');
-        if (data['message'] == 'success')
-        {
+        if (data['message'] == 'success') {
             $("#challan_order_row_" + $('#delete_challan_submit').val()).remove();
             $('#flash_message').html("Order deleted successfully");
             $('#flash_message').removeClass('alert-danger');
             $('#flash_message').addClass('alert-success');
             $('#flash_message').fadeIn();
             $('#flash_message').fadeOut(5000);
-        }
-        else {
-
+        } else {
             $('#flash_message').html("Delete opration failed");
             $('#flash_message').removeClass('alert-success');
             $('#flash_message').addClass('alert-danger');
             $('#flash_message').fadeIn();
             $('#flash_message').fadeOut(5000);
         }
-
     }, 'json'); //done 
 
 });
-function delete_purchase_order(purchase_order_id)
-{
+function delete_purchase_order(purchase_order_id) {
     $('#delete_purchase_order_submit').val(purchase_order_id);
 }
 /*
  * Delete order by AJAX call
  */
 $('.delete_purchase_order_submit').click(function () {
+
     $('#delete_purchase_order').modal('hide');
     /*Form token set up*/
     $.ajaxSetup({
@@ -1112,26 +1106,21 @@ $('.delete_purchase_order_submit').click(function () {
     var posting = $.post(url, {formData: $data});
     posting.done(function (data) {
         $("#pwdr").val('');
-        if (data['message'] == 'success')
-        {
+        if (data['message'] == 'success') {
             $("#purchase_order_row_" + purchase_order_id).remove();
             $('#flash_message').html("Purchase order deleted successfully");
             $('#flash_message').removeClass('alert-danger');
             $('#flash_message').addClass('alert-success');
             $('#flash_message').fadeIn();
             $('#flash_message').fadeOut(5000);
-        }
-        else {
-
+        } else {
             $('#flash_message').html("Purchase order delete opration failed");
             $('#flash_message').removeClass('alert-success');
             $('#flash_message').addClass('alert-danger');
             $('#flash_message').fadeIn();
             $('#flash_message').fadeOut(5000);
         }
-
-    }, 'json'); //done 
-
+    }, 'json'); //done
 });
 /*
  * set Purchase order id for manual complete
@@ -1139,8 +1128,7 @@ $('.delete_purchase_order_submit').click(function () {
  * @returns {undefined}
  */
 
-function manual_complete(purchase_order_id)
-{
+function manual_complete(purchase_order_id) {
     $('#purchase_order_id').val(purchase_order_id);
 }
 
@@ -1148,6 +1136,7 @@ function manual_complete(purchase_order_id)
  * Cancel the Purchase order using AJAX request
  */
 $('.manual_complete_purchase_order_submit').click(function () {
+
     $('#manual_complete').modal('hide');
     /*Form token set up*/
     $.ajaxSetup({
@@ -1162,35 +1151,28 @@ $('.manual_complete_purchase_order_submit').click(function () {
     url = $form.attr('action');
     var posting = $.post(url, {formData: $data});
     posting.done(function (data) {
-
-        if (data['message'] == 'success')
-        {
+        if (data['message'] == 'success') {
             $("#purchase_order_row_" + $('#purchase_order_id').val()).remove();
             $('#flash_message').html("Purchase order cancel successfully");
             $('#flash_message').removeClass('alert-danger');
             $('#flash_message').addClass('alert-success');
             $('#flash_message').fadeIn();
             $('#flash_message').fadeOut(5000);
-        }
-        else {
-
+        } else {
             $('#flash_message').html("Purchase order cancel failed");
             $('#flash_message').removeClass('alert-success');
             $('#flash_message').addClass('alert-danger');
             $('#flash_message').fadeIn();
             $('#flash_message').fadeOut(5000);
         }
-
-    }, 'json'); //done 
-
+    }, 'json'); //done
 });
 /*
  * set purchase advice id to form model
  * @param {type} purchase_advice_id
  * @returns {undefined}
  */
-function delete_purchase_advice(purchase_advice_id)
-{
+function delete_purchase_advice(purchase_advice_id) {
     $("#delete_purchase_advice").attr('action', baseurl + '/purchaseorder_advise/' + purchase_advice_id + '-delete');
     $('#delete_purchase_advice_submit').val(purchase_advice_id);
 }
@@ -1199,6 +1181,7 @@ function delete_purchase_advice(purchase_advice_id)
  * Delete Purchase Advice from delivery order page
  */
 $('.delete_purchase_advice_submit').click(function () {
+
     $('#deletePurchaseAdvice').modal('hide');
     /*Form token set up*/
     $.ajaxSetup({
@@ -1214,40 +1197,35 @@ $('.delete_purchase_advice_submit').click(function () {
     var posting = $.post(url, {formData: $data});
     posting.done(function (data) {
         $("#pwdr").val('');
-        if (data['message'] == 'success')
-        {
+        if (data['message'] == 'success') {
             $("#purchase_advice_row_" + $('#delete_purchase_advice_submit').val()).remove();
             $('#flash_message').html("Purchase advice deleted successfully");
             $('#flash_message').removeClass('alert-danger');
             $('#flash_message').addClass('alert-success');
             $('#flash_message').fadeIn();
             $('#flash_message').fadeOut(5000);
-        }
-        else {
-
+        } else {
             $('#flash_message').html("Purchase advice delete opration failed");
             $('#flash_message').removeClass('alert-success');
             $('#flash_message').addClass('alert-danger');
             $('#flash_message').fadeIn();
             $('#flash_message').fadeOut(5000);
         }
-
-    }, 'json'); //done 
-
+    }, 'json'); //done
 });
 /*
  * set purchase challan id to the form model 
  * @param {type} challan_id
  * @returns {undefined}
  */
-function delete_purchase_challan(purchase_challan_id)
-{
+function delete_purchase_challan(purchase_challan_id) {
     $('#delete_purchase_challan_submit').val(purchase_challan_id);
 }
 /*
  * Delete the purchase challan by challan_id
  */
 $('.delete_purchase_challan_submit').click(function () {
+
     $('#delete_purchase_challan').modal('hide');
     /*Form token set up*/
     $.ajaxSetup({
@@ -1263,23 +1241,19 @@ $('.delete_purchase_challan_submit').click(function () {
     var posting = $.post(url, {formData: $data});
     posting.done(function (data) {
         $("#pwdr").val('');
-        if (data['message'] == 'success')
-        {
+        if (data['message'] == 'success') {
             $("#purchase_challan_row_" + $('#delete_purchase_challan_submit').val()).remove();
             $('#flash_message').html("Purchase challan deleted successfully");
             $('#flash_message').removeClass('alert-danger');
             $('#flash_message').addClass('alert-success');
             $('#flash_message').fadeIn();
             $('#flash_message').fadeOut(5000);
-        }
-        else {
+        } else {
             $('#flash_message').html("Purchase challan delete opration failed");
             $('#flash_message').removeClass('alert-success');
             $('#flash_message').addClass('alert-danger');
             $('#flash_message').fadeIn();
             $('#flash_message').fadeOut(5000);
         }
-
-    }, 'json'); //done 
-
+    }, 'json'); //done
 });

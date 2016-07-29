@@ -1007,30 +1007,22 @@ class HomeController extends Controller {
         }
         $deliver_sum = $deliver_sum / 100;
         $deliver_pending_sum = $deliver_pending_sum / 100;
-
         $pur_challan = PurchaseChallan::with('purchase_product')->get();
         $challan_sum = 0;
         foreach ($pur_challan as $qty) {
-
             foreach ($qty['purchase_product'] as $qty_val) {
                 $challan_sum += $qty_val->quantity;
             }
         }
-
         $challan_sum = $challan_sum / 100;
-
         $purc_order_sum = 0;
         $pur_challan = PurchaseOrder::with('purchase_products')->get();
         foreach ($pur_challan as $qty) {
-
             foreach ($qty['purchase_products'] as $qty_val) {
                 $purc_order_sum += $qty_val->quantity;
             }
         }
-
         $purc_order_sum = $purc_order_sum / 100;
-
-        $allcounts = [];
         $allcounts['order_counts'] = $order;
         $allcounts['pending_counts'] = $pending_order;
         $allcounts['inquiry_counts'] = $inquiry;
@@ -1045,143 +1037,178 @@ class HomeController extends Controller {
     public function appinquiry() {
 
         $data = Input::all();
-        if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
-            $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])
-                            ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')
-                            ->orderBy('created_at', 'desc')->get();
-        } else {
-
-            $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')
-//                            ->where('inquiry_status', 'pending')
-                            ->orderBy('created_at', 'desc')->get();
-        }
+        $q = Inquiry::query();
+        if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '')
+            $q->where('inquiry_status', '=', $data['inquiry_filter']);
+        if (Input::has('inquiry_sync_date') && $data['inquiry_sync_date'] != '')
+            $q->where('created_at', '>', $data['inquiry_sync_date']);
+        $inquiries = $q->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')->orderBy('created_at', 'desc')->get();
         return json_encode($inquiries);
     }
 
     public function apporders() {
+
         $data = Input::all();
         $q = Order::query();
-        if (isset($data['order_filter']) && $data['order_filter'] != '') {
+        if (isset($data['order_filter']) && $data['order_filter'] != '')
             $q->where('order_status', '=', $data['order_filter']);
-        }
+        if (Input::has('order_sync_date') && $data['order_sync_date'] != '')
+            $q->where('created_at', '>', $data['order_sync_date']);
         $allorders = $q->with('all_order_products')->with('customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->get();
         return json_encode($allorders);
     }
 
     public function appinventory() {
 
-        $allinventory = Inventory::with('product_sub_category')->get();
+        if (Input::has('inventory_sync_date') && Input::get('inventory_sync_date') != '')
+            $allinventory = Inventory::with('product_sub_category')->where('created_at', '>', Input::get('inventory_sync_date'))->get();
+        else
+            $allinventory = Inventory::with('product_sub_category')->get();
         return json_encode($allinventory);
     }
 
     public function appdelivery_order() {
 
-        $delivery_data = 0;
-        $delivery_data = DeliveryOrder::orderBy('created_at', 'desc')
-//                        ->where('order_status', 'pending')
-                        ->with('delivery_product', 'customer')->get();
-
-        $do_obj = new DeliveryOrderController();
-        $delivery_data = $do_obj->checkpending_quantity($delivery_data);
+        if (Input::has('delivery_order_sync_date') && Input::get('delivery_order_sync_date') != '')
+            $delivery_orders = DeliveryOrder::where('created_at', '>', Input::get('delivery_order_sync_date'))->orderBy('created_at', 'desc')->with('delivery_product', 'customer')->get();
+        else
+            $delivery_orders = DeliveryOrder::orderBy('created_at', 'desc')->with('delivery_product', 'customer')->get();
+        $delivery_order_obj = new DeliveryOrderController();
+        $delivery_orders = $delivery_order_obj->checkpending_quantity($delivery_orders);
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
-
-        $data = [];
-        $data['delivery_details'] = $delivery_data;
+        $data['delivery_details'] = $delivery_orders;
         $data['delivery_location'] = $delivery_locations;
         return json_encode($data);
     }
 
     public function appalldelivery_challan() {
-        $allorders = DeliveryChallan::with('customer', 'delivery_challan_products', 'delivery_order')
-//                        ->where('challan_status', '=', 'pending')
-                        ->orderBy('created_at', 'desc')->get();
-        return json_encode($allorders);
+
+        if (Input::has('delivery_challan_sync_date') && Input::get('delivery_challan_sync_date') != '')
+            $deliverychallans = DeliveryChallan::with('customer', 'delivery_challan_products', 'delivery_order')->where('created_at', '>', Input::get('delivery_challan_sync_date'))->orderBy('created_at', 'desc')->get();
+        else
+            $deliverychallans = DeliveryChallan::with('customer', 'delivery_challan_products', 'delivery_order')->orderBy('created_at', 'desc')->get();
+        return json_encode($deliverychallans);
     }
 
     public function appallunit() {
-        $units = Units::orderBy('created_at', 'desc')->get();
-        return json_encode($units);
+
+        if (Input::has('unit_sync_date') && Input::get('unit_sync_date') != '')
+            $units = Units::where('created_at', '>', Input::get('unit_sync_date'))->orderBy('created_at', 'desc')->get();
+        else
+            $units = Units::orderBy('created_at', 'desc')->get();
     }
 
     public function appallcity() {
-        $cities = City::with('states')->orderBy('created_at', 'desc')->get();
+
+        if (Input::has('city_sync_date') && Input::get('city_sync_date') != '')
+            $cities = City::with('states')->where('created_at', '>', Input::get('city_sync_date'))->orderBy('created_at', 'desc')->get();
+        else
+            $cities = City::with('states')->orderBy('created_at', 'desc')->get();
         return json_encode($cities);
     }
 
     public function appallstate() {
-        $states = States::orderBy('created_at', 'desc')->get();
+
+        if (Input::has('state_sync_date') && Input::get('state_sync_date') != '')
+            $states = States::where('created_at', '>', Input::get('state_sync_date'))->orderBy('created_at', 'desc')->get();
+        else
+            $states = States::orderBy('created_at', 'desc')->get();
         return json_encode($states);
     }
 
     public function appallcustomers() {
-        $customers = Customer::orderBy('tally_name', 'asc')->where('customer_status', '=', 'permanent')->get();
+
+        if (Input::has('customer_sync_date') && Input::get('customer_sync_date') != '')
+            $customers = Customer::where('created_at', '>', Input::get('customer_sync_date'))->where('customer_status', '=', 'permanent')->orderBy('tally_name', 'asc')->get();
+        else
+            $customers = Customer::where('customer_status', '=', 'permanent')->orderBy('tally_name', 'asc')->get();
         return json_encode($customers);
     }
 
     public function appallproduct_category() {
-        $product_cat = ProductCategory::orderBy('created_at', 'desc')->get();
-        return json_encode($product_cat);
+
+        if (Input::has('product_category_sync_date') && Input::get('product_category_sync_date') != '')
+            $product_category = ProductCategory::where('created_at', '>', Input::get('product_category_sync_date'))->orderBy('created_at', 'desc')->get();
+        else
+            $product_category = ProductCategory::orderBy('created_at', 'desc')->get();
+        return json_encode($product_category);
     }
 
     public function appallproduct_sub_category() {
-        $product_type = ProductType::all();
-        $units = Units::all();
-        $product_sub_cat = "";
-        $q = ProductSubCategory::query();
-        $q->with('product_category');
-        $product_sub_cat = $q->orderBy('created_at', 'desc')->get();
+
+        if (Input::has('product_subcategory_sync_date') && Input::get('product_subcategory_sync_date') != '')
+            $product_sub_cat = ProductSubCategory::with('product_category')->where('created_at', '>', Input::get('product_subcategory_sync_date'))->orderBy('created_at', 'desc')->get();
+        else
+            $product_sub_cat = ProductSubCategory::with('product_category')->orderBy('created_at', 'desc')->get();
         return json_encode($product_sub_cat);
     }
 
     public function appallusers() {
+
         $users_data = User::where('role_id', '!=', 0)->with('user_role')->orderBy('created_at', 'desc')->get();
         return json_encode($users_data);
     }
 
     public function appallpending_customers() {
+
         $customers = Customer::orderBy('created_at', 'desc')->where('customer_status', '=', 'pending')->get();
         return json_encode($customers);
     }
 
     public function appallpending_delivery_order() {
+
         $delivery_data = DeliveryOrder::where('order_status', 'pending')->with('user', 'customer')->get();
         return json_encode($delivery_data);
     }
 
     public function appallpurchaseorders() {
-        $q = PurchaseOrder::query();
-        $purchase_orders = $q->orderBy('created_at', 'desc')->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')->get();
+
+        if (Input::has('purchase_order_sync_date') && Input::get('purchase_order_sync_date') != '')
+            $purchase_orders = PurchaseOrder::with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')->where('created_at', '>', Input::get('purchase_order_sync_date'))->orderBy('created_at', 'desc')->get();
+        else
+            $purchase_orders = PurchaseOrder::with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')->orderBy('created_at', 'desc')->get();
         return json_encode($purchase_orders);
     }
 
     public function appallpurchaseorder_advise() {
-        $q = PurchaseAdvise::query()->with('supplier', 'purchase_products');
-        $purchase_advise = $q->orderBy('created_at', 'desc')->get();
+
+        if (Input::has('purchase_advise_sync_date') && Input::get('purchase_advise_sync_date') != '')
+            $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products')->where('created_at', '>', Input::get('purchase_advise_sync_date'))->orderBy('created_at', 'desc')->get();
+        else
+            $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products')->orderBy('created_at', 'desc')->get();
         return json_encode($purchase_advise);
     }
 
     public function appallpending_purchase_advice() {
-        $q = PurchaseAdvise::query()->with('supplier', 'purchase_products');
-        $q->where('advice_status', '=', 'in_process');
-        $purchase_advise = $q->orderBy('created_at', 'desc')->get();
+
+        $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products')->where('advice_status', '=', 'in_process')->orderBy('created_at', 'desc')->get();
         return json_encode($purchase_advise);
     }
 
     public function appallpurchase_challan() {
-        $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
-//                ->where('order_status', 'pending')
-                        ->orderBy('created_at', 'desc')->get();
+
+        if (Input::has('purchase_challan_sync_date') && Input::get('purchase_challan_sync_date') != '')
+            $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')->where('created_at', '>', Input::get('purchase_challan_sync_date'))->orderBy('created_at', 'desc')->get();
+        else
+            $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')->orderBy('created_at', 'desc')->get();
         return json_encode($purchase_challan);
     }
 
     public function appallpurchase_order_daybook() {
-        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
-                        ->where('order_status', 'completed')->orderBy('created_at', 'desc')->get();
+
+        if (Input::has('purchase_orderdaybook_sync_date') && Input::get('purchase_orderdaybook_sync_date') != '')
+            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')->where('order_status', 'completed')->where('created_at', '>', Input::get('purchase_orderdaybook_sync_date'))->orderBy('created_at', 'desc')->get();
+        else
+            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')->where('order_status', 'completed')->orderBy('created_at', 'desc')->get();
         return json_encode($purchase_daybook);
     }
 
     public function applocation() {
-        $delivery_location = DeliveryLocation::where('status', '=', 'permanent')->with('city', 'states')->orderBy('created_at', 'desc')->get();
+
+        if (Input::has('delivery_location_sync_date') && Input::get('delivery_location_sync_date') != '')
+            $delivery_location = DeliveryLocation::with('city', 'states')->where('status', '=', 'permanent')->where('created_at', '>', Input::get('delivery_location_sync_date'))->orderBy('created_at', 'desc')->get();
+        else
+            $delivery_location = DeliveryLocation::with('city', 'states')->where('status', '=', 'permanent')->orderBy('created_at', 'desc')->get();
         return json_encode($delivery_location);
     }
 

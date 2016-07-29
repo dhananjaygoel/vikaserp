@@ -630,11 +630,7 @@ class DeliveryOrderController extends Controller {
 
     function checkpending_quantity($delivery_orders) {
 
-        $all_del_orders = array();
-        $pending_orders = array();
-
         if (count($delivery_orders) > 0) {
-
             foreach ($delivery_orders as $key => $del_order) {
                 $delivery_order_quantity = 0;
                 $delivery_order_present_shipping = 0;
@@ -644,12 +640,10 @@ class DeliveryOrderController extends Controller {
                         if ($popv->unit_id == 1) {
                             $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
                             $delivery_order_present_shipping = $delivery_order_present_shipping + $popv->present_shipping;
-                        }
-                        if ($popv->unit_id == 2) {
+                        } elseif ($popv->unit_id == 2) {
                             $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight);
                             $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight);
-                        }
-                        if ($popv->unit_id == 3) {
+                        } elseif ($popv->unit_id == 3) {
                             $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
                             $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
                         }
