@@ -38,9 +38,9 @@ class BulkDeleteController extends Controller {
         $password = Input::get('password_delete');
         $expected_date = Input::get('expected_date');
         $delete_seletected_module = Input::get('delete_seletected_module');
-        if ($module == "0" || $module == "") {
-            return back()->with('flash_message_error', 'You have not selected any module.');
-        }
+        if (Input::has('select_module') && (Input::get('select_module') == "0" || Input::get('select_module') == "")) {
++            return redirect('bulk-delete')->with('flash_message_error', 'You have not selected any module.');
+		}
         if (count($delete_seletected_module) > 0) {
             if (!Hash::check($password, Auth::user()->password)) {
                 return back()->with('flash_message_error', 'You have entered wrong password. Please provide correct password.');
