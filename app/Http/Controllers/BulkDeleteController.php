@@ -38,7 +38,7 @@ class BulkDeleteController extends Controller {
         $password = Input::get('password_delete');
         $expected_date = Input::get('expected_date');
         $delete_seletected_module = Input::get('delete_seletected_module');
-        if ($module == "0" || $module == "") {
+        if (Input::has('select_module') && (Input::get('select_module') == "0" || Input::get('select_module') == "")) {
             return back()->with('flash_message_error', 'You have not selected any module.');
         }
         if (count($delete_seletected_module) > 0) {
@@ -61,8 +61,7 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        $inqiry_obj = Inquiry::find($delete_module);
-                        $inqiry_obj->delete();
+                        Inquiry::find($delete_module)->delete();
                     }
                 }
                 $newdate = ((strlen(Input::get('expected_date')) > 1) ? Input::get('expected_date') : date('Y-m-d')) . ' 23:59:59';
@@ -110,9 +109,7 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        $inqiry_obj = Order::find($delete_module);
-                        if (isset($inqiry_obj))
-                            $inqiry_obj->delete();
+                        Order::find($delete_module)->delete();
                     }
                 }
                 /*
@@ -164,8 +161,7 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        $inqiry_obj = DeliveryOrder::find($delete_module);
-                        $inqiry_obj->delete();
+                        DeliveryOrder::find($delete_module)->delete();
                     }
                 }
                 /*
@@ -211,8 +207,7 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        $inqiry_obj = DeliveryChallan::find($delete_module);
-                        $inqiry_obj->delete();
+                        DeliveryChallan::find($delete_module)->delete();
                     }
                 }
                 /*
@@ -249,8 +244,7 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        $inqiry_obj = PurchaseOrder::find($delete_module);
-                        $inqiry_obj->delete();
+                        PurchaseOrder::find($delete_module)->delete();
                     }
                 }
                 /*
@@ -265,7 +259,6 @@ class BulkDeleteController extends Controller {
                                     ->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')->Paginate(20);
                 }
                 $result_temp = $this->quantity_calculation($purchase_orders);
-
                 foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;
                     if ($temp['customer']->tally_name != '')
@@ -300,8 +293,7 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        $purchase_advise_obj = PurchaseAdvise::find($delete_module);
-                        $purchase_advise_obj->delete();
+                        PurchaseAdvise::find($delete_module)->delete();
                     }
                 }
                 /*
@@ -341,8 +333,7 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        $purchase_challan_obj = PurchaseChallan::find($delete_module);
-                        $purchase_challan_obj->delete();
+                        PurchaseChallan::find($delete_module)->delete();
                     }
                 }
                 /*

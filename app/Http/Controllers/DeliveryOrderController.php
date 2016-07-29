@@ -361,6 +361,7 @@ class DeliveryOrderController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy($id) {
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('delivery_order')->with('error', 'You do not have permission.');
         }
@@ -555,7 +556,6 @@ class DeliveryOrderController extends Controller {
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
                 $str .= " Trk No. " . $delivery_data->vehicle_number . ", Drv No. " . $delivery_data->driver_contact_no . ". \nVIKAS ASSOCIATES";
-
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -579,6 +579,7 @@ class DeliveryOrderController extends Controller {
      */
 
     public function pending_quantity_order($id) {
+
         $pending_orders = array();
         $all_order_products = AllOrderProducts::where('order_id', $id)->where('order_type', 'delivery_order')->get();
         $pending_quantity = 0;
@@ -601,10 +602,10 @@ class DeliveryOrderController extends Controller {
      */
 
     function product_price() {
+
         $input_data = Input::get("product_id");
         $customer_id = Input::get("customer_id");
         $delivery_location_id = Input::get("delivery_location_id");
-
         $product_category = ProductCategory::find($input_data);
         $product_price = $product_category->price;
         $product_sub_category = ProductSubCategory::where('product_category_id', $input_data)->first();
@@ -628,6 +629,7 @@ class DeliveryOrderController extends Controller {
      */
 
     function checkpending_quantity($delivery_orders) {
+
         $all_del_orders = array();
         $pending_orders = array();
 
