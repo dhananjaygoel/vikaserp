@@ -38,6 +38,7 @@ class WelcomeController extends Controller {
      * @return void
      */
     public function __construct() {
+        date_default_timezone_set("Asia/Calcutta");
 //		$this->middleware('guest');
     }
 

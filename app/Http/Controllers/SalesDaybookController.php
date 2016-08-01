@@ -23,6 +23,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class SalesDaybookController extends Controller {
 
     public function __construct() {
+        date_default_timezone_set("Asia/Calcutta");
         $this->middleware('validIP');
     }
 

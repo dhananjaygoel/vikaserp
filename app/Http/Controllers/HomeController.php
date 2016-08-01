@@ -46,7 +46,7 @@ class HomeController extends Controller {
      * Create a new controller instance.
      */
     public function __construct() {
-        
+        date_default_timezone_set("Asia/Calcutta");
     }
 
     public function generateUserOtp() {

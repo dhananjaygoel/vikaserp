@@ -26,6 +26,7 @@ use Session;
 class DeliveryChallanController extends Controller {
 
     public function __construct() {
+        date_default_timezone_set("Asia/Calcutta");
         define('PROFILE_ID', Config::get('smsdata.profile_id'));
         define('PASS', Config::get('smsdata.password'));
         define('SENDER_ID', Config::get('smsdata.sender_id'));
@@ -100,7 +101,7 @@ class DeliveryChallanController extends Controller {
      * Update Delivery Challan Details
      */
     public function update($id) {
-        
+
         $input_data = Input::all();
         if (Session::has('forms_edit_delivery_challan')) {
             $session_array = Session::get('forms_edit_delivery_challan');
@@ -197,7 +198,7 @@ class DeliveryChallanController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy($id) {
-        
+
         $inputData = Input::get('formData');
         parse_str($inputData, $formFields);
         $password = $formFields['password'];

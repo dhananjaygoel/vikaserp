@@ -16,6 +16,11 @@ use App\PurchaseOrder;
 use App\ProductSubCategory;
 
 class DashboardController extends Controller {
+
+    public function __construct() {
+        date_default_timezone_set("Asia/Calcutta");
+    }
+
     /*
       | Will get counts of total Orders and Pending Delivery Orders.
       | Counts of All purchases. Pending or Inprocess.

@@ -15,6 +15,10 @@ use App\PurchaseChallan;
 
 class CronDeleteRecordsController extends Controller {
 
+    public function __construct() {
+        date_default_timezone_set("Asia/Calcutta");
+    }
+
     /**
      * Delete data which is 7 days old.
      */
@@ -166,7 +170,7 @@ class CronDeleteRecordsController extends Controller {
                 $purchase_challan[$key]->delete();
             }
         }
-        
+
         echo 'success';
     }
 

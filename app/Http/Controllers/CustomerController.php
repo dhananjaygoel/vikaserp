@@ -32,6 +32,7 @@ use App\ProductType;
 class CustomerController extends Controller {
 
     public function __construct() {
+        date_default_timezone_set("Asia/Calcutta");
         define('PROFILE_ID', Config::get('smsdata.profile_id'));
         define('PASS', Config::get('smsdata.password'));
         define('SENDER_ID', Config::get('smsdata.sender_id'));

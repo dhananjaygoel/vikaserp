@@ -26,6 +26,7 @@ use App\DeliveryOrder;
 class PendingOrderReportController extends Controller {
 
     public function __construct() {
+        date_default_timezone_set("Asia/Calcutta");
         $this->middleware('validIP');
     }
 
