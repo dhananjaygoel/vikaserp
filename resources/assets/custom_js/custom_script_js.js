@@ -1,11 +1,9 @@
 $(document).ready(function () {
     $("#warehouse_radio").click(function () {
         $(".supplier_order").hide();
-
     });
     $("#supplier_radio").click(function () {
         $(".supplier_order").show();
-
     });
     $("#existing_customer").click(function () {
         $(".new_customer_details").hide();
@@ -15,15 +13,12 @@ $(document).ready(function () {
         $(".new_customer_details").show();
         $(".customer_select_order").hide();
     });
-
-
     $("#vat_inclusive").click(function () {
         $(".vat_field").show();
 
     });
     $("#all_inclusive").click(function () {
         $(".vat_field").hide();
-
     });
     $('#add_order_location').change(function () {
         if ($('#add_order_location').val() == 'other') {
@@ -39,7 +34,6 @@ $(document).ready(function () {
         }
     });
     $('#purchase_other_location').change(function () {
-
         if ($('#purchase_other_location').val() == '-1') {
             $('#other_location_input_wrapper').css('display', 'block');
         } else {
@@ -362,7 +356,9 @@ function fetch_price() {
                 }
             }
             var rate = $("#product_price_" + i).val();
+            var vat_percentage = $("#product_vatpercentage_" + i).val();
             var amount = parseFloat(rate) * parseInt(quantity);
+            amount = parseFloat(amount + ((amount * vat_percentage) / 100));
             if (amount > 0) {
                 $("#amount_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
             }
@@ -436,8 +432,8 @@ function grand_total_challan() {
             if ($("#actual_pieces_" + i).val() > 0 && $("#actual_quantity_" + i).val() == 0 || $("#actual_quantity_" + i).val() == '') {
                 quantity = parseFloat($("#actual_pieces_" + i).val());
             }
-
             total_price_products = total_price_products + (parseFloat($('#product_price_' + i).val()) * quantity);
+            total_price_products = total_price_products + parseFloat((total_price_products * $('#product_vatpercentage_' + i).val()) / 100);
             total_actual_quantity = total_actual_quantity + quantity;
         }
     }

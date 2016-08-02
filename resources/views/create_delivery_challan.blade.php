@@ -63,6 +63,7 @@
                                             <td><span>Actual Pieces</span></td>
                                             <td><span>Present Shipping</span></td>
                                             <td><span>Rate</span></td>
+                                            <td><span>Vat Percentage</span></td>
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
                                             <td><span>Amount</span></td>
                                         </tr>
@@ -102,6 +103,9 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">{{$product->price}}<input type="hidden" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="fetch_price();"></div>
+                                            </td>
+                                            <td class="col-md-2">
+                                                <div class="form-group">{{$product->vat_percentage}}<input type="hidden" class="form-control" id="product_vatpercentage_{{$key}}" value="{{$product->vat_percentage}}" name="product[{{$key}}][vat_percentage]" placeholder="Vat Percentage" onblur="fetch_price();"></div>
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group ">
@@ -192,11 +196,11 @@
                             <input id="labour" class="form-control" placeholder="Labour" name="labour" value="" type="tel">
                         </div>
                         @if($delivery_data->vat_percentage==0)
-                        <div class="form-group">
+<!--                        <div class="form-group">
                             <label for="Plusvat"><b class="challan">Plus VAT : </b> No</label>
-                        </div>
+                        </div>-->
                         @else
-                        <div class="form-group">
+<!--                        <div class="form-group">
                             <label for="vatp"><b class="challan">VAT Percentage : </b>
                                 {{$delivery_data->vat_percentage}}
                                 <input type="hidden" name="vat_percentage" id="vat_percentage" value="{{$delivery_data->vat_percentage}}" readonly="readonly">
@@ -206,7 +210,7 @@
                             <label for="vatp"><b class="challan">VAT Value : </b>
                                 <span id="vat_val"></span>
                             </label>
-                        </div>
+                        </div>-->
                         @endif
                         <div class="form-group">
                             <label for="vatp"><b class="challan">Total : </b>

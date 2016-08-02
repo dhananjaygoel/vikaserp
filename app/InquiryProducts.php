@@ -18,7 +18,7 @@ class InquiryProducts extends Model {
      *
      * @var array
      */
-    protected $fillable = ['inquiry_id', 'product_category_id', 'unit_id', 'quantity', 'price', 'remarks'];
+    protected $fillable = ['inquiry_id', 'product_category_id', 'unit_id', 'quantity', 'price', 'vat_percentage', 'remarks'];
 
     public function unit() {
         return $this->hasOne('App\Units', 'id', 'unit_id');
@@ -27,7 +27,7 @@ class InquiryProducts extends Model {
     public function product_category() {
         return $this->hasOne('App\ProductCategory', 'id', 'product_category_id');
     }
-    
+
     public function inquiry_product_details() {
         return $this->hasOne('App\ProductSubCategory', 'id', 'product_category_id')->with('product_category');
     }

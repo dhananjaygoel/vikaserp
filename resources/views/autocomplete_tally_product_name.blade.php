@@ -75,7 +75,7 @@
                 '<input type="hidden" name="product[' + current_row_count + '][order]" value="">' +
                 '</tr>';
         $("#add_product_table_delivery_order").children("tbody").append(html);
-        //  --------------------------------------Enter product name---------------------------------------------              
+//  --------------------------------------Enter product name---------------------------------------------              
                 {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
                     return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
                 }) !!} 
@@ -119,7 +119,12 @@
                 '<input type="tel" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
                 '</div>' +
                 '</td>' +
-                '<td class="col-md-4">' +
+                '<td class="col-md-2">' +
+                '<div class="form-group">' +
+                '<input type="tel" class="form-control" placeholder="Vat Percentage" id="vat_percentage_' + current_row_count + '" name="product[' + current_row_count + '][vat_percentage]">' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-2">' +
                 '<div class="form-group">' +
                 '<input id="remark" class="form-control" placeholder="Remark" name="product[' + current_row_count + '][remark]" value="" type="text">' +
                 '</div>' +
@@ -158,12 +163,12 @@
                 '</td>' +
                 '</tr>';
         $("#add_product_table_purchase").children("tbody").append(purchase_html);
-               //  --------------------------------------Enter product name---------------------------------------------              
+//  --------------------------------------Enter product name---------------------------------------------              
                 {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
                     return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
                 }) !!} 
     });
-//  --------------------------------------Dynamic add product delevery chalan name---------------------------------------------     
+//  --------------------------------------Dynamic add product delivery challan name---------------------------------------------     
     $("#add_product_row_delivery_challan").on("click", function () {
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
@@ -221,7 +226,7 @@
                 '<input type="hidden" name="product[' + current_row_count + '][order]" value="">' +
                 '</tr>';
         $("#add_product_table_delivery_challan").children("tbody").append(html);
-        //  --------------------------------------Enter product name---------------------------------------------              
+//  --------------------------------------Enter product name---------------------------------------------              
                 {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
                     return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
                 }) !!}
@@ -304,7 +309,7 @@
                 '</td>' +
                 '</tr>';
         $("#add_product_table_purchase").children("tbody").append(purchase_html);
-         //  --------------------------------------Enter product name---------------------------------------------              
+//  --------------------------------------Enter product name---------------------------------------------              
                 {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
                     return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
                 }) !!}

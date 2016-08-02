@@ -61,7 +61,6 @@
                                 <select class="form-control" name="supplier_id" id="add_status_type">
                                     <option value="" disabled="">Select supplier</option>
                                     @if(count($customers)>0)
-
                                     @foreach($customers as $customer)
                                     <option
                                     <?php
@@ -69,11 +68,7 @@
                                         echo 'selected="selected"';
                                     }
                                     ?> value="{{$customer->id}}">
-                                        @if($customer->tally_name != "")
-                                        {{$customer->tally_name}}
-                                        @else
-                                        {{$customer->owner_name}}
-                                        @endif
+                                        {{($customer->tally_name != "")?$customer->tally_name:$customer->owner_name}}
                                     </option>
                                     @endforeach
                                     @endif
@@ -170,17 +165,9 @@
                                     <select class="form-control" name="add_inquiry_location" id="add_order_location">
                                         <option value="0">Delivery Location</option>
                                         @foreach($delivery_location as $location)
-                                        @if($order->delivery_location_id == $location->id)
-                                        <option value="{{$location->id}}" selected="" data-location-difference="{{$location->difference}}">{{$location->area_name}}</option>
-                                        @else
-                                        <option value="{{$location->id}}" data-location-difference="{{$location->difference}}">{{$location->area_name}}</option>
-                                        @endif
+                                        <option value="{{$location->id}}" {{($order->delivery_location_id == $location->id)?'selected':''}} data-location-difference="{{$location->difference}}">{{$location->area_name}}</option>
                                         @endforeach
-                                        @if($order->delivery_location_id == 0)
-                                        <option id="other_location" value="other" selected="">Other</option>
-                                        @else
-                                        <option id="other_location" value="other">Other</option>
-                                        @endif
+                                        <option id="other_location" value="other" {{($order->delivery_location_id == 0)?'selected':''}} >Other</option>
                                     </select>
                                 </div>
                                 <div class="col-md-4">
@@ -219,6 +206,7 @@
                                             <td><span>Quantity</span></td>
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
                                             <td><span>Price</span><span class="mandatory">*</span></td>
+                                            <td><span>Vat Percentage</span></td>
                                             <td><span>Remark</span></td>
                                         </tr>
                                         <?php
@@ -256,7 +244,12 @@
                                                                 <input type="text" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
                                                             </div>
                                                         </td>
-                                                        <td class="col-md-4">
+                                                        <td class="col-md-2">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" id="vat_percentage_{{$i}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat percentage" value="<?php if (isset($session_data['product'][$i]['vat_percentage'])) { ?>{{$session_data['product'][$i]['vat_percentage']}}<?php } ?>">
+                                                            </div>
+                                                        </td>
+                                                        <td class="col-md-2">
                                                             <div class="form-group">
                                                                 <input id="remark" class="form-control" placeholder="Remark" name="product[{{$i}}][remark]" type="text" value="<?php if (isset($session_data['product'][$i]['remark'])) { ?>{{$session_data['product'][$i]['remark']}}<?php } ?>">
                                                             </div>
@@ -302,7 +295,12 @@
                                                         <input type="tel" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
                                                     </div>
                                                 </td>
-                                                <td class="col-md-4">
+                                                <td class="col-md-2">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="vat_percentage_{{$key}}" name="product[{{$key}}][vat_percentage]" placeholder="Vat percentage" value="{{$product->vat_percentage}}">
+                                                    </div>
+                                                </td>
+                                                <td class="col-md-2">
                                                     <div class="form-group">
                                                         <input id="remark" class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text">
                                                     </div>
@@ -341,6 +339,7 @@
                         </div>
                         <div class="clearfix"></div>
                         @if($order->vat_percentage == 0)
+                        <!--
                         <div class="form-group">
                             <div class="radio">
                                 <input checked="" value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
@@ -361,7 +360,9 @@
                                 </table>
                             </div>
                         </div>
+                        -->
                         @elseif($order->vat_percentage != 0)
+                        <!--
                         <div class="form-group">
                             <div class="radio">
                                 <input value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
@@ -382,6 +383,7 @@
                                 </table>
                             </div>
                         </div>
+                        -->
                         @endif
                         <div class="clearfix"></div>
                         <div class="form-group col-md-4 targetdate">
@@ -401,7 +403,7 @@
                         </div>
                         <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip btn_edit_order_sms" id="edit_order_sendSMS" >Save and Send SMS</button>
                         <hr>
-                        <div >
+                        <div>
                             <button type="submit" class="btn btn-primary form_button_footer btn_edit_order">Submit</button>
                             <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>
                         </div>

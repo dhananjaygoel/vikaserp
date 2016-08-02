@@ -177,6 +177,7 @@
                                             <td><span>Quantity</span></td>
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
                                             <td><span>Price</span></td>
+                                            <td><span>Vat Percentage</span></td>
                                             <td><span>Remark</span></td>
                                         </tr>
                                         <?php
@@ -211,6 +212,11 @@
                                                         <td class="col-md-2">
                                                             <div class="form-group">
                                                                 <input type="text" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
+                                                            </div>
+                                                        </td>
+                                                        <td class="col-md-2">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" id="vat_percentage_{{$i}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat percentage" value="<?php if (isset($session_data['product'][$i]['vat_percentage'])) { ?>{{$session_data['product'][$i]['vat_percentage']}}<?php } ?>">
                                                             </div>
                                                         </td>
                                                         <td class="col-md-4">
@@ -257,6 +263,11 @@
                                                         <input type="text" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
                                                     </div>
                                                 </td>
+                                                <td class="col-md-2">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="vat_percentage_{{$key}}" name="product[{{$key}}][vat_percentage]" placeholder="Vat percentage" value="{{$product->vat_percentage}}">
+                                                    </div>
+                                                </td>
                                                 <td class="col-md-4">
                                                     <div class="form-group">
                                                         <input id="remark" class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text">
@@ -298,6 +309,7 @@
 
                         <div class="clearfix"></div>
                         @if($inquiry->vat_percentage == 0)
+                        <!--
                         <div class="form-group">
                             <div class="radio">
                                 <input checked="" value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
@@ -306,7 +318,6 @@
                                 <label for="optionsRadios4">Plus VAT</label>
                             </div>
                         </div>
-
                         <div class="plusvat " style="display: none">
                             <div class="form-group">
                                 <table id="table-example" class="table ">
@@ -319,7 +330,9 @@
                                 </table>
                             </div>
                         </div>
+                        -->
                         @elseif($inquiry->vat_percentage != 0)
+                        <!--
                         <div class="form-group">
                             <div class="radio">
                                 <input value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
@@ -328,7 +341,6 @@
                                 <label for="optionsRadios4">Plus VAT</label>
                             </div>
                         </div>
-
                         <div class="plusvat">
                             <div class="form-group">
                                 <table id="table-example" class="table ">
@@ -341,6 +353,7 @@
                                 </table>
                             </div>
                         </div>
+                        -->
                         @endif
                         <div class="form-group col-md-4 targetdate">
                             <label for="date">Expected Delivery Date:</label>

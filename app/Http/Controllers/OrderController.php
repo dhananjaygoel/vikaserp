@@ -89,7 +89,7 @@ class OrderController extends Controller {
             $q->with('all_order_products');
         }
         if (Input::has('flag') && Input::get('flag') == 'true') {
-            $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('flaged', 'desc')->paginate(20);
+            $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('flaged', 'desc')->orderBy('created_at', 'desc')->paginate(20);
         } else {
             $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->paginate(20);
         }
@@ -160,11 +160,8 @@ class OrderController extends Controller {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
                 $customers = new Customer();
-                $customers->owner_name = $input_data['customer_name'];
-                $customers->contact_person = $input_data['contact_person'];
-                $customers->phone_number1 = $input_data['mobile_number'];
-                $customers->credit_period = $input_data['credit_period'];
-                $customers->customer_status = 'pending';
+                $newcustomer = $customers->addNewCustomer($input_data['customer_name'], $input_data['contact_person'], $input_data['mobile_number'], $input_data['credit_period']);
+                $customer_id = $newcustomer->id;
             } else {
                 $error_msg = $validator->messages();
                 Session::forget('product');
@@ -214,22 +211,18 @@ class OrderController extends Controller {
             $order_status = 'supplier';
             $supplier_id = $input_data['supplier_id'];
         }
-        if ($input_data['status1'] == 'include_vat') {
-            $vat_price = '';
-        }
-        if ($input_data['status1'] == 'exclude_vat') {
-            $vat_price = $input_data['vat_price'];
-        }
-        if ($input_data['customer_status'] == "new_customer") {
-            $customers->save();
-            $customer_id = $customers->id;
-        }
+//        if ($input_data['status1'] == 'include_vat') {
+//            $vat_price = '';
+//        }
+//        if ($input_data['status1'] == 'exclude_vat') {
+//            $vat_price = $input_data['vat_price'];
+//        }        
         $order = new Order();
         $order->order_source = $order_status;
         $order->supplier_id = $supplier_id;
         $order->customer_id = $customer_id;
         $order->created_by = Auth::id();
-        $order->vat_percentage = $vat_price;
+//        $order->vat_percentage = $vat_price;
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
         $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
@@ -307,7 +300,7 @@ class OrderController extends Controller {
             }
         }
         $order->save();
-        $order_id = DB::getPdo()->lastInsertId();
+        $order_id = $order->id;
         $order_products = array();
         foreach ($input_data['product'] as $product_data) {
             if (($product_data['name'] != "") && ($product_data['id'] != "") && ($product_data['id'] > 0)) {
@@ -318,9 +311,10 @@ class OrderController extends Controller {
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
-                    'remarks' => $product_data['remark'],
+                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
+                    'remarks' => $product_data['remark']
                 ];
-                $add_order_products = AllOrderProducts::create($order_products);
+                AllOrderProducts::create($order_products);
             }
         }
 
@@ -368,6 +362,7 @@ class OrderController extends Controller {
      * Functioanlity: Display order details of particulat order
      */
     public function show($id) {
+
         $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->find($id);
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
@@ -382,6 +377,7 @@ class OrderController extends Controller {
      * Functioanlity: Show edit order details page
      */
     public function edit($id) {
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -416,9 +412,7 @@ class OrderController extends Controller {
             array_push($forms_array, $input_data['form_key']);
             Session::put('forms_edit_order', $forms_array);
         }
-        $rules = array(
-            'status' => 'required',
-        );
+        $rules = [ 'status' => 'required'];
         $validator = Validator::make($input_data, $rules);
         if ($validator->fails()) {
             Session::forget('product');
@@ -450,13 +444,8 @@ class OrderController extends Controller {
                     $customer_id = $input_data['pending_user_id'];
                 } else {
                     $customers = new Customer();
-                    $customers->owner_name = $input_data['customer_name'];
-                    $customers->contact_person = $input_data['contact_person'];
-                    $customers->phone_number1 = $input_data['mobile_number'];
-                    $customers->credit_period = $input_data['credit_period'];
-                    $customers->customer_status = 'pending';
-                    $customers->save();
-                    $customer_id = $customers->id;
+                    $newcustomer = $customers->addNewCustomer($input_data['customer_name'], $input_data['contact_person'], $input_data['mobile_number'], $input_data['credit_period']);
+                    $customer_id = $newcustomer->id;
                 }
             } else {
                 $error_msg = $validator->messages();
@@ -484,12 +473,12 @@ class OrderController extends Controller {
             $order_status = 'supplier';
             $supplier_id = $input_data['supplier_id'];
         }
-        if ($input_data['vat_status'] == 'include_vat') {
-            $vat_price = '';
-        }
-        if ($input_data['vat_status'] == 'exclude_vat') {
-            $vat_price = $input_data['vat_percentage'];
-        }
+//        if ($input_data['vat_status'] == 'include_vat') {
+//            $vat_price = '';
+//        }
+//        if ($input_data['vat_status'] == 'exclude_vat') {
+//            $vat_price = $input_data['vat_percentage'];
+//        }
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
         $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
@@ -500,7 +489,7 @@ class OrderController extends Controller {
             'customer_id' => $customer_id,
             'created_by' => Auth::id(),
             'delivery_location_id' => $input_data['add_inquiry_location'],
-            'vat_percentage' => $input_data['vat_percentage'],
+//            'vat_percentage' => $input_data['vat_percentage'],
             'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['order_remark']
         ]);
@@ -510,8 +499,7 @@ class OrderController extends Controller {
                 'location_difference' => $input_data['location_difference']
             ]);
         } else {
-            $update_order = $order->update([
-                'other_location' => '',
+            $update_order = $order->update([ 'other_location' => '',
                 'location_difference' => $input_data['location_difference']
             ]);
         }
@@ -524,7 +512,8 @@ class OrderController extends Controller {
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
-                    'remarks' => $product_data['remark'],
+                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
+                    'remarks' => $product_data['remark']
                 ];
                 $edit_order_products = AllOrderProducts::find($product_data['order']);
                 $edit_order_products->update($order_products);
@@ -536,9 +525,10 @@ class OrderController extends Controller {
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
-                    'remarks' => $product_data['remark'],
+                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
+                    'remarks' => $product_data['remark']
                 ];
-                $add_order_products = AllOrderProducts::create($order_products);
+                AllOrderProducts::create($order_products);
             }
         }
 
@@ -632,7 +622,6 @@ class OrderController extends Controller {
                     $receipent['email'] = $customers->email;
                     $receipent['name'] = $customers->owner_name;
                 }
-
                 Mail::send('emails.new_order_mail', ['order' => $mail_array], function($message) use($receipent) {
                     $message->to($receipent['email'], $receipent['name'])->subject('Vikash Associates: Order Updated');
                 });
@@ -650,19 +639,16 @@ class OrderController extends Controller {
         $inputData = Input::get('formData');
         parse_str($inputData, $formFields);
         $password = $formFields['password'];
+        $userinfo = auth()->user();
         $order_sort_type = $formFields['order_sort_type'];
-
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        if ($userinfo->role_id != 0 && $userinfo->role_id != 1) {
+            return redirect('orders')->with('error', 'You do not have permission.');
+        } elseif ($password == '') {
+            return redirect('orders')->with('error', 'Please enter your password');
         }
-        if ($password == '') {
-            return Redirect::to('orders')->with('error', 'Please enter your password');
-        }
-        $current_user = User::find(Auth::id());
-        if (Hash::check($password, $current_user->password)) {
-            $order = Order::find($id);
+        if (Hash::check($password, $userinfo->password)) {
             AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'order')->delete();
-            $order->delete();
+            Order::find($id)->delete();
             Session::put('order-sort-type', $order_sort_type);
             return array('message' => 'success');
         } else {
@@ -677,7 +663,7 @@ class OrderController extends Controller {
     public function manual_complete_order() {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return redirect('orders')->with('error', 'You do not have permission.');
         }
         $formFields = Input::get('formData');
         parse_str($formFields, $input);
@@ -754,9 +740,8 @@ class OrderController extends Controller {
             }
 //            }
         }
-        $update_order = $order->update([
-            'order_status' => "Cancelled"
-        ]);
+        $order->order_status = "Cancelled";
+        $order->save();
         $cancel_order = OrderCancelled::create([
                     'order_id' => $order_id,
                     'order_type' => 'Order',
@@ -782,11 +767,10 @@ class OrderController extends Controller {
             $total_delivery_order_product_quantity = $delivery_order_products->sum('quantity');
             $order['all_order_products'][$key]['pending_quantity'] = ($value->quantity - $total_delivery_order_product_quantity);
         }
-
         $units = Units::all();
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
-        return View::make('create_delivery_order', compact('order', 'delivery_location', 'units', 'customers'));
+        return view('create_delivery_order', compact('order', 'delivery_location', 'units', 'customers'));
     }
 
     /*
@@ -794,11 +778,11 @@ class OrderController extends Controller {
      */
 
     public function pending_quantity_order($id) {
-        $pending_orders = array();
 
+        $pending_orders = array();
         $delivery_orders = DeliveryOrder::where('order_id', $id)->get();
-        $order_products = AllOrderProducts::where('order_id', $id)->where('order_type', 'order')->get();
-        $pending_qty = 0;
+//        $order_products = AllOrderProducts::where('order_id', $id)->where('order_type', 'order')->get();
+//        $pending_qty = 0;
         $total_qty = 0;
         $temp_array = array();
         foreach ($delivery_orders as $del_order) {
@@ -828,8 +812,8 @@ class OrderController extends Controller {
             }
         }
         $order_all_order_products = AllOrderProducts::where('order_id', $id)->where('order_type', 'order')->get();
-        $total_quantity_ord = 0;
-        $tot_pend_qty = 0;
+//        $total_quantity_ord = 0;
+//        $tot_pend_qty = 0;
         foreach ($order_all_order_products as $ordes_products) {
             $list_id = $ordes_products->id;
             $quantity = $ordes_products->quantity;
@@ -864,7 +848,6 @@ class OrderController extends Controller {
                 return Redirect::back()->with('flash_message', 'This delivry order is already saved. Please refresh the page');
             }
         }
-
         if (Session::has('forms_delivery_order')) {
             $session_array = Session::get('forms_delivery_order');
             if (count($session_array) > 0) {
@@ -890,7 +873,7 @@ class OrderController extends Controller {
             $delivery_order->order_source = $order->order_source;
             $delivery_order->supplier_id = $order->supplier_id;
             $delivery_order->created_by = $user->id;
-            $delivery_order->vat_percentage = $order->vat_percentage;
+//            $delivery_order->vat_percentage = $order->vat_percentage;
             $delivery_order->expected_delivery_date = $order->expected_delivery_date;
             $delivery_order->remarks = $input_data['remarks'];
             $delivery_order->vehicle_number = $input_data['vehicle_number'];
@@ -905,14 +888,14 @@ class OrderController extends Controller {
                 $delivery_order->location_difference = $order->location_difference;
             }
             $delivery_order->save();
-            $order_products = array();
-            $order_id = DB::getPdo()->lastInsertId();
+            $delivery_order_id = $delivery_order->id;
             $total_qty = 0;
             $present_shipping = 0;
+            $order_products = array();
             foreach ($input_data['product'] as $product_data) {
                 if ($product_data['name'] != "" && $product_data['order'] != '') {
                     $order_products = [
-                        'order_id' => $order_id,
+                        'order_id' => $delivery_order_id,
                         'order_type' => 'delivery_order',
                         'from' => $id,
                         'product_category_id' => $product_data['id'],
@@ -920,25 +903,27 @@ class OrderController extends Controller {
                         'quantity' => $product_data['present_shipping'],
                         'present_shipping' => $product_data['present_shipping'],
                         'price' => $product_data['price'],
+                        'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
                         'remarks' => $product_data['remark'],
                         'parent' => $product_data['order']
                     ];
                     $total_qty = $total_qty + $product_data['quantity'];
                     $present_shipping = $present_shipping + $product_data['present_shipping'];
-                    $add_order_products = AllOrderProducts::create($order_products);
+                    AllOrderProducts::create($order_products);
                 }
                 if ($product_data['name'] != "" && $product_data['order'] == '') {
                     $order_products = [
-                        'order_id' => $order_id,
+                        'order_id' => $delivery_order_id,
                         'order_type' => 'delivery_order',
                         'product_category_id' => $product_data['product_category_id'],
                         'unit_id' => $product_data['units'],
                         'quantity' => $product_data['present_shipping'],
                         'present_shipping' => $product_data['present_shipping'],
                         'price' => $product_data['price'],
+                        'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
                         'remarks' => $product_data['remark']
                     ];
-                    $add_order_products = AllOrderProducts::create($order_products);
+                    AllOrderProducts::create($order_products);
                 }
             }
             //If pending quantity is Zero complete the order
@@ -979,11 +964,9 @@ class OrderController extends Controller {
                     $product_size = ProductSubCategory::find($dopv->product_category_id);
                     if ($dopv->unit_id == 1) {
                         $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity;
-                    }
-                    if ($dopv->unit_id == 2) {
+                    } elseif ($dopv->unit_id == 2) {
                         $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight;
-                    }
-                    if ($dopv->unit_id == 3) {
+                    } elseif ($dopv->unit_id == 3) {
                         $delivery_order_quantity = $delivery_order_quantity + ($dopv->quantity / $product_size->standard_length ) * $product_size->weight;
                     }
                 }
@@ -993,20 +976,14 @@ class OrderController extends Controller {
                     $product_size = ProductSubCategory::find($opv->product_category_id);
                     if ($opv->unit_id == 1) {
                         $order_quantity = $order_quantity + $opv->quantity;
-                    }
-                    if ($opv->unit_id == 2) {
+                    } elseif ($opv->unit_id == 2) {
                         $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
-                    }
-                    if ($opv->unit_id == 3) {
+                    } elseif ($opv->unit_id == 3) {
                         $order_quantity = $order_quantity + (($opv->quantity / $product_size->standard_length ) * $product_size->weight);
                     }
                 }
             }
-            if ($delivery_order_quantity >= $order_quantity) {
-                $allorders[$key]['pending_quantity'] = 0;
-            } else {
-                $allorders[$key]['pending_quantity'] = ($order_quantity - $delivery_order_quantity);
-            }
+            $allorders[$key]['pending_quantity'] = ($delivery_order_quantity >= $order_quantity) ? 0 : ($order_quantity - $delivery_order_quantity);
             $allorders[$key]['total_quantity'] = $order_quantity;
         }
         return $allorders;
@@ -1017,18 +994,15 @@ class OrderController extends Controller {
      */
 
     public function fetch_order_size() {
+
         $term = '%' . Input::get('term') . '%';
         $product = ProductSubCategory::where('size', 'like', $term)->get();
         if (count($product) > 0) {
             foreach ($product as $prod) {
-                $data_array[] = [
-                    'value' => $prod->size
-                ];
+                $data_array[] = [ 'value' => $prod->size];
             }
         } else {
-            $data_array[] = [
-                'value' => 'No size found',
-            ];
+            $data_array[] = [ 'value' => 'No size found'];
         }
         echo json_encode(array('data_array' => $data_array));
     }

@@ -184,7 +184,7 @@ $(document).ready(function () {
                 '<input id="actual_quantity_' + current_row_count + '" class="form-control delivery_challan_qty" placeholder="Qnty" name="product[' + current_row_count + '][actual_quantity]" value="" type="text" onblur="fetch_price();">' +
                 '</div>' +
                 '</td>' +
-                '<td class="col-md-2">' +
+                '<td class="col-md-1">' +
                 '<div class="form-group">' +
                 '<input id="actual_pieces_' + current_row_count + '" class="form-control calc_actual_quantity" placeholder="Actual Pieces" name="product[' + current_row_count + '][actual_pieces]" value="" type="text" onblur="fetch_price();">' +
                 '</div>' +
@@ -196,16 +196,21 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-2">' +
                 '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+                '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]" onblur="fetch_price();">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
+                '<div class="form-group">' +
+                '<input type="text" class="form-control" placeholder="Vat Percentage" id="product_vatpercentage_' + current_row_count + '" name="product[' + current_row_count + '][vat_percentage]" onblur="fetch_price();">' +
+                '</div>' +
+                '</td>' +
+                '<td class="col-md-1">' +
                 '<div class="form-group ">' +
                 '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
                 '</select>' +
                 '</div>' +
                 '</td>' +
-                '<td class="col-md-2">' +
+                '<td class="col-md-1">' +
                 '<div class="form-group">' +
                 '<div id="amount_' + current_row_count + '">0</div>' +
                 '</div>' +

@@ -9,9 +9,7 @@
                     <li><a href="{{url('delivery_challan')}}">Delivery Challan</a></li>
                     <li class="active"><span>Edit Delivery Challan</span></li>
                 </ol>
-                <div class="clearfix">
-                    <h1 class="pull-left">Edit Delivery Challan</h1>
-                </div>
+                <div class="clearfix"><h1 class="pull-left">Edit Delivery Challan</h1></div>
             </div>
         </div>
         <div class="row">
@@ -53,6 +51,7 @@
                                             <td><span>Actual Pieces</span></td>
                                             <td><span>Present Shipping</span></td>
                                             <td><span>Rate</span></td>
+                                            <td><span>Vat Percentage</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Amount</span></td>
                                         </tr>
@@ -77,20 +76,24 @@
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
                                                 <div class="form-group">
                                                     <input id="actual_pieces_{{$key}}" class="form-control" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{$product->actual_pieces}}" type="tel" onblur="fetch_price();">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
-                                                <div class="form-group">
-                                                    {{ $product->present_shipping}}
+                                                <div class="form-group">{{ $product->present_shipping}}
                                                     <input id="present_shipping_{{$key}}" class="form-control text-center" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{ $product->present_shipping}}" type="hidden" >
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="change_amount({{$key}})">
+                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="fetch_price({{$key}})">
+                                                </div>
+                                            </td>
+                                            <td class="col-md-2">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="product_vatpercentage_{{$key}}" value="{{$product->vat_percentage}}" name="product[{{$key}}][vat_percentage]" placeholder="Vat Percenatge" onblur="fetch_price({{$key}})">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -102,10 +105,9 @@
                                                     <input type="hidden" id="unit_name_{{$key}}" value="{{$unit->unit_name}}">
                                                     @endif
                                                     @endforeach
-
                                                 </div>
                                             </td>
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
                                                 <div class="form-group"><div id="amount_{{$key}}"></div></div>
                                             </td>
                                         </tr>
@@ -126,7 +128,7 @@
                                                     <input id="actual_quantity_{{$key}}" class="form-control delivery_challan_qty" placeholder="Qnty" name="product[{{$key}}][actual_quantity]" value="" type="tel" onblur="fetch_price();">
                                                 </div>
                                             </td>
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
                                                 <div class="form-group">
                                                     <input id="actual_pieces_{{$key}}" class="form-control" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="" type="tel" onblur="fetch_price();">
                                                 </div>
@@ -138,7 +140,12 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="" name="product[{{$key}}][price]" placeholder="Price" onblur="change_amount({{$key}})">
+                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="" name="product[{{$key}}][price]" placeholder="Price" onblur="fetch_price({{$key}})">
+                                                </div>
+                                            </td>
+                                            <td class="col-md-2">
+                                                <div class="form-group">
+                                                    <input type="tel" class="form-control" id="product_vatpercentage_{{$key}}" value="" name="product[{{$key}}][vat_percentage]" placeholder="Vat Percentage" onblur="fetch_price({{$key}})">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -152,7 +159,7 @@
                                                     @endforeach
                                                 </div>
                                             </td>
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
                                                 <div class="form-group">
                                                     <div id="amount_{{$key}}"></div>
                                                 </div>

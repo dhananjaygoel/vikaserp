@@ -142,6 +142,7 @@
                                             <td><span>Quantity</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Price</span></td>
+                                            <td><span>Vat Percentage</span></td>
                                             <td><span>Remark</span></td>
                                         </tr>
                                         @foreach($inquiry['inquiry_products'] as $key=>$product)
@@ -162,11 +163,7 @@
                                                 <div class="form-group ">
                                                     <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}">
                                                         @foreach($units as $unit)
-                                                        @if($product->unit_id == $unit->id)
-                                                        <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
-                                                        @else
-                                                        <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
-                                                        @endif
+                                                        <option value="{{$unit->id}}" {{($product->unit_id == $unit->id)?'selected':''}} >{{$unit->unit_name}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -176,7 +173,12 @@
                                                     <input type="text" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
                                                 </div>
                                             </td>
-                                            <td class="col-md-4">
+                                            <td class="col-md-2">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="vat_percentage_{{$key}}" name="product[{{$key}}][vat_percentage]" placeholder="Vat percentage" value="{{$product->vat_percentage}}">
+                                                </div>
+                                            </td>
+                                            <td class="col-md-2">
                                                 <div class="form-group">
                                                     <input id="remark" class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text">
                                                 </div>
@@ -260,6 +262,7 @@
                         @endif
                         <div class="clearfix"></div>
                         @if($inquiry->vat_percentage == 0)
+                        <!--
                         <div class="form-group">
                             <div class="radio">
                                 <input checked="" value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
@@ -280,7 +283,9 @@
                                 </table>
                             </div>
                         </div>
+                        -->
                         @elseif($inquiry->vat_percentage != 0)
+                        <!--
                         <div class="form-group">
                             <div class="radio">
                                 <input value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
@@ -301,6 +306,7 @@
                                 </table>
                             </div>
                         </div>
+                        -->
                         @endif
                         <div class="form-group col-md-4 targetdate">
                             <label for="date">Expected Delivery Date: </label>

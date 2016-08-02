@@ -173,41 +173,22 @@
             <div class="name-date">
                 <div class="">
                     <div class="name">
-                        Name:
-
-                        @if(isset($allorder['customer']->tally_name) && $allorder['customer']->tally_name != "")
-                        {{$allorder['customer']->tally_name}}
-                        @else
-                        {{$allorder['customer']->owner_name}}
-                        @endif
+                        Name:                       
+                        {{(isset($allorder['customer']->tally_name) && $allorder['customer']->tally_name != "")?$allorder['customer']->tally_name:$allorder['customer']->owner_name}}
                     </div>
-                    <div class="date">
-                        Date: {{date('F d, Y')}}
-                    </div>
+                    <div class="date">Date: {{date('F d, Y')}}</div>
                 </div>
             </div>
             <div class="delivery-details">
                 <div class="delivery">
-                    Delivery @: @if($allorder['delivery_order']->delivery_location_id!=0)
-                    {{ $allorder['delivery_order']['location']->area_name }}
-                    @else
-                    {{ $allorder['delivery_order']->other_location }}
-                    @endif
+                    Delivery @: {{($allorder['delivery_order']->delivery_location_id!=0)? $allorder['delivery_order']['location']->area_name:$allorder['delivery_order']->other_location }}
                 </div>
-                <div class="estmt-no">
-                    Challan Serial: {{ $allorder->serial_number }}
-                </div>
+                <div class="estmt-no">Challan Serial: {{ $allorder->serial_number }}</div>
             </div>
-
             <div class="time">
-                <div class="time-gen">
-                    Time Created: {{ date("h:i:sa", strtotime($allorder->created_at))}}
-                </div>
-                <div class="time-prnt">
-                    Time Print: {{ date("h:i:sa") }}
-                </div>
+                <div class="time-gen">Time Created: {{ date("h:i:sa", strtotime($allorder->created_at))}}</div>
+                <div class="time-prnt">Time Print: {{ date("h:i:sa") }}</div>
             </div>
-
             <div class="divTable">
                 <div class="headRow">
                     <div class="divCell2">Sr.</div>
@@ -224,7 +205,6 @@
                 ?>
 
                 @foreach($allorder['delivery_challan_products'] as $prod)
-
                 @if($prod->order_type == 'delivery_challan')
                 <div class="divRow">
                     <div class="divCell2">{{ $i++ }}</div>
@@ -254,21 +234,15 @@
                 ?>
                 @endif
                 @endforeach
-
             </div>
-
             <div class="footer">
                 <div class="total-desc">
                     <div class="quantity">
                         Total Quantity: {{ round($allorder['delivery_challan_products']->sum('actual_quantity'), 2) }}
                     </div>
                     <div class="ruppes grand_price">
-                        &nbsp;
-                        <?php $gt = round($allorder->grand_price, 2) ?>
-                        Rupees <?php
-                        echo $allorder->convert_value;
-                        ?> only.
-
+                        &nbsp; <?php $gt = round($allorder->grand_price, 2) ?>
+                        Rupees <?php echo $allorder->convert_value; ?> only.
                     </div>
                 </div>
                 <div class="total">
@@ -277,29 +251,15 @@
                         <div class="value bob"> {{ round($total_price, 2) }} &nbsp;</div>
                         <div class="label ">&nbsp; Loading</div>
                         <div class="value">
-                            @if($allorder->loading_charge != "")
-                            {{round($allorder->loading_charge,2)}}
-                            @else
-                            0
-                            @endif
-                            &nbsp;
+                            {{($allorder->loading_charge != "") ? round($allorder->loading_charge,2) : 0}}&nbsp;
                         </div>
                         <div class="label">&nbsp; Frt</div>
                         <div class="value">
-                            @if($allorder->freight != "")
-                            {{round($allorder->freight,2)}}
-                            @else
-                            0
-                            @endif
-                            &nbsp;
+                            {{($allorder->freight != "")?round($allorder->freight,2):0}} &nbsp;
                         </div>
                         <div class="label">&nbsp; disc.</div>
                         <div class="value">
-                            @if($allorder->discount != "")
-                            {{round($allorder->discount,2)}}
-                            @else
-                            0
-                            @endif
+                            {{($allorder->discount != "")?round($allorder->discount,2):0}}
                             &nbsp;
                         </div>
                         <div class="label">&nbsp; Total</div>
@@ -310,43 +270,25 @@
                         </div>
                         <div class="label">&nbsp; Vat</div>
                         <div class="value">
-                            <?php
-                            if (isset($allorder->vat_percentage) && ($with_total != "")) {
-                                $vat = round(($with_total * $allorder->vat_percentage) / 100, 2);
-                            } else {
-                                $vat = 0;
-                            }
-                            ?>
+                            <?php $vat = (isset($allorder->vat_percentage) && ($with_total != "")) ? round(($with_total * $allorder->vat_percentage) / 100, 2) : 0; ?>
                             {{ $vat }}
                             &nbsp;
                         </div>
                         <div class="label">&nbsp; Round Off</div>
                         <div class="value">
-                            <?php
-                            if (isset($allorder->round_off) && ($allorder->round_off != "")) {
-                                $roundoff = round($allorder->round_off, 2);
-                            } else {
-                                $roundoff = 0;
-                            }
-                            ?>                            
+                            <?php $roundoff = (isset($allorder->round_off) && ($allorder->round_off != "")) ? round($allorder->round_off, 2) : 0; ?>
                             {{$roundoff}}
                             &nbsp;
                         </div>
                         <div class="label">&nbsp; GT</div>
                         <div class="value">
-                            <?php
-                            $gt = $with_total + $vat + $roundoff
-                            ?>
-                            {{ round($gt, 2) }}
+                            {{ round(($with_total + $vat + $roundoff), 2) }}
                             &nbsp;
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
         <?php
 
         function convert_number($number) {

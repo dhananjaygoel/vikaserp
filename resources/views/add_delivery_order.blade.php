@@ -28,9 +28,7 @@
                             @endforeach
                         </div>
                         @endif
-                        <div class="form-group">
-                            Date: {{date('d F, Y')}}
-                        </div>
+                        <div class="form-group">Date: {{date('d F, Y')}}</div>
                         <form id="onenter_prevent" method="POST" action="{{URL::action('DeliveryOrderController@store')}}" accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">                                                        
                             <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
@@ -52,15 +50,7 @@
                                     ?>>
                                     <label for="new_customer">New</label>
                                 </div>
-
-                                <?php
-                                if (Input::old('customer_status') == "new_customer") {
-                                    $style = 'style="display: none"';
-                                } else {
-                                    $style = 'style="display: block"';
-                                }
-                                ?>
-                                <div class="customer_select" <?= $style ?>>
+                                <div class="customer_select" style="{{(Input::old('customer_status') == "new_customer")?'display: none':'display: block'}}">
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
                                             <input class="form-control" placeholder="Enter Tally Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
@@ -72,14 +62,7 @@
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-                            <?php
-                            if (Input::old('customer_status') == "new_customer") {
-                                $style = 'style="display: block"';
-                            } else {
-                                $style = 'style="display: none"';
-                            }
-                            ?>
-                            <div class="exist_field" <?= $style ?>>
+                            <div class="exist_field" style="{{(Input::old('customer_status') == "new_customer")?'display: block':'display: none'}}">
                                 <div class="form-group">
                                     <label for="name">Customer Name<span class="mandatory">*</span></label>
                                     <input id="name" class="form-control" placeholder="Name" name="customer_name" value="{{ old('customer_name') }}" type="text">
@@ -92,13 +75,11 @@
                                     <label for="mobile_number">Mobile Number<span class="mandatory">*</span> </label>
                                     <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{ old('mobile_number') }}" type="tel">
                                 </div>
-
                                 <div class="form-group">
                                     <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
                                     <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ old('mobile_number') }}" type="tel">
                                 </div>
                             </div>
-
                             <div class="row col-md-12">
                                 <div class="form-group">
                                     <div class="col-md-4">
@@ -139,6 +120,7 @@
                                                 <td><span>Quantity</span></td>
                                                 <td><span>Unit</span><span class="mandatory">*</span></td>
                                                 <td><span>Price</span><span class="mandatory">*</span></td>
+                                                <td><span>Vat Percentage</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
                                             <?php
@@ -146,11 +128,7 @@
                                             if (isset($session_data['product'])) {
                                                 $total_products_added = sizeof($session_data['product']);
                                             }
-                                            if (isset($total_products_added) && ($total_products_added > 10)) {
-                                                $j = $total_products_added;
-                                            } else {
-                                                $j = 1;
-                                            }
+                                            $j = (isset($total_products_added) && ($total_products_added > 10)) ? $total_products_added : 1;
                                             for ($i = 1; $i <= $j; $i++) {
                                                 ?>
                                                 <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
@@ -168,7 +146,7 @@
                                                         </div>
                                                     </td>
                                                     <td class="col-md-2">
-                                                        <div class="form-group ">
+                                                        <div class="form-group">
                                                             <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
                                                                 @foreach($units as $unit)
                                                                 <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
@@ -177,19 +155,24 @@
                                                         </div>
                                                     </td>
                                                     <td class="col-md-2">
-                                                        <div class="form-group col-md-6">
-                                                            <!--                                                            form for save product value-->
-                                                            <input type="tel" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
-
-                                                        </div>
+                                                        <div class="form-group ">
+                                                            <!-- form for save product value-->
+                                                            <input type="tel" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value = "{{(isset($session_data['product'][$i]['price'])) ?$session_data['product'][$i]['price'] : ''}}">
+                                                            <!--
                                                         <div class="form-group col-md-6 difference_form">
-                                                            <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
+                                                            <input class="btn btn-primary" type="button" class="form-control" value="save" >
                                                         </div>
-
+                                                            -->
+                                                        </div>
                                                     </td>
-                                                    <td class="col-md-4">
+                                                    <td class="col-md-2">
                                                         <div class="form-group">
-                                                            <input id="remark" class="form-control" placeholder="Remark" name="product[{{$i}}][remark]" type="text" value="<?php if (isset($session_data['product'][$i]['remark'])) { ?>{{$session_data['product'][$i]['remark']}}<?php } ?>">
+                                                            <input type="text" class="form-control" id="vat_percentage_{{$i}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat Percentage" value = "{{(isset($session_data['product'][$i]['vat_percentage'])) ?$session_data['product'][$i]['vat_percentage'] : ''}}">
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                        <div class="form-group">
+                                                            <input id="remark" class="form-control" placeholder="Remark" name="product[{{$i}}][remark]" type="text" value = "{{(isset($session_data['product'][$i]['remark'])) ?$session_data['product'][$i]['remark'] : ''}}">
                                                         </div>
                                                     </td>
                                                 </tr>

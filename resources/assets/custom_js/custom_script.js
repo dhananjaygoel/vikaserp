@@ -552,7 +552,6 @@ function show_hide_customer(status) {
 
 /** product_autocomplete  */
 function product_autocomplete(id) {
-
     var customer_id = $('#existing_customer_id').val();
     if (customer_id == "") {
         customer_id = 0;

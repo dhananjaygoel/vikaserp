@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title','Add Orders')
 @section('content')
-<?php
-
-use Illuminate\Support\Facades\Session;
-?>
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
@@ -65,14 +61,7 @@ use Illuminate\Support\Facades\Session;
                                     <input value="new_customer" id="new_customer" class="new_customer_order" name="customer_status" type="radio"> 
                                     <label for="new_customer">New</label>
                                 </div>
-                                <?php
-                                if (Input::old('customer_status') == "new_customer") {
-                                    $style = 'display:none;';
-                                } else {
-                                    $style = 'display:block;';
-                                }
-                                ?>
-                                <div class="customer_select_order" style="<?= $style ?>" >
+                                <div class="customer_select_order" style="{{(Input::old('customer_status') == "new_customer")?'display:none':'display:block'}}">
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
                                             <input class="form-control" placeholder="Enter Tally Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
@@ -84,14 +73,7 @@ use Illuminate\Support\Facades\Session;
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-                            <?php
-                            if (Input::old('customer_status') == "new_customer") {
-                                $style = 'display:block;';
-                            } else {
-                                $style = 'display:none;';
-                            }
-                            ?>
-                            <div class="new_customer_details" style="<?= $style ?>">
+                            <div class="new_customer_details" style="{{(Input::old('customer_status') == "new_customer")?'display:block':'display:none'}}">
                                 <div class="form-group">
                                     <label for="name">Customer Name<span class="mandatory">*</span></label>
                                     <input id="name" class="form-control" placeholder="Name" name="customer_name" value="{{old('customer_name')}}" type="text">
@@ -104,7 +86,6 @@ use Illuminate\Support\Facades\Session;
                                     <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
                                     <input id="mobile_number" class="form-control" placeholder="Mobile Number" name="mobile_number" value="{{old('mobile_number')}}" type="tel">
                                 </div>
-
                                 <div class="form-group">
                                     <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
                                     <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{old('credit_period')}}" type="tel">
@@ -150,6 +131,7 @@ use Illuminate\Support\Facades\Session;
                                                 <td><span>Quantity</span></td>
                                                 <td><span>Unit</span><span class="mandatory">*</span></td>
                                                 <td><span>Price</span><span class="mandatory">*</span></td>
+                                                <td><span>Vat Percentage</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
                                             <?php
@@ -157,27 +139,23 @@ use Illuminate\Support\Facades\Session;
                                             if (isset($session_data['product'])) {
                                                 $total_products_added = sizeof($session_data['product']);
                                             }
-                                            if (isset($total_products_added) && ($total_products_added > 10)) {
-                                                $j = $total_products_added;
-                                            } else {
-                                                $j = 1;
-                                            }
+                                            $j = (isset($total_products_added) && ($total_products_added > 10)) ? $total_products_added : 1;
                                             for ($i = 1; $i <= $j; $i++) {
                                                 ?>
-                                                <tr id = "add_row_{{$i}}" class = "add_product_row" data-row-id = "{{$i}}">
-                                                    <td class = "col-md-3">
+                                                <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
+                                                    <td class="col-md-3">
                                                         <div class = "form-group searchproduct">
                                                             <input class = "form-control each_product_detail" placeholder = "Enter Product name" data-productid="{{$i}}" type = "text" name = "product[{{$i}}][name]" id = "add_product_name_{{$i}}" onfocus = "product_autocomplete({{$i}});" value = "<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>">
                                                             <input type = "hidden" name = "product[{{$i}}][id]" id = "add_product_id_{{$i}}" value = "">
                                                             <i class = "fa fa-search search-icon"></i>
                                                         </div>
                                                     </td>
-                                                    <td class = "col-md-1">
+                                                    <td class="col-md-1">
                                                         <div class = "form-group">
                                                             <input id = "quantity_{{$i}}" class = "form-control each_product_qty" data-productid="{{$i}}" placeholder = "Qnty" name = "product[{{$i}}][quantity]" type = "tel" value = "<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
                                                         </div>
                                                     </td>
-                                                    <td class = "col-md-2">
+                                                    <td class="col-md-2">
                                                         <div class = "form-group ">
                                                             <select class = "form-control" name = "product[{{$i}}][units]" id = "units_{{$i}}">
                                                                 @foreach($units as $unit)
@@ -186,22 +164,26 @@ use Illuminate\Support\Facades\Session;
                                                             </select>
                                                         </div>
                                                     </td>
-                                                    <td class = "col-md-2">
-                                                        <div class = "form-group col-md-6">
-                                                            <input type = "tel" class = "form-control" id = "product_price_{{$i}}" name = "product[{{$i}}][price]" placeholder = "Price" value = "<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
-                                                        </div>
-                                                        <div class = "form-group col-md-6 difference_form">
+                                                    <td class="col-md-2">
+                                                        <div class = "form-group">
+                                                            <input type = "tel" class = "form-control" id = "product_price_{{$i}}" name = "product[{{$i}}][price]" placeholder = "Price" value = "{{(isset($session_data['product'][$i]['price'])) ?$session_data['product'][$i]['price'] : ''}}">
                                                         </div>
                                                     </td>
-                                                    <td class = "col-md-4">
+                                                    <td class="col-md-2">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" id="vat_percentage_{{$i}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat percentage" value = "{{(isset($session_data['product'][$i]['vat_percentage'])) ?$session_data['product'][$i]['vat_percentage'] : ''}}">
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-md-2">
                                                         <div class = "form-group">
-                                                            <input id = "remark" class = "form-control" placeholder = "Remark" name = "product[{{$i}}][remark]" type = "text" value = "<?php if (isset($session_data['product'][$i]['remark'])) { ?>{{$session_data['product'][$i]['remark']}}<?php } ?>">
+                                                            <input id = "remark" class = "form-control" placeholder = "Remark" name = "product[{{$i}}][remark]" type = "text" value = "{{(isset($session_data['product'][$i]['remark'])) ?$session_data['product'][$i]['remark'] : ''}}">
                                                         </div>
                                                     </td>
                                                 </tr>
-                                            <?php }
+                                            <?php
+                                            }
+                                            Session::put('input_data', '');
                                             ?>
-                                            <?php Session::put('input_data', ''); ?>
                                         </tbody>
                                     </table>
                                     <table>
@@ -231,6 +213,7 @@ use Illuminate\Support\Facades\Session;
                                 </div>
                             </div>
                             <div class="clearfix"></div>
+                            <!--
                             <div class="form-group">
                                 <div class="radio">
                                     <input checked="" value="include_vat" id="all_inclusive" name="status1" type="radio">
@@ -239,9 +222,10 @@ use Illuminate\Support\Facades\Session;
                                     <label for="vat_inclusive">Plus VAT</label>
                                 </div>
                             </div>
+                            -->
                             <div class="vat_field " style="display: none">
                                 <div class="form-group">
-                                    <table id="table-example" class="table ">
+                                    <table id="table-example" class="table">
                                         <tbody>
                                             <tr class="cdtable">
                                                 <td class="cdfirst">VAT Percentage:</td>
@@ -262,16 +246,16 @@ use Illuminate\Support\Facades\Session;
                             <div class="clearfix"></div>
                             <div class="form-group">
                                 <label for="order_remark">Remark</label>
-                                <textarea class="form-control" id="order_remark" name="order_remark"  rows="3"></textarea>
+                                <textarea class="form-control" id="order_remark" name="order_remark" rows="3"></textarea>
                             </div>
                             <div class="checkbox">
                                 <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email</span></label>
                             </div>
-                            <div >
+                            <div>
                                 <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip btn_add_order_sms" id="add_order_sendSMS" >Save and Send SMS</button>
                             </div>
                             <hr>
-                            <div >
+                            <div>
                                 <input type="hidden" name="total_products" id="total_products" value="{{isset($existig_product)?$existig_product:10}}">
                                 <button type="submit" class="btn btn-primary form_button_footer btn_add_order">Submit</button>
                                 <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>

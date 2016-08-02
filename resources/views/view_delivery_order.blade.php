@@ -76,18 +76,11 @@
                             <table id="table-example" class="table table-hover customerview_table  ">
                                 <tbody>
                                     <tr class="headingunderline">
-                                        <td>
-                                            <span>Product(Alias)</span>
-                                        </td>
-                                        <td>
-                                            <span>Present shipping</span>
-                                        </td>
-                                        <td>
-                                            <span>Unit</span>
-                                        </td>
-                                        <td>
-                                            <span>Price</span>
-                                        </td>
+                                        <td><span>Product(Alias)</span></td>
+                                        <td><span>Present shipping</span></td>
+                                        <td><span>Unit</span></td>
+                                        <td><span>Price</span></td>
+                                        <td><span>Vat Percentage</span></td>
                                         <td><span>Remark</span></td>                                    
                                     </tr>
                                     <?php $grand = 0; ?>
@@ -98,39 +91,28 @@
                                         <td>{{$product->present_shipping}}</td>
                                         <td>
                                             @foreach($units as $unit)
-                                            @if($unit->id == $product->unit_id) {{ $unit->unit_name }} @endif
+                                            {{($unit->id == $product->unit_id)? $unit->unit_name:''}}
                                             @endforeach
                                         </td>
                                         <td>{{$product->price}}</td>
+                                        <td>{{($product->vat_percentage!='')?$product->vat_percentage:''}}</td>
                                         <td>{{$product->remarks}}</td>
                                     </tr>
-
                                     <?php
                                     $grand = $grand + $product->present_shipping * $product->price;
                                     $grand = $grand - $grand * $delivery_data->vat_percentage / 100;
                                     ?>
                                     @endif
                                     @endforeach
-
                                 </tbody>
                             </table>
                             <table id="table-example" class="table table-hover customerview_table  ">
                                 <tbody>
                                     @if($delivery_data->vat_percentage != "" || $delivery_data->vat_percentage > 0)
-                                    <tr>
-                                        <td><span>Plus VAT: </span>
-                                            Yes
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><span>VAT Percentage: </span>{{ $delivery_data->vat_percentage }}</td>
-                                    </tr>
+<!--                                    <tr><td><span>Plus VAT: </span> Yes</td></tr>
+                                    <tr><td><span>VAT Percentage: </span>{{ $delivery_data->vat_percentage }}</td></tr>-->
                                     @else
-                                    <tr>
-                                        <td><span>Plus VAT: </span>
-                                            No
-                                        </td>
-                                    </tr>
+                                    <!--<tr><td><span>Plus VAT: </span> No</td></tr>-->
                                     @endif
                                     <tr><td><b>Vehicle Name:</b> {{ $delivery_data->vehicle_number }} </td> </tr>
                                     <tr><td><b>Driver Contact:</b> {{ $delivery_data->driver_contact_no }} </td> </tr>

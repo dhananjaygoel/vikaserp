@@ -63,12 +63,12 @@ class DeliveryOrderController extends Controller {
         if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
 
             if ($qstring_sort_type_order == 'Inprocess') {
-                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer')->paginate(20);
+                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending', 'order_details')->with('delivery_product', 'customer')->paginate(20);
             } elseif ($qstring_sort_type_order == 'Delivered') {
-                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer')->paginate(20);
+                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             }
         } else {
-            $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer')->paginate(20);
+            $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
         }
         $delivery_data = $this->checkpending_quantity($delivery_data);
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
@@ -109,19 +109,15 @@ class DeliveryOrderController extends Controller {
         }
         $i = 0;
         $customer_id = 0;
-
         $j = count($input_data['product']);
-
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] == "") {
                 $i++;
             }
         }
-
         if ($i == $j) {
             return Redirect::back()->withInput()->with('validation_message', 'Please enter at least one product details');
         }
-
         if ($input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
@@ -151,28 +147,25 @@ class DeliveryOrderController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
-
-        $vat_price = 0;
-        if ($input_data['status1'] == 'include_vat') {
-            $vat_price = '';
-        }
-        if ($input_data['status1'] == 'exclude_vat') {
-            $vat_price = $input_data['vat_price'];
-        }
-
+//        $vat_price = 0;
+//        if ($input_data['status1'] == 'include_vat') {
+//            $vat_price = '';
+//        }
+//        if ($input_data['status1'] == 'exclude_vat') {
+//            $vat_price = $input_data['vat_price'];
+//        }
         $delivery_order = new DeliveryOrder();
         $delivery_order->order_id = 0;
         $delivery_order->order_source = 'warehouse';
         $delivery_order->customer_id = $customer_id;
         $delivery_order->created_by = Auth::id();
-        $delivery_order->vat_percentage = $vat_price;
+//        $delivery_order->vat_percentage = $vat_price;
         $delivery_order->estimate_price = 0;
         $delivery_order->expected_delivery_date = date_format(date_create(date("Y-m-d")), 'Y-m-d');
         $delivery_order->remarks = $input_data['order_remark'];
         $delivery_order->vehicle_number = $input_data['vehicle_number'];
         $delivery_order->driver_contact_no = $input_data['driver_contact'];
         $delivery_order->order_status = "Pending";
-
         if (isset($input_data['add_order_location']) && ($input_data['add_order_location'] == "other")) {
             $delivery_order->other_location = $input_data['other_location_name'];
             $delivery_order->location_difference = $input_data['location_difference'];
@@ -180,10 +173,8 @@ class DeliveryOrderController extends Controller {
             $delivery_order->delivery_location_id = $input_data['add_order_location'];
             $delivery_order->location_difference = $input_data['location_difference'];
         }
-
         $delivery_order->save();
-        $delivery_order_id = DB::getPdo()->lastInsertId();
-
+        $delivery_order_id = $delivery_order->id;
         $order_products = array();
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
@@ -195,10 +186,10 @@ class DeliveryOrderController extends Controller {
                     'quantity' => $product_data['quantity'],
                     'present_shipping' => $product_data['quantity'],
                     'price' => $product_data['price'],
-                    'remarks' => $product_data['remark'],
+                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
+                    'remarks' => $product_data['remark']
                 ];
-
-                $add_order_products = AllOrderProducts::create($order_products);
+                AllOrderProducts::create($order_products);
             }
         }
         return redirect('delivery_order')->with('validation_message', 'Delivery order details successfully added.');
@@ -208,6 +199,7 @@ class DeliveryOrderController extends Controller {
      * Display the specified resource.
      */
     public function show($id) {
+
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')->find($id);
         if (count($delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
@@ -222,6 +214,7 @@ class DeliveryOrderController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit($id) {
+
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
@@ -230,7 +223,6 @@ class DeliveryOrderController extends Controller {
         }
         $customers = Customer::all();
         $pending_orders = $this->pending_quantity_order($id);
-
         return view('edit_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'pending_orders'));
     }
 
@@ -238,6 +230,7 @@ class DeliveryOrderController extends Controller {
      * Update the specified resource in storage.
      */
     public function update($id) {
+
         $input_data = Input::all();
         if (Session::has('forms_edit_delivery_order')) {
             $session_array = Session::get('forms_edit_delivery_order');
@@ -295,12 +288,12 @@ class DeliveryOrderController extends Controller {
             }
         }
         $vat_price = 0;
-        if ($input_data['status1'] == 'include_vat') {
-            $vat_price = '';
-        }
-        if ($input_data['status1'] == 'exclude_vat') {
-            $vat_price = $input_data['vat_price'];
-        }
+//        if ($input_data['status1'] == 'include_vat') {
+//            $vat_price = '';
+//        }
+//        if ($input_data['status1'] == 'exclude_vat') {
+//            $vat_price = $input_data['vat_price'];
+//        }
         $delivery_location = 0;
         $location = "";
         $other_location_difference = "";
@@ -319,7 +312,7 @@ class DeliveryOrderController extends Controller {
             'delivery_location_id' => $delivery_location,
             'other_location' => $location,
             'location_difference' => $location_difference,
-            'vat_percentage' => $vat_price,
+//            'vat_percentage' => $vat_price,
             'estimate_price' => 0,
             'estimated_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
             'expected_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
@@ -338,6 +331,7 @@ class DeliveryOrderController extends Controller {
                     'quantity' => $product_data['quantity'],
                     'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price'],
+                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
                     'remarks' => $product_data['remark'],
                 ];
                 $add_order_products = AllOrderProducts::where('id', '=', $product_data['id'])->update($order_products);
@@ -350,6 +344,7 @@ class DeliveryOrderController extends Controller {
                     'quantity' => $product_data['present_shipping'],
                     'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price'],
+                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
                     'remarks' => $product_data['remark'],
                 ];
                 $add_order_products = AllOrderProducts::create($order_products);
@@ -394,15 +389,13 @@ class DeliveryOrderController extends Controller {
         if (Input::get('order_status')) {
             if (Input::get('order_status') == 'Inprocess') {
                 if ((isset($filteron) && ($filteron != "")) && (isset($filterby) && ($filterby != ""))) {
-                    $delivery_data = DeliveryOrder::where('order_status', 'pending')->orderby($filteron, $filterby)
-                                    ->with('user', 'customer')->paginate(20);
+                    $delivery_data = DeliveryOrder::where('order_status', 'pending')->orderby($filteron, $filterby)->with('user', 'customer')->paginate(20);
                 } else {
                     $delivery_data = DeliveryOrder::with('user', 'customer')->where('order_status', 'pending')->paginate(20);
                 }
             } elseif (Input::get('order_status') == 'Delivered') {
                 if ((isset($filteron) && ($filteron != "")) && (isset($filterby) && ($filterby != ""))) {
-                    $delivery_data = DeliveryOrder::where('order_status', 'completed')->orderby($filteron, $filterby)
-                                    ->with('user', 'customer')->paginate(20);
+                    $delivery_data = DeliveryOrder::where('order_status', 'completed')->orderby($filteron, $filterby)->with('user', 'customer')->paginate(20);
                 } else {
                     $delivery_data = DeliveryOrder::with('user', 'customer')->where('order_status', 'completed')->paginate(20);
                 }
@@ -476,9 +469,9 @@ class DeliveryOrderController extends Controller {
         $delivery_challan->round_off = $input_data['round_off'];
         $delivery_challan->loaded_by = $input_data['loadedby'];
         $delivery_challan->labours = $input_data['labour'];
-        if (isset($input_data['vat_percentage'])) {
-            $delivery_challan->vat_percentage = $input_data['vat_percentage'];
-        }
+//        if (isset($input_data['vat_percentage'])) {
+//            $delivery_challan->vat_percentage = $input_data['vat_percentage'];
+//        }
         $delivery_challan->grand_price = $input_data['grand_total'];
         $delivery_challan->remarks = $input_data['challan_remark'];
         $delivery_challan->challan_status = "Pending";
@@ -497,6 +490,7 @@ class DeliveryOrderController extends Controller {
                     'quantity' => $product_data['actual_quantity'],
                     'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price'],
+                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
                     'from' => $input_data['order_id'],
                     'parent' => $product_data['order'],
                 ];
@@ -517,9 +511,7 @@ class DeliveryOrderController extends Controller {
                 $add_order_products = AllOrderProducts::create($order_products);
             }
         }
-        DeliveryOrder::where('id', '=', $id)->update(array(
-            'order_status' => 'completed'
-        ));
+        DeliveryOrder::where('id', '=', $id)->update(array('order_status' => 'completed'));
         return redirect('delivery_order')->with('success', 'One Delivery Challan is successfully created.');
     }
 
@@ -532,9 +524,7 @@ class DeliveryOrderController extends Controller {
 
         $current_date = date("m/d/");
         $date_letter = 'DO/' . $current_date . "" . $id;
-        DeliveryOrder::where('id', $id)->update(array(
-            'serial_no' => $date_letter,
-        ));
+        DeliveryOrder::where('id', $id)->update(array('serial_no' => $date_letter));
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'unit', 'location')->find($id);
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();

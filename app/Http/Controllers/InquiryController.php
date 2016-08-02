@@ -78,6 +78,7 @@ class InquiryController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(InquiryRequest $request) {
+
         $input_data = Input::all();
         if (Session::has('forms_inquiry')) {
             $session_array = Session::get('forms_inquiry');
@@ -98,17 +99,14 @@ class InquiryController extends Controller {
             'add_inquiry_location' => 'required',
         );
         $validator = Validator::make($input_data, $rules);
-
         if ($validator->fails()) {
             Session::forget('product');
             Session::put('input_data', $input_data);
             return Redirect::back()->withErrors($validator)->withInput();
         }
-
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
         $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
-
         $i = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
@@ -147,11 +145,9 @@ class InquiryController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
-
         $add_inquiry = new Inquiry(); //::create($add_inquiry_array);
         $add_inquiry->customer_id = $customer_id;
         $add_inquiry->created_by = Auth::id();
-
         if ('other' == $input_data['add_inquiry_location']) {
             $add_inquiry->delivery_location_id = 0;
             $add_inquiry->other_location = $input_data['other_location_name'];
@@ -160,13 +156,12 @@ class InquiryController extends Controller {
             $add_inquiry->delivery_location_id = $input_data['add_inquiry_location'];
             $add_inquiry->location_difference = $input_data['location_difference'];
         }
-        $add_inquiry->vat_percentage = $input_data['vat_percentage'];
+//        $add_inquiry->vat_percentage = $input_data['vat_percentage'];
         $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
         $add_inquiry->remarks = $input_data['inquiry_remark'];
         $add_inquiry->inquiry_status = "Pending";
         $add_inquiry->save();
-
-        $inquiry_id = DB::getPdo()->lastInsertId();
+        $inquiry_id = $add_inquiry->id;
         $inquiry_products = array();
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
@@ -176,9 +171,10 @@ class InquiryController extends Controller {
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
-                    'remarks' => $product_data['remark'],
+                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
+                    'remarks' => $product_data['remark']
                 ];
-                $add_inquiry_products = InquiryProducts::create($inquiry_products);
+                InquiryProducts::create($inquiry_products);
             }
         }
 
@@ -251,11 +247,11 @@ class InquiryController extends Controller {
      * Display the specified resource.
      */
     public function show($id) {
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->find($id);
-
         if (count($inquiry) < 1) {
             return redirect('inquiry')->with('flash_message', 'Enquiry does not exist.');
         }
@@ -317,7 +313,6 @@ class InquiryController extends Controller {
             $flash_message = "Message sent successfully";
             return redirect('inquiry')->with('flash_success_message', 'Message sent successfully');
         }
-
 //        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
         return View::make('inquiry_details', array('inquiry' => $inquiry, 'delivery_location' => $delivery_location, 'message' => $flash_message));
 //        return redirect('inquiry')->with('flash_success_message', 'Message sent successfully');
@@ -327,6 +322,7 @@ class InquiryController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit($id) {
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -360,11 +356,8 @@ class InquiryController extends Controller {
             array_push($forms_array, $input_data['form_key']);
             Session::put('forms_edit_inquiry', $forms_array);
         }
-        $rules = array(
-            'add_inquiry_location' => 'required',
-        );
+        $rules = array('add_inquiry_location' => 'required');
         $validator = Validator::make($input_data, $rules);
-
         if ($validator->fails()) {
             Session::forget('product');
             Session::put('input_data', $input_data);
@@ -373,8 +366,6 @@ class InquiryController extends Controller {
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
         $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
-
-
         $i = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
@@ -385,14 +376,11 @@ class InquiryController extends Controller {
         if ($i == $j) {
             return Redirect::back()->with('flash_message', 'Please insert product details');
         }
-        if ($input_data['vat_status'] == 'include_vat') {
-            $vat_price = '';
-        }
-
-        if ($input_data['vat_status'] == 'exclude_vat') {
-            $vat_price = $input_data['vat_percentage'];
-        }
-
+//        if ($input_data['vat_status'] == 'include_vat') {
+//            $vat_price = '';
+//        } elseif ($input_data['vat_status'] == 'exclude_vat') {
+//            $vat_price = $input_data['vat_percentage'];
+//        }
         $customers = Customer::find($input_data['customer_id']);
         if ($input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
@@ -433,7 +421,7 @@ class InquiryController extends Controller {
         $update_inquiry = $inquiry->update([
             'customer_id' => $customer_id,
             'created_by' => Auth::id(),
-            'vat_percentage' => $vat_price,
+//            'vat_percentage' => $vat_price,
             'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['inquiry_remark']
 //            'inquiry_status' => $input_data['inquiry_status']
@@ -452,7 +440,7 @@ class InquiryController extends Controller {
             ]);
         }
         $inquiry_products = array();
-        $delete_old_inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->delete();
+        InquiryProducts::where('inquiry_id', '=', $id)->delete();
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
                 $inquiry_products = [
@@ -461,9 +449,10 @@ class InquiryController extends Controller {
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
+                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
                     'remarks' => $product_data['remark'],
                 ];
-                $add_inquiry_products = InquiryProducts::create($inquiry_products);
+                InquiryProducts::create($inquiry_products);
             }
         }
 
@@ -565,19 +554,8 @@ class InquiryController extends Controller {
                     'location_difference' => $customer['deliverylocation']->difference,
                 ];
             }
-            /* Code commented of getting from view */
-//            foreach ($customers as $customer) {
-//                $data_array[] = [
-//                    'value' => $customer->owner_name . '-' . $customer->tally_name,
-//                    'id' => $customer->id,
-//                    'delivery_location_id' => $customer->delivery_location_id,
-//                    'location_difference' => $customer->difference,
-//                ];
-//            }
         } else {
-            $data_array[] = [
-                'value' => 'No Customers',
-            ];
+            $data_array[] = [ 'value' => 'No Customers'];
         }
         echo json_encode(array('data_array' => $data_array));
     }
@@ -603,16 +581,13 @@ class InquiryController extends Controller {
                         $cust = $customer->difference_amount;
                     }
                 }
-                $data_array[] = [
-                    'value' => $product->alias_name,
+                $data_array[] = [ 'value' => $product->alias_name,
                     'id' => $product->id,
                     'product_price' => $product['product_category']->price + $cust + $location_diff + $product->difference
                 ];
             }
         } else {
-            $data_array[] = [
-                'value' => 'No Products',
-            ];
+            $data_array[] = [ 'value' => 'No Products'];
         }
         echo json_encode(array('data_array' => $data_array));
     }
@@ -622,6 +597,7 @@ class InquiryController extends Controller {
      */
 
     public function recalculate_product_price() {
+
         $delivery_location = Input::get('delivery_location');
         $customer_id = Input::get('customer_id');
         $product_id = Input::get('product_id');
@@ -636,8 +612,7 @@ class InquiryController extends Controller {
                 $cust = $customer->difference_amount;
             }
         }
-        $data_array[] = [
-            'value' => $product->alias_name,
+        $data_array[] = [ 'value' => $product->alias_name,
             'id' => $product->id,
             'product_price' => $product['product_category']->price + $cust + $location_diff + $product->difference
         ];
@@ -649,8 +624,8 @@ class InquiryController extends Controller {
      */
 
     public function store_price() {
-        $input_data = Input::all();
-        $update_price = InquiryProducts::where('id', '=', $input_data['id'])->update(['price' => $input_data['updated_price']]);
+
+        InquiryProducts::where('id', '=', Input::get('id'))->update(['price' => Input::get('updated_price')]);
     }
 
     /*
@@ -755,18 +730,18 @@ class InquiryController extends Controller {
             $order_status = 'supplier';
             $supplier_id = $input_data['supplier_id'];
         }
-        if ($input_data['vat_status'] == 'include_vat') {
-            $vat_price = '';
-        }
-        if ($input_data['vat_status'] == 'exclude_vat') {
-            $vat_price = $input_data['vat_percentage'];
-        }
+//        if ($input_data['vat_status'] == 'include_vat') {
+//            $vat_price = '';
+//        }
+//        if ($input_data['vat_status'] == 'exclude_vat') {
+//            $vat_price = $input_data['vat_percentage'];
+//        }
         $order = new Order();
         $order->order_source = $order_status;
         $order->supplier_id = $supplier_id;
         $order->customer_id = $customer_id;
         $order->created_by = Auth::id();
-        $order->vat_percentage = $vat_price;
+//        $order->vat_percentage = $vat_price;
         $order->expected_delivery_date = $datetime->format('Y-m-d');
         $order->remarks = $input_data['inquiry_remark'];
         $order->order_status = "Pending";
@@ -836,8 +811,7 @@ class InquiryController extends Controller {
             }
         }
         $order->save();
-
-        $order_id = DB::getPdo()->lastInsertId();
+        $order_id = $order->id;
         $order_products = array();
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
@@ -848,9 +822,10 @@ class InquiryController extends Controller {
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
-                    'remarks' => $product_data['remark'],
+                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
+                    'remarks' => $product_data['remark']
                 ];
-                $add_order_products = AllOrderProducts::create($order_products);
+                AllOrderProducts::create($order_products);
             }
         }
 
@@ -862,11 +837,7 @@ class InquiryController extends Controller {
             if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
                 $order = Order::with('all_order_products.order_product_details', 'delivery_location')->find($order_id);
                 if (count($order) > 0) {
-                    if (count($order['delivery_location']) > 0) {
-                        $delivery_location = $order['delivery_location']->area_name;
-                    } else {
-                        $delivery_location = $order->other_location;
-                    }
+                    $delivery_location = (count($order['delivery_location']) > 0) ? $order['delivery_location']->area_name : $order->other_location;
                     $mail_array = array(
                         'customer_name' => $customers->owner_name,
                         'expected_delivery_date' => $order->expected_delivery_date,

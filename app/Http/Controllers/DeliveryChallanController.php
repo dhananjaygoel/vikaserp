@@ -26,6 +26,7 @@ use Session;
 class DeliveryChallanController extends Controller {
 
     public function __construct() {
+
         date_default_timezone_set("Asia/Calcutta");
         define('PROFILE_ID', Config::get('smsdata.profile_id'));
         define('PASS', Config::get('smsdata.password'));
@@ -82,19 +83,20 @@ class DeliveryChallanController extends Controller {
         if (count($allorder) < 1) {
             return redirect('delivery_challan')->with('success', 'Invalid challan or challan not found');
         }
-        return View::make('delivery_challan_details', compact('allorder'));
+        return view('delivery_challan_details', compact('allorder'));
     }
 
     /**
      * Show Edit Delivery Challan Details
      */
     public function edit($id) {
+
         $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order')
 //                ->where('challan_status', '=', 'pending')
                 ->find($id);
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
-        return View::make('edit_delivery_challan', compact('allorder', 'price_delivery_order', 'units', 'delivery_locations'));
+        return view('edit_delivery_challan', compact('allorder', 'price_delivery_order', 'units', 'delivery_locations'));
     }
 
     /**
@@ -138,9 +140,9 @@ class DeliveryChallanController extends Controller {
         $delivery_challan->round_off = $input_data['round_off'];
         $delivery_challan->grand_price = $input_data['grand_total'];
         $delivery_challan->remarks = $input_data['challan_remark'];
-        if (isset($input_data['vat_percentage'])) {
-            $delivery_challan->vat_percentage = $input_data['vat_percentage'];
-        }
+//        if (isset($input_data['vat_percentage'])) {
+//            $delivery_challan->vat_percentage = $input_data['vat_percentage'];
+//        }
         $delivery_challan->save();
 
 //        $update_challan = $delivery_challan->update([
@@ -169,7 +171,7 @@ class DeliveryChallanController extends Controller {
 //                "bill_number" => $input_data['billno']]);
 //        }
 
-        $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
+        AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
         if ($j != 0) {
             $order_products = array();
             foreach ($input_data['product'] as $product_data) {
@@ -184,10 +186,11 @@ class DeliveryChallanController extends Controller {
                         'quantity' => $product_data['actual_quantity'],
                         'present_shipping' => $product_data['actual_quantity'],
                         'price' => $product_data['price'],
+                        'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
                         'from' => $input_data['order_id'],
                         'parent' => $input_data['order'],
                     ];
-                    $add_order_products = AllOrderProducts::create($order_products);
+                    AllOrderProducts::create($order_products);
                 }
             }
         }
@@ -209,11 +212,9 @@ class DeliveryChallanController extends Controller {
         if ($password == '') {
             return Redirect::to('delivery_challan')->with('error', 'Please enter your password');
         }
-        $current_user = User::find(Auth::id());
-        if (Hash::check($password, $current_user->password)) {
-            $order = DeliveryChallan::find($id);
+        if (Hash::check($password, Auth::user()->password)) {
             AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
-            $order->delete();
+            DeliveryChallan::find($id)->delete();
             Session::put('order-sort-type', $order_sort_type);
             return array('message' => 'success');
         } else {
@@ -229,11 +230,19 @@ class DeliveryChallanController extends Controller {
 
         $serial_number_delivery_order = Input::get('serial_number');
         $current_date = date("m/d/");
-        $date_letter = 'DC/' . $current_date . $id;
-        DeliveryChallan::where('id', $id)->update(array(
-            'serial_number' => $date_letter,
-            'challan_status' => "completed"
-        ));
+        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products')->find($id);
+        $vat_applicable = 0;
+        if (isset($update_delivery_challan->delivery_challan_products) && count($update_delivery_challan->delivery_challan_products) > 0) {
+            foreach ($update_delivery_challan->delivery_challan_products as $key => $delivery_challan_products) {
+                if ($delivery_challan_products->vat_percentage > 0) {
+                    $vat_applicable = 1;
+                }
+            }
+        }
+        $date_letter = 'DC/' . $current_date . $id . (($vat_applicable > 0) ? "P" : "A");
+        $update_delivery_challan->serial_number = $date_letter;
+        $update_delivery_challan->challan_status = 'completed';
+        $update_delivery_challan->save();
         $this->checkpending_quantity();
         $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
                         ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();

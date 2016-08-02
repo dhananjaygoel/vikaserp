@@ -36,27 +36,12 @@
                             <div class="form-group">
                                 <label>Customer<span class="mandatory">*</span></label>
                                 <div class="radio">
-                                    <input checked="" value="existing_customer" id="existing_customer" name="customer_status" type="radio" <?php
-                                    if (Input::old('customer_status') == "existing_customer") {
-                                        echo 'checked="checked"';
-                                    }
-                                    ?>>
+                                    <input checked="" value="existing_customer" id="existing_customer" name="customer_status" type="radio" {{(Input::old('customer_status') == "existing_customer")? 'checked' : ''}}>
                                     <label for="existing_customer">Existing</label>
-                                    <input value="new_customer" id="new_customer" name="customer_status" type="radio" <?php
-                                    if (Input::old('customer_status') == "new_customer") {
-                                        echo 'checked="checked"';
-                                    }
-                                    ?>>
+                                    <input value="new_customer" id="new_customer" name="customer_status" type="radio" {{(Input::old('customer_status') == "new_customer")?'checked':''}}>
                                     <label for="new_customer">New</label>
                                 </div>
-                                <?php
-                                if (Input::old('customer_status') == "new_customer") {
-                                    $style = 'display:none;';
-                                } else {
-                                    $style = 'display:block;';
-                                }
-                                ?>
-                                <div class="customer_select" style="<?= $style ?>" >
+                                <div class="customer_select" style="{{(Input::old('customer_status') == "new_customer")?'display:none':'display:block'}}" >
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
                                             <input class="form-control" placeholder="Enter Tally Name" type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
@@ -68,14 +53,7 @@
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-                            <?php
-                            if (Input::old('customer_status') == "new_customer") {
-                                $style = 'display:block;';
-                            } else {
-                                $style = 'display:none;';
-                            }
-                            ?>
-                            <div class="exist_field " style="<?= $style ?>">
+                            <div class="exist_field " style="{{(Input::old('customer_status') == "new_customer")?'display:block':'display:none'}}">
                                 <div class="form-group">
                                     <label for="name">Customer Name<span class="mandatory">*</span></label>
                                     <input id="customer_name" class="form-control" placeholder="Name" name="customer_name" value="{{ old('customer_name') }}" type="text">
@@ -132,6 +110,7 @@
                                                 <td><span>Quantity</span></td>
                                                 <td><span>Unit</span><span class="mandatory">*</span></td>
                                                 <td><span>Price</span></td>
+                                                <td><span>Vat Percentage</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
                                             <?php
@@ -139,11 +118,7 @@
                                             if (isset($session_data['product'])) {
                                                 $total_products_added = sizeof($session_data['product']);
                                             }
-                                            if (isset($total_products_added) && ($total_products_added > 10)) {
-                                                $j = $total_products_added;
-                                            } else {
-                                                $j = 1;
-                                            }
+                                            $j = (isset($total_products_added) && ($total_products_added > 10)) ? $total_products_added : 1;
                                             for ($i = 1; $i <= $j; $i++) {
                                                 ?>
                                                 <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
@@ -173,14 +148,21 @@
                                                             <input type="tel" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
                                                         </div>
                                                     </td>
-                                                    <td class="col-md-4">
+                                                    <td class="col-md-2">
                                                         <div class="form-group">
-                                                            <input id="remark" class="form-control" placeholder="Remark" name="product[{{$i}}][remark]" type="text" value="<?php if (isset($session_data['product'][$i]['remark'])) { ?>{{$session_data['product'][$i]['remark']}}<?php } ?>">
+                                                            <input type="text" class="form-control" id="vat_percentage_{{$i}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat percentage">
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                        <div class="form-group">
+                                                            <input id="remark" class="form-control" placeholder="Remark" name="product[{{$i}}][remark]" type="text" value="{{(isset($session_data['product'][$i]['remark']))?$session_data['product'][$i]['remark']:''}}">
                                                         </div>
                                                     </td>
                                                 </tr>
-                                            <?php } ?>
-                                            <?php Session::forget('input_data'); ?>
+                                                <?php
+                                            }
+                                            Session::forget('input_data');
+                                            ?>
                                         </tbody>
                                     </table>
                                     <table>
@@ -210,6 +192,7 @@
                                 </div>
                             </div>
                             <div class="clearfix"></div>
+                            <!--
                             <div class="form-group">
                                 <div class="radio">
                                     <input checked="" value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
@@ -218,13 +201,14 @@
                                     <label for="optionsRadios4">Plus VAT</label>
                                 </div>
                             </div>
+                            -->
                             <div class="plusvat " style="display: none">
                                 <div class="form-group">
                                     <table id="table-example" class="table ">
                                         <tbody>
                                             <tr class="cdtable">
                                                 <td class="cdfirst">VAT Percentage:</td>
-                                                <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="" type="tel"></td>
+                                                <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="" type="text"></td>
                                             </tr>
                                         </tbody>
                                     </table>
