@@ -23,7 +23,7 @@ class AlterOrderTable01 extends Migration {
      */
     public function down() {
         Schema::table('orders', function($table) {
-            $table->boolean('flaged');
+            $table->dropColumn('flaged');
         });
     }
 

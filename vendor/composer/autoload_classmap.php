@@ -8,6 +8,8 @@ $baseDir = dirname($vendorDir);
 return array(
     'AddIndexCustomer' => $baseDir . '/database/migrations/2015_08_14_084448_add_index_customer.php',
     'AddIndexProductSubCategory' => $baseDir . '/database/migrations/2015_08_14_074532_add_index_product_sub_category.php',
+    'AlterAllOrderProducts01' => $baseDir . '/database/migrations/2016_08_03_133725_alter_all_order_products_01.php',
+    'AlterInquiryProducts01' => $baseDir . '/database/migrations/2016_08_03_134914_alter_inquiry_products_01.php',
     'AlterOrderTable01' => $baseDir . '/database/migrations/2016_07_28_092217_alter_order_table_01.php',
     'CreateAllOrderProductsTable' => $baseDir . '/database/migrations/2015_06_13_063346_create_all_order_products_table.php',
     'CreateCityTable' => $baseDir . '/database/migrations/2015_06_04_073640_create_city_table.php',
