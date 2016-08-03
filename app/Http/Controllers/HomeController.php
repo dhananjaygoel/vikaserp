@@ -192,7 +192,10 @@ class HomeController extends Controller {
             $order_detail = Order::find($orderid);
             $delivery_order_detail = DeliveryOrder::where('order_id', '=', $orderid)->first();
             $delivery_challan_detail = DeliveryChallan::where('order_id', '=', $orderid)->first();
-            if ($order_detail && $order_detail->order_status == 'completed') {                
+            if (!isset($order_detail->id)) {
+                return json_encode(array('result' => false, 'message' => 'Invalid order Id'));
+            }
+            if ($order_detail->order_status == 'completed') {
                 if (isset($delivery_challan_detail) && $delivery_challan_detail->order_id == $orderid)
                     return json_encode(array('result' => true, 'message' => 'Out for delivery'));
                 else
@@ -201,7 +204,7 @@ class HomeController extends Controller {
                 return json_encode(array('result' => true, 'message' => (($order_detail->created_at == $order_detail->updated_at) ? 'Order is placed' : 'Order is updated')));
             }
         } else {
-            return json_encode(array('result' => false, 'message' => 'Invalid order Id'));
+            return json_encode(array('result' => false, 'message' => 'Please provide Order Id'));
         }
     }
 
