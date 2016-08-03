@@ -185,6 +185,26 @@ class HomeController extends Controller {
         }
     }
 
+    public function appOrderStatus() {
+
+        if (Input::has('order_id') && Input::get('order_id') > 0) {
+            $orderid = Input::get('order_id');
+            $order_detail = Order::find($orderid);
+            $delivery_order_detail = DeliveryOrder::where('order_id', '=', $orderid)->first();
+            $delivery_challan_detail = DeliveryChallan::where('order_id', '=', $orderid)->first();
+            if ($order_detail && $order_detail->order_status == 'completed') {                
+                if (isset($delivery_challan_detail) && $delivery_challan_detail->order_id == $orderid)
+                    return json_encode(array('result' => true, 'message' => 'Out for delivery'));
+                else
+                    return json_encode(array('result' => true, 'message' => 'DO is placed'));
+            } else {
+                return json_encode(array('result' => true, 'message' => (($order_detail->created_at == $order_detail->updated_at) ? 'Order is placed' : 'Order is updated')));
+            }
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Invalid order Id'));
+        }
+    }
+
     public function appAllRelationshipManager() {
 
         $managers = User::where('role_id', '=', 0)->select('id', 'first_name', 'last_name')->get();
