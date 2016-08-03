@@ -176,8 +176,7 @@
                                                             </td>
                                                             <td class="col-md-1">
                                                                 <div class="form-group">
-                                                                    <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" value="{{$session_data['product'][$i]['quantity']}}" type="hidden">
-                                                                    {{$session_data['product'][$i]['quantity']}}
+                                                                    <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" value="{{$session_data['product'][$i]['quantity']}}" type="text">
                                                                 </div>
                                                             </td>
                                                             <td class="col-md-1">
@@ -338,17 +337,14 @@
                                                 </td>
                                                 <td class="col-md-1">
                                                     <div class="form-group">
-                                                        <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" type="hidden">
-                                                        {{ $product->quantity}}
+                                                        <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" type="text">
                                                     </div>
                                                 </td>
                                                 <td class="col-md-1">
                                                     <div class="form-group ">
                                                         <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}">
                                                             @foreach($units as $unit)
-                                                            @if($product->unit_id == $unit->id)
-                                                            <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
-                                                            @endif
+                                                            <option value="{{$unit->id}}" {{($product->unit_id == $unit->id)?'selected':''}}>{{$unit->unit_name}}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
