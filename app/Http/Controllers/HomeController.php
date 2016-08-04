@@ -763,7 +763,7 @@ class HomeController extends Controller {
                     }
                 }
                 $order_response[$value->server_id] = Order::find($value->server_id);
-                $order_response[$value->server_id]['products'] = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->get();
+                $order_response[$value->server_id]['all_order_products'] = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->get();
             }
         }
         return json_encode($order_response);
