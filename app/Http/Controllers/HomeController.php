@@ -571,7 +571,7 @@ class HomeController extends Controller {
             } else {
                 $delivery_order = DeliveryOrder::find($value->server_id);
                 if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
-                    $add_customers = new Customer();                    
+                    $add_customers = new Customer();
                     $add_customers->addNewCustomer($value->customer_name, $value->customer_contact_person, $value->customer_mobile, $value->customer_credit_period);
                     $customer_list[$value->id] = $add_customers->id;
                 }
@@ -594,7 +594,7 @@ class HomeController extends Controller {
                 } else {
                     $delivery_order->other_location = $value->other_location;
                     $delivery_order->location_difference = $value->other_location_difference;
-                }                
+                }
                 $delivery_order->save();
                 $delivery_order_id = $delivery_order->id;
                 $delivery_order_products = array();
@@ -801,7 +801,7 @@ class HomeController extends Controller {
 //        }
         $inquiry_response = [];
         $customer_list = [];
-        if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '') {
+        if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '' && Input::get('inquiry_sync_date') != NULL) {
             $last_sync_date = Input::get('inquiry_sync_date');
             $inquiry_added_server = Inquiry::where('created_at', '>', $last_sync_date)->with('inquiry_products')->get();
             $inquiry_response['inquiry_new'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : '';
@@ -813,7 +813,6 @@ class HomeController extends Controller {
         if (isset($inquiries)) {
             foreach ($inquiries as $key => $value) {
                 if ($value->server_id > 0) {
-
                     $add_inquiry = Inquiry::find($value->server_id);
                     $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
                     $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
