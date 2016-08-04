@@ -660,70 +660,71 @@ class HomeController extends Controller {
 //            if ($inquiryies != '' || $inquiryiesproduct != '') {
 //                $inquiry_details = $this->appsync1();
 //            }
-            if ($value->serverId == 0) {
-                if ($value->custServerId == 0 || $value->custServerId == '0') {
+            if ($value->server_id == 0) {
+                if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
                     $add_customers = new Customer();
-                    $add_customers->addNewCustomer($value->customerName, $value->custContactPerson, $value->customerMobile, $value->custCredit);
+                    $add_customers->addNewCustomer($value->customer_name, $value->customer_contact_person, $value->customer_mobile, $value->customer_credit_period);
                     $customer_list[$value->id] = $add_customers->id;
                 }
-                if ($value->supplierId == 0) {
+                if ($value->supplier_id == 0) {
                     $order_status = 'warehouse';
                     $supplier_id = 0;
                 } else {
                     $other_location_difference;
                     $order_status = 'supplier';
-                    $supplier_id = $value->supplierId;
+                    $supplier_id = $value->supplier_id;
                 }
                 $order = new Order();
                 $order->order_source = $order_status;
                 $order->supplier_id = $supplier_id;
-                $order->customer_id = ($value->custServerId == 0) ? $customer_list[$value->id] : $value->custServerId;
+                $order->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
                 $order->created_by = 1;
-                $order->vat_percentage = ($value->vatPerc == '') ? '' : $value->vatPerc;
-                $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expDelDate);
+                $order->vat_percentage = ($value->vat_percentage == '') ? '' : $value->vat_percentage;
+                $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
                 $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
                 $datetime = new DateTime($date);
                 $order->expected_delivery_date = $datetime->format('Y-m-d');
-                $order->remarks = $value->remark;
+                $order->remarks = $value->remarks;
                 $order->order_status = "Pending";
-                if ($value->delLocId > 0) {
-                    $order->delivery_location_id = $value->delLocId;
-                    $order->location_difference = $value->delLocDiff;
+                if ($value->delivery_location_id > 0) {
+                    $order->delivery_location_id = $value->delivery_location_id;
+                    $order->location_difference = $value->location_difference;
                 } else {
                     $order->delivery_location_id = 0;
-                    $order->other_location = $value->otherLocation;
-                    $order->location_difference = $value->otherLocationDifference;
+                    $order->other_location = $value->other_location;
+                    $order->location_difference = $value->other_location_difference;
                 }
                 $order->save();
                 $order_id = $order->id;
                 $order_products = array();
                 foreach ($orderproduct as $product_data) {
-                    if ($product_data->maxOrderId == $value->id) {
+                    if ($product_data->order_id == $value->id) {
                         $order_products = [
                             'order_id' => $order_id,
                             'order_type' => 'order',
-                            'product_category_id' => $product_data->productCatId,
-                            'unit_id' => $product_data->unitId,
-                            'quantity' => $product_data->qty,
+                            'product_category_id' => $product_data->product_category_id,
+                            'unit_id' => $product_data->unit_id,
+                            'quantity' => $product_data->quantity,
                             'price' => $product_data->price,
+                            'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
                             'remarks' => '',
                         ];
-                        $add_order_products = AllOrderProducts::create($order_products);
+                        AllOrderProducts::create($order_products);
                     }
                 }
                 $order_response[$value->id] = $order_id;
             } else {
-                $order = Order::find($value->serverId);
-                if ($value->custServerId == 0 || $value->custServerId == '0') {
+                $order = Order::find($value->server_id);
+                if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
                     $add_customers = new Customer();
-                    $add_customers->addNewCustomer($value->customerName, $value->custContactPerson, $value->customerMobile, $value->custCredit);
+                    $add_customers->addNewCustomer($value->customer_name, $value->customer_contact_person, $value->customer_mobile, $value->customer_credit_period);
                     $customer_list[$value->id] = $add_customers->id;
                 }
-                $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expDelDate);
+                $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
                 $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
                 $datetime = new DateTime($date);
-                $order->vat_percentage = ($value->vatPerc == '') ? '' : $value->vatPerc;
-                if ($value->supplierId == 0) {
+                $order->vat_percentage = ($value->vat_percentage == '') ? '' : $value->vat_percentage;
+                if ($value->supplier_id == 0) {
                     $order_status = 'warehouse';
                     $supplier_id = 0;
                 } else {
@@ -732,36 +733,37 @@ class HomeController extends Controller {
                     $supplier_id = $value->supplier_id;
                 }
                 $order->supplier_id = $supplier_id;
-                $order->remarks = ($value->remark != '') ? $value->remark : '';
-                $order->order_status = $value->orderStatus;
-                if ($value->delLocId > 0) {
-                    $order->delivery_location_id = $value->delLocId;
-                    $order->location_difference = $value->delLocDiff;
+                $order->remarks = ($value->remarks != '') ? $value->remarks : '';
+                $order->order_status = $value->order_status;
+                if ($value->delivery_location_id > 0) {
+                    $order->delivery_location_id = $value->delivery_location_id;
+                    $order->location_difference = $value->location_difference;
                 } else {
                     $order->delivery_location_id = 0;
-                    $order->other_location = $value->otherLocation;
-                    $order->location_difference = $value->otherLocationDifference;
+                    $order->other_location = $value->other_location;
+                    $order->location_difference = $value->other_location_difference;
                 }
-                $order->customer_id = ($value->custServerId == 0) ? $customer_list[$value->id] : $value->custServerId;
+                $order->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
                 $order->expected_delivery_date = $datetime->format('Y-m-d');
                 $order->save();
                 AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->delete();
                 foreach ($orderproduct as $product_data) {
                     $order_products = array();
-                    if ($product_data->maxOrderId == $value->id) {
+                    if ($product_data->order_id == $value->id) {
                         $order_products = [
-                            'order_id' => $value->serverId,
-                            'product_category_id' => $product_data->productCatId,
-                            'unit_id' => $product_data->unitId,
-                            'quantity' => $product_data->qty,
+                            'order_id' => $value->server_id,
+                            'product_category_id' => $product_data->product_category_id,
+                            'unit_id' => $product_data->unit_id,
+                            'quantity' => $product_data->quantity,
                             'price' => $product_data->price,
+                            'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
                             'remarks' => '',
                         ];
-                        $add_order_products = AllOrderProducts::create($order_products);
+                        AllOrderProducts::create($order_products);
                     }
                 }
-                $order_response[$value->serverId] = Order::find($value->serverId);
-                $order_response[$value->serverId]['products'] = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->get();
+                $order_response[$value->server_id] = Order::find($value->server_id);
+                $order_response[$value->server_id]['products'] = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->get();
             }
         }
         return json_encode($order_response);
@@ -841,6 +843,7 @@ class HomeController extends Controller {
                                 'unit_id' => $product_data->unit_id,
                                 'quantity' => $product_data->quantity,
                                 'price' => $product_data->price,
+                                'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
                                 'remarks' => '',
                             ];
                             $add_inquiry_products = InquiryProducts::create($inquiry_products);
@@ -852,10 +855,10 @@ class HomeController extends Controller {
 
                     if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
                         $add_customers = new Customer();
-                        $add_customers->owner_name = $value->owner_name;
-                        $add_customers->contact_person = $value->contact_person;
-                        $add_customers->phone_number1 = $value->phone_number1;
-                        $add_customers->credit_period = $value->credit_period;
+                        $add_customers->owner_name = $value->customer_name;
+                        $add_customers->contact_person = $value->customer_contact_peron;
+                        $add_customers->phone_number1 = $value->customer_mobile;
+                        $add_customers->credit_period = $value->customer_credit_period;
                         $add_customers->customer_status = 'pending';
                         $add_customers->save();
                         $customer_list[$value->id] = $add_customers->id;
