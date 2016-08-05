@@ -766,6 +766,8 @@ class HomeController extends Controller {
                 $order_response[$value->server_id]['all_order_products'] = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->get();
             }
         }
+        if (count($customer_list) > 0)
+            $order_response['customer_new'] = $customer_list;
         return json_encode($order_response);
     }
 
