@@ -374,8 +374,8 @@ class HomeController extends Controller {
                 $add_supplier = new Customer();
                 $add_supplier->addNewCustomer($value->supplier_name, "", $value->supplier_mobile, $value->credit_period);
                 $customer_list[$value->id] = $add_supplier->id;
-            }            
-            
+            }
+
             $date_string = preg_replace('~\x{00a0}~u', ' ', $value->bill_date);
             $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
             $datetime = new DateTime($date);
@@ -698,6 +698,8 @@ class HomeController extends Controller {
                 $delivery_order_response[$value->server_id]['products'] = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $delivery_order->id)->get();
             }
         }
+        if (count($customer_list) > 0)
+            $delivery_order_response['customer_new'] = $customer_list;
         return json_encode($delivery_order_response);
     }
 
