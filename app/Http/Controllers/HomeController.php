@@ -425,6 +425,8 @@ class HomeController extends Controller {
                 $purchase_advice_response[$value->id] = $purchase_advise_id;
             }
         }
+        if (count($customer_list) > 0)
+            $purchase_advice_response['customer_new'] = $customer_list;
         return json_encode($purchase_advice_response);
     }
 
@@ -496,6 +498,8 @@ class HomeController extends Controller {
                 $purchase_order_response[$value->id] = $purchase_order_id;
             }
         }
+        if (count($customer_list) > 0)
+            $purchase_order_response['customer_new'] = $customer_list;
         return json_encode($purchase_order_response);
     }
 
@@ -581,6 +585,8 @@ class HomeController extends Controller {
                 $delivery_challan_response[$value->id] = $delivery_challan_id;
             }
         }
+        if (count($customer_list) > 0)
+            $delivery_challan_response['customer_new'] = $customer_list;
         return json_encode($delivery_challan_response);
     }
 
