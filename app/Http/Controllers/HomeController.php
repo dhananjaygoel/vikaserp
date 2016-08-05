@@ -20,6 +20,7 @@ use App\Units;
 use App\DeliveryOrder;
 use App\DeliveryChallan;
 use App\AllOrderProducts;
+use App\PurchaseProducts;
 use App\Http\Controllers\DeliveryOrderController;
 use Jenssegers\Agent\Agent;
 use Illuminate\Support\Facades\Auth;
@@ -367,52 +368,55 @@ class HomeController extends Controller {
         $purchase_order_response = [];
         $customer_list = [];
         foreach ($purchaseorders as $key => $value) {
-            if ($value->servId)
-                $purchase_order = new PurchaseOrder();
+            
+            if ($value->server_id > 0)
+                $purchase_order = PurchaseOrder::find($value->server_id);
             else
-                $purchase_order = PurchaseOrder::find($value->servId);
-            if ($value->servSupplierId == 0) {
+                $purchase_order = new PurchaseOrder();
+            
+            if ($value->server_supplier_id == 0) {
                 $add_supplier = new Customer();
-                $add_supplier->addNewCustomer($value->customerName, $value->custContactPerson, $value->customerMobile, $value->custCreditPeriod);
+                $add_supplier->addNewCustomer($value->supplier_name, "", $value->supplier_mobile, $value->credit_period);
                 $customer_list[$value->id] = $add_supplier->id;
             }
-            $expected_delivery_date = explode('-', $value->expectedDeliveryDate);
+            $expected_delivery_date = explode('-', $value->expected_delivery_date);
             $expected_delivery_date = $expected_delivery_date[2] . '-' . $expected_delivery_date[0] . '-' . $expected_delivery_date[1];
             $expected_delivery_date = date("Y-m-d", strtotime($expected_delivery_date));
-            $purchase_order->supplier_id = ($value->servSupplierId > 0) ? $value->servSupplierId : $customer_list[$value->id];
+            $purchase_order->supplier_id = ($value->server_supplier_id > 0) ? $value->server_supplier_id : $customer_list[$value->id];
             $purchase_order->created_by = 1;
-            $purchase_order->order_for = ($value->custServerId > 0) ? $value->custServerId : 0;
-            $purchase_order->vat_percentage = ($value->vatPercentage > 0) ? $value->vatPercentage : 0;
+            $purchase_order->order_for = ($value->customer_server_id > 0) ? $value->customer_server_id : 0;
+            $purchase_order->vat_percentage = ($value->vat_percentage > 0) ? $value->vat_percentage : 0;
             $purchase_order->expected_delivery_date = $expected_delivery_date;
-            $purchase_order->remarks = $value->remark;
-            $purchase_order->order_status = $value->orderStatus;
-            if ($value->deliveryLocationId > 0) {
-                $purchase_order->delivery_location_id = $value->deliveryLocationId;
+            $purchase_order->remarks = $value->remarks;
+            $purchase_order->order_status = $value->order_status;
+            if ($value->delivery_location_id > 0) {
+                $purchase_order->delivery_location_id = $value->delivery_location_id;
             } else {
-                $purchase_order->other_location = $value->locationDiff;
-                $purchase_order->other_location_difference = $value->otherLocationDifference;
+                $purchase_order->other_location = $value->other_location;
+                $purchase_order->other_location_difference = $value->other_location_difference;
             }
             $purchase_order->save();
             $purchase_order_id = $purchase_order->id;
             $purchase_order_products = array();
-            if ($value->servId)
-                AllOrderProducts::where('order_type', '=', 'purchase_order')->where('order_id', '=', $value->servId)->delete();
+            if ($value->server_id) {
+                AllOrderProducts::where('order_type', '=', 'purchase_order')->where('order_id', '=', $value->server_id)->delete();
+            }
             foreach ($purchaseorderproducts as $product_data) {
-                if ($value->id == $product_data->purchaseOrderId) {
+                if ($value->id == $product_data->purchase_order_id) {
                     $purchase_order_products = [
                         'purchase_order_id' => $purchase_order_id,
-                        'product_category_id' => $product_data->productCategoryId,
-                        'unit_id' => $product_data->unitId,
-                        'quantity' => $product_data->qty,
+                        'product_category_id' => $product_data->product_category_id,
+                        'unit_id' => $product_data->unit_id,
+                        'quantity' => $product_data->actual_pieces,
                         'price' => $product_data->price,
                         'remarks' => '',
                     ];
                     PurchaseProducts::create($purchase_order_products);
                 }
             }
-            if ($value->servId > 0) {
-                $purchase_order_response[$value->id] = PurchaseOrder::find($value->servId);
-                $purchase_order_response[$value->id]['products'] = PurchaseProducts::where('order_type', '=', 'purchase_order')->where('order_id', '=', $value->servId)->get();
+            if ($value->server_id > 0) {
+                $purchase_order_response[$value->id] = PurchaseOrder::find($value->server_id);
+                $purchase_order_response[$value->id]['products'] = PurchaseProducts::where('order_type', '=', 'purchase_order')->where('order_id', '=', $value->server_id)->get();
             } else {
                 $purchase_order_response[$value->id] = $purchase_order_id;
             }
