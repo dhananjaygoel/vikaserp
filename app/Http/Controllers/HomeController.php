@@ -592,7 +592,7 @@ class HomeController extends Controller {
                 $delivery_order->vehicle_number = ($value->vehicle_number != '') ? $value->vehicle_number : '';
                 $delivery_order->driver_contact_no = ($value->driver_contact_no != '') ? $value->driver_contact_no : '';
                 $delivery_order->order_status = "Pending";
-                if ($value->deliveryLocationId > 0) {
+                if ($value->delivery_location_id > 0) {
                     $delivery_order->delivery_location_id = $value->delivery_location_id;
                     $delivery_order->location_difference = $value->location_difference;
                 } else {
