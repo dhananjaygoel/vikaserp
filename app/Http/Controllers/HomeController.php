@@ -666,13 +666,13 @@ class HomeController extends Controller {
                     $add_customers->addNewCustomer($value->customer_name, $value->customer_contact_person, $value->customer_mobile, $value->customer_credit_period);
                     $customer_list[$value->id] = $add_customers->id;
                 }
-                if ($value->supplier_id == 0) {
+                if ($value->supplier_server_id == 0) {
                     $order_status = 'warehouse';
                     $supplier_id = 0;
                 } else {
                     $other_location_difference;
                     $order_status = 'supplier';
-                    $supplier_id = $value->supplier_id;
+                    $supplier_id = $value->supplier_server_id;
                 }
                 $order = new Order();
                 $order->order_source = $order_status;
@@ -724,13 +724,13 @@ class HomeController extends Controller {
                 $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
                 $datetime = new DateTime($date);
 //                $order->vat_percentage = ($value->vat_percentage == '') ? '' : $value->vat_percentage;
-                if ($value->supplier_id == 0) {
+                if ($value->supplier_server_id == 0) {
                     $order_status = 'warehouse';
                     $supplier_id = 0;
                 } else {
                     $other_location_difference;
                     $order_status = 'supplier';
-                    $supplier_id = $value->supplier_id;
+                    $supplier_id = $value->supplier_server_id;
                 }
                 $order->supplier_id = $supplier_id;
                 $order->remarks = ($value->remarks != '') ? $value->remarks : '';
