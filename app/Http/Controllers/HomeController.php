@@ -345,12 +345,87 @@ class HomeController extends Controller {
         return json_encode(array('result' => true, 'message' => 'Email send successfully'));
     }
 
-    public function appSyncPurchaseAdvise() {
+    public function appSyncPurchaseChallan() {
         
     }
 
-    public function appSyncPurchaseChallan() {
-        
+    public function appSyncPurchaseAdvise() {
+
+        $input_data = Input::all();
+        if (Input::has('purchase_advice')) {
+            $purchaseadvices = (json_decode($input_data['purchase_advice']));
+        }
+        if (Input::has('customer')) {
+            $customers = (json_decode($input_data['customer']));
+        }
+        if (Input::has('purchase_advice_product')) {
+            $purchaseadviceproducts = (json_decode($input_data['purchase_advice_product']));
+        }
+        $purchase_advice_response = [];
+        $customer_list = [];
+        foreach ($purchaseadvices as $key => $value) {
+
+            if ($value->server_id > 0)
+                $purchase_advice = PurchaseAdvise::find($value->server_id);
+            else
+                $purchase_advice = new PurchaseAdvise();
+
+            if ($value->server_supplier_id == 0) {
+                $add_supplier = new Customer();
+                $add_supplier->addNewCustomer($value->supplier_name, "", $value->supplier_mobile, $value->credit_period);
+                $customer_list[$value->id] = $add_supplier->id;
+            }            
+            
+            $date_string = preg_replace('~\x{00a0}~u', ' ', $value->bill_date);
+            $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+            $datetime = new DateTime($date);
+            $date_string2 = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
+            $date2 = date("Y/m/d", strtotime(str_replace('-', '/', $date_string2)));
+            $datetime2 = new DateTime($date2);
+            $purchase_advice->purchase_advice_date = $datetime->format('Y-m-d');
+            $purchase_advice->supplier_id = ($value->server_supplier_id > 0) ? $value->server_supplier_id : $customer_list[$value->id];
+            $purchase_advice->created_by = 1;
+            $purchase_advice->expected_delivery_date = $datetime2->format('Y-m-d');
+            $purchase_advice->total_price = $value->total_price;
+            $purchase_advice->remarks = $value->remarks;
+            $purchase_advice->vehicle_number = $value->vehicle_number;
+            $purchase_advice->order_for = $value->order_for;
+            $purchase_advice->advice_status = 'in_process';
+            if ($value->vat_percentage > 0) {
+                $purchase_advice->vat_percentage = $value->vat_percentage;
+            }
+            if ($value->delivery_location_id > 0) {
+                $purchase_advice->delivery_location_id = $value->delivery_location_id;
+            } else {
+                $purchase_advice->other_location = $value->other_location_name;
+                $purchase_advice->other_location_difference = $value->other_location_difference;
+            }
+            $purchase_advice->save();
+            $purchase_advise_id = $purchase_advice->id;
+            foreach ($purchaseadviceproducts as $product_data) {
+                if ($product_data->purchase_order_id == $value->id) {
+                    $purchase_advise_products = [
+                        'purchase_order_id' => $purchase_advise_id,
+                        'order_type' => 'purchase_advice',
+                        'product_category_id' => $product_data->product_category_id,
+                        'unit_id' => $product_data->unit_id,
+                        'quantity' => $product_data->quantity,
+                        'price' => $product_data->price,
+                        'remarks' => "",
+                        'present_shipping' => $product_data->present_shipping,
+                        'from' => ($product_data->server_pur_order_id > 0) ? $product_data->server_pur_order_id : ''
+                    ];
+                    PurchaseProducts::create($purchase_advise_products);
+                }
+            }
+            if ($value->server_id > 0) {
+                $purchase_advice_response[$value->id] = PurchaseAdvise::find($value->server_id);
+                $purchase_advice_response[$value->id]['products'] = PurchaseProducts::where('order_type', '=', 'purchase_advice')->where('order_id', '=', $value->server_id)->get();
+            } else {
+                $purchase_advice_response[$value->id] = $purchase_advise_id;
+            }
+        }
+        return json_encode($purchase_advice_response);
     }
 
     public function appSyncPurchaseOrder() {
@@ -368,12 +443,12 @@ class HomeController extends Controller {
         $purchase_order_response = [];
         $customer_list = [];
         foreach ($purchaseorders as $key => $value) {
-            
+
             if ($value->server_id > 0)
                 $purchase_order = PurchaseOrder::find($value->server_id);
             else
                 $purchase_order = new PurchaseOrder();
-            
+
             if ($value->server_supplier_id == 0) {
                 $add_supplier = new Customer();
                 $add_supplier->addNewCustomer($value->supplier_name, "", $value->supplier_mobile, $value->credit_period);

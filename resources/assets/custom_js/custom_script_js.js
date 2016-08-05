@@ -357,6 +357,9 @@ function fetch_price() {
             }
             var rate = $("#product_price_" + i).val();
             var vat_percentage = $("#product_vatpercentage_" + i).val();
+            if (vat_percentage == '') {
+                vat_percentage = 0;
+            }
             var amount = parseFloat(rate) * parseInt(quantity);
             amount = parseFloat(amount + ((amount * vat_percentage) / 100));
             if (amount > 0) {
@@ -429,11 +432,15 @@ function grand_total_challan() {
             if ($("#actual_quantity_" + i).val() > 0 && $("#actual_quantity_" + i).val() != 0 || $("#actual_quantity_" + i).val() != '') {
                 quantity = parseFloat($("#actual_quantity_" + i).val());
             }
-            if ($("#actual_pieces_" + i).val() > 0 && $("#actual_quantity_" + i).val() == 0 || $("#actual_quantity_" + i).val() == '') {
-                quantity = parseFloat($("#actual_pieces_" + i).val());
+//            if ($("#actual_pieces_" + i).val() > 0 && $("#actual_quantity_" + i).val() == 0 || $("#actual_quantity_" + i).val() == '') {
+//                quantity = parseFloat($("#actual_pieces_" + i).val());
+//            }
+            var vat_percentage = $("#product_vatpercentage_" + i).val();
+            if (vat_percentage == '') {
+                vat_percentage = 0;
             }
-            total_price_products = total_price_products + (parseFloat($('#product_price_' + i).val()) * quantity);
-            total_price_products = total_price_products + parseFloat((total_price_products * $('#product_vatpercentage_' + i).val()) / 100);
+            var amount = parseFloat(parseFloat($('#product_price_' + i).val()) * quantity);
+            total_price_products = total_price_products + amount + parseFloat((amount * $('#product_vatpercentage_' + i).val()) / 100);
             total_actual_quantity = total_actual_quantity + quantity;
         }
     }
