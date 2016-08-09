@@ -513,74 +513,87 @@ class HomeController extends Controller {
             $customers = (json_decode($data['customer']));
         }
         if (Input::has('delivery_challan_product')) {
-            $deliveryorderproducts = (json_decode($data['delivery_challan_product']));
+            $deliverychallanproducts = (json_decode($data['delivery_challan_product']));
         }
         $delivery_challan_response = [];
         $customer_list = [];
+
+        if (Input::has('delivery_challan_sync_date') && Input::get('delivery_challan_sync_date') != '') {
+            $last_sync_date = Input::get('delivery_challan_sync_date');
+            $delivery_challan_server = DeliveryChallan::where('created_at', '>', $last_sync_date)->with('delivery_challan_products')->get();
+            $delivery_challan_response['delivery_challan_new'] = ($delivery_challan_server && count($delivery_challan_server) > 0) ? $delivery_challan_server : '';
+        } else {
+            $delivery_challan_server = DeliveryChallan::with('delivery_challan_products')->get();
+            $delivery_challan_response['delivery_challan_new'] = ($delivery_challan_server && count($delivery_challan_server) > 0) ? $delivery_challan_server : '';
+        }
+
         foreach ($delivery_challans as $key => $value) {
-            if ($value->servId == 0)
+            if ($value->server_id == 0)
                 $delivery_challan = new DeliveryChallan();
             else
-                $delivery_challan = DeliveryChallan::find($value->servId);
-            if ($value->custServId == 0 || $value->custServId == '0') {
+                $delivery_challan = DeliveryChallan::find($value->server_id);
+
+            if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
                 $add_customers = new Customer();
-                $add_customers->addNewCustomer($value->customerName, $value->custContactPerson, $value->customerMobile, $value->custCreditPeriod);
+                $add_customers->addNewCustomer($value->customer_name, $value->customer_contact_person, $value->customer_mobile, $value->customer_credit_period);
                 $customer_list[$value->id] = $add_customers->id;
             }
-            if ($value->servOrdId == 0) {
+            if ($value->server_order_id == 0) {
                 $delivery_challan->order_id = 0;
+            }else{
+                $delivery_challan->order_id = $value->server_order_id;
             }
-            if ($value->servDOID == 0) {
-                DeliveryOrder::where('id', '=', $value->servDOID)->update(array('order_status' => 'completed'));
+            if ($value->server_del_order_id == 0) {
+                DeliveryOrder::where('id', '=', $value->server_del_order_id)->update(array('order_status' => 'completed'));
                 $delivery_challan->delivery_order_id = 0;
             } else {
-                $delivery_challan->delivery_order_id = $value->servDOID;
+                $delivery_challan->delivery_order_id = $value->server_del_order_id;
             }
-            $delivery_challan->customer_id = ($value->custServId == 0) ? $customer_list[$value->id] : $value->custServId;
+            $delivery_challan->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
             $delivery_challan->created_by = 1;
-            if (isset($value->billno)) {
-                $delivery_challan->bill_number = $value->billno;
+            if (isset($value->bill_number)) {
+                $delivery_challan->bill_number = $value->bill_number;
             }
             $delivery_challan->discount = ($value->discount != '') ? $value->discount : '';
             $delivery_challan->freight = ($value->freight != '') ? $value->freight : '';
-            $delivery_challan->loading_charge = ($value->loadingCharge != '') ? $value->loadingCharge : '';
-            $delivery_challan->round_off = ($value->roundOff != '') ? $value->roundOff : '';
-            $delivery_challan->loaded_by = ($value->loadedBy != '') ? $value->loadedBy : '';
+            $delivery_challan->loading_charge = ($value->loading_charge != '') ? $value->loading_charge : '';
+            $delivery_challan->round_off = ($value->round_off != '') ? $value->round_off : '';
+            $delivery_challan->loaded_by = ($value->loaded_by != '') ? $value->loaded_by : '';
             $delivery_challan->labours = ($value->labours != '') ? $value->labours : '';
-            if (isset($value->vatPercentage) && $value->vatPercentage > 0) {
-                $delivery_challan->vat_percentage = $value->vatPercentage;
-            }
-            $delivery_challan->grand_price = $value->grandPrice;
+//            if (isset($value->vat_percentage) && $value->vat_percentage > 0) {
+//                $delivery_challan->vat_percentage = $value->vat_percentage;
+//            }
+            $delivery_challan->grand_price = $value->grand_price;
             $delivery_challan->remarks = $value->remarks;
             $delivery_challan->challan_status = "Pending";
             $delivery_challan->save();
             $delivery_challan_id = $delivery_challan->id;
             $delivery_challan_products = array();
-            if ($value->servId > 0)
-                AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->servId)->delete();
+            if ($value->server_id > 0)
+                AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->server_id)->delete();
 
-            foreach ($deliveryorderproducts as $product_data) {
-                if ($product_data->delChallanId == $value->id) {
+            foreach ($deliverychallanproducts as $product_data) {
+                if ($product_data->delivery_challan_id == $value->id) {
                     $delivery_challan_products = [
                         'order_id' => $delivery_challan_id,
                         'order_type' => 'delivery_challan',
-                        'product_category_id' => $product_data->productCategoryId,
-                        'unit_id' => $product_data->unitId,
-                        'quantity' => $product_data->qty,
-                        'price' => $product_data->actualPrice,
+                        'product_category_id' => $product_data->product_category_id,
+                        'unit_id' => $product_data->unit_id,
+                        'quantity' => $product_data->quantity,
+                        'price' => $product_data->actual_price,
                         'remarks' => '',
-                        'present_shipping' => $product_data->presentShipping,
-                        'actual_pieces' => $product_data->actualPieces,
-                        'actual_quantity' => $product_data->actualQty,
+                        'present_shipping' => $product_data->present_shipping,
+                        'actual_pieces' => $product_data->actual_pieces,
+                        'actual_quantity' => $product_data->actual_quantity,
                         'from' => 0, //Will need to check with app data
                         'parent' => 0, //Will need to check with app data
                     ];
                     AllOrderProducts::create($delivery_challan_products);
                 }
             }
-            if ($value->servId > 0) {
-                $delivery_challan_response[$value->id] = DeliveryChallan::find($value->servId);
-                $delivery_challan_response[$value->id]['products'] = AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->servId)->get();
+            if ($value->server_id > 0) {
+                $delivery_challan_response[$value->id] = DeliveryChallan::find($value->server_id);
+                $delivery_challan_response[$value->id]['products'] = AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->server_id)->get();
             } else {
                 $delivery_challan_response[$value->id] = $delivery_challan_id;
             }
@@ -604,6 +617,16 @@ class HomeController extends Controller {
         }
         $delivery_order_response = [];
         $customer_list = [];
+
+        if (Input::has('delivery_order_sync_date') && Input::get('delivery_order_sync_date') != '') {
+            $last_sync_date = Input::get('delivery_order_sync_date');
+            $delivery_order_server = DeliveryOrder::where('created_at', '>', $last_sync_date)->with('delivery_product')->get();
+            $delivery_order_response['delivery_order_new'] = ($delivery_order_server && count($delivery_order_server) > 0) ? $delivery_order_server : '';
+        } else {
+            $delivery_order_server = DeliveryOrder::with('delivery_product')->get();
+            $delivery_order_response['delivery_order_new'] = ($delivery_order_server && count($delivery_order_server) > 0) ? $delivery_order_server : '';
+        }
+
         foreach ($delivery_orders as $key => $value) {
 
             if ($value->server_id == 0) {
@@ -735,12 +758,12 @@ class HomeController extends Controller {
             $order_added_server = Order::where('created_at', '>', $last_sync_date)->with('all_order_products')->get();
             $order_response['order_new'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : '';
             $inquiry_added_server = Inquiry::where('created_at', '>', $last_sync_date)->with('inquiry_products')->get();
-            $order_response['inquiry_new'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : '';
+//            $order_response['inquiry_new'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : '';
         } else {
             $order_added_server = Order::with('all_order_products')->get();
             $order_response['order_new'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : '';
             $inquiry_added_server = Inquiry::with('inquiry_products')->get();
-            $order_response['inquiry_new'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : '';
+//            $order_response['inquiry_new'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : '';
         }
         foreach ($orders as $key => $value) {
 

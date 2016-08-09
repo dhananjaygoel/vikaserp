@@ -300,7 +300,6 @@ function grand_total_delivery_order() {
             total_price = total_price + (parseInt($('#product_price_' + i).val()) * present_shipping);
         }
     }
-
     var vat_val = 0;
     if ($('#optionsRadios6').is(':checked')) {
         vat_val = (parseInt(total_price) * $('#vat_percentage').val()) / 100;
