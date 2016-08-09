@@ -540,7 +540,7 @@ class HomeController extends Controller {
             }
             if ($value->server_order_id == 0) {
                 $delivery_challan->order_id = 0;
-            }else{
+            } else {
                 $delivery_challan->order_id = $value->server_order_id;
             }
             if ($value->server_del_order_id == 0) {
@@ -795,6 +795,7 @@ class HomeController extends Controller {
                 $datetime = new DateTime($date);
                 $order->expected_delivery_date = $datetime->format('Y-m-d');
                 $order->remarks = $value->remarks;
+                $order->flaged = ($value->flaged != '') ? $value->flaged : 0;
                 $order->order_status = "Pending";
                 if ($value->delivery_location_id > 0) {
                     $order->delivery_location_id = $value->delivery_location_id;
@@ -845,6 +846,7 @@ class HomeController extends Controller {
                 $order->supplier_id = $supplier_id;
                 $order->remarks = ($value->remarks != '') ? $value->remarks : '';
                 $order->order_status = $value->order_status;
+                $order->flaged = ($value->flaged != '') ? $value->flaged : 0;
                 if ($value->delivery_location_id > 0) {
                     $order->delivery_location_id = $value->delivery_location_id;
                     $order->location_difference = $value->location_difference;
