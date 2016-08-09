@@ -420,7 +420,7 @@ class HomeController extends Controller {
             }
             if ($value->server_id > 0) {
                 $purchase_advice_response[$value->id] = PurchaseAdvise::find($value->server_id);
-                $purchase_advice_response[$value->id]['products'] = PurchaseProducts::where('order_type', '=', 'purchase_advice')->where('order_id', '=', $value->server_id)->get();
+                $purchase_advice_response[$value->id]['purchase_products'] = PurchaseProducts::where('order_type', '=', 'purchase_advice')->where('order_id', '=', $value->server_id)->get();
             } else {
                 $purchase_advice_response[$value->id] = $purchase_advise_id;
             }
@@ -493,7 +493,7 @@ class HomeController extends Controller {
             }
             if ($value->server_id > 0) {
                 $purchase_order_response[$value->id] = PurchaseOrder::find($value->server_id);
-                $purchase_order_response[$value->id]['products'] = PurchaseProducts::where('order_type', '=', 'purchase_order')->where('order_id', '=', $value->server_id)->get();
+                $purchase_order_response[$value->id]['purchase_products'] = PurchaseProducts::where('order_type', '=', 'purchase_order')->where('order_id', '=', $value->server_id)->get();
             } else {
                 $purchase_order_response[$value->id] = $purchase_order_id;
             }
@@ -593,7 +593,7 @@ class HomeController extends Controller {
             }
             if ($value->server_id > 0) {
                 $delivery_challan_response[$value->id] = DeliveryChallan::find($value->server_id);
-                $delivery_challan_response[$value->id]['products'] = AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->server_id)->get();
+                $delivery_challan_response[$value->id]['delivery_challan_products'] = AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->server_id)->get();
             } else {
                 $delivery_challan_response[$value->id] = $delivery_challan_id;
             }
@@ -724,7 +724,7 @@ class HomeController extends Controller {
                     }
                 }
                 $delivery_order_response[$value->server_id] = DeliveryOrder::find($delivery_order->id);
-                $delivery_order_response[$value->server_id]['products'] = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $delivery_order->id)->get();
+                $delivery_order_response[$value->server_id]['delivery_product'] = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $delivery_order->id)->get();
             }
         }
         if (count($customer_list) > 0)
