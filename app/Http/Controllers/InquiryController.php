@@ -456,6 +456,7 @@ class InquiryController extends Controller {
             }
         }
 
+        $inquiry->save();
         /*
           |------------------------------------------------
           | SEND SMS TO THE CUSTOMER WITH UPDATED QUOTATIONS
