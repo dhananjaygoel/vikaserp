@@ -975,6 +975,9 @@ class HomeController extends Controller {
                             $add_inquiry_products = InquiryProducts::create($inquiry_products);
                         }
                     }
+                    $inquiry_products = InquiryProducts::where('inquiry_id', '=', $value->server_id)->first();
+                    $add_inquiry->updated_at = $inquiry_products->updated_at;
+                    $add_inquiry->save();
                     $inquiry_response[$value->server_id] = Inquiry::find($value->server_id);
                     $inquiry_response[$value->server_id]['inquiry_products'] = InquiryProducts::where('inquiry_id', '=', $value->server_id)->get();
                 } else {
