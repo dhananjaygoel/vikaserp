@@ -985,7 +985,7 @@ class HomeController extends Controller {
                         $add_customers->contact_person = $value->customer_contact_peron;
                         $add_customers->phone_number1 = $value->customer_mobile;
                         $add_customers->credit_period = $value->customer_credit_period;
-                        $add_customers->customer_status = $value->inquiry_status;
+                        $add_customers->customer_status = 'Pending';
                         $add_customers->save();
                         $customer_list[$value->id] = $add_customers->id;
                     }
