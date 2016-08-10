@@ -402,6 +402,9 @@ class HomeController extends Controller {
             }
             $purchase_advice->save();
             $purchase_advise_id = $purchase_advice->id;
+            if ($value->server_id > 0) {
+                PurchaseProducts::where('order_type', '=', 'purchase_advice')->where('purchase_order_id', '=', $value->server_id)->delete();
+            }
             foreach ($purchaseadviceproducts as $product_data) {
                 if ($product_data->purchase_order_id == $value->id) {
                     $purchase_advise_products = [
@@ -419,10 +422,10 @@ class HomeController extends Controller {
                 }
             }
             if ($value->server_id > 0) {
-                $purchase_advice_prod = AllOrderProducts::where('order_type', '=', 'purchase_advice')->where('order_id', '=', $value->server_id)->first();
+                $purchase_advice_prod = PurchaseProducts::where('order_type', '=', 'purchase_advice')->where('purchase_order_id', '=', $value->server_id)->first();
                 $purchase_advice->updated_at = $purchase_advice_prod->updated_at;
                 $purchase_advice_response[$value->id] = PurchaseAdvise::find($value->server_id);
-                $purchase_advice_response[$value->id]['purchase_products'] = PurchaseProducts::where('order_type', '=', 'purchase_advice')->where('order_id', '=', $value->server_id)->get();
+                $purchase_advice_response[$value->id]['purchase_products'] = PurchaseProducts::where('order_type', '=', 'purchase_advice')->where('purchase_order_id', '=', $value->server_id)->get();
             } else {
                 $purchase_advice_response[$value->id] = $purchase_advise_id;
             }
@@ -479,7 +482,7 @@ class HomeController extends Controller {
             $purchase_order_id = $purchase_order->id;
             $purchase_order_products = array();
             if ($value->server_id) {
-                AllOrderProducts::where('order_type', '=', 'purchase_order')->where('order_id', '=', $value->server_id)->delete();
+                PurchaseProducts::where('order_type', '=', 'purchase_order')->where('purchase_order_id', '=', $value->server_id)->delete();
             }
             foreach ($purchaseorderproducts as $product_data) {
                 if ($value->id == $product_data->purchase_order_id) {
@@ -495,10 +498,10 @@ class HomeController extends Controller {
                 }
             }
             if ($value->server_id > 0) {
-                $purchase_order_prod = AllOrderProducts::where('order_type', '=', 'purchase_order')->where('order_id', '=', $value->server_id)->first();
+                $purchase_order_prod = PurchaseProducts::where('order_type', '=', 'purchase_order')->where('purchase_order_id', '=', $value->server_id)->first();
                 $purchase_order->updated_at = $purchase_order_prod->updated_at;
                 $purchase_order_response[$value->id] = PurchaseOrder::find($value->server_id);
-                $purchase_order_response[$value->id]['purchase_products'] = PurchaseProducts::where('order_type', '=', 'purchase_order')->where('order_id', '=', $value->server_id)->get();
+                $purchase_order_response[$value->id]['purchase_products'] = PurchaseProducts::where('order_type', '=', 'purchase_order')->where('purchase_order_id', '=', $value->server_id)->get();
             } else {
                 $purchase_order_response[$value->id] = $purchase_order_id;
             }

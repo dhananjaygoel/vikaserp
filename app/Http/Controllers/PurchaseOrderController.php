@@ -268,7 +268,7 @@ class PurchaseOrderController extends Controller {
                     'price' => $product_data['price'],
                     'remarks' => $product_data['remark'],
                 ];
-                $add_purchase_order_products = PurchaseProducts::create($purchase_order_products);
+                PurchaseProducts::create($purchase_order_products);
             }
         }
 
@@ -498,7 +498,7 @@ class PurchaseOrderController extends Controller {
             ]);
         }
         $purchase_order_products = array();
-        $delete_old_purchase_products = PurchaseProducts::where('purchase_order_id', '=', $id)->delete();
+        PurchaseProducts::where('order_type', '=', 'purchase_order')->where('purchase_order_id', '=', $id)->delete();
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
                 $purchase_order_products = [
@@ -509,10 +509,10 @@ class PurchaseOrderController extends Controller {
                     'price' => $product_data['price'],
                     'remarks' => $product_data['remark'],
                 ];
-                $add_purchase_order_products = PurchaseProducts::create($purchase_order_products);
+                PurchaseProducts::create($purchase_order_products);
             }
         }
-        $purchase_order_prod = AllOrderProducts::where('order_type', '=', 'purchase_order')->where('order_id', '=', $id)->first();
+        $purchase_order_prod = PurchaseProducts::where('order_type', '=', 'purchase_order')->where('purchase_order_id', '=', $id)->first();
         $purchase_order->updated_at = $purchase_order_prod->updated_at;
         $purchase_order->save();
         /*
