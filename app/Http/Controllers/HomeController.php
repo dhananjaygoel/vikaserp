@@ -565,7 +565,7 @@ class HomeController extends Controller {
 //            }
             $delivery_challan->grand_price = $value->grand_price;
             $delivery_challan->remarks = $value->remarks;
-            $delivery_challan->challan_status = "Pending";
+            $delivery_challan->challan_status = ($value->server_id > 0) ? $value->challan_status : "Pending";
             $delivery_challan->save();
             $delivery_challan_id = $delivery_challan->id;
             $delivery_challan_products = array();
@@ -626,7 +626,11 @@ class HomeController extends Controller {
             $delivery_order_server = DeliveryOrder::with('delivery_product')->get();
             $delivery_order_response['delivery_order_new'] = ($delivery_order_server && count($delivery_order_server) > 0) ? $delivery_order_server : '';
         }
-
+        if (Input::has('delivery_order_sync_date') && Input::get('delivery_order_sync_date') != '' && Input::get('delivery_order_sync_date') != NULL) {
+            $last_sync_date = Input::get('delivery_order_sync_date');
+            $delivery_order_updated_server = DeliveryOrder::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('delivery_product')->get();
+            $delivery_order_response['delivery_order_updated'] = ($delivery_order_updated_server && count($delivery_order_updated_server) > 0) ? $delivery_order_updated_server : '';
+        }
         foreach ($delivery_orders as $key => $value) {
 
             if ($value->server_id == 0) {
@@ -695,7 +699,7 @@ class HomeController extends Controller {
                 $delivery_order->remarks = $value->remarks;
                 $delivery_order->vehicle_number = ($value->vehicle_number != '') ? $value->vehicle_number : '';
                 $delivery_order->driver_contact_no = ($value->driver_contact_no != '') ? $value->driver_contact_no : '';
-                $delivery_order->order_status = "Pending";
+                $delivery_order->order_status = $value->order_status;
                 if ($value->delivery_location_id > 0) {
                     $delivery_order->delivery_location_id = $value->delivery_location_id;
                     $delivery_order->location_difference = $value->location_difference;
@@ -757,13 +761,18 @@ class HomeController extends Controller {
             $last_sync_date = Input::get('order_sync_date');
             $order_added_server = Order::where('created_at', '>', $last_sync_date)->with('all_order_products')->get();
             $order_response['order_new'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : '';
-            $inquiry_added_server = Inquiry::where('created_at', '>', $last_sync_date)->with('inquiry_products')->get();
+//            $inquiry_added_server = Inquiry::where('created_at', '>', $last_sync_date)->with('inquiry_products')->get();
 //            $order_response['inquiry_new'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : '';
         } else {
             $order_added_server = Order::with('all_order_products')->get();
             $order_response['order_new'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : '';
-            $inquiry_added_server = Inquiry::with('inquiry_products')->get();
+//            $inquiry_added_server = Inquiry::with('inquiry_products')->get();
 //            $order_response['inquiry_new'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : '';
+        }
+        if (Input::has('order_sync_date') && Input::get('order_sync_date') != '' && Input::get('order_sync_date') != NULL) {
+            $last_sync_date = Input::get('order_sync_date');
+            $order_updated_server = Order::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('all_order_products')->get();
+            $order_response['order_updated'] = ($order_updated_server && count($order_updated_server) > 0) ? $order_updated_server : '';
         }
         foreach ($orders as $key => $value) {
 
@@ -923,7 +932,11 @@ class HomeController extends Controller {
             $inquiry_added_server = Inquiry::with('inquiry_products')->get();
             $inquiry_response['inquiry_new'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : '';
         }
-
+        if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '' && Input::get('inquiry_sync_date') != NULL) {
+            $last_sync_date = Input::get('inquiry_sync_date');
+            $inquiry_updated_server = Inquiry::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('inquiry_products')->get();
+            $inquiry_response['inquiry_updated'] = ($inquiry_updated_server && count($inquiry_updated_server) > 0) ? $inquiry_updated_server : '';
+        }
         if (isset($inquiries)) {
             foreach ($inquiries as $key => $value) {
                 if ($value->server_id > 0) {
@@ -972,7 +985,7 @@ class HomeController extends Controller {
                         $add_customers->contact_person = $value->customer_contact_peron;
                         $add_customers->phone_number1 = $value->customer_mobile;
                         $add_customers->credit_period = $value->customer_credit_period;
-                        $add_customers->customer_status = 'pending';
+                        $add_customers->customer_status = $value->inquiry_status;
                         $add_customers->save();
                         $customer_list[$value->id] = $add_customers->id;
                     }
