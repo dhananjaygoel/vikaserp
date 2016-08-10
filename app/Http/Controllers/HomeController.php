@@ -419,11 +419,14 @@ class HomeController extends Controller {
                 }
             }
             if ($value->server_id > 0) {
+                $purchase_advice_prod = AllOrderProducts::where('order_type', '=', 'purchase_advice')->where('order_id', '=', $value->server_id)->first();
+                $purchase_advice->updated_at = $purchase_advice_prod->updated_at;
                 $purchase_advice_response[$value->id] = PurchaseAdvise::find($value->server_id);
                 $purchase_advice_response[$value->id]['purchase_products'] = PurchaseProducts::where('order_type', '=', 'purchase_advice')->where('order_id', '=', $value->server_id)->get();
             } else {
                 $purchase_advice_response[$value->id] = $purchase_advise_id;
             }
+            $purchase_advice->save();
         }
         if (count($customer_list) > 0)
             $purchase_advice_response['customer_new'] = $customer_list;
@@ -492,11 +495,14 @@ class HomeController extends Controller {
                 }
             }
             if ($value->server_id > 0) {
+                $purchase_order_prod = AllOrderProducts::where('order_type', '=', 'purchase_order')->where('order_id', '=', $value->server_id)->first();
+                $purchase_order->updated_at = $purchase_order_prod->updated_at;
                 $purchase_order_response[$value->id] = PurchaseOrder::find($value->server_id);
                 $purchase_order_response[$value->id]['purchase_products'] = PurchaseProducts::where('order_type', '=', 'purchase_order')->where('order_id', '=', $value->server_id)->get();
             } else {
                 $purchase_order_response[$value->id] = $purchase_order_id;
             }
+            $purchase_order->save();
         }
         if (count($customer_list) > 0)
             $purchase_order_response['customer_new'] = $customer_list;
@@ -592,11 +598,14 @@ class HomeController extends Controller {
                 }
             }
             if ($value->server_id > 0) {
+                $delivery_challan_prod = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->first();
+                $delivery_challan->updated_at = $delivery_challan_prod->updated_at;
                 $delivery_challan_response[$value->id] = DeliveryChallan::find($value->server_id);
                 $delivery_challan_response[$value->id]['delivery_challan_products'] = AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->server_id)->get();
             } else {
                 $delivery_challan_response[$value->id] = $delivery_challan_id;
             }
+            $delivery_challan->save();
         }
         if (count($customer_list) > 0)
             $delivery_challan_response['customer_new'] = $customer_list;
@@ -707,7 +716,6 @@ class HomeController extends Controller {
                     $delivery_order->other_location = $value->other_location;
                     $delivery_order->location_difference = $value->other_location_difference;
                 }
-                $delivery_order->save();
                 $delivery_order_id = $delivery_order->id;
                 $delivery_order_products = array();
                 AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $delivery_order->id)->delete();
@@ -727,6 +735,9 @@ class HomeController extends Controller {
                         AllOrderProducts::create($delivery_order_products);
                     }
                 }
+                $delivery_order_prod = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $delivery_order_id)->first();
+                $delivery_order->updated_at = $delivery_order_prod->updated_at;
+                $delivery_order->save();
                 $delivery_order_response[$value->server_id] = DeliveryOrder::find($delivery_order->id);
                 $delivery_order_response[$value->server_id]['delivery_product'] = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $delivery_order->id)->get();
             }
@@ -866,7 +877,6 @@ class HomeController extends Controller {
                 }
                 $order->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
                 $order->expected_delivery_date = $datetime->format('Y-m-d');
-                $order->save();
                 AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->delete();
                 foreach ($orderproduct as $product_data) {
                     $order_products = array();
@@ -883,6 +893,9 @@ class HomeController extends Controller {
                         AllOrderProducts::create($order_products);
                     }
                 }
+                $order_prod = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $value->server_id)->first();
+                $order->updated_at = $order_prod->updated_at;
+                $order->save();
                 $order_response[$value->server_id] = Order::find($value->server_id);
                 $order_response[$value->server_id]['all_order_products'] = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->get();
             }

@@ -143,8 +143,6 @@ class DeliveryChallanController extends Controller {
 //        if (isset($input_data['vat_percentage'])) {
 //            $delivery_challan->vat_percentage = $input_data['vat_percentage'];
 //        }
-        $delivery_challan->save();
-
 //        $update_challan = $delivery_challan->update([
 //            'bill_number' => $input_data['billno'],
 //            'freight' => $input_data['freight'],
@@ -193,6 +191,9 @@ class DeliveryChallanController extends Controller {
                     AllOrderProducts::create($order_products);
                 }
             }
+            $delivery_challan_prod = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->first();
+            $delivery_challan->updated_at = $delivery_challan_prod->updated_at;
+            $delivery_challan->save();
         }
         return redirect('delivery_challan')->with('flash_message', 'Delivery Challan details updated successfuly .');
     }

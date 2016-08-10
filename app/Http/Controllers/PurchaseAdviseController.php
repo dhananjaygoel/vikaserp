@@ -282,11 +282,13 @@ class PurchaseAdviseController extends Controller {
                         'present_shipping' => $product_data['present_shipping'],
                         'from' => $product_data['purchase']
                     ];
-
                     $add_purchase_advise_products = PurchaseProducts::create($purchase_advise_products);
                 }
             }
         }
+        $purchase_advice_prod = AllOrderProducts::where('order_type', '=', 'purchase_advice')->where('order_id', '=', $value->server_id)->first();
+        $purchase_advise->updated_at = $purchase_advice_prod->updated_at;
+        $purchase_advise->save();
         return redirect('purchaseorder_advise')->with('success', 'Purchase advise updated successfully');
     }
 

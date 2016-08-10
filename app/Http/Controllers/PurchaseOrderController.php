@@ -483,7 +483,6 @@ class PurchaseOrderController extends Controller {
             }
         }
         $update_purchase_order = $purchase_order->update($add_purchase_order_array);
-
         if (isset($input_data['purchase_order_location']) && ($input_data['purchase_order_location'] == -1)) {
 
             $purchase_order->update([
@@ -513,6 +512,9 @@ class PurchaseOrderController extends Controller {
                 $add_purchase_order_products = PurchaseProducts::create($purchase_order_products);
             }
         }
+        $purchase_order_prod = AllOrderProducts::where('order_type', '=', 'purchase_order')->where('order_id', '=', $id)->first();
+        $purchase_order->updated_at = $purchase_order_prod->updated_at;
+        $purchase_order->save();
         /*
           | ------------------------------------------------------
           | SEND EMAIL TO SUPPLIER ON UPDATE OF NEW PURCHASE ORDER

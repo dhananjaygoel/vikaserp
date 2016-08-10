@@ -531,6 +531,9 @@ class OrderController extends Controller {
                 AllOrderProducts::create($order_products);
             }
         }
+        $order_prod = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $id)->first();
+        $order->updated_at = $order_prod->updated_at;
+        $order->save();
 
         /*
          * ------------------- --------------
