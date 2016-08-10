@@ -455,7 +455,6 @@ class InquiryController extends Controller {
                 InquiryProducts::create($inquiry_products);
             }
         }
-
         $inquiry->save();
         /*
           |------------------------------------------------
