@@ -455,7 +455,8 @@ class InquiryController extends Controller {
                 InquiryProducts::create($inquiry_products);
             }
         }
-        $inquiry->inquiry_status = $inquiry->inquiry_status;
+        $inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->first();
+        $inquiry->updated_at = $inquiry_products->updated_at;
         $inquiry->save();
         /*
           |------------------------------------------------
