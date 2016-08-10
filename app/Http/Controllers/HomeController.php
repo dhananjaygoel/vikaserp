@@ -528,6 +528,13 @@ class HomeController extends Controller {
             $last_sync_date = Input::get('delivery_challan_sync_date');
             $delivery_challan_server = DeliveryChallan::where('created_at', '>', $last_sync_date)->with('delivery_challan_products')->get();
             $delivery_challan_response['delivery_challan_new'] = ($delivery_challan_server && count($delivery_challan_server) > 0) ? $delivery_challan_server : '';
+
+            /* Send Updated customers */
+            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+            $delivery_challan_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : '';
+            /* Send New customers */
+            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
+            $delivery_challan_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : '';
         } else {
             $delivery_challan_server = DeliveryChallan::with('delivery_challan_products')->get();
             $delivery_challan_response['delivery_challan_new'] = ($delivery_challan_server && count($delivery_challan_server) > 0) ? $delivery_challan_server : '';
@@ -639,6 +646,13 @@ class HomeController extends Controller {
             $last_sync_date = Input::get('delivery_order_sync_date');
             $delivery_order_updated_server = DeliveryOrder::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('delivery_product')->get();
             $delivery_order_response['delivery_order_updated'] = ($delivery_order_updated_server && count($delivery_order_updated_server) > 0) ? $delivery_order_updated_server : '';
+
+            /* Send Updated customers */
+            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+            $delivery_order_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : '';
+            /* Send New customers */
+            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
+            $delivery_order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : '';
         }
         foreach ($delivery_orders as $key => $value) {
 
@@ -784,6 +798,13 @@ class HomeController extends Controller {
             $last_sync_date = Input::get('order_sync_date');
             $order_updated_server = Order::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('all_order_products')->get();
             $order_response['order_updated'] = ($order_updated_server && count($order_updated_server) > 0) ? $order_updated_server : '';
+
+            /* Send Updated customers */
+            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+            $order_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : '';
+            /* Send New customers */
+            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
+            $order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : '';
         }
         foreach ($orders as $key => $value) {
 
@@ -949,11 +970,27 @@ class HomeController extends Controller {
             $last_sync_date = Input::get('inquiry_sync_date');
             $inquiry_updated_server = Inquiry::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('inquiry_products')->get();
             $inquiry_response['inquiry_updated'] = ($inquiry_updated_server && count($inquiry_updated_server) > 0) ? $inquiry_updated_server : '';
+
+            /* Send Updated customers */
+            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+            $inquiry_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : '';
+            /* Send New customers */
+            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
+            $inquiry_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : '';
         }
         if (isset($inquiries)) {
             foreach ($inquiries as $key => $value) {
                 if ($value->server_id > 0) {
                     $add_inquiry = Inquiry::find($value->server_id);
+
+                    $update_customers = Customer::find($add_inquiry->customer_id);
+                    $update_customers->owner_name = $value->customer_name;
+                    $update_customers->contact_person = $value->customer_contact_peron;
+                    $update_customers->phone_number1 = $value->customer_mobile;
+                    $update_customers->credit_period = $value->customer_credit_period;
+                    $update_customers->customer_status = $value->customer_status;
+                    $update_customers->save();
+
                     $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
                     $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
                     $datetime = new DateTime($date);
@@ -1285,9 +1322,9 @@ class HomeController extends Controller {
     public function appallcustomers() {
 
         if (Input::has('customer_sync_date') && Input::get('customer_sync_date') != '')
-            $customers = Customer::where('created_at', '>', Input::get('customer_sync_date'))->where('customer_status', '=', 'permanent')->orderBy('tally_name', 'asc')->get();
+            $customers = Customer::where('created_at', '>', Input::get('customer_sync_date'))->orderBy('tally_name', 'asc')->get();
         else
-            $customers = Customer::where('customer_status', '=', 'permanent')->orderBy('tally_name', 'asc')->get();
+            $customers = Customer::orderBy('tally_name', 'asc')->get();
         return json_encode($customers);
     }
 
