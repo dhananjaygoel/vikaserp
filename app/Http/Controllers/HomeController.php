@@ -488,6 +488,13 @@ class HomeController extends Controller {
             $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
             $purchase_order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
+        	/* Send Updated customers */
+            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+            $purchase_order_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
+            /* Send New customers */
+            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
+            $purchase_order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
+        	
             $purchase_order_server = PurchaseOrder::with('purchase_products')->get();
             $purchase_order_response['purchase_order_new'] = ($purchase_order_server && count($purchase_order_server) > 0) ? $purchase_order_server : array();
         }
