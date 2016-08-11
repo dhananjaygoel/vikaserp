@@ -433,6 +433,13 @@ class HomeController extends Controller {
         }
         if (count($customer_list) > 0)
             $purchase_advice_response['customer_new'] = $customer_list;
+
+        $purchase_advice_date = PurchaseAdvise::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($purchase_advice_date))
+            $purchase_advice_response['latest_date'] = [$purchase_advice_date->updated_at->toDateTimeString()];
+        else
+            $purchase_advice_response['latest_date'] = [];
+
         return json_encode($purchase_advice_response);
     }
 
@@ -448,15 +455,15 @@ class HomeController extends Controller {
         if (Input::has('purchase_order_product')) {
             $purchaseorderproducts = (json_decode($data['purchase_order_product']));
         }
-        
+
         if (Input::has('purchase_order_sync_date') && Input::get('purchase_order_sync_date') != '') {
             $last_sync_date = Input::get('purchase_order_sync_date');
             $purchase_order_server = PurchaseOrder::where('created_at', '>', $last_sync_date)->with('purchase_products')->get();
             $purchase_order_response['purchase_order_new'] = ($purchase_order_server && count($purchase_order_server) > 0) ? $purchase_order_server : array();
-            
+
             $purchase_order_updated_server = PurchaseOrder::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('purchase_products')->get();
             $purchase_order_response['delivery_order_updated'] = ($purchase_order_updated_server && count($purchase_order_updated_server) > 0) ? $purchase_order_updated_server : array();
-            
+
             /* Send Updated customers */
             $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
             $purchase_order_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
@@ -467,8 +474,8 @@ class HomeController extends Controller {
             $purchase_order_server = PurchaseOrder::with('purchase_products')->get();
             $purchase_order_response['purchase_order_new'] = ($purchase_order_server && count($purchase_order_server) > 0) ? $purchase_order_server : array();
         }
-        
-        
+
+
         $purchase_order_response = [];
         $customer_list = [];
         foreach ($purchaseorders as $key => $value) {
@@ -530,6 +537,13 @@ class HomeController extends Controller {
         }
         if (count($customer_list) > 0)
             $purchase_order_response['customer_new'] = $customer_list;
+
+        $purchase_order_date = PurchaseOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($purchase_order_date))
+            $purchase_order_response['latest_date'] = [$purchase_order_date->updated_at->toDateTimeString()];
+        else
+            $purchase_order_response['latest_date'] = [];
+
         return json_encode($purchase_order_response);
     }
 
@@ -552,7 +566,7 @@ class HomeController extends Controller {
             $last_sync_date = Input::get('delivery_challan_sync_date');
             $delivery_challan_server = DeliveryChallan::where('created_at', '>', $last_sync_date)->with('delivery_challan_products')->get();
             $delivery_challan_response['delivery_challan_new'] = ($delivery_challan_server && count($delivery_challan_server) > 0) ? $delivery_challan_server : array();
-            
+
             /* Send Updated customers */
             $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
             $delivery_challan_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
@@ -640,6 +654,13 @@ class HomeController extends Controller {
         }
         if (count($customer_list) > 0)
             $delivery_challan_response['customer_new'] = $customer_list;
+
+        $delivery_challan_date = DeliveryChallan::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($delivery_challan_date))
+            $delivery_challan_response['latest_date'] = [$delivery_challan_date->updated_at->toDateTimeString()];
+        else
+            $delivery_challan_response['latest_date'] = [];
+
         return json_encode($delivery_challan_response);
     }
 
@@ -782,6 +803,13 @@ class HomeController extends Controller {
         }
         if (count($customer_list) > 0)
             $delivery_order_response['customer_new'] = $customer_list;
+
+        $delivery_order_date = DeliveryOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($delivery_order_date))
+            $delivery_order_response['latest_date'] = [$delivery_order_date->updated_at->toDateTimeString()];
+        else
+            $delivery_order_response['latest_date'] = [];
+
         return json_encode($delivery_order_response);
     }
 
@@ -947,6 +975,13 @@ class HomeController extends Controller {
         }
         if (count($customer_list) > 0)
             $order_response['customer_new'] = $customer_list;
+
+        $order_date = Order::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($order_date))
+            $order_response['latest_date'] = [$order_date->updated_at->toDateTimeString()];
+        else
+            $order_response['latest_date'] = [];
+
         return json_encode($order_response);
     }
 
@@ -1108,6 +1143,11 @@ class HomeController extends Controller {
         if (count($customer_list) > 0)
             $inquiry_response['customer_new'] = $customer_list;
 
+        $inquiry_date = Inquiry::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($inquiry_date))
+            $inquiry_response['latest_date'] = [$inquiry_date->updated_at->toDateTimeString()];
+        else
+            $inquiry_response['latest_date'] = [];
 
 //        if ($inquiryies != NULL || $inquiryiesproduct != NULL) {
 //            return $inquiry_response;
