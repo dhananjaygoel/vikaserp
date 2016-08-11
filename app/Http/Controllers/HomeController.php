@@ -1305,6 +1305,13 @@ class HomeController extends Controller {
         if (Input::has('inquiry_sync_date') && $data['inquiry_sync_date'] != '')
             $q->where('created_at', '>', $data['inquiry_sync_date']);
         $inquiries = $q->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')->orderBy('created_at', 'desc')->get();
+
+        $inquiry_date = Inquiry::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($inquiry_date)) {
+            $inquiries['latest_date'] = [$inquiry_date->updated_at->toDateTimeString()];
+        } else {
+            $inquiries['latest_date'] = [];
+        }
         return json_encode($inquiries);
     }
 
@@ -1315,162 +1322,306 @@ class HomeController extends Controller {
         if (isset($data['order_filter']) && $data['order_filter'] != '')
             $q->where('order_status', '=', $data['order_filter']);
         if (Input::has('order_sync_date') && $data['order_sync_date'] != '')
-            $q->where('created_at', '>', $data['order_sync_date']);
+            $q->where('updated_at', '>', $data['order_sync_date']);
         $allorders = $q->with('all_order_products')->with('customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->get();
+
+        $orders_date = Order::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($orders_date)) {
+            $allorders['latest_date'] = [$orders_date->updated_at->toDateTimeString()];
+        } else {
+            $allorders['latest_date'] = [];
+        }
         return json_encode($allorders);
     }
 
     public function appinventory() {
 
-        if (Input::has('inventory_sync_date') && Input::get('inventory_sync_date') != '')
-            $allinventory = Inventory::with('product_sub_category')->where('created_at', '>', Input::get('inventory_sync_date'))->get();
-        else
+        if (Input::has('inventory_sync_date') && Input::get('inventory_sync_date') != '') {
+            $allinventory = Inventory::with('product_sub_category')->where('updated_at', '>', Input::get('inventory_sync_date'))->get();
+        } else {
             $allinventory = Inventory::with('product_sub_category')->get();
+        }
+        $inventory_date = Inventory::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($inventory_date))
+            $allinventory['latest_date'] = [$inventory_date->updated_at->toDateTimeString()];
+        else
+            $allinventory['latest_date'] = [];
         return json_encode($allinventory);
     }
 
     public function appdelivery_order() {
 
-        if (Input::has('delivery_order_sync_date') && Input::get('delivery_order_sync_date') != '')
-            $delivery_orders = DeliveryOrder::where('created_at', '>', Input::get('delivery_order_sync_date'))->orderBy('created_at', 'desc')->with('delivery_product', 'customer')->get();
-        else
+        if (Input::has('delivery_order_sync_date') && Input::get('delivery_order_sync_date') != '') {
+            $delivery_orders = DeliveryOrder::where('updated_at', '>', Input::get('delivery_order_sync_date'))->orderBy('created_at', 'desc')->with('delivery_product', 'customer')->get();
+        } else {
             $delivery_orders = DeliveryOrder::orderBy('created_at', 'desc')->with('delivery_product', 'customer')->get();
+        }
         $delivery_order_obj = new DeliveryOrderController();
         $delivery_orders = $delivery_order_obj->checkpending_quantity($delivery_orders);
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $data['delivery_details'] = $delivery_orders;
         $data['delivery_location'] = $delivery_locations;
+        $delivery_order_date = DeliveryOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($delivery_order_date))
+            $data['latest_date'] = [$delivery_order_date->updated_at->toDateTimeString()];
+        else
+            $data['latest_date'] = [];
         return json_encode($data);
     }
 
     public function appalldelivery_challan() {
 
-        if (Input::has('delivery_challan_sync_date') && Input::get('delivery_challan_sync_date') != '')
-            $deliverychallans = DeliveryChallan::with('customer', 'delivery_challan_products', 'delivery_order')->where('created_at', '>', Input::get('delivery_challan_sync_date'))->orderBy('created_at', 'desc')->get();
-        else
+        if (Input::has('delivery_challan_sync_date') && Input::get('delivery_challan_sync_date') != '') {
+            $deliverychallans = DeliveryChallan::with('customer', 'delivery_challan_products', 'delivery_order')->where('updated_at', '>', Input::get('delivery_challan_sync_date'))->orderBy('created_at', 'desc')->get();
+        } else {
             $deliverychallans = DeliveryChallan::with('customer', 'delivery_challan_products', 'delivery_order')->orderBy('created_at', 'desc')->get();
+        }
+        $deliverychallan_date = DeliveryChallan::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($deliverychallan_date))
+            $deliverychallans['latest_date'] = [$deliverychallan_date->updated_at->toDateTimeString()];
+        else
+            $deliverychallans['latest_date'] = [];
+
         return json_encode($deliverychallans);
     }
 
     public function appallunit() {
 
-        if (Input::has('unit_sync_date') && Input::get('unit_sync_date') != '')
-            $units = Units::where('created_at', '>', Input::get('unit_sync_date'))->orderBy('created_at', 'desc')->get();
-        else
+        if (Input::has('unit_sync_date') && Input::get('unit_sync_date') != '') {
+            $units = Units::where('updated_at', '>', Input::get('unit_sync_date'))->orderBy('created_at', 'desc')->get();
+        } else {
             $units = Units::orderBy('created_at', 'desc')->get();
+        }
+        $unit_date = Units::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($unit_date)) {
+            $units['latest_date'] = [$unit_date->updated_at->toDateTimeString()];
+        } else {
+            $units['latest_date'] = [];
+        }
+        return json_encode($units);
     }
 
     public function appallcity() {
 
-        if (Input::has('city_sync_date') && Input::get('city_sync_date') != '')
-            $cities = City::with('states')->where('created_at', '>', Input::get('city_sync_date'))->orderBy('created_at', 'desc')->get();
-        else
+        if (Input::has('city_sync_date') && Input::get('city_sync_date') != '') {
+            $cities = City::with('states')->where('updated_at', '>', Input::get('city_sync_date'))->orderby('updated_at', 'DESC')->get();
+        } else {
             $cities = City::with('states')->orderBy('created_at', 'desc')->get();
+        }
+        $city_date = City::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($city_date)) {
+            $cities['latest_date'] = [$city_date->updated_at->toDateTimeString()];
+        } else {
+            $cities['latest_date'] = [];
+        }
         return json_encode($cities);
     }
 
     public function appallstate() {
 
-        if (Input::has('state_sync_date') && Input::get('state_sync_date') != '')
-            $states = States::where('created_at', '>', Input::get('state_sync_date'))->orderBy('created_at', 'desc')->get();
-        else
+        if (Input::has('state_sync_date') && Input::get('state_sync_date') != '') {
+            $states = States::where('updated_at', '>', Input::get('state_sync_date'))->orderBy('created_at', 'desc')->get();
+        } else {
             $states = States::orderBy('created_at', 'desc')->get();
+        }
+        $state_date = States::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($state_date)) {
+            $states['latest_date'] = [$state_date->updated_at->toDateTimeString()];
+        } else {
+            $states['latest_date'] = [];
+        }
         return json_encode($states);
     }
 
     public function appallcustomers() {
 
-        if (Input::has('customer_sync_date') && Input::get('customer_sync_date') != '')
-            $customers = Customer::where('created_at', '>', Input::get('customer_sync_date'))->orderBy('tally_name', 'asc')->get();
-        else
+        if (Input::has('customer_sync_date') && Input::get('customer_sync_date') != '') {
+            $customers = Customer::where('updated_at', '>', Input::get('customer_sync_date'))->orderBy('tally_name', 'asc')->get();
+        } else {
             $customers = Customer::orderBy('tally_name', 'asc')->get();
+        }
+        $customer_date = Customer::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($customer_date)) {
+            $customers['latest_date'] = [$customer_date->updated_at->toDateTimeString()];
+        } else {
+            $customers['latest_date'] = [];
+        }
         return json_encode($customers);
     }
 
     public function appallproduct_category() {
 
-        if (Input::has('product_category_sync_date') && Input::get('product_category_sync_date') != '')
-            $product_category = ProductCategory::where('created_at', '>', Input::get('product_category_sync_date'))->orderBy('created_at', 'desc')->get();
-        else
+        if (Input::has('product_category_sync_date') && Input::get('product_category_sync_date') != '') {
+            $product_category = ProductCategory::where('updated_at', '>', Input::get('product_category_sync_date'))->orderBy('created_at', 'desc')->get();
+        } else {
             $product_category = ProductCategory::orderBy('created_at', 'desc')->get();
+        }
+        $product_category_date = ProductCategory::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($product_category_date)) {
+            $product_category['latest_date'] = [$product_category_date->updated_at->toDateTimeString()];
+        } else {
+            $product_category['latest_date'] = [];
+        }
         return json_encode($product_category);
     }
 
     public function appallproduct_sub_category() {
 
-        if (Input::has('product_subcategory_sync_date') && Input::get('product_subcategory_sync_date') != '')
-            $product_sub_cat = ProductSubCategory::with('product_category')->where('created_at', '>', Input::get('product_subcategory_sync_date'))->orderBy('created_at', 'desc')->get();
-        else
-            $product_sub_cat = ProductSubCategory::with('product_category')->orderBy('created_at', 'desc')->get();
-        return json_encode($product_sub_cat);
+        if (Input::has('product_subcategory_sync_date') && Input::get('product_subcategory_sync_date') != '') {
+            $product_subcategory = ProductSubCategory::with('product_category')->where('updated_at', '>', Input::get('product_subcategory_sync_date'))->orderBy('created_at', 'desc')->get();
+        } else {
+            $product_subcategory = ProductSubCategory::with('product_category')->orderBy('created_at', 'desc')->get();
+        }
+        $product_subcategory_date = ProductSubCategory::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($product_subcategory_date)) {
+            $product_subcategory['latest_date'] = [$product_subcategory_date->updated_at->toDateTimeString()];
+        } else {
+            $product_subcategory['latest_date'] = [];
+        }
+        return json_encode($product_subcategory);
     }
 
     public function appallusers() {
 
-        $users_data = User::where('role_id', '!=', 0)->with('user_role')->orderBy('created_at', 'desc')->get();
+        if (Input::has('user_sync_date') && Input::get('user_sync_date') != '') {
+            $users_data = User::where('role_id', '!=', 0)->with('user_role')->where('updated_at', '>', Input::get('user_sync_date'))->orderBy('created_at', 'desc')->get();
+        } else {
+            $users_data = User::where('role_id', '!=', 0)->with('user_role')->orderBy('created_at', 'desc')->get();
+        }
+        $user_date = User::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($user_date)) {
+            $users_data['latest_date'] = [$user_date->updated_at->toDateTimeString()];
+        } else {
+            $users_data['latest_date'] = [];
+        }
         return json_encode($users_data);
     }
 
     public function appallpending_customers() {
 
-        $customers = Customer::orderBy('created_at', 'desc')->where('customer_status', '=', 'pending')->get();
+        if (Input::has('customer_sync_date') && Input::get('customer_sync_date') != '') {
+            $customers = Customer::where('updated_at', '>', Input::get('customer_sync_date'))->where('customer_status', '=', 'pending')->get();
+        } else {
+            $customers = Customer::where('customer_status', '=', 'pending')->where('customer_status', '=', 'pending')->get();
+        }
+        $customer_date = Customer::select('updated_at')->where('customer_status', '=', 'pending')->orderby('updated_at', 'DESC')->first();
+        if (!empty($customer_date)) {
+            $customers['latest_date'] = [$customer_date->updated_at->toDateTimeString()];
+        } else {
+            $customers['latest_date'] = [];
+        }
         return json_encode($customers);
     }
 
     public function appallpending_delivery_order() {
 
-        $delivery_data = DeliveryOrder::where('order_status', 'pending')->with('user', 'customer')->get();
+        if (Input::has('delivery_order_sync_date') && Input::get('delivery_order_sync_date') != '') {
+            $delivery_data = DeliveryOrder::with('user', 'customer')->where('updated_at', '>', Input::get('delivery_order_sync_date'))->where('order_status', 'pending')->get();
+        } else {
+            $delivery_data = DeliveryOrder::with('user', 'customer')->where('order_status', 'pending')->get();
+        }
+        $delivery_order_date = DeliveryOrder::select('updated_at')->where('order_status', 'pending')->orderby('updated_at', 'DESC')->first();
+        if (!empty($delivery_order_date)) {
+            $delivery_data['latest_date'] = [$delivery_order_date->updated_at->toDateTimeString()];
+        } else {
+            $delivery_data['latest_date'] = [];
+        }
         return json_encode($delivery_data);
     }
 
     public function appallpurchaseorders() {
 
-        if (Input::has('purchase_order_sync_date') && Input::get('purchase_order_sync_date') != '')
-            $purchase_orders = PurchaseOrder::with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')->where('created_at', '>', Input::get('purchase_order_sync_date'))->orderBy('created_at', 'desc')->get();
-        else
+        if (Input::has('purchase_order_sync_date') && Input::get('purchase_order_sync_date') != '') {
+            $purchase_orders = PurchaseOrder::with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')->where('updated_at', '>', Input::get('purchase_order_sync_date'))->orderBy('created_at', 'desc')->get();
+        } else {
             $purchase_orders = PurchaseOrder::with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')->orderBy('created_at', 'desc')->get();
+        }
+        $purchase_order_date = PurchaseOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($purchase_order_date)) {
+            $purchase_orders['latest_date'] = [$purchase_order_date->updated_at->toDateTimeString()];
+        } else {
+            $purchase_orders['latest_date'] = [];
+        }
         return json_encode($purchase_orders);
     }
 
     public function appallpurchaseorder_advise() {
 
-        if (Input::has('purchase_advise_sync_date') && Input::get('purchase_advise_sync_date') != '')
-            $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products')->where('created_at', '>', Input::get('purchase_advise_sync_date'))->orderBy('created_at', 'desc')->get();
-        else
+        if (Input::has('purchase_advise_sync_date') && Input::get('purchase_advise_sync_date') != '') {
+            $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products')->where('updated_at', '>', Input::get('purchase_advise_sync_date'))->orderBy('created_at', 'desc')->get();
+        } else {
             $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products')->orderBy('created_at', 'desc')->get();
+        }
+        $purchase_advise_date = PurchaseAdvise::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($purchase_advise_date)) {
+            $purchase_advise['latest_date'] = [$purchase_advise_date->updated_at->toDateTimeString()];
+        } else {
+            $purchase_advise['latest_date'] = [];
+        }
         return json_encode($purchase_advise);
     }
 
     public function appallpending_purchase_advice() {
 
-        $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products')->where('advice_status', '=', 'in_process')->orderBy('created_at', 'desc')->get();
+        if (Input::has('purchase_advise_sync_date') && Input::get('purchase_advise_sync_date') != '') {
+            $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products')->where('updated_at', '>', Input::get('purchase_advise_sync_date'))->where('advice_status', '=', 'in_process')->orderBy('created_at', 'desc')->get();
+        } else {
+            $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products')->where('advice_status', '=', 'in_process')->orderBy('created_at', 'desc')->get();
+        }
+        $purchase_advise_date = PurchaseAdvise::select('updated_at')->where('advice_status', '=', 'in_process')->orderby('updated_at', 'DESC')->first();
+        if (!empty($purchase_advise_date)) {
+            $purchase_advise['latest_date'] = [$purchase_advise_date->updated_at->toDateTimeString()];
+        } else {
+            $purchase_advise['latest_date'] = [];
+        }
         return json_encode($purchase_advise);
     }
 
     public function appallpurchase_challan() {
 
-        if (Input::has('purchase_challan_sync_date') && Input::get('purchase_challan_sync_date') != '')
-            $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')->where('created_at', '>', Input::get('purchase_challan_sync_date'))->orderBy('created_at', 'desc')->get();
-        else
+        if (Input::has('purchase_challan_sync_date') && Input::get('purchase_challan_sync_date') != '') {
+            $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')->where('updated_at', '>', Input::get('purchase_challan_sync_date'))->orderBy('created_at', 'desc')->get();
+        } else {
             $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')->orderBy('created_at', 'desc')->get();
+        }
+        $purchase_challan_date = PurchaseChallan::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($purchase_challan_date)) {
+            $purchase_challan['latest_date'] = [$purchase_challan_date->updated_at->toDateTimeString()];
+        } else {
+            $purchase_challan['latest_date'] = [];
+        }
         return json_encode($purchase_challan);
     }
 
     public function appallpurchase_order_daybook() {
 
-        if (Input::has('purchase_orderdaybook_sync_date') && Input::get('purchase_orderdaybook_sync_date') != '')
-            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')->where('order_status', 'completed')->where('created_at', '>', Input::get('purchase_orderdaybook_sync_date'))->orderBy('created_at', 'desc')->get();
-        else
+        if (Input::has('purchase_orderdaybook_sync_date') && Input::get('purchase_orderdaybook_sync_date') != '') {
+            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')->where('order_status', 'completed')->where('updated_at', '>', Input::get('purchase_orderdaybook_sync_date'))->orderBy('created_at', 'desc')->get();
+        } else {
             $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')->where('order_status', 'completed')->orderBy('created_at', 'desc')->get();
+        }
+        $purchase_daybook_date = PurchaseChallan::select('updated_at')->where('order_status', 'completed')->orderby('updated_at', 'DESC')->first();
+        if (!empty($purchase_daybook_date)) {
+            $purchase_daybook['latest_date'] = [$purchase_daybook_date->updated_at->toDateTimeString()];
+        } else {
+            $purchase_daybook['latest_date'] = [];
+        }
         return json_encode($purchase_daybook);
     }
 
     public function applocation() {
 
-        if (Input::has('delivery_location_sync_date') && Input::get('delivery_location_sync_date') != '')
+        if (Input::has('delivery_location_sync_date') && Input::get('delivery_location_sync_date') != '') {
             $delivery_location = DeliveryLocation::with('city', 'states')->where('status', '=', 'permanent')->where('created_at', '>', Input::get('delivery_location_sync_date'))->orderBy('created_at', 'desc')->get();
-        else
+        } else {
             $delivery_location = DeliveryLocation::with('city', 'states')->where('status', '=', 'permanent')->orderBy('created_at', 'desc')->get();
+        }
+        $delivery_location_date = DeliveryLocation::select('updated_atc')->orderby('updated_at', 'DESC')->first();
+        if (!empty($delivery_location_date)) {
+            $delivery_location['latest_date'] = [$delivery_location_date->updated_at->toDateTimeString()];
+        } else {
+            $delivery_location['latest_date'] = [];
+        }
         return json_encode($delivery_location);
     }
 
