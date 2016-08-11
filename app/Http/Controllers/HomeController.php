@@ -488,6 +488,7 @@ class HomeController extends Controller {
             $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
             $purchase_order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
+        	
             $purchase_order_server = PurchaseOrder::with('purchase_products')->get();
             $purchase_order_response['purchase_order_new'] = ($purchase_order_server && count($purchase_order_server) > 0) ? $purchase_order_server : array();
         }
