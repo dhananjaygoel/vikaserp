@@ -490,14 +490,14 @@ class HomeController extends Controller {
                 $add_supplier->addNewCustomer($value->supplier_name, "", $value->supplier_mobile, $value->credit_period);
                 $customer_list[$value->id] = $add_supplier->id;
             }
-            $expected_delivery_date = explode('-', $value->expected_delivery_date);
-            $expected_delivery_date = $expected_delivery_date[2] . '-' . $expected_delivery_date[0] . '-' . $expected_delivery_date[1];
-            $expected_delivery_date = date("Y-m-d", strtotime($expected_delivery_date));
+//            $expected_delivery_date = explode('-', $value->expected_delivery_date);
+//            $expected_delivery_date = $expected_delivery_date[2] . '-' . $expected_delivery_date[0] . '-' . $expected_delivery_date[1];
+//            $expected_delivery_date = date("Y-m-d", strtotime($expected_delivery_date));
             $purchase_order->supplier_id = ($value->server_supplier_id > 0) ? $value->server_supplier_id : $customer_list[$value->id];
             $purchase_order->created_by = 1;
             $purchase_order->order_for = ($value->customer_server_id > 0) ? $value->customer_server_id : 0;
             $purchase_order->vat_percentage = ($value->vat_percentage > 0) ? $value->vat_percentage : 0;
-            $purchase_order->expected_delivery_date = $expected_delivery_date;
+            $purchase_order->expected_delivery_date = $value->expected_delivery_date;
             $purchase_order->remarks = $value->remarks;
             $purchase_order->order_status = $value->order_status;
             if ($value->delivery_location_id > 0) {
