@@ -361,10 +361,10 @@ class HomeController extends Controller {
         }
         if (Input::has('purchase_challan_sync_date') && Input::get('purchase_challan_sync_date') != '') {
             $last_sync_date = Input::get('purchase_challan_sync_date');
-            $purchase_challan_server = PurchaseChallan::where('created_at', '>', $last_sync_date)->with('purchase_products')->get();
+            $purchase_challan_server = PurchaseChallan::where('created_at', '>', $last_sync_date)->with('all_purchase_products')->get();
             $purchase_challan_response['purchase_challan_server_added'] = ($purchase_challan_server && count($purchase_challan_server) > 0) ? $purchase_challan_server : array();
 
-            $purchase_challan_updated_server = PurchaseChallan::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('purchase_products')->get();
+            $purchase_challan_updated_server = PurchaseChallan::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('all_purchase_products')->get();
             $purchase_challan_response['purchase_challan_server_updated'] = ($purchase_challan_updated_server && count($purchase_challan_updated_server) > 0) ? $purchase_challan_updated_server : array();
 
             /* Send Updated customers */
@@ -374,7 +374,7 @@ class HomeController extends Controller {
             $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
             $purchase_challan_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
-            $purchase_challan_server = PurchaseChallan::with('purchase_products')->get();
+            $purchase_challan_server = PurchaseChallan::with('all_purchase_products')->get();
             $purchase_challan_response['purchase_challan_server_added'] = ($purchase_challan_server && count($purchase_challan_server) > 0) ? $purchase_challan_server : array();
         }
         foreach ($purchasechallan as $key => $value) {
@@ -388,7 +388,7 @@ class HomeController extends Controller {
                 $add_supplier->addNewCustomer($value->supplier_name, "", $value->supplier_mobile, $value->credit_period);
                 $customer_list[$value->id] = $add_supplier->id;
             }
-            $purchase_challan->expected_delivery_date = $value->bill_date;
+            $purchase_challan->expected_delivery_date = $value->expected_delivery_date;
             $purchase_challan->purchase_advice_id = ($value->server_purchase_advice_id > 0) ? $value->server_purchase_advice_id : 0;
             $purchase_challan->purchase_order_id = ($value->server_purchase_order_id > 0) ? $value->server_purchase_order_id : 0;
             $purchase_challan->delivery_location_id = $value->delivery_location_id;
