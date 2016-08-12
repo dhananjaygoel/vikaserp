@@ -452,9 +452,9 @@ class HomeController extends Controller {
 
         $purchase_advice_date = PurchaseAdvise::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($purchase_advice_date))
-            $purchase_advice_response['latest_date'] = [$purchase_advice_date->updated_at->toDateTimeString()];
+            $purchase_advice_response['latest_date'] = $purchase_advice_date->updated_at->toDateTimeString();
         else
-            $purchase_advice_response['latest_date'] = [];
+            $purchase_advice_response['latest_date'] = "";
 
         return json_encode($purchase_advice_response);
     }
@@ -554,9 +554,9 @@ class HomeController extends Controller {
 
         $purchase_order_date = PurchaseOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($purchase_order_date))
-            $purchase_order_response['latest_date'] = [$purchase_order_date->updated_at->toDateTimeString()];
+            $purchase_order_response['latest_date'] = $purchase_order_date->updated_at->toDateTimeString();
         else
-            $purchase_order_response['latest_date'] = [];
+            $purchase_order_response['latest_date'] = "";
 
         return json_encode($purchase_order_response);
     }
@@ -673,9 +673,9 @@ class HomeController extends Controller {
 
         $delivery_challan_date = DeliveryChallan::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($delivery_challan_date))
-            $delivery_challan_response['latest_date'] = [$delivery_challan_date->updated_at->toDateTimeString()];
+            $delivery_challan_response['latest_date'] = $delivery_challan_date->updated_at->toDateTimeString();
         else
-            $delivery_challan_response['latest_date'] = [];
+            $delivery_challan_response['latest_date'] = "";
 
         return json_encode($delivery_challan_response);
     }
@@ -820,9 +820,9 @@ class HomeController extends Controller {
 
         $delivery_order_date = DeliveryOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($delivery_order_date))
-            $delivery_order_response['latest_date'] = [$delivery_order_date->updated_at->toDateTimeString()];
+            $delivery_order_response['latest_date'] = $delivery_order_date->updated_at->toDateTimeString();
         else
-            $delivery_order_response['latest_date'] = [];
+            $delivery_order_response['latest_date'] = "";
 
         return json_encode($delivery_order_response);
     }
@@ -976,9 +976,9 @@ class HomeController extends Controller {
 
         $order_date = Order::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($order_date))
-            $order_response['latest_date'] = [$order_date->updated_at->toDateTimeString()];
+            $order_response['latest_date'] = $order_date->updated_at->toDateTimeString();
         else
-            $order_response['latest_date'] = [];
+            $order_response['latest_date'] = "";
 
         return json_encode($order_response);
     }
@@ -1141,9 +1141,9 @@ class HomeController extends Controller {
 
         $inquiry_date = Inquiry::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($inquiry_date))
-            $inquiry_response['latest_date'] = [$inquiry_date->updated_at->toDateTimeString()];
+            $inquiry_response['latest_date'] = $inquiry_date->updated_at->toDateTimeString();
         else
-            $inquiry_response['latest_date'] = [];
+            $inquiry_response['latest_date'] = "";
 
 //        if ($inquiryies != NULL || $inquiryiesproduct != NULL) {
 //            return $inquiry_response;
