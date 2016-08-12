@@ -1038,6 +1038,7 @@ class HomeController extends Controller {
                 if ($value->server_id > 0) {
                     $add_inquiry = Inquiry::find($value->server_id);
                     /* Update customer here */
+                    /*
                     $update_customers = Customer::find($add_inquiry->customer_server_id);
                     $update_customers->owner_name = $value->customer_name;
                     $update_customers->contact_person = $value->customer_contact_peron;
@@ -1045,6 +1046,7 @@ class HomeController extends Controller {
                     $update_customers->credit_period = $value->customer_credit_period;
                     $update_customers->customer_status = $update_customers->customer_status;
                     $update_customers->save();
+                    */
                     /* Update customer ends here */
                     $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
                     $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
