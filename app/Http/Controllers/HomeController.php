@@ -346,7 +346,115 @@ class HomeController extends Controller {
     }
 
     public function appSyncPurchaseChallan() {
-        
+
+        $input_data = Input::all();
+        $purchase_challan_response = [];
+        $customer_list = [];
+        if (Input::has('purchase_challan')) {
+            $purchasechallan = (json_decode($input_data['purchase_challan']));
+        }
+        if (Input::has('customer')) {
+            $customers = (json_decode($input_data['customer']));
+        }
+        if (Input::has('purchase_challan_product')) {
+            $purchasechallanproducts = (json_decode($input_data['purchase_challan_product']));
+        }
+        if (Input::has('purchase_challan_sync_date') && Input::get('purchase_challan_sync_date') != '') {
+            $last_sync_date = Input::get('purchase_challan_sync_date');
+            $purchase_challan_server = PurchaseChallan::where('created_at', '>', $last_sync_date)->with('purchase_products')->get();
+            $purchase_challan_response['purchase_challan_server_added'] = ($purchase_challan_server && count($purchase_challan_server) > 0) ? $purchase_challan_server : array();
+
+            $purchase_challan_updated_server = PurchaseChallan::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('purchase_products')->get();
+            $purchase_challan_response['purchase_challan_server_updated'] = ($purchase_challan_updated_server && count($purchase_challan_updated_server) > 0) ? $purchase_challan_updated_server : array();
+
+            /* Send Updated customers */
+            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+            $purchase_challan_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
+            /* Send New customers */
+            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
+            $purchase_challan_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
+        } else {
+            $purchase_challan_server = PurchaseChallan::with('purchase_products')->get();
+            $purchase_challan_response['purchase_challan_server_added'] = ($purchase_challan_server && count($purchase_challan_server) > 0) ? $purchase_challan_server : array();
+        }
+        foreach ($purchasechallan as $key => $value) {
+            if ($value->server_id > 0)
+                $purchase_challan = PurchaseChallan::find($value->server_id);
+            else
+                $purchase_challan = new PurchaseChallan();
+
+            if ($value->server_supplier_id == 0) {
+                $add_supplier = new Customer();
+                $add_supplier->addNewCustomer($value->supplier_name, "", $value->supplier_mobile, $value->credit_period);
+                $customer_list[$value->id] = $add_supplier->id;
+            }
+            $purchase_challan->expected_delivery_date = $value->bill_date;
+            $purchase_challan->purchase_advice_id = ($value->server_purchase_advice_id > 0) ? $value->server_purchase_advice_id : 0;
+            $purchase_challan->purchase_order_id = ($value->server_purchase_order_id > 0) ? $value->server_purchase_order_id : 0;
+            $purchase_challan->delivery_location_id = $value->delivery_location_id;
+            $purchase_challan->serial_number = ($value->serial_number != '') ? $value->serial_number : "";
+            $purchase_challan->supplier_id = $value->server_supplier_id;
+            $purchase_challan->created_by = 1;
+            $purchase_challan->vehicle_number = $value->vehicle_number;
+            $purchase_challan->discount = $value->discount;
+            $purchase_challan->unloaded_by = $value->unloaded_by;
+            $purchase_challan->round_off = $value->round_off;
+            $purchase_challan->labours = $value->labours;
+            $purchase_challan->remarks = $value->remarks;
+            $purchase_challan->grand_total = $value->grand_total;
+            $purchase_challan->order_status = $value->order_status;
+            $purchase_challan->freight = $value->freight;
+
+            if ($value->vat_percentage > 0) {
+                $purchase_challan->vat_percentage = $value->vat_percentage;
+            }
+            if ($value->delivery_location_id > 0) {
+                $purchase_challan->delivery_location_id = $value->delivery_location_id;
+            } else {
+                $purchase_challan->other_location = $value->other_location_name;
+                $purchase_challan->other_location_difference = $value->other_location_difference;
+            }
+            $purchase_challan->save();
+            $purchase_challan_id = $purchase_challan->id;
+            if ($value->server_id > 0) {
+                PurchaseProducts::where('order_type', '=', 'purchase_challan')->where('purchase_order_id', '=', $value->server_id)->delete();
+            }
+            foreach ($purchasechallanproducts as $product_data) {
+                if ($product_data->purchase_order_id == $value->id) {
+                    $purchase_challan_products = [
+                        'purchase_order_id' => $purchase_challan_id,
+                        'order_type' => 'purchase_challan',
+                        'product_category_id' => $product_data->product_category_id,
+                        'unit_id' => $product_data->unit_id,
+                        'quantity' => $product_data->quantity,
+                        'price' => $product_data->price,
+                        'remarks' => "",
+                        'present_shipping' => $product_data->present_shipping,
+                        'from' => ($product_data->server_pur_order_id > 0) ? $product_data->server_pur_order_id : ''
+                    ];
+                    PurchaseProducts::create($purchase_challan_products);
+                }
+            }
+            if ($value->server_id > 0) {
+                $purchase_challan_prod = PurchaseProducts::where('order_type', '=', 'purchase_challan')->where('purchase_order_id', '=', $value->server_id)->first();
+                $purchase_challan->updated_at = $purchase_challan_prod->updated_at;
+                $purchase_challan_response[$value->id] = PurchaseChallan::find($value->server_id);
+                $purchase_challan_response[$value->id]['purchase_products'] = PurchaseProducts::where('order_type', '=', 'purchase_challan')->where('purchase_order_id', '=', $value->server_id)->get();
+            } else {
+                $purchase_challan_response[$value->id] = $purchase_challan_id;
+            }
+            $purchase_challan->save();
+        }
+        if (count($customer_list) > 0)
+            $purchase_challan_response['customer_new'] = $customer_list;
+
+        $purchase_challan_date = PurchaseChallan::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($purchase_challan_date))
+            $purchase_challan_response['latest_date'] = $purchase_challan_date->updated_at->toDateTimeString();
+        else
+            $purchase_challan_response['latest_date'] = "";
+
+        return json_encode($purchase_challan_response);
     }
 
     public function appSyncPurchaseAdvise() {
@@ -1040,14 +1148,14 @@ class HomeController extends Controller {
                     $add_inquiry = Inquiry::find($value->server_id);
                     /* Update customer here */
                     /*
-                    $update_customers = Customer::find($add_inquiry->customer_server_id);
-                    $update_customers->owner_name = $value->customer_name;
-                    $update_customers->contact_person = $value->customer_contact_peron;
-                    $update_customers->phone_number1 = $value->customer_mobile;
-                    $update_customers->credit_period = $value->customer_credit_period;
-                    $update_customers->customer_status = $update_customers->customer_status;
-                    $update_customers->save();
-                    */
+                      $update_customers = Customer::find($add_inquiry->customer_server_id);
+                      $update_customers->owner_name = $value->customer_name;
+                      $update_customers->contact_person = $value->customer_contact_peron;
+                      $update_customers->phone_number1 = $value->customer_mobile;
+                      $update_customers->credit_period = $value->customer_credit_period;
+                      $update_customers->customer_status = $update_customers->customer_status;
+                      $update_customers->save();
+                     */
                     /* Update customer ends here */
                     $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
                     $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
