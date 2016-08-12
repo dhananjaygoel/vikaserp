@@ -514,6 +514,7 @@ class HomeController extends Controller {
             $purchase_order->expected_delivery_date = $value->expected_delivery_date;
             $purchase_order->remarks = $value->remarks;
             $purchase_order->order_status = $value->order_status;
+            $purchase_order->is_view_all = $value->is_view_all;
             if ($value->delivery_location_id > 0) {
                 $purchase_order->delivery_location_id = $value->delivery_location_id;
             } else {
