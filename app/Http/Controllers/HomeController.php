@@ -768,7 +768,7 @@ class HomeController extends Controller {
                 }
             }
             if ($value->server_id > 0) {
-                $delivery_challan_prod = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->first();
+                $delivery_challan_prod = AllOrderProducts::where('order_id', '=', $value->server_id)->where('order_type', '=', 'delivery_challan')->first();
                 $delivery_challan->updated_at = $delivery_challan_prod->updated_at;
                 $delivery_challan_response[$value->id] = DeliveryChallan::find($value->server_id);
                 $delivery_challan_response[$value->id]['delivery_challan_products'] = AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->server_id)->get();
