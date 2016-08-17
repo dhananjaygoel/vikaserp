@@ -68,6 +68,7 @@ Route::get('app_customer_info/{id}', 'HomeController@customerInfo');
 Route::get('app_customer_inquiry/{id}', 'HomeController@customerInquiry');
 Route::get('app_customer_orders/{id}', 'HomeController@customerOrders');
 /* All customer app routes ends here */
+/*
 Route::get('demorouteandroid', 'HomeController@demorouteandroid');
 Route::get('androidtesting', 'HomeController@androidtesting');
 Route::get('devicename', 'HomeController@devicename');
@@ -77,6 +78,7 @@ Route::get('robottesting', 'HomeController@robottesting');
 Route::get('platformname', 'HomeController@platformname');
 Route::get('platformversion', 'HomeController@platformversion');
 Route::get('browserversion', 'HomeController@browserversion');
+ */
 Route::get('updatedata', 'HomeController@updatedata');
 Route::get('phpversion', 'WelcomeController@phpversion');
 Route::get('showupdatedata', 'HomeController@showupdatedata');

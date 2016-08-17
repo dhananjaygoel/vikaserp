@@ -6,13 +6,15 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    '6fac04860a2cf4b03e356f4caca377d6' => $vendorDir . '/symfony/var-dumper/Symfony/Component/VarDumper/Resources/functions/dump.php',
-    '742cc5b936ec765a3455c0a976796f29' => $vendorDir . '/nikic/php-parser/lib/bootstrap.php',
-    '01b872096dad055849387e42d41a176d' => $vendorDir . '/swiftmailer/swiftmailer/lib/swift_required.php',
-    '05669301f06448944ce5eb260126f84e' => $vendorDir . '/ircmaxell/password-compat/lib/password.php',
-    'da0e56e38d387da6d4174d0dd783cafd' => $vendorDir . '/psy/psysh/src/Psy/functions.php',
-    '9b24cdf6705c981dc519077514baadf4' => $vendorDir . '/danielstjules/stringy/src/Create.php',
-    '1078299014c0119b5037eeb7efc1d1de' => $vendorDir . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
-    '183ed00ee3916a78840c7d11bba9bb86' => $vendorDir . '/laravel/framework/src/Illuminate/Support/helpers.php',
-    '8c9698b305e308ed34201edf1f3c1e48' => $vendorDir . '/illuminate/html/helpers.php',
+    'fe1bcd0336136e435eaf197895daf81a' => $vendorDir . '/nikic/php-parser/lib/bootstrap.php',
+    '9f7f3f9b1f82484e76bcd07b985a2d2f' => $vendorDir . '/symfony/var-dumper/Symfony/Component/VarDumper/Resources/functions/dump.php',
+    'e40631d46120a9c38ea139981f8dab26' => $vendorDir . '/ircmaxell/password-compat/lib/password.php',
+    '2c102faa651ef8ea5874edb585946bce' => $vendorDir . '/swiftmailer/swiftmailer/lib/swift_required.php',
+    'bd9634f2d41831496de0d3dfe4c94881' => $vendorDir . '/symfony/polyfill-php56/bootstrap.php',
+    '5255c38a0faeba867671b61dfda6d864' => $vendorDir . '/paragonie/random_compat/lib/random.php',
+    'e7223560d890eab89cda23685e711e2c' => $vendorDir . '/psy/psysh/src/Psy/functions.php',
+    '65fec9ebcfbb3cbb4fd0d519687aea01' => $vendorDir . '/danielstjules/stringy/src/Create.php',
+    'f0906e6318348a765ffb6eb24e0d0938' => $vendorDir . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
+    '58571171fd5812e6e447dce228f52f4d' => $vendorDir . '/laravel/framework/src/Illuminate/Support/helpers.php',
+    '752af1c2bdb339e8474c3c31b22b7d54' => $vendorDir . '/illuminate/html/helpers.php',
 );

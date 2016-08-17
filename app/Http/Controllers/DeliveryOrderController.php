@@ -533,6 +533,16 @@ class DeliveryOrderController extends Controller {
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
+
+//        $pdf = \PDF::loadView('print_delivery_order', ['delivery_data' => $delivery_data,
+//                    'units' => $units,
+//                    'delivery_locations' => $delivery_locations,
+//                    'customers' => $customers
+//        ]);
+//        $filename = getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf';
+//        chmod($filename, 0777);
+//        $pdf->save($filename);
+
         /*
           |------------------- -----------------------
           | SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER

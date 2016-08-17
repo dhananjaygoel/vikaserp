@@ -122,7 +122,8 @@ return [
         'Illuminate\View\ViewServiceProvider',
         'Illuminate\Html\HtmlServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',
-        'Jenssegers\Agent\AgentServiceProvider',
+//        'Jenssegers\Agent\AgentServiceProvider',
+        'Barryvdh\DomPDF\ServiceProvider',
         /*
          * Application Service Providers...
          */
@@ -182,5 +183,6 @@ return [
         'Excel' => 'Maatwebsite\Excel\Facades\Excel',
         'Agent' => 'Jenssegers\Agent\Facades\Agent',
         'FormAutocomplete' => 'Sukohi\FormAutocomplete\Facades\FormAutocomplete',
+        'PDF' => 'Barryvdh\DomPDF\Facade',
     ],
 ];

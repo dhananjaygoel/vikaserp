@@ -4,6 +4,7 @@
         <title>Delivery Order</title>
         <meta charset="windows-1252">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     </head>
     <body>
         <style>
@@ -21,7 +22,6 @@
                 border-bottom: 1px solid #ccc;
             }
             .divRow{
-
                 width:auto;
                 clear:both;
                 border-top: 1px solid #ccc;
@@ -58,16 +58,14 @@
                         {
                             border: none;
                         }*/
-            .divRow:last-child
-            {
+            .divRow:last-child{
                 border-top: none;
                 border-bottom: 1px solid #ccc;
             }
             .headRow{
                 display:table-row;
             }
-            .footer
-            {
+            .footer{
                 width: 100%;
                 float: left;
             }
@@ -81,8 +79,7 @@
                 float: left;
                 padding-top: 20px;
             }
-            .invoice
-            {
+            .invoice{
                 width:70%;
                 margin-left: 15%;
                 border: 1px solid #ccc;
@@ -90,65 +87,54 @@
                 padding: 0px;
                 overflow: hidden;
             }
-            .del
-            {
+            .del{
                 width: 100%;
                 float: left;
                 padding: 10px 0px 10px 5px;
             }
-            .trk-mobile
-            {
+            .trk-mobile{
                 width: 100%;
                 float: left;
                 padding: 10px 0px 10px 5px;
                 border-bottom: 1px solid #ccc;
             }
-
-            .trk-no
-            {
+            .trk-no{
                 width: 50%;
                 float: left;
             }
-            .mob-no
-            {
+            .mob-no{
                 width: 50%;
                 float: left;
             }
-            .name
-            {
+            .name{
                 width: 100%;
                 padding: 10px 0px 10px 5px;
                 float: left;
                 position: relative;
                 border-bottom: 1px solid #ccc;
             }
-            .delivery-details
-            {
+            .delivery-details{
                 width: 100%;
                 padding: 10px 0px 10px 5px;
                 float: left;
                 border-bottom: 1px solid #ccc;
             }
-            .do-no
-            {
+            .do-no{
                 width: 33%;
                 float: left;
                 position: relative;
             }
-            .date
-            {
+            .date{
                 width: 33%;
                 float: left;
                 position: relative;
             }
-            .time
-            {
+            .time{
                 width: 33%;
                 float: left;
                 position: relative;
             }
-            .title
-            {
+            .title{
                 width: 100%;
                 text-align: center;
                 border-bottom: 1px solid #ccc;

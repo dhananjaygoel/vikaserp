@@ -9,7 +9,6 @@ use App\Customer;
 use App\User;
 use App\ProductCategory;
 use App\ProductSubCategory;
-use App\ProductType;
 use App\PurchaseOrder;
 use App\PurchaseAdvise;
 use App\PurchaseChallan;
@@ -19,15 +18,14 @@ use App\Order;
 use App\Units;
 use App\DeliveryOrder;
 use App\DeliveryChallan;
+use App\InquiryProducts;
 use App\AllOrderProducts;
 use App\PurchaseProducts;
 use App\Http\Controllers\DeliveryOrderController;
-use Jenssegers\Agent\Agent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use DateTime;
 use Illuminate\Support\Facades\DB;
-use App\InquiryProducts;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -761,6 +759,7 @@ class HomeController extends Controller {
                         'present_shipping' => $product_data->present_shipping,
                         'actual_pieces' => $product_data->actual_pieces,
                         'actual_quantity' => $product_data->actual_quantity,
+                        'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
                         'from' => 0, //Will need to check with app data
                         'parent' => 0, //Will need to check with app data
                     ];
@@ -1739,123 +1738,133 @@ class HomeController extends Controller {
 
 // All Functions added by user 157 for app ends here //
 
+    /*
+     * Unwanted code starts here 
+     * 
+     */
 
-    public function demorouteandroid() {
-        return json_encode(array(
-            'result' => true,
-            'message' => 'Thank you for visiting'), 200
-        );
-    }
+    /*
+      public function demorouteandroid() {
+      return json_encode(array(
+      'result' => true,
+      'message' => 'Thank you for visiting'), 200
+      );
+      }
 
-    public function devicetesting() {
-        $agent = new Agent();
-        if ($agent->isMobile()) {
-            return json_encode(array(
-                'result' => true,
-                'message' => 'This device is mobile'), 200
-            );
-        }
-        if ($agent->isTablet()) {
-            return json_encode(array(
-                'result' => true,
-                'message' => 'This device is tablet'), 200
-            );
-        }
-    }
+      public function devicetesting() {
+      $agent = new Agent();
+      if ($agent->isMobile()) {
+      return json_encode(array(
+      'result' => true,
+      'message' => 'This device is mobile'), 200
+      );
+      }
+      if ($agent->isTablet()) {
+      return json_encode(array(
+      'result' => true,
+      'message' => 'This device is tablet'), 200
+      );
+      }
+      }
 
-    public function phonetesting() {
-        $agent = new Agent();
-        if ($agent->isPhone()) {
-            return json_encode(array(
-                'result' => true,
-                'message' => 'This is phone device'), 200
-            );
-        } else {
-            return json_encode(array(
-                'result' => true,
-                'message' => 'This is not a phone device'), 200
-            );
-        }
-    }
+      public function phonetesting() {
+      $agent = new Agent();
+      if ($agent->isPhone()) {
+      return json_encode(array(
+      'result' => true,
+      'message' => 'This is phone device'), 200
+      );
+      } else {
+      return json_encode(array(
+      'result' => true,
+      'message' => 'This is not a phone device'), 200
+      );
+      }
+      }
 
-    public function robottesting() {
-        $agent = new Agent();
-        if ($agent->isRobot()) {
-            return json_encode(array(
-                'result' => true,
-                'message' => 'This is robot device'), 200
-            );
-        } else {
-            return json_encode(array(
-                'result' => true,
-                'message' => 'This is not a robot device'), 200
-            );
-        }
-    }
+      public function robottesting() {
+      $agent = new Agent();
+      if ($agent->isRobot()) {
+      return json_encode(array(
+      'result' => true,
+      'message' => 'This is robot device'), 200
+      );
+      } else {
+      return json_encode(array(
+      'result' => true,
+      'message' => 'This is not a robot device'), 200
+      );
+      }
+      }
 
-    public function platformname() {
-        $agent = new Agent();
-        $platform = $agent->platform();
+      public function platformname() {
+      $agent = new Agent();
+      $platform = $agent->platform();
 
-        $result = [];
-        $result[] = $platform;
-        return json_encode($result);
-    }
+      $result = [];
+      $result[] = $platform;
+      return json_encode($result);
+      }
 
-    public function platformversion() {
-        $agent = new Agent();
-        $platform = $agent->platform();
-        $version = $agent->version($platform);
-        $result = [];
-        $result[] = $version;
-        return json_encode($result);
-    }
+      public function platformversion() {
+      $agent = new Agent();
+      $platform = $agent->platform();
+      $version = $agent->version($platform);
+      $result = [];
+      $result[] = $version;
+      return json_encode($result);
+      }
 
-    public function browserversion() {
-        $agent = new Agent();
-        $browser = $agent->browser();
-        $version = $agent->version($browser);
-        $result = [];
-        $result[] = $version;
-        return json_encode($result);
-    }
+      public function browserversion() {
+      $agent = new Agent();
+      $browser = $agent->browser();
+      $version = $agent->version($browser);
+      $result = [];
+      $result[] = $version;
+      return json_encode($result);
+      }
 
-    public function devicename() {
-        $agent = new Agent();
-        $device = $agent->device();
+      public function devicename() {
+      $agent = new Agent();
+      $device = $agent->device();
 
-        $result = [];
-        $result[] = $device;
-        return json_encode($result);
-    }
+      $result = [];
+      $result[] = $device;
+      return json_encode($result);
+      }
 
-    public function androidtesting() {
-        $agent = new Agent();
+      public function androidtesting() {
+      $agent = new Agent();
 
-        if ($agent->isNexus()) {
-            return json_encode(array(
-                'result' => true,
-                'message' => 'This is Nexus device'), 200
-            );
-        }
-        if ($agent->isSafari()) {
-            return json_encode(array(
-                'result' => true,
-                'message' => 'This is Safari device'), 200
-            );
-        }
-        if ($agent->isAndroidOS()) {
-            return json_encode(array(
-                'result' => true,
-                'message' => 'This is android device'), 200
-            );
-        } else {
-            return json_encode(array(
-                'result' => true,
-                'message' => 'This is not an android device'), 200
-            );
-        }
-    }
+      if ($agent->isNexus()) {
+      return json_encode(array(
+      'result' => true,
+      'message' => 'This is Nexus device'), 200
+      );
+      }
+      if ($agent->isSafari()) {
+      return json_encode(array(
+      'result' => true,
+      'message' => 'This is Safari device'), 200
+      );
+      }
+      if ($agent->isAndroidOS()) {
+      return json_encode(array(
+      'result' => true,
+      'message' => 'This is android device'), 200
+      );
+      } else {
+      return json_encode(array(
+      'result' => true,
+      'message' => 'This is not an android device'), 200
+      );
+      }
+      }
+     */
+    /*
+     * Unwanted code ends here
+     * 
+     */
 
     /**
      * Show the application dashboard to the user.
