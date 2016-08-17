@@ -536,6 +536,7 @@ class HomeController extends Controller {
                         'unit_id' => $product_data->unit_id,
                         'quantity' => $product_data->quantity,
                         'price' => $product_data->price,
+                        'actual_pieces' => $product_data->actual_pieces,
                         'remarks' => "",
                         'present_shipping' => $product_data->present_shipping,
                         'from' => ($product_data->server_pur_order_id > 0) ? $product_data->server_pur_order_id : ''
