@@ -24,6 +24,7 @@ use App\PurchaseOrderCanceled;
 use DateTime;
 use App\ProductSubCategory;
 use Session;
+use App\PurchaseAdvise;
 
 class PurchaseOrderController extends Controller {
 
@@ -722,18 +723,20 @@ class PurchaseOrderController extends Controller {
         foreach ($purchase_orders as $key => $order) {
             $purchase_order_quantity = 0;
             $purchase_order_advise_quantity = 0;
-            $purchase_order_advise_products = PurchaseProducts::where('from', '=', $order->id)->get();
-
+            $purchase_advice_details = PurchaseAdvise::where('purchase_order_id', '=', $order->id)->first();
+            if (!empty($purchase_advice_details)) {
+                $purchase_order_advise_products = PurchaseProducts::where('purchase_order_id', '=', $purchase_advice_details->id)->where('order_type', '=', 'purchase_advice')->get();
+            } else {
+                $purchase_order_advise_products = NULL;
+            }
             if (count($purchase_order_advise_products) > 0) {
                 foreach ($purchase_order_advise_products as $poapk => $poapv) {
                     $product_size = ProductSubCategory::find($poapv->product_category_id);
                     if ($poapv->unit_id == 1) {
                         $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity;
-                    }
-                    if ($poapv->unit_id == 2) {
+                    } elseif ($poapv->unit_id == 2) {
                         $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity * $product_size->weight;
-                    }
-                    if ($poapv->unit_id == 3) {
+                    } elseif ($poapv->unit_id == 3) {
                         $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity / $product_size->standard_length ) * $product_size->weight;
                     }
                 }
@@ -744,11 +747,9 @@ class PurchaseOrderController extends Controller {
                     $product_size = ProductSubCategory::find($popv->product_category_id);
                     if ($popv->unit_id == 1) {
                         $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
-                    }
-                    if ($popv->unit_id == 2) {
+                    } elseif ($popv->unit_id == 2) {
                         $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight);
-                    }
-                    if ($popv->unit_id == 3) {
+                    } elseif ($popv->unit_id == 3) {
                         $purchase_order_quantity = $purchase_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
                     }
                 }
