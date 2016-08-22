@@ -723,7 +723,7 @@ class PurchaseOrderController extends Controller {
         foreach ($purchase_orders as $key => $order) {
             $purchase_order_quantity = 0;
             $purchase_order_advise_quantity = 0;
-            $purchase_advice_details = PurchaseAdvise::where('purchase_order_id', '=', $order->id)->first();
+            $purchase_advice_details = PurchaseAdvise::where('purchase_order_id', '=', $order->id)->get();
             if (!empty($purchase_advice_details)) {
                 $purchase_order_advise_products = PurchaseProducts::where('purchase_order_id', '=', $purchase_advice_details->id)->where('order_type', '=', 'purchase_advice')->get();
             } else {
