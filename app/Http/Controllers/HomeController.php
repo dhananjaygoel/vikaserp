@@ -535,11 +535,11 @@ class HomeController extends Controller {
                         'order_type' => 'purchase_advice',
                         'product_category_id' => $product_data->product_category_id,
                         'unit_id' => $product_data->unit_id,
-                        'quantity' => $product_data->quantity,
+                        'quantity' => $product_data->present_shipping,
+                        'present_shipping' => $product_data->present_shipping,
                         'price' => $product_data->price,
                         'actual_pieces' => $product_data->actual_pieces,
                         'remarks' => "",
-                        'present_shipping' => $product_data->present_shipping,
                         'from' => ($product_data->server_pur_order_id > 0) ? $product_data->server_pur_order_id : ''
                     ];
                     PurchaseProducts::create($purchase_advise_products);
