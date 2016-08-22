@@ -720,45 +720,46 @@ class PurchaseOrderController extends Controller {
 
     function quantity_calculation($purchase_orders) {
 
-        foreach ($purchase_orders as $key => $order) {
+    foreach ($purchase_orders as $key => $order) {
             $purchase_order_quantity = 0;
             $purchase_order_advise_quantity = 0;
-            $purchase_advice_detail = PurchaseAdvise::where('purchase_order_id', '=', $order->id)->get();
-            if (isset($purchase_advice_detail) && !empty($purchase_advice_detail) && count($purchase_advice_detail) > 0) {
-                foreach ($purchase_advice_detail as $purchase_advice_details) {
-                    if (!empty($purchase_advice_details)) {
-                        $purchase_order_advise_products = PurchaseProducts::where('purchase_order_id', '=', $purchase_advice_details->id)->where('order_type', '=', 'purchase_advice')->get();
-                    } else {
-                        $purchase_order_advise_products = NULL;
-                    }
-                    if (count($purchase_order_advise_products) > 0) {
-                        foreach ($purchase_order_advise_products as $poapk => $poapv) {
-                            $product_size = ProductSubCategory::find($poapv->product_category_id);
-                            if ($poapv->unit_id == 1) {
-                                $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity;
-                            } elseif ($poapv->unit_id == 2) {
-                                $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity * $product_size->weight;
-                            } elseif ($poapv->unit_id == 3) {
-                                $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity / $product_size->standard_length ) * $product_size->weight;
-                            }
-                        }
-                    }
+            $purchase_order_advise_products = PurchaseProducts::where('from', '=', $order->id)->get();
 
-                    if (count($order['purchase_products']) > 0) {
-                        foreach ($order['purchase_products'] as $popk => $popv) {
-                            $product_size = ProductSubCategory::find($popv->product_category_id);
-                            if ($popv->unit_id == 1) {
-                                $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
-                            } elseif ($popv->unit_id == 2) {
-                                $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight);
-                            } elseif ($popv->unit_id == 3) {
-                                $purchase_order_quantity = $purchase_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
-                            }
-                        }
+            if (count($purchase_order_advise_products) > 0) {
+                foreach ($purchase_order_advise_products as $poapk => $poapv) {
+                    $product_size = ProductSubCategory::find($poapv->product_category_id);
+                    if ($poapv->unit_id == 1) {
+                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity;
+                    }
+                    if ($poapv->unit_id == 2) {
+                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity * $product_size->weight;
+                    }
+                    if ($poapv->unit_id == 3) {
+                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity / $product_size->standard_length ) * $product_size->weight;
                     }
                 }
             }
-            $purchase_orders[$key]['pending_quantity'] = ($purchase_order_advise_quantity >= $purchase_order_quantity) ? 0 : ($purchase_order_quantity - $purchase_order_advise_quantity);
+
+            if (count($order['purchase_products']) > 0) {
+                foreach ($order['purchase_products'] as $popk => $popv) {
+                    $product_size = ProductSubCategory::find($popv->product_category_id);
+                    if ($popv->unit_id == 1) {
+                        $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
+                    }
+                    if ($popv->unit_id == 2) {
+                        $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight);
+                    }
+                    if ($popv->unit_id == 3) {
+                        $purchase_order_quantity = $purchase_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+                    }
+                }
+            }
+
+            if ($purchase_order_advise_quantity >= $purchase_order_quantity) {
+                $purchase_orders[$key]['pending_quantity'] = 0;
+            } else {
+                $purchase_orders[$key]['pending_quantity'] = ($purchase_order_quantity - $purchase_order_advise_quantity);
+            }
             $purchase_orders[$key]['total_quantity'] = $purchase_order_quantity;
         }
         return $purchase_orders;
