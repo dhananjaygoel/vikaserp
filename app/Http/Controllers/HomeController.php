@@ -859,7 +859,7 @@ class HomeController extends Controller {
                             'order_type' => 'delivery_order',
                             'product_category_id' => $product_data->product_category_id,
                             'unit_id' => $product_data->unit_id,
-                            'quantity' => $product_data->quantity,
+                            'quantity' => $product_data->present_shipping,
                             'present_shipping' => $product_data->present_shipping,
                             'price' => $product_data->actualPrice,
                             'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
