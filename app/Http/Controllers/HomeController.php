@@ -512,7 +512,7 @@ class HomeController extends Controller {
             $purchase_advice->remarks = $value->remarks;
             $purchase_advice->vehicle_number = $value->vehicle_number;
             $purchase_advice->order_for = $value->order_for;
-            $purchase_advice->advice_status = 'in_process';
+            $purchase_advice->advice_status = ($value->advice_status != '') ? $value->advice_status : 'in_process';
             if ($value->vat_percentage > 0) {
                 $purchase_advice->vat_percentage = $value->vat_percentage;
             }
