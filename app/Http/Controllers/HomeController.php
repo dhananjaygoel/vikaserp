@@ -504,6 +504,7 @@ class HomeController extends Controller {
             $date_string2 = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
             $date2 = date("Y/m/d", strtotime(str_replace('-', '/', $date_string2)));
             $datetime2 = new DateTime($date2);
+            $purchase_advice->purchase_order_id = ($value->server_purchase_order_id > 0) ? $value->server_purchase_order_id : 0;
             $purchase_advice->purchase_advice_date = $datetime->format('Y-m-d');
             $purchase_advice->supplier_id = ($value->server_supplier_id > 0) ? $value->server_supplier_id : $customer_list[$value->id];
             $purchase_advice->created_by = 1;
