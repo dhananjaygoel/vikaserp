@@ -831,9 +831,7 @@ class HomeController extends Controller {
                     $add_customers->addNewCustomer($value->customer_name, $value->customer_contact_person, $value->customer_mobile, $value->customer_credit_period);
                     $customer_list[$value->id] = $add_customers->id;
                 }
-                if ($value->order_id == 0) {
-                    $delivery_order->order_id = 0;
-                }
+                $delivery_order->order_id = ($value->server_order_id > 0)?$value->server_order_id:0;
                 $delivery_order->order_source = 'warehouse';
                 $delivery_order->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
                 $delivery_order->created_by = 1;
