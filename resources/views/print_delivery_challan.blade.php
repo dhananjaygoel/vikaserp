@@ -74,13 +74,29 @@
             }
             .detail_table{
                 border: 1px solid #ccc;
-                margin-left: 20px;
+                margin-left: 80px;
                 margin-top: 5px;
                 margin-bottom: 10px;
             }
             .detail_table th{
                 border-bottom: 1px solid #ccc;
+                border-right: 1px solid #ccc;
+                line-height: 12px;
+                padding-left: 5px;
+                min-width: 70px;
             } 
+            .detail_table td{
+                line-height: 12px;
+                padding-left: 5px;
+                border-right: 1px solid #ccc;
+                text-align: center;
+            } 
+            .detail_table td:last-child{
+                border-right: none;
+            }
+            .detail_table th:last-child{
+                border-right: none;
+            }
             /*            .detail_table td{
                             border-right: 1px solid #ccc;
                         }*/
@@ -255,13 +271,13 @@
                     <table class="table-responsive detail_table">
                         <tr>
                             <th> Total Amount  </th>
-                            <th> Total Including Vat  </th>
                             <th> Total Vat  </th>
+                            <th> Total Inc. Vat  </th>
                         </tr>
                         <tr class="secondrow">
                             <td> {{ round($total_price, 2) }}  </td>
-                            <td> {{ $total_vat_amount }} </td>
-                            <td> {{ round($total_price+$total_vat_amount, 2) }}  </td>
+                            <td> {{ $total_vat_amount }}  </td>
+                            <td> {{ round($total_price+$total_vat_amount, 2) }} </td>
                         </tr>
                     </table>
                     <div class="ruppes grand_price">
