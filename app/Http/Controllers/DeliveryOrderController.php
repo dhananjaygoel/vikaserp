@@ -60,16 +60,25 @@ class DeliveryOrderController extends Controller {
             }
         }
         $delivery_data = 0;
+        $q = DeliveryOrder::query();
         if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
-
             if ($qstring_sort_type_order == 'Inprocess') {
-                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending', 'order_details')->with('delivery_product', 'customer')->paginate(20);
+//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+                $q->where('order_status', 'pending');
             } elseif ($qstring_sort_type_order == 'Delivered') {
-                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+                $q->where('order_status', 'completed');
             }
         } else {
-            $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+            $q->where('order_status', 'pending');
+//            $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
         }
+        if (Input::has('flag') && Input::get('flag') == 'true') {
+            $q->orderBy('flaged', 'desc')->orderBy('updated_at', 'desc');
+        } else {
+            $q->orderBy('updated_at', 'desc');
+        }
+        $delivery_data = $q->with('delivery_product', 'customer', 'order_details')->paginate(20);
         $delivery_data = $this->checkpending_quantity($delivery_data);
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_data->setPath('delivery_order');
@@ -473,9 +482,11 @@ class DeliveryOrderController extends Controller {
         $delivery_challan->round_off = $input_data['round_off'];
         $delivery_challan->loaded_by = $input_data['loadedby'];
         $delivery_challan->labours = $input_data['labour'];
-//        if (isset($input_data['vat_percentage'])) {
-//            $delivery_challan->vat_percentage = $input_data['vat_percentage'];
-//        }
+        if (isset($input_data['loading_vat_percentage'])) {
+            $delivery_challan->loading_vat_percentage = $input_data['loading_vat_percentage'];
+        } else {
+            $delivery_challan->loading_vat_percentage = 0;
+        }        
         $delivery_challan->grand_price = $input_data['grand_total'];
         $delivery_challan->remarks = $input_data['challan_remark'];
         $delivery_challan->challan_status = "Pending";
@@ -534,6 +545,7 @@ class DeliveryOrderController extends Controller {
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
 
+//        \PDF::set_base_path(asset('resources/assets/css/custom_style'));
 //        $pdf = \PDF::loadView('print_delivery_order', ['delivery_data' => $delivery_data,
 //                    'units' => $units,
 //                    'delivery_locations' => $delivery_locations,
@@ -541,6 +553,7 @@ class DeliveryOrderController extends Controller {
 //        ]);
 //        $filename = getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf';
 //        chmod($filename, 0777);
+//        $pdf->set_base_path(asset('resources/assets/css/custom_style'));
 //        $pdf->save($filename);
 
         /*

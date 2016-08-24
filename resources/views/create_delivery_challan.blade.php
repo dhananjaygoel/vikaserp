@@ -26,17 +26,14 @@
                             @endforeach
                         </div>
                         @endif
-                        <div class="form-group">
-                            Date : {{date('d F, Y')}}
-                        </div>
+                        <div class="form-group">Date : {{date('d F, Y')}}</div>
                         <hr>
                         {!!Form::open(array('method'=>'POST','url'=>url('create_delivery_challan/'.$delivery_data['id']),'id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="order_id" value="{{$delivery_data->order_id}}">
                         <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                         <input type="hidden" id="customer_id" name="customer_id" value="{{$delivery_data['customer']->id}}">
                         <div class="form-group">
-                            <span>Serial Number: </span>
-                            {{($delivery_data->serial_no != "")?$delivery_data->serial_no:'--'}}
+                            <span>Serial Number: </span>{{($delivery_data->serial_no != "") ? $delivery_data->serial_no : '--'}}
                         </div>
                         <hr>
                         <input type="hidden" name="supplier_id" value="{{ $delivery_data->supplier_id }}"/>
@@ -119,9 +116,7 @@
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
-                                                <div class="form-group">
-                                                    <div id="amount_{{$key}}"></div>
-                                                </div>
+                                                <div class="form-group"><div id="amount_{{$key}}"></div></div>
                                             </td>
                                         </tr>
                                         <?php $key++; ?>
@@ -172,8 +167,18 @@
                             </label>
                         </div>
                         <div class="form-group">
-                            <label for="driver_contact"><b class="challan">Loading</b></label>
-                            <input id="loading_charge" class="form-control" placeholder="loading" name="loading" value="" type="tel" onblur="grand_total_challan();">
+                            <div class="col-md-4 no_left_margin">
+                                <label for="driver_contact"><b class="challan">Loading</b></label>
+                                <input id="loading_charge" class="form-control" placeholder="Loading Charges" name="loading" value="" type="tel" onblur="grand_total_challan();">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="driver_contact"><b class="challan">Loading Vat Percentage</b></label>
+                                <input id="loading_vat_percentage" class="form-control" placeholder="Loading Vat Percentage" name="loading_vat_percentage" value="" type="tel" onblur="grand_total_challan();">
+                            </div>
+                            <div class="col-md-4 no_right_margin">
+                                <label for="driver_contact"><b class="challan">Total Loading Vat Charges</b></label>
+                                <input id="loading_total_charge" readonly="" class="form-control" value="">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="Discount"><b class="challan">Discount</b></label>
@@ -196,21 +201,21 @@
                             <input id="labour" class="form-control" placeholder="Labour" name="labour" value="" type="tel">
                         </div>
                         @if($delivery_data->vat_percentage==0)
-<!--                        <div class="form-group">
-                            <label for="Plusvat"><b class="challan">Plus VAT : </b> No</label>
-                        </div>-->
+                        <!--                        <div class="form-group">
+                                                    <label for="Plusvat"><b class="challan">Plus VAT : </b> No</label>
+                                                </div>-->
                         @else
-<!--                        <div class="form-group">
-                            <label for="vatp"><b class="challan">VAT Percentage : </b>
-                                {{$delivery_data->vat_percentage}}
-                                <input type="hidden" name="vat_percentage" id="vat_percentage" value="{{$delivery_data->vat_percentage}}" readonly="readonly">
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <label for="vatp"><b class="challan">VAT Value : </b>
-                                <span id="vat_val"></span>
-                            </label>
-                        </div>-->
+                        <!--                        <div class="form-group">
+                                                    <label for="vatp"><b class="challan">VAT Percentage : </b>
+                                                        {{$delivery_data->vat_percentage}}
+                                                        <input type="hidden" name="vat_percentage" id="vat_percentage" value="{{$delivery_data->vat_percentage}}" readonly="readonly">
+                                                    </label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="vatp"><b class="challan">VAT Value : </b>
+                                                        <span id="vat_val"></span>
+                                                    </label>
+                                                </div>-->
                         @endif
                         <div class="form-group">
                             <label for="vatp"><b class="challan">Total : </b>
@@ -249,12 +254,12 @@
                             <textarea class="form-control" id="challan_remark" name="challan_remark" rows="3">{{isset($delivery_data->remarks)?$delivery_data->remarks:''}}</textarea>
                         </div>
                         <hr>
-                        <div >
+                        <div>
                             <button type="submit" class="btn btn-primary form_button_footer btn_delorderto_delchallan">Submit</button>
                             <a href="{{url('delivery_order')}}" class="btn btn-default form_button_footer">Back</a>
                         </div>
                         <div class="clearfix"></div>
-                        </form>
+                        {!! Form::close() !!}
                         <div class="clearfix"></div>
                     </div>
                 </div>

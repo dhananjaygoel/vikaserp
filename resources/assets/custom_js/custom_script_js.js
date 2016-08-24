@@ -422,6 +422,7 @@ function grand_total_challan() {
     var current_row_count = $(".add_product_row").length;
     var total_price_products = 0;
     var total_actual_quantity = 0;
+    var loading_vat_percentage = $('#loading_vat_percentage').val().trim();
     for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseFloat($('#product_price_' + i).val())) {
             var unit_id = $("#units_" + i).val();
@@ -453,6 +454,17 @@ function grand_total_challan() {
             loading_charge = parseFloat($("#loading_charge").val());
             $("#loading_charge").val(loading_charge.toFixed(2));
             total_price += parseFloat(loading_charge.toFixed(2));
+        }
+        if (parseFloat(loading_vat_percentage) > 0) {
+            var subtotal = ((parseFloat(loading_vat_percentage) * parseFloat($("#loading_charge").val())) / 100);
+            $('#loading_total_charge').attr('value', parseFloat($("#loading_charge").val()) + subtotal);
+            total_price += parseFloat($('#loading_total_charge').attr('value')) - parseFloat($("#loading_charge").val());
+        } else {
+            if ($("#loading_charge").val().trim() != '') {
+                $('#loading_total_charge').attr('value', $("#loading_charge").val());
+            } else {
+                $('#loading_total_charge').attr('value', '');
+            }
         }
     }
 

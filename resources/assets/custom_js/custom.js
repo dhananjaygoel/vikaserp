@@ -92,11 +92,12 @@ $(document).ready(function () {
             $(this).addClass('empty_star');
         }
         var baseurl = $('#baseurl').attr('name');
+        var module = $('#module').val();
         var order_id = $(this).attr('data-orderid');
         $.ajax({
             type: 'get',
             url: baseurl + '/flag_order',
-            data: {order_id: order_id},
+            data: {order_id: order_id, module: module},
             success: function (data) {
             }
         });

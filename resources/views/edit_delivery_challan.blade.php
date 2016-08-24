@@ -211,10 +211,22 @@
                                 <label for="billno"><b class="challan">Bill Number</b></label>
                                 <input id="billno" class="form-control" placeholder="Bill Number" name="billno"  value="{{$allorder->bill_number}}" type="text">
                             </div>
+
                             <div class="form-group">
-                                <label for="driver_contact"><b class="challan">Loading</b></label>
-                                <input id="loading_charge" class="form-control" placeholder="loading" name="loading"  value="{{$allorder->loading_charge}}" type="text" onblur="grand_total_challan();">
+                                <div class="col-md-4 no_left_margin">
+                                    <label for="loading"><b class="challan">Loading</b></label>
+                                    <input id="loading_charge" class="form-control" placeholder="Loading Charges" name="loading" value="{{$allorder->loading_charge}}" type="tel" onblur="grand_total_challan();">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="driver_contact"><b class="challan">Loading Vat Percentage</b></label>
+                                    <input id="loading_vat_percentage" class="form-control" placeholder="Loading Vat Percentage" name="loading_vat_percentage" value="{{$allorder->loading_vat_percentage}}" type="tel" onblur="grand_total_challan();">
+                                </div>
+                                <div class="col-md-4 no_right_margin">
+                                    <label for="driver_contact"><b class="challan">Total Loading Vat Charges</b></label>
+                                    <input id="loading_total_charge" readonly="" class="form-control" value="">
+                                </div>
                             </div>
+
                             <div class="form-group">
                                 <label for="vehicle_name"><b class="challan">Discount</b></label>
                                 <input id="discount_value" class="form-control" placeholder="Discount" name="discount"  value="{{$allorder->discount}}" type="text" onblur="grand_total_challan();">
@@ -238,12 +250,12 @@
                                 <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="{{($allorder->round_off != '')?$allorder->round_off:''}}" type="tel" onblur="grand_total_challan();">
                             </div>
                             @if($allorder->vat_percentage==0 || $allorder->vat_percentage=='')
-                            <div class="form-group">
+<!--                            <div class="form-group">
                                 <label for="Plusvat"><b class="challan">Plus VAT : </b> No
                                 </label>
-                            </div>
+                            </div>-->
                             @else
-                            <div class="form-group">                                
+<!--                            <div class="form-group">                                
                                 <label for="vatp"><b class="challan">VAT Percentage : </b>
                                     {{($allorder->vat_percentage != '') ? $allorder->vat_percentage : ''}}
                                     <input type="hidden" name="vat_percentage" id="vat_percentage" value="{{($allorder->vat_percentage>0) ? $allorder->vat_percentage :''}}" readonly="readonly">
@@ -253,7 +265,7 @@
                                 <label for="vatp"><b class="challan">VAT Value : </b>
                                     <span id="vat_val"></span>
                                 </label>
-                            </div>
+                            </div>-->
                             @endif
                             <div class="form-group">
                                 <label for="total"><b class="challan">Grand Total : </b>

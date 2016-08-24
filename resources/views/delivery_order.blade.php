@@ -9,6 +9,7 @@
                     <li><a href="#">Home</a></li>
                     <li class="active"><span>Delivery Orders</span></li>
                 </ol>
+                <input type="hidden" id="module" value="deliveryorder">
                 <h1 class="pull-left">Delivery Orders</h1>
                 <div class="pull-right top-page-ui">
                     <a href="{{URL::action('DeliveryOrderController@create')}}" class="btn btn-primary pull-right">
@@ -57,29 +58,27 @@
                         </div>
                         @endif
                         @if (Session::has('success'))
-                        <div class="alert alert-success alert-success1">
-                            {{Session::get('success')}}
-                        </div>
+                        <div class="alert alert-success alert-success1">{{Session::get('success')}}</div>
                         @endif
-
                         @if (Session::has('flash_message'))
                         <div class="alert alert-success alert-success1">
                             <i class="fa fa-check-circle fa-fw fa-lg"></i>
                             <strong>Well done!</strong> User details successfully added.
-                        </div> <br/>
+                        </div><br/>
                         @endif
-
                         @if (Session::has('wrong'))
-                        <div class="alert alert-danger alert-success1">
-                            {{Session::get('wrong')}}
-                        </div>
+                        <div class="alert alert-danger alert-success1">{{Session::get('wrong')}}</div>
                         @endif
-
                         @if(sizeof($delivery_data) != 0)
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
                                 <thead>
                                     <tr>
+                                        @if(Input::has('flag') && Input::get('flag') == 'true')
+                                        <th><a href="{{url('delivery_order?flag=false')}}">Flag</a></th>
+                                        @else
+                                        <th><a href="{{url('delivery_order?flag=true')}}">Flag</a></th>
+                                        @endif
                                         <th class="">#</th>
                                         <th>Date</th>
                                         <th>Tally Name</th>
@@ -97,6 +96,9 @@
                                     <?php $i = ($delivery_data->currentPage() - 1 ) * $delivery_data->perPage() + 1; ?>
                                     @foreach($delivery_data as $delivery)
                                     <tr id="delivery_order_row_{{$delivery->id}}">
+                                        <td>
+                                            <span class="{{($delivery->flaged==true)?'filled_star flags':'empty_star flags'}}" data-orderid="{{$delivery->id}}"></span>
+                                        </td>
                                         <td>{{ $i++ }}</td>
                                         <td>{{date("F jS, Y", strtotime($delivery->created_at)) }}</td>
                                         <td>

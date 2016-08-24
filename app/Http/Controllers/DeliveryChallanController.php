@@ -105,6 +105,9 @@ class DeliveryChallanController extends Controller {
     public function update($id) {
 
         $input_data = Input::all();
+        if (!isset($input_data['grand_total']) || $input_data['grand_total'] == '') {
+            return Redirect::back()->with('validation_message', 'No Value Updated. Please update something');
+        }
         if (Session::has('forms_edit_delivery_challan')) {
             $session_array = Session::get('forms_edit_delivery_challan');
             if (count($session_array) > 0) {
@@ -140,9 +143,11 @@ class DeliveryChallanController extends Controller {
         $delivery_challan->round_off = $input_data['round_off'];
         $delivery_challan->grand_price = $input_data['grand_total'];
         $delivery_challan->remarks = $input_data['challan_remark'];
-//        if (isset($input_data['vat_percentage'])) {
-//            $delivery_challan->vat_percentage = $input_data['vat_percentage'];
-//        }
+        if (isset($input_data['loading_vat_percentage'])) {
+            $delivery_challan->loading_vat_percentage = $input_data['loading_vat_percentage'];
+        } else {
+            $delivery_challan->loading_vat_percentage = 0;
+        }
 //        $update_challan = $delivery_challan->update([
 //            'bill_number' => $input_data['billno'],
 //            'freight' => $input_data['freight'],
@@ -233,10 +238,14 @@ class DeliveryChallanController extends Controller {
         $current_date = date("m/d/");
         $update_delivery_challan = DeliveryChallan::with('delivery_challan_products')->find($id);
         $vat_applicable = 0;
+        $total_vat_amount = 0;
         if (isset($update_delivery_challan->delivery_challan_products) && count($update_delivery_challan->delivery_challan_products) > 0) {
             foreach ($update_delivery_challan->delivery_challan_products as $key => $delivery_challan_products) {
                 if ($delivery_challan_products->vat_percentage > 0) {
                     $vat_applicable = 1;
+                    if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
+                        $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
+                    }
                 }
             }
         }
@@ -299,7 +308,7 @@ class DeliveryChallanController extends Controller {
                 }
             }
         }
-        return view('print_delivery_challan', compact('allorder'));
+        return view('print_delivery_challan', compact('allorder', 'total_vat_amount'));
     }
 
     /*
@@ -521,10 +530,13 @@ class DeliveryChallanController extends Controller {
                 else
                     $points = $point; //$points = $words[$point];
                 $strs = preg_replace('/\W\w+\s*(\W*)$/', '$1', $result);
-//            $points = ($point) ?
-//                    $words[$point / 10] . " " .
-//                    $words[$point = $point % 10] : '';
-                $convert_value = ucfirst($result . " rupees and " . $points . " paise");
+
+                if ($point % 10 == 0) {
+                    $convert_value = ucfirst($result . " point " . $words[$points]);
+                } else {
+                    $points = ($point) ? ($words[$point / 10] . " " . $words[$point = $point % 10]) : '';
+                    $convert_value = ucfirst($result . " rupees and " . $points . " paise");
+                }
             } else
                 $convert_value = ucfirst($result);
             return $convert_value;

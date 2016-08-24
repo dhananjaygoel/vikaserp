@@ -88,34 +88,34 @@
                         <div class="form-group">
                             <label for="vehicle_name"><b class="challan">Total Actual Quantity: </b></label>
                             {{$allorder['all_order_products']->sum('actual_quantity')}}&nbsp;&nbsp;
-                            <label for="vehicle_name"><b class="challan">Total Amount: </b></label>{{$total_amount}}
+                            <label for="vehicle_name"><b class="challan">Total Amount: </b></label> {{$total_amount}}
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label for="vehicle_name"><b class="challan">Discount: </b></label>{{$allorder->discount}}
+                            <label for="vehicle_name"><b class="challan">Discount: </b></label> {{$allorder->discount}}
                             <?php $total_amount = $total_amount + $allorder->discount; ?>
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label for="driver_name"><b class="challan">Freight: </b></label>{{$allorder->freight}}
+                            <label for="driver_name"><b class="challan">Freight: </b></label> {{$allorder->freight}}
                             <?php $total_amount = $total_amount + $allorder->freight; ?>
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label for="driver_contact"><b class="challan">Loading: </b></label>{{$allorder->loading_charge}}
+                            <label for="driver_contact"><b class="challan">Loading: </b></label> {{$allorder->loading_charge}}
                             <?php $total_amount = $total_amount + $allorder->loading_charge; ?>
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label for="total"><b class="challan">Total</b><span class="gtotal">{{$total_amount}}</span></label>
+                            <label for="total"><b class="challan">Total: </b></label> {{$total_amount}}
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label for="loadedby"><b class="challan">Loaded By: </b></label>{{$allorder->loaded_by}}
+                            <label for="loadedby"><b class="challan">Loaded By: </b></label> {{$allorder->loaded_by}}
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label for="labour"><b class="challan">Labour: </b></label>{{$allorder->labours}}
+                            <label for="labour"><b class="challan">Labour: </b></label> {{$allorder->labours}}
                         </div>
                         <hr>
                         @if($allorder->vat_percentage != "" || $allorder->vat_percentage != 0)
@@ -134,22 +134,20 @@
                                                 <hr>-->
                         @endif
                         <div class="form-group">
-                            <label for="total"><b class="challan">Round Off: </b><span class="gtotal">{{$allorder->round_off}}</span></label>
+                            <label for="total"><b class="challan">Round Off: </b>{{$allorder->round_off}}</label>
                         </div>
                         <hr/>
                         <div class="form-group">
-                            <label for="total"><b class="challan">Grand Total: </b><span class="gtotal">{{$allorder->grand_price}}</span></label>
+                            <label for="total"><b class="challan">Grand Total: </b>{{$allorder->grand_price}}</label>
                         </div>
                         <hr/>
                         <div class="form-group">
-                            <label for="vehicle_number"><b class="challan">Vehicle Number: </b>
-                                <span class="gtotal">{{$allorder['delivery_order']->vehicle_number}}</span>
+                            <label for="vehicle_number"><b class="challan">Vehicle Number: </b>{{$allorder['delivery_order']->vehicle_number}}
                             </label>
                         </div>
                         <hr/>
                         <div class="form-group">
-                            <label for="driver_contact"><b class="challan">Driver Contact: </b>
-                                <span class="gtotal">{{$allorder['delivery_order']->driver_contact_no}}</span>
+                            <label for="driver_contact"><b class="challan">Driver Contact: </b>{{$allorder['delivery_order']->driver_contact_no}}
                             </label>
                         </div>
                         <hr>
@@ -161,29 +159,29 @@
                         @endif
                         @if($allorder->order_id > 0)
                         <div class="form-group">
-                            <label for="orderby"><b class="challan">Order By : </b></label>
+                            <label for="orderby"><b class="challan">Order By: </b></label>
                             {{$allorder->order_details->createdby['first_name']." ".$allorder->order_details->createdby['last_name']}}
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label for="orderdatetime"><b class="challan">Order Time/Date : </b></label>{{$allorder->order_details['updated_at']}}
+                            <label for="orderdatetime"><b class="challan">Order Time/Date: </b></label> {{$allorder->order_details['updated_at']}}
                         </div><hr>
                         @else
                         <div class="form-group">
-                            <label for="deliveryorderby"><b class="challan">Delivery Order By : </b></label>
+                            <label for="deliveryorderby"><b class="challan">Delivery Order By: </b></label>
                             {{$allorder->delivery_order->user['first_name']." ".$allorder->delivery_order->user['last_name']}}
                         </div><hr>
                         <div class="form-group">
-                            <label for="deliveryorderdatetime"><b class="challan">Delivery Order Time/Date : </b></label>
+                            <label for="deliveryorderdatetime"><b class="challan">Delivery Order Time/Date: </b></label>
                             {{$allorder->delivery_order['updated_at']}}
                         </div><hr>
                         @endif
                         <div class="form-group">
-                            <label for="deliveryorderby"><b class="challan">Delivery Challan By : </b></label>
+                            <label for="deliveryorderby"><b class="challan">Delivery Challan By: </b></label>
                             {{$allorder->user['first_name']." ".$allorder->user['last_name']}}
                         </div><hr>
                         <div class="form-group">
-                            <label for="deliveryorderdatetime"><b class="challan">Delivery Challan Time/Date : </b></label> {{$allorder->updated_at}}
+                            <label for="deliveryorderdatetime"><b class="challan">Delivery Challan Time/Date: </b></label> {{$allorder->updated_at}}
                         </div><hr>
                         <div class="form-group">
                             <label for="challan_remark"><b class="challan">Remark: </b></label>

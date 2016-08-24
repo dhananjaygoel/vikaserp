@@ -124,8 +124,14 @@ class OrderController extends Controller {
      */
     public function flagOrder() {
 
-        $order_details = Order::find(Input::get('order_id'));
-        $order_details->flagOrder($order_details);
+        $data = Input::all();
+        if ($data['module'] == 'order') {
+            $order_details = Order::find(Input::get('order_id'));
+            $order_details->flagOrder($order_details);
+        } elseif ($data['module'] == 'deliveryorder') {
+            $delivery_order_details = DeliveryOrder::find(Input::get('order_id'));
+            $delivery_order_details->flagDelievryOrder($delivery_order_details);
+        }
     }
 
     /**

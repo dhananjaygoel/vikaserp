@@ -51,4 +51,9 @@ class DeliveryOrder extends Model implements AuthenticatableContract, CanResetPa
         return $this->hasOne('App\Units', 'id', 'unit_id');
     }
 
+    public function flagDelievryOrder($delivery_order_details) {
+        $this->flaged = ($delivery_order_details->flaged == true) ? false : true;
+        $this->save();
+    }
+
 }

@@ -101,13 +101,7 @@
                                     <tr id="purchase_advice_row_{{$pa->id}}">
                                         <td>{{ $i }}</td>
                                         <td>{{ date("F jS, Y", strtotime($pa->purchase_advice_date)) }}</td>
-                                        <td>
-                                            @if($pa['supplier']->tally_name != "" )
-                                            {{$pa['supplier']->tally_name}}
-                                            @else
-                                            {{$pa['supplier']->owner_name}}
-                                            @endif
-                                        </td>
+                                        <td>{{($pa['supplier']->tally_name != "" ) ? $pa['supplier']->tally_name:$pa['supplier']->owner_name}}</td>
                                         <td>{{ $pa->vehicle_number}}</td>
                                         <td>{{ round($pa->total_quantity, 2) }}</td>
                                         <td>{{ $pa->serial_number }}</td>
@@ -183,10 +177,10 @@
                                             @endif
                                         </td>
                                     </tr>
-                                
-                                
-                                <?php $i++; ?>
-                                @endforeach
+
+
+                                    <?php $i++; ?>
+                                    @endforeach
                                 <div class="modal fade" id="deletePurchaseAdvice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">

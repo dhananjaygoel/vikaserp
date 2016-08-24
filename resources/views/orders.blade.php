@@ -9,6 +9,7 @@
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Orders</span></li>
                 </ol>
+                <input type="hidden" id="module" value="order">
                 <div class="filter-block">
                     <form action="{{url('orders')}}" method="GET" id="orderForm">
                         <h1 class="pull-left">Orders</h1>

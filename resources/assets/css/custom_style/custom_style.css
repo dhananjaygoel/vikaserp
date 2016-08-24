@@ -14,8 +14,13 @@
     padding-bottom: 15px !important;
 }
 .supplier_order{width:30%}
-
-
+.no_left_margin{
+    margin-left: -7px;
+}
+.no_right_margin{
+    margin-left: 7px;
+    margin-bottom: 10px;
+}
 .loadinggif {
     background:url('http://www.hsi.com.hk/HSI-Net/pages/images/en/share/ajax-loader.gif') no-repeat right center;
     margin-right: 50px;

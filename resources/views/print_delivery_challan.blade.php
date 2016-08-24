@@ -34,7 +34,7 @@
             .divCell{
                 float:left;
                 display:table-column;
-                width:14.2%;
+                width:13.2%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
@@ -195,6 +195,7 @@
                     <div class="divCell">Size</div>
                     <div class="divCell">Pcs</div>
                     <div class="divCell">Qty</div>
+                    <div class="divCell">Vat</div>
                     <div class="divCell">Rate</div>
                     <div class="divCell">Amount</div>
                 </div>
@@ -211,6 +212,7 @@
                     <div class="divCell">{{ $prod['order_product_details']->alias_name }}</div>
                     <div class="divCell">{{ $prod->actual_pieces }}</div>
                     <div class="divCell">{{ round($prod->actual_quantity) }}</div>
+                    <div class="divCell">{{($prod->vat_percentage!='')?round($prod->vat_percentage):''}}</div>
                     <div class="divCell"><?php echo $rate = $prod->price; ?></div>
                     <div class="divCell">
                         <?php $total_price += $rate * $prod->actual_quantity; ?>
@@ -239,6 +241,20 @@
                 <div class="total-desc">
                     <div class="quantity">
                         Total Quantity: {{ round($allorder['delivery_challan_products']->sum('actual_quantity'), 2) }}
+                        <!--                        <div class="col-md-10 col-sm-10 col-xm-10">
+                                                    <table class="table-responsive border2">
+                                                        <tr>
+                                                            <td> Total </td>
+                                                            <td> Total (Vat Included) </td>
+                                                            <td> Total Vat </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td> Total </td>
+                                                            <td> Total Including Vat </td>
+                                                            <td> Total Vat Amount</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>-->
                     </div>
                     <div class="ruppes grand_price">
                         &nbsp; <?php $gt = round($allorder->grand_price, 2) ?>
@@ -251,27 +267,35 @@
                         <div class="value bob"> {{ round($total_price, 2) }} &nbsp;</div>
                         <div class="label ">&nbsp; Loading</div>
                         <div class="value">
-                            {{($allorder->loading_charge != "") ? round($allorder->loading_charge,2) : 0}}&nbsp;
+                            <?php
+                            $loading_charge = $allorder->loading_charge;
+                            $loading_vat = $allorder->loading_vat_percentage;
+                            $loadtotal = $loading_charge + (($loading_charge * $allorder->loading_vat_percentage) / 100)
+                            ?>
+                            {{$loadtotal}} &nbsp;
                         </div>
-                        <div class="label">&nbsp; Frt</div>
+                        <div class="label">&nbsp; Freight</div>
                         <div class="value">
                             {{($allorder->freight != "")?round($allorder->freight,2):0}} &nbsp;
                         </div>
-                        <div class="label">&nbsp; disc.</div>
+                        <div class="label">&nbsp; Discount</div>
                         <div class="value">
                             {{($allorder->discount != "")?round($allorder->discount,2):0}}
                             &nbsp;
                         </div>
                         <div class="label">&nbsp; Total</div>
                         <div class="value">
-                            <?php $with_total = $total_price + $allorder->loading_charge + $allorder->freight + $allorder->discount; ?>
+                            <?php $with_total = $total_price + $loadtotal + $allorder->freight + $allorder->discount; ?>
                             {{ round($with_total, 2) }}
                             &nbsp;
                         </div>
                         <div class="label">&nbsp; Vat</div>
                         <div class="value">
-                            <?php $vat = (isset($allorder->vat_percentage) && ($with_total != "")) ? round(($with_total * $allorder->vat_percentage) / 100, 2) : 0; ?>
-                            {{ $vat }}
+                            <?php
+                            $vat = $total_vat_amount;
+// $vat = (isset($allorder->vat_percentage) && ($with_total != "")) ? round(($with_total * $allorder->vat_percentage) / 100, 2) : 0; 
+                            ?>
+                            {{ round($total_vat_amount,2) }}
                             &nbsp;
                         </div>
                         <div class="label">&nbsp; Round Off</div>

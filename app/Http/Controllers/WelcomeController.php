@@ -19,6 +19,10 @@ use Session;
 use Schema;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Config;
+use Dropbox\Client;
+use Dropbox\WriteMode;
+use Illuminate\Filesystem\Filesystem;
+use Dropbox;
 
 class WelcomeController extends Controller {
     /*
@@ -31,6 +35,37 @@ class WelcomeController extends Controller {
       | controllers, you are free to modify or remove it as you desire.
       |
      */
+
+    /**
+     * Create a new controller instance.
+     *
+     */
+    public function dropboxfile() {
+
+//        $Client = new Client(config('filesystems.dropbox.key'), config('filesystems.dropbox.secret'));
+//        $file = fopen(public_path('images/angular_crud.png'), 'rb');
+//        $size = filesize(public_path('images/angular_crud.png'));
+//        $dropboxFileName = '/dropboxfile-name.png';
+//        $Client->uploadFile($dropboxFileName, WriteMode::add(), $file, $size);
+//        $client = new Client(Config::get('filesystems.disks.dropbox.token'), Config::get('filesystems.disks.dropbox.app_secret'));
+        $client = new Client(Config::get('filesystems.disks.dropbox.token'), Config::get('filesystems.disks.dropbox.app_secret'));
+        echo "<pre>";
+        print_r($client);
+        echo "<pre>";
+        exit();
+//        $this->filesystem = new Filesystem(new Dropbox($client, '/'));
+//        $file = $this->filesystem->getAccountInfo("demo.txt");
+//        $file = $client->getClientIdentifier();
+
+
+
+        $f = fopen("demo.txt", "w+b");
+        $fileMetadata = $client->getFile("/working-draft.txt", $f);
+        fclose($f);
+        print_r($fileMetadata);
+
+        exit();
+    }
 
     /**
      * Create a new controller instance.

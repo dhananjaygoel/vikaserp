@@ -143,16 +143,10 @@
             }
         </style>
         <div class="invoice">
-            <div class="title">
-                Delivery Order
-            </div>
+            <div class="title">Delivery Order</div>
             <div class="delivery-details">
-                <div class="do-no">
-                    DO Number: {{ $delivery_data->serial_no }}
-                </div>
-                <div class="date">
-                    Date: {{ date('F d, Y')}}
-                </div>
+                <div class="do-no">DO Number: {{ $delivery_data->serial_no }}</div>
+                <div class="date">Date: {{ date('F d, Y')}}</div>
                 <div class="time">
                     <!--Time: {{ date("h:i:sa") }}-->
                     Time: <?php
@@ -165,29 +159,14 @@
                 </div>
             </div>
             <div class="name">
-                Name:
-                @if($delivery_data['customer']->tally_name != "")
-                {{ $delivery_data['customer']->tally_name }}
-                @else
-                {{ $delivery_data['customer']->owner_name }}
-                @endif
-
+                Name: {{($delivery_data['customer']->tally_name != "") ? $delivery_data['customer']->tally_name : $delivery_data['customer']->owner_name }}
             </div>
             <div class="trk-mobile">
-                <div class="trk-no">
-                    Vehicle No: {{ $delivery_data->vehicle_number }}
-                </div>
-                <div class="mob-no">
-                    Driver Mob: {{ $delivery_data->driver_contact_no }}
-                </div>
+                <div class="trk-no">Vehicle No: {{ $delivery_data->vehicle_number }}</div>
+                <div class="mob-no">Driver Mob: {{ $delivery_data->driver_contact_no }}</div>
             </div>
             <div class="del">
-                Delivery @:
-                @if($delivery_data->delivery_location_id!=0)
-                {{ $delivery_data['location']->area_name }}
-                @else
-                {{ $delivery_data->other_location }}
-                @endif
+                Delivery @: {{($delivery_data->delivery_location_id!=0) ? $delivery_data['location']->area_name : $delivery_data->other_location }}
             </div>
             <div class="divTable">
                 <div class="headRow">
@@ -198,10 +177,7 @@
                     <div class="divCell">Pcs</div>
                     <div class="divCell">Qty</div>
                 </div>
-
-                <?php
-                $i = 1;
-                ?>
+                <?php $i = 1; ?>
                 @foreach($delivery_data['delivery_product'] as $product)
                 @if($product['order_type'] == 'delivery_order')
                 <div class="divRow">
@@ -222,12 +198,8 @@
                 @endforeach
             </div>
             <div class="footer">
-                <div class="remark">
-                    Remark:
-                </div>
-                <div class="content">
-                    {{ $delivery_data->remarks }}
-                </div>
+                <div class="remark">Remark:</div>
+                <div class="content">{{ $delivery_data->remarks }}</div>
             </div>
         </div>
     </body>
