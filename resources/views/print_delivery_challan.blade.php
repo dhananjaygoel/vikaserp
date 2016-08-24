@@ -72,12 +72,22 @@
                 padding: 0px;
                 overflow: hidden;
             }
-
-            .time{
+            .detail_table{
+                border: 1px solid #ccc;
+                margin-left: 20px;
+                margin-top: 5px;
+                margin-bottom: 10px;
+            }
+            .detail_table th{
+                border-bottom: 1px solid #ccc;
+            } 
+            /*            .detail_table td{
+                            border-right: 1px solid #ccc;
+                        }*/
+            .time td{
                 width: 100%;
                 float: left;
                 padding: 10px 0px 10px 5px;
-
             }
 
             .time-gen{
@@ -139,7 +149,7 @@
                 margin: 0px;
             }
             .quantity{
-                height: 80px;
+                height: 10px;
                 padding: 5px 5px 0 10px;
             }
             .label{
@@ -241,21 +251,19 @@
                 <div class="total-desc">
                     <div class="quantity">
                         Total Quantity: {{ round($allorder['delivery_challan_products']->sum('actual_quantity'), 2) }}
-                        <!--                        <div class="col-md-10 col-sm-10 col-xm-10">
-                                                    <table class="table-responsive border2">
-                                                        <tr>
-                                                            <td> Total </td>
-                                                            <td> Total (Vat Included) </td>
-                                                            <td> Total Vat </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td> Total </td>
-                                                            <td> Total Including Vat </td>
-                                                            <td> Total Vat Amount</td>
-                                                        </tr>
-                                                    </table>
-                                                </div>-->
                     </div>
+                    <table class="table-responsive detail_table">
+                        <tr>
+                            <th> Total Amount  </th>
+                            <th> Total Including Vat  </th>
+                            <th> Total Vat  </th>
+                        </tr>
+                        <tr class="secondrow">
+                            <td> {{ round($total_price, 2) }}  </td>
+                            <td> {{ $total_vat_amount }} </td>
+                            <td> {{ round($total_price+$total_vat_amount, 2) }}  </td>
+                        </tr>
+                    </table>
                     <div class="ruppes grand_price">
                         &nbsp; <?php $gt = round($allorder->grand_price, 2) ?>
                         Rupees <?php echo $allorder->convert_value; ?> only.
