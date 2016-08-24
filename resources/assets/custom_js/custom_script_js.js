@@ -422,7 +422,7 @@ function grand_total_challan() {
     var current_row_count = $(".add_product_row").length;
     var total_price_products = 0;
     var total_actual_quantity = 0;
-    var loading_vat_percentage = $('#loading_vat_percentage').val().trim();
+    var loading_vat_percentage = $('#loading_vat_percentage').val();
     for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseFloat($('#product_price_' + i).val())) {
             var unit_id = $("#units_" + i).val();
