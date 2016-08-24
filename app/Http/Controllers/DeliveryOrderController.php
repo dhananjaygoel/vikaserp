@@ -74,9 +74,9 @@ class DeliveryOrderController extends Controller {
 //            $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
         }
         if (Input::has('flag') && Input::get('flag') == 'true') {
-            $q->orderBy('flaged', 'desc')->orderBy('updated_at', 'desc');
+            $q->orderBy('flaged', 'desc')->orderBy('created_at', 'desc');
         } else {
-            $q->orderBy('updated_at', 'desc');
+            $q->orderBy('created_at', 'desc');
         }
         $delivery_data = $q->with('delivery_product', 'customer', 'order_details')->paginate(20);
         $delivery_data = $this->checkpending_quantity($delivery_data);
@@ -486,7 +486,7 @@ class DeliveryOrderController extends Controller {
             $delivery_challan->loading_vat_percentage = $input_data['loading_vat_percentage'];
         } else {
             $delivery_challan->loading_vat_percentage = 0;
-        }        
+        }
         $delivery_challan->grand_price = $input_data['grand_total'];
         $delivery_challan->remarks = $input_data['challan_remark'];
         $delivery_challan->challan_status = "Pending";
