@@ -24,6 +24,7 @@ use App\PurchaseOrderCanceled;
 use DateTime;
 use App\ProductSubCategory;
 use Session;
+use App\PurchaseAdvise;
 
 class PurchaseOrderController extends Controller {
 
@@ -719,7 +720,7 @@ class PurchaseOrderController extends Controller {
 
     function quantity_calculation($purchase_orders) {
 
-        foreach ($purchase_orders as $key => $order) {
+    foreach ($purchase_orders as $key => $order) {
             $purchase_order_quantity = 0;
             $purchase_order_advise_quantity = 0;
             $purchase_order_advise_products = PurchaseProducts::where('from', '=', $order->id)->get();

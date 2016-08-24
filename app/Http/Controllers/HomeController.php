@@ -504,6 +504,7 @@ class HomeController extends Controller {
             $date_string2 = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
             $date2 = date("Y/m/d", strtotime(str_replace('-', '/', $date_string2)));
             $datetime2 = new DateTime($date2);
+            $purchase_advice->purchase_order_id = ($value->server_purchase_order_id > 0) ? $value->server_purchase_order_id : 0;
             $purchase_advice->purchase_advice_date = $datetime->format('Y-m-d');
             $purchase_advice->supplier_id = ($value->server_supplier_id > 0) ? $value->server_supplier_id : $customer_list[$value->id];
             $purchase_advice->created_by = 1;
@@ -512,7 +513,7 @@ class HomeController extends Controller {
             $purchase_advice->remarks = $value->remarks;
             $purchase_advice->vehicle_number = $value->vehicle_number;
             $purchase_advice->order_for = $value->order_for;
-            $purchase_advice->advice_status = 'in_process';
+            $purchase_advice->advice_status = ($value->advice_status != '') ? $value->advice_status : 'in_process';
             if ($value->vat_percentage > 0) {
                 $purchase_advice->vat_percentage = $value->vat_percentage;
             }
@@ -534,11 +535,11 @@ class HomeController extends Controller {
                         'order_type' => 'purchase_advice',
                         'product_category_id' => $product_data->product_category_id,
                         'unit_id' => $product_data->unit_id,
-                        'quantity' => $product_data->quantity,
+                        'quantity' => $product_data->present_shipping,
+                        'present_shipping' => $product_data->present_shipping,
                         'price' => $product_data->price,
                         'actual_pieces' => $product_data->actual_pieces,
                         'remarks' => "",
-                        'present_shipping' => $product_data->present_shipping,
                         'from' => ($product_data->server_pur_order_id > 0) ? $product_data->server_pur_order_id : ''
                     ];
                     PurchaseProducts::create($purchase_advise_products);
@@ -768,7 +769,7 @@ class HomeController extends Controller {
                 }
             }
             if ($value->server_id > 0) {
-                $delivery_challan_prod = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->first();
+                $delivery_challan_prod = AllOrderProducts::where('order_id', '=', $value->server_id)->where('order_type', '=', 'delivery_challan')->first();
                 $delivery_challan->updated_at = $delivery_challan_prod->updated_at;
                 $delivery_challan_response[$value->id] = DeliveryChallan::find($value->server_id);
                 $delivery_challan_response[$value->id]['delivery_challan_products'] = AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->server_id)->get();
@@ -831,9 +832,7 @@ class HomeController extends Controller {
                     $add_customers->addNewCustomer($value->customer_name, $value->customer_contact_person, $value->customer_mobile, $value->customer_credit_period);
                     $customer_list[$value->id] = $add_customers->id;
                 }
-                if ($value->order_id == 0) {
-                    $delivery_order->order_id = 0;
-                }
+                $delivery_order->order_id = ($value->server_order_id > 0)?$value->server_order_id:0;
                 $delivery_order->order_source = 'warehouse';
                 $delivery_order->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
                 $delivery_order->created_by = 1;
@@ -861,7 +860,7 @@ class HomeController extends Controller {
                             'order_type' => 'delivery_order',
                             'product_category_id' => $product_data->product_category_id,
                             'unit_id' => $product_data->unit_id,
-                            'quantity' => $product_data->quantity,
+                            'quantity' => $product_data->present_shipping,
                             'present_shipping' => $product_data->present_shipping,
                             'price' => $product_data->actualPrice,
                             'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
