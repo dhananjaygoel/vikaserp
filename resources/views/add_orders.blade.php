@@ -13,8 +13,7 @@
                     <h1 class="pull-left"></h1>
                 </div>
             </div>
-        </div>        
-        <div id="demodiv">Demo div</div>        
+        </div>
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box">
