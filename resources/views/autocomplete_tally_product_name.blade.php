@@ -65,7 +65,6 @@
                 '<div class="form-group">' +
                 '<input type="text" class="form-control" placeholder="Vat Percentage" id="product_vatpercentage_' + current_row_count + '" name="product[' + current_row_count + '][vat_percentage]" onblur="fetch_price();">'+
                 '<input id="pending_qunatity_value_' + current_row_count + '" class="form-control text-center" name="product[' + current_row_count + '][pending_quantity]" value="" type="hidden">' +
-                '<div id="pending_qunatity_' + current_row_count + '"></div>' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
