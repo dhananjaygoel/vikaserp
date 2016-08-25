@@ -1000,43 +1000,41 @@ function delete_delivery_order(deliver_order_id) {
 /*
  * Delete delivery order from delivery order page
  */
-$('.delete_delivery_order_submit').click(function () {
-    $('#myModalDeleteDeliveryOrder').modal('hide');
-    /*Form token set up*/
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('input[name="_token"]').val()
-        }});
-    /* Delivery order form id object*/
-    $form = $('#delete_delivery_order');
-    /*Delivery order form data*/
-    $data = $form.serialize();
-    /*MDelivery order from url*/
-    url = $form.attr('action');
-    var posting = $.post(url, {formData: $data});
-    posting.done(function (data) {
-        $("#pwdr").val('');
-        if (data['message'] == 'success')
-        {
-            $("#delivery_order_row_" + $('#user_id').val()).remove();
-            $('#flash_message').html("Order Deleted Successfully");
-            $('#flash_message').removeClass('alert-danger');
-            $('#flash_message').addClass('alert-success');
-            $('#flash_message').fadeIn();
-            $('#flash_message').fadeOut(5000);
-        }
-        else {
-
-            $('#flash_message').html("Delete Opration Failed");
-            $('#flash_message').removeClass('alert-success');
-            $('#flash_message').addClass('alert-danger');
-            $('#flash_message').fadeIn();
-            $('#flash_message').fadeOut(5000);
-        }
-
-    }, 'json'); //done 
-
-});
+/*
+ $('.delete_delivery_order_submit').click(function () {
+ $('#myModalDeleteDeliveryOrder').modal('hide');
+ $.ajaxSetup({
+ headers: {
+ 'X-CSRF-TOKEN': $('input[name="_token"]').val()
+ }});
+ $form = $('#delete_delivery_order');
+ $data = $form.serialize();
+ url = $form.attr('action');
+ var posting = $.post(url, {formData: $data});
+ posting.done(function (data) {
+ $("#pwdr").val('');
+ if (data['message'] == 'success')
+ {
+ $("#delivery_order_row_" + $('#user_id').val()).remove();
+ $('#flash_message').html("Order Deleted Successfully");
+ $('#flash_message').removeClass('alert-danger');
+ $('#flash_message').addClass('alert-success');
+ $('#flash_message').fadeIn();
+ $('#flash_message').fadeOut(5000);
+ }
+ else {
+ 
+ $('#flash_message').html("Delete Opration Failed");
+ $('#flash_message').removeClass('alert-success');
+ $('#flash_message').addClass('alert-danger');
+ $('#flash_message').fadeIn();
+ $('#flash_message').fadeOut(5000);
+ }
+ 
+ }, 'json'); //done 
+ 
+ });
+ */
 /*
  * set challan id to the form model 
  * @param {type} challan_id

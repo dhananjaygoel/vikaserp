@@ -374,17 +374,27 @@ class DeliveryOrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('delivery_order')->with('error', 'You do not have permission.');
         }
-        $inputData = Input::get('formData');
-        parse_str($inputData, $formFields);
-        $password = $formFields['password'];
-        $order_sort_type = $formFields['order_sort_type'];
+
+        $data = Input::all();
+        if (isset($data['password']) && ($data['password'] != '')) {
+            $password = $data['password'];
+        } else {
+            return Redirect::to('delivery_order')->with('error', 'Please enter password.');
+        }
+
+//        $inputData = Input::get('formData');
+//        parse_str($inputData, $formFields);
+//        $password = $formFields['password'];
+//        $order_sort_type = $formFields['order_sort_type'];
         if (Hash::check($password, Auth::user()->password)) {
             DeliveryOrder::find($id)->delete();
             AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_order')->delete();
-            Session::put('order-sort-type', $order_sort_type);
-            return array('message' => 'success');
+//            Session::put('order-sort-type', $order_sort_type);
+//            return array('message' => 'success');
+            return Redirect::to('delivery_order')->with('success', 'Record deleted successfully.');
         } else {
-            return array('message' => 'failed');
+//            return array('message' => 'failed');
+            return Redirect::to('delivery_order')->with('error', 'Please enter correct password.');
         }
     }
 
@@ -487,8 +497,13 @@ class DeliveryOrderController extends Controller {
         } else {
             $delivery_challan->loading_vat_percentage = 0;
         }
+        if (isset($input_data['freight_vat_percentage'])) {
+            $delivery_challan->freight_vat_percentage = $input_data['freight_vat_percentage'];
+        } else {
+            $delivery_challan->freight_vat_percentage = 0;
+        }
         $delivery_challan->grand_price = $input_data['grand_total'];
-        $delivery_challan->remarks = $input_data['challan_remark'];
+        $delivery_challan->remarks = trim($input_data['challan_remark']);
         $delivery_challan->challan_status = "Pending";
         $delivery_challan->save();
         $delivery_challan_id = $delivery_challan->id;
@@ -526,7 +541,7 @@ class DeliveryOrderController extends Controller {
                 $add_order_products = AllOrderProducts::create($order_products);
             }
         }
-        DeliveryOrder::where('id', '=', $id)->update(array('order_status' => 'completed'));
+        DeliveryOrder:: where('id', '=', $id)->update(array('order_status' => 'completed'));
         return redirect('delivery_order')->with('success', 'One Delivery Challan is successfully created.');
     }
 
@@ -539,7 +554,7 @@ class DeliveryOrderController extends Controller {
 
         $current_date = date("m/d/");
         $date_letter = 'DO/' . $current_date . "" . $id;
-        DeliveryOrder::where('id', $id)->update(array('serial_no' => $date_letter));
+        DeliveryOrder:: where('id', $id)->update(array('serial_no' => $date_letter));
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'unit', 'location')->find($id);
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
