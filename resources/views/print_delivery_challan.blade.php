@@ -97,24 +97,22 @@
             .detail_table th:last-child{
                 border-right: none;
             }
-            /*            .detail_table td{
-                            border-right: 1px solid #ccc;
-                        }*/
             .time td{
                 width: 100%;
                 float: left;
                 padding: 10px 0px 10px 5px;
             }
-
             .time-gen{
                 width: 50%;
                 float: left;
+                line-height: 20px;
+                margin-left: 5px;
             }
             .time-prnt{
-                width: 50%;
+                width: 48%;
                 float: left;
+                line-height: 20px;
             }
-
             .delivery-details{
                 width: 100%;
                 padding: 10px 0px 10px 5px;
@@ -193,26 +191,23 @@
         </style>
 
         <div class="invoice">
-            <div class="title">
-                Estimate
-            </div>
+            <div class="title">Estimate</div>
             <div class="name-date">
                 <div class="">
                     <div class="name">
-                        Name:                       
-                        {{(isset($allorder['customer']->tally_name) && $allorder['customer']->tally_name != "")?$allorder['customer']->tally_name:$allorder['customer']->owner_name}}
+                        Name: {{(isset($allorder->customer->tally_name) && $allorder->customer->tally_name != "") ? $allorder->customer->tally_name : $allorder->customer->owner_name}}
                     </div>
                     <div class="date">Date: {{date('F d, Y')}}</div>
                 </div>
             </div>
             <div class="delivery-details">
                 <div class="delivery">
-                    Delivery @: {{($allorder['delivery_order']->delivery_location_id!=0)? $allorder['delivery_order']['location']->area_name:$allorder['delivery_order']->other_location }}
+                    Delivery @: {{($allorder->delivery_order->delivery_location_id!=0) ? $allorder->delivery_order->location->area_name : $allorder->delivery_order->other_location }}
                 </div>
                 <div class="estmt-no">Challan Serial: {{ $allorder->serial_number }}</div>
             </div>
             <div class="time">
-                <div class="time-gen">Time Created: {{ date("h:i:sa", strtotime($allorder->created_at))}}</div>
+                <div class="time-gen"> Time Created: {{ date("h:i:sa", strtotime($allorder->created_at))}}</div>
                 <div class="time-prnt">Time Print: {{ date("h:i:sa") }}</div>
             </div>
             <div class="divTable">
@@ -230,12 +225,17 @@
                 $total_price = 0;
 //                $total_qty = 0;
                 ?>
-
                 @foreach($allorder['delivery_challan_products'] as $prod)
                 @if($prod->order_type == 'delivery_challan')
+
+
+                <?php
+                $loading_vat_amount = ($allorder->loading_charge * $allorder->loading_vat_percentage) / 100;
+                $freight_vat_amount = ($allorder->freight * $allorder->freight_vat_percentage) / 100;
+                ?>
                 <div class="divRow">
                     <div class="divCell2">{{ $i++ }}</div>
-                    <div class="divCell">{{ $prod['order_product_details']->alias_name }}</div>
+                    <div class="divCell">{{ $prod->order_product_details->alias_name }}</div>
                     <div class="divCell">{{ $prod->actual_pieces }}</div>
                     <div class="divCell">{{ round($prod->actual_quantity) }}</div>
                     <div class="divCell">{{($prod->vat_percentage!='')?round($prod->vat_percentage):''}}</div>
@@ -266,18 +266,18 @@
             <div class="footer">
                 <div class="total-desc">
                     <div class="quantity">
-                        Total Quantity: {{ round($allorder['delivery_challan_products']->sum('actual_quantity'), 2) }}
+                        Total Quantity: {{ round($allorder->delivery_challan_products->sum('actual_quantity'), 2) }}
                     </div>
                     <table class="table-responsive detail_table">
                         <tr>
-                            <th> Total Amount  </th>
-                            <th> Total Vat  </th>
-                            <th> Total Inc. Vat  </th>
+                            <th> Total Amount </th>
+                            <th> Total Vat </th>
+                            <th> Total Inc. Vat </th>
                         </tr>
                         <tr class="secondrow">
                             <td> {{ round($total_price, 2) }}  </td>
-                            <td> {{ $total_vat_amount }}  </td>
-                            <td> {{ round($total_price+$total_vat_amount, 2) }} </td>
+                            <td> {{ $total_vat_amount+$loading_vat_amount+$freight_vat_amount }}  </td>
+                            <td> {{ round($total_price+$total_vat_amount+$loading_vat_amount+$freight_vat_amount, 2) }} </td>
                         </tr>
                     </table>
                     <div class="ruppes grand_price">
@@ -294,9 +294,8 @@
                             <?php
                             $loading_charge = $allorder->loading_charge;
                             $loading_vat = $allorder->loading_vat_percentage;
-                            $loadtotal = $loading_charge + (($loading_charge * $allorder->loading_vat_percentage) / 100)
                             ?>
-                            {{$loadtotal}} &nbsp;
+                            {{($loading_charge != "")?round($loading_charge,2):0}} &nbsp;
                         </div>
                         <div class="label">&nbsp; Freight</div>
                         <div class="value">
@@ -309,23 +308,29 @@
                         </div>
                         <div class="label">&nbsp; Total</div>
                         <div class="value">
-                            <?php $with_total = $total_price + $loadtotal + $allorder->freight + $allorder->discount; ?>
+                            <?php $with_total = $total_price + $loading_charge + $allorder->freight + $allorder->discount; ?>
                             {{ round($with_total, 2) }}
                             &nbsp;
                         </div>
                         <div class="label">&nbsp; Vat</div>
                         <div class="value">
                             <?php
-                            $vat = $total_vat_amount;
+                            $vat = $total_vat_amount + $loading_vat_amount + $freight_vat_amount;
 // $vat = (isset($allorder->vat_percentage) && ($with_total != "")) ? round(($with_total * $allorder->vat_percentage) / 100, 2) : 0; 
                             ?>
-                            {{ round($total_vat_amount,2) }}
+                            {{ round($vat,2) }}
                             &nbsp;
                         </div>
                         <div class="label">&nbsp; Round Off</div>
                         <div class="value">
-                            <?php $roundoff = (isset($allorder->round_off) && ($allorder->round_off != "")) ? round($allorder->round_off, 2) : 0; ?>
-                            {{$roundoff}}
+                            <?php
+                            if (isset($allorder->round_off) && ($allorder->round_off != "")) {
+                                $roundoff = $allorder->round_off;
+                            } else {
+                                $roundoff = 0;
+                            }
+                            ?>
+                            {{ round($roundoff,2) }}
                             &nbsp;
                         </div>
                         <div class="label">&nbsp; GT</div>

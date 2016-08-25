@@ -142,11 +142,16 @@ class DeliveryChallanController extends Controller {
         $delivery_challan->loading_charge = $input_data['loading'];
         $delivery_challan->round_off = $input_data['round_off'];
         $delivery_challan->grand_price = $input_data['grand_total'];
-        $delivery_challan->remarks = $input_data['challan_remark'];
+        $delivery_challan->remarks = trim($input_data['challan_remark']);
         if (isset($input_data['loading_vat_percentage'])) {
             $delivery_challan->loading_vat_percentage = $input_data['loading_vat_percentage'];
         } else {
             $delivery_challan->loading_vat_percentage = 0;
+        }
+        if (isset($input_data['freight_vat_percentage'])) {
+            $delivery_challan->freight_vat_percentage = $input_data['freight_vat_percentage'];
+        } else {
+            $delivery_challan->freight_vat_percentage = 0;
         }
 //        $update_challan = $delivery_challan->update([
 //            'bill_number' => $input_data['billno'],

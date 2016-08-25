@@ -423,6 +423,7 @@ function grand_total_challan() {
     var total_price_products = 0;
     var total_actual_quantity = 0;
     var loading_vat_percentage = $('#loading_vat_percentage').val();
+    var freight_vat_percentage = $('#freight_vat_percentage').val();
     for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseFloat($('#product_price_' + i).val())) {
             var unit_id = $("#units_" + i).val();
@@ -458,7 +459,7 @@ function grand_total_challan() {
         if (parseFloat(loading_vat_percentage) > 0) {
             var subtotal = ((parseFloat(loading_vat_percentage) * parseFloat($("#loading_charge").val())) / 100);
             $('#loading_total_charge').attr('value', parseFloat($("#loading_charge").val()) + subtotal);
-            total_price += parseFloat($('#loading_total_charge').attr('value')) - parseFloat($("#loading_charge").val());
+            total_price += (parseFloat($('#loading_total_charge').attr('value')) - parseFloat($("#loading_charge").val()));
         } else {
             if ($("#loading_charge").val().trim() != '') {
                 $('#loading_total_charge').attr('value', $("#loading_charge").val());
@@ -487,12 +488,23 @@ function grand_total_challan() {
     if ($("#freight_value").length > 0) {
         if (parseFloat($("#freight_value").val())) {
             freight_value = parseFloat($("#freight_value").val());
+            $("#freight_value").val(freight_value.toFixed(2));
+            total_price = parseFloat(total_price) + parseFloat(freight_value);
         }
-        $("#freight_value").val(freight_value.toFixed(2));
-
+        if (parseFloat(freight_vat_percentage) > 0) {
+            var subtotal_frieght = ((parseFloat(freight_vat_percentage) * parseFloat($("#freight_value").val())) / 100);
+            $('#freight_total_charge').attr('value', parseFloat($("#freight_value").val()) + subtotal_frieght);
+            total_price += (parseFloat($('#freight_total_charge').attr('value')) - parseFloat($("#freight_value").val()));
+        } else {
+            if ($("#freight_value").val() != '') {
+                $('#freight_total_charge').attr('value', $("#freight_value").val());
+            } else {
+                $('#freight_total_charge').attr('value', '');
+            }
+        }
     }
-    total_price = parseFloat(total_price) + parseFloat(freight_value.toFixed(2));
-    total_price = total_price.toFixed(2);
+//    total_price = parseFloat(total_price) + parseFloat(freight_value.toFixed(2));
+//    total_price = parseFloat(total_price.toFixed(2));
     var vat_val = 0;
     $("#total_l_d_f").html("<span class='text-center'>" + total_price + "</span>");
     if (parseFloat($('#vat_percentage').val()) > 0) {

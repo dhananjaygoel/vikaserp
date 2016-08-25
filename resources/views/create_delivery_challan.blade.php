@@ -168,28 +168,48 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-4 no_left_margin">
-                                <label for="driver_contact"><b class="challan">Loading</b></label>
+                                <label for="Loading"><b class="challan">Loading</b></label>
                                 <input id="loading_charge" class="form-control" placeholder="Loading Charges" name="loading" value="" type="tel" onblur="grand_total_challan();">
                             </div>
                             <div class="col-md-4">
-                                <label for="driver_contact"><b class="challan">Loading Vat Percentage</b></label>
+                                <label for="Loading Vat Percentage"><b class="challan">Loading Vat Percentage</b></label>
                                 <input id="loading_vat_percentage" class="form-control" placeholder="Loading Vat Percentage" name="loading_vat_percentage" value="" type="tel" onblur="grand_total_challan();">
                             </div>
                             <div class="col-md-4 no_right_margin">
-                                <label for="driver_contact"><b class="challan">Total Loading Vat Charges</b></label>
+                                <label for="Total Loading Vat Charges"><b class="challan">Total Loading Charges</b></label>
                                 <input id="loading_total_charge" readonly="" class="form-control" value="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="Discount"><b class="challan">Discount</b></label>
-                            <input id="discount_value" class="form-control" placeholder="Discount" name="discount" value="" type="tel" onblur="grand_total_challan();">
+                            <div class="col-md-4 no_left_margin">
+                                <label for="Discount"><b class="challan">Discount</b></label>
+                                <input id="discount_value" class="form-control" placeholder="Discount " name="discount" value="" type="tel" onblur="grand_total_challan();">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="Loading_discount_percentage"><b class="challan">Discount Vat Percentage</b></label>
+                                <input id="discount_vat_percentage" class="form-control" placeholder="Discount Vat Percentage" name="discount_vat_percentage" value="" type="tel" onblur="grand_total_challan();">
+                            </div>
+                            <div class="col-md-4 no_right_margin">
+                                <label for="Total_frieght_charges"><b class="challan">Total Discount Charges</b></label>
+                                <input id="discount_total_charge" readonly="" class="form-control" value="">
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="driver_name"><b class="challan">Freight</b></label>
-                            <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="" type="tel" onblur="grand_total_challan();">
+                            <div class="col-md-4 no_left_margin">
+                                <label for="Freight"><b class="challan">Freight</b></label>
+                                <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="" type="tel" onblur="grand_total_challan();">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="Loading_frieght_percentage"><b class="challan">Freight Vat Percentage</b></label>
+                                <input id="freight_vat_percentage" class="form-control" placeholder="Freight Vat Percentage" name="freight_vat_percentage" value="" type="tel" onblur="grand_total_challan();">
+                            </div>
+                            <div class="col-md-4 no_right_margin">
+                                <label for="Total_frieght_charges"><b class="challan">Total Freight Charges</b></label>
+                                <input id="freight_total_charge" readonly="" class="form-control" value="">
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="driver_contact"><b class="challan">Total</b></label>
+                            <label for="Total"><b class="challan">Total</b></label>
                             <div id="total_l_d_f"></div>
                         </div>
                         <div class="form-group">
@@ -225,11 +245,11 @@
                             </label>
                         </div>
                         <div class="form-group">
-                            <label for="labour"><b class="challan">Round Off</b></label>
+                            <label for="RoundOff"><b class="challan">Round Off</b></label>
                             <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="" type="tel" onblur="grand_total_challan();">
                         </div>
                         <div class="form-group">
-                            <label for="total"><b class="challan">Grand Total : </b>
+                            <label for="Grand_total"><b class="challan">Grand Total : </b>
                                 <span class="gtotal">
                                     <input type="text" class="form-control" name="grand_total" id="grand_total" readonly="readonly">
                                 </span>

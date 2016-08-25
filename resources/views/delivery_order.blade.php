@@ -195,8 +195,6 @@
                                             @endif
                                         </td>
                                     </tr>
-
-
                                     @endforeach
                                 <div class="modal fade" id="myModalDeleteDeliveryOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -205,33 +203,26 @@
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
-
-                                            <form method="POST" accept-charset="UTF-8" id="delete_delivery_order">
+                                            <form method="POST" accept-charset="UTF-8" action="#" id="delete_delivery_order">
                                                 <input name="_token" type="hidden" value="{{ csrf_token() }}">
                                                 <div class="modal-body">
                                                     <div class="delete">
-                                                        <?php
-                                                        $us = Auth::user();
-                                                        $us['mobile_number']
-                                                        ?>
-                                                        <div><b>Mobile:</b>
-                                                            {{$us['mobile_number']}}
-                                                            <input type="hidden" name="mobile" value="{{$us['mobile_number']}}"/>
+                                                        <div><b>Mobile:</b> {{auth()->user()->mobile_number}}
+                                                            <input type="hidden" name="mobile" value="{{auth()->user()->mobile_number}}"/>
                                                             <input type="hidden" name="user_id" id="user_id"/>
                                                         </div>
                                                         <div class="pwd">
                                                             <div class="pwdl"><b>Password:</b></div>
-                                                            <div class="pwdr"><input class="form-control" name="password" placeholder="" id="pwdr" required="required" type="password"></div>
+                                                            <div class="pwdr"><input class="form-control" name="password" placeholder="" id="pwdr delivery_order_password" required="required" type="password"></div>
                                                         </div>
                                                         <div class="clearfix"></div>
                                                         <div class="delp">Are you sure you want to <b>delete </b>?</div>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-
                                                     <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                    <button type="button" class="btn btn-default delete_delivery_order_submit">Yes</button>
+                                                    <button type="submit" class="btn btn-default delete_delivery_order_submit">Yes</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -255,9 +246,8 @@
                                                 </div>
                                                 <div class="clearfix"></div>
                                                 <hr>
-                                                <div >
+                                                <div>
                                                     <button type="button" class="btn btn-primary form_button_footer print_delivery_order" id="print_delivery_order" >Print</button>
-
                                                     <a  class="btn btn-default form_button_footer">Cancel</a>
                                                 </div>
                                                 <div class="clearfix"></div>

@@ -13,6 +13,8 @@ return array(
     'Adobe_Font_Metrics' => $vendorDir . '/phenx/php-font-lib/classes/Adobe_Font_Metrics.php',
     'AlterAllOrderProducts01' => $baseDir . '/database/migrations/2016_08_03_133725_alter_all_order_products_01.php',
     'AlterDeliveryChallan01' => $baseDir . '/database/migrations/2016_08_24_140726_alter_delivery_challan_01.php',
+    'AlterDeliveryChallan02' => $baseDir . '/database/migrations/2016_08_25_054947_alter_delivery_challan_02.php',
+    'AlterDeliveryChallan03' => $baseDir . '/database/migrations/2016_08_25_135403_alter_delivery_challan_03.php',
     'AlterDeliveryOrderTable01' => $baseDir . '/database/migrations/2016_08_24_095334_alter_delivery_order_table_01.php',
     'AlterInquiryProducts01' => $baseDir . '/database/migrations/2016_08_03_134914_alter_inquiry_products_01.php',
     'AlterOrderTable01' => $baseDir . '/database/migrations/2016_07_28_092217_alter_order_table_01.php',

@@ -211,7 +211,6 @@
                                 <label for="billno"><b class="challan">Bill Number</b></label>
                                 <input id="billno" class="form-control" placeholder="Bill Number" name="billno"  value="{{$allorder->bill_number}}" type="text">
                             </div>
-
                             <div class="form-group">
                                 <div class="col-md-4 no_left_margin">
                                     <label for="loading"><b class="challan">Loading</b></label>
@@ -226,18 +225,26 @@
                                     <input id="loading_total_charge" readonly="" class="form-control" value="">
                                 </div>
                             </div>
-
                             <div class="form-group">
-                                <label for="vehicle_name"><b class="challan">Discount</b></label>
+                                <label for="Discount"><b class="challan">Discount</b></label>
                                 <input id="discount_value" class="form-control" placeholder="Discount" name="discount"  value="{{$allorder->discount}}" type="text" onblur="grand_total_challan();">
                             </div>
                             <div class="form-group">
-                                <label for="driver_name"><b class="challan">Freight</b></label>
-                                <input id="freight_value" class="form-control" placeholder="Freight " name="freight"  value="{{$allorder->freight}}" type="text" onblur="grand_total_challan();">
+                                <div class="col-md-4 no_left_margin">
+                                    <label for="Freight"><b class="challan">Freight</b></label>
+                                    <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="{{$allorder->freight}}" type="text" onblur="grand_total_challan();">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="Loading_frieght_percentage"><b class="challan">Freight Vat Percentage</b></label>
+                                    <input id="freight_vat_percentage" class="form-control" placeholder="Freight Vat Percentage" name="freight_vat_percentage" value="{{($allorder->freight_vat_percentage != '')?$allorder->freight_vat_percentage:0}}" type="text" onblur="grand_total_challan();">
+                                </div>
+                                <div class="col-md-4 no_right_margin">
+                                    <label for="Total_frieght_charges"><b class="challan">Total Freight Charges</b></label>
+                                    <input id="freight_total_charge" readonly="" class="form-control" value="">
+                                </div>
                             </div>
-
                             <div class="form-group">
-                                <label for="driver_contact"><b class="challan">Total : </b></label>
+                                <label for="Total"><b class="challan">Total </b></label>
                                 <div id="total_l_d_f"></div>
                             </div>
 
@@ -250,25 +257,25 @@
                                 <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="{{($allorder->round_off != '')?$allorder->round_off:''}}" type="tel" onblur="grand_total_challan();">
                             </div>
                             @if($allorder->vat_percentage==0 || $allorder->vat_percentage=='')
-<!--                            <div class="form-group">
-                                <label for="Plusvat"><b class="challan">Plus VAT : </b> No
-                                </label>
-                            </div>-->
+                            <!--                            <div class="form-group">
+                                                            <label for="Plusvat"><b class="challan">Plus VAT : </b> No
+                                                            </label>
+                                                        </div>-->
                             @else
-<!--                            <div class="form-group">                                
-                                <label for="vatp"><b class="challan">VAT Percentage : </b>
-                                    {{($allorder->vat_percentage != '') ? $allorder->vat_percentage : ''}}
-                                    <input type="hidden" name="vat_percentage" id="vat_percentage" value="{{($allorder->vat_percentage>0) ? $allorder->vat_percentage :''}}" readonly="readonly">
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <label for="vatp"><b class="challan">VAT Value : </b>
-                                    <span id="vat_val"></span>
-                                </label>
-                            </div>-->
+                            <!--                            <div class="form-group">                                
+                                                            <label for="vatp"><b class="challan">VAT Percentage : </b>
+                                                                {{($allorder->vat_percentage != '') ? $allorder->vat_percentage : ''}}
+                                                                <input type="hidden" name="vat_percentage" id="vat_percentage" value="{{($allorder->vat_percentage>0) ? $allorder->vat_percentage :''}}" readonly="readonly">
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="vatp"><b class="challan">VAT Value : </b>
+                                                                <span id="vat_val"></span>
+                                                            </label>
+                                                        </div>-->
                             @endif
                             <div class="form-group">
-                                <label for="total"><b class="challan">Grand Total : </b>
+                                <label for="total"><b class="challan">Grand Total </b>
                                     <span class="gtotal">
                                         <input type="text" class="form-control" name="grand_total" id="grand_total" readonly="readonly">
                                     </span>
@@ -276,7 +283,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="challan_remark"><b class="challan">Remark</b></label>
-                                <textarea class="form-control" id="challan_remark" name="challan_remark"  rows="3"> {{$allorder->remarks}}</textarea>
+                                <textarea class="form-control" id="challan_remark" name="challan_remark" rows="3">{{trim($allorder->remarks)}}</textarea>
                             </div>
                             <!--  <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> -->
                             <hr>
