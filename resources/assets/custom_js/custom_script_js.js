@@ -424,6 +424,7 @@ function grand_total_challan() {
     var total_actual_quantity = 0;
     var loading_vat_percentage = $('#loading_vat_percentage').val();
     var freight_vat_percentage = $('#freight_vat_percentage').val();
+    var discount_vat_percentage = $('#discount_vat_percentage').val();
     for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseFloat($('#product_price_' + i).val())) {
             var unit_id = $("#units_" + i).val();
@@ -456,7 +457,7 @@ function grand_total_challan() {
             $("#loading_charge").val(loading_charge.toFixed(2));
             total_price += parseFloat(loading_charge.toFixed(2));
         }
-        if (parseFloat(loading_vat_percentage) > 0) {
+        if (parseFloat(loading_vat_percentage) > 0 && parseFloat(loading_charge) > 0) {
             var subtotal = ((parseFloat(loading_vat_percentage) * parseFloat($("#loading_charge").val())) / 100);
             $('#loading_total_charge').attr('value', parseFloat($("#loading_charge").val()) + subtotal);
             total_price += (parseFloat($('#loading_total_charge').attr('value')) - parseFloat($("#loading_charge").val()));
@@ -475,10 +476,25 @@ function grand_total_challan() {
         if (parseFloat($("#discount_value").val())) {
             discount_value = parseFloat($("#discount_value").val());
             $("#discount_value").val(discount_value.toFixed(2));
+            total_price = parseFloat(total_price) + parseFloat(discount_value);
+        }
+
+
+
+        if (parseFloat(discount_vat_percentage) > 0 && parseFloat(discount_value) > 0) {
+            var subtotal_discount = ((parseFloat(discount_vat_percentage) * parseFloat($("#discount_value").val())) / 100);
+            $('#discount_total_charge').attr('value', parseFloat($("#discount_value").val()) + subtotal_discount);
+            total_price += (parseFloat($('#discount_total_charge').attr('value')) - parseFloat($("#discount_value").val()));
+        } else {
+            if ($("#discount_value").val() != '') {
+                $('#discount_total_charge').attr('value', $("#discount_value").val());
+            } else {
+                $('#discount_total_charge').attr('value', '');
+            }
         }
     }
-    total_price = parseFloat(total_price) + parseFloat(discount_value.toFixed(2));
-    total_price = total_price.toFixed(2);
+//    total_price = parseFloat(total_price) + parseFloat(discount_value.toFixed(2));
+//    total_price = total_price.toFixed(2);
 
 //    total_l_d_f
     $("#total_price").val(total_price_products.toFixed(2));
@@ -491,7 +507,7 @@ function grand_total_challan() {
             $("#freight_value").val(freight_value.toFixed(2));
             total_price = parseFloat(total_price) + parseFloat(freight_value);
         }
-        if (parseFloat(freight_vat_percentage) > 0) {
+        if (parseFloat(freight_vat_percentage) > 0 && parseFloat(freight_value) > 0) {
             var subtotal_frieght = ((parseFloat(freight_vat_percentage) * parseFloat($("#freight_value").val())) / 100);
             $('#freight_total_charge').attr('value', parseFloat($("#freight_value").val()) + subtotal_frieght);
             total_price += (parseFloat($('#freight_total_charge').attr('value')) - parseFloat($("#freight_value").val()));
@@ -504,7 +520,7 @@ function grand_total_challan() {
         }
     }
 //    total_price = parseFloat(total_price) + parseFloat(freight_value.toFixed(2));
-//    total_price = parseFloat(total_price.toFixed(2));
+    total_price = parseFloat(total_price.toFixed(2));
     var vat_val = 0;
     $("#total_l_d_f").html("<span class='text-center'>" + total_price + "</span>");
     if (parseFloat($('#vat_percentage').val()) > 0) {

@@ -225,10 +225,33 @@
                                     <input id="loading_total_charge" readonly="" class="form-control" value="">
                                 </div>
                             </div>
+                            <!--
                             <div class="form-group">
                                 <label for="Discount"><b class="challan">Discount</b></label>
                                 <input id="discount_value" class="form-control" placeholder="Discount" name="discount"  value="{{$allorder->discount}}" type="text" onblur="grand_total_challan();">
                             </div>
+                            -->
+
+
+                            <div class="form-group">
+                                <div class="col-md-4 no_left_margin">
+                                    <label for="Discount"><b class="challan">Discount</b></label>
+                                    <input id="discount_value" class="form-control" placeholder="Discount " name="discount" value="{{$allorder->discount}}" type="tel" onblur="grand_total_challan();">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="Loading_discount_percentage"><b class="challan">Discount Vat Percentage</b></label>
+                                    <input id="discount_vat_percentage" class="form-control" placeholder="Discount Vat Percentage" name="discount_vat_percentage" value="{{$allorder->discount_vat_percentage}}" type="tel" onblur="grand_total_challan();">
+                                </div>
+                                <div class="col-md-4 no_right_margin">
+                                    <label for="Total_frieght_charges"><b class="challan">Total Discount Charges</b></label>
+                                    <input id="discount_total_charge" readonly="" class="form-control" value="">
+                                </div>
+                            </div>
+
+
+
+
+
                             <div class="form-group">
                                 <div class="col-md-4 no_left_margin">
                                     <label for="Freight"><b class="challan">Freight</b></label>

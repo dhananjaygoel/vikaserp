@@ -153,6 +153,11 @@ class DeliveryChallanController extends Controller {
         } else {
             $delivery_challan->freight_vat_percentage = 0;
         }
+        if (isset($input_data['discount_vat_percentage'])) {
+            $delivery_challan->discount_vat_percentage = $input_data['discount_vat_percentage'];
+        } else {
+            $delivery_challan->discount_vat_percentage = 0;
+        }
 //        $update_challan = $delivery_challan->update([
 //            'bill_number' => $input_data['billno'],
 //            'freight' => $input_data['freight'],

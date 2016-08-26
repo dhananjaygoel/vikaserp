@@ -189,7 +189,6 @@
                 /*padding: 0 5px 0 0px;*/
             }
         </style>
-
         <div class="invoice">
             <div class="title">Estimate</div>
             <div class="name-date">
@@ -227,11 +226,11 @@
                 ?>
                 @foreach($allorder['delivery_challan_products'] as $prod)
                 @if($prod->order_type == 'delivery_challan')
-
-
                 <?php
                 $loading_vat_amount = ($allorder->loading_charge * $allorder->loading_vat_percentage) / 100;
                 $freight_vat_amount = ($allorder->freight * $allorder->freight_vat_percentage) / 100;
+                $discount_vat_amount = ($allorder->discount * $allorder->discount_vat_percentage) / 100;
+                $final_vat_amount = $total_vat_amount + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount;
                 ?>
                 <div class="divRow">
                     <div class="divCell2">{{ $i++ }}</div>
@@ -276,13 +275,13 @@
                         </tr>
                         <tr class="secondrow">
                             <td> {{ round($total_price, 2) }}  </td>
-                            <td> {{ $total_vat_amount+$loading_vat_amount+$freight_vat_amount }}  </td>
-                            <td> {{ round($total_price+$total_vat_amount+$loading_vat_amount+$freight_vat_amount, 2) }} </td>
+                            <td> {{ $final_vat_amount }}  </td>
+                            <td> {{ round($total_price+$final_vat_amount, 2) }} </td>
                         </tr>
                     </table>
                     <div class="ruppes grand_price">
                         &nbsp; <?php $gt = round($allorder->grand_price, 2) ?>
-                        Rupees <?php echo $allorder->convert_value; ?> only.
+                        Rupees <?php echo ucwords(str_replace(".", "", convert_number($allorder->grand_price))); ?> Only.
                     </div>
                 </div>
                 <div class="total">
@@ -315,7 +314,7 @@
                         <div class="label">&nbsp; Vat</div>
                         <div class="value">
                             <?php
-                            $vat = $total_vat_amount + $loading_vat_amount + $freight_vat_amount;
+                            $vat = $final_vat_amount;
 // $vat = (isset($allorder->vat_percentage) && ($with_total != "")) ? round(($with_total * $allorder->vat_percentage) / 100, 2) : 0; 
                             ?>
                             {{ round($vat,2) }}
@@ -382,12 +381,16 @@
             }
             $str = array_reverse($str);
             $result = implode('', $str);
-            $points = ($point) ?
-                    "." . $words[$point / 10] . " " .
-                    $words[$point = $point % 10] : '';
-//            return $result . "Rupees  " . $points . " Paise";
-
-            return $result;
+            if (($point % 10) == 0) {
+                $points = $words[$point];
+            } else {
+                $points = ($point) ? "." . $words[$point / 10] . " " . $words[$point = $point % 10] : '';
+            }
+            if (strlen($points) > 0) {
+                return $result . "Rupees  " . ucwords($points) . " Paise";
+            } else {
+                return $result . "Rupees  ";
+            }
         }
         ?>
     </body>

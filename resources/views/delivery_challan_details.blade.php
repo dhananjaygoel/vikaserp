@@ -92,8 +92,20 @@
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label for="Discount"><b class="challan">Discount: </b></label> {{$allorder->discount}}
-                            <?php $total_amount = $total_amount + $allorder->discount; ?>
+                            <div class="col-md-4 no_left_margin">
+                                <label for="Discount"><b class="challan">Discount: </b></label> {{$allorder->discount}}
+                            </div>
+                            <div class="col-md-4">
+                                <label for="Discount Vat Percentage"><b class="challan">Discount Vat Percentage: </b></label> {{$allorder->discount_vat_percentage}}
+                            </div>
+                            <?php
+                            $total_discount_charges = $allorder->discount + (($allorder->discount * $allorder->discount_vat_percentage) / 100);
+                            $total_amount = $total_amount + $total_discount_charges;
+                            ?>
+                            <div class="col-md-4">
+                                <label for="Total Discount Charges"><b class="challan">Total Freight Charges: </b></label> {{$total_discount_charges}}
+                            </div>
+                            <br>
                         </div>
                         <hr>
                         <div class="form-group">

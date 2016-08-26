@@ -502,6 +502,11 @@ class DeliveryOrderController extends Controller {
         } else {
             $delivery_challan->freight_vat_percentage = 0;
         }
+        if (isset($input_data['discount_vat_percentage'])) {
+            $delivery_challan->discount_vat_percentage = $input_data['discount_vat_percentage'];
+        } else {
+            $delivery_challan->discount_vat_percentage = 0;
+        }
         $delivery_challan->grand_price = $input_data['grand_total'];
         $delivery_challan->remarks = trim($input_data['challan_remark']);
         $delivery_challan->challan_status = "Pending";
