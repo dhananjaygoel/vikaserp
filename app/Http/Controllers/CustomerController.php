@@ -322,6 +322,7 @@ class CustomerController extends Controller {
      * Remove the specific customer from database.
      */
     public function destroy($id) {
+
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -331,7 +332,6 @@ class CustomerController extends Controller {
         }
 
         $current_user = User::find(Auth::id());
-
         if (Hash::check($password, $current_user->password)) {
             $customer = Customer::find($id);
             $customer_exist = array();
@@ -468,10 +468,9 @@ class CustomerController extends Controller {
      */
 
     public function get_city() {
+
         $state_id = Input::get('state');
-
         $data = City::where('state_id', $state_id)->get();
-
         $city = array();
         $i = 0;
         foreach ($data as $key => $val) {
@@ -489,6 +488,7 @@ class CustomerController extends Controller {
      */
 
     public function set_price($id) {
+
         $customer_id = array('id' => $id);
         $cutomer_difference = CustomerProductDifference::where('customer_id', $id)->get();
         $product_category = ProductCategory::all();
@@ -503,17 +503,11 @@ class CustomerController extends Controller {
     public function update_set_price() {
 
         $customer_id = Input::get('customer_id');
-
         $product_differrence = Input::get('product_differrence');
-
         if (Input::get('product_differrence') != '') {
-
-            $product_difference1 = CustomerProductDifference::where('customer_id', $customer_id)
-                    ->delete();
-
+            $product_difference1 = CustomerProductDifference::where('customer_id', $customer_id)->delete();
             $product_category_id = Input::get('product_category_id');
             if (isset($product_category_id)) {
-
                 foreach ($product_category_id as $key => $value) {
                     if (Input::get('product_differrence')[$key] != '') {
                         $product_difference = new CustomerProductDifference();
@@ -524,7 +518,6 @@ class CustomerController extends Controller {
                     }
                 }
             }
-
             return redirect('set_price/' . $customer_id)->with('success', 'Customer Set price successfully updated');
         } else {
             return redirect('set_price/' . $customer_id)->with('error', 'Please enter the customer set price please');

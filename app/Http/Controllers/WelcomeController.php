@@ -754,7 +754,8 @@ class WelcomeController extends Controller {
      * Functionality: Export exisitng customer list into excel file
      */
     public function excel_export_customer() {
-        $allcustomers = Customer::where('relationship_manager', '=', 2)->where('customer_status', 'permanent')->with('states', 'getcity', 'deliverylocation', 'manager')->get();
+
+        $allcustomers = Customer::where('customer_status', 'permanent')->with('states', 'getcity', 'deliverylocation', 'manager')->get();
         Excel::create('Customer List', function($excel) use($allcustomers) {
             $excel->sheet('Customers List', function($sheet) use($allcustomers) {
                 $sheet->loadView('excelView.customer', array('allcustomers' => $allcustomers));
