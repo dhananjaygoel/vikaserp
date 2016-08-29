@@ -832,7 +832,7 @@ class HomeController extends Controller {
                     $add_customers->addNewCustomer($value->customer_name, $value->customer_contact_person, $value->customer_mobile, $value->customer_credit_period);
                     $customer_list[$value->id] = $add_customers->id;
                 }
-                $delivery_order->order_id = ($value->server_order_id > 0)?$value->server_order_id:0;
+                $delivery_order->order_id = ($value->server_order_id > 0) ? $value->server_order_id : 0;
                 $delivery_order->order_source = 'warehouse';
                 $delivery_order->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
                 $delivery_order->created_by = 1;
@@ -1145,6 +1145,16 @@ class HomeController extends Controller {
             foreach ($inquiries as $key => $value) {
                 if ($value->server_id > 0) {
                     $add_inquiry = Inquiry::find($value->server_id);
+                    if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
+                        $add_customers = new Customer();
+                        $add_customers->owner_name = $value->customer_name;
+                        $add_customers->contact_person = $value->customer_contact_peron;
+                        $add_customers->phone_number1 = $value->customer_mobile;
+                        $add_customers->credit_period = $value->customer_credit_period;
+                        $add_customers->customer_status = 'Pending';
+                        $add_customers->save();
+                        $customer_list[$value->id] = $add_customers->id;
+                    }
                     /* Update customer here */
                     /*
                       $update_customers = Customer::find($add_inquiry->customer_server_id);
@@ -1168,8 +1178,9 @@ class HomeController extends Controller {
                         $add_inquiry->other_location = $value->other_location;
                         $add_inquiry->location_difference = $value->location_difference;
                     }
-                    if (isset($value->customer_server_id) && (($value->customer_server_id) > 0))
-                        $add_inquiry->customer_id = $value->customer_server_id;
+                    if (isset($value->customer_server_id) && (($value->customer_server_id) > 0)) {
+                        $add_inquiry->customer_id = (!empty($value->customer_server_id) && $value->customer_server_id > 0) ? $value->customer_server_id : $customer_list[$value->id];
+                    }
                     $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
                     $add_inquiry->remarks = ($value->remarks != '') ? $value->remarks : '';
                     $add_inquiry->inquiry_status = $value->inquiry_status;
