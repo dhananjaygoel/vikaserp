@@ -1178,8 +1178,10 @@ class HomeController extends Controller {
                         $add_inquiry->other_location = $value->other_location;
                         $add_inquiry->location_difference = $value->location_difference;
                     }
-                    if (isset($value->customer_server_id) && (($value->customer_server_id) > 0)) {
-                        $add_inquiry->customer_id = (!empty($value->customer_server_id) && $value->customer_server_id > 0) ? $value->customer_server_id : $customer_list[$value->id];
+                    if (isset($customer_list[$value->id]) && !empty($customer_list[$value->id] > 0)) {
+                        $add_inquiry->customer_id = $customer_list[$value->id];
+                    } else {
+                        $add_inquiry->customer_id = $value->customer_server_id;
                     }
                     $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
                     $add_inquiry->remarks = ($value->remarks != '') ? $value->remarks : '';
