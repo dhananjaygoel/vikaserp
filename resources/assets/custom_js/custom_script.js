@@ -552,6 +552,7 @@ function show_hide_customer(status) {
 
 /** product_autocomplete  */
 function product_autocomplete(id) {
+
     var customer_id = $('#existing_customer_id').val();
     if (customer_id == "") {
         customer_id = 0;
@@ -578,8 +579,10 @@ function product_autocomplete(id) {
                     $("#add_product_id_" + id).val(obj.data_array[0].id);
                     $("#add_product_id_" + id).attr('data-curname', obj.data_array[0].value);
                     $('#quantity_' + id).focus();
-                    $('.more_button').parent().trigger('click');
 //                    $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
+                },
+                complete: function (data) {
+                    $('.more_button').parent().trigger('click');
                 },
             });
         }
@@ -874,24 +877,20 @@ $('.delete_inquiry_form_submit').click(function () {
     var posting = $.post(url, {formData: $data});
     posting.done(function (data) {
         $("#pwdr").val('');
-        if (data['message'] == 'success')
-        {
+        if (data['message'] == 'success') {
             $("#inquiry_row_" + inquiry_id).remove();
             $('#flash_message').html("Inquiry Deleted Successfully");
             $('#flash_message').removeClass('alert-danger');
             $('#flash_message').addClass('alert-success');
             $('#flash_message').fadeIn();
             $('#flash_message').fadeOut(5000);
-        }
-        else {
-
+        } else {
             $('#flash_message').html("Delete Opration Failed");
             $('#flash_message').removeClass('alert-success');
             $('#flash_message').addClass('alert-danger');
             $('#flash_message').fadeIn();
             $('#flash_message').fadeOut(5000);
         }
-
     }, 'json'); //done    
 
 
@@ -901,8 +900,7 @@ $('.delete_inquiry_form_submit').click(function () {
  * @param {type} order_id
  * @returns {undefined}
  */
-function delete_order_row(order_id)
-{
+function delete_order_row(order_id) {
     $('.delete_orders_modal_submit').val(order_id);
 }
 /*
