@@ -223,15 +223,13 @@
                 $i = 1;
                 $total_price = 0;
 //                $total_qty = 0;
-                ?>
-                @foreach($allorder['delivery_challan_products'] as $prod)
-                @if($prod->order_type == 'delivery_challan')
-                <?php
                 $loading_vat_amount = ($allorder->loading_charge * $allorder->loading_vat_percentage) / 100;
                 $freight_vat_amount = ($allorder->freight * $allorder->freight_vat_percentage) / 100;
                 $discount_vat_amount = ($allorder->discount * $allorder->discount_vat_percentage) / 100;
-                $final_vat_amount = $total_vat_amount + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount;
+                $final_vat_amount = ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) - $discount_vat_amount;
                 ?>
+                @foreach($allorder['delivery_challan_products'] as $prod)
+                @if($prod->order_type == 'delivery_challan')
                 <div class="divRow">
                     <div class="divCell2">{{ $i++ }}</div>
                     <div class="divCell">{{ $prod->order_product_details->alias_name }}</div>
@@ -307,7 +305,7 @@
                         </div>
                         <div class="label">&nbsp; Total</div>
                         <div class="value">
-                            <?php $with_total = $total_price + $loading_charge + $allorder->freight + $allorder->discount; ?>
+                            <?php $with_total = $total_price + $loading_charge + $allorder->freight - $allorder->discount; ?>
                             {{ round($with_total, 2) }}
                             &nbsp;
                         </div>
@@ -386,6 +384,10 @@
             } else {
                 $points = ($point) ? "." . $words[$point / 10] . " " . $words[$point = $point % 10] : '';
             }
+            echo "<pre>";
+            print_r($points);
+            echo "<pre>";
+            exit();
             if (strlen($points) > 0) {
                 return $result . "Rupees  " . ucwords($points) . " Paise";
             } else {

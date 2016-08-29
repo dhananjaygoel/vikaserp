@@ -47,9 +47,7 @@
                                     @if($product->order_type =='delivery_challan')
                                     <tr id="add_row_{{$key}}" class="add_product_row">
                                         <td class="col-md-2">
-                                            <div class="form-group searchproduct">
-                                                {{$product->order_product_details->alias_name}}
-                                            </div>
+                                            <div class="form-group searchproduct">{{$product->order_product_details->alias_name}}</div>
                                         </td>
                                         <td class="col-md-1">
                                             <div class="form-group">{{$product->quantity}}</div>
@@ -100,7 +98,7 @@
                             </div>
                             <?php
                             $total_discount_charges = $allorder->discount + (($allorder->discount * $allorder->discount_vat_percentage) / 100);
-                            $total_amount = $total_amount + $total_discount_charges;
+                            $total_amount = $total_amount - $total_discount_charges;
                             ?>
                             <div class="col-md-4">
                                 <label for="Total Discount Charges"><b class="challan">Total Freight Charges: </b></label> {{$total_discount_charges}}

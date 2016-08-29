@@ -222,6 +222,7 @@
                             </div>
 
                             <div class="clearfix"></div>
+                            <!--
                             <div class="form-group">
                                 <div class="radio">
                                     <input checked="" value="include_vat" id="optionsRadios5" name="status1" type="radio" onclick="calculate_grand_total();">
@@ -230,6 +231,7 @@
                                     <label for="optionsRadios6">Plus VAT</label>
                                 </div>
                             </div>
+                            -->
                             <div class="plusvat " style="display: none">
                                 <div class="form-group">
                                     <table id="table-example" class="table ">

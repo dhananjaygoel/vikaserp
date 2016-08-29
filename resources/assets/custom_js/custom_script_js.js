@@ -455,11 +455,11 @@ function grand_total_challan() {
         if (parseFloat($("#loading_charge").val())) {
             loading_charge = parseFloat($("#loading_charge").val());
             $("#loading_charge").val(loading_charge.toFixed(2));
-            total_price += parseFloat(loading_charge.toFixed(2));
+            total_price = parseFloat(total_price) + parseFloat(loading_charge.toFixed(2));
         }
         if (parseFloat(loading_vat_percentage) > 0 && parseFloat(loading_charge) > 0) {
             var subtotal = ((parseFloat(loading_vat_percentage) * parseFloat($("#loading_charge").val())) / 100);
-            $('#loading_total_charge').attr('value', parseFloat($("#loading_charge").val()) + subtotal);
+            $('#loading_total_charge').attr('value', (parseFloat($("#loading_charge").val()) + subtotal).toFixed(2));
             total_price += (parseFloat($('#loading_total_charge').attr('value')) - parseFloat($("#loading_charge").val()));
         } else {
             if ($("#loading_charge").val().trim() != '') {
@@ -469,22 +469,18 @@ function grand_total_challan() {
             }
         }
     }
-
     //discount
     var discount_value = 0;
     if ($("#discount_value").length > 0) {
         if (parseFloat($("#discount_value").val())) {
             discount_value = parseFloat($("#discount_value").val());
             $("#discount_value").val(discount_value.toFixed(2));
-            total_price = parseFloat(total_price) + parseFloat(discount_value);
+            total_price = parseFloat(total_price) - parseFloat(discount_value);
         }
-
-
-
         if (parseFloat(discount_vat_percentage) > 0 && parseFloat(discount_value) > 0) {
             var subtotal_discount = ((parseFloat(discount_vat_percentage) * parseFloat($("#discount_value").val())) / 100);
-            $('#discount_total_charge').attr('value', parseFloat($("#discount_value").val()) + subtotal_discount);
-            total_price += (parseFloat($('#discount_total_charge').attr('value')) - parseFloat($("#discount_value").val()));
+            $('#discount_total_charge').attr('value', (parseFloat($("#discount_value").val()) + subtotal_discount).toFixed(2));
+            total_price -= subtotal_discount;
         } else {
             if ($("#discount_value").val() != '') {
                 $('#discount_total_charge').attr('value', $("#discount_value").val());
@@ -509,7 +505,7 @@ function grand_total_challan() {
         }
         if (parseFloat(freight_vat_percentage) > 0 && parseFloat(freight_value) > 0) {
             var subtotal_frieght = ((parseFloat(freight_vat_percentage) * parseFloat($("#freight_value").val())) / 100);
-            $('#freight_total_charge').attr('value', parseFloat($("#freight_value").val()) + subtotal_frieght);
+            $('#freight_total_charge').attr('value', (parseFloat($("#freight_value").val()) + subtotal_frieght).toFixed(2));
             total_price += (parseFloat($('#freight_total_charge').attr('value')) - parseFloat($("#freight_value").val()));
         } else {
             if ($("#freight_value").val() != '') {

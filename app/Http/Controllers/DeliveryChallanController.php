@@ -266,8 +266,8 @@ class DeliveryChallanController extends Controller {
         $this->checkpending_quantity();
         $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
                         ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
-        $calculated_vat_value = $allorder->grand_price * ($allorder->vat_percentage / 100);
-        $allorder['calculated_vat_price'] = $calculated_vat_value;
+//        $calculated_vat_value = $allorder->grand_price * ($allorder->vat_percentage / 100);
+//        $allorder['calculated_vat_price'] = $calculated_vat_value;
         $number = $allorder->grand_price;
         $exploded_value = explode(".", $number);
         $result_paisa = $exploded_value[1] % 10;
