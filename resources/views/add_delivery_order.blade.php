@@ -50,10 +50,11 @@
                                     ?>>
                                     <label for="new_customer">New</label>
                                 </div>
-                                <div class="customer_select" style="{{(Input::old('customer_status') == "new_customer")?'display: none':'display: block'}}">
+                                <div class="" style="{{(Input::old('customer_status') == "new_customer")?'display: none':'display: block'}}">
                                     <div class="col-md-4">
-                                        <div class="form-group searchproduct">
-                                            <input class="form-control" placeholder="Enter Tally Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
+                                        <div class="form-group ">
+                                            <input class="form-control" placeholder="Enter Tally Name " type="text" id="existing_customer_name" name="existing_customer_name" tabindex="1" class="ui-dform-text" />
+                                            
                                             <input type="hidden" id="existing_customer_id" name="autocomplete_customer_id">
                                             <input type="hidden" id="customer_default_location">
                                             <i class="fa fa-search search-icon"></i>
@@ -84,7 +85,7 @@
                                 <div class="form-group">
                                     <div class="col-md-4">
                                         <label for="location">Delivery Location:<span class="mandatory">*</span></label>
-                                        <select class="form-control" name="add_order_location" id="add_order_location">
+                                        <select class="form-control " name="add_order_location" id="add_order_location" tabindex="2">
                                             <option value="0" selected="">Delivery Location</option>
                                             @foreach($delivery_locations as $delivery_location)
                                             @if($delivery_location->status=='permanent' && $delivery_location->id!=0)
@@ -96,7 +97,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="location">Location Difference</label>
-                                        <input id="location_difference" class="form-control" placeholder="Location Difference " name="location_difference" value="" type="tel">
+                                        <input id="location_difference" class="form-control" placeholder="Location Difference " name="location_difference" value="" type="tel" tabindex="3" class="ui-dform-text" />
                                     </div>
                                 </div>
                             </div>
@@ -134,7 +135,7 @@
                                                 <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
-                                                            <input class="form-control each_product_detail" data-productid="{{$i}}" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>">
+                                                            <input class="form-control each_product_detail" data-productid="{{$i}}" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>" tabindex="4" class="ui-dform-text">
                                                             <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
                                                             <i class="fa fa-search search-icon"></i>
                                                             <input type="hidden" name="product[{{$i}}][order]" value="">
