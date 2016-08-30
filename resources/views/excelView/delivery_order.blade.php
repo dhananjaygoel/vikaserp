@@ -90,7 +90,7 @@
         </tr>
         <?php $count = 0; ?>
         @foreach($delivery_data['delivery_product'] as $product)
-        @if($count!=0 && $product->order_type =='delivery_order')
+        @if($count!=0 && isset($product->order_type) &&  $product->order_type =='delivery_order')
         <tr>
             <td></td>
             <td></td>
