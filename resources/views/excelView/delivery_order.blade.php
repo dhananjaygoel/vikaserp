@@ -32,7 +32,7 @@
             <td>
                 @if($delivery_data['customer']->owner_name != "" && $delivery_data['customer']->tally_name != "")
                 {{ $delivery_data['customer']->owner_name }}-{{$delivery_data['customer']->tally_name}}
-                @else
+                @else 
                 {{ $delivery_data['customer']->owner_name }}
                 @endif
             </td>
@@ -42,16 +42,18 @@
                 @endif
             </td>
             <td>
+                @if(isset($delivery_data['created_at']) && $delivery_data['created_at']!='')
                 {{date('F jS, Y', strtotime ($delivery_data['created_at']))}}
+                @endif
             </td>
             <td>
-                {{($delivery_data->serial_no != "") ? $delivery_data->serial_no : '--'}}
+                {{(isset($delivery_data->serial_no) && $delivery_data->serial_no != "") ? $delivery_data->serial_no : '--'}}
             </td>
             <td>
-                {{$delivery_data['customer']->phone_number1}}
+                {{(isset($delivery_data['customer']->phone_number1) && $delivery_data['customer']->phone_number1 != "") ? $delivery_data['customer']->phone_number1: ''}}
             </td>
             <td>
-                @if($delivery_data->delivery_location_id == 0)
+                @if(isset($delivery_data->delivery_location_id) && $delivery_data->delivery_location_id == 0)
                 {{$delivery_data->other_location}}
                 @else
                 @foreach($delivery_locations as $location)
@@ -62,7 +64,7 @@
                 @endif
             </td>
             <td>
-                {{$delivery_data->location_difference}}
+                {{(isset($delivery_data->location_difference) && $delivery_data->location_difference != "") ? $delivery_data->location_difference : ''}}
             </td>
             <?php $product = isset($delivery_data['delivery_product']) && isset($delivery_data['delivery_product'][0]) ? $delivery_data['delivery_product'][0] : ''; ?>
             @if(isset($product) && $product!='' && $product->order_type =='delivery_order')
@@ -77,13 +79,14 @@
             <td>{{($product->vat_percentage!='')?$product->vat_percentage:''}}</td>
             <td>{{$product->remarks}}</td>
             @endif
-            <td>{{$delivery_data->vehicle_number }}</td>
-            <td>{{$delivery_data->driver_contact_no }}</td>
-            <td>{{$delivery_data->remarks }}s</td>
-            <td>{{$delivery_data->order_details->createdby->first_name." ".$delivery_data->order_details->createdby->last_name}}</td>
-            <td>{{$delivery_data->order_details->updated_at}}</td>
-            <td>{{$delivery_data->user->first_name." ".$delivery_data->user->last_name}}</td>
-            <td>{{$delivery_data->updated_at}}</td>
+            
+            <td>{{(isset($delivery_data->vehicle_number) && $delivery_data->vehicle_number != "") ? $delivery_data->vehicle_number : ''}}</td>
+            <td>{{(isset($delivery_data->driver_contact_no) && $delivery_data->driver_contact_no != "") ? $delivery_data->driver_contact_no : ''}}</td>
+            <td>{{(isset($delivery_data->remarks) && $delivery_data->remarks != "") ? $delivery_data->remarks : ''}}</td>
+            <td>{{(isset($delivery_data->order_details->createdby->first_name) && $delivery_data->order_details->createdby->first_name != "" && isset($delivery_data->order_details->createdby->last_name) && $delivery_data->order_details->createdby->last_name != "") ? $delivery_data->order_details->createdby->first_name." ".$delivery_data->order_details->createdby->last_name : ''}}</td>
+            <td>{{(isset($delivery_data->order_details->updated_at) && $delivery_data->order_details->updated_at != "") ? $delivery_data->order_details->updated_at : ''}}</td>
+            <td>{{(isset($delivery_data->user->first_name) && isset($delivery_data->user->last_name)) ? $delivery_data->user->first_name." ".$delivery_data->user->last_name : ''}}</td>
+            <td>{{(isset($delivery_data->updated_at)) ? $delivery_data->updated_at : ''}}</td>
         </tr>
         <?php $count = 0; ?>
         @foreach($delivery_data['delivery_product'] as $product)
