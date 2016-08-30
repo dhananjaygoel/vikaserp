@@ -102,7 +102,53 @@ class BulkDeleteController extends Controller {
                 }
                 break;
 //----------------------------------------------------
-            case 'order':
+            case 'order-pending':
+                $head[0] = 'TALLY NAME';
+                $head[1] = 'TOTAL QUANTITY';
+                $head[2] = 'MOBILE';
+                $head[3] = 'DELIVERY LOCATION';
+                $head[4] = 'ORDER BY';
+                /*
+                 * Delete selected orders.
+                 */
+                if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
+                    foreach ($delete_seletected_module as $delete_module) {
+                        Order::find($delete_module)->delete();
+                    }
+                }
+                /*
+                 * Delete selected orders end.
+                 */
+                $newdate = ((strlen(Input::get('expected_date')) > 1) ? Input::get('expected_date') : date('Y-m-d')) . ' 23:59:59';
+                $result_temp = Order::where('order_status', '=', 'pending')
+                                ->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')
+                                ->where('created_at', '<=', $newdate)
+                                ->orderBy('created_at', 'desc')->Paginate(20);
+                foreach ($result_temp as $key => $temp) {
+                    $tr_id[$key] = $temp->id;
+                    if ($temp['customer']->tally_name != '')
+                        $result_data[$key][0] = $temp['customer']->tally_name;
+                    else
+                        $result_data[$key][0] = $temp['customer']->owner_name;
+                    $total_size_quantity = 0;
+                    foreach ($temp->all_order_products as $order_product_array) {
+                        $total_size_quantity+=$order_product_array->quantity;
+                    }
+                    $result_data[$key][1] = round($total_size_quantity, 2);
+                    $result_data[$key][2] = $temp['customer']->phone_number1;
+                    if ($temp->delivery_location_id != 0)
+                        $result_data[$key][3] = $temp['delivery_location']->area_name;
+                    elseif ($temp->delivery_location_id == 0)
+                        $result_data[$key][3] = $temp['other_location'];
+                    $users = User::all();
+                    foreach ($users as $u) {
+                        if ($u['id'] == $temp['created_by']) {
+                            $result_data[$key][4] = $u['first_name'];
+                        }
+                    }
+                }
+                break;
+            case 'order-completed':
                 $head[0] = 'TALLY NAME';
                 $head[1] = 'TOTAL QUANTITY';
                 $head[2] = 'MOBILE';

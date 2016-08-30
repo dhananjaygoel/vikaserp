@@ -46,7 +46,11 @@ use Illuminate\Support\Facades\Session;
                                         <select class="form-control" name="select_module" id="select_module">
                                             <option value="0" selected="">Select Module</option>
                                             <option id="other_location" {{(isset($module) && $module == "inquiry")?'selected':''}} value="inquiry">Inquiry</option>
-                                            <option id="other_location" {{(isset($module) && $module == "order")?'selected':''}} value="order">Orders</option>
+                                            <optgroup label="Orders">
+                                                <option id="other_location" {{(isset($module) && $module == "order-pending")?'selected':''}} value="order-pending">Pending</option>
+                                            <option id="other_location" {{(isset($module) && $module == "order-completed")?'selected':''}} value="order-completed">Completed</option>
+                                            </optgroup>
+                                            
                                             <option id="other_location" {{(isset($module) && $module == "delivery_order")?'selected':''}} value="delivery_order">Delivery Orders</option>
                                             <option id="other_location" {{(isset($module) && $module == "delivery_challan")?'selected':''}} value="delivery_challan">Delivery Challan</option>
                                             <option id="other_location" {{(isset($module) && $module == "purchase_order")?'selected':''}} value="purchase_order">Purchase Orders</option>

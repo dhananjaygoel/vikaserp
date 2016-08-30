@@ -42,6 +42,16 @@
                             </form>
                         </div>
                     </div>
+                    @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Delivered' )
+                                <a href="{{URL::action('DeliveryOrderController@exportDeliveryOrderBasedOnStatus',['delivery_order_status'=>'Delivered'])}}" class="btn btn-primary pull-right">
+                                    Export
+                                </a>
+                                @endif 
+                                @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Inprocess')
+                                <a href="{{URL::action('DeliveryOrderController@exportDeliveryOrderBasedOnStatus',['delivery_order_status'=>'Inprocess'])}}" class="btn btn-primary pull-right">
+                                    Export
+                                </a>
+                                @endif
                 </div>
             </div>
         </div>
