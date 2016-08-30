@@ -321,6 +321,7 @@
                                             Session::put('input_data', '');
                                         } else {
                                             ?>
+                                            <?php $counter=0; ?>
                                             @foreach($delivery_data['delivery_product'] as $key=>$product)
                                             @if($product->order_type =='delivery_order')
                                             <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
@@ -337,7 +338,7 @@
                                                 </td>
                                                 <td class="col-md-1">
                                                     <div class="form-group">
-                                                        <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" type="text" type="text" tabindex="4">
+                                                        <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" type="text" type="text" @if($counter==0) tabindex="4" class="ui-dform-text" @endif>                                                    <?php $counter++; ?>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-1">

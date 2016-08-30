@@ -231,14 +231,16 @@
                                             Session::put('input_data', '');
                                         } else {
                                             ?>
+                                            <?php $counter=0;?>
                                             @foreach($inquiry['inquiry_products'] as $key=>$product)
                                             <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
                                                 <td class="col-md-3">
                                                     <div class="form-group searchproduct">
-                                                        <input class="form-control each_product_detail each_product_detail_edit" data-productid="{{$key}}" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});" value="{{isset($product['inquiry_product_details'])?$product['inquiry_product_details']->alias_name: ''}}" tabindex="4" class="ui-dform-text">
+                                                        <input class="form-control each_product_detail each_product_detail_edit" data-productid="{{$key}}" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});" value="{{isset($product['inquiry_product_details'])?$product['inquiry_product_details']->alias_name: ''}}" @if($counter==0)tabindex="4" class="ui-dform-text" @endif >
                                                         <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}" id="add_product_id_{{$key}}">
                                                         <i class="fa fa-search search-icon"></i>
                                                     </div>
+                                                    <?php $counter++;?>
                                                 </td>
                                                 <td class="col-md-1">
                                                     <div class="form-group">
