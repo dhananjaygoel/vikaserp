@@ -69,15 +69,15 @@ Route::get('app_customer_inquiry/{id}', 'HomeController@customerInquiry');
 Route::get('app_customer_orders/{id}', 'HomeController@customerOrders');
 /* All customer app routes ends here */
 /*
-Route::get('demorouteandroid', 'HomeController@demorouteandroid');
-Route::get('androidtesting', 'HomeController@androidtesting');
-Route::get('devicename', 'HomeController@devicename');
-Route::get('devicetesting', 'HomeController@devicetesting');
-Route::get('phonetesting', 'HomeController@phonetesting');
-Route::get('robottesting', 'HomeController@robottesting');
-Route::get('platformname', 'HomeController@platformname');
-Route::get('platformversion', 'HomeController@platformversion');
-Route::get('browserversion', 'HomeController@browserversion');
+  Route::get('demorouteandroid', 'HomeController@demorouteandroid');
+  Route::get('androidtesting', 'HomeController@androidtesting');
+  Route::get('devicename', 'HomeController@devicename');
+  Route::get('devicetesting', 'HomeController@devicetesting');
+  Route::get('phonetesting', 'HomeController@phonetesting');
+  Route::get('robottesting', 'HomeController@robottesting');
+  Route::get('platformname', 'HomeController@platformname');
+  Route::get('platformversion', 'HomeController@platformversion');
+  Route::get('browserversion', 'HomeController@browserversion');
  */
 Route::get('updatedata', 'HomeController@updatedata');
 Route::get('phpversion', 'WelcomeController@phpversion');
@@ -163,7 +163,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('print_purchase_daybook', 'PurchaseDaybookController@print_purchase_daybook');
     Route::get('change_password', 'PasswordController@getPassword');
     Route::post('change_password', 'PasswordController@postPassword');
-    Route::post('inquiry/{id}-delete', 'InquiryController@destroy');
+    Route::post('inquiry/delete', 'InquiryController@destroy');
     Route::resource('inquiry', 'InquiryController');
 
 //    Route::get('fetch_existing_supplier', 'InquiryController@fetch_existing_supplier');

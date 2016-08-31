@@ -17,7 +17,8 @@ use Input;
 use DB;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UpdateUser;
-use Jenssegers\Agent\Agent;
+
+//use Jenssegers\Agent\Agent;
 
 class UsersController extends Controller {
 
@@ -62,44 +63,43 @@ class UsersController extends Controller {
 
     public function store(UserRequest $request) {
 
-        $agent = new Agent();
-        if ($agent->isAndroidOS()) {
-            $Users_data = new User();
-            $Users_data->role_id = Input::get('user_type');
-            $Users_data->first_name = Input::get('first_name');
-            $Users_data->last_name = Input::get('last_name');
-            $Users_data->phone_number = Input::get('telephone_number');
-            $Users_data->mobile_number = Input::get('mobile_number');
-            $Users_data->email = Input::get('email');
-            $Users_data->password = Hash::make(Input::get('password'));
-            if ($Users_data->save()) {
-                return json_encode(array(
-                    'result' => true,
-                    'message' => 'User details successfully added.'), 200
-                );
-            } else {
-                return json_encode(array(
-                    'result' => false,
-                    'message' => 'Unable to store user at this moment'), 200
-                );
-            }
+
+//        if ($agent->isAndroidOS()) {
+//            $Users_data = new User();
+//            $Users_data->role_id = Input::get('user_type');
+//            $Users_data->first_name = Input::get('first_name');
+//            $Users_data->last_name = Input::get('last_name');
+//            $Users_data->phone_number = Input::get('telephone_number');
+//            $Users_data->mobile_number = Input::get('mobile_number');
+//            $Users_data->email = Input::get('email');
+//            $Users_data->password = Hash::make(Input::get('password'));
+//            if ($Users_data->save()) {
+//                return json_encode(array(
+//                    'result' => true,
+//                    'message' => 'User details successfully added.'), 200
+//                );
+//            } else {
+//                return json_encode(array(
+//                    'result' => false,
+//                    'message' => 'Unable to store user at this moment'), 200
+//                );
+//            }
+//        } else {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
+        $Users_data = new User();
+        $Users_data->role_id = Input::get('user_type');
+        $Users_data->first_name = Input::get('first_name');
+        $Users_data->last_name = Input::get('last_name');
+        $Users_data->phone_number = Input::get('telephone_number');
+        $Users_data->mobile_number = Input::get('mobile_number');
+        $Users_data->email = Input::get('email');
+        $Users_data->password = Hash::make(Input::get('password'));
+        if ($Users_data->save()) {
+            return redirect('users')->with('flash_message', 'User details successfully added.');
         } else {
-            if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-                return Redirect::to('orders')->with('error', 'You do not have permission.');
-            }
-            $Users_data = new User();
-            $Users_data->role_id = Input::get('user_type');
-            $Users_data->first_name = Input::get('first_name');
-            $Users_data->last_name = Input::get('last_name');
-            $Users_data->phone_number = Input::get('telephone_number');
-            $Users_data->mobile_number = Input::get('mobile_number');
-            $Users_data->email = Input::get('email');
-            $Users_data->password = Hash::make(Input::get('password'));
-            if ($Users_data->save()) {
-                return redirect('users')->with('flash_message', 'User details successfully added.');
-            } else {
-                return redirect('users')->with('error', 'Unable to store user at this moment');
-            }
+            return redirect('users')->with('error', 'Unable to store user at this moment');
         }
     }
 

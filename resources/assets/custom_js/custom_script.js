@@ -852,10 +852,9 @@ function fetch_city() {
  * Seting inquiry_id to form onclick on the delete button
  * @param {type} inquiry_id
  */
-function delete_inquiry_row(inquiry_id)
-{
-    $form = $('.delete_inquiry_form');
-    $('.delete_inquiry_form_submit').val(inquiry_id);
+function delete_inquiry_row(inquiry_id) {
+    $('#inquiry_id').val(inquiry_id);
+    $('#inquiry_id').focus();
 }
 
 /*Code use to delete inquiry*/
