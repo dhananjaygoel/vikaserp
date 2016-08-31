@@ -66,7 +66,7 @@
                             <div class="customer_select" style="display: none">
                                 <div class="col-md-4">
                                     <div class="form-group searchproduct">
-                                        <input class="form-control" placeholder="Enter Tally Name " type="text" name="existing_customer_name" id="existing_customer_name" tabindex="1" class="ui-dform-text">
+                                        <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" name="existing_customer_name" id="existing_customer_name" tabindex="1" >
                                         <input id="existing_customer_id" class="form-control" name="existing_customer_name" value="" type="hidden">
                                         <i class="fa fa-search search-icon"></i>
                                     </div>
@@ -105,7 +105,7 @@
                             <div class="customer_select" >
                                 <div class="col-md-4">
                                     <div class="form-group searchproduct">
-                                        <input class="form-control" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name" tabindex="1" class="ui-dform-text">
+                                        <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name" tabindex="1" >
                                         <input id="existing_customer_id" class="form-control" name="existing_customer_name" value="{{$inquiry['customer']->id}}" type="hidden">
                                         <i class="fa fa-search search-icon"></i>
                                     </div>
@@ -149,7 +149,7 @@
                                         <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
-                                                    <input class="form-control each_product_detail" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{isset($product['inquiry_product_details'])?$product['inquiry_product_details']->alias_name: ''}}" tabindex="2" class="ui-dform-text">
+                                                    <input class="form-control focus_on_enter each_product_detail" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{isset($product['inquiry_product_details'])?$product['inquiry_product_details']->alias_name: ''}}" tabindex="2" >
                                                     <input type="hidden" name="product[{{$key}}][id]"  id="add_product_id_{{$key}}" value="{{$product->product_category_id}}">
                                                     <i class="fa fa-search search-icon"></i>
                                                 </div>
