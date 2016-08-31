@@ -236,7 +236,7 @@
                             <div class="form-group">
                                 <div class="col-md-4 no_left_margin">
                                     <label for="Discount"><b class="challan">Discount</b></label>
-                                    <input id="discount_value" class="form-control" placeholder="Discount " name="discount" value="{{$allorder->discount}}" type="tel" onblur="grand_total_challan();">
+                                    <input id="discount_value" class="form-control" placeholder="Discount " name="discount" value="{{$allorder->discount}}" type="tel" onblur="grand_total_challan(); " onkeypress=" return validation_digit();">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="Loading_discount_percentage"><b class="challan">Discount Vat Percentage</b></label>

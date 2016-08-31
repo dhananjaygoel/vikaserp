@@ -51,7 +51,7 @@
                             <div class="customer_select" style="display: none">
                                 <div class="col-md-4">
                                     <div class="form-group searchproduct">
-                                        <input class="form-control" placeholder="Enter Tally Name " type="text" name="existing_customer_name" id="existing_customer_name">
+                                        <input class="form-control" placeholder="Enter Tally Name " type="text" name="existing_customer_name" id="existing_customer_name" tabindex="1" class="ui-dform-text">
                                         <input id="existing_customer_id" class="form-control" name="existing_customer_name" value="" type="hidden">
                                         <i class="fa fa-search search-icon"></i>
                                     </div>
@@ -90,7 +90,7 @@
                             <div class="customer_select" >
                                 <div class="col-md-4">
                                     <div class="form-group searchproduct">
-                                        <input class="form-control" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name">
+                                        <input class="form-control" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name" tabindex="1" class="ui-dform-text">
                                         <input id="existing_customer_id" class="form-control" name="existing_customer_name" value="{{$inquiry['customer']->id}}" type="hidden">
                                         <i class="fa fa-search search-icon"></i>
                                     </div>
@@ -123,7 +123,7 @@
                             <div class="form-group">
                                 <div class="col-md-4">
                                     <label for="location">Delivery Location:<span class="mandatory">*</span></label>
-                                    <select class="form-control" name="add_inquiry_location" id="add_order_location">
+                                    <select class="form-control" name="add_inquiry_location" id="add_order_location" tabindex="2" class="ui-dform-select">
                                         <option value="0">Delivery Location</option>
                                         @foreach($delivery_location as $location)
                                         @if($location->status=='permanent' && $location->id!=0)
@@ -143,7 +143,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="location">Location Difference</label>
-                                    <input id="location_difference" class="form-control" placeholder="Location Difference " name="location_difference" value="{{$inquiry->location_difference}}" type="tel">
+                                    <input id="location_difference" class="form-control" placeholder="Location Difference " name="location_difference" value="{{$inquiry->location_difference}}" type="tel" tabindex="3" class="ui-dform-text">
                                 </div>
                             </div>
                         </div>
@@ -190,7 +190,7 @@
                                                     <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
                                                         <td class="col-md-3">
                                                             <div class="form-group searchproduct">
-                                                                <input class="form-control each_product_detail each_product_detail_edit" data-productid="{{$i}}" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>">
+                                                                <input class="form-control each_product_detail each_product_detail_edit" data-productid="{{$i}}" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>" tabindex="4" class="ui-dform-text">
                                                                 <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="<?php if (isset($session_data['product'][$i]['id'])) { ?>{{$session_data['product'][$i]['id']}}<?php } ?>">
                                                                 <i class="fa fa-search search-icon"></i>
                                                             </div>
@@ -231,14 +231,16 @@
                                             Session::put('input_data', '');
                                         } else {
                                             ?>
+                                            <?php $counter=0;?>
                                             @foreach($inquiry['inquiry_products'] as $key=>$product)
                                             <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
                                                 <td class="col-md-3">
                                                     <div class="form-group searchproduct">
-                                                        <input class="form-control each_product_detail each_product_detail_edit" data-productid="{{$key}}" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});" value="{{isset($product['inquiry_product_details'])?$product['inquiry_product_details']->alias_name: ''}}">
+                                                        <input class="form-control each_product_detail each_product_detail_edit" data-productid="{{$key}}" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});" value="{{isset($product['inquiry_product_details'])?$product['inquiry_product_details']->alias_name: ''}}" @if($counter==0)tabindex="4" class="ui-dform-text" @endif >
                                                         <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}" id="add_product_id_{{$key}}">
                                                         <i class="fa fa-search search-icon"></i>
                                                     </div>
+                                                    <?php $counter++;?>
                                                 </td>
                                                 <td class="col-md-1">
                                                     <div class="form-group">

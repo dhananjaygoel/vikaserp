@@ -83,7 +83,7 @@
                             <div class="customer_select">
                                 <div class="col-md-4">
                                     <div class="form-group searchproduct">
-                                        <input value="{{ $delivery_data['customer']->tally_name }}" class="form-control" placeholder="Enter Tally Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
+                                        <input value="{{ $delivery_data['customer']->tally_name }}" class="form-control" placeholder="Enter Tally Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name" tabindex="1" class="ui-dform-text">
                                         <input type="hidden" value="{{ $delivery_data['customer']->id }}" id="existing_customer_id" name="autocomplete_customer_id">
                                         <i class="fa fa-search search-icon"></i>
                                     </div>
@@ -114,7 +114,7 @@
                             <div class="form-group">
                                 <div class="col-md-4">
                                     <label for="location">Delivery Location:<span class="mandatory">*</span></label>
-                                    <select class="form-control" name="add_order_location" id="add_order_location">
+                                    <select class="form-control" name="add_order_location" id="add_order_location" tabindex="2" class="ui-dform-select">
                                         <option value="0" selected="">Delivery Location</option>
                                         @foreach($delivery_locations as $delivery_location)
                                         @if($delivery_location->status=='permanent' && $delivery_location->id!= 0)
@@ -126,7 +126,7 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="location">Location Difference</label>
-                                    <input id="location_difference" class="form-control" placeholder="Location Difference " name="location_difference" value="{{ $delivery_data->location_difference}}" type="tel">
+                                    <input id="location_difference" class="form-control" placeholder="Location Difference " name="location_difference" value="{{ $delivery_data->location_difference}}" type="tel" tabindex="3" class="ui-dform-text">
                                 </div>
                             </div>
                         </div>
@@ -176,7 +176,7 @@
                                                             </td>
                                                             <td class="col-md-1">
                                                                 <div class="form-group">
-                                                                    <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" value="{{$session_data['product'][$i]['quantity']}}" type="text">
+                                                                    <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" value="{{$session_data['product'][$i]['quantity']}}" type="text" tabindex="4" class="ui-dform-text">
                                                                 </div>
                                                             </td>
                                                             <td class="col-md-1">
@@ -249,7 +249,7 @@
                                                             </td>
                                                             <td class="col-md-1">
                                                                 <div class="form-group">
-                                                                    <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" value="{{$session_data['product'][$i]['quantity']}}" type="text" onblur="create_delivery_order_PS({{$i}});">
+                                                                    <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" value="{{$session_data['product'][$i]['quantity']}}" type="text" onblur="create_delivery_order_PS({{$i}});" type="text" tabindex="4">
                                                                     <!--{{$session_data['product'][$i]['quantity']}}-->
                                                                 </div>
                                                             </td>
@@ -321,6 +321,7 @@
                                             Session::put('input_data', '');
                                         } else {
                                             ?>
+                                            <?php $counter=0; ?>
                                             @foreach($delivery_data['delivery_product'] as $key=>$product)
                                             @if($product->order_type =='delivery_order')
                                             <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
@@ -337,7 +338,7 @@
                                                 </td>
                                                 <td class="col-md-1">
                                                     <div class="form-group">
-                                                        <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" type="text">
+                                                        <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" type="text" type="text" @if($counter==0) tabindex="4" class="ui-dform-text" @endif>                                                    <?php $counter++; ?>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-1">

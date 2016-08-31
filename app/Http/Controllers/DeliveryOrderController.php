@@ -24,6 +24,7 @@ use App\DeliveryChallan;
 use App\CustomerProductDifference;
 use App\ProductCategory;
 use Session;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DeliveryOrderController extends Controller {
     /*
@@ -89,7 +90,7 @@ class DeliveryOrderController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create() {
-        
+
         $units = Units::all();
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
@@ -693,6 +694,36 @@ class DeliveryOrderController extends Controller {
             }
         }
         return $delivery_orders;
+    }
+
+    /* Function used to export dilivery order list based on order status */
+
+    public function exportDeliveryOrderBasedOnStatus($delivery_order_status) {
+        
+        if ($delivery_order_status == 'Inprocess') {
+//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+                $delivery_order_status='pending';
+            } elseif ($delivery_order_status == 'Delivered') {
+//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+               $delivery_order_status='completed';
+            }
+        $delivery_order_objects = DeliveryOrder::where('order_status',$delivery_order_status)->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')->get();
+       
+        if (count($delivery_order_objects) == 0) {
+           return redirect::back()->with('error','No data found');
+        }else{
+            $units = Units::all();
+            $delivery_locations = DeliveryLocation::all();
+            $customers = Customer::all();
+
+            Excel::create('Delivery Order List', function($excel) use($delivery_order_objects, $units, $delivery_locations, $customers) {
+                $excel->sheet('Delivery-Order-List', function($sheet) use($delivery_order_objects, $units, $delivery_locations, $customers) {
+                    $sheet->loadView('excelView.delivery_order', array('delivery_order_objects' => $delivery_order_objects, 'units' => $units, 'delivery_locations' => $delivery_locations, 'customers' => $customers));
+                });
+            })->export('xls');
+        }
+            
+        
     }
 
 }
