@@ -35,9 +35,20 @@
                             <br>
                         </div>
                     </form>
+                    @if(sizeof($allorders)!=0 && $qstring_sort_type_order == 'pending')
+        <a href="{{URL::action('DeliveryChallanController@exportDeliveryChallanBasedOnStatus',['delivery_challan_status'=>'pending'])}}" class="btn btn-primary pull-right">
+            Export
+        </a>
+        @endif
+        @if(sizeof($allorders)!=0 && $qstring_sort_type_order == 'completed')
+        <a href="{{URL::action('DeliveryChallanController@exportDeliveryChallanBasedOnStatus',['delivery_challan_status'=>'completed'])}}" class="btn btn-primary pull-right">
+            Export
+        </a>
+        @endif
                 </div>
             </div>
         </div>
+        
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">

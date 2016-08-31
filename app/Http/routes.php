@@ -244,3 +244,5 @@ Route::any('update_user_role', 'WelcomeController@update_user_role');
 Route::any('updatecity_delievrylocation', 'HomeController@updatecity_delievrylocation');
 
 Route::get('export-delivery-order/{delivery_order_status}','DeliveryOrderController@exportDeliveryOrderBasedOnStatus');
+Route::get('export-delivery-challan/{delivery_challan_status}','DeliveryChallanController@exportDeliveryChallanBasedOnStatus');
+Route::get('export-order/{order_status}','OrderController@exportOrderBasedOnStatus');

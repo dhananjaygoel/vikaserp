@@ -27,6 +27,7 @@ use App\DeliveryOrder;
 use App\ProductSubCategory;
 use DateTime;
 use Session;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller {
 
@@ -1014,6 +1015,40 @@ class OrderController extends Controller {
             $data_array[] = [ 'value' => 'No size found'];
         }
         echo json_encode(array('data_array' => $data_array));
+    }
+
+    /* Function used to export order details in excel */
+
+    public function exportOrderBasedOnStatus($order_status) {
+        if ($order_status == 'pending') {
+//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+            $order_status = 'pending';
+            $excel_name = 'Order-Pending-' . date('dmyhis');
+        } elseif ($order_status == 'completed') {
+//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+            $order_status = 'completed';
+            $excel_name = 'Order-Completed-' . date('dmyhis');
+        } elseif ($order_status == 'cancelled') {
+//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+            $order_status = 'cancelled';
+            $excel_name = 'Order-Cancelled-' . date('dmyhis');
+        }
+
+        $order_objects = Order::where('order_status', $order_status)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->get();
+
+
+        if (count($order_objects) == 0) {
+            return redirect::back()->with('flash_message', 'Order does not exist.');
+        } else {
+            $units = Units::all();
+            $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
+            $customers = Customer::orderBy('tally_name', 'ASC')->get();
+            Excel::create($excel_name, function($excel) use($order_objects, $units, $delivery_location, $customers) {
+                $excel->sheet('Order-List', function($sheet) use($order_objects, $units, $delivery_location, $customers) {
+                    $sheet->loadView('excelView.order', array('order_objects' => $order_objects, 'units' => $units, 'delivery_location' => $delivery_location, 'customers' => $customers));
+                });
+            })->export('xls');
+        }
     }
 
 }

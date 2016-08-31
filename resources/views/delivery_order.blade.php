@@ -30,9 +30,9 @@
                                 }
                                 ?>
                                 <select class="form-control" id="order_status" name="order_status" onchange="this.form.submit()">
-                                    <option value="" selected="">--Status--</option>
-                                    <option <?php if ($qstring_sort_type_order == 'Delivered') echo 'selected=""'; ?> value="Delivered">Delivered</option>
                                     <option <?php if ($qstring_sort_type_order == 'Inprocess') echo 'selected=""'; ?> value="Inprocess">Inprocess</option>
+                                    <option <?php if ($qstring_sort_type_order == 'Delivered') echo 'selected=""'; ?> value="Delivered">Delivered</option>
+                                    
                                 </select>
                                 <?php
                                 if (isset($session_sort_type_order)) {
@@ -47,7 +47,7 @@
                                     Export
                                 </a>
                                 @endif 
-                                @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Inprocess')
+                                @if(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='Inprocess')
                                 <a href="{{URL::action('DeliveryOrderController@exportDeliveryOrderBasedOnStatus',['delivery_order_status'=>'Inprocess'])}}" class="btn btn-primary pull-right">
                                     Export
                                 </a>

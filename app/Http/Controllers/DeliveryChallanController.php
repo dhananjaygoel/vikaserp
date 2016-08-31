@@ -22,7 +22,7 @@ use App\DeliveryLocation;
 use App\Customer;
 use App\ProductSubCategory;
 use Session;
-
+use Maatwebsite\Excel\Facades\Excel;
 class DeliveryChallanController extends Controller {
 
     public function __construct() {
@@ -582,5 +582,30 @@ class DeliveryChallanController extends Controller {
             }
         }
     }
+/* Function used to export dilivery challan  list based on order status */
 
+    public function exportDeliveryChallanBasedOnStatus($delivery_order_status) {
+
+        if ($delivery_order_status == 'pending') {
+//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+            $delivery_order_status = 'pending';
+            $excel_name = 'DeliveryChallan-InProgress-'.date('dmyhis');
+        } elseif ($delivery_order_status == 'completed') {
+//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+            $delivery_order_status = 'completed';
+             $excel_name = 'DeliveryOrder-Completed-'.date('dmyhis');
+        }
+        
+$delivery_challan_objects = DeliveryChallan::where('challan_status',$delivery_order_status)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')->get();
+
+if (count($delivery_challan_objects) == 0) {
+            return redirect::back()->with('flash_message', 'No data found');
+        } else {
+            Excel::create($excel_name, function($excel) use($delivery_challan_objects) {
+                $excel->sheet('Delivery-Challan', function($sheet) use($delivery_challan_objects) {
+                    $sheet->loadView('excelView.delivery_challan', array('delivery_challan_objects' => $delivery_challan_objects));
+                });
+            })->export('xls');
+        }
+    }
 }

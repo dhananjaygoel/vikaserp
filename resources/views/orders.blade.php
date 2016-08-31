@@ -79,6 +79,21 @@
                             </span>
                         </div>
                     </form>
+                    @if(sizeof($allorders)!=0 && $qstring_sort_type_order=='pending')
+                    <a href="{{URL::action('OrderController@exportOrderBasedOnStatus',['order_status'=>'pending'])}}" class="btn btn-primary pull-right">
+                        Export
+                    </a>
+                    @endif
+                    @if(sizeof($allorders)!=0 && $qstring_sort_type_order=='completed')
+                    <a href="{{URL::action('OrderController@exportOrderBasedOnStatus',['order_status'=>'completed'])}}" class="btn btn-primary pull-right">
+                        Export
+                    </a>
+                    @endif
+                    @if(sizeof($allorders)!=0 && $qstring_sort_type_order=='cancelled')
+                    <a href="{{URL::action('OrderController@exportOrderBasedOnStatus',['order_status'=>'cancelled'])}}" class="btn btn-primary pull-right">
+                        Export
+                    </a>
+                    @endif
                 </div>
             </div>
         </div>

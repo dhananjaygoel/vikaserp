@@ -60,13 +60,16 @@
                                     <input value="new_customer" id="new_customer" class="new_customer_order" name="customer_status" type="radio"> 
                                     <label for="new_customer">New</label>
                                 </div>
+                                <style>
+.searchproduct .fa-sort-desc{position: absolute;right:6px;top:7px;cursor:pointer;}
+                                </style>
                                 <div class="customer_select_order" style="{{(Input::old('customer_status') == "new_customer")?'display:none':'display:block'}}">
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
                                             <input class="form-control" placeholder="Enter Tally Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name" tabindex="1" class="ui-dform-text">
                                             <input type="hidden" id="existing_customer_id" name="existing_customer_name">
                                             <input type="hidden" id="customer_default_location">
-                                            <i class="fa fa-search search-icon"></i>
+                                                <!--<i class="fa fa-sort-desc " id='existing_customer_id_focus'></i>-->
                                         </div>
                                     </div>
                                 </div>
