@@ -166,12 +166,10 @@
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
-                                            <form action="{{url('inquiry/delete')}}" method="post">
+                                            <form method="post" action="{{url('inquiry/delete')}}">
                                                 <div class="modal-body">
-                                                    <!--{!! Form::open(array('method'=>'DELETE', 'id'=>'delete_inquiry_form'))!!}-->
-
-                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                    <input class="form-control" name="inquiry_id" id="inquiry_id" type="hidden">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
+                                                    <input class="form-control" name="inquiry_id" id="inquiry_id" type="hidden"/>
                                                     <div class="delete">
                                                         <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                         <div class="pwd">
@@ -184,7 +182,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <!--<a class="btn btn-default delete_inquiry_form_submit">Confirm</a>-->
-                                                    <input type="submit" class="btn btn-default" value="Confirm"></a>
+                                                    <input type="submit" class="btn btn-default submit_inquiry_delete" value="Confirm"/>
                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 </div>
                                             </form>
