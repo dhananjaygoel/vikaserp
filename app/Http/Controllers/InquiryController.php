@@ -29,10 +29,12 @@ use DateTime;
 use App\CustomerProductDifference;
 use Session;
 use Illuminate\Support\Facades\Event;
+use Memcached;
 
 class InquiryController extends Controller {
 
     public function __construct() {
+
         date_default_timezone_set("Asia/Calcutta");
         define('PROFILE_ID', Config::get('smsdata.profile_id'));
         define('PASS', Config::get('smsdata.password'));
@@ -46,6 +48,7 @@ class InquiryController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
+
         $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -66,6 +69,7 @@ class InquiryController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create() {
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -253,7 +257,7 @@ class InquiryController extends Controller {
         }
         $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->find($id);
         if (count($inquiry) < 1) {
-            return redirect('inquiry')->with('flash_message', 'Enquiry does not exist.');
+            return redirect('inquiry')->with('flash_message', 'Inquiry does not exist.');
         }
         $flash_message = '';
         $delivery_location = DeliveryLocation::all();
@@ -328,7 +332,7 @@ class InquiryController extends Controller {
         }
         $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->find($id);
         if (count($inquiry) < 1) {
-            return redirect('inquiry')->with('flash_message', 'Enquiry does not exist.');
+            return redirect('inquiry')->with('flash_message', 'Inquiry does not exist.');
         }
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
@@ -514,19 +518,17 @@ class InquiryController extends Controller {
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id) {
+    public function destroy() {
 
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::to('inquiry')->with('error', 'You do not have permission.');
         }
-        $inputData = Input::get('formData');
-        parse_str($inputData, $formFields);
-        if (Hash::check($formFields['password'], Auth::user()->password)) {
-            $delete_inquiry = Inquiry::find($id)->delete();
-            $delete_inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->delete();
-            return array('message' => 'success');
+        if (Input::has('inquiry_id') && Input::has('password') && (Hash::check(Input::get('password'), Auth::user()->password))) {
+            InquiryProducts::where('inquiry_id', '=', Input::get('inquiry_id'))->delete();
+            Inquiry::find(Input::get('inquiry_id'))->delete();
+            return redirect('inquiry')->with('flash_success_message', 'Inquiry deleted successfully.');
         } else {
-            return array('message' => 'failed');
+            return redirect('inquiry')->with('flash_message', 'Please enter valid password.');
         }
     }
 
@@ -568,12 +570,10 @@ class InquiryController extends Controller {
 
     public function fetch_products() {
 
-        $delivery_location = Input::get('delivery_location');
+//        $delivery_location = Input::get('delivery_location');
         $customer_id = Input::get('customer_id');
-        $location_diff = 0;
-        $location_diff = Input::get('location_difference');
-        $term = Input::get('term');
-        $products = ProductSubCategory::where('alias_name', 'like', '%' . $term . '%')->with('product_category')->get();
+//        $location_diff = 0;
+        $products = ProductSubCategory::where('alias_name', 'like', '%' . Input::get('term') . '%')->with('product_category')->get();
         if (count($products) > 0) {
             foreach ($products as $product) {
                 $cust = 0;
@@ -583,9 +583,10 @@ class InquiryController extends Controller {
                         $cust = $customer->difference_amount;
                     }
                 }
-                $data_array[] = [ 'value' => $product->alias_name,
+                $data_array[] = [
+                    'value' => $product->alias_name,
                     'id' => $product->id,
-                    'product_price' => $product['product_category']->price + $cust + $location_diff + $product->difference
+                    'product_price' => $product['product_category']->price + $cust + Input::get('location_difference') + $product->difference
                 ];
             }
         } else {

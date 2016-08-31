@@ -700,7 +700,8 @@ function validation_digit() {
 }
 
  $( document ).ready(function() {
-    $('input,select').on('keypress', function (e) {
+    $('.focus_on_enter').on('keypress', function (e) {
+       
      if (e.which == 13) {        
          e.preventDefault();
          var $next = $('[tabIndex=' + (+this.tabIndex + 1) + ']');
