@@ -128,7 +128,7 @@
 
         <!-- theme scripts -->
         {!! HTML::script('/resources/assets/js/scripts.js') !!}
-        {!! HTML::script('/resources/assets/js/pace.min.js') !!}
+<!--        {!! HTML::script('/resources/assets/js/pace.min.js') !!}-->
         <!-- this page specific inline scripts -->
 
         <!-- RTL support - for demo only -->

@@ -700,17 +700,14 @@ function validation_digit() {
 }
 
  $( document ).ready(function() {
-    $('.focus_on_enter').on('keypress', function (e) {
-       
+    $('.focus_on_enter').on('keypress', function (e) {       
      if (e.which == 13) {        
          e.preventDefault();
-         var $next = $('[tabIndex=' + (+this.tabIndex + 1) + ']');
-        // console.log($next);
+         var $next = $('[tabIndex=' + (+this.tabIndex + 1) + ']');        
          if (!$next.length) {
             // $next = $('[tabIndex=1]');
          }
-         var name = $next.focus();
-             console.log(name);
+         var name = $next.focus();            
         }
     });
 });
