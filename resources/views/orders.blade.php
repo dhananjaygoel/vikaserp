@@ -11,6 +11,7 @@
                 </ol>
                 <input type="hidden" id="module" value="order">
                 <div class="filter-block">
+                    
                     <form action="{{url('orders')}}" method="GET" id="orderForm">
                         <h1 class="pull-left">Orders</h1>
                         <div class="pull-right">
@@ -31,7 +32,6 @@
                             }
                             ?>
                             <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
-                                <option value="" selected="">--Status-- </option>
                                 <option <?php if ($qstring_sort_type_order == 'pending') echo 'selected=""'; ?> value="pending">Pending</option>
                                 <option <?php if ($qstring_sort_type_order == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
                                 <option <?php if ($qstring_sort_type_order == 'cancelled') echo 'selected=""'; ?> value="cancelled">Canceled</option>
@@ -52,7 +52,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-2 pull-right">                            
+                        <div class="col-md-1 pull-right">                            
                             <select class="form-control" id="user_filter3" name="fulfilled_filter" onchange="this.form.submit();">
                                 <option value="" selected="">--Fulfilled by--</option>
                                 <option {{(Input::get('fulfilled_filter') != 'all') ? 'selected' :'' }} value="0" >Warehouse</option>
@@ -78,7 +78,25 @@
                                 </button>
                             </span>
                         </div>
+                         <div class="input-group col-md-1 pull-right">
+                    @if(sizeof($allorders)!=0 && ($qstring_sort_type_order=='pending' || $qstring_sort_type_order=='' ))
+                    <a href="{{URL::action('OrderController@exportOrderBasedOnStatus',['order_status'=>'pending'])}}" class="btn btn-primary">
+                        Export
+                    </a>
+                    @endif
+                    @if(sizeof($allorders)!=0 && $qstring_sort_type_order=='completed')
+                    <a href="{{URL::action('OrderController@exportOrderBasedOnStatus',['order_status'=>'completed'])}}" class="btn btn-primary">
+                        Export
+                    </a>
+                    @endif
+                    @if(sizeof($allorders)!=0 && $qstring_sort_type_order=='cancelled')
+                    <a href="{{URL::action('OrderController@exportOrderBasedOnStatus',['order_status'=>'cancelled'])}}" class="btn btn-primary">
+                        Export
+                    </a>
+                    </div>
+                    @endif
                     </form>
+                    
                 </div>
             </div>
         </div>

@@ -23,7 +23,6 @@
                             }
                             ?>
                             <select class="form-control" id="user_filter3" name="status_filter" onchange="this.form.submit();">
-                                <option value="" selected="">--Status--</option>
                                 <option <?php if ($qstring_sort_type_order == 'pending') echo 'selected=""'; ?> value="pending">Inprogress</option>
                                 <option <?php if ($qstring_sort_type_order == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
                             </select>
@@ -35,9 +34,20 @@
                             <br>
                         </div>
                     </form>
+                    @if(sizeof($allorders)!=0 && ($qstring_sort_type_order == 'pending' ||$qstring_sort_type_order==''))
+                    <a href="{{URL::action('DeliveryChallanController@exportDeliveryChallanBasedOnStatus',['delivery_challan_status'=>'pending'])}}" class="btn btn-primary pull-right">
+                        Export
+                    </a>
+                    @endif
+                    @if(sizeof($allorders)!=0 && $qstring_sort_type_order == 'completed')
+                    <a href="{{URL::action('DeliveryChallanController@exportDeliveryChallanBasedOnStatus',['delivery_challan_status'=>'completed'])}}" class="btn btn-primary pull-right">
+                        Export
+                    </a>
+                    @endif
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">

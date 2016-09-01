@@ -698,18 +698,15 @@ function create_delivery_order_PS(row_id) {
 function validation_digit() {
     return ((event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46);
 }
-
 $(document).ready(function () {
-    $('input,select').on('keypress', function (e) {
+    $('.focus_on_enter').on('keypress', function (e) {
         if (e.which == 13) {
             e.preventDefault();
             var $next = $('[tabIndex=' + (+this.tabIndex + 1) + ']');
-            // console.log($next);
             if (!$next.length) {
                 // $next = $('[tabIndex=1]');
             }
             var name = $next.focus();
-            console.log(name);
         }
     });
 });
