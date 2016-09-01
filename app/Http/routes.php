@@ -27,6 +27,16 @@ Route::post('appsyncdeliverychallan', 'HomeController@appSyncDeliveryChallan');
 Route::post('appsyncpurchaseadvise', 'HomeController@appSyncPurchaseAdvise');
 Route::post('appsyncpurchasechallan', 'HomeController@appSyncPurchaseChallan');
 Route::post('appsyncpurchaseorder', 'HomeController@appSyncPurchaseOrder');
+Route::post('appdeleteinquiry', 'HomeController@appdeleteinquiry');
+Route::post('appdeleteorder', 'HomeController@appdeleteorder');
+Route::post('appdeletedelivery_order', 'HomeController@appdeletedelivery_order');
+Route::post('appdeletedelivery_challan', 'HomeController@appdeletedelivery_challan');
+
+Route::post('appdeletepurchase_order', 'HomeController@appdeletepurchase_order');
+Route::post('appdeletepurchase_advise', 'HomeController@appdeletepurchase_advise');
+Route::post('appdeletepurchase_challan', 'HomeController@appdeletepurchase_challan');
+
+
 Route::get('appcount', 'HomeController@appcount');
 Route::get('appinquiry', 'HomeController@appinquiry');
 Route::get('apporders', 'HomeController@apporders');
@@ -243,7 +253,7 @@ Route::post('update_all_sizes', 'ProductsubController@update_all_sizes_differenc
 Route::any('update_user_role', 'WelcomeController@update_user_role');
 Route::any('updatecity_delievrylocation', 'HomeController@updatecity_delievrylocation');
 
-Route::get('export-delivery-order/{delivery_order_status}','DeliveryOrderController@exportDeliveryOrderBasedOnStatus');
-Route::get('export-delivery-challan/{delivery_challan_status}','DeliveryChallanController@exportDeliveryChallanBasedOnStatus');
-Route::get('export-order/{order_status}','OrderController@exportOrderBasedOnStatus');
-Route::get('get-data','DeliveryOrderController@get_data');
+Route::get('export-delivery-order/{delivery_order_status}', 'DeliveryOrderController@exportDeliveryOrderBasedOnStatus');
+Route::get('export-delivery-challan/{delivery_challan_status}', 'DeliveryChallanController@exportDeliveryChallanBasedOnStatus');
+Route::get('export-order/{order_status}', 'OrderController@exportOrderBasedOnStatus');
+Route::get('get-data', 'DeliveryOrderController@get_data');
