@@ -728,5 +728,14 @@ class DeliveryOrderController extends Controller {
             })->export('xls');
         }
     }
+    
+    public function get_data() {
+        $product_sub_category = ProductSubCategory::with('product_category')->get();
+        $customer_product_difference = CustomerProductDifference::all();        
+        echo json_encode(array(
+            'product_sub_category' => $product_sub_category,
+            'customer_product_difference' => $customer_product_difference,            
+            ));
+    }
 
 }

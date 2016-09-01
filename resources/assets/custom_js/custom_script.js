@@ -3,6 +3,22 @@ var _token = $('#csrf_token').attr('content');
 var cache_customer = {};
 var cache_product = {};
 var cache_supplier = {};
+var all_data;
+
+
+
+$( document ).ready(function() {
+    $.ajax({
+        url: baseurl + '/get-data',       
+        success: function (data) {
+           all_data = jQuery.parseJSON(data);
+//            $("#add_product_id_" + id).val(obj.data_array[0].id);
+            console.log(all_data);
+                },
+    });
+    //alert(baseurl);
+    
+});
 /*
  * Setting new Cookie
  * @param {type} cname
@@ -552,12 +568,15 @@ function show_hide_customer(status) {
 
 /** product_autocomplete  */
 function product_autocomplete(id) {
-
     var customer_id = $('#existing_customer_id').val();
     if (customer_id == "") {
         customer_id = 0;
     }
     var location_difference = 0;
+    var value;
+    var id_value ;
+    var product_price;
+    var cust=0;
     location_difference = $('#location_difference').val();
     $("#add_product_name_" + id).autocomplete({
         position: {
@@ -566,28 +585,53 @@ function product_autocomplete(id) {
         },
         select: function (event, ui) {
             var term = ui.item.value;
-            $.ajax({
-//                beforeSend: function() {
-//                    $.blockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
-//                },
-                url: baseurl + '/fetch_products',
-                cache: true,
-                data: {"term": term, 'customer_id': customer_id, 'location_difference': location_difference},
-                success: function (data) {
-                    var obj = jQuery.parseJSON(data);
-                    $("#product_price_" + id).val(obj.data_array[0].product_price); // to add price in the textbox
-                    $("#add_product_id_" + id).val(obj.data_array[0].id);
-                    $("#add_product_id_" + id).attr('data-curname', obj.data_array[0].value);
+            var result = $.grep(all_data.product_sub_category, function(e){ return e.alias_name == term; });
+             
+             if (result.length > 0) {
+                if (customer_id > 0) {
+                    var temp = $.grep(all_data.customer_product_difference, function(e){ return (e.customer_id == customer_id); });
+                    var customer = $.grep(temp, function(e){ return (e.product_category_id == result[0].product_category.id); }); 
+                    if (customer.length > 0) {
+                       cust = customer.difference_amount;
+                    }
+                    value = result[0].alias_name;
+                    id_value = result[0].id;
+                    product_price = parseFloat(result[0].product_category.price) + parseFloat(cust) + parseFloat(location_difference) + parseFloat(result[0].difference);
+                }  
+             
+             }
+             else
+             {
+                 value = 'No Products';
+             }
+              $("#product_price_" + id).val(product_price); // to add price in the textbox
+                    $("#add_product_id_" + id).val(id_value);
+                    $("#add_product_id_" + id).attr('data-curname', value);
                     $('#quantity_' + id).focus();
-//                    $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
-                },
-                complete: function (data) {
                     $('.more_button').parent().trigger('click');
-                },
-            });
+                    $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
+
+//            $.ajax({
+////                beforeSend: function() {
+////                    $.blockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
+////                },
+//                url: baseurl + '/fetch_products',
+//                cache: true,
+//                data: {"term": term, 'customer_id': customer_id, 'location_difference': location_difference},
+//                success: function (data) {
+//                    var obj = jQuery.parseJSON(data);
+//                    $("#product_price_" + id).val(obj.data_array[0].product_price); // to add price in the textbox
+//                    $("#add_product_id_" + id).val(obj.data_array[0].id);
+//                    $("#add_product_id_" + id).attr('data-curname', obj.data_array[0].value);
+//                    $('#quantity_' + id).focus();
+//                    $('.more_button').parent().trigger('click');
+////                    $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
+//                },
+//            });
         }
     });
 }
+
 
 function delivery_challan_product_autocomplete(id) {
 
