@@ -22,7 +22,7 @@
                     </header>
                     <div class="main-box-body clearfix">
                         <hr>
-                        {!! Form::open(array('method'=>'PUT','url'=>url('city',$city->id), 'id'=>'onenter_prevent'))!!}
+                        {!! Form::open(array('method'=>'PUT','url'=>url('city',$city->id), 'id'=>''))!!}
                         @if (count($errors) > 0)
                         <div role="alert" class="alert alert-warning">
                             <ul>

@@ -18,7 +18,7 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
-                        <form id="onenter_prevent" name="add_inquiry_form" method="POST" action="{{URL::action('InquiryController@store')}}">
+                        <form id="onenter_prevent" data-button='btn_add_inquiry' name="add_inquiry_form" method="POST" action="{{URL::action('InquiryController@store')}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                             @if (count($errors) > 0)
@@ -229,7 +229,8 @@
                             <button type="button" class="btn btn-primary btn_add_inquiry_sms" id="add_inquiry_sendSMS">Save and Send SMS</button>
                             <hr>
                             <div>
-                                <input type="submit" class="btn btn-primary form_button_footer btn_add_inquiry" value="Submit">
+                                <button type="submit" class="btn btn-primary form_button_footer btn_add_inquiry">Submit</button>
+                                <!--<input type="submit" class="btn btn-primary form_button_footer btn_add_inquiry" value="Submit">-->
                                 <a href="{{URL::to('inquiry')}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>

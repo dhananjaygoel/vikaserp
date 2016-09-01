@@ -19,13 +19,22 @@
                             <div class="col-md-12">
                                 <form method="GET" action="{{url('inquiry')}}">
                                     <select class="form-control" id="inquiry_filter" name="inquiry_filter" onchange="this.form.submit();">
-                                        <option value="" selected="">Status</option>
                                         <option <?php if (Input::get('inquiry_filter') == 'Pending') echo 'selected=""'; ?> value="Pending">Pending</option>
                                         <option <?php if (Input::get('inquiry_filter') == 'Completed') echo 'selected=""'; ?> value="Completed">Completed</option>
                                     </select>
                                 </form>
                             </div>
                         </div>
+                        @if(sizeof($inquiries)!=0 && (Input::get('inquiry_filter') == 'Pending' ||Input::get('inquiry_filter')==''))
+                    <a href="{{URL::action('InquiryController@exportinquiryBasedOnStatus',['inquiry_status'=>'Pending'])}}" class="btn btn-primary pull-right">
+                        Export
+                    </a>
+                    @endif
+                    @if(sizeof($inquiries)!=0 && Input::get('inquiry_filter') == 'Completed')
+                    <a href="{{URL::action('InquiryController@exportinquiryBasedOnStatus',['inquiry_status'=>'Completed'])}}" class="btn btn-primary pull-right">
+                        Export
+                    </a>
+                    @endif
                     </div>
                 </div>
             </div>

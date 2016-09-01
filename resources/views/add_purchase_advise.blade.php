@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Session;
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
-                        <form id="onenter_prevent" method="POST" action="{{url('purchaseorder_advise')}}" accept-charset="UTF-8" >
+                        <form data-button="btn_add_purchase_advice" id="onenter_prevent" method="POST" action="{{url('purchaseorder_advise')}}" accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">                                                        
                             <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                             @if (count($errors) > 0)

@@ -246,4 +246,5 @@ Route::any('updatecity_delievrylocation', 'HomeController@updatecity_delievryloc
 Route::get('export-delivery-order/{delivery_order_status}','DeliveryOrderController@exportDeliveryOrderBasedOnStatus');
 Route::get('export-delivery-challan/{delivery_challan_status}','DeliveryChallanController@exportDeliveryChallanBasedOnStatus');
 Route::get('export-order/{order_status}','OrderController@exportOrderBasedOnStatus');
+Route::get('export-inquiry/{inquiry_status}','InquiryController@exportinquiryBasedOnStatus');
 Route::get('get-data','DeliveryOrderController@get_data');

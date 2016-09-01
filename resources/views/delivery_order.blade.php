@@ -67,6 +67,7 @@
                             <strong> {{ Session::get('error') }} </strong>
                         </div>
                         @endif
+                       
                         @if (Session::has('success'))
                         <div class="alert alert-success alert-success1">{{Session::get('success')}}</div>
                         @endif

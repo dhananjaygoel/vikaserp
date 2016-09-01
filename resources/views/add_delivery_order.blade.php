@@ -29,7 +29,7 @@
                         </div>
                         @endif
                         <div class="form-group">Date: {{date('d F, Y')}}</div>
-                        <form id="onenter_prevent" method="POST" action="{{URL::action('DeliveryOrderController@store')}}" accept-charset="UTF-8" >
+                        <form id="onenter_prevent"  data-button='btn_add_delivery_order' method="POST" action="{{URL::action('DeliveryOrderController@store')}}" accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">                                                        
                             <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                             <div class="form-group">

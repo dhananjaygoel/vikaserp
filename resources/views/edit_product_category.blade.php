@@ -30,7 +30,7 @@
                 </div>
                 @endif  
 
-                {!!Form::open(array('method'=>'PUT','url'=>url('product_category/'.$product_cat[0]['id']),'id'=>'onenter_prevent'))!!}
+                {!!Form::open(array('method'=>'PUT','url'=>url('product_category/'.$product_cat[0]['id']),'id'=>''))!!}
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <div class="form-group">
                     <label>Product Category Type<span class="mandatory">*</span></label>

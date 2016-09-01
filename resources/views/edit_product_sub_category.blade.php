@@ -35,7 +35,7 @@
                         </div>
                         @endif
 
-                        {!!Form::open(array('method'=>'PUT','url'=>url('product_sub_category/'.$prod_sub_cat->id),'id'=>'onenter_prevent'))!!}
+                        {!!Form::open(array('method'=>'PUT','url'=>url('product_sub_category/'.$prod_sub_cat->id),'id'=>''))!!}
 
                         <div class="form-group productcategory col-md-3">
                             <input type="hidden" name="baseurl" id="baseurl2" value="{{url()}}" /> 

@@ -29,7 +29,7 @@
                         </div>
                         @endif
                         <div class="form-group">Date : {{date('d F, Y')}}</div>
-                        {!!Form::open(array('method'=>'PUT','url'=>url('delivery_order/'.$delivery_data['id']),'id'=>'onenter_prevent'))!!}
+                        {!!Form::open(array('data-button'=>'btn_edit_delivery_order','method'=>'PUT','url'=>url('delivery_order/'.$delivery_data['id']),'id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                         @if($delivery_data['customer']->customer_status =="pending")

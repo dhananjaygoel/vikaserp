@@ -22,7 +22,7 @@
                     </header>
                     <div class="main-box-body clearfix">
                         <hr>
-                        {!! Form::open(array('method'=>'PUT','url'=>url('states',$state->id), 'id'=>'onenter_prevent'))!!}
+                        {!! Form::open(array('method'=>'PUT','url'=>url('states',$state->id), 'id'=>''))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         @if (count($errors) > 0)
                         <div role="alert" class="alert alert-warning">

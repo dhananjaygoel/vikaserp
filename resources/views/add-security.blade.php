@@ -30,7 +30,7 @@
                         </div>
                         @endif
                         <hr>
-                        <form method="POST" action="{{url('security')}}" accept-charset="UTF-8" id="onenter_prevent" >
+                        <form method="POST" action="{{url('security')}}" accept-charset="UTF-8" id="" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
 
                             <div class="form-group">

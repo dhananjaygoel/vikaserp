@@ -18,7 +18,7 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
-                        {!! Form::open(array('method'=>'PUT','url'=>url('purchase_orders',$purchase_order->id), 'id'=>'onenter_prevent'))!!}
+                        {!! Form::open(array('data-button'=>'sendSMSEditPurchaseOrder','method'=>'PUT','url'=>url('purchase_orders',$purchase_order->id), 'id'=>'onenter_prevent'))!!}
                         @if (count($errors) > 0)
                         <div role="alert" class="alert alert-warning">
                             <ul>
@@ -372,7 +372,8 @@
                     </div>
                     <hr>
                     <div>
-                        <input type="button" title="SMS would be sent to Party" class="btn btn-primary smstooltip" id="sendSMSEditPurchaseOrder" value="Save and Send SMS">
+                        <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" id="sendSMSEditPurchaseOrder" >Save and Send SMS</button>
+                        <!--<input type="button" title="SMS would be sent to Party" class="btn btn-primary smstooltip" id="sendSMSEditPurchaseOrder" value="Save and Send SMS">-->
                         <a href="{{URL::to('purchase_orders')}}" class="btn btn-default form_button_footer">Back</a>
                     </div>
                     <div class="clearfix"></div>
