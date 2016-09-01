@@ -1023,14 +1023,17 @@ class OrderController extends Controller {
         if ($order_status == 'pending') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $order_status = 'pending';
+            $excel_sheet_name = 'Pending';
             $excel_name = 'Order-Pending-' . date('dmyhis');
         } elseif ($order_status == 'completed') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $order_status = 'completed';
+            $excel_sheet_name = 'Completed';
             $excel_name = 'Order-Completed-' . date('dmyhis');
         } elseif ($order_status == 'cancelled') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $order_status = 'cancelled';
+             $excel_sheet_name = 'Cancelled';
             $excel_name = 'Order-Cancelled-' . date('dmyhis');
         }
 
@@ -1043,8 +1046,8 @@ class OrderController extends Controller {
             $units = Units::all();
             $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
             $customers = Customer::orderBy('tally_name', 'ASC')->get();
-            Excel::create($excel_name, function($excel) use($order_objects, $units, $delivery_location, $customers) {
-                $excel->sheet('Order-List', function($sheet) use($order_objects, $units, $delivery_location, $customers) {
+            Excel::create($excel_name, function($excel) use($order_objects, $units, $delivery_location, $customers,$excel_sheet_name) {
+                $excel->sheet('Order-'.$excel_sheet_name, function($sheet) use($order_objects, $units, $delivery_location, $customers) {
                     $sheet->loadView('excelView.order', array('order_objects' => $order_objects, 'units' => $units, 'delivery_location' => $delivery_location, 'customers' => $customers));
                 });
             })->export('xls');

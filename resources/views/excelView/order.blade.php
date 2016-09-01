@@ -13,7 +13,7 @@
             <td class="heading1">Delivery Location Difference</td>
 
             <td class="heading1">Product(Alias)</td>
-            <td class="heading1">Qty</td>
+            <td class="heading1">Quantity</td>
             <td class="heading1">Unit</td>
             <td class="heading1">Price</td>
             <td class="heading1">Vat Percentage</td>

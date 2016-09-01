@@ -589,10 +589,12 @@ class DeliveryChallanController extends Controller {
         if ($delivery_order_status == 'pending') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $delivery_order_status = 'pending';
+            $excel_sheet_name = 'Pending';
             $excel_name = 'DeliveryChallan-InProgress-'.date('dmyhis');
         } elseif ($delivery_order_status == 'completed') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $delivery_order_status = 'completed';
+            $excel_sheet_name = 'Completed';
              $excel_name = 'DeliveryOrder-Completed-'.date('dmyhis');
         }
         
@@ -601,8 +603,8 @@ $delivery_challan_objects = DeliveryChallan::where('challan_status',$delivery_or
 if (count($delivery_challan_objects) == 0) {
             return redirect::back()->with('flash_message', 'No data found');
         } else {
-            Excel::create($excel_name, function($excel) use($delivery_challan_objects) {
-                $excel->sheet('Delivery-Challan', function($sheet) use($delivery_challan_objects) {
+            Excel::create($excel_name, function($excel) use($delivery_challan_objects,$excel_sheet_name) {
+                $excel->sheet('DeliveryChallan-'.$excel_sheet_name, function($sheet) use($delivery_challan_objects,$excel_sheet_name) {
                     $sheet->loadView('excelView.delivery_challan', array('delivery_challan_objects' => $delivery_challan_objects));
                 });
             })->export('xls');

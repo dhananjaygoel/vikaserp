@@ -703,10 +703,12 @@ class DeliveryOrderController extends Controller {
         if ($delivery_order_status == 'Inprocess') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $delivery_order_status = 'pending';
+            $excel_sheet_name = 'Inprocess';
             $excel_name = 'DeliveryOrder-InProcess-'.date('dmyhis');
         } elseif ($delivery_order_status == 'Delivered') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $delivery_order_status = 'completed';
+            $excel_sheet_name = 'Delivered';
              $excel_name = 'DeliveryOrder-Delivered-'.date('dmyhis');
         }
         $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')->get();
@@ -719,8 +721,8 @@ class DeliveryOrderController extends Controller {
             $customers = Customer::all();
           
             
-            Excel::create($excel_name, function($excel) use($delivery_order_objects, $units, $delivery_locations, $customers) {
-                $excel->sheet('Delivery-Order-List', function($sheet) use($delivery_order_objects, $units, $delivery_locations, $customers) {
+            Excel::create($excel_name, function($excel) use($delivery_order_objects, $units, $delivery_locations, $customers,$excel_sheet_name) {
+                $excel->sheet('DeliveryOrder-'.$excel_sheet_name, function($sheet) use($delivery_order_objects, $units, $delivery_locations, $customers) {
                     $sheet->loadView('excelView.delivery_order', array('delivery_order_objects' => $delivery_order_objects, 'units' => $units, 'delivery_locations' => $delivery_locations, 'customers' => $customers));
                 });
             })->export('xls');
