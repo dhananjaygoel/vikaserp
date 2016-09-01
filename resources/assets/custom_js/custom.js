@@ -460,13 +460,11 @@ $('#onenter_prevent input,#onenter_prevent textarea').keypress(function (e) {
     }
 });
 $('form#onenter_prevent').keypress(function (e) {
-    alert('Enter');
+    
     if (e.which == 13) {
        submit_button_id= $(this).attr('data-button');
-       alert(submit_button_id);
-       if(submit_button_id){
+      if(submit_button_id){
            $('.'+submit_button_id).trigger('click');
-           alert('Triggred');
        }else{
            return false;
        }
