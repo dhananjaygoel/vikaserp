@@ -25,7 +25,7 @@
                             @endforeach                       
                         </div>
                         @endif 
-                        <form id="onenter_prevent" method="POST" action="{{URL::action('ProductController@store')}}"accept-charset="UTF-8" >
+                        <form  method="POST" action="{{URL::action('ProductController@store')}}"accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <div class="form-group">
                                 <label>Product Category Type<span class="mandatory">*</span></label>                                

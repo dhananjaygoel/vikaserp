@@ -18,7 +18,7 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
-                        <form id="onenter_prevent" method="POST" action="{{URL::action('OrderController@store')}}">
+                        <form id="onenter_prevent" data-button='btn_add_order' method="POST" action="{{URL::action('OrderController@store')}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                             @if (count($errors) > 0)

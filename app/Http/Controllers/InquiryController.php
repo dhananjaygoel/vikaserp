@@ -30,7 +30,7 @@ use App\CustomerProductDifference;
 use Session;
 use Illuminate\Support\Facades\Event;
 use Memcached;
-
+use Maatwebsite\Excel\Facades\Excel;
 class InquiryController extends Controller {
 
     public function __construct() {
@@ -860,6 +860,34 @@ class InquiryController extends Controller {
         }
         Inquiry::where('id', '=', $id)->update(['inquiry_status' => 'Completed']);
         return redirect('inquiry')->with('flash_success_message', 'One Order successfully generated for Inquiry.');
+    }
+    
+    /* Function used to export inquiry records*/
+    public function exportinquiryBasedOnStatus($inquiry_status){
+        
+        if ($inquiry_status == 'Pending') {
+//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+            $inquiry_status = 'pending';
+            $excel_sheet_name = 'Pending';
+            $excel_name = 'Inquiry-Pending-'.date('dmyhis');
+        } elseif ($inquiry_status == 'Completed') {
+//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+            $inquiry_status = 'completed';
+            $excel_sheet_name = 'Completed';
+             $excel_name = 'Inquiry-Completed-'.date('dmyhis');
+        }
+        
+$inquiry_objects = Inquiry::where('inquiry_status',$inquiry_status)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->get();
+if (count($inquiry_objects) == 0) {
+            return redirect::back()->with('flash_message', 'No data found');
+        } else {
+            $delivery_location = DeliveryLocation::all();
+            Excel::create($excel_name, function($excel) use($inquiry_objects,$excel_sheet_name,$delivery_location) {
+                $excel->sheet('Inquiry-'.$excel_sheet_name, function($sheet) use($inquiry_objects,$delivery_location) {
+                    $sheet->loadView('excelView.inquiry', array('inquiry_objects' => $inquiry_objects,'delivery_location'=>$delivery_location));
+                });
+            })->export('xls');
+        }
     }
 
 }

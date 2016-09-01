@@ -15,7 +15,7 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
-                        {!! Form::open(array('method'=>'PUT','url'=>url('orders',$order->id), 'id'=>'onenter_prevent'))!!}
+                        {!! Form::open(array('method'=>'PUT','url'=>url('orders',$order->id), 'id'=>'onenter_prevent','data-button'=>'btn_edit_order'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                         <input type="hidden" name="order_id" value="{{$order->id}}">

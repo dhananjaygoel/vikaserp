@@ -203,7 +203,7 @@ class DeliveryOrderController extends Controller {
                 AllOrderProducts::create($order_products);
             }
         }
-        return redirect('delivery_order')->with('validation_message', 'Delivery order details successfully added.');
+        return redirect('delivery_order')->with('success', 'Delivery order details successfully added.');
     }
 
     /**
@@ -365,7 +365,7 @@ class DeliveryOrderController extends Controller {
         $delivery_order_prod = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $id)->first();
         $delivery_order->updated_at = $delivery_order_prod->updated_at;
         $delivery_order->save();
-        return redirect('delivery_order')->with('validation_message', 'Delivery order details successfully updated.');
+        return redirect('delivery_order')->with('success', 'Delivery order details successfully updated.');
     }
 
     /**

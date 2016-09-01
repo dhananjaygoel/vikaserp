@@ -454,9 +454,20 @@ function update_price(product_id) {
 }
 
 
-$('#onenter_prevent input').keypress(function (e) {
+$('#onenter_prevent input,#onenter_prevent textarea').keypress(function (e) {
     if (e.which == 13) {
         return false;
+    }
+});
+$('form#onenter_prevent').keypress(function (e) {
+    
+    if (e.which == 13) {
+       submit_button_id= $(this).attr('data-button');
+      if(submit_button_id){
+           $('.'+submit_button_id).trigger('click');
+       }else{
+           return false;
+       }
     }
 });
 $('body').delegate("#add_order_location", "blur", function () {

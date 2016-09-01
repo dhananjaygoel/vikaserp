@@ -18,7 +18,7 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
-                        <form id="onenter_prevent" method="POST" action="{{URL::action('PurchaseAdviseController@store_advise')}}">
+                        <form data-button="" id="onenter_prevent" method="POST" action="{{URL::action('PurchaseAdviseController@store_advise')}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">                                                        
                             <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                             <input type="hidden" name="id" value="{{$purchase_orders->id}}">
@@ -203,7 +203,8 @@
                             <!--<button title="SMS would be sent to Relationship Manager" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>-->
                             <hr>
                             <div>
-                                <input type="submit" class="btn btn-primary btn_purorder_to_puradvice" value="Submit">
+                                <button  type="button" class="btn btn-primary btn_purorder_to_puradvice" id="sendSMSEditPurchaseOrder" >Submit</button>
+                                <!--<input type="submit" class="btn btn-primary btn_purorder_to_puradvice" value="Submit">-->
                                 <a href="{{url('purchase_orders')}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
                         </form>

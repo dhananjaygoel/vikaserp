@@ -8,13 +8,18 @@ var all_data;
 
 
 $( document ).ready(function() {
+    $('button[data-dismiss="modal"]').click(function () {
+        $('input[type="password"]').val('');
+    });
     $.ajax({
         url: baseurl + '/get-data',       
         success: function (data) {
-           all_data = jQuery.parseJSON(data);           
-            },
+           all_data = jQuery.parseJSON(data);
+//            $("#add_product_id_" + id).val(obj.data_array[0].id);
+            console.log(all_data);
+                },
     });
-    
+    //alert(baseurl);
     
 });
 /*
@@ -576,11 +581,6 @@ function product_autocomplete(id) {
     var product_price;
     var cust=0;
     location_difference = $('#location_difference').val();
-    if(location_difference == null | location_difference == "")
-    {
-        location_difference = 0;
-    }
-    //console.log(location_difference);
     $("#add_product_name_" + id).autocomplete({
         position: {
             my: "left bottom",
@@ -592,34 +592,21 @@ function product_autocomplete(id) {
              
              if (result.length > 0) {
                 if (customer_id > 0) {
-                    console.log("hi");
                     var temp = $.grep(all_data.customer_product_difference, function(e){ return (e.customer_id == customer_id); });
                     var customer = $.grep(temp, function(e){ return (e.product_category_id == result[0].product_category.id); }); 
                     if (customer.length > 0) {
                        cust = customer.difference_amount;
                     }
-                    if(result[0].difference == null | result[0].difference == "")
-                    {
-                        result[0].difference = 0;
-                    }
-                    console.log('diff='+result[0].difference);
                     value = result[0].alias_name;
                     id_value = result[0].id;
                     product_price = parseFloat(result[0].product_category.price) + parseFloat(cust) + parseFloat(location_difference) + parseFloat(result[0].difference);
                 }  
-                else
-                {
-                    value = result[0].alias_name;
-                    id_value = "0";
-                    product_price=parseFloat(0);
-                }
              
-            }
-            else
-            {
-                value = 'No Products';
-                
-            }
+             }
+             else
+             {
+                 value = 'No Products';
+             }
               $("#product_price_" + id).val(product_price); // to add price in the textbox
                     $("#add_product_id_" + id).val(id_value);
                     $("#add_product_id_" + id).attr('data-curname', value);
