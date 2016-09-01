@@ -149,7 +149,7 @@
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
                                             <td><span>Present Shipping</span></td>
                                             <td><span>Price</span><span class="mandatory">*</span></td>
-                                            <td><span>Vat Percentage</span></td>
+                                            <td class="inquiry_vat_chkbox"><span>Vat</span></td>
                                             <td><span>Pending Quantity</span></td>
                                             <td><span>Remark</span></td>
                                         </tr>
@@ -321,7 +321,7 @@
                                             Session::put('input_data', '');
                                         } else {
                                             ?>
-                                            <?php $counter=0; ?>
+                                            <?php $counter = 0; ?>
                                             @foreach($delivery_data['delivery_product'] as $key=>$product)
                                             @if($product->order_type =='delivery_order')
                                             <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
@@ -369,13 +369,18 @@
                                                     -->
                                                 </td>
                                                 <td class="col-md-2">
-                                                    <!--                                                            form for save product value-->
-                                                    <input type="text" class="form-control" id="vat_percentage_{{$key}}" value="{{($product->vat_percentage!='')?$product->vat_percentage:''}}" name="product[{{$key}}][vat_percentage]" placeholder="Vat Percentage">
-                                                    <!--
-                                                    <div class="form-group col-md-6 difference_form">
-                                                        <input class="btn btn-primary" type="button" class="form-control" value="save" >
+                                                    <div class="form-group inquiry_vat_chkbox">
+
+                                                        <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes">
+
+                                                        <!--                                                            form for save product value-->
+                                                        <!--<input type="text" class="form-control" id="vat_percentage_{{$key}}" value="{{($product->vat_percentage!='')?$product->vat_percentage:''}}" name="product[{{$key}}][vat_percentage]" placeholder="Vat Percentage">-->
+                                                        <!--
+                                                        <div class="form-group col-md-6 difference_form">
+                                                            <input class="btn btn-primary" type="button" class="form-control" value="save" >
+                                                        </div>
+                                                        -->
                                                     </div>
-                                                    -->
                                                 </td>
                                                 <td class="col-md-1">
                                                     <div class="form-group">

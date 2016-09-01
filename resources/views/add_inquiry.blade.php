@@ -9,9 +9,7 @@
                     <li><a href="{{url('inquiry')}}">Inquiry</a></li>
                     <li class="active"><span>Add Inquiry</span></li>
                 </ol>
-                <div class="clearfix">
-                    <h1 class="pull-left"></h1>
-                </div>
+                <div class="clearfix"><h1 class="pull-left"></h1></div>
             </div>
         </div>
         <div class="row">
@@ -88,6 +86,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="location">Location Difference: </label>
+                                        <input id="location_difference" class="form-control" placeholder="Location Difference " name="location_difference" value="" type="tel">
                                         <input id="location_difference" class="form-control focus_on_enter" placeholder="Location Difference " name="location_difference" value="" type="tel" tabindex="3" >
                                     </div>
                                 </div>
@@ -110,7 +109,7 @@
                                                 <td><span>Quantity</span></td>
                                                 <td><span>Unit</span><span class="mandatory">*</span></td>
                                                 <td><span>Price</span></td>
-                                                <td><span>Vat Percentage</span></td>
+                                                <td class="inquiry_vat_chkbox"><span>Vat</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
                                             <?php
@@ -148,12 +147,13 @@
                                                             <input type="tel" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
                                                         </div>
                                                     </td>
-                                                    <td class="col-md-2">
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control" id="vat_percentage_{{$i}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat percentage">
+                                                    <td class="col-md-1">
+                                                        <div class="form-group inquiry_vat_chkbox">
+                                                            <!--<input type="text" class="form-control" id="vat_percentage_{{$i}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat percentage">-->
+                                                            <input class="vat_chkbox" type="checkbox" name="product[{{$i}}][vat_percentage]" value="yes">
                                                         </div>
                                                     </td>
-                                                    <td class="col-md-2">
+                                                    <td class="col-md-3">
                                                         <div class="form-group">
                                                             <input id="remark" class="form-control" placeholder="Remark" name="product[{{$i}}][remark]" type="text" value="{{(isset($session_data['product'][$i]['remark']))?$session_data['product'][$i]['remark']:''}}">
                                                         </div>

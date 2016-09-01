@@ -199,7 +199,7 @@ class DeliveryChallanController extends Controller {
                         'quantity' => $product_data['actual_quantity'],
                         'present_shipping' => $product_data['actual_quantity'],
                         'price' => $product_data['price'],
-                        'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
+                        'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                         'from' => $input_data['order_id'],
                         'parent' => $input_data['order'],
                     ];

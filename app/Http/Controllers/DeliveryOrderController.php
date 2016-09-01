@@ -197,7 +197,7 @@ class DeliveryOrderController extends Controller {
                     'quantity' => $product_data['quantity'],
                     'present_shipping' => $product_data['quantity'],
                     'price' => $product_data['price'],
-                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
+                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark']
                 ];
                 AllOrderProducts::create($order_products);
@@ -342,7 +342,7 @@ class DeliveryOrderController extends Controller {
                     'quantity' => $product_data['quantity'],
                     'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price'],
-                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
+                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark'],
                 ];
                 $add_order_products = AllOrderProducts::where('id', '=', $product_data['id'])->update($order_products);
@@ -355,7 +355,7 @@ class DeliveryOrderController extends Controller {
                     'quantity' => $product_data['present_shipping'],
                     'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price'],
-                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
+                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark'],
                 ];
                 $add_order_products = AllOrderProducts::create($order_products);
@@ -527,7 +527,7 @@ class DeliveryOrderController extends Controller {
                     'quantity' => $product_data['actual_quantity'],
                     'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price'],
-                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
+                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'from' => $input_data['order_id'],
                     'parent' => $product_data['order'],
                 ];
@@ -543,6 +543,7 @@ class DeliveryOrderController extends Controller {
                     'quantity' => $product_data['quantity'],
                     'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price'],
+                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'from' => ''
                 ];
                 $add_order_products = AllOrderProducts::create($order_products);
@@ -703,13 +704,15 @@ class DeliveryOrderController extends Controller {
         if ($delivery_order_status == 'Inprocess') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $delivery_order_status = 'pending';
+
+
             $excel_sheet_name = 'Inprocess';
-            $excel_name = 'DeliveryOrder-InProcess-'.date('dmyhis');
+            $excel_name = 'DeliveryOrder-InProcess-' . date('dmyhis');
         } elseif ($delivery_order_status == 'Delivered') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $delivery_order_status = 'completed';
             $excel_sheet_name = 'Delivered';
-             $excel_name = 'DeliveryOrder-Delivered-'.date('dmyhis');
+            $excel_name = 'DeliveryOrder-Delivered-' . date('dmyhis');
         }
         $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')->get();
 
@@ -719,23 +722,23 @@ class DeliveryOrderController extends Controller {
             $units = Units::all();
             $delivery_locations = DeliveryLocation::all();
             $customers = Customer::all();
-          
-            
-            Excel::create($excel_name, function($excel) use($delivery_order_objects, $units, $delivery_locations, $customers,$excel_sheet_name) {
-                $excel->sheet('DeliveryOrder-'.$excel_sheet_name, function($sheet) use($delivery_order_objects, $units, $delivery_locations, $customers) {
+
+
+            Excel::create($excel_name, function($excel) use($delivery_order_objects, $units, $delivery_locations, $customers, $excel_sheet_name) {
+                $excel->sheet('DeliveryOrder-' . $excel_sheet_name, function($sheet) use($delivery_order_objects, $units, $delivery_locations, $customers) {
                     $sheet->loadView('excelView.delivery_order', array('delivery_order_objects' => $delivery_order_objects, 'units' => $units, 'delivery_locations' => $delivery_locations, 'customers' => $customers));
                 });
             })->export('xls');
         }
     }
-    
+
     public function get_data() {
         $product_sub_category = ProductSubCategory::with('product_category')->get();
-        $customer_product_difference = CustomerProductDifference::all();        
+        $customer_product_difference = CustomerProductDifference::all();
         echo json_encode(array(
             'product_sub_category' => $product_sub_category,
-            'customer_product_difference' => $customer_product_difference,            
-            ));
+            'customer_product_difference' => $customer_product_difference,
+        ));
     }
 
 }

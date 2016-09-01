@@ -15,7 +15,7 @@
 
         <!-- RTL support - for demo only -->
         {!! HTML::style('/resources/assets/css/bootstrap/bootstrap.min.css') !!}
-        <script src="js/demo-rtl.js"></script>
+        <!--<script src="js/demo-rtl.js"></script>-->
         <!--
         If you need RTL support just include here RTL CSS file <link rel="stylesheet" type="text/css" href="css/libs/bootstrap-rtl.min.css" />
         And add "rtl" class to <body> element - e.g. <body class="rtl">
@@ -90,7 +90,7 @@
         <!-- this page specific scripts -->
 
         <!-- Bootbox Js -->
-        {!! HTML::script('/resources/assets/js/bootbox.min.js') !!}
+        <!--{!! HTML::script('/resources/assets/js/bootbox.min.js') !!}-->
         {!! HTML::script('/resources/assets/js/jquery_block_UI.js') !!}
 
         <!-- Bootstrap spinner Js -->
@@ -119,7 +119,7 @@
 
 
 
-        {!! HTML::script('/resources/assets/js/jquery.spinner.min.js') !!}
+        <!--{!! HTML::script('/resources/assets/js/jquery.spinner.min.js') !!}-->
 
 
 
@@ -132,7 +132,7 @@
         <!-- this page specific inline scripts -->
 
         <!-- RTL support - for demo only -->
-        {!! HTML::script('/resources/assets/js/demo-rtl.js') !!}
+        <!--{!!  HTML::script('/resources/assets/js/demo-rtl.js') !!}-->
         <!-- Confirm Exit JS -->
         {!! HTML::script('/resources/assets/js/jquery.confirmExit.min.js') !!}
 

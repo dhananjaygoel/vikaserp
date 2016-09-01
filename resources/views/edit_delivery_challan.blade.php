@@ -51,7 +51,7 @@
                                             <td><span>Actual Pieces</span></td>
                                             <td><span>Present Shipping</span></td>
                                             <td><span>Rate</span></td>
-                                            <td><span>Vat Percentage</span></td>
+                                            <td class="inquiry_vat_chkbox"><span>Vat</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Amount</span></td>
                                         </tr>
@@ -92,8 +92,9 @@
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" id="product_vatpercentage_{{$key}}" value="{{$product->vat_percentage}}" name="product[{{$key}}][vat_percentage]" placeholder="Vat Percenatge" onblur="fetch_price({{$key}})">
+                                                <div class="form-group inquiry_vat_chkbox">
+                                                    <!--<input type="text" class="form-control" id="product_vatpercentage_{{$key}}" value="{{$product->vat_percentage}}" name="product[{{$key}}][vat_percentage]" placeholder="Vat Percenatge" onblur="fetch_price({{$key}})">-->
+                                                    <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -144,8 +145,9 @@
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
-                                                <div class="form-group">
-                                                    <input type="tel" class="form-control" id="product_vatpercentage_{{$key}}" value="" name="product[{{$key}}][vat_percentage]" placeholder="Vat Percentage" onblur="fetch_price({{$key}})">
+                                                <div class="form-group inquiry_vat_chkbox">
+                                                    <!--<input type="tel" class="form-control" id="product_vatpercentage_{{$key}}" value="" name="product[{{$key}}][vat_percentage]" placeholder="Vat Percentage" onblur="fetch_price({{$key}})">-->
+                                                    <input class="vat_chkbox" type="checkbox" name="product[{{$key}}][vat_percentage]" value="yes">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">

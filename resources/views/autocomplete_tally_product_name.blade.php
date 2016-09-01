@@ -62,8 +62,8 @@
             '</div>' +
             '</td>' +
             '<td class="col-md-1">' +
-            '<div class="form-group">' +
-            '<input type="text" class="form-control" placeholder="Vat Percentage" id="product_vatpercentage_' + current_row_count + '" name="product[' + current_row_count + '][vat_percentage]" onblur="fetch_price();">' +
+            '<div class="form-group inquiry_vat_chkbox">' +
+            '<input type="checkbox" class="vat_chkbox" name="product[' + current_row_count + '][vat_percentage]" value="yes">' +
             '<input id="pending_qunatity_value_' + current_row_count + '" class="form-control text-center" name="product[' + current_row_count + '][pending_quantity]" value="" type="hidden">' +
             '</div>' +
             '</td>' +
@@ -124,12 +124,12 @@
             '<input type="tel" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
             '</div>' +
             '</td>' +
-            '<td class="col-md-2">' +
-            '<div class="form-group">' +
-            '<input type="tel" class="form-control" placeholder="Vat Percentage" id="vat_percentage_' + current_row_count + '" name="product[' + current_row_count + '][vat_percentage]">' +
+            '<td class="col-md-1">' +
+            '<div class="form-group inquiry_vat_chkbox">' +
+            '<input type="checkbox" class="vat_chkbox" name="product[' + current_row_count + '][vat_percentage]" value="yes">' +
             '</div>' +
             '</td>' +
-            '<td class="col-md-2">' +
+            '<td class="col-md-3">' +
             '<div class="form-group">' +
             '<input id="remark" class="form-control" placeholder="Remark" name="product[' + current_row_count + '][remark]" value="" type="text">' +
             '</div>' +

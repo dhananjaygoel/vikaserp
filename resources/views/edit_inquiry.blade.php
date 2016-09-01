@@ -177,7 +177,7 @@
                                             <td><span>Quantity</span></td>
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
                                             <td><span>Price</span></td>
-                                            <td><span>Vat Percentage</span></td>
+                                            <td class="inquiry_vat_chkbox"><span>Vat</span></td>
                                             <td><span>Remark</span></td>
                                         </tr>
                                         <?php
@@ -214,12 +214,12 @@
                                                                 <input type="text" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
                                                             </div>
                                                         </td>
-                                                        <td class="col-md-2">
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control" id="vat_percentage_{{$i}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat percentage" value="<?php if (isset($session_data['product'][$i]['vat_percentage'])) { ?>{{$session_data['product'][$i]['vat_percentage']}}<?php } ?>">
+                                                        <td class="col-md-1">
+                                                            <div class="form-group inquiry_vat_chkbox">
+                                                                <input type="text" class="form-control" id="vat_percentage_{{$i}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat percentage" value="yes">
                                                             </div>
                                                         </td>
-                                                        <td class="col-md-4">
+                                                        <td class="col-md-3">
                                                             <div class="form-group">
                                                                 <input id="remark" class="form-control" placeholder="Remark" name="product[{{$i}}][remark]" type="text" value="<?php if (isset($session_data['product'][$i]['remark'])) { ?>{{$session_data['product'][$i]['remark']}}<?php } ?>">
                                                             </div>
@@ -231,16 +231,16 @@
                                             Session::put('input_data', '');
                                         } else {
                                             ?>
-                                            <?php $counter=0;?>
+                                            <?php $counter = 0; ?>
                                             @foreach($inquiry['inquiry_products'] as $key=>$product)
                                             <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
                                                 <td class="col-md-3">
                                                     <div class="form-group searchproduct">
                                                         <input class="form-control each_product_detail each_product_detail_edit" data-productid="{{$key}}" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});" value="{{isset($product['inquiry_product_details'])?$product['inquiry_product_details']->alias_name: ''}}" @if($counter==0)tabindex="4" class="ui-dform-text" @endif >
-                                                        <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}" id="add_product_id_{{$key}}">
+                                                               <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}" id="add_product_id_{{$key}}">
                                                         <i class="fa fa-search search-icon"></i>
                                                     </div>
-                                                    <?php $counter++;?>
+                                                    <?php $counter++; ?>
                                                 </td>
                                                 <td class="col-md-1">
                                                     <div class="form-group">
@@ -266,8 +266,9 @@
                                                     </div>
                                                 </td>
                                                 <td class="col-md-2">
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" id="vat_percentage_{{$key}}" name="product[{{$key}}][vat_percentage]" placeholder="Vat percentage" value="{{$product->vat_percentage}}">
+                                                    <div class="form-group inquiry_vat_chkbox">
+                                                        <!--<input type="text" class="form-control" id="vat_percentage_{{$key}}" name="product[{{$key}}][vat_percentage]" placeholder="Vat percentage" value="{{$product->vat_percentage}}">-->
+                                                        <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes">
                                                     </div>
                                                 </td>
                                                 <td class="col-md-4">
