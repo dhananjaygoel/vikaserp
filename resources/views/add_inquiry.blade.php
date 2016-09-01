@@ -9,9 +9,7 @@
                     <li><a href="{{url('inquiry')}}">Inquiry</a></li>
                     <li class="active"><span>Add Inquiry</span></li>
                 </ol>
-                <div class="clearfix">
-                    <h1 class="pull-left"></h1>
-                </div>
+                <div class="clearfix"><h1 class="pull-left"></h1></div>
             </div>
         </div>
         <div class="row">
@@ -44,7 +42,7 @@
                                 <div class="customer_select" style="{{(Input::old('customer_status') == "new_customer")?'display:none':'display:block'}}" >
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
-                                            <input class="form-control" placeholder="Enter Tally Name" type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name" tabindex="1" class="ui-dform-text">
+                                            <input class="form-control" placeholder="Enter Tally Name" type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
                                             <input type="hidden" id="existing_customer_id" name="existing_customer_name">
                                             <input type="hidden" id="customer_default_location">
                                             <i class="fa fa-search search-icon"></i>
@@ -76,7 +74,7 @@
                                 <div class="form-group">
                                     <div class="form-group col-md-4">
                                         <label for="location">Delivery Location:<span class="mandatory">*</span></label>
-                                        <select class="form-control" name="add_inquiry_location" id="add_order_location" tabindex="2" class="ui-dform-select">
+                                        <select class="form-control" name="add_inquiry_location" id="add_order_location">
                                             <option value="0" selected="">Delivery Location</option>
                                             @foreach($delivery_locations as $delivery_location)
                                             @if($delivery_location->status=='permanent' && $delivery_location->id!=0)
@@ -88,7 +86,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="location">Location Difference: </label>
-                                        <input id="location_difference" class="form-control" placeholder="Location Difference " name="location_difference" value="" type="tel" tabindex="3" class="ui-dform-text">
+                                        <input id="location_difference" class="form-control" placeholder="Location Difference " name="location_difference" value="" type="tel">
                                     </div>
                                 </div>
                             </div>
@@ -110,7 +108,7 @@
                                                 <td><span>Quantity</span></td>
                                                 <td><span>Unit</span><span class="mandatory">*</span></td>
                                                 <td><span>Price</span></td>
-                                                <td><span>Vat Percentage</span></td>
+                                                <td class="inquiry_vat_chkbox"><span>Vat</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
                                             <?php
@@ -124,7 +122,7 @@
                                                 <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
-                                                            <input class="form-control each_product_detail" data-productid="{{$i}}" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>" tabindex="4" class="ui-dform-text">
+                                                            <input class="form-control each_product_detail" data-productid="{{$i}}" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>">
                                                             <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
                                                             <i class="fa fa-search search-icon"></i>
                                                         </div>
@@ -148,12 +146,13 @@
                                                             <input type="tel" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
                                                         </div>
                                                     </td>
-                                                    <td class="col-md-2">
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control" id="vat_percentage_{{$i}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat percentage">
+                                                    <td class="col-md-1">
+                                                        <div class="form-group inquiry_vat_chkbox">
+                                                            <!--<input type="text" class="form-control" id="vat_percentage_{{$i}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat percentage">-->
+                                                            <input class="vat_chkbox" type="checkbox" name="product[{{$i}}][vat_percentage]" value="yes">
                                                         </div>
                                                     </td>
-                                                    <td class="col-md-2">
+                                                    <td class="col-md-3">
                                                         <div class="form-group">
                                                             <input id="remark" class="form-control" placeholder="Remark" name="product[{{$i}}][remark]" type="text" value="{{(isset($session_data['product'][$i]['remark']))?$session_data['product'][$i]['remark']:''}}">
                                                         </div>

@@ -125,13 +125,8 @@ class InquiryController extends Controller {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
                 $customers = new Customer();
-                $customers->owner_name = $input_data['customer_name'];
-                $customers->contact_person = $input_data['contact_person'];
-                $customers->phone_number1 = $input_data['mobile_number'];
-                $customers->credit_period = $input_data['credit_period'];
-                $customers->customer_status = 'pending';
-                $customers->save();
-                $customer_id = $customers->id;
+                $customers_info = $customers->addNewCustomer($input_data['customer_name'], $input_data['contact_person'], $input_data['mobile_number'], $input_data['credit_period']);
+                $customer_id = $customers_info->id;
             } else {
                 $error_msg = $validator->messages();
                 Session::forget('product');
@@ -175,7 +170,7 @@ class InquiryController extends Controller {
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
-                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
+                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark']
                 ];
                 InquiryProducts::create($inquiry_products);
@@ -453,7 +448,7 @@ class InquiryController extends Controller {
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
-                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
+                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark'],
                 ];
                 InquiryProducts::create($inquiry_products);

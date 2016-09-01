@@ -82,7 +82,7 @@
                                             <td><span>Qty</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Price</span></td>
-                                            <td><span>Vat Percentage</span></td>
+                                            <td><span>Vat</span></td>
                                             <td class="widthtable"><span>Remark</span></td>
                                         </tr>
                                         <?php $total = 0; ?>
@@ -101,8 +101,14 @@
                                                     <?php $total = $total + $product->price * $product->quantity; ?>
                                                 </div>
                                             </td>
-                                            <td class="col-md-2"><div class="form-group">{{$product->vat_percentage}}</div></td>
-                                            <td class="col-md-2"><div class="form-group">{{$product->remarks}}</div></td>
+                                            <td class="col-md-2">
+                                                <div class="form-group">
+                                                    <input type="checkbox" disabled="" {{($product->vat_percentage>0)?'checked':''}} >
+                                                </div>
+                                            </td>
+                                            <td class="col-md-2">
+                                                <div class="form-group">{{$product->remarks}}</div>
+                                            </td>
                                         </tr>
                                         @endif
                                         @endforeach

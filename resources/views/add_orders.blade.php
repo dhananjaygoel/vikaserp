@@ -130,7 +130,7 @@
                                                 <td><span>Quantity</span></td>
                                                 <td><span>Unit</span><span class="mandatory">*</span></td>
                                                 <td><span>Price</span><span class="mandatory">*</span></td>
-                                                <td><span>Vat Percentage</span></td>
+                                                <td class="inquiry_vat_chkbox"><span>Vat</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
                                             <?php
@@ -168,18 +168,19 @@
                                                             <input type = "tel" class = "form-control" id = "product_price_{{$i}}" name = "product[{{$i}}][price]" placeholder = "Price" value = "{{(isset($session_data['product'][$i]['price'])) ?$session_data['product'][$i]['price'] : ''}}">
                                                         </div>
                                                     </td>
-                                                    <td class="col-md-2">
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control" id="vat_percentage_{{$i}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat percentage" value = "{{(isset($session_data['product'][$i]['vat_percentage'])) ?$session_data['product'][$i]['vat_percentage'] : ''}}">
+                                                    <td class="col-md-1">
+                                                        <div class="form-group inquiry_vat_chkbox">
+                                                            <!--<input type="text" class="form-control" id="vat_percentage_{{$i}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat percentage" value = "{{(isset($session_data['product'][$i]['vat_percentage'])) ?$session_data['product'][$i]['vat_percentage'] : ''}}">-->
+                                                            <input class="vat_chkbox" type="checkbox" name="product[{{$i}}][vat_percentage]" value="yes">
                                                         </div>
                                                     </td>
-                                                    <td class="col-md-2">
+                                                    <td class="col-md-3">
                                                         <div class = "form-group">
                                                             <input id = "remark" class = "form-control" placeholder = "Remark" name = "product[{{$i}}][remark]" type = "text" value = "{{(isset($session_data['product'][$i]['remark'])) ?$session_data['product'][$i]['remark'] : ''}}">
                                                         </div>
                                                     </td>
                                                 </tr>
-                                            <?php
+                                                <?php
                                             }
                                             Session::put('input_data', '');
                                             ?>

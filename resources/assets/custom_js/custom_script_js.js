@@ -355,12 +355,12 @@ function fetch_price() {
                 }
             }
             var rate = $("#product_price_" + i).val();
-            var vat_percentage = $("#product_vatpercentage_" + i).val();
-            if (vat_percentage == '') {
-                vat_percentage = 0;
-            }
+//            var vat_percentage = $("#product_vatpercentage_" + i).val();
+//            if (vat_percentage == '') {
+//                vat_percentage = 0;
+//            }
             var amount = parseFloat(rate) * parseInt(quantity);
-            amount = parseFloat(amount + ((amount * vat_percentage) / 100));
+//            amount = parseFloat(amount + ((amount * vat_percentage) / 100));
             if (amount > 0) {
                 $("#amount_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
             }
@@ -422,9 +422,9 @@ function grand_total_challan() {
     var current_row_count = $(".add_product_row").length;
     var total_price_products = 0;
     var total_actual_quantity = 0;
-    var loading_vat_percentage = $('#loading_vat_percentage').val();
-    var freight_vat_percentage = $('#freight_vat_percentage').val();
-    var discount_vat_percentage = $('#discount_vat_percentage').val();
+//    var loading_vat_percentage = $('#loading_vat_percentage').val();
+//    var freight_vat_percentage = $('#freight_vat_percentage').val();
+//    var discount_vat_percentage = $('#discount_vat_percentage').val();
     for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseFloat($('#product_price_' + i).val())) {
             var unit_id = $("#units_" + i).val();
@@ -437,12 +437,12 @@ function grand_total_challan() {
 //            if ($("#actual_pieces_" + i).val() > 0 && $("#actual_quantity_" + i).val() == 0 || $("#actual_quantity_" + i).val() == '') {
 //                quantity = parseFloat($("#actual_pieces_" + i).val());
 //            }
-            var vat_percentage = $("#product_vatpercentage_" + i).val();
-            if (vat_percentage == '') {
-                vat_percentage = 0;
-            }
+//            var vat_percentage = $("#product_vatpercentage_" + i).val();
+//            if (vat_percentage == '') {
+//                vat_percentage = 0;
+//            }
             var amount = parseFloat(parseFloat($('#product_price_' + i).val()) * quantity);
-            total_price_products = total_price_products + amount + parseFloat((amount * $('#product_vatpercentage_' + i).val()) / 100);
+            total_price_products = total_price_products + amount;
             total_actual_quantity = total_actual_quantity + quantity;
         }
     }
@@ -457,17 +457,17 @@ function grand_total_challan() {
             $("#loading_charge").val(loading_charge.toFixed(2));
             total_price = parseFloat(total_price) + parseFloat(loading_charge.toFixed(2));
         }
-        if (parseFloat(loading_vat_percentage) > 0 && parseFloat(loading_charge) > 0) {
-            var subtotal = ((parseFloat(loading_vat_percentage) * parseFloat($("#loading_charge").val())) / 100);
-            $('#loading_total_charge').attr('value', (parseFloat($("#loading_charge").val()) + subtotal).toFixed(2));
-            total_price += (parseFloat($('#loading_total_charge').attr('value')) - parseFloat($("#loading_charge").val()));
-        } else {
-            if ($("#loading_charge").val().trim() != '') {
-                $('#loading_total_charge').attr('value', $("#loading_charge").val());
-            } else {
-                $('#loading_total_charge').attr('value', '');
-            }
-        }
+//        if (parseFloat(loading_vat_percentage) > 0 && parseFloat(loading_charge) > 0) {
+//            var subtotal = ((parseFloat(loading_vat_percentage) * parseFloat($("#loading_charge").val())) / 100);
+//            $('#loading_total_charge').attr('value', (parseFloat($("#loading_charge").val()) + subtotal).toFixed(2));
+//            total_price += (parseFloat($('#loading_total_charge').attr('value')) - parseFloat($("#loading_charge").val()));
+//        } else {
+//            if ($("#loading_charge").val().trim() != '') {
+//                $('#loading_total_charge').attr('value', $("#loading_charge").val());
+//            } else {
+//                $('#loading_total_charge').attr('value', '');
+//            }
+//        }
     }
     //discount
     var discount_value = 0;
@@ -477,17 +477,17 @@ function grand_total_challan() {
             $("#discount_value").val(discount_value.toFixed(2));
             total_price = parseFloat(total_price) - parseFloat(discount_value);
         }
-        if (parseFloat(discount_vat_percentage) > 0 && parseFloat(discount_value) > 0) {
-            var subtotal_discount = ((parseFloat(discount_vat_percentage) * parseFloat($("#discount_value").val())) / 100);
-            $('#discount_total_charge').attr('value', (parseFloat($("#discount_value").val()) + subtotal_discount).toFixed(2));
-            total_price -= subtotal_discount;
-        } else {
-            if ($("#discount_value").val() != '') {
-                $('#discount_total_charge').attr('value', $("#discount_value").val());
-            } else {
-                $('#discount_total_charge').attr('value', '');
-            }
-        }
+//        if (parseFloat(discount_vat_percentage) > 0 && parseFloat(discount_value) > 0) {
+//            var subtotal_discount = ((parseFloat(discount_vat_percentage) * parseFloat($("#discount_value").val())) / 100);
+//            $('#discount_total_charge').attr('value', (parseFloat($("#discount_value").val()) + subtotal_discount).toFixed(2));
+//            total_price -= subtotal_discount;
+//        } else {
+//            if ($("#discount_value").val() != '') {
+//                $('#discount_total_charge').attr('value', $("#discount_value").val());
+//            } else {
+//                $('#discount_total_charge').attr('value', '');
+//            }
+//        }
     }
 //    total_price = parseFloat(total_price) + parseFloat(discount_value.toFixed(2));
 //    total_price = total_price.toFixed(2);
@@ -503,17 +503,17 @@ function grand_total_challan() {
             $("#freight_value").val(freight_value.toFixed(2));
             total_price = parseFloat(total_price) + parseFloat(freight_value);
         }
-        if (parseFloat(freight_vat_percentage) > 0 && parseFloat(freight_value) > 0) {
-            var subtotal_frieght = ((parseFloat(freight_vat_percentage) * parseFloat($("#freight_value").val())) / 100);
-            $('#freight_total_charge').attr('value', (parseFloat($("#freight_value").val()) + subtotal_frieght).toFixed(2));
-            total_price += (parseFloat($('#freight_total_charge').attr('value')) - parseFloat($("#freight_value").val()));
-        } else {
-            if ($("#freight_value").val() != '') {
-                $('#freight_total_charge').attr('value', $("#freight_value").val());
-            } else {
-                $('#freight_total_charge').attr('value', '');
-            }
-        }
+//        if (parseFloat(freight_vat_percentage) > 0 && parseFloat(freight_value) > 0) {
+//            var subtotal_frieght = ((parseFloat(freight_vat_percentage) * parseFloat($("#freight_value").val())) / 100);
+//            $('#freight_total_charge').attr('value', (parseFloat($("#freight_value").val()) + subtotal_frieght).toFixed(2));
+//            total_price += (parseFloat($('#freight_total_charge').attr('value')) - parseFloat($("#freight_value").val()));
+//        } else {
+//            if ($("#freight_value").val() != '') {
+//                $('#freight_total_charge').attr('value', $("#freight_value").val());
+//            } else {
+//                $('#freight_total_charge').attr('value', '');
+//            }
+//        }
     }
 //    total_price = parseFloat(total_price) + parseFloat(freight_value.toFixed(2));
     total_price = parseFloat(total_price.toFixed(2));
@@ -699,17 +699,17 @@ function validation_digit() {
     return ((event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46);
 }
 
- $( document ).ready(function() {
+$(document).ready(function () {
     $('input,select').on('keypress', function (e) {
-     if (e.which == 13) {        
-         e.preventDefault();
-         var $next = $('[tabIndex=' + (+this.tabIndex + 1) + ']');
-        // console.log($next);
-         if (!$next.length) {
-            // $next = $('[tabIndex=1]');
-         }
-         var name = $next.focus();
-             console.log(name);
+        if (e.which == 13) {
+            e.preventDefault();
+            var $next = $('[tabIndex=' + (+this.tabIndex + 1) + ']');
+            // console.log($next);
+            if (!$next.length) {
+                // $next = $('[tabIndex=1]');
+            }
+            var name = $next.focus();
+            console.log(name);
         }
     });
 });

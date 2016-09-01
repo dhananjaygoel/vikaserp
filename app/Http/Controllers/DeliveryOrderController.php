@@ -197,7 +197,7 @@ class DeliveryOrderController extends Controller {
                     'quantity' => $product_data['quantity'],
                     'present_shipping' => $product_data['quantity'],
                     'price' => $product_data['price'],
-                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
+                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark']
                 ];
                 AllOrderProducts::create($order_products);
@@ -342,7 +342,7 @@ class DeliveryOrderController extends Controller {
                     'quantity' => $product_data['quantity'],
                     'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price'],
-                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
+                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark'],
                 ];
                 $add_order_products = AllOrderProducts::where('id', '=', $product_data['id'])->update($order_products);
@@ -355,7 +355,7 @@ class DeliveryOrderController extends Controller {
                     'quantity' => $product_data['present_shipping'],
                     'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price'],
-                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
+                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark'],
                 ];
                 $add_order_products = AllOrderProducts::create($order_products);
@@ -527,7 +527,7 @@ class DeliveryOrderController extends Controller {
                     'quantity' => $product_data['actual_quantity'],
                     'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price'],
-                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
+                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'from' => $input_data['order_id'],
                     'parent' => $product_data['order'],
                 ];
@@ -543,6 +543,7 @@ class DeliveryOrderController extends Controller {
                     'quantity' => $product_data['quantity'],
                     'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price'],
+                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'from' => ''
                 ];
                 $add_order_products = AllOrderProducts::create($order_products);
@@ -699,19 +700,19 @@ class DeliveryOrderController extends Controller {
     /* Function used to export dilivery order list based on order status */
 
     public function exportDeliveryOrderBasedOnStatus($delivery_order_status) {
-        
+
         if ($delivery_order_status == 'Inprocess') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
-                $delivery_order_status='pending';
-            } elseif ($delivery_order_status == 'Delivered') {
+            $delivery_order_status = 'pending';
+        } elseif ($delivery_order_status == 'Delivered') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
-               $delivery_order_status='completed';
-            }
-        $delivery_order_objects = DeliveryOrder::where('order_status',$delivery_order_status)->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')->get();
-       
+            $delivery_order_status = 'completed';
+        }
+        $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')->get();
+
         if (count($delivery_order_objects) == 0) {
-           return redirect::back()->with('error','No data found');
-        }else{
+            return redirect::back()->with('error', 'No data found');
+        } else {
             $units = Units::all();
             $delivery_locations = DeliveryLocation::all();
             $customers = Customer::all();
@@ -722,8 +723,6 @@ class DeliveryOrderController extends Controller {
                 });
             })->export('xls');
         }
-            
-        
     }
 
 }

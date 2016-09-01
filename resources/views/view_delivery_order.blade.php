@@ -80,7 +80,7 @@
                                         <td><span>Present shipping</span></td>
                                         <td><span>Unit</span></td>
                                         <td><span>Price</span></td>
-                                        <td><span>Vat Percentage</span></td>
+                                        <td><span>Vat</span></td>
                                         <td><span>Remark</span></td>                                    
                                     </tr>
                                     <?php $grand = 0; ?>
@@ -95,7 +95,11 @@
                                             @endforeach
                                         </td>
                                         <td>{{$product->price}}</td>
-                                        <td>{{($product->vat_percentage!='')?$product->vat_percentage:''}}</td>
+                                        <td>
+                                            <div class="form-group">
+                                                <input type="checkbox" disabled="" {{($product->vat_percentage>0)?'checked':''}} >
+                                            </div>
+                                        </td>
                                         <td>{{$product->remarks}}</td>
                                     </tr>
                                     <?php

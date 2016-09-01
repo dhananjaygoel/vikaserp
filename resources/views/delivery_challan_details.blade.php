@@ -34,12 +34,12 @@
                                 <tbody>
                                     <tr class="headingunderline">
                                         <td class="col-md-2"><span>Product Name(Alias)</span></td>
-                                        <td class="col-md-1"><span>Actual Quantity</span></td>
+                                        <td class="col-md-2"><span>Actual Quantity</span></td>
                                         <td class="col-md-1"><span>Actual Pieces</span></td>
                                         <td class="col-md-1"><span>Unit</span></td>
                                         <td class="col-md-2"><span>Present Shipping</span></td>
                                         <td class="col-md-1"><span>Rate</span></td>
-                                        <td class="col-md-2"><span>Vat Percentage</span></td>
+                                        <td class="col-md-1"><span>Vat</span></td>
                                         <td class="col-md-2"><span>Amount</span></td>
                                     </tr>
                                     <?php $total_amount = 0; ?>
@@ -49,7 +49,7 @@
                                         <td class="col-md-2">
                                             <div class="form-group searchproduct">{{$product->order_product_details->alias_name}}</div>
                                         </td>
-                                        <td class="col-md-1">
+                                        <td class="col-md-2">
                                             <div class="form-group">{{$product->quantity}}</div>
                                         </td>
                                         <td class="col-md-1">
@@ -61,17 +61,18 @@
                                         <td class="col-md-2">
                                             <div class="form-group">{{$product->present_shipping}}</div>
                                         </td>
-                                        <td class="col-md-2">
+                                        <td class="col-md-1">
                                             <div class="form-group">{{$product->price}}</div>
                                         </td>
-                                        <td class="col-md-2">
-                                            <div class="form-group">{{($product->vat_percentage!='')?$product->vat_percentage:''}}</div>
+                                        <td class="col-md-1">
+                                            <div class="form-group">
+                                                <input type="checkbox" disabled="" {{($product->vat_percentage>0)?'checked':''}} >
+                                            </div>
                                         </td>
-                                        <td class="col-md-3">
+                                        <td class="col-md-2">
                                             <div class="form-group">
                                                 <?php
                                                 $amount = $product->actual_quantity * $product->price;
-                                                $amount = $amount + (($amount * (($product->vat_percentage != '') ? $product->vat_percentage : 0)) / 100);
                                                 $total_amount = round($amount + $total_amount, 2);
                                                 ?>
                                                 {{round($amount, 2)}}
@@ -90,52 +91,22 @@
                         </div>
                         <hr>
                         <div class="form-group">
-                            <div class="col-md-4 no_left_margin">
-                                <label for="Discount"><b class="challan">Discount: </b></label> {{$allorder->discount}}
-                            </div>
-                            <div class="col-md-4">
-                                <label for="Discount Vat Percentage"><b class="challan">Discount Vat Percentage: </b></label> {{$allorder->discount_vat_percentage}}
-                            </div>
-                            <?php
-                            $total_discount_charges = $allorder->discount + (($allorder->discount * $allorder->discount_vat_percentage) / 100);
-                            $total_amount = $total_amount - $total_discount_charges;
-                            ?>
-                            <div class="col-md-4">
-                                <label for="Total Discount Charges"><b class="challan">Total Freight Charges: </b></label> {{$total_discount_charges}}
-                            </div>
-                            <br>
-                        </div>
-                        <hr>
-                        <div class="form-group">
-                            <div class="col-md-4 no_left_margin">
-                                <label for="Freight"><b class="challan">Freight: </b></label> {{$allorder->freight}}
-                            </div>
-                            <div class="col-md-4">
-                                <label for="Freight Vat Percentage"><b class="challan">Freight Vat Percentage: </b></label> {{$allorder->freight_vat_percentage}}
-                            </div>
-                            <?php
-                            $total_freight_charges = $allorder->freight + (($allorder->freight * $allorder->freight_vat_percentage) / 100);
-                            $total_amount = $total_amount + $total_freight_charges;
-                            ?>
-                            <div class="col-md-4">
-                                <label for="Total Freight Charges"><b class="challan">Total Freight Charges: </b></label> {{$total_freight_charges}}
-                            </div>
-                            <br>
-                        </div>
-                        <hr>
-                        <div class="form-group">
-                            <div class="col-md-4 no_left_margin">
+                            <div class="col-md-12 no_left_margin">
                                 <label for="Loading"><b class="challan">Loading: </b></label> {{$allorder->loading_charge}}
                             </div>
-                            <div class="col-md-4">
-                                <label for="Loading"><b class="challan">Loading Vat Percentage: </b></label> {{$allorder->loading_vat_percentage}}
+                            <br>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <div class="col-md-12 no_left_margin">
+                                <label for="Discount"><b class="challan">Discount: </b></label> {{$allorder->discount}}
                             </div>
-                            <?php
-                            $total_loading_charges = $allorder->loading_charge + (($allorder->loading_charge * $allorder->loading_vat_percentage) / 100);
-                            $total_amount = $total_amount + $total_loading_charges;
-                            ?>
-                            <div class="col-md-4">
-                                <label for="Loading"><b class="challan">Total Loading Charges: </b></label> {{$total_loading_charges}}
+                            <br>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <div class="col-md-12 no_left_margin">
+                                <label for="Freight"><b class="challan">Freight: </b></label> {{$allorder->freight}}
                             </div>
                             <br>
                         </div>

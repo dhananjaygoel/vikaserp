@@ -200,12 +200,12 @@ $(document).ready(function () {
                 '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]" onblur="fetch_price();">' +
                 '</div>' +
                 '</td>' +
-                '<td class="col-md-2">' +
-                '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="Vat Percentage" id="product_vatpercentage_' + current_row_count + '" name="product[' + current_row_count + '][vat_percentage]" onblur="fetch_price();">' +
+                '<td class="col-md-1">' +
+                '<div class="form-group inquiry_vat_chkbox">' +
+                '<input type="checkbox" class="vat_chkbox" name="product[' + current_row_count + '][vat_percentage]" value="yes">' +
                 '</div>' +
                 '</td>' +
-                '<td class="col-md-1">' +
+                '<td class="col-md-2">' +
                 '<div class="form-group ">' +
                 '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
                 '</select>' +

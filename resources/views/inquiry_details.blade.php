@@ -69,16 +69,10 @@
                                         @endif
                                         @endforeach
                                         @else
-                                        <tr>
-                                            <td><span class="underline">Other Location: </span> {{$inquiry->other_location}} </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="underline">Location Difference: </span> {{$inquiry->location_difference}} </td>
-                                        </tr>
+                                        <tr><td><span class="underline">Other Location: </span> {{$inquiry->other_location}} </td></tr>
+                                        <tr><td><span class="underline">Location Difference: </span> {{$inquiry->location_difference}} </td></tr>
                                         @endif
-                                        <tr>
-                                            <td><span class="underline">Product Details </span></td>
-                                        </tr>
+                                        <tr><td><span class="underline">Product Details </span></td></tr>
                                     </tbody>
                                 </table>
                                 <table id="table-example" class="table customerview_table">
@@ -88,7 +82,7 @@
                                             <td><span> Quantity</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Price</span></td>
-                                            <td><span>Vat Percentage</span></td>
+                                            <td><span>Vat</span></td>
                                             <td class="widthtable"><span>Update Price</span></td>
                                             <td><span>Remark</span></td>
                                         </tr>
@@ -98,7 +92,11 @@
                                             <td>{{$product_data->quantity}}</td>
                                             <td>{{$product_data['unit']->unit_name}}</td>
                                             <td><div id='price_{{$product_data->id}}'>{{$product_data->price}}</div></td>
-                                            <td><div id='price_{{$product_data->id}}'>{{$product_data->vat_percentage}}</div></td>
+                                            <td>
+                                                <div id='vat_{{$product_data->id}}'>
+                                                    <input type="checkbox" disabled="" {{($product_data->vat_percentage>0)?'checked':''}} >
+                                                </div>
+                                            </td>
                                             <td>
                                                 <div class="row product-price">
                                                     <div class="form-group col-md-6">
