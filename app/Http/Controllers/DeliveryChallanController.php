@@ -23,6 +23,7 @@ use App\Customer;
 use App\ProductSubCategory;
 use Session;
 use Maatwebsite\Excel\Facades\Excel;
+
 class DeliveryChallanController extends Controller {
 
     public function __construct() {
@@ -260,7 +261,12 @@ class DeliveryChallanController extends Controller {
             }
         }
         $date_letter = 'DC/' . $current_date . $id . (($vat_applicable > 0) ? "P" : "A");
-        $update_delivery_challan->serial_number = $date_letter;
+        if ($update_delivery_challan->ref_delivery_challan_id > 0) {
+            $get_serial_number = DeliveryChallan::find($update_delivery_challan->ref_delivery_challan_id);
+            $update_delivery_challan->serial_number = $get_serial_number->serial_number;
+        } else {
+            $update_delivery_challan->serial_number = $date_letter;
+        }
         $update_delivery_challan->challan_status = 'completed';
         $update_delivery_challan->save();
         $this->checkpending_quantity();
@@ -582,7 +588,8 @@ class DeliveryChallanController extends Controller {
             }
         }
     }
-/* Function used to export dilivery challan  list based on order status */
+
+    /* Function used to export dilivery challan  list based on order status */
 
     public function exportDeliveryChallanBasedOnStatus($delivery_order_status) {
 
@@ -590,24 +597,25 @@ class DeliveryChallanController extends Controller {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $delivery_order_status = 'pending';
             $excel_sheet_name = 'Pending';
-            $excel_name = 'DeliveryChallan-InProgress-'.date('dmyhis');
+            $excel_name = 'DeliveryChallan-InProgress-' . date('dmyhis');
         } elseif ($delivery_order_status == 'completed') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $delivery_order_status = 'completed';
             $excel_sheet_name = 'Completed';
-             $excel_name = 'DeliveryOrder-Completed-'.date('dmyhis');
+            $excel_name = 'DeliveryOrder-Completed-' . date('dmyhis');
         }
-        
-$delivery_challan_objects = DeliveryChallan::where('challan_status',$delivery_order_status)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')->get();
 
-if (count($delivery_challan_objects) == 0) {
+        $delivery_challan_objects = DeliveryChallan::where('challan_status', $delivery_order_status)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')->get();
+
+        if (count($delivery_challan_objects) == 0) {
             return redirect::back()->with('flash_message', 'No data found');
         } else {
-            Excel::create($excel_name, function($excel) use($delivery_challan_objects,$excel_sheet_name) {
-                $excel->sheet('DeliveryChallan-'.$excel_sheet_name, function($sheet) use($delivery_challan_objects,$excel_sheet_name) {
+            Excel::create($excel_name, function($excel) use($delivery_challan_objects, $excel_sheet_name) {
+                $excel->sheet('DeliveryChallan-' . $excel_sheet_name, function($sheet) use($delivery_challan_objects, $excel_sheet_name) {
                     $sheet->loadView('excelView.delivery_challan', array('delivery_challan_objects' => $delivery_challan_objects));
                 });
             })->export('xls');
         }
     }
+
 }

@@ -235,11 +235,11 @@
                                                         <input type="hidden" name="vat_percentage" id="vat_percentage" value="{{isset($delivery_data->vat_percentage)?$delivery_data->vat_percentage:0}}" readonly="readonly">
                                                     </label>
                                                 </div>
-                                                <div class="form-group">
+<!--                                                <div class="form-group">
                                                     <label for="vatp"><b class="challan">VAT Value : </b>
                                                         <span id="vat_val"></span>
                                                     </label>
-                                                </div>
+                                                </div>-->
                         @if($delivery_data->vat_percentage==0)
                         <!--                        <div class="form-group">
                                                     <label for="Plusvat"><b class="challan">Plus VAT : </b> No</label>

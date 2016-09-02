@@ -15,6 +15,7 @@ return array(
     'AlterDeliveryChallan01' => $baseDir . '/database/migrations/2016_08_24_140726_alter_delivery_challan_01.php',
     'AlterDeliveryChallan02' => $baseDir . '/database/migrations/2016_08_25_054947_alter_delivery_challan_02.php',
     'AlterDeliveryChallan03' => $baseDir . '/database/migrations/2016_08_25_135403_alter_delivery_challan_03.php',
+    'AlterDeliveryChallan04' => $baseDir . '/database/migrations/2016_09_02_153923_alter_delivery_challan_04.php',
     'AlterDeliveryOrderTable01' => $baseDir . '/database/migrations/2016_08_24_095334_alter_delivery_order_table_01.php',
     'AlterInquiryProducts01' => $baseDir . '/database/migrations/2016_08_03_134914_alter_inquiry_products_01.php',
     'AlterOrderTable01' => $baseDir . '/database/migrations/2016_07_28_092217_alter_order_table_01.php',
