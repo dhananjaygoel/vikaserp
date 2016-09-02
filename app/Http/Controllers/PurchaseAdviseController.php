@@ -286,7 +286,7 @@ class PurchaseAdviseController extends Controller {
                 }
             }
         }
-        $purchase_advice_prod = PurchaseProducts::where('order_type', '=', 'purchase_advice')->where('purchase_order_id', '=', $value->server_id)->first();
+        $purchase_advice_prod = PurchaseProducts::where('order_type', '=', 'purchase_advice')->where('purchase_order_id', '=', $id)->first();
         $purchase_advise->updated_at = $purchase_advice_prod->updated_at;
         $purchase_advise->save();
         return redirect('purchaseorder_advise')->with('success', 'Purchase advise updated successfully');

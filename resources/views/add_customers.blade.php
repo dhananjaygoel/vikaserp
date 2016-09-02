@@ -16,7 +16,7 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
-                        <form id="onenter_prevent" method="POST" action="{{url('customers')}}" accept-charset="UTF-8" >
+                        <form id="" method="POST" action="{{url('customers')}}" accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             @if (count($errors) > 0)
                             <div role="alert" class="alert alert-warning">

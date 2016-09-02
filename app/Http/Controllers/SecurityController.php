@@ -64,7 +64,7 @@ class SecurityController extends Controller {
 
         $validator = Validator::make($data, ['ip_address' => 'required|unique:security|ip']);
         if ($validator->fails()) {
-            return Redirect::back()->with('error', 'Please enter valid IP Address');
+            return Redirect::back()->with('error',$validator->messages()->first());
         }
         $security->ip_address = $ipaddress;
         $security->save();

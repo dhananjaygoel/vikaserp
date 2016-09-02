@@ -35,7 +35,7 @@
 
                             <div class="form-group">
                                 <label for="ip">IP Address</label>
-                                <input id="ip_address" class="form-control" placeholder="IP Address" name="ip_address" value="" type="tel">
+                                <input id="ip_address" class="form-control" placeholder="IP Address" name="ip_address" value="{{Input::old('ip_address')}}" type="tel">
                             </div>
                             <hr>
                             <div >

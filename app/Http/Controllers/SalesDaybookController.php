@@ -87,6 +87,7 @@ class SalesDaybookController extends Controller {
      */
 
     public function delete_multiple_challan() {
+        
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -125,6 +126,7 @@ class SalesDaybookController extends Controller {
      */
 
     public function delete_challan($id) {
+        
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
