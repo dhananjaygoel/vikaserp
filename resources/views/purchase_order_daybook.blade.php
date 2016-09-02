@@ -155,7 +155,8 @@
                                                     @endif
                                                 </td>
                                                 @if(Auth::user()->role_id == 0)
-                                                <td>  <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal{{$daybook->id}}" >
+                                                <td>  
+                                                    <a href="#" class="table-link danger delete-purchase-order-daybook" data-toggle="modal" data-target="#delete-purchase-order-daybook" data-url='{{url('purchase_order_daybook',$daybook->id)}}'>
                                                         <span class="fa-stack">
                                                             <i class="fa fa-square fa-stack-2x"></i>
                                                             <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -164,35 +165,7 @@
                                                 </td>
                                                 @endif
                                             </tr>
-
-                                        <div class="modal fade" id="myModal{{$daybook->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                                        <h4 class="modal-title" id="myModalLabel"></h4>
-                                                    </div>
-                                                    {!! Form::open(array('method'=>'POST','url'=>url('purchase_order_daybook',$daybook->id), 'id'=>'delete_purchase_challan_form'))!!}
-                                                    <div class="modal-body">
-                                                        <div class="delete">
-                                                            <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
-                                                            <div class="pwd">
-                                                                <div class="pwdl"><b>Password:</b></div>
-                                                                <div class="pwdr"><input class="form-control" placeholder="" type="password" name="password"></div>
-                                                            </div>
-                                                            <div class="clearfix"></div>
-                                                            <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                        <button type="button" class="btn btn-default" onclick="this.form.submit();" id="yes">Yes</button>
-                                                    </div>
-                                                    {!! Form::close() !!}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        @endforeach
+                                            @endforeach
                                         </tbody>
                                     </table>
                                     @if(Auth::user()->role_id == 0)
@@ -264,5 +237,32 @@
                 </div>
             </div>
         </div>
+                                          <div class="modal fade" id="delete-purchase-order-daybook" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                                        <h4 class="modal-title" id="myModalLabel"></h4>
+                                                    </div>
+                                                    {!! Form::open(array('method'=>'POST', 'id'=>'delete_purchase_daybook_form'))!!}
+                                                    <div class="modal-body">
+                                                        <div class="delete">
+                                                            <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
+                                                            <div class="pwd">
+                                                                <div class="pwdl"><b>Password:</b></div>
+                                                                <div class="pwdr"><input class="form-control" placeholder="" type="password" name="password"></div>
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                            <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                                        <button type="submit" class="btn btn-default" >Yes</button>
+                                                    </div>
+                                                    {!! Form::close() !!}
+                                                </div>
+                                            </div>
+                                        </div>
     </div>
     @stop
