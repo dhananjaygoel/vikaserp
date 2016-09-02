@@ -11,7 +11,7 @@
                 </ol>
                 <div class="clearfix">
                     <h1 class="pull-left"></h1>
-                    @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
+                    @if($order->order_status!='completed' && Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     <div class="pull-right top-page-ui">
                         <a href="{{url('orders/'.$order->id.'/edit')}}" class="btn btn-primary pull-right">Edit Order</a>
                     </div>

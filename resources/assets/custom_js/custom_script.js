@@ -102,27 +102,27 @@ $(document).ready(function () {
     /*
      * autocomplete 
      */
-    $("#existing_customer_name").autocomplete({
-        select: function (event, ui) {
-            var term = ui.item.value;
-            $.ajax({
-//                beforeSend: function() {
-//                    $.blockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
+//    $("#existing_customer_name").autocomplete({
+//        select: function (event, ui) {
+//            var term = ui.item.value;
+//            $.ajax({
+////                beforeSend: function() {
+////                    $.blockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
+////                },
+//                url: baseurl + '/fetch_existing_customer',
+//                data: {"term": term},
+//                cache: true,
+//                success: function (data) {
+//                    var obj = jQuery.parseJSON(data);
+//                    $("#existing_customer_id").val(obj.data_array[0].id);
+//                    $("#customer_default_location").val(obj.data_array[0].delivery_location_id);
+//                    $("#location_difference").val(obj.data_array[0].location_difference);
+//                    default_delivery_location();
+////                    $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
 //                },
-                url: baseurl + '/fetch_existing_customer',
-                data: {"term": term},
-                cache: true,
-                success: function (data) {
-                    var obj = jQuery.parseJSON(data);
-                    $("#existing_customer_id").val(obj.data_array[0].id);
-                    $("#customer_default_location").val(obj.data_array[0].delivery_location_id);
-                    $("#location_difference").val(obj.data_array[0].location_difference);
-                    default_delivery_location();
-//                    $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
-                },
-            });
-        }
-    });
+//            });
+//        }
+//    });
 //    $("#existing_customer_name").autocomplete({
 //        minLength: 1,
 //        dataType: 'json',
