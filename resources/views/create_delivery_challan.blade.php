@@ -229,6 +229,17 @@
                             <label for="labour"><b class="challan">Labour </b></label>
                             <input id="labour" class="form-control" placeholder="Labour" name="labour" value="" type="tel">
                         </div>
+                        <div class="form-group">
+                                                    <label for="vatp"><b class="challan">VAT Percentage : </b>
+                    {{isset($delivery_data->vat_percentage)?$delivery_data->vat_percentage:0}}                                    
+                                                        <input type="hidden" name="vat_percentage" id="vat_percentage" value="{{isset($delivery_data->vat_percentage)?$delivery_data->vat_percentage:0}}" readonly="readonly">
+                                                    </label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="vatp"><b class="challan">VAT Value : </b>
+                                                        <span id="vat_val"></span>
+                                                    </label>
+                                                </div>
                         @if($delivery_data->vat_percentage==0)
                         <!--                        <div class="form-group">
                                                     <label for="Plusvat"><b class="challan">Plus VAT : </b> No</label>

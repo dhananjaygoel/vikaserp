@@ -112,7 +112,7 @@
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label for="total"><b class="challan">Total: </b></label> {{$total_amount}}
+                            <label for="total"><b class="challan">Total: </b></label> <?php print_r($total_amount + $allorder->freight + $allorder->loading_charge - $allorder->discount);?>
                         </div>
                         <hr>
                         <div class="form-group">
@@ -123,15 +123,13 @@
                             <label for="labour"><b class="challan">Labour: </b></label> {{$allorder->labours}}
                         </div>
                         <hr>
+                                         
                         @if($allorder->vat_percentage != "" || $allorder->vat_percentage != 0)
-                        <!--                        <div class="form-group">
-                                                    <label for="Plusvat"><b class="challan">VAT: </b> Yes</label>
-                                                </div>
-                                                <hr>
+                                                
                                                 <div class="form-group">
                                                     <label for="driver_contact"><b class="challan">VAT Percentage: </b> {{$allorder->vat_percentage}} %</label>
                                                 </div>
-                                                <hr>-->
+                                                <hr>
                         @else
                         <!--                        <div class="form-group">
                                                     <label for="Plusvat"><b class="challan">VAT: </b> No</label>
