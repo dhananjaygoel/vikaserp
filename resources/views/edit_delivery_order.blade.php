@@ -46,7 +46,7 @@
                                     <div class="form-group searchproduct">
                                         <input class="form-control" placeholder="Enter Tally Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name">
                                         <input type="hidden" id="existing_customer_id" name="autocomplete_customer_id">
-                                        <i class="fa fa-search search-icon"></i>
+                                        <!--<i class="fa fa-search search-icon"></i>-->
                                     </div>
                                 </div>
                             </div>

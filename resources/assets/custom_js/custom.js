@@ -1926,3 +1926,163 @@ function update_inventory(e, value) {
         scrollTop: $('.navbar-brand').offset().top
     }, 1000);
 }
+$( function() {
+    $.widget( "custom.combobox", {
+      _create: function() {
+        this.wrapper = $( "<span>" )
+          .addClass( "custom-combobox" )
+          .insertAfter( this.element );
+ 
+        this.element.hide();
+        this._createAutocomplete();
+        this._createShowAllButton();
+      },
+ 
+      _createAutocomplete: function() {
+        var selected = this.element.children( ":selected" ),
+          value = selected.val() ? selected.text() : "";
+ 
+        this.input = $( "<input>" )
+          .appendTo( this.wrapper )
+          .val( value )
+          .attr( "title", "" )
+          .attr( "placeholder", "Enter tally name" )
+          .addClass( "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
+          .autocomplete({
+            delay: 0,
+            minLength: 0,
+            source: $.proxy( this, "_source" )
+          })
+          .tooltip({
+            classes: {
+              "ui-tooltip": "ui-state-highlight"
+            }
+          });
+ 
+        this._on( this.input, {
+          autocompleteselect: function( event, ui ) {
+              
+var term = ui.item.value;
+
+            $.ajax({
+//                beforeSend: function() {
+//                    $.blockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
+//                },
+                url: baseurl + '/fetch_existing_customer',
+                data: {"term": term},
+                cache: true,
+                success: function (data) {
+                    var obj = jQuery.parseJSON(data);
+                    $("#existing_customer_id").val(obj.data_array[0].id);
+                    $("#customer_default_location").val(obj.data_array[0].delivery_location_id);
+                    $("#location_difference").val(obj.data_array[0].location_difference);
+                    default_delivery_location();
+//                    $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
+                },
+            });
+          },
+ 
+          autocompletechange: "_removeIfInvalid"
+        });
+      },
+ 
+      _createShowAllButton: function() {
+        var input = this.input,
+          wasOpen = false;
+ 
+        $( "<a>" )
+          .attr( "tabIndex", -1 )
+          //.attr( "title", "Show All Items" )
+          //.tooltip()
+          .appendTo( this.wrapper )
+          .button({
+            icons: {
+              primary: "ui-icon-triangle-1-s"
+            },
+            text: false
+          })
+          .removeClass( "ui-corner-all" )
+          .addClass( "custom-combobox-toggle ui-corner-right" )
+          .on( "mousedown", function() {
+            wasOpen = input.autocomplete( "widget" ).is( ":visible" );
+          })
+          .on( "click", function() {
+            input.trigger( "focus" );
+ 
+            // Close if already visible
+            if ( wasOpen ) {
+              return;
+            }
+ 
+            // Pass empty string as value to search for, displaying all results
+            input.autocomplete( "search", "" );
+          });
+      },
+ 
+      _source: function( request, response ) {
+        //$("#existing_customer_name").addClass('loadinggif');
+            var customer = request.term;
+                   
+                        $.ajax({
+                        url: baseurl + '/fetch_existing_customer',
+                        data: {"term": request.term},
+                        cache: true,
+                        success: function(data) {
+                            var main_array = JSON.parse(data);
+                           
+                            response(main_array['data_array']);
+                          //  $("#existing_customer_name").removeClass('loadinggif');
+//                             var data_cache=JSON.parse(cache);
+//                            setCookie('cache',data_cache,1);
+                        },
+                       });
+                    
+      },
+      
+ 
+      _removeIfInvalid: function( event, ui ) {
+ 
+        // Selected an item, nothing to do
+        if ( ui.item ) {
+          return;
+        }
+ 
+        // Search for a match (case-insensitive)
+        var value = this.input.val(),
+          valueLowerCase = value.toLowerCase(),
+          valid = false;
+        this.element.children( "option" ).each(function() {
+          if ( $( this ).text().toLowerCase() === valueLowerCase ) {
+            this.selected = valid = true;
+            return false;
+          }
+        });
+ 
+        // Found a match, nothing to do
+        if ( valid ) {
+          return;
+        }
+ 
+        // Remove invalid value
+//        this.input
+//          .val( "" )
+//          .attr( "title", value + " didn't match any item" )
+//          .tooltip( "open" );
+//        this.element.val( "" );
+//        this._delay(function() {
+//          this.input.tooltip( "close" ).attr( "title", "" );
+//        }, 2500 );
+        this.input.autocomplete( "instance" ).term = "";
+      },
+ 
+      _destroy: function() {
+        this.wrapper.remove();
+        this.element.show();
+      }
+    });
+ 
+    $( "#existing_customer_name" ).combobox();
+    $( "#toggle" ).on( "click", function() {
+      $( "#combobox" ).toggle();
+    });
+  } );

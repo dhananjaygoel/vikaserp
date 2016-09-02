@@ -45,7 +45,7 @@
                                             <input class="form-control focus_on_enter" placeholder="Enter Tally Name" type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name" tabindex="1" />
                                             <input type="hidden" id="existing_customer_id" name="existing_customer_name">
                                             <input type="hidden" id="customer_default_location">
-                                            <i class="fa fa-search search-icon"></i>
+                                            <!--<i class="fa fa-search search-icon"></i>-->
                                         </div>
                                     </div>
                                 </div>

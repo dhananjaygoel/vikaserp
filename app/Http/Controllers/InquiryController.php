@@ -533,26 +533,34 @@ class InquiryController extends Controller {
 
     public function fetch_existing_customer() {
 
-        $term = '%' . Input::get('term') . '%';
-        $customers = Customer::where(function($query) use($term) {
+        $term = Input::get('term');
+        if($term!=''){
+             $term = '%' . $term . '%';
+            $customers = Customer::where(function($query) use($term) {
                             $query->whereHas('only_city', function($q) use ($term) {
                                 $q->where('city_name', 'like', $term);
                             });
                         })
+                        ->where('tally_name', '<>', '')
                         ->where('customer_status', '=', 'permanent')
                         ->orWhere('company_name', $term)
                         ->orWhere('tally_name', 'like', $term)
                         ->with('delivery_location')->orderBy('owner_name', 'ASC')->get();
-
+        }else{
+            $customers = Customer::with('delivery_location')->where('tally_name', '<>', '')->orderBy('owner_name', 'ASC')->get();
+        }
+        
         if (count($customers) > 0) {
             foreach ($customers as $customer) {
                 $data_array[] = [
-                    'value' => $customer->owner_name . '-' . $customer->tally_name,
+                    'value' =>$customer->tally_name,
                     'id' => $customer->id,
                     'delivery_location_id' => $customer->delivery_location_id,
-                    'location_difference' => $customer['deliverylocation']->difference,
+                    'location_difference' => isset($customer['deliverylocation']) ? $customer['deliverylocation']->difference:'',
                 ];
             }
+           
+            
         } else {
             $data_array[] = [ 'value' => 'No Customers'];
         }
