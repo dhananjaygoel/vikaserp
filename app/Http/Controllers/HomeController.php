@@ -1526,6 +1526,7 @@ class HomeController extends Controller {
                     $add_inquiry->inquiry_status = "Pending";
                     $add_inquiry->save();
                     $inquiry_id = $add_inquiry->id;
+                    $inquiry_products_track = 0;
                     foreach ($inquiryproduct as $product_data) {
                         $inquiry_products = array();
                         if ($product_data->inquiry_id == $value->id) {
@@ -1545,15 +1546,22 @@ class HomeController extends Controller {
                 }
             }
         }
+
+        if (count($inquiry_products_track) > 0) {
+            
+        }
+
         if (count($customer_list) > 0) {
             $inquiry_response['customer_new'] = $customer_list;
         }
         if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '' && Input::get('inquiry_sync_date') != NULL) {
             $inquiry_response['inquiry_deleted'] = Inquiry::withTrashed()->where('deleted_at', '>=', Input::get('inquiry_sync_date'))->select('id')->get();
         }
-        $inquiry_date = Inquiry::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $inquiry_date = Inquiry::select('updated_at')->
+                        orderby('updated_at', 'DESC')->first();
         if (!empty($inquiry_date))
-            $inquiry_response['latest_date'] = $inquiry_date->updated_at->toDateTimeString();
+            $inquiry_response[
+                    'latest_date'] = $inquiry_date->updated_at->toDateTimeString();
         else
             $inquiry_response['latest_date'] = "";
 
@@ -1561,6 +1569,7 @@ class HomeController extends Controller {
 //            return $inquiry_response;
 //        } else {
         return json_encode($inquiry_response);
+
 //        }
     }
 
@@ -1602,7 +1611,7 @@ class HomeController extends Controller {
 //                $sync['city'] = [$syncdata['city'], $city_date->updated_at->toDateTimeString()];
 //                $sync['state'] = [$syncdata['state'], $state_date->updated_at->toDateTimeString()];
 //                $sync['inventory'] = [$syncdata['inventory'], $inventory_date->updated_at->toDateTimeString()];
-//        return json_encode($sync);
+        //        return json_encode($sync);
 
 
 
@@ -1625,41 +1634,55 @@ class HomeController extends Controller {
         $inventory_date = Inventory::select('updated_at')->orderby('updated_at', 'DESC')->first();
 
         $sync = [];
-        $syncdata = (json_decode(Input::get('sync_info'), true));
+        $syncdata = ( json_decode(Input::get('sync_info'), true) );
         foreach ($syncdata as $synckey => $syncvalue) {
             if ($synckey == 'inquiry' && !empty($inquiry_date))
-                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $inquiry_date->updated_at->toDateTimeString()];
+                $sync[$synckey] = ['app_updated_date' => $syncvalue,
+                    'server_updated_date' => $inquiry_date->updated_at->toDateTimeString()];
             else
                 $sync[$synckey] = [];
             if ($synckey == 'order' && !empty($order_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $order_date->updated_at->toDateTimeString()];
+
             if ($synckey == 'delivery_order' && !empty($delivery_order_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $delivery_order_date->updated_at->toDateTimeString()];
+
             if ($synckey == 'delivery_challan' && !empty($delivery_challan_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $delivery_challan_date->updated_at->toDateTimeString()];
+
             if ($synckey == 'purchase_order' && !empty($purchase_order_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $purchase_order_date->updated_at->toDateTimeString()];
+
             if ($synckey == 'purchase_advice' && !empty($purchase_advice_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $purchase_advice_date->updated_at->toDateTimeString()];
+
             if ($synckey == 'purchase_challan' && !empty($purchase_challan_date))
-                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $purchase_challan_date->updated_at->toDateTimeString()];
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $purchase_challan_date->updated_at->toDateTimeString
+                    ()];
             if ($synckey == 'customer' && !empty($customer_date))
-                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $customer_date->updated_at->toDateTimeString()];
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $customer_date->updated_at->
+                            toDateTimeString()];
             if ($synckey == 'user' && !empty($user_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $user_date->updated_at->toDateTimeString()];
+
             if ($synckey == 'product_cat' && !empty($product_category))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $product_category->updated_at->toDateTimeString()];
             if ($synckey == 'product_sub_cat' && !empty($product_subcategory_date))
-                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $product_subcategory_date->updated_at->toDateTimeString()];
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $product_subcategory_date->updated_at->toDateTimeString
+                    ()];
             if ($synckey == 'location' && !empty($location_date))
-                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $location_date->updated_at->toDateTimeString()];
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $location_date->updated_at->
+                            toDateTimeString()];
             if ($synckey == 'city' && !empty($city_date))
-                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $city_date->updated_at->toDateTimeString()];
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $city_date->updated_at->
+                            toDateTimeString()];
             if ($synckey == 'state' && !empty($state_date))
-                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $state_date->updated_at->toDateTimeString()];
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $state_date->updated_at->toDateTimeString()
+                ];
             if ($synckey == 'inventory' && !empty($inventory_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $inventory_date->updated_at->toDateTimeString()];
         }
+
         return json_encode($sync);
     }
 
@@ -1667,7 +1690,6 @@ class HomeController extends Controller {
      * App dashboard counts
      */
     public function appcount() {
-
         $order = Order::all()->count();
         $pending_order = Order::where('order_status', 'pending')->count();
         $inquiry = Inquiry::all()->count();
@@ -1711,7 +1733,9 @@ class HomeController extends Controller {
         $allcounts['deliver_sum'] = $deliver_sum;
         $allcounts['deliver_pending_sum'] = $deliver_pending_sum;
         $allcounts['challan_sum'] = $challan_sum;
+
         $allcounts['purc_order_sum'] = $challan_sum;
+
         return json_encode($allcounts);
     }
 
@@ -1722,8 +1746,10 @@ class HomeController extends Controller {
 
         $data = Input::all();
         $q = Inquiry::query();
+
         if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '')
             $q->where('inquiry_status', '=', $data['inquiry_filter']);
+
         if (Input::has('inquiry_sync_date') && $data['inquiry_sync_date'] != '')
             $q->where('created_at', '>', $data['inquiry_sync_date']);
         $inquiries['all'] = $q->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')->orderBy('created_at', 'desc')->get();
@@ -1743,9 +1769,11 @@ class HomeController extends Controller {
     public function apporders() {
 
         $data = Input::all();
-        $q = Order::query();
+        $q = Order::query()
+        ;
         if (isset($data['order_filter']) && $data['order_filter'] != '')
             $q->where('order_status', '=', $data['order_filter']);
+
         if (Input::has('order_sync_date') && $data['order_sync_date'] != '')
             $q->where('updated_at', '>', $data['order_sync_date']);
         $allorders['all'] = $q->with('all_order_products')->with('customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->get();
@@ -1756,6 +1784,7 @@ class HomeController extends Controller {
         } else {
             $allorders['latest_date'] = "";
         }
+
         return json_encode($allorders);
     }
 
@@ -1769,12 +1798,16 @@ class HomeController extends Controller {
         } else {
             $allinventory['all'] = Inventory::with('product_sub_category')->get();
         }
-        $inventory_date = Inventory::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $inventory_date = Inventory::select('updated_at')->
+                        orderby('updated_at', 'DESC')->first();
         if (!empty($inventory_date))
-            $allinventory['latest_date'] = $inventory_date->updated_at->toDateTimeString();
+            $allinventory[
+                    'latest_date'] = $inventory_date->updated_at->toDateTimeString();
         else
             $allinventory['latest_date'] = "";
-        return json_encode($allinventory);
+        return
+
+                json_encode($allinventory);
     }
 
     /**
@@ -1783,7 +1816,7 @@ class HomeController extends Controller {
     public function appdelivery_order() {
 
         if (Input::has('delivery_order_sync_date') && Input::get('delivery_order_sync_date') != '') {
-            $delivery_orders['all'] = DeliveryOrder::where('updated_at', '>', Input::get('delivery_order_sync_date'))->orderBy('created_at', 'desc')->with('delivery_product', 'customer')->get();
+            $delivery_orders['all'] = DeliveryOrder ::where('updated_at', '>', Input:: get('delivery_order_sync_date'))->orderBy('created_at', 'desc')->with('delivery_product', 'customer')->get();
         } else {
             $delivery_orders['all'] = DeliveryOrder::orderBy('created_at', 'desc')->with('delivery_product', 'customer')->get();
         }
@@ -1792,11 +1825,14 @@ class HomeController extends Controller {
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $data['delivery_details'] = $delivery_orders;
         $data['delivery_location'] = $delivery_locations;
-        $delivery_order_date = DeliveryOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $delivery_order_date = DeliveryOrder::select('updated_at')->orderby
+                        ('updated_at', 'DESC')->first();
         if (!empty($delivery_order_date))
-            $data['latest_date'] = $delivery_order_date->updated_at->toDateTimeString();
+            $data[
+                    'latest_date'] = $delivery_order_date->updated_at->toDateTimeString();
         else
             $data['latest_date'] = "";
+
         return json_encode($data);
     }
 
@@ -1806,13 +1842,14 @@ class HomeController extends Controller {
     public function appalldelivery_challan() {
 
         if (Input::has('delivery_challan_sync_date') && Input::get('delivery_challan_sync_date') != '') {
-            $deliverychallans['all'] = DeliveryChallan::with('customer', 'delivery_challan_products', 'delivery_order')->where('updated_at', '>', Input::get('delivery_challan_sync_date'))->orderBy('created_at', 'desc')->get();
+            $deliverychallans['all'] = DeliveryChallan :: with('customer', 'delivery_challan_products', 'delivery_order')->where('updated_at', '>', Input::get('delivery_challan_sync_date'))->orderBy('created_at', 'desc')->get();
         } else {
-            $deliverychallans['all'] = DeliveryChallan::with('customer', 'delivery_challan_products', 'delivery_order')->orderBy('created_at', 'desc')->get();
-        }
-        $deliverychallan_date = DeliveryChallan::select('updated_at')->orderby('updated_at', 'DESC')->first();
+            $deliverychallans['all'] = DeliveryChallan ::with('customer', 'delivery_challan_products', 'delivery_order')->orderBy('created_at', 'desc')->get();
+        } $deliverychallan_date = DeliveryChallan::select('updated_at')->orderby(
+                        'updated_at', 'DESC')->first();
         if (!empty($deliverychallan_date))
-            $deliverychallans['latest_date'] = $deliverychallan_date->updated_at->toDateTimeString();
+            $deliverychallans[
+                    'latest_date'] = $deliverychallan_date->updated_at->toDateTimeString();
         else
             $deliverychallans['latest_date'] = "";
 
@@ -1824,7 +1861,7 @@ class HomeController extends Controller {
      */
     public function appallunit() {
 
-        if (Input::has('unit_sync_date') && Input::get('unit_sync_date') != '') {
+        if (Input::has('unit_sync_date') && Input:: get('unit_sync_date') != '') {
             $units['all'] = Units::where('updated_at', '>', Input::get('unit_sync_date'))->orderBy('created_at', 'desc')->get();
         } else {
             $units['all'] = Units::orderBy('created_at', 'desc')->get();
@@ -1835,6 +1872,7 @@ class HomeController extends Controller {
         } else {
             $units['latest_date'] = "";
         }
+
         return json_encode($units);
     }
 
@@ -1854,6 +1892,7 @@ class HomeController extends Controller {
         } else {
             $cities['latest_date'] = "";
         }
+
         return json_encode($cities);
     }
 
@@ -1862,7 +1901,7 @@ class HomeController extends Controller {
      */
     public function appallstate() {
 
-        if (Input::has('state_sync_date') && Input::get('state_sync_date') != '') {
+        if (Input::has('state_sync_date') && Input:: get('state_sync_date') != '') {
             $states['all'] = States::where('updated_at', '>', Input::get('state_sync_date'))->orderBy('created_at', 'desc')->get();
         } else {
             $states['all'] = States::orderBy('created_at', 'desc')->get();
@@ -1873,6 +1912,7 @@ class HomeController extends Controller {
         } else {
             $states['latest_date'] = [];
         }
+
         return json_encode($states);
     }
 
@@ -1892,7 +1932,9 @@ class HomeController extends Controller {
         } else {
             $customers['latest_date'] = "";
         }
-        return json_encode($customers);
+        return
+
+                json_encode($customers);
     }
 
     /**
@@ -1901,17 +1943,17 @@ class HomeController extends Controller {
     public function appallproduct_category() {
 
         if (Input::has('product_category_sync_date') && Input::get('product_category_sync_date') != '') {
-            $product_category['all'] = ProductCategory::where('updated_at', '>', Input::get('product_category_sync_date'))->orderBy('created_at', 'desc')->get();
+            $product_category['all'] = ProductCategory:: where('updated_at', '>', Input::get('product_category_sync_date'))->orderBy('created_at', 'desc')->get();
         } else {
             $product_category['all'] = ProductCategory::orderBy('created_at', 'desc')->get();
-        }
-        $product_category_date = ProductCategory::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        } $product_category_date = ProductCategory::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($product_category_date)) {
             $product_category['latest_date'] = $product_category_date->updated_at->toDateTimeString();
         } else {
             $product_category['latest_date'] = "";
         }
-        return json_encode($product_category);
+        return json_encode(
+                $product_category);
     }
 
     /**
@@ -1923,14 +1965,15 @@ class HomeController extends Controller {
             $product_subcategory['all'] = ProductSubCategory::with('product_category')->where('updated_at', '>', Input::get('product_subcategory_sync_date'))->orderBy('created_at', 'desc')->get();
         } else {
             $product_subcategory['all'] = ProductSubCategory::with('product_category')->orderBy('created_at', 'desc')->get();
-        }
-        $product_subcategory_date = ProductSubCategory::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        } $product_subcategory_date = ProductSubCategory::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($product_subcategory_date)) {
             $product_subcategory['latest_date'] = $product_subcategory_date->updated_at->toDateTimeString();
         } else {
             $product_subcategory['latest_date'] = "";
         }
-        return json_encode($product_subcategory);
+        return
+
+                json_encode($product_subcategory);
     }
 
     /**
@@ -1938,7 +1981,7 @@ class HomeController extends Controller {
      */
     public function appallusers() {
 
-        if (Input::has('user_sync_date') && Input::get('user_sync_date') != '') {
+        if (Input::has('user_sync_date') && Input ::get('user_sync_date') != '') {
             $users_data['all'] = User::where('role_id', '!=', 0)->with('user_role')->where('updated_at', '>', Input::get('user_sync_date'))->orderBy('created_at', 'desc')->get();
         } else {
             $users_data['all'] = User::where('role_id', '!=', 0)->with('user_role')->orderBy('created_at', 'desc')->get();
@@ -1949,7 +1992,9 @@ class HomeController extends Controller {
         } else {
             $users_data['latest_date'] = "";
         }
-        return json_encode($users_data);
+        return
+
+                json_encode($users_data);
     }
 
     /**
@@ -1958,7 +2003,7 @@ class HomeController extends Controller {
     public function appallpending_customers() {
 
         if (Input::has('customer_sync_date') && Input::get('customer_sync_date') != '') {
-            $customers['all'] = Customer::where('updated_at', '>', Input::get('customer_sync_date'))->where('customer_status', '=', 'pending')->get();
+            $customers['all'] = Customer:: where('updated_at', '>', Input::get('customer_sync_date'))->where('customer_status', '=', 'pending')->get();
         } else {
             $customers['all'] = Customer::where('customer_status', '=', 'pending')->where('customer_status', '=', 'pending')->get();
         }
@@ -1968,7 +2013,9 @@ class HomeController extends Controller {
         } else {
             $customers['latest_date'] = "";
         }
-        return json_encode($customers);
+        return
+
+                json_encode($customers);
     }
 
     /**
@@ -1980,14 +2027,15 @@ class HomeController extends Controller {
             $delivery_data['all'] = DeliveryOrder::with('user', 'customer')->where('updated_at', '>', Input::get('delivery_order_sync_date'))->where('order_status', 'pending')->get();
         } else {
             $delivery_data['all'] = DeliveryOrder::with('user', 'customer')->where('order_status', 'pending')->get();
-        }
-        $delivery_order_date = DeliveryOrder::select('updated_at')->where('order_status', 'pending')->orderby('updated_at', 'DESC')->first();
+        } $delivery_order_date = DeliveryOrder::select('updated_at')->where('order_status', 'pending')->orderby('updated_at', 'DESC')->first();
         if (!empty($delivery_order_date)) {
             $delivery_data['latest_date'] = $delivery_order_date->updated_at->toDateTimeString();
         } else {
             $delivery_data['latest_date'] = "";
         }
-        return json_encode($delivery_data);
+        return
+
+                json_encode($delivery_data);
     }
 
     /**
@@ -1996,17 +2044,18 @@ class HomeController extends Controller {
     public function appallpurchaseorders() {
 
         if (Input::has('purchase_order_sync_date') && Input::get('purchase_order_sync_date') != '') {
-            $purchase_orders['all'] = PurchaseOrder::with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')->where('updated_at', '>', Input::get('purchase_order_sync_date'))->orderBy('created_at', 'desc')->get();
+            $purchase_orders['all'] = PurchaseOrder:: with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')->where('updated_at', '>', Input::get('purchase_order_sync_date'))->orderBy('created_at', 'desc')->get();
         } else {
-            $purchase_orders['all'] = PurchaseOrder::with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')->orderBy('created_at', 'desc')->get();
-        }
-        $purchase_order_date = PurchaseOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
+            $purchase_orders['all'] = PurchaseOrder:: with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')->orderBy('created_at', 'desc')->get();
+        } $purchase_order_date = PurchaseOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($purchase_order_date)) {
             $purchase_orders['latest_date'] = $purchase_order_date->updated_at->toDateTimeString();
         } else {
             $purchase_orders['latest_date'] = "";
         }
-        return json_encode($purchase_orders);
+        return
+
+                json_encode($purchase_orders);
     }
 
     /**
@@ -2017,15 +2066,15 @@ class HomeController extends Controller {
         if (Input::has('purchase_advise_sync_date') && Input::get('purchase_advise_sync_date') != '') {
             $purchase_advise['all'] = PurchaseAdvise::with('supplier', 'purchase_products')->where('updated_at', '>', Input::get('purchase_advise_sync_date'))->orderBy('created_at', 'desc')->get();
         } else {
-            $purchase_advise['all'] = PurchaseAdvise::with('supplier', 'purchase_products')->orderBy('created_at', 'desc')->get();
-        }
-        $purchase_advise_date = PurchaseAdvise::select('updated_at')->orderby('updated_at', 'DESC')->first();
+            $purchase_advise ['all'] = PurchaseAdvise::with('supplier', 'purchase_products')->orderBy('created_at', 'desc')->get();
+        } $purchase_advise_date = PurchaseAdvise::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($purchase_advise_date)) {
             $purchase_advise['latest_date'] = $purchase_advise_date->updated_at->toDateTimeString();
         } else {
             $purchase_advise['latest_date'] = "";
         }
-        return json_encode($purchase_advise);
+        return json_encode(
+                $purchase_advise);
     }
 
     /**
@@ -2037,14 +2086,15 @@ class HomeController extends Controller {
             $purchase_advise['all'] = PurchaseAdvise::with('supplier', 'purchase_products')->where('updated_at', '>', Input::get('purchase_advise_sync_date'))->where('advice_status', '=', 'in_process')->orderBy('created_at', 'desc')->get();
         } else {
             $purchase_advise['all'] = PurchaseAdvise::with('supplier', 'purchase_products')->where('advice_status', '=', 'in_process')->orderBy('created_at', 'desc')->get();
-        }
-        $purchase_advise_date = PurchaseAdvise::select('updated_at')->where('advice_status', '=', 'in_process')->orderby('updated_at', 'DESC')->first();
+        } $purchase_advise_date = PurchaseAdvise ::select('updated_at')->where('advice_status', '=', 'in_process')->orderby('updated_at', 'DESC')->first();
         if (!empty($purchase_advise_date)) {
             $purchase_advise['latest_date'] = $purchase_advise_date->updated_at->toDateTimeString();
         } else {
             $purchase_advise['latest_date'] = "";
         }
-        return json_encode($purchase_advise);
+        return
+
+                json_encode($purchase_advise);
     }
 
     /**
@@ -2056,14 +2106,14 @@ class HomeController extends Controller {
             $purchase_challan['all'] = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')->where('updated_at', '>', Input::get('purchase_challan_sync_date'))->orderBy('created_at', 'desc')->get();
         } else {
             $purchase_challan['all'] = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')->orderBy('created_at', 'desc')->get();
-        }
-        $purchase_challan_date = PurchaseChallan::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        } $purchase_challan_date = PurchaseChallan::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($purchase_challan_date)) {
             $purchase_challan['latest_date'] = $purchase_challan_date->updated_at->toDateTimeString();
         } else {
             $purchase_challan['latest_date'] = "";
         }
-        return json_encode($purchase_challan);
+        return json_encode(
+                $purchase_challan);
     }
 
     /**
@@ -2075,14 +2125,15 @@ class HomeController extends Controller {
             $purchase_daybook['all'] = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')->where('order_status', 'completed')->where('updated_at', '>', Input::get('purchase_orderdaybook_sync_date'))->orderBy('created_at', 'desc')->get();
         } else {
             $purchase_daybook['all'] = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')->where('order_status', 'completed')->orderBy('created_at', 'desc')->get();
-        }
-        $purchase_daybook_date = PurchaseChallan::select('updated_at')->where('order_status', 'completed')->orderby('updated_at', 'DESC')->first();
+        } $purchase_daybook_date = PurchaseChallan::select('updated_at')->where('order_status', 'completed')->orderby('updated_at', 'DESC')->first();
         if (!empty($purchase_daybook_date)) {
             $purchase_daybook['latest_date'] = $purchase_daybook_date->updated_at->toDateTimeString();
         } else {
             $purchase_daybook['latest_date'] = "";
         }
-        return json_encode($purchase_daybook);
+        return
+
+                json_encode($purchase_daybook);
     }
 
     /**
@@ -2094,14 +2145,15 @@ class HomeController extends Controller {
             $delivery_location['all'] = DeliveryLocation::with('city', 'states')->where('status', '=', 'permanent')->where('created_at', '>', Input::get('delivery_location_sync_date'))->orderBy('created_at', 'desc')->get();
         } else {
             $delivery_location['all'] = DeliveryLocation::with('city', 'states')->where('status', '=', 'permanent')->orderBy('created_at', 'desc')->get();
-        }
-        $delivery_location_date = DeliveryLocation::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        } $delivery_location_date = DeliveryLocation::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($delivery_location_date)) {
             $delivery_location['latest_date'] = $delivery_location_date->updated_at->toDateTimeString();
         } else {
             $delivery_location['latest_date'] = "";
         }
-        return json_encode($delivery_location);
+        return
+
+                json_encode($delivery_location);
     }
 
     /*
@@ -2126,25 +2178,24 @@ class HomeController extends Controller {
         $inquiry_response = [];
         $customer_list = [];
         if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '' && Input::get('inquiry_sync_date') != NULL) {
-            $last_sync_date = Input::get('inquiry_sync_date');
+            $last_sync_date = Input:: get('inquiry_sync_date');
             $inquiry_added_server = Inquiry::where('created_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->with('inquiry_products')->get();
-            $inquiry_response['inquiry_server_added'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : array();
+            $inquiry_response ['inquiry_server_added'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : array();
 
             $inquiry_updated_server = Inquiry::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('customer_id', '=', $customer_id)->with('inquiry_products')->get();
-            $inquiry_response['inquiry_server_updated'] = ($inquiry_updated_server && count($inquiry_updated_server) > 0) ? $inquiry_updated_server : array();
+            $inquiry_response ['inquiry_server_updated'] = ($inquiry_updated_server && count($inquiry_updated_server) > 0) ? $inquiry_updated_server : array();
 
-            /* Send Updated customers */
-            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('customer_id', '=', $customer_id)->get();
+            /* Send Updated customers */ $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('id', '=', $customer_id)->get();
             $inquiry_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
-            /* Send New customers */
-            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->get();
-            $inquiry_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
+            /* Send New customers */ $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->where('id', '=', $customer_id)->get();
+            $inquiry_response ['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
             $inquiry_added_server = Inquiry::with('inquiry_products')->where('customer_id', '=', $customer_id)->get();
-            $inquiry_response['inquiry_server_added'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : array();
+            $inquiry_response ['inquiry_server_added'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : array();
         }
         if (isset($inquiries)) {
             foreach ($inquiries as $key => $value) {
+
                 if ($value->server_id > 0) {
                     $add_inquiry = Inquiry::find($value->server_id);
                     if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
@@ -2157,8 +2208,7 @@ class HomeController extends Controller {
                         $add_customers->save();
                         $customer_list[$value->id] = $add_customers->id;
                     }
-                    /* Update customer ends here */
-                    $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
+                    /* Update customer ends here */ $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
                     $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
                     $datetime = new DateTime($date);
                     $add_inquiry->vat_percentage = ($value->vat_percentage == "" || empty($value->vat_percentage)) ? 0 : $value->vat_percentage;
@@ -2180,7 +2230,7 @@ class HomeController extends Controller {
                     $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
                     $add_inquiry->remarks = ($value->remarks != '') ? $value->remarks : '';
                     $add_inquiry->inquiry_status = $value->inquiry_status;
-                    $delete_old_inquiry_products = InquiryProducts::where('inquiry_id', '=', $value->server_id)->delete();
+                    $delete_old_inquiry_products = InquiryProducts::where('inquiry_i d', '=', $value->server_id)->delete();
                     foreach ($inquiryproduct as $product_data) {
                         $inquiry_products = array();
                         if ($product_data->inquiry_id == $value->id) {
@@ -2216,7 +2266,7 @@ class HomeController extends Controller {
                     $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
                     $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
                     $datetime = new DateTime($date);
-                    $add_inquiry = new Inquiry();
+                    $add_inquiry = new Inquiry ( );
                     $add_inquiry->customer_id = (!empty($value->customer_server_id) && $value->customer_server_id > 0) ? $value->customer_server_id : $customer_list[$value->id];
                     $add_inquiry->created_by = 1;
                     if (($value->other_location == "") || empty($value->other_location)) {
@@ -2260,12 +2310,16 @@ class HomeController extends Controller {
             $inquiry_response['inquiry_deleted'] = Inquiry::withTrashed()->where('customer_id', '=', $customer_id)->where('deleted_at', '>=', Input::get('inquiry_sync_date'))->select('id')->get();
         }
         $inquiry_date = Inquiry::select('updated_at')->orderby('updated_at', 'DESC')->where('customer_id', '=', $customer_id)->first();
+
         if (!empty($inquiry_date))
-            $inquiry_response['latest_date'] = $inquiry_date->updated_at->toDateTimeString();
+            $inquiry_response[
+                    'latest_date'] = $inquiry_date->updated_at->toDateTimeString();
         else
             $inquiry_response['latest_date'] = "";
 
-        return json_encode($inquiry_response);
+        return
+
+                json_encode($inquiry_response);
     }
 
     /**
@@ -2286,22 +2340,20 @@ class HomeController extends Controller {
             $orderproduct = (json_decode($data['order_product']));
         }
         if (Input::has('customer_id')) {
-            $customer_id = (json_decode($data['customer_id']));
+            $customer_id = (json_decode($data['customer_id']) );
         }
         if (Input::has('order_sync_date') && Input::get('order_sync_date') != '') {
-            $last_sync_date = Input::get('order_sync_date');
+            $last_sync_date = Input:: get('order_sync_date');
             $order_added_server = Order::where('created_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->with('all_order_products')->get();
-            $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
+            $order_response ['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
 
             $order_updated_server = Order::where('updated_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->whereRaw('updated_at > created_at')->with('all_order_products')->get();
-            $order_response['order_server_updated'] = ($order_updated_server && count($order_updated_server) > 0) ? $order_updated_server : '';
+            $order_response ['order_server_updated'] = ($order_updated_server && count($order_updated_server) > 0) ? $order_updated_server : '';
 
-            /* Send Updated customers */
-            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->whereRaw('updated_at > created_at')->get();
+            /* Send Updated customers */ $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->where('id', '=', $customer_id)->whereRaw('updated_at > created_at')->get();
             $order_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
-            /* Send New customers */
-            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->get();
-            $order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
+            /* Send New customers */ $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->where('id', '=', $customer_id)->get();
+            $order_response ['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
             $order_added_server = Order::with('all_order_products')->where('customer_id', '=', $customer_id)->get();
             $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
@@ -2419,7 +2471,7 @@ class HomeController extends Controller {
             }
         }
         if (count($customer_list) > 0) {
-            $order_response['customer_new'] = $customer_list;
+            $order_response ['customer_new'] = $customer_list;
         }
         if (Input::has('order_sync_date') && Input::get('order_sync_date') != '' && Input::get('order_sync_date') != NULL) {
             $order_response['order_deleted'] = Order::withTrashed()->where('customer_id', '=', $customer_id)->where('deleted_at', '>=', Input::get('order_sync_date'))->select('id')->get();
@@ -2566,7 +2618,9 @@ class HomeController extends Controller {
     /**
      * Show the application dashboard to the user.
      */
-    public function index() {
+    public function
+
+    index() {
         return view('dashboard');
     }
 
@@ -2574,6 +2628,7 @@ class HomeController extends Controller {
         $product_data = ProductCategory::all();
         foreach ($product_data as $value) {
             $product = ProductCategory::find($value->id);
+
             $product->price_new = $product->price;
             $product->save();
         }
@@ -2583,7 +2638,8 @@ class HomeController extends Controller {
         $product_data = ProductCategory::all();
         echo "<table>";
         foreach ($product_data as $value) {
-            echo "<tr><td>" . $value->id . "</td><td>" . $value->product_type_id . "</td><td>" . $value->product_category_name . "</td><td>" . $value->price . "</td><td>" . $value->price_new . "</td></tr>";
+            echo "<tr><td>" . $value->id . "</td><td>" . $value->product_type_id . "</td><td>" . $value->product_category_name . "</td><td>" . $value->price .
+            "</td><td>" . $value->price_new . "</td></tr>";
         }
         echo "</table>";
     }
