@@ -292,6 +292,111 @@ class HomeController extends Controller {
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
 
+    public function appdeleteinquiry() {
+
+        $input_data = Input::all();
+        $inquiries = (json_decode($input_data['inquiry_deleted']));
+        if (count($inquiries) > 0) {
+            foreach ($inquiries as $inquiry) {
+                $inquiry_details = Inquiry::find($inquiry);
+                if ($inquiry_details && !empty($inquiry_details)) {
+                    $inquiry_details->delete();
+                }
+            }
+        }
+        return json_encode(array('result' => true, 'message' => 'Inquiries deleted successfully.'));
+    }
+
+    public function appdeleteorder() {
+
+        $input_data = Input::all();
+        $orders = (json_decode($input_data['order_deleted']));
+        if (count($orders) > 0) {
+            foreach ($orders as $order) {
+                $order_details = Order::find($order);
+                if ($order_details && !empty($order_details)) {
+                    $order_details->delete();
+                }
+            }
+        }
+        return json_encode(array('result' => true, 'message' => 'Orders deleted successfully.'));
+    }
+
+    public function appdeletedelivery_order() {
+
+        $input_data = Input::all();
+        $delievry_orders = (json_decode($input_data['delievry_order_deleted']));
+        if (count($delievry_orders) > 0) {
+            foreach ($delievry_orders as $delievry_order) {
+                $delievry_order_details = DeliveryOrder::find($delievry_order);
+                if ($delievry_order_details && !empty($delievry_order_details)) {
+                    $delievry_order_details->delete();
+                }
+            }
+        }
+        return json_encode(array('result' => true, 'message' => 'Delievry Orders deleted successfully.'));
+    }
+
+    public function appdeletedelivery_challan() {
+
+        $input_data = Input::all();
+        $delievry_challans = (json_decode($input_data['delievry_challan_deleted']));
+        if (count($delievry_challans) > 0) {
+            foreach ($delievry_challans as $delievry_challan) {
+                $delievry_challan_details = DeliveryChallan::find($delievry_challan);
+                if ($delievry_challan_details && !empty($delievry_challan_details)) {
+                    $delievry_challan_details->delete();
+                }
+            }
+        }
+        return json_encode(array('result' => true, 'message' => 'Delievry Challans deleted successfully.'));
+    }
+
+    public function appdeletepurchase_order() {
+
+        $input_data = Input::all();
+        $purchase_orders = (json_decode($input_data['purchase_order_deleted']));
+        if (count($purchase_orders) > 0) {
+            foreach ($purchase_orders as $purchase_order) {
+                $purchase_order_details = PurchaseOrder::find($purchase_order);
+                if ($purchase_order_details && !empty($purchase_order_details)) {
+                    $purchase_order_details->delete();
+                }
+            }
+        }
+        return json_encode(array('result' => true, 'message' => 'Purchase Orders deleted successfully.'));
+    }
+
+    public function appdeletepurchase_advise() {
+
+        $input_data = Input::all();
+        $purchase_advises = (json_decode($input_data['purchase_advise_deleted']));
+        if (count($purchase_advises) > 0) {
+            foreach ($purchase_advises as $purchase_advise) {
+                $purchase_advise_details = PurchaseAdvise::find($purchase_advise);
+                if ($purchase_advise_details && !empty($purchase_advise_details)) {
+                    $purchase_advise_details->delete();
+                }
+            }
+        }
+        return json_encode(array('result' => true, 'message' => 'Purchase Advise deleted successfully.'));
+    }
+
+    public function appdeletepurchase_challan() {
+
+        $input_data = Input::all();
+        $purchase_challans = (json_decode($input_data['purchase_challan_deleted']));
+        if (count($purchase_challans) > 0) {
+            foreach ($purchase_challans as $purchase_challan) {
+                $purchase_challan_details = PurchaseChallan::find($purchase_challan);
+                if ($purchase_challan_details && !empty($purchase_challan_details)) {
+                    $purchase_challan_details->delete();
+                }
+            }
+        }
+        return json_encode(array('result' => true, 'message' => 'Purchase Challan deleted successfully.'));
+    }
+
     public function updateCustomer() {
 
         $customer = Customer::find(Input::get('customer_id'));
@@ -443,9 +548,12 @@ class HomeController extends Controller {
             }
             $purchase_challan->save();
         }
-        if (count($customer_list) > 0)
+        if (count($customer_list) > 0) {
             $purchase_challan_response['customer_new'] = $customer_list;
-
+        }
+        if (Input::has('purchase_challan_sync_date') && Input::get('purchase_challan_sync_date') != '' && Input::get('purchase_challan_sync_date') != NULL) {
+            $purchase_challan_response['purchase_challan_deleted'] = PurchaseChallan::withTrashed()->where('deleted_at', '>=', Input::get('purchase_challan_sync_date'))->select('id')->get();
+        }
         $purchase_challan_date = PurchaseChallan::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($purchase_challan_date))
             $purchase_challan_response['latest_date'] = $purchase_challan_date->updated_at->toDateTimeString();
@@ -555,9 +663,12 @@ class HomeController extends Controller {
             }
             $purchase_advice->save();
         }
-        if (count($customer_list) > 0)
+        if (count($customer_list) > 0) {
             $purchase_advice_response['customer_new'] = $customer_list;
-
+        }
+        if (Input::has('purchase_advice_sync_date') && Input::get('purchase_advice_sync_date') != '' && Input::get('purchase_advice_sync_date') != NULL) {
+            $purchase_advice_response['purchase_advise_deleted'] = PurchaseAdvise::withTrashed()->where('deleted_at', '>=', Input::get('purchase_advice_sync_date'))->select('id')->get();
+        }
         $purchase_advice_date = PurchaseAdvise::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($purchase_advice_date))
             $purchase_advice_response['latest_date'] = $purchase_advice_date->updated_at->toDateTimeString();
@@ -658,9 +769,12 @@ class HomeController extends Controller {
             }
             $purchase_order->save();
         }
-        if (count($customer_list) > 0)
+        if (count($customer_list) > 0) {
             $purchase_order_response['customer_new'] = $customer_list;
-
+        }
+        if (Input::has('purchase_order_sync_date') && Input::get('purchase_order_sync_date') != '' && Input::get('purchase_order_sync_date') != NULL) {
+            $purchase_order_response['purchase_order_deleted'] = PurchaseOrder::withTrashed()->where('deleted_at', '>=', Input::get('purchase_order_sync_date'))->select('id')->get();
+        }
         $purchase_order_date = PurchaseOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($purchase_order_date))
             $purchase_order_response['latest_date'] = $purchase_order_date->updated_at->toDateTimeString();
@@ -778,9 +892,12 @@ class HomeController extends Controller {
             }
             $delivery_challan->save();
         }
-        if (count($customer_list) > 0)
+        if (count($customer_list) > 0) {
             $delivery_challan_response['customer_new'] = $customer_list;
-
+        }
+        if (Input::has('delivery_challan_sync_date') && Input::get('delivery_challan_sync_date') != '' && Input::get('delivery_challan_sync_date') != NULL) {
+            $delivery_challan_response['delivery_challan_deleted'] = DeliveryChallan::withTrashed()->where('deleted_at', '>=', Input::get('delivery_challan_sync_date'))->select('id')->get();
+        }
         $delivery_challan_date = DeliveryChallan::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($delivery_challan_date))
             $delivery_challan_response['latest_date'] = $delivery_challan_date->updated_at->toDateTimeString();
@@ -923,9 +1040,12 @@ class HomeController extends Controller {
                 $delivery_order_response[$value->server_id]['delivery_product'] = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $delivery_order->id)->get();
             }
         }
-        if (count($customer_list) > 0)
+        if (count($customer_list) > 0) {
             $delivery_order_response['customer_new'] = $customer_list;
-
+        }
+        if (Input::has('delivery_order_sync_date') && Input::get('delivery_order_sync_date') != '' && Input::get('delivery_order_sync_date') != NULL) {
+            $delivery_order_response['delivery_order_deleted'] = DeliveryOrder::withTrashed()->where('deleted_at', '>=', Input::get('delivery_order_sync_date'))->select('id')->get();
+        }
         $delivery_order_date = DeliveryOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($delivery_order_date))
             $delivery_order_response['latest_date'] = $delivery_order_date->updated_at->toDateTimeString();
@@ -1079,9 +1199,12 @@ class HomeController extends Controller {
                 $order_response[$value->server_id]['all_order_products'] = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->get();
             }
         }
-        if (count($customer_list) > 0)
+        if (count($customer_list) > 0) {
             $order_response['customer_new'] = $customer_list;
-
+        }
+        if (Input::has('order_sync_date') && Input::get('order_sync_date') != '' && Input::get('order_sync_date') != NULL) {
+            $order_response['order_deleted'] = Order::withTrashed()->where('deleted_at', '>=', Input::get('order_sync_date'))->select('id')->get();
+        }
         $order_date = Order::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($order_date))
             $order_response['latest_date'] = $order_date->updated_at->toDateTimeString();
@@ -1261,9 +1384,12 @@ class HomeController extends Controller {
                 }
             }
         }
-        if (count($customer_list) > 0)
+        if (count($customer_list) > 0) {
             $inquiry_response['customer_new'] = $customer_list;
-
+        }
+        if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '' && Input::get('inquiry_sync_date') != NULL) {
+            $inquiry_response['inquiry_deleted'] = Inquiry::withTrashed()->where('deleted_at', '>=', Input::get('inquiry_sync_date'))->select('id')->get();
+        }
         $inquiry_date = Inquiry::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($inquiry_date))
             $inquiry_response['latest_date'] = $inquiry_date->updated_at->toDateTimeString();
