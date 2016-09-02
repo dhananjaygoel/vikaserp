@@ -339,39 +339,6 @@
                             </div>
                         </div>
                         <div class="clearfix"></div>
-                        @if($order->vat_percentage == 0)
-                        <!--
-                        <div class="form-group">
-                            <div class="radio">
-                                <input checked="" value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
-                                <label for="optionsRadios3">All Inclusive</label>
-                                <input value="exclude_vat" id="optionsRadios4" name="vat_status" type="radio">
-                                <label for="optionsRadios4">Plus VAT</label>
-                            </div>
-                        </div>
-                        <div class="plusvat " style="display: none">
-                            <div class="form-group">
-                                <table id="table-example" class="table ">
-                                    <tbody>
-                                        <tr class="cdtable">
-                                            <td class="cdfirst">VAT Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->other_location}}" type="text"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        -->
-                        @elseif($order->vat_percentage != 0)
-                        <!--
-                        <div class="form-group">
-                            <div class="radio">
-                                <input value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
-                                <label for="optionsRadios3">All Inclusive</label>
-                                <input checked="" value="exclude_vat" id="optionsRadios4" name="vat_status" type="radio">
-                                <label for="optionsRadios4">Plus VAT</label>
-                            </div>
-                        </div>
                         <div class="plusvat">
                             <div class="form-group">
                                 <table id="table-example" class="table ">
@@ -384,7 +351,52 @@
                                 </table>
                             </div>
                         </div>
-                        -->
+                        @if($order->vat_percentage == 0)
+                        
+<!--                        <div class="form-group">
+                            <div class="radio">
+                                <input checked="" value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
+                                <label for="optionsRadios3">All Inclusive</label>
+                                <input value="exclude_vat" id="optionsRadios4" name="vat_status" type="radio">
+                                <label for="optionsRadios4">Plus VAT</label>
+                            </div>
+                        </div>-->
+<!--                        <div class="plusvat " style="display: none">
+                            <div class="form-group">
+                                <table id="table-example" class="table ">
+                                    <tbody>
+                                        <tr class="cdtable">
+                                            <td class="cdfirst">VAT Percentage:</td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->other_location}}" type="text"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>-->
+                        
+                        @elseif($order->vat_percentage != 0)
+                        
+<!--                        <div class="form-group">
+                            <div class="radio">
+                                <input value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
+                                <label for="optionsRadios3">All Inclusive</label>
+                                <input checked="" value="exclude_vat" id="optionsRadios4" name="vat_status" type="radio">
+                                <label for="optionsRadios4">Plus VAT</label>
+                            </div>
+                        </div>-->
+<!--                        <div class="plusvat">
+                            <div class="form-group">
+                                <table id="table-example" class="table ">
+                                    <tbody>
+                                        <tr class="cdtable">
+                                            <td class="cdfirst">VAT Percentage:</td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->vat_percentage}}" type="tel"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>-->
+                        
                         @endif
                         <div class="clearfix"></div>
                         <div class="form-group col-md-4 targetdate">

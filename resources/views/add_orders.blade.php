@@ -226,13 +226,13 @@
                                 </div>
                             </div>
                             -->
-                            <div class="vat_field " style="display: none">
+                            <div class="vat_field ">
                                 <div class="form-group">
                                     <table id="table-example" class="table">
                                         <tbody>
                                             <tr class="cdtable">
                                                 <td class="cdfirst">VAT Percentage:</td>
-                                                <td><input id="price" class="form-control" placeholder="VAT Percentage" name="vat_price" value="" type="tel"></td>
+                                                <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="" type="tel"></td>
                                             </tr>
                                         </tbody>
                                     </table>

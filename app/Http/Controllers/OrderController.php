@@ -229,7 +229,7 @@ class OrderController extends Controller {
         $order->supplier_id = $supplier_id;
         $order->customer_id = $customer_id;
         $order->created_by = Auth::id();
-//        $order->vat_percentage = $vat_price;
+        $order->vat_percentage = $input_data['vat_price'];
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
         $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
@@ -496,7 +496,7 @@ class OrderController extends Controller {
             'customer_id' => $customer_id,
             'created_by' => Auth::id(),
             'delivery_location_id' => $input_data['add_inquiry_location'],
-//            'vat_percentage' => $input_data['vat_percentage'],
+            'vat_percentage' => $input_data['vat_percentage'],
             'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['order_remark']
         ]);
@@ -768,7 +768,7 @@ class OrderController extends Controller {
 
     public function create_delivery_order($id) {
 
-        $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);
+        $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);        
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }
@@ -852,6 +852,7 @@ class OrderController extends Controller {
     public function store_delivery_order($id) {
 
         $input_data = Input::all();
+        
         $order_details = Order::find($input_data['order_id']);
         if (!empty($order_details)) {
             if ($order_details->order_status == 'completed') {
@@ -883,7 +884,7 @@ class OrderController extends Controller {
             $delivery_order->order_source = $order->order_source;
             $delivery_order->supplier_id = $order->supplier_id;
             $delivery_order->created_by = $user->id;
-//            $delivery_order->vat_percentage = $order->vat_percentage;
+            $delivery_order->vat_percentage = $order->vat_percentage;
             $delivery_order->expected_delivery_date = $order->expected_delivery_date;
             $delivery_order->remarks = $input_data['remarks'];
             $delivery_order->vehicle_number = $input_data['vehicle_number'];
@@ -913,7 +914,7 @@ class OrderController extends Controller {
                         'quantity' => $product_data['present_shipping'],
                         'present_shipping' => $product_data['present_shipping'],
                         'price' => $product_data['price'],
-                        'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
+                        'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                         'remarks' => $product_data['remark'],
                         'parent' => $product_data['order']
                     ];

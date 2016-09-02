@@ -166,7 +166,9 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" value="{{$product->vat_percentage}}" id="product_price_{{$key}}" name="product[{{$key}}][vat_percentage]">
+<!--                                                    <input type="text" class="form-control" value="{{$product->vat_percentage}}" id="product_price_{{$key}}" name="product[{{$key}}][vat_percentage]">--> 
+                                                   <input readonly class="vat_chkbox" type="checkbox"  name="product[{{$key}}][vat_percentage]" value="yes" {{($product->vat_percentage>0)?'checked':''}} >
+                                                        </div>
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -216,6 +218,13 @@
                         <div class="clearfix"></div>
                         <table id="table-example" class="table table-hover  ">
                             <tbody>
+                                <tr class="cdtable">
+                                    <td class="cdfirst">VAT Percentage:</td>
+                                    <td>
+                                        {{$order->vat_percentage}}
+                                        <input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->vat_percentage}}" type="hidden" readonly="readonly" onblur="grand_total_delivery_order();">
+                                    </td>
+                                </tr>
                                 @if($order->vat_percentage == 0)
 <!--                                <tr class="cdtable">
                                     <td class="cdfirst">Plus VAT:</td>
