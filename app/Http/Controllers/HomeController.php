@@ -548,9 +548,12 @@ class HomeController extends Controller {
             }
             $purchase_challan->save();
         }
-        if (count($customer_list) > 0)
+        if (count($customer_list) > 0) {
             $purchase_challan_response['customer_new'] = $customer_list;
-
+        }
+        if (Input::has('purchase_challan_sync_date') && Input::get('purchase_challan_sync_date') != '' && Input::get('purchase_challan_sync_date') != NULL) {
+            $purchase_challan_response['purchase_challan_deleted'] = PurchaseChallan::withTrashed()->where('deleted_at', '>=', Input::get('purchase_challan_sync_date'))->select('id')->get();
+        }
         $purchase_challan_date = PurchaseChallan::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($purchase_challan_date))
             $purchase_challan_response['latest_date'] = $purchase_challan_date->updated_at->toDateTimeString();
@@ -660,9 +663,12 @@ class HomeController extends Controller {
             }
             $purchase_advice->save();
         }
-        if (count($customer_list) > 0)
+        if (count($customer_list) > 0) {
             $purchase_advice_response['customer_new'] = $customer_list;
-
+        }
+        if (Input::has('purchase_advice_sync_date') && Input::get('purchase_advice_sync_date') != '' && Input::get('purchase_advice_sync_date') != NULL) {
+            $purchase_advice_response['purchase_advise_deleted'] = PurchaseAdvise::withTrashed()->where('deleted_at', '>=', Input::get('purchase_advice_sync_date'))->select('id')->get();
+        }
         $purchase_advice_date = PurchaseAdvise::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($purchase_advice_date))
             $purchase_advice_response['latest_date'] = $purchase_advice_date->updated_at->toDateTimeString();
@@ -763,9 +769,12 @@ class HomeController extends Controller {
             }
             $purchase_order->save();
         }
-        if (count($customer_list) > 0)
+        if (count($customer_list) > 0) {
             $purchase_order_response['customer_new'] = $customer_list;
-
+        }
+        if (Input::has('purchase_order_sync_date') && Input::get('purchase_order_sync_date') != '' && Input::get('purchase_order_sync_date') != NULL) {
+            $purchase_order_response['purchase_order_deleted'] = PurchaseOrder::withTrashed()->where('deleted_at', '>=', Input::get('purchase_order_sync_date'))->select('id')->get();
+        }
         $purchase_order_date = PurchaseOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($purchase_order_date))
             $purchase_order_response['latest_date'] = $purchase_order_date->updated_at->toDateTimeString();
@@ -883,9 +892,12 @@ class HomeController extends Controller {
             }
             $delivery_challan->save();
         }
-        if (count($customer_list) > 0)
+        if (count($customer_list) > 0) {
             $delivery_challan_response['customer_new'] = $customer_list;
-
+        }
+        if (Input::has('delivery_challan_sync_date') && Input::get('delivery_challan_sync_date') != '' && Input::get('delivery_challan_sync_date') != NULL) {
+            $delivery_challan_response['delivery_challan_deleted'] = DeliveryChallan::withTrashed()->where('deleted_at', '>=', Input::get('delivery_challan_sync_date'))->select('id')->get();
+        }
         $delivery_challan_date = DeliveryChallan::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($delivery_challan_date))
             $delivery_challan_response['latest_date'] = $delivery_challan_date->updated_at->toDateTimeString();
@@ -1028,9 +1040,12 @@ class HomeController extends Controller {
                 $delivery_order_response[$value->server_id]['delivery_product'] = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $delivery_order->id)->get();
             }
         }
-        if (count($customer_list) > 0)
+        if (count($customer_list) > 0) {
             $delivery_order_response['customer_new'] = $customer_list;
-
+        }
+        if (Input::has('delivery_order_sync_date') && Input::get('delivery_order_sync_date') != '' && Input::get('delivery_order_sync_date') != NULL) {
+            $delivery_order_response['delivery_order_deleted'] = DeliveryOrder::withTrashed()->where('deleted_at', '>=', Input::get('delivery_order_sync_date'))->select('id')->get();
+        }
         $delivery_order_date = DeliveryOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($delivery_order_date))
             $delivery_order_response['latest_date'] = $delivery_order_date->updated_at->toDateTimeString();
@@ -1184,9 +1199,12 @@ class HomeController extends Controller {
                 $order_response[$value->server_id]['all_order_products'] = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->get();
             }
         }
-        if (count($customer_list) > 0)
+        if (count($customer_list) > 0) {
             $order_response['customer_new'] = $customer_list;
-
+        }
+        if (Input::has('order_sync_date') && Input::get('order_sync_date') != '' && Input::get('order_sync_date') != NULL) {
+            $order_response['order_deleted'] = Order::withTrashed()->where('deleted_at', '>=', Input::get('order_sync_date'))->select('id')->get();
+        }
         $order_date = Order::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($order_date))
             $order_response['latest_date'] = $order_date->updated_at->toDateTimeString();

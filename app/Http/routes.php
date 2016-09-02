@@ -31,12 +31,9 @@ Route::post('appdeleteinquiry', 'HomeController@appdeleteinquiry');
 Route::post('appdeleteorder', 'HomeController@appdeleteorder');
 Route::post('appdeletedelivery_order', 'HomeController@appdeletedelivery_order');
 Route::post('appdeletedelivery_challan', 'HomeController@appdeletedelivery_challan');
-
 Route::post('appdeletepurchase_order', 'HomeController@appdeletepurchase_order');
 Route::post('appdeletepurchase_advise', 'HomeController@appdeletepurchase_advise');
 Route::post('appdeletepurchase_challan', 'HomeController@appdeletepurchase_challan');
-
-
 Route::get('appcount', 'HomeController@appcount');
 Route::get('appinquiry', 'HomeController@appinquiry');
 Route::get('apporders', 'HomeController@apporders');
