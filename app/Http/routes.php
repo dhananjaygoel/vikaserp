@@ -27,6 +27,8 @@ Route::post('appsyncdeliverychallan', 'HomeController@appSyncDeliveryChallan');
 Route::post('appsyncpurchaseadvise', 'HomeController@appSyncPurchaseAdvise');
 Route::post('appsyncpurchasechallan', 'HomeController@appSyncPurchaseChallan');
 Route::post('appsyncpurchaseorder', 'HomeController@appSyncPurchaseOrder');
+Route::post('appcustomerdeleteinquiry', 'HomeController@appcustomerdeleteinquiry');
+Route::post('appcustomerdeleteorder', 'HomeController@appcustomerdeleteorder');
 Route::post('appdeleteinquiry', 'HomeController@appdeleteinquiry');
 Route::post('appdeleteorder', 'HomeController@appdeleteorder');
 Route::post('appdeletedelivery_order', 'HomeController@appdeletedelivery_order');

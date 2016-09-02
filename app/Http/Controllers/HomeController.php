@@ -48,6 +48,9 @@ class HomeController extends Controller {
         date_default_timezone_set("Asia/Calcutta");
     }
 
+    /**
+     * Generate user OTP
+     */
     public function generateUserOtp() {
 
         $user = User::where('mobile_number', '=', Input::get('username'))->first();
@@ -57,6 +60,9 @@ class HomeController extends Controller {
             return json_encode(array('result' => false, 'message' => 'User not found'));
     }
 
+    /**
+     * App user reset password
+     */
     public function appUserResetPassword() {
 
         if (Input::get('otp') == '123456' || Input::get('otp') == 123456) {
@@ -73,6 +79,9 @@ class HomeController extends Controller {
         }
     }
 
+    /**
+     * App user verify OTP
+     */
     public function appVerifyUserOtp() {
 
         if (Input::get('otp') == '123456' || Input::get('otp') == 123456) {
@@ -87,6 +96,9 @@ class HomeController extends Controller {
         }
     }
 
+    /**
+     * App user profile picture updated
+     */
     public function appUserProfile() {
 
         if (isset($_FILES["myfile"])) {
@@ -101,6 +113,9 @@ class HomeController extends Controller {
         return json_encode(array('result' => true, 'message' => 'User profile picture added successfully'));
     }
 
+    /**
+     * App user login
+     */
     public function applogin() {
 
         $data = Input::all();
@@ -113,6 +128,9 @@ class HomeController extends Controller {
         }
     }
 
+    /**
+     * App user update profile info
+     */
     public function appUpdateUser() {
 
         $user = User::find(Input::get('user_id'));
@@ -132,6 +150,9 @@ class HomeController extends Controller {
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
 
+    /**
+     * App customer login
+     */
     public function appCustomerLogin() {
 
         $customer = Customer::with('manager')->where('phone_number1', '=', Input::get('username'))->first();
@@ -146,6 +167,9 @@ class HomeController extends Controller {
         }
     }
 
+    /**
+     * App customer reset password
+     */
     public function customerResetPassword() {
 
         if (Input::get('otp') == '123456' || Input::get('otp') == 123456) {
@@ -162,6 +186,9 @@ class HomeController extends Controller {
         }
     }
 
+    /**
+     * App generate OTP
+     */
     public function generateOtp() {
 
         $customer = Customer::where('phone_number1', '=', Input::get('username'))->first();
@@ -171,6 +198,9 @@ class HomeController extends Controller {
             return json_encode(array('result' => true, 'message' => 'Customer not found'));
     }
 
+    /**
+     * App verify OTP
+     */
     public function verifyOtp() {
 
         if (Input::get('otp') == '123456' || Input::get('otp') == 123456) {
@@ -184,6 +214,9 @@ class HomeController extends Controller {
         }
     }
 
+    /**
+     * App order status
+     */
     public function appOrderStatus() {
 
         if (Input::has('order_id') && Input::get('order_id') > 0) {
@@ -207,42 +240,63 @@ class HomeController extends Controller {
         }
     }
 
+    /**
+     * App all relationship manager
+     */
     public function appAllRelationshipManager() {
 
         $managers = User::where('role_id', '=', 0)->select('id', 'first_name', 'last_name')->get();
         return json_encode($managers);
     }
 
+    /**
+     * App track order
+     */
     public function trackOrder($id) {
 
         $order_details = Order::find($id);
         return json_encode($order_details->order_status);
     }
 
+    /**
+     * App track inquiry
+     */
     public function trackInquiry($id) {
 
         $inquiry_details = Inquiry::find($id);
         return json_encode($inquiry_details->inquiry_status);
     }
 
+    /**
+     * App customer orders
+     */
     public function customerOrders($id) {
 
         $order_details = Order::where('customer_id', '=', $id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->get();
         return json_encode($order_details);
     }
 
+    /**
+     * App customer inquiries
+     */
     public function customerInquiry($id) {
 
         $inquiry_details = Inquiry::where('customer_id', '=', $id)->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')->orderBy('created_at', 'desc')->get();
         return json_encode($inquiry_details);
     }
 
+    /**
+     * App customer info
+     */
     public function customerInfo($id) {
 
         $customer_details = Customer::with('deliverylocation', 'customerproduct', 'manager')->find($id);
         return json_encode($customer_details);
     }
 
+    /**
+     * App customer profile
+     */
     public function appCustomerProfile() {
 
         if (isset($_FILES["myfile"])) {
@@ -257,6 +311,9 @@ class HomeController extends Controller {
         return json_encode(array('result' => true, 'message' => 'User profile picture added successfully'));
     }
 
+    /**
+     * App add customer
+     */
     public function addCustomer() {
 
         $customer_check = Customer::where('phone_number1', '=', Input::get('mobile'))->first();
@@ -292,6 +349,30 @@ class HomeController extends Controller {
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
 
+    /**
+     * App customer delete inquiry
+     */
+    public function appcustomerdeleteinquiry() {
+
+        $input_data = Input::all();
+        $inquiries = (json_decode($input_data['inquiry_deleted']));
+        $customer_id = $input_data['customer_id'];
+        if (count($inquiries) > 0) {
+            foreach ($inquiries as $inquiry) {
+                $inquiry_details = Inquiry::where('customer_id', '=', $customer_id)->find($inquiry);
+                if ($inquiry_details && !empty($inquiry_details)) {
+                    $inquiry_details->delete();
+                }
+            }
+            return json_encode(array('result' => true, 'message' => 'Inquiries deleted successfully.'));
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
+        }
+    }
+
+    /**
+     * App delete inquiries
+     */
     public function appdeleteinquiry() {
 
         $input_data = Input::all();
@@ -303,10 +384,36 @@ class HomeController extends Controller {
                     $inquiry_details->delete();
                 }
             }
+            return json_encode(array('result' => true, 'message' => 'Inquiries deleted successfully.'));
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
         }
-        return json_encode(array('result' => true, 'message' => 'Inquiries deleted successfully.'));
     }
 
+    /**
+     * App customer delete orders
+     */
+    public function appcustomerdeleteorder() {
+
+        $input_data = Input::all();
+        $orders = (json_decode($input_data['order_deleted']));
+        $customer_id = $input_data['customer_id'];
+        if (count($orders) > 0) {
+            foreach ($orders as $order) {
+                $order_details = Order::where('customer_id', '=', $customer_id)->find($order);
+                if ($order_details && !empty($order_details)) {
+                    $order_details->delete();
+                }
+            }
+            return json_encode(array('result' => true, 'message' => 'Orders deleted successfully.'));
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
+        }
+    }
+
+    /**
+     * App delete orders
+     */
     public function appdeleteorder() {
 
         $input_data = Input::all();
@@ -318,10 +425,15 @@ class HomeController extends Controller {
                     $order_details->delete();
                 }
             }
+            return json_encode(array('result' => true, 'message' => 'Orders deleted successfully.'));
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
         }
-        return json_encode(array('result' => true, 'message' => 'Orders deleted successfully.'));
     }
 
+    /**
+     * App delete delivery orders
+     */
     public function appdeletedelivery_order() {
 
         $input_data = Input::all();
@@ -333,10 +445,15 @@ class HomeController extends Controller {
                     $delievry_order_details->delete();
                 }
             }
+            return json_encode(array('result' => true, 'message' => 'Delievry Orders deleted successfully.'));
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
         }
-        return json_encode(array('result' => true, 'message' => 'Delievry Orders deleted successfully.'));
     }
 
+    /**
+     * App delete delivery challans
+     */
     public function appdeletedelivery_challan() {
 
         $input_data = Input::all();
@@ -348,10 +465,15 @@ class HomeController extends Controller {
                     $delievry_challan_details->delete();
                 }
             }
+            return json_encode(array('result' => true, 'message' => 'Delievry Challans deleted successfully.'));
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
         }
-        return json_encode(array('result' => true, 'message' => 'Delievry Challans deleted successfully.'));
     }
 
+    /**
+     * App delete purchase orders
+     */
     public function appdeletepurchase_order() {
 
         $input_data = Input::all();
@@ -363,10 +485,15 @@ class HomeController extends Controller {
                     $purchase_order_details->delete();
                 }
             }
+            return json_encode(array('result' => true, 'message' => 'Purchase Orders deleted successfully.'));
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
         }
-        return json_encode(array('result' => true, 'message' => 'Purchase Orders deleted successfully.'));
     }
 
+    /**
+     * App delete purchase advise
+     */
     public function appdeletepurchase_advise() {
 
         $input_data = Input::all();
@@ -378,10 +505,15 @@ class HomeController extends Controller {
                     $purchase_advise_details->delete();
                 }
             }
+            return json_encode(array('result' => true, 'message' => 'Purchase Advise deleted successfully.'));
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
         }
-        return json_encode(array('result' => true, 'message' => 'Purchase Advise deleted successfully.'));
     }
 
+    /**
+     * App delete purchase challans
+     */
     public function appdeletepurchase_challan() {
 
         $input_data = Input::all();
@@ -393,10 +525,15 @@ class HomeController extends Controller {
                     $purchase_challan_details->delete();
                 }
             }
+            return json_encode(array('result' => true, 'message' => 'Purchase Challan deleted successfully.'));
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
         }
-        return json_encode(array('result' => true, 'message' => 'Purchase Challan deleted successfully.'));
     }
 
+    /**
+     * App update customers
+     */
     public function updateCustomer() {
 
         $customer = Customer::find(Input::get('customer_id'));
@@ -435,6 +572,9 @@ class HomeController extends Controller {
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
 
+    /**
+     * App contact us
+     */
     public function appContactUs() {
 
         $data = Input::all();
@@ -448,6 +588,9 @@ class HomeController extends Controller {
         return json_encode(array('result' => true, 'message' => 'Email send successfully'));
     }
 
+    /**
+     * App sync purchase challan
+     */
     public function appSyncPurchaseChallan() {
 
         $input_data = Input::all();
@@ -563,6 +706,9 @@ class HomeController extends Controller {
         return json_encode($purchase_challan_response);
     }
 
+    /**
+     * App sync purchase advise
+     */
     public function appSyncPurchaseAdvise() {
 
         $input_data = Input::all();
@@ -678,6 +824,9 @@ class HomeController extends Controller {
         return json_encode($purchase_advice_response);
     }
 
+    /**
+     * App sync purchase order
+     */
     public function appSyncPurchaseOrder() {
 
         $data = Input::all();
@@ -784,6 +933,9 @@ class HomeController extends Controller {
         return json_encode($purchase_order_response);
     }
 
+    /**
+     * App sync delievry challan
+     */
     public function appSyncDeliveryChallan() {
 
         $data = Input::all();
@@ -907,6 +1059,9 @@ class HomeController extends Controller {
         return json_encode($delivery_challan_response);
     }
 
+    /**
+     * App sync delievry order
+     */
     public function appSyncDeliveryOrder() {
 
         $data = Input::all();
@@ -1055,6 +1210,9 @@ class HomeController extends Controller {
         return json_encode($delivery_order_response);
     }
 
+    /**
+     * App sync order
+     */
     public function appSyncOrder() {
 
         $data = Input::all();
@@ -1214,6 +1372,9 @@ class HomeController extends Controller {
         return json_encode($order_response);
     }
 
+    /**
+     * App sync inquiries
+     */
 // All Functions added by user 157 for android request //
 //    public function appsyncinquiry($inquiryies = NULL, $inquiry_customers = NULL, $inquiryiesproduct = NULL) {
     public function appsyncinquiry() {
@@ -1403,6 +1564,9 @@ class HomeController extends Controller {
 //        }
     }
 
+    /**
+     * App sync and comare last sync dated and send updated date
+     */
     public function appsync() {
 
 //        $data = Input::all();
@@ -1499,6 +1663,9 @@ class HomeController extends Controller {
         return json_encode($sync);
     }
 
+    /**
+     * App dashboard counts
+     */
     public function appcount() {
 
         $order = Order::all()->count();
@@ -1548,6 +1715,9 @@ class HomeController extends Controller {
         return json_encode($allcounts);
     }
 
+    /**
+     * App inquiry
+     */
     public function appinquiry() {
 
         $data = Input::all();
@@ -1567,6 +1737,9 @@ class HomeController extends Controller {
         return json_encode($inquiries);
     }
 
+    /**
+     * App orders
+     */
     public function apporders() {
 
         $data = Input::all();
@@ -1586,6 +1759,9 @@ class HomeController extends Controller {
         return json_encode($allorders);
     }
 
+    /**
+     * App inventory
+     */
     public function appinventory() {
 
         if (Input::has('inventory_sync_date') && Input::get('inventory_sync_date') != '') {
@@ -1601,6 +1777,9 @@ class HomeController extends Controller {
         return json_encode($allinventory);
     }
 
+    /**
+     * App get all delivery order
+     */
     public function appdelivery_order() {
 
         if (Input::has('delivery_order_sync_date') && Input::get('delivery_order_sync_date') != '') {
@@ -1621,6 +1800,9 @@ class HomeController extends Controller {
         return json_encode($data);
     }
 
+    /**
+     * App get all delievry challan
+     */
     public function appalldelivery_challan() {
 
         if (Input::has('delivery_challan_sync_date') && Input::get('delivery_challan_sync_date') != '') {
@@ -1637,6 +1819,9 @@ class HomeController extends Controller {
         return json_encode($deliverychallans);
     }
 
+    /**
+     * App get all unit
+     */
     public function appallunit() {
 
         if (Input::has('unit_sync_date') && Input::get('unit_sync_date') != '') {
@@ -1653,6 +1838,9 @@ class HomeController extends Controller {
         return json_encode($units);
     }
 
+    /**
+     * App get all city
+     */
     public function appallcity() {
 
         if (Input::has('city_sync_date') && Input::get('city_sync_date') != '') {
@@ -1669,6 +1857,9 @@ class HomeController extends Controller {
         return json_encode($cities);
     }
 
+    /**
+     * App get all state
+     */
     public function appallstate() {
 
         if (Input::has('state_sync_date') && Input::get('state_sync_date') != '') {
@@ -1685,6 +1876,9 @@ class HomeController extends Controller {
         return json_encode($states);
     }
 
+    /**
+     * App get all customers
+     */
     public function appallcustomers() {
 
         if (Input::has('customer_sync_date') && Input::get('customer_sync_date') != '') {
@@ -1701,6 +1895,9 @@ class HomeController extends Controller {
         return json_encode($customers);
     }
 
+    /**
+     * App get all product category
+     */
     public function appallproduct_category() {
 
         if (Input::has('product_category_sync_date') && Input::get('product_category_sync_date') != '') {
@@ -1717,6 +1914,9 @@ class HomeController extends Controller {
         return json_encode($product_category);
     }
 
+    /**
+     * App get all product sub category
+     */
     public function appallproduct_sub_category() {
 
         if (Input::has('product_subcategory_sync_date') && Input::get('product_subcategory_sync_date') != '') {
@@ -1733,6 +1933,9 @@ class HomeController extends Controller {
         return json_encode($product_subcategory);
     }
 
+    /**
+     * App get all usres
+     */
     public function appallusers() {
 
         if (Input::has('user_sync_date') && Input::get('user_sync_date') != '') {
@@ -1749,6 +1952,9 @@ class HomeController extends Controller {
         return json_encode($users_data);
     }
 
+    /**
+     * App get all pending customers
+     */
     public function appallpending_customers() {
 
         if (Input::has('customer_sync_date') && Input::get('customer_sync_date') != '') {
@@ -1765,6 +1971,9 @@ class HomeController extends Controller {
         return json_encode($customers);
     }
 
+    /**
+     * App get all pending delivery orders
+     */
     public function appallpending_delivery_order() {
 
         if (Input::has('delivery_order_sync_date') && Input::get('delivery_order_sync_date') != '') {
@@ -1781,6 +1990,9 @@ class HomeController extends Controller {
         return json_encode($delivery_data);
     }
 
+    /**
+     * App get all purchase orders
+     */
     public function appallpurchaseorders() {
 
         if (Input::has('purchase_order_sync_date') && Input::get('purchase_order_sync_date') != '') {
@@ -1797,6 +2009,9 @@ class HomeController extends Controller {
         return json_encode($purchase_orders);
     }
 
+    /**
+     * App get all purchase advise
+     */
     public function appallpurchaseorder_advise() {
 
         if (Input::has('purchase_advise_sync_date') && Input::get('purchase_advise_sync_date') != '') {
@@ -1813,6 +2028,9 @@ class HomeController extends Controller {
         return json_encode($purchase_advise);
     }
 
+    /**
+     * App get all pending purchase advise
+     */
     public function appallpending_purchase_advice() {
 
         if (Input::has('purchase_advise_sync_date') && Input::get('purchase_advise_sync_date') != '') {
@@ -1829,6 +2047,9 @@ class HomeController extends Controller {
         return json_encode($purchase_advise);
     }
 
+    /**
+     * App get all purchase challan
+     */
     public function appallpurchase_challan() {
 
         if (Input::has('purchase_challan_sync_date') && Input::get('purchase_challan_sync_date') != '') {
@@ -1845,6 +2066,9 @@ class HomeController extends Controller {
         return json_encode($purchase_challan);
     }
 
+    /**
+     * App get all purchase order daybook
+     */
     public function appallpurchase_order_daybook() {
 
         if (Input::has('purchase_orderdaybook_sync_date') && Input::get('purchase_orderdaybook_sync_date') != '') {
@@ -1861,6 +2085,9 @@ class HomeController extends Controller {
         return json_encode($purchase_daybook);
     }
 
+    /**
+     * App get all location
+     */
     public function applocation() {
 
         if (Input::has('delivery_location_sync_date') && Input::get('delivery_location_sync_date') != '') {
