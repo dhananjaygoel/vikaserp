@@ -26,7 +26,7 @@
                         @if (Session::has('flash_message'))
                         <div class="alert alert-success alert-success1">
                             <i class="fa fa-check-circle fa-fw fa-lg"></i>
-                            <strong>Well done!</strong> User details successfully added.
+                            <strong>Well done!</strong> {{Session::get('flash_message')}}
                         </div> <br/>
                         @endif
                         @if (Session::has('success'))

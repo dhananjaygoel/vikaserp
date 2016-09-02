@@ -72,7 +72,7 @@
                         <div class="col-md-2 pull-right">                            
                             <select class="form-control" id="user_filter3" name="fulfilled_filter" onchange="this.form.submit();">
                                 <option value="" selected="">--Fulfilled by--</option>
-                                <option {{(Input::get('fulfilled_filter') != 'all') ? 'selected' :'' }} value="0" >Warehouse</option>
+                                <option {{(Input::get('fulfilled_filter') == '0') ? 'selected' :'' }} value="0" >Warehouse</option>
                                 <option {{(Input::get('fulfilled_filter') == 'all') ? 'selected' :'' }} value="all" >Direct</option>
                             </select>
                         </div>

@@ -73,7 +73,7 @@
                             <hr>
                             <div >
                                 <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
-                                <a href="{{url('change_password')}}" class="btn btn-default form_button_footer">Back</a>
+                                <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
 
                             <div class="clearfix"></div>

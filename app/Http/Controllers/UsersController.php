@@ -117,7 +117,7 @@ class UsersController extends Controller {
             if (Input::get('mobile') == Auth::user()->mobile_number) {
                 //        if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
                 if (User::destroy($id)) {
-                    return redirect('users')->with('flash_message', 'User details successfully deleted.');
+                    return redirect('users')->with('flash_message', 'User deleted successfully.');
                 } else {
                     return redirect('users')->with('flash_message', 'Unable to delete the user details.');
                 }

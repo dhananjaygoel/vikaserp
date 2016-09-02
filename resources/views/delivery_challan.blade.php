@@ -78,7 +78,7 @@
                                     @if($challan->challan_status == 'pending')
                                     <tr id="challan_order_row_{{$challan->id}}">
                                         <td class="text-center">{{$k++}}</td>
-                                        <td class="text-left">
+                                        <td class="text-center">
                                             {{ ($challan['customer']->tally_name != "") ? $challan['customer']->tally_name : $challan['customer']->owner_name }}
                                         </td>
                                         <td class="text-center">
