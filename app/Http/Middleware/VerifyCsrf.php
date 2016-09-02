@@ -46,6 +46,8 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
         'appdeletepurchase_challan',
         'appcustomerdeleteinquiry',
         'appcustomerdeleteorder',
+        'appsync_customerorder',
+        'appsync_customerinquiry',
     ];
 
     /**
