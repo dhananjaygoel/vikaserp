@@ -12,10 +12,12 @@
                 <div class="filter-block">
                     <h1 class="pull-left">View Inquiry</h1>
                     <div class="pull-right top-page-ui">
+                        @if($inquiry->inquiry_status != 'completed')
                         @if( Auth::user()->role_id != 2)
                         <a href="{{ url('inquiry/'.$inquiry->id.'/edit') }}" class="btn btn-primary pull-right">
                             Edit Inquiry
                         </a>
+                        @endif
                         @endif
                     </div>
                 </div>
