@@ -201,6 +201,7 @@ class ProductsubController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+       
         if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
             $product_cat = ProductSubCategory::find($id);
             $order_count = AllOrderProducts::where('product_category_id', $id)->count();
