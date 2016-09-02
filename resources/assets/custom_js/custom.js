@@ -82,7 +82,12 @@ $(document).ready(function () {
     });
 });
 $(document).ready(function () {
-
+$('body').on('click','.delete-purchase-order-daybook',function(){
+    $("#delete_purchase_daybook_form").attr('action',$(this).attr('data-url'));
+});
+$('body').on('click','.delete-sales-day-book',function(){
+    $("#delete-sales-day-book-form").attr('action',$(this).attr('data-url'));
+});
     $(".flags").click(function () {
         if ($(this).hasClass('empty_star')) {
             $(this).removeClass('empty_star');

@@ -170,7 +170,7 @@
                                             </td>
                                             @if( Auth::user()->role_id == 0)
                                             <td>
-                                                <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan_{{$challan->id}}" title="delete">
+                                                <a href="#" class="table-link danger delete-sales-day-book" data-toggle="modal" data-target="#delete-sales-day-book" title="delete" data-url='{{url("delete_sales_daybook",$challan->id)}}'>
                                                     <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
                                                         <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -180,34 +180,7 @@
                                             @endif
                                         </tr>
                                         @if( Auth::user()->role_id == 0  )
-                                    <div class="modal fade" id="delete_challan_{{$challan->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                                    <h4 class="modal-title" id="myModalLabel"></h4>
-                                                </div>
-                                                {!! Form::open(array("method"=>"POST","url"=>url("delete_sales_daybook",$challan->id), "id"=>"delete_sales_daybook_form"))!!}
-                                                <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                                <div class="modal-body">
-                                                    <div class="delete">
-                                                        <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
-                                                        <div class="pwd">
-                                                            <div class="pwdl"><b>Password:</b></div>
-                                                            <div class="pwdr"><input class="form-control" placeholder="" name="password" type="password"></div>
-                                                        </div>
-                                                        <div class="clearfix"></div>
-                                                        <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                    <button type="button" class="btn btn-default" id="yes" onclick="this.form.submit();">Yes</button>
-                                                </div>
-                                                {!! Form::close() !!}
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                     @endif
                                     @endforeach
                                     </tbody>
@@ -271,6 +244,34 @@
                         </div>
                     </div>
                     @endif
+                    <div class="modal fade" id="delete-sales-day-book" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel"></h4>
+                                                </div>
+                                                {!! Form::open(array("method"=>"POST", "id"=>"delete-sales-day-book-form"))!!}
+                                                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                                <div class="modal-body">
+                                                    <div class="delete">
+                                                        <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
+                                                        <div class="pwd">
+                                                            <div class="pwdl"><b>Password:</b></div>
+                                                            <div class="pwdr"><input class="form-control" placeholder="" name="password" type="password"></div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                        <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                                    <button type="button" class="btn btn-default" id="yes" onclick="this.form.submit();">Yes</button>
+                                                </div>
+                                                {!! Form::close() !!}
+                                            </div>
+                                        </div>
+                                    </div>
                 </div>
             </div>
         </div>
