@@ -2,8 +2,7 @@
     <div class="container">
         <a href="{{url('/')}}" id="logo" class="navbar-brand">
             {!! HTML::image('/resources/assets/img/logo1.png' , 'Logo', array('class' => 'normal-logo logo-white')) !!}
-            {!! HTML::image('/resources/assets/img/logo-black.png' , 'Logo', array('class' => 'normal-logo logo-black')) !!}
-            {!! HTML::image('/resources/assets/img/logo-small.png' , 'Logo', array('class' => 'small-logo hidden-xs hidden-sm hidden')) !!}
+           
         </a>
         <div class="clearfix">
             <button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
