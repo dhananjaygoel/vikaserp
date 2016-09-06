@@ -259,3 +259,21 @@ Route::get('export-delivery-challan/{delivery_challan_status}', 'DeliveryChallan
 Route::get('export-order/{order_status}', 'OrderController@exportOrderBasedOnStatus');
 Route::get('export-inquiry/{inquiry_status}', 'InquiryController@exportinquiryBasedOnStatus');
 Route::get('get-data', 'DeliveryOrderController@get_data');
+
+Route::get('dropbax-demo-functionality', function() {
+    $url = 'https://www.dropbox.com/oauth2/authorize';
+    $url = '?response_type=';
+    $curl_object = curl_init();
+    curl_setopt($curl_object, CURLOPT_URL, $url);
+    curl_setopt($curl_object, CURLOPT_CUSTOMREQUEST, "GET");
+    curl_setopt($curl_object, CURLOPT_POSTFIELDS, $json_request);
+    curl_setopt($curl_object, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl_object, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+    /* Get response from QPX API */
+    $response_output = curl_exec($curl_object);
+    /* Close CRUL connection */
+    curl_close($curl_object);
+});
+Route::get('auth/dropbox/callback',function(){
+    echo "Comes";
+});
