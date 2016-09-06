@@ -374,7 +374,11 @@ class WelcomeController extends Controller {
         if (Input::hasFile('excel_file')) {
             $input = Input::file('excel_file');
             $filename = $input->getRealPath();
+            $extension = $input->getClientOriginalExtension();
             $msg = "";
+            if(in_array($extension,array('xlsx','xls'))){
+                
+            
             Excel::load($filename, function($reader) {
                 ini_set('max_execution_time', 720);
                 $sheet = $reader->getSheet(0);
@@ -406,6 +410,11 @@ class WelcomeController extends Controller {
                 Session::forget('resultmsg');
                 return redirect('excel_import_customer')->with('wrong', $msg);
             }
+            }else{
+                return redirect('excel_import_customer')->with('wrong', 'Invalid file format.');
+            }
+                
+            
         } else {
             return redirect('excel_import_customer')->with('wrong', 'Please select file to upload');
         }

@@ -172,7 +172,7 @@ class BulkDeleteController extends Controller {
                                 ->orderBy('created_at', 'desc')->Paginate(20);
                 foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;
-                    if ($temp['customer']->tally_name != '')
+                    if (isset($temp['customer']->tally_name) && $temp['customer']->tally_name != '')
                         $result_data[$key][0] = $temp['customer']->tally_name;
                     else
                         $result_data[$key][0] = $temp['customer']->owner_name;

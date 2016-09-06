@@ -12,7 +12,7 @@
                 <div class="clearfix">
                     <h1 class="pull-left">Users</h1>
                     <div class="pull-right top-page-ui">
-                        <a href="{{URL::action('UsersController@create')}}" class="btn btn-primary pull-right">
+                        <a href="{{URL::action('UsersController@create')}}"  title="Add User" class="btn btn-primary pull-right">
                             <i class="fa fa-plus-circle fa-lg"></i> Add user
                         </a>
                     </div>
@@ -70,13 +70,13 @@
                                         <td>{{$user->mobile_number}} </td>
                                         <td>{{$user['user_role']->name}}</td>
                                         <td class="text-center">
-                                            <a href="{{URL::action('UsersController@edit',['id'=> $user->id])}}" class="table-link">
+                                            <a href="{{URL::action('UsersController@edit',['id'=> $user->id])}}" class="table-link" title="Edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal<?php echo $user->id; ?>">
+                                            <a href="#" class="table-link danger" title="Delete" data-toggle="modal" data-target="#myModal<?php echo $user->id; ?>">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
