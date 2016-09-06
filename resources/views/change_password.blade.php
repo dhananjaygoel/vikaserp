@@ -60,11 +60,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="password">New Password</label>
-                                <input id="password" class="form-control" placeholder="New Password" name="password" value="" type="password">
+                                <input id="password" class="form-control" placeholder="New Password" name="new_password" value="" type="password">
                             </div>
                             <div class="form-group">
                                 <label for="confirm_password">Confirm Password</label>
-                                <input id="confirm_password" class="form-control" placeholder="Confirm Password" name="confirm_password" value="" type="password">
+                                <input id="confirm_password" class="form-control" placeholder="Confirm Password" name="new_password_confirmation" value="" type="password">
                             </div>
 
 

@@ -85,7 +85,7 @@
                                     <div class="form-group searchproduct">
                                         <input value="{{ $delivery_data['customer']->tally_name }}" class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name" tabindex="1">
                                         <input type="hidden" value="{{ $delivery_data['customer']->id }}" id="existing_customer_id" name="autocomplete_customer_id">
-                                        <i class="fa fa-search search-icon"></i>
+                                        <!--<i class="fa fa-search search-icon"></i>-->
                                     </div>
                                 </div>
                             </div>

@@ -32,7 +32,7 @@ class PasswordController extends Controller {
         $id = $user->id;
         $mobile_number = $user->mobile_number;
         if (Auth::attempt(['mobile_number' => $mobile_number, 'password' => $old_password])) {
-            $new_password = Hash::make($request->input('password'));
+            $new_password = Hash::make($request->input('new_password'));
             User::where('id', $id)->update(array('password' => $new_password));
             return redirect('change_password')->with('message', 'Your password is successfully changed.');
         } else {

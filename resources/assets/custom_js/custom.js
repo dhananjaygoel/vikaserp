@@ -1949,8 +1949,10 @@ $( function() {
       },
  
       _createAutocomplete: function() {
-        var selected = this.element.children( ":selected" ),
-          value = selected.val() ? selected.text() : "";
+        var selected = this.element.children( ":selected" );
+//               alert(this.element.val());
+          value = this.element.val();
+//         this.element.val() value = selected.val() ? selected.text() : "";
  
         this.input = $( "<input>" )
           .appendTo( this.wrapper )
@@ -1958,7 +1960,7 @@ $( function() {
           .attr( "title", "" )
           .attr( "tabindex", "1" )
           .attr( "placeholder", "Enter tally name" )
-          .addClass( "focus_on_enter custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
+          .addClass( " custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left focus_on_enter" )
           .autocomplete({
             delay: 0,
             minLength: 0,

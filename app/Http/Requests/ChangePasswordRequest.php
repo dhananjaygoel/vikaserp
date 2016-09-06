@@ -5,8 +5,8 @@ namespace App\Http\Requests;
 use App\Http\Requests\Request;
 
 class ChangePasswordRequest extends Request {
-    
-    protected $redirect ='change_password';
+
+    protected $redirect = 'change_password';
 
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,10 @@ class ChangePasswordRequest extends Request {
     public function rules() {
         return [
             'old_password' => 'required',
-            'password' => 'required|min:6|max:100',
-            'confirm_password' => 'required|min:6|max:100|same:password',
+//            'new_password' => 'required|min:6|max:100',
+//            'confirm_password' => 'required|min:6|max:100|same:password',
+            'new_password' => 'required|min:6|max:100|confirmed ',
+            'new_password_confirmation' => 'required'
         ];
     }
 
@@ -38,5 +40,4 @@ class ChangePasswordRequest extends Request {
 //            'confirm_password.same' => 'Please enter same new password and confirm password.'
 //        ];
 //    }
-
 }
