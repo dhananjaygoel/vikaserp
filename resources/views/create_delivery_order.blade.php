@@ -116,7 +116,7 @@
                                             <td><span><b>Unit</b></span></td>
                                             <td><span><b>Present Shipping</b></span></td>
                                             <td><span><b>Price</b></span></td>
-                                            <td><span><b>Vat</b></span></td>
+                                            <td class="inquiry_vat_chkbox"><span><b>Vat</b></span></td>
                                             <td><span><b>Pending Order</b></span></td>
                                             <td><span><b>Remark</b></span></td>
                                         </tr>
@@ -164,10 +164,10 @@
                                                     <?php $total = $total + $product->price; ?>
                                                 </div>
                                             </td>
-                                            <td class="col-md-1">
-                                                <div class="form-group">
+                                            <td class="col-md-1 ">
+                                                <div class="form-group inquiry_vat_chkbox">
 <!--                                                    <input type="text" class="form-control" value="{{$product->vat_percentage}}" id="product_price_{{$key}}" name="product[{{$key}}][vat_percentage]">--> 
-                                                   <input readonly class="vat_chkbox" type="checkbox"  name="product[{{$key}}][vat_percentage]" value="yes" {{($product->vat_percentage>0)?'checked':''}} >
+                                                   <input readonly class="vat_chkbox " type="checkbox"  name="product[{{$key}}][vat_percentage]" value="yes" {{($product->vat_percentage>0)?'checked':''}} >
                                                         </div>
                                                 </div>
                                             </td>
