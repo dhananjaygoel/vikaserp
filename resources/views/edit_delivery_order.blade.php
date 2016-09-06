@@ -437,50 +437,61 @@
                             <input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="{{ $delivery_data->driver_contact_no }}" type="tel">
                         </div>
                         <div class="clearfix"></div>
-                        <!--
-                        <div class="form-group">
-                            <div class="radio">
-                                <input checked="" value="include_vat" id="optionsRadios5" name="status1" type="radio" onclick="grand_total_delivery_order();">
-                                <label for="optionsRadios5">All Inclusive</label>
-                                <input value="exclude_vat" id="optionsRadios6" name="status1" type="radio" onclick="grand_total_delivery_order();" {{($delivery_data->vat_percentage != '')?'checked':''}}>
-                                <label for="optionsRadios6">Plus VAT</label>
+                        <div class="plusvat " >
+                            <div class="form-group">
+                                <table id="table-example" class="table ">
+                                    <tbody>
+                                        <tr class="cdtable">
+                                            <td class="cdfirst">VAT Percentage:</td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ isset($delivery_data->vat_percentage)? $delivery_data->vat_percentage:0}}" type="text" onblur="grand_total_delivery_order({{($key!='')?$key:1}});"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
+                            <!--
+                            <div class="form-group">
+                                <div class="radio">
+                                    <input checked="" value="include_vat" id="optionsRadios5" name="status1" type="radio" onclick="grand_total_delivery_order();">
+                                    <label for="optionsRadios5">All Inclusive</label>
+                                    <input value="exclude_vat" id="optionsRadios6" name="status1" type="radio" onclick="grand_total_delivery_order();" {{($delivery_data->vat_percentage != '')?'checked':''}}>
+                                    <label for="optionsRadios6">Plus VAT</label>
+                                </div>
+                            </div>
+                            -->
+                            <!--                        <div class="plusvat " style="{{($delivery_data->vat_percentage != '') ?"display:block" : ""}}">
+                                                        <div class="form-group">
+                                                            <table id="table-example" class="table ">
+                                                                <tbody>
+                                                                    <tr class="cdtable">
+                                                                        <td class="cdfirst">VAT Percentage:</td>
+                                                                        <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ $delivery_data->vat_percentage }}" type="tel" onblur="grand_total_delivery_order({{($key!='')?$key:1}});"></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>-->
+                            <div class="clearfix"></div>
+                            <div class="form-group">
+                                <label for="inquiry_remark">Remark</label>
+                                <textarea class="form-control" id="order_remark" name="order_remark"  rows="3">{{ $delivery_data->remarks }}</textarea>
+                            </div>
+                            <div>
+                                <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>-->
+                            </div>
+                            <hr>
+                            <div>
+                                <!--<input type="hidden" name="row_count" value="{{sizeof($delivery_data['delivery_product'])}}">-->
+                                <button type="submit" class="btn btn-primary form_button_footer btn_edit_delivery_order">Submit</button>
+                                <a href="{{url('delivery_order')}}" class="btn btn-default form_button_footer">Back</a>
+                            </div>
+                            <div class="clearfix"></div>
+                            </form>
+                            <div class="clearfix"></div>
                         </div>
-                        -->
-                        <!--                        <div class="plusvat " style="{{($delivery_data->vat_percentage != '') ?"display:block" : ""}}">
-                                                    <div class="form-group">
-                                                        <table id="table-example" class="table ">
-                                                            <tbody>
-                                                                <tr class="cdtable">
-                                                                    <td class="cdfirst">VAT Percentage:</td>
-                                                                    <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ $delivery_data->vat_percentage }}" type="tel" onblur="grand_total_delivery_order({{($key!='')?$key:1}});"></td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>-->
-                        <div class="clearfix"></div>
-                        <div class="form-group">
-                            <label for="inquiry_remark">Remark</label>
-                            <textarea class="form-control" id="order_remark" name="order_remark"  rows="3">{{ $delivery_data->remarks }}</textarea>
-                        </div>
-                        <div>
-                            <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>-->
-                        </div>
-                        <hr>
-                        <div>
-                            <!--<input type="hidden" name="row_count" value="{{sizeof($delivery_data['delivery_product'])}}">-->
-                            <button type="submit" class="btn btn-primary form_button_footer btn_edit_delivery_order">Submit</button>
-                            <a href="{{url('delivery_order')}}" class="btn btn-default form_button_footer">Back</a>
-                        </div>
-                        <div class="clearfix"></div>
-                        </form>
-                        <div class="clearfix"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-@include('autocomplete_tally_product_name')
-@stop
+    @include('autocomplete_tally_product_name')
+    @stop

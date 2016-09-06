@@ -162,15 +162,19 @@ class DeliveryOrderController extends Controller {
 //        if ($input_data['status1'] == 'include_vat') {
 //            $vat_price = '';
 //        }
-//        if ($input_data['status1'] == 'exclude_vat') {
-//            $vat_price = $input_data['vat_price'];
-//        }
+        if (isset($input_data['vat_price'])) {
+            $vat_price = $input_data['vat_price'];
+        }
+        else
+        {
+             $vat_price = 0;
+        }
         $delivery_order = new DeliveryOrder();
         $delivery_order->order_id = 0;
         $delivery_order->order_source = 'warehouse';
         $delivery_order->customer_id = $customer_id;
         $delivery_order->created_by = Auth::id();
-//        $delivery_order->vat_percentage = $vat_price;
+        $delivery_order->vat_percentage = $vat_price;
         $delivery_order->estimate_price = 0;
         $delivery_order->expected_delivery_date = date_format(date_create(date("Y-m-d")), 'Y-m-d');
         $delivery_order->remarks = $input_data['order_remark'];
@@ -305,6 +309,14 @@ class DeliveryOrderController extends Controller {
 //        if ($input_data['status1'] == 'exclude_vat') {
 //            $vat_price = $input_data['vat_price'];
 //        }
+        if (isset($input_data['vat_price'])) {
+            $vat_price = $input_data['vat_price'];
+        }
+        else
+        {
+             $vat_price = 0;
+        }
+        
         $delivery_location = 0;
         $location = "";
         $other_location_difference = "";
@@ -323,7 +335,7 @@ class DeliveryOrderController extends Controller {
             'delivery_location_id' => $delivery_location,
             'other_location' => $location,
             'location_difference' => $location_difference,
-//            'vat_percentage' => $vat_price,
+            'vat_percentage' => $vat_price,
             'estimate_price' => 0,
             'estimated_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
             'expected_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
