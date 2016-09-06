@@ -1956,6 +1956,7 @@ $( function() {
           .appendTo( this.wrapper )
           .val( value )
           .attr( "title", "" )
+          .attr( "tabindex", "1" )
           .attr( "placeholder", "Enter tally name" )
           .addClass( "focus_on_enter custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
           .autocomplete({
