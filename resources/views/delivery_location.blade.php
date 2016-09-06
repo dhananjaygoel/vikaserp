@@ -15,7 +15,7 @@
                     <h1 class="pull-left">Location</h1>
                     @if( Auth::user()->role_id == 0  )
                     <div class="pull-right top-page-ui">
-                        <a href="{{URL::action('DeliveryLocationController@create')}}" class="btn btn-primary pull-right">
+                        <a href="{{URL::action('DeliveryLocationController@create')}}" title="Add New Location" class="btn btn-primary pull-right">
                             <i class="fa fa-plus-circle fa-lg"></i> Add New Location
                         </a>
                     </div>
@@ -82,13 +82,13 @@
                                         </td>
                                         @if( Auth::user()->role_id == 0 )
                                         <td class="text-center">
-                                            <a href="{{ Url::action('DeliveryLocationController@edit', ['id' => $location_data->id]) }}" class="table-link">
+                                            <a title="Edit" href="{{ Url::action('DeliveryLocationController@edit', ['id' => $location_data->id]) }}" class="table-link">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_location_modal_{{$location_data->id}}">
+                                            <a title="Delete" href="#" class="table-link danger" data-toggle="modal" data-target="#delete_location_modal_{{$location_data->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
