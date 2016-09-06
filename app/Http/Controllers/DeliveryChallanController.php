@@ -260,13 +260,20 @@ class DeliveryChallanController extends Controller {
                 }
             }
         }
-        $date_letter = 'DC/' . $current_date . $id . (($vat_applicable > 0) ? "P" : "A");
-        if ($update_delivery_challan->ref_delivery_challan_id > 0) {
-            $get_serial_number = DeliveryChallan::find($update_delivery_challan->ref_delivery_challan_id);
-            $update_delivery_challan->serial_number = $get_serial_number->serial_number;
-        } else {
-            $update_delivery_challan->serial_number = $date_letter;
+        if($update_delivery_challan->ref_delivery_challan_id  ==0){
+            $modified_id = $id;
+        }else{
+            $modified_id = $update_delivery_challan->ref_delivery_challan_id;
         }
+        $date_letter = 'DC/' . $current_date . $modified_id . (($vat_applicable > 0) ? "P" : "A");
+        
+       
+//        if ($update_delivery_challan->ref_delivery_challan_id != 0) {
+//            $get_serial_number = DeliveryChallan::find($update_delivery_challan->ref_delivery_challan_id);
+//            $update_delivery_challan->serial_number = $get_serial_number->serial_number;
+//        } else {
+            $update_delivery_challan->serial_number = $date_letter;
+//        }
         $update_delivery_challan->challan_status = 'completed';
         $update_delivery_challan->save();
         $this->checkpending_quantity();
@@ -276,6 +283,15 @@ class DeliveryChallanController extends Controller {
 //        $allorder['calculated_vat_price'] = $calculated_vat_value;
         $number = $allorder->grand_price;
         $exploded_value = explode(".", $number);
+        
+        if(!isset($exploded_value[1]))
+        {
+            $number = number_format($number, 2, '.', '');
+            $allorder->grand_price = $number;
+            $allorder->save();
+            $exploded_value = explode(".", $number);
+        }        
+                
         $result_paisa = $exploded_value[1] % 10;
         if (isset($exploded_value[1]) && strlen($exploded_value[1]) > 1 && $result_paisa != 0) {
             $convert_value = $this->convert_number_to_words($allorder->grand_price);
