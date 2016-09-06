@@ -411,7 +411,7 @@ class WelcomeController extends Controller {
                 return redirect('excel_import_customer')->with('wrong', $msg);
             }
             }else{
-                return redirect('excel_import_customer')->with('wrong', 'Invalid file format.');
+                return redirect('excel_import_customer')->with('wrong', 'File format is invalid.');
             }
                 
             
