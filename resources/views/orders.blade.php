@@ -118,7 +118,7 @@
                                 $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
                                 ?>
                                 @foreach($allorders as $order)
-                                @if($order->order_status == 'pending')
+                                @if(isset($order->order_status) && $order->order_status == 'pending')
                                 @if($k==1)
                                 <thead>
                                     <tr>
@@ -193,7 +193,7 @@
                                         </td>
                                     </tr>
                                     @endif
-                                    @if($order->order_status == 'completed')
+                                    @if(isset($order->order_status) && $order->order_status == 'completed')
                                     @if($k==1)
                                 <thead>
                                     <tr>
@@ -250,7 +250,7 @@
                                     </td>
                                 </tr>
                                 @endif
-                                @if($order->order_status == 'cancelled')
+                                @if(isset($order->order_status) && $order->order_status == 'cancelled')
                                 @if($k==1)
                                 <thead>
                                     <tr>

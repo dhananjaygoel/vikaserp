@@ -65,11 +65,11 @@
                             <input id="email" class="form-control" placeholder="Email Id" name="email" value="{{$user_data['email']}}" type="email">
                         </div>
                         <div class="form-group">
-                            <label for="password">Password<span class="mandatory">*</span></label>
+                            <label for="password">Password</label>
                             <input id="password" class="form-control" placeholder="Password" name="password" value="" type="password">
                         </div>
                         <div class="form-group">
-                            <label for="password_confirmation">Confirm Password<span class="mandatory">*</span></label>
+                            <label for="password_confirmation">Confirm Password</label>
 
                             <input id="password_confirmation" class="form-control" placeholder="Confirm Password" name="password_confirmation" value="" type="password">
                         </div>  
