@@ -549,7 +549,8 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
             }
         }
 
-    } else {       
+    } else {  
+       
         if ($('#existing_customer_id').val() == "" || $('#existing_customer_name').val() == "") {
             $('#existing_customer_name').addClass('error_validation');
             status_form = 1;
@@ -558,16 +559,22 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
             $('#add_order_location').addClass('error_validation');
             status_form = 1;
         }
+         
+        
         CheckBoxArray = [];
         $("input:checkbox[class='vat_chkbox']:checked").each(function(){
         CheckBoxArray.push($(this).val());
             if ($('#vat_percentage').val()==""){
                 $('#vat_percentage').addClass('error_validation');
                   status_form = 1;  
+            }else{
+                $('#vat_percentage').removeClass('error_validation');
+                  status_form = 0; 
             }
                 
             
         });
+//        alert(status_form);
         if(CheckBoxArray.length == 0)
         {
              $('#vat_percentage').removeClass('error_validation');
@@ -829,6 +836,9 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
             if ($('#vat_percentage').val()==""){
                 $('#vat_percentage').addClass('error_validation');
                   status_form = 1;  
+            }else{
+                $('#vat_percentage').removeClass('error_validation');
+                  status_form = 0; 
             }
                 
             
@@ -1947,7 +1957,7 @@ $( function() {
           .val( value )
           .attr( "title", "" )
           .attr( "placeholder", "Enter tally name" )
-          .addClass( "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
+          .addClass( "focus_on_enter custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
           .autocomplete({
             delay: 0,
             minLength: 0,
@@ -1974,6 +1984,7 @@ var term = ui.item.value;
                 success: function (data) {
                     var obj = jQuery.parseJSON(data);
                     $("#existing_customer_id").val(obj.data_array[0].id);
+                    $("#existing_customer_name").val(obj.data_array[0].value);
                     $("#customer_default_location").val(obj.data_array[0].delivery_location_id);
                     $("#location_difference").val(obj.data_array[0].location_difference);
                     default_delivery_location();

@@ -556,7 +556,7 @@ class InquiryController extends Controller {
                     'value' =>$customer->tally_name,
                     'id' => $customer->id,
                     'delivery_location_id' => $customer->delivery_location_id,
-                    'location_difference' => isset($customer['deliverylocation']) ? $customer['deliverylocation']->difference:'',
+                    'location_difference' =>  $customer['deliverylocation']->difference,
                 ];
             }
            
