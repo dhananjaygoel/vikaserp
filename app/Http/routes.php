@@ -260,7 +260,7 @@ Route::get('export-order/{order_status}', 'OrderController@exportOrderBasedOnSta
 Route::get('export-inquiry/{inquiry_status}', 'InquiryController@exportinquiryBasedOnStatus');
 Route::get('get-data', 'DeliveryOrderController@get_data');
 
-Route::get('auth/dropbox/callback',function(){
+Route::get('reponse/dropbox/callback',function(){
     echo "Comes";
 });
 Route::get('dropbax-demo-functionality', function() {
