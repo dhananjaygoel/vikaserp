@@ -311,18 +311,19 @@
                         </div>
 
                         <div class="clearfix"></div>
-                        <div class="plusvat " >
+                        <div class="plusvat">
                             <div class="form-group">
                                 <table id="table-example" class="table ">
                                     <tbody>
                                         <tr class="cdtable">
                                             <td class="cdfirst">VAT Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="" type="tel"></td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$product->vat_percentage}}" type="text"></td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                        
                         @if($inquiry->vat_percentage == 0)
                         <!--
                         <div class="form-group">
