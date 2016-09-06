@@ -151,8 +151,8 @@
                                         </tr>
                                         @endif
                                         @else
-                                        <tr class="smallinput datadisplay_{{$inventory->id}}">
-                                            <td>{{$inventory->product_sub_category->alias_name}}</td>
+                                        <tr class="smallinput datadisplay_{{isset($inventory->id) ? $inventory->id:''}}">
+                                            <td>{{isset($inventory->product_sub_category->alias_name) ? $inventory->product_sub_category->alias_name:''}}</td>
 
                                             @if(auth()->user()->role_id == 0)
                                             <td class="{{ ($inventory->minimal < $total) ?'minimum_reach': '' }}">
