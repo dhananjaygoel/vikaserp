@@ -155,7 +155,7 @@ class InquiryController extends Controller {
             $add_inquiry->delivery_location_id = $input_data['add_inquiry_location'];
             $add_inquiry->location_difference = $input_data['location_difference'];
         }
-//        $add_inquiry->vat_percentage = $input_data['vat_percentage'];
+        $add_inquiry->vat_percentage = $input_data['vat_percentage'];
         $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
         $add_inquiry->remarks = $input_data['inquiry_remark'];
         $add_inquiry->inquiry_status = "Pending";
@@ -747,7 +747,7 @@ class InquiryController extends Controller {
         $order->supplier_id = $supplier_id;
         $order->customer_id = $customer_id;
         $order->created_by = Auth::id();
-//        $order->vat_percentage = $vat_price;
+        //$order->vat_percentage = $input_data['vat_percentage'];
         $order->expected_delivery_date = $datetime->format('Y-m-d');
         $order->remarks = $input_data['inquiry_remark'];
         $order->order_status = "Pending";
@@ -828,7 +828,7 @@ class InquiryController extends Controller {
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
-                    'vat_percentage' => ($product_data['vat_percentage'] != '') ? $product_data['vat_percentage'] : 0,
+                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark']
                 ];
                 AllOrderProducts::create($order_products);
