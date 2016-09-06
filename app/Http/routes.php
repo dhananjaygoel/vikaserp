@@ -260,6 +260,9 @@ Route::get('export-order/{order_status}', 'OrderController@exportOrderBasedOnSta
 Route::get('export-inquiry/{inquiry_status}', 'InquiryController@exportinquiryBasedOnStatus');
 Route::get('get-data', 'DeliveryOrderController@get_data');
 
+Route::get('auth/dropbox/callback',function(){
+    echo "Comes";
+});
 Route::get('dropbax-demo-functionality', function() {
     $url = 'https://www.dropbox.com/oauth2/authorize';
     $url = '?response_type=';
@@ -274,6 +277,4 @@ Route::get('dropbax-demo-functionality', function() {
     /* Close CRUL connection */
     curl_close($curl_object);
 });
-Route::get('auth/dropbox/callback',function(){
-    echo "Comes";
-});
+
