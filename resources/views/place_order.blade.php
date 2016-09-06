@@ -107,7 +107,7 @@
                                     <div class="form-group searchproduct">
                                         <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name" tabindex="1" >
                                         <input id="existing_customer_id" class="form-control" name="existing_customer_name" value="{{$inquiry['customer']->id}}" type="hidden">
-                                        <i class="fa fa-search search-icon"></i>
+                                        <!--<i class="fa fa-search search-icon"></i>-->
                                     </div>
                                 </div>
                             </div>
