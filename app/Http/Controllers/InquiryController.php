@@ -380,6 +380,13 @@ class InquiryController extends Controller {
 //        } elseif ($input_data['vat_status'] == 'exclude_vat') {
 //            $vat_price = $input_data['vat_percentage'];
 //        }
+        
+        if (isset($input_data['vat_percentage'])) {
+            $vat_price = $input_data['vat_percentage'];
+        }
+        else {
+            $vat_price =0;
+        }
         $customers = Customer::find($input_data['customer_id']);
         if ($input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
@@ -420,7 +427,7 @@ class InquiryController extends Controller {
         $update_inquiry = $inquiry->update([
             'customer_id' => $customer_id,
             'created_by' => Auth::id(),
-//            'vat_percentage' => $vat_price,
+            'vat_percentage' => $vat_price,
             'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['inquiry_remark']
 //            'inquiry_status' => $input_data['inquiry_status']
@@ -742,12 +749,20 @@ class InquiryController extends Controller {
 //        if ($input_data['vat_status'] == 'exclude_vat') {
 //            $vat_price = $input_data['vat_percentage'];
 //        }
+        if (isset($input_data['vat_percentage'])) {
+            $vat_price = $input_data['vat_percentage'];
+        }
+        else
+        {
+            $vat_price =0;
+        }
+        
         $order = new Order();
         $order->order_source = $order_status;
         $order->supplier_id = $supplier_id;
         $order->customer_id = $customer_id;
         $order->created_by = Auth::id();
-        //$order->vat_percentage = $input_data['vat_percentage'];
+        $order->vat_percentage = $vat_price;
         $order->expected_delivery_date = $datetime->format('Y-m-d');
         $order->remarks = $input_data['inquiry_remark'];
         $order->order_status = "Pending";

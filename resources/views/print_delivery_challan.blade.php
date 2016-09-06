@@ -279,7 +279,7 @@
                     </table>
                     <div class="ruppes grand_price">
                         &nbsp; <?php $gt = round($allorder->grand_price, 2) ?>
-                        Rupees <?php echo ucwords(str_replace(".", "", convert_number($allorder->grand_price))); ?> Only.
+                        Rupees <?php //echo ucwords(str_replace(".", "", convert_number($allorder->grand_price))); ?> Only.
                     </div>
                 </div>
                 <div class="total">
