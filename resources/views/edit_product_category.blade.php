@@ -8,7 +8,9 @@
                 <li><a href="{{url()}}/product_category">Product Category</a></li>
                 <li class="active"><span>Edit Product Category</span></li>
             </ol>
-            
+            <div class="clearfix">
+                <h1 class="pull-left"> Edit Product Category</h1>
+            </div>
         </div>
     </div>
     <div class="col-lg-12">
