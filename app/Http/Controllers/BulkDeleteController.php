@@ -175,7 +175,7 @@ class BulkDeleteController extends Controller {
                     if (isset($temp['customer']->tally_name) && $temp['customer']->tally_name != '')
                         $result_data[$key][0] = $temp['customer']->tally_name;
                     else
-                        $result_data[$key][0] = $temp['customer']->owner_name;
+                        $result_data[$key][0] = isset($temp['customer']->owner_name) ? $temp['customer']->owner_name :'';
                     $total_size_quantity = 0;
                     foreach ($temp->all_order_products as $order_product_array) {
                         $total_size_quantity+=$order_product_array->quantity;

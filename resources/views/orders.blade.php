@@ -207,23 +207,23 @@
                                     </tr>
                                 </thead>
                                 @endif
-                                <tr id="order_row_{{$order->id}}">
+                                <tr id="order_row_{{isset($order->id) ? $order->id:''}}">
                                     <td>{{$k++}}</td>                                    
-                                    <td>{{($order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}</td>
+                                    <td>{{(isset($order["customer"]->tally_name) && $order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}</td>
                                     @if(count($pending_orders) > 0)
                                     @foreach($pending_orders as $porder)
                                     @if($porder['id'] == $order->id)
-                                    <td>{{ round($porder['total_quantity'], 2) }}</td>
+                                    <td>{{ isset($porder['total_quantity']) ? round($porder['total_quantity'], 2):'0.00' }}</td>
                                     @endif
                                     @endforeach
                                     @else
                                     <td></td>
                                     @endif
-                                    <td>{{$order['customer']['phone_number1']}}</td>
+                                    <td>{{isset($order['customer']['phone_number1']) ? $order['customer']['phone_number1']:''}}</td>
                                     @if(isset($order['delivery_location']) && $order['delivery_location']['area_name'] !="")
                                     <td class="text">{{$order['delivery_location']['area_name']}}</td>
                                     @else
-                                    <td class="text">{{$order['other_location']}}</td>
+                                    <td class="text">{{isset($order['other_location']) ? $order['other_location']:''}}</td>
                                     @endif
                                     <td class="text"><?php
                                         foreach ($users as $u) {
@@ -233,14 +233,14 @@
                                         }
                                         ?></td>
                                     <td class="text-center">
-                                        <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
+                                        <a href="{{url('orders/'.isset($order->id)?$order->id:'')}}" class="table-link" title="view">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                             </span>
                                         </a>
                                         @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
-                                        <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal" onclick="delete_order_row({{$order->id}})">
+                                        <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal" onclick="delete_order_row({{isset($order->id) ? $order->id:''}})">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
