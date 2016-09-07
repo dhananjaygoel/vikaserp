@@ -98,10 +98,20 @@ $('#purchaseaAdviseFilter').on('change', function () {
 });
 
 $('#sendSMS').click(function () {
+    var data_next_button = $(this).attr('data-id');
+    if(data_next_button){
+        $("#"+data_next_button).attr('disabled',true).attr('readonly',true);
+    }
     var action = $(this).parents('form').attr('action');
     $(this).parents('form').attr('action', action + '?sendsms=true');
     $(this).parents('form').submit();
 });
+$('.form_button_footer').click(function () {
+    var data_next_button = $(this).attr('data-id');
+    if(data_next_button){
+        $("#"+data_next_button).attr('disabled',true).attr('readonly',true);
+    }
+ });
 
 $('body').delegate("#sendSMSEditPurchaseOrder", "click", function () {
 

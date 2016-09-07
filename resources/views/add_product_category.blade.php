@@ -47,11 +47,11 @@
                                 <input id="price" class="form-control" placeholder="Price" name="price" value="{{ old('price') }}" type="tel">
                             </div>
                             <div>
-                                <button type="button" class="btn btn-primary" id="sendSMS" >Send SMS</button>
+                                <button type="button" class="btn btn-primary" id="sendSMS" data-id='product-id-submit-btn'>Send SMS</button>
                             </div>
                             <hr>
                             <div>
-                                <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
+                                <button type="submit" class="btn btn-primary form_button_footer" id='product-id-submit-btn' data-id='sendSMS'>Submit</button>
                                 <a href="{{url()}}/product_category" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>
