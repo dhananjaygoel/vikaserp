@@ -2172,4 +2172,9 @@ var term = ui.item.value;
     $( "#toggle" ).on( "click", function() {
       $( "#combobox" ).toggle();
     });
+    
   } );
+  $(window).load(function() {
+  console.clear();
+});
+//
