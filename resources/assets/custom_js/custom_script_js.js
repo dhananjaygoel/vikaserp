@@ -255,7 +255,7 @@ function change_quantity2(key) {
     var tot_quty = $("#quantity_" + key).val(); //ok
     var total = parseInt(quantity) + parseInt(present_shipping);
     $("#present_shipping_" + key).val(present_shipping);
-    if ((parseInt(tot_quty) - parseInt(present_shipping) < 0)) {
+    if ((parseInt(tot_quty) - parseInt(present_shipping) < 0) || isNaN(parseInt(tot_quty) - parseInt(present_shipping)) == true) {
         $("#pending_qunatity_" + key).html("<span>" + 0 + "</span");
     } else {
         $("#pending_qunatity_" + key).html("<span>" + (parseInt(tot_quty) - parseInt(present_shipping)) + "</span");

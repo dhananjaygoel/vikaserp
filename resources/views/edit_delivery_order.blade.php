@@ -176,7 +176,7 @@
                                                             </td>
                                                             <td class="col-md-1">
                                                                 <div class="form-group">
-                                                                    <input id="quantity_{{$i}}" class="form-control focus_on_enter" placeholder="Qnty" name="product[{{$i}}][quantity]" value="{{$session_data['product'][$i]['quantity']}}" type="text" tabindex="4">
+                                                                    <input onblur="change_quantity2({{$i}});" id="quantity_{{$i}}" class="form-control focus_on_enter" placeholder="Qnty" name="product[{{$i}}][quantity]" value="{{$session_data['product'][$i]['quantity']}}" type="text" tabindex="4" >
                                                                 </div>
                                                             </td>
                                                             <td class="col-md-1">
@@ -249,7 +249,7 @@
                                                             </td>
                                                             <td class="col-md-1">
                                                                 <div class="form-group">
-                                                                    <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" value="{{$session_data['product'][$i]['quantity']}}" type="text" onblur="create_delivery_order_PS({{$i}});" type="text" tabindex="4">
+                                                                    <input onblur="change_quantity2({{$i}});" id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" value="{{$session_data['product'][$i]['quantity']}}" type="text" onblur="create_delivery_order_PS({{$i}});" type="text" tabindex="4">
                                                                     <!--{{$session_data['product'][$i]['quantity']}}-->
                                                                 </div>
                                                             </td>
@@ -338,7 +338,7 @@
                                                 </td>
                                                 <td class="col-md-1">
                                                     <div class="form-group">
-                                                        <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" type="text" type="text" @if($counter==0) tabindex="4" class="ui-dform-text" @endif>                                                    <?php $counter++; ?>
+                                                        <input onblur="change_quantity2({{$key}});" id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" type="text" type="text" @if($counter==0) tabindex="4" class="ui-dform-text" @endif>                                                    <?php $counter++; ?>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-1">
