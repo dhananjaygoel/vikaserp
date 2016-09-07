@@ -171,18 +171,19 @@
             <div class="divTable">
                 <div class="headRow">
                     <div class="divCell2">Sr.</div>
-                    <div class="divCell3">Size</div>
+                    <div class="divCell">Size</div>
                     <div class="divCell">Qty</div>
                     <div class="divCell">Unit</div>
                     <div class="divCell">Pcs</div>
-                    <div class="divCell">Qty</div>
+                    <div class="divCell">Present Shipping</div>
+                    <div class="divCell">VAT</div>
                 </div>
                 <?php $i = 1; ?>
                 @foreach($delivery_data['delivery_product'] as $product)
                 @if($product['order_type'] == 'delivery_order')
                 <div class="divRow">
                     <div class="divCell2">{{ $i++ }}</div>
-                    <div class="divCell3">{{ $product['order_product_details']->alias_name }}</div>
+                    <div class="divCell">{{ $product['order_product_details']->alias_name }}</div>
                     <div class="divCell">{{ $product->quantity }}</div>
                     <div class="divCell">
                         @foreach($units as $u)
@@ -191,8 +192,9 @@
                         @endif
                         @endforeach
                     </div>
-                    <div class="divCell"> &nbsp; </div>
-                    <div class="divCell"> &nbsp; </div>
+                    <div class="divCell">{{ $product->actual_pieces }}</div>
+                    <div class="divCell">{{ $product->present_shipping }}</div>
+                    <div class="divCell">@if($product->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}</div>
                 </div>
                 @endif
                 @endforeach
