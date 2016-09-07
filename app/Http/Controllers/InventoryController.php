@@ -306,10 +306,10 @@ class InventoryController extends Controller {
             $inventory_details->save();
         }
         $query = Inventory::query();
-        if (Input::has('search_inventory') && Input::get('search_inventory') != "") {
-            $query->whereHas('product_sub_category', function($querydetails) {
-                $querydetails->where('alias_name', Input::get('search_inventory'));
-            });
+        if (Input::has('inventory_filter') && Input::get('inventory_filter') =='minimal') {
+          
+//                $query->where('minimal','<','physical_closing_qty'-'pending_delivery_order_qty'-'pending_sales_order_qty'+'pending_purchase_advise_qty');
+            $query->whereRaw('minimal < physical_closing_qty-pending_delivery_order_qty-pending_sales_order_qty+pending_purchase_advise_qty');
         }
         if (Input::has('product_category_filter') && Input::get('product_category_filter') != '') {
             $categoryid = Input::get('product_category_filter');
