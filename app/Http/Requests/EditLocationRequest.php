@@ -24,7 +24,8 @@ class EditLocationRequest extends Request {
         return [
             'city' => 'required',
             'state' => 'required',
-            'area_name' => 'required'
+            'area_name' => 'required',
+            'difference' => 'numeric'
         ];
     }
 
