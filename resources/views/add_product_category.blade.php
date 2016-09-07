@@ -14,10 +14,16 @@
                 </div>
             </div>
         </div>
+       
         <div class="row">
             <div class="col-lg-12">
-                <div class="main-box">                     
+                 
+                <div class="main-box">
+                   
                     <div class="main-box-body clearfix">
+                         @if (Session::has('flash_message'))
+        <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('flash_message') }}</div>
+        @endif
                         @if (count($errors) > 0)
                         <div class="alert alert-warning">                        
                             @foreach ($errors->all() as $error)
@@ -27,6 +33,7 @@
                         @endif 
                         <form  method="POST" action="{{URL::action('ProductController@store')}}"accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
+                            <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                             <div class="form-group">
                                 <label>Product Category Type<span class="mandatory">*</span></label>                                
                                 <div class="radio">

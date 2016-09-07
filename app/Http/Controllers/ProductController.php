@@ -21,7 +21,7 @@ use App\Http\Requests\ProductCategoryRequest;
 use Input;
 use App;
 use Config;
-
+use Session;
 class ProductController extends Controller {
 
     public function __construct() {
@@ -64,6 +64,21 @@ class ProductController extends Controller {
 
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
+         if (Session::has('forms_product_category')) {
+            $session_array = Session::get('forms_product_category');
+            if (count($session_array) > 0) {
+                if (in_array($request->form_key, $session_array)) {
+                    return Redirect::back()->with('flash_message', 'This product category is already saved. Please refresh the page');
+                } else {
+                    array_push($session_array, $request->form_key);
+                    Session::put('forms_product_category', $session_array);
+                }
+            }
+        } else {
+            $forms_array = [];
+            array_push($forms_array,$request->form_key);
+            Session::put('forms_product_category', $forms_array);
         }
         $product_category = new ProductCategory();
         $product_category->product_type_id = $request->input('product_type');

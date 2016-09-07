@@ -8,14 +8,7 @@
                 <li><a href="{{url()}}/product_category">Product Category</a></li>
                 <li class="active"><span>Edit Product Category</span></li>
             </ol>
-            <div class="clearfix">
-                <h1 class="pull-left"> Edit Product Category</h1>
-                <div class="pull-right top-page-ui">
-                    <a href="{{ URL::action('ProductController@edit',['id'=>$product_cat[0]['id']]) }}" class="btn btn-primary pull-right">
-                        Edit Product Category
-                    </a>
-                </div>
-            </div>
+            
         </div>
     </div>
     <div class="col-lg-12">
