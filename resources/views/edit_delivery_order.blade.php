@@ -298,7 +298,7 @@
                                                                     @foreach($pending_orders as $porder)
                                                                     @if($porder['product_id'] == $session_data['product'][$i]['product_category_id'] && $porder['id']== $session_data['product'][$i]['id'])
                                                                     <input type="hidden" value="{{$porder['total_pending_quantity']}}" id="pending_qunatity_value_{{$i}}">
-                                                                    <div id="pending_qunatity_{{$i}}"><span class="text-center">{{$porder['total_pending_quantity']}}</span>
+                                                                    <div id="pending_qunatity_{{$i}}"><span class="text-center">{{ $porder['total_pending_quantity'] > 0 ?$porder['total_pending_quantity']:0}}</span>
                                                                     </div>
                                                                     @elseif($j==1)
                                                                     <input type="hidden" value="0" id="pending_qunatity_value_{{$i}}">
@@ -387,7 +387,7 @@
                                                         @foreach($pending_orders as $porder)
                                                         @if($porder['product_id'] == $product->product_category_id && $porder['id']== $product->id)
                                                         <input type="hidden" value="{{$porder['total_pending_quantity']}}" id="pending_qunatity_value_{{$key}}">
-                                                        <div id="pending_qunatity_{{$key}}"><span class="text-center">{{$porder['total_pending_quantity']}}</span>
+                                                        <div id="pending_qunatity_{{$key}}"><span class="text-center">{{$porder['total_pending_quantity'] > 0 ? $porder['total_pending_quantity']:0}}</span>
                                                         </div>
                                                         @endif
                                                         @endforeach
