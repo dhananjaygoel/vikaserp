@@ -259,7 +259,8 @@
                                                 <hr>
                                                 <div>
                                                     <button type="button" class="btn btn-primary form_button_footer print_delivery_order" id="print_delivery_order" >Print</button>
-                                                    <a  class="btn btn-default form_button_footer">Cancel</a>
+                                                    <button type="button" class="btn btn-default form_button_footer" data-dismiss="modal">Cancel</button>
+                                                   
                                                 </div>
                                                 <div class="clearfix"></div>
                                             </div>
