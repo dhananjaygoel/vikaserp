@@ -1,0 +1,165 @@
+.ui-state-focus{
+    background: none !important;
+    border: none !important;
+    border-radius: none !important;
+}
+.alert-warning ul li{
+    list-style: none !important;
+}
+.units_dropdown{
+    width: 90% !important;
+}
+.customer_select_order
+{
+    padding-bottom: 15px !important;
+}
+.supplier_order{width:30%}
+.no_left_margin{
+    margin-left: -7px;
+}
+.no_right_margin{
+    margin-left: 7px;
+    margin-bottom: 10px;
+}
+.loadinggif {
+    background:url('http://www.hsi.com.hk/HSI-Net/pages/images/en/share/ajax-loader.gif') no-repeat right center;
+    margin-right: 50px;
+}
+.normal_cursor{
+    cursor: default !important;
+}
+
+.ui-autocomplete{
+    overflow-y: scroll !important;
+    max-height: 250px;
+}
+.inquiry_vat_chkbox{
+    text-align: center;
+}
+.empty_star{
+    background-image:url(../../img/stars.png);
+    background-repeat:no-repeat;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    background-position: -0px -16px;
+}
+.filled_star{
+    background-image:url(../../img/stars.png);
+    background-repeat:no-repeat;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+}
+/*.sticky_inventory{
+    position: fixed;
+    top: 0;
+    z-index: 210;
+    max-width: 100%;
+    width: 100%;
+    border-bottom: 0;
+}
+.sticky_inventory th:nth-child(1){
+    min-width: 125px;
+}
+.sticky_inventory th:nth-child(2){
+    min-width: 125px;
+}
+.sticky_inventory th:nth-child(3){
+    min-width: 245px !important;
+    max-width: 245px !important;
+}
+.sticky_inventory ~ .txt_open_stock{
+    width: 240px !important;
+    max-width: 240px !important;
+}
+.sticky_inventory th:nth-child(5){
+    min-width: 105px;
+}
+.sticky_inventory th:nth-child(4),.sticky_inventory th:nth-child(6),
+.sticky_inventory th:nth-child(7),.sticky_inventory th:nth-child(8),
+.sticky_inventory th:nth-child(9),.sticky_inventory th:nth-child(10),
+.sticky_inventory th:nth-child(11),.sticky_inventory th:nth-child(12){
+    min-width: 85px;
+}*/
+.custom_alert_success, #empty_select_completed, .delete_records_empty, #add_product_row_delivery_challan, #add_product_row, #add_product_row_delivery_order{
+    display:none;
+}
+#password_delete_completetd{
+    margin-bottom: 10px;
+}
+.delete_completed_heading{
+    cursor: pointer;
+}
+.delete_completed{
+    margin-right: 5px;
+}
+.delete_completed_heading input{
+    height: 13px !important;
+}
+.smallinput td:nth-child(1){
+    width: 20% !important;
+}
+.minimum_reach{
+    background-color: rgba(255,0,0,0.2);
+}
+.smallinput td:nth-child(2){
+    width: 10% !important;
+}
+.smallinput td:nth-child(3){
+    width: 10% !important;
+}
+.inventory_update, .inventory_update_max, .inventory_update_min{
+    display: none;
+}
+@media (min-width:995px) and (max-width:1030px) {
+
+    .ui-autocomplete{
+        overflow-y: scroll !important;
+        min-height: 150px !important;
+        max-height: 250px;
+    }
+}
+.error_page_link{
+    color: #3498db !important;
+    text-decoration: underline !important;
+}
+.error_page_link:hover{
+    color: #333 !important;
+    text-decoration: none !important;
+}
+.erro_page_heading{
+    font-size: 28px;
+}
+.error_page_div{
+    margin-top: 50px;
+    text-align: center;
+}
+
+ .custom-combobox {
+    position: relative;
+    display: inline-block;
+width:100%;
+  }
+  .custom-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: 0px;
+    padding: 0;
+  }
+  .custom-combobox-input {
+         
+    margin: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right:0px;
+     width:100%;
+  }.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+      background: none;
+     
+  }
+  
+  
+  
