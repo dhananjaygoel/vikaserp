@@ -46,7 +46,7 @@
                             </a>
                             @endif
                         </div>
-                        <div class="col-md-1 pull-right" style="padding: 0;">
+                        <div class="col-md-2 pull-right" style="padding: 0;">
                             
                             <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
                                 <option <?php if ($qstring_sort_type_order == 'pending') echo 'selected=""'; ?> value="pending">Pending</option>
@@ -86,7 +86,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="input-group col-md-2 pull-right">
+                        <div class="input-group col-md-2 pull-right" style="width: 11%">
                             <input class="form-control order_filter ui-autocomplete-input" placeholder="Size" value="{{Input::get('size_filter')}}" id="order_size" autocomplete="off"  type="text">
                             <input type='hidden' placeholder="Size" value="{{Input::get('size_filter')}}" id="order_size_temp" autocomplete="off" name="size_filter" type="text">
                             <span class="input-group-btn">

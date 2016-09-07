@@ -207,6 +207,18 @@
                                     </table>
                                 </div>
                             </div>
+                             <div class="plusvat " >
+                                <div class="form-group">
+                                    <table id="table-example" class="table ">
+                                        <tbody>
+                                            <tr class="cdtable">
+                                                <td class="cdfirst">VAT Percentage:</td>
+                                                <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="" type="text" onblur="calculate_grand_total();"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="vehicle_name">Vehicle Number</label>
                                 <input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="" type="text">
@@ -231,18 +243,7 @@
                                 </div>
                             </div>
                             -->
-                            <div class="plusvat " >
-                                <div class="form-group">
-                                    <table id="table-example" class="table ">
-                                        <tbody>
-                                            <tr class="cdtable">
-                                                <td class="cdfirst">VAT Percentage:</td>
-                                                <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="" type="text" onblur="calculate_grand_total();"></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                           
                             <div class="clearfix"></div>
 
                             <div class="form-group">

@@ -506,6 +506,24 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
             $('#period').addClass('error_validation');
             status_form = 1;
         }
+         CheckBoxArray = [];
+        $("input:checkbox[class='vat_chkbox']:checked").each(function(){
+        CheckBoxArray.push($(this).val());
+            if ($('#vat_percentage').val()==""){
+                $('#vat_percentage').addClass('error_validation');
+                  status_form = 1;  
+            }else{
+                $('#vat_percentage').removeClass('error_validation');
+                  status_form = 0; 
+            }
+                
+            
+        });
+        if(CheckBoxArray.length == 0)
+        {
+             $('#vat_percentage').removeClass('error_validation');
+                  status_form = 0;  
+        }
         var tot_products = $(".add_product_row").length;
         var j = 0;
         for (i = 1; i <= tot_products; i++) {
@@ -765,6 +783,24 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
         if ($('#period').val() == '') {
             $('#period').addClass('error_validation');
             status_form = 1;
+        }
+        CheckBoxArray = [];
+        $("input:checkbox[class='vat_chkbox']:checked").each(function(){
+        CheckBoxArray.push($(this).val());
+            if ($('#vat_percentage').val()==""){
+                $('#vat_percentage').addClass('error_validation');
+                status_form = 1;  
+            }else{
+                $('#vat_percentage').removeClass('error_validation');
+                status_form = 0; 
+            }
+                
+            
+        });
+        if(CheckBoxArray.length == 0)
+        {
+            $('#vat_percentage').removeClass('error_validation');
+            status_form = 0;  
         }
         var tot_products = $(".add_product_row").length;
         var j = 0;
@@ -1144,6 +1180,24 @@ $('body').delegate(".btn_add_delivery_order", "click", function () {
             $('#period').addClass('error_validation');
             status_form = 1;
         }
+        CheckBoxArray = [];
+        $("input:checkbox[class='vat_chkbox']:checked").each(function(){
+        CheckBoxArray.push($(this).val());
+            if ($('#vat_percentage').val()==""){
+                $('#vat_percentage').addClass('error_validation');
+                  status_form = 1;  
+            }else{
+                $('#vat_percentage').removeClass('error_validation');
+                  status_form = 0; 
+            }
+                
+            
+        });
+        if(CheckBoxArray.length == 0)
+        {
+            $('#vat_percentage').removeClass('error_validation');
+            status_form = 0;  
+        }
         var tot_products = $(".add_product_row").length;
         var j = 0;
         for (i = 1; i <= tot_products; i++) {
@@ -1188,6 +1242,25 @@ $('body').delegate(".btn_add_delivery_order", "click", function () {
         if ($('#add_order_location').val() == '0') {
             $('#add_order_location').addClass('error_validation');
             status_form = 1;
+        }
+        
+        CheckBoxArray = [];
+        $("input:checkbox[class='vat_chkbox']:checked").each(function(){
+        CheckBoxArray.push($(this).val());
+            if ($('#vat_percentage').val()==""){
+                $('#vat_percentage').addClass('error_validation');
+                  status_form = 1;  
+            }else{
+                $('#vat_percentage').removeClass('error_validation');
+                  status_form = 0; 
+            }
+                
+            
+        });
+        if(CheckBoxArray.length == 0)
+        {
+             $('#vat_percentage').removeClass('error_validation');
+                  status_form = 0;  
         }
 
         var tot_products = $(".add_product_row").length;

@@ -428,6 +428,18 @@
                             </div>
                         </div>
                         <div class="clearfix"></div>
+                        <div class="plusvat " >
+                            <div class="form-group">
+                                <table id="table-example" class="table ">
+                                    <tbody>
+                                        <tr class="cdtable">
+                                            <td class="cdfirst" style="font-weight: 500;">VAT Percentage:</td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ isset($delivery_data->vat_percentage)? $delivery_data->vat_percentage:0}}" type="text" onblur="grand_total_delivery_order({{($key!='')?$key:1}});"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>    
                         <div class="form-group">
                             <label for="vehicle_name">Vehicle Number</label>
                             <input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{ $delivery_data->vehicle_number }}" type="text">
@@ -437,17 +449,7 @@
                             <input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="{{ $delivery_data->driver_contact_no }}" type="tel">
                         </div>
                         <div class="clearfix"></div>
-                        <div class="plusvat " >
-                            <div class="form-group">
-                                <table id="table-example" class="table ">
-                                    <tbody>
-                                        <tr class="cdtable">
-                                            <td class="cdfirst">VAT Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ isset($delivery_data->vat_percentage)? $delivery_data->vat_percentage:0}}" type="text" onblur="grand_total_delivery_order({{($key!='')?$key:1}});"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                        
                             <!--
                             <div class="form-group">
                                 <div class="radio">

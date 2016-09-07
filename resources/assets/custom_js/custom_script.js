@@ -16,7 +16,7 @@ $( document ).ready(function() {
         success: function (data) {
            all_data = jQuery.parseJSON(data);
 //            $("#add_product_id_" + id).val(obj.data_array[0].id);
-            console.log(all_data);
+//            console.log(all_data);
                 },
     });
     //alert(baseurl);

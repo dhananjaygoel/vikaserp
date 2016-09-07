@@ -91,7 +91,7 @@
                                                     <input type="tel" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="fetch_price({{$key}})">
                                                 </div>
                                             </td>
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
                                                 <div class="form-group inquiry_vat_chkbox">
                                                     <!--<input type="text" class="form-control" id="product_vatpercentage_{{$key}}" value="{{$product->vat_percentage}}" name="product[{{$key}}][vat_percentage]" placeholder="Vat Percenatge" onblur="fetch_price({{$key}})">-->
                                                     <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes">
@@ -144,7 +144,7 @@
                                                     <input type="tel" class="form-control" id="product_price_{{$key}}" value="" name="product[{{$key}}][price]" placeholder="Price" onblur="fetch_price({{$key}})">
                                                 </div>
                                             </td>
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
                                                 <div class="form-group inquiry_vat_chkbox">
                                                     <!--<input type="tel" class="form-control" id="product_vatpercentage_{{$key}}" value="" name="product[{{$key}}][vat_percentage]" placeholder="Vat Percentage" onblur="fetch_price({{$key}})">-->
                                                     <input class="vat_chkbox" type="checkbox" name="product[{{$key}}][vat_percentage]" value="yes">
@@ -214,18 +214,19 @@
                                 <input id="billno" class="form-control" placeholder="Bill Number" name="billno"  value="{{$allorder->bill_number}}" type="text">
                             </div>
                             <div class="form-group">
-                                <div class="col-md-4 no_left_margin">
+                                <div class="col-md-12 no_left_margin">
                                     <label for="loading"><b class="challan">Loading</b></label>
                                     <input id="loading_charge" class="form-control" placeholder="Loading Charges" name="loading" value="{{$allorder->loading_charge}}" type="tel" onblur="grand_total_challan();">
                                 </div>
-                                <div class="col-md-4">
+                                
+<!--                                <div class="col-md-4">
                                     <label for="driver_contact"><b class="challan">Loading Vat Percentage</b></label>
                                     <input id="loading_vat_percentage" class="form-control" placeholder="Loading Vat Percentage" name="loading_vat_percentage" value="{{$allorder->loading_vat_percentage}}" type="tel" onblur="grand_total_challan();">
                                 </div>
                                 <div class="col-md-4 no_right_margin">
                                     <label for="driver_contact"><b class="challan">Total Loading Vat Charges</b></label>
                                     <input id="loading_total_charge" readonly="" class="form-control" value="">
-                                </div>
+                                </div>-->
                             </div>
                             <!--
                             <div class="form-group">
@@ -236,18 +237,18 @@
 
 
                             <div class="form-group">
-                                <div class="col-md-4 no_left_margin">
+                                <div class="col-md-12 no_left_margin">
                                     <label for="Discount"><b class="challan">Discount</b></label>
                                     <input id="discount_value" class="form-control" placeholder="Discount " name="discount" value="{{$allorder->discount}}" type="tel" onblur="grand_total_challan(); " onkeypress=" return validation_digit();">
                                 </div>
-                                <div class="col-md-4">
+<!--                                <div class="col-md-4">
                                     <label for="Loading_discount_percentage"><b class="challan">Discount Vat Percentage</b></label>
                                     <input id="discount_vat_percentage" class="form-control" placeholder="Discount Vat Percentage" name="discount_vat_percentage" value="{{$allorder->discount_vat_percentage}}" type="tel" onblur="grand_total_challan();">
                                 </div>
                                 <div class="col-md-4 no_right_margin">
                                     <label for="Total_frieght_charges"><b class="challan">Total Discount Charges</b></label>
                                     <input id="discount_total_charge" readonly="" class="form-control" value="">
-                                </div>
+                                </div>-->
                             </div>
 
 
@@ -255,18 +256,18 @@
 
 
                             <div class="form-group">
-                                <div class="col-md-4 no_left_margin">
+                                <div class="col-md-12 no_left_margin">
                                     <label for="Freight"><b class="challan">Freight</b></label>
                                     <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="{{$allorder->freight}}" type="text" onblur="grand_total_challan();">
                                 </div>
-                                <div class="col-md-4">
+<!--                                <div class="col-md-4">
                                     <label for="Loading_frieght_percentage"><b class="challan">Freight Vat Percentage</b></label>
                                     <input id="freight_vat_percentage" class="form-control" placeholder="Freight Vat Percentage" name="freight_vat_percentage" value="{{($allorder->freight_vat_percentage != '')?$allorder->freight_vat_percentage:0}}" type="text" onblur="grand_total_challan();">
                                 </div>
                                 <div class="col-md-4 no_right_margin">
                                     <label for="Total_frieght_charges"><b class="challan">Total Freight Charges</b></label>
                                     <input id="freight_total_charge" readonly="" class="form-control" value="">
-                                </div>
+                                </div>-->
                             </div>
                             <div class="form-group">
                                 <label for="Total"><b class="challan">Total </b></label>
