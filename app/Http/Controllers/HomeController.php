@@ -1547,9 +1547,7 @@ class HomeController extends Controller {
             }
         }
 
-        if (count($inquiry_products_track) > 0) {
-            
-        }
+       
 
         if (count($customer_list) > 0) {
             $inquiry_response['customer_new'] = $customer_list;
