@@ -18,6 +18,7 @@ return array(
     'AlterDeliveryChallan04' => $baseDir . '/database/migrations/2016_09_02_153923_alter_delivery_challan_04.php',
     'AlterDeliveryOrderTable01' => $baseDir . '/database/migrations/2016_08_24_095334_alter_delivery_order_table_01.php',
     'AlterInquiryProducts01' => $baseDir . '/database/migrations/2016_08_03_134914_alter_inquiry_products_01.php',
+    'AlterInquiryProductsTable02' => $baseDir . '/database/migrations/2016_09_09_072016_alter_inquiry_products_table_02.php',
     'AlterOrderTable01' => $baseDir . '/database/migrations/2016_07_28_092217_alter_order_table_01.php',
     'Attribute_Translator' => $vendorDir . '/dompdf/dompdf/include/attribute_translator.cls.php',
     'Block_Frame_Decorator' => $vendorDir . '/dompdf/dompdf/include/block_frame_decorator.cls.php',
