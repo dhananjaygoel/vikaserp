@@ -1529,6 +1529,7 @@ class HomeController extends Controller {
                     $inquiry_id = $add_inquiry->id;
                     $inquiry_products_track = 0;
                     foreach ($inquiryproduct as $product_data) {
+                        $inquiry_response[$value->server_id]['inquiry_products_local_ids'][]=$product_data->id;
                         $inquiry_products = array();
                         if ($product_data->inquiry_id == $value->id) {
                             $inquiry_products = [
