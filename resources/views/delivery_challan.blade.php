@@ -213,7 +213,7 @@
                                             <div class="modal-body">
                                                 <input type="hidden" name="_token"value="{{csrf_token()}}">
                                                 <input type="hidden" name="serial_number" value="{{$challan['delivery_order']->serial_no}}">
-                                                <input type="hidden" name="delivery_order_id" value="{{$challan['delivery_order']->id}}">
+                                                <input type="hidden" name="delivery_order_id" value="{{isset($challan['delivery_order']->id) ? $challan['delivery_order']->id:''}}">
                                                 <div class="row print_time">
                                                     <div class="col-md-12"> Print By <br>
                                                         <span class="current_time"></span>
