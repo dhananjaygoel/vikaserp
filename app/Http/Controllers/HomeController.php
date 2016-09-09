@@ -1474,6 +1474,7 @@ class HomeController extends Controller {
                     $add_inquiry->inquiry_status = $value->inquiry_status;
                     $delete_old_inquiry_products = InquiryProducts::where('inquiry_id', '=', $value->server_id)->delete();
                     foreach ($inquiryproduct as $product_data) {
+                        $inquiry_response[$value->server_id]['inquiry_products_local_ids'][]=$product_data->id;
                         $inquiry_products = array();
                         if ($product_data->inquiry_id == $value->id) {
                             $inquiry_products = [
