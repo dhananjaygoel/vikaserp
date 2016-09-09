@@ -846,10 +846,21 @@ class DeliveryOrderController extends Controller {
     public function get_data() {
         $product_sub_category = ProductSubCategory::with('product_category')->get();
         $customer_product_difference = CustomerProductDifference::all();
+        //$customers = Customer::with('delivery_location')->where('tally_name', '<>', '')->orderBy('owner_name', 'ASC')->get();
+//         foreach ($customers as $customer) {
+//                $customer_array[] = [
+//                    'value' =>$customer->tally_name,
+//                    'id' => $customer->id,
+//                    'delivery_location_id' => $customer->delivery_location_id,
+//                    'location_difference' =>  $customer['deliverylocation']->difference,
+//                ];
+//            }
         echo json_encode(array(
             'product_sub_category' => $product_sub_category,
             'customer_product_difference' => $customer_product_difference,
+            //'customers' => $customers,
         ));
     }
 
 }
+ 
