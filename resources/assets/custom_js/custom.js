@@ -111,18 +111,9 @@ $('body').on('click','.delete-sales-day-book',function(){
         $(".exist_field").hide();
         $(".customer_select").show();
     });
-    $("#existing_customer").click(function () {
-       
-        $(".tabindex2").attr("tabindex", 2);
-        $(".tabindex3").attr("tabindex", 3);
-        $(".tabindex4").attr("tabindex", 4);
-    });
     $("#new_customer").click(function () {
         $(".exist_field").show();
         $(".customer_select").hide();
-        $(".tabindex2").attr("tabindex", 0);
-        $(".tabindex3").attr("tabindex", 0);
-        $(".tabindex4").attr("tabindex", 0);
     });
     $("#optionsRadios4").click(function () {
         $(".supplier").show();
