@@ -553,10 +553,10 @@ class InquiryController extends Controller {
                         ->orWhere('company_name', $term)
                         ->orWhere('tally_name', 'like', $term)
                         ->with('delivery_location')
-                        ->orderBy('owner_name', 'ASC')
+                        ->orderBy('tally_name', 'ASC')
                         ->select('tally_name AS value','id AS id', 'delivery_location_id AS delivery_location_id')->get(array('delivery_location.difference.id as difference'));
         }else{
-            $customers = Customer::with('delivery_location')->where('tally_name', '<>', '')->orderBy('owner_name', 'ASC')->select('tally_name AS value','id AS id', 'delivery_location_id AS delivery_location_id')->get();
+            $customers = Customer::with('delivery_location')->where('tally_name', '<>', '')->orderBy('tally_name', 'ASC')->select('tally_name AS value','id AS id', 'delivery_location_id AS delivery_location_id')->get();
         }
         
 //        if (count($customers) > 0) {
