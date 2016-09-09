@@ -55,18 +55,18 @@
                                 <br/>
                                 <label>Customer<span class="mandatory">*</span></label>
                                 <div class="radio">
-                                    <input checked value="existing_customer" id="existing_customer" name="customer_status" type="radio" class="existing_customer_order">
-                                    <label for="existing_customer">Existing</label>
-                                    <input value="new_customer" id="new_customer" class="new_customer_order" name="customer_status" type="radio"> 
+                                    <input checked value="existing_customer" id="existing_customer" name="customer_status" type="radio" class="existing_customer_order" {{(Input::old('customer_status') == "existing_customer")? 'checked' : ''}}>
+                                    <label for="existing_customer" >Existing</label>
+                                    <input value="new_customer" id="new_customer" class="new_customer_order" name="customer_status" type="radio" {{(Input::old('customer_status') == "new_customer")?'checked':''}}> 
                                     <label for="new_customer">New</label>
-                                </div>
+                                </div>                                
                                 <style>
 .searchproduct .fa-sort-desc{position: absolute;right:6px;top:7px;cursor:pointer;}
                                 </style>
                                 <div class="customer_select_order" style="{{(Input::old('customer_status') == "new_customer")?'display:none':'display:block'}}">
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
-                                            <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name" tabindex="1" >
+                                            <input class="form-control focus_on_enter tabindex1" placeholder="Enter Tally Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name" tabindex="1" >
                                             <input type="hidden" id="existing_customer_id" name="existing_customer_name">
                                             <input type="hidden" id="customer_default_location">
                                                 <!--<i class="fa fa-sort-desc " id='existing_customer_id_focus'></i>-->
@@ -97,7 +97,7 @@
                                 <div class="form-group">
                                     <div class="col-md-4">
                                         <label for="location">Delivery Location:<span class="mandatory">*</span></label>
-                                        <select class="form-control focus_on_enter" name="add_order_location" id="add_order_location" tabindex="2" >
+                                        <select class="form-control focus_on_enter tabindex2" name="add_order_location" id="add_order_location" tabindex="2" >
                                             <option value="0" selected="">Delivery Location</option>
                                             @foreach($delivery_locations as $delivery_location)
                                             @if($delivery_location->status=='permanent' && $delivery_location->id!=0)
@@ -109,7 +109,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="location">Location Difference</label>
-                                        <input id="location_difference" class="form-control focus_on_enter" placeholder="Location Difference " name="location_difference" value="" type="tel" tabindex="3" >
+                                        <input id="location_difference" class="form-control focus_on_enter tabindex3" placeholder="Location Difference " name="location_difference" value="" type="tel" tabindex="3" >
                                     </div>
                                 </div>
                             </div>
@@ -147,7 +147,7 @@
                                                 <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
                                                     <td class="col-md-3">
                                                         <div class = "form-group searchproduct">
-                                                            <input class = "form-control focus_on_enter each_product_detail" placeholder = "Enter Product name" data-productid="{{$i}}" type = "text" name = "product[{{$i}}][name]" id = "add_product_name_{{$i}}" onfocus = "product_autocomplete({{$i}});" value = "<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>" tabindex="4" >
+                                                            <input class = "form-control focus_on_enter each_product_detail tabindex4" placeholder = "Enter Product name" data-productid="{{$i}}" type = "text" name = "product[{{$i}}][name]" id = "add_product_name_{{$i}}" onfocus = "product_autocomplete({{$i}});" value = "<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>" tabindex="4" >
                                                             <input type = "hidden" name = "product[{{$i}}][id]" id = "add_product_id_{{$i}}" value = "">
                                                             <i class = "fa fa-search search-icon"></i>
                                                         </div>

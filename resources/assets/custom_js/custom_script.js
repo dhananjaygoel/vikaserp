@@ -581,6 +581,11 @@ function product_autocomplete(id) {
     var product_price;
     var cust=0;
     location_difference = $('#location_difference').val();
+    if(location_difference == null | location_difference == "")
+    {
+        location_difference = 0;
+    }
+    //console.log(location_difference);
     $("#add_product_name_" + id).autocomplete({
         position: {
             my: "left bottom",
@@ -601,7 +606,13 @@ function product_autocomplete(id) {
                     id_value = result[0].id;
                     product_price = parseFloat(result[0].product_category.price) + parseFloat(cust) + parseFloat(location_difference) + parseFloat(result[0].difference);
                 }  
-             
+                else
+                {
+                    value = result[0].alias_name;
+                    id_value = result[0].id;
+                    product_price = parseFloat(result[0].product_category.price) +  parseFloat(location_difference) + parseFloat(result[0].difference);
+                                  // product_price=parseFloat(result[0].product_category.price+parseFloat(result[0].difference)+location_difference) ;
+                }             
              }
              else
              {
