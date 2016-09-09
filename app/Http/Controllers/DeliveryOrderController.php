@@ -642,8 +642,9 @@ class DeliveryOrderController extends Controller {
             $vat_input_data['discount'] = round(($ratio_with_vat * $input_data['discount']) / 100, 2);
             $vat_input_data['freight'] = round(($ratio_with_vat * $input_data['freight']) / 100, 2);
             $vat_input_data['loading'] = round(($ratio_with_vat * $input_data['freight']) / 100, 2);
+            $vat_input_data['round_off'] = round(($ratio_with_vat * $input_data['round_off']) / 100, 2);
             $vat_input_data['freight_vat_percentage'] = $vat_input_data['loading_vat_percentage'] = $vat_input_data['discount_vat_percentage'] = round($vat_input_data['vat_percentage'], 2);
-            $vat_input_data['grand_total'] = round($total_vat_price + $vat_on_price_count + $vat_share_overhead + $vat_on_overhead_count, 2);
+            $vat_input_data['grand_total'] = round($total_vat_price + $vat_on_price_count + $vat_share_overhead + $vat_on_overhead_count+$vat_input_data['round_off'], 2);
 
 
 
@@ -653,8 +654,9 @@ class DeliveryOrderController extends Controller {
             $without_vat_input_data['discount'] = round(($ratio_without_vat * $input_data['discount']) / 100, 2);
             $without_vat_input_data['freight'] = round(($ratio_without_vat * $input_data['freight']) / 100, 2);
             $without_vat_input_data['loading'] = round(($ratio_without_vat * $input_data['freight']) / 100, 2);
+            $without_vat_input_data['round_off'] = round(($ratio_without_vat * $input_data['round_off']) / 100, 2);
             $without_vat_input_data['freight_vat_percentage'] = $without_vat_input_data['loading_vat_percentage'] = $without_vat_input_data['discount_vat_percentage'] = $without_vat_input_data['vat_percentage'] = 0;
-            $without_vat_input_data['grand_total'] = round($total_without_vat_price + $without_vat_share_overhead, 2);
+            $without_vat_input_data['grand_total'] = round($total_without_vat_price + $without_vat_share_overhead+ $without_vat_input_data['round_off'], 2);
 
             $savedid = $this->store_delivery_challan_vat_wise($vat_input_data, $id);
             $this->store_delivery_challan_vat_wise($without_vat_input_data, $id, $savedid);
