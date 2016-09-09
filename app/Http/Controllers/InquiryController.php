@@ -552,26 +552,28 @@ class InquiryController extends Controller {
                         ->where('customer_status', '=', 'permanent')
                         ->orWhere('company_name', $term)
                         ->orWhere('tally_name', 'like', $term)
-                        ->with('delivery_location')->orderBy('owner_name', 'ASC')->get();
+                        ->with('delivery_location')
+                        ->orderBy('owner_name', 'ASC')
+                        ->select('tally_name AS value','id AS id', 'delivery_location_id AS delivery_location_id')->get(array('delivery_location.difference.id as difference'));
         }else{
-            $customers = Customer::with('delivery_location')->where('tally_name', '<>', '')->orderBy('owner_name', 'ASC')->get();
+            $customers = Customer::with('delivery_location')->where('tally_name', '<>', '')->orderBy('owner_name', 'ASC')->select('tally_name AS value','id AS id', 'delivery_location_id AS delivery_location_id')->get();
         }
         
-        if (count($customers) > 0) {
-            foreach ($customers as $customer) {
-                $data_array[] = [
-                    'value' =>$customer->tally_name,
-                    'id' => $customer->id,
-                    'delivery_location_id' => $customer->delivery_location_id,
-                    'location_difference' =>  $customer['deliverylocation']->difference,
-                ];
-            }
-           
-            
-        } else {
-            $data_array[] = [ 'value' => 'No Customers'];
-        }
-        echo json_encode(array('data_array' => $data_array));
+//        if (count($customers) > 0) {
+//            foreach ($customers as $customer) {
+//                $data_array[] = [
+//                    'value' =>$customer->tally_name,
+//                    'id' => $customer->id,
+//                    'delivery_location_id' => $customer->delivery_location_id,
+//                    'location_difference' =>  $customer['deliverylocation']->difference,
+//                ];
+//            }
+//           
+//            
+//        } else {
+//            $customers[] = [ 'value' => 'No Customers'];
+//        }
+        echo json_encode(array('data_array' => $customers));
     }
 
     /*
