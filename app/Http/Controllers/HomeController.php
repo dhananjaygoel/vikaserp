@@ -1443,7 +1443,7 @@ class HomeController extends Controller {
                         $add_customers->contact_person = $value->customer_contact_peron;
                         $add_customers->phone_number1 = $value->customer_mobile;
                         $add_customers->credit_period = $value->customer_credit_period;
-                        $add_customers->customer_status = 'Pending';
+                        $add_customers->customer_status = $value->customer_status;
                         $add_customers->save();
                         $customer_list[$value->id] = $add_customers->id;
                     }
@@ -1510,7 +1510,7 @@ class HomeController extends Controller {
                         $add_customers->contact_person = $value->customer_contact_peron;
                         $add_customers->phone_number1 = $value->customer_mobile;
                         $add_customers->credit_period = $value->customer_credit_period;
-                        $add_customers->customer_status = 'Pending';
+                        $add_customers->customer_status = $value->customer_status;
                         $add_customers->save();
                         $customer_list[$value->id] = $add_customers->id;
                     }
@@ -1532,7 +1532,7 @@ class HomeController extends Controller {
                     $add_inquiry->vat_percentage = ($value->vat_percentage != "") ? $value->vat_percentage : 0;
                     $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
                     $add_inquiry->remarks = ($value->remarks != '') ? $value->remarks : '';
-                    $add_inquiry->inquiry_status = "Pending";
+                    $add_inquiry->inquiry_status = $value->inquiry_status;
                     $add_inquiry->save();
                     $inquiry_id = $add_inquiry->id;
                     $inquiry_products_track = 0;
