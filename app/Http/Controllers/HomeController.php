@@ -989,7 +989,7 @@ class HomeController extends Controller {
                 $delivery_challan->order_id = $value->server_order_id;
             }
             if ($value->server_del_order_id == 0) {
-                DeliveryOrder::where('id', '=', $value->server_del_order_id)->update(array('order_status' => 'completed'));
+                DeliveryOrder::where('id', '=', $value->server_del_order_id)->update(array('order_status' => $value->order_status));
                 $delivery_challan->delivery_order_id = 0;
             } else {
                 $delivery_challan->delivery_order_id = $value->server_del_order_id;
@@ -1118,7 +1118,7 @@ class HomeController extends Controller {
                 $delivery_order->remarks = $value->remarks;
                 $delivery_order->vehicle_number = ($value->vehicle_number != '') ? $value->vehicle_number : '';
                 $delivery_order->driver_contact_no = ($value->driver_contact_no != '') ? $value->driver_contact_no : '';
-                $delivery_order->order_status = "Pending";
+                $delivery_order->order_status = $value->order_status;
                 if ($value->delivery_location_id > 0) {
                     $delivery_order->delivery_location_id = $value->delivery_location_id;
                     $delivery_order->location_difference = $value->location_difference;
@@ -1279,7 +1279,7 @@ class HomeController extends Controller {
                 $order->expected_delivery_date = $datetime->format('Y-m-d');
                 $order->remarks = $value->remarks;
                 $order->flaged = ($value->flaged != '') ? $value->flaged : 0;
-                $order->order_status = "Pending";
+                $order->order_status = $value->order_status;
                 if ($value->delivery_location_id > 0) {
                     $order->delivery_location_id = $value->delivery_location_id;
                     $order->location_difference = $value->location_difference;
