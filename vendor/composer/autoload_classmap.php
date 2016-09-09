@@ -11,6 +11,7 @@ return array(
     'AddIndexCustomer' => $baseDir . '/database/migrations/2015_08_14_084448_add_index_customer.php',
     'AddIndexProductSubCategory' => $baseDir . '/database/migrations/2015_08_14_074532_add_index_product_sub_category.php',
     'Adobe_Font_Metrics' => $vendorDir . '/phenx/php-font-lib/classes/Adobe_Font_Metrics.php',
+    'AlterAllOrderProductTable01' => $baseDir . '/database/migrations/2016_09_09_090343_alter_all_order_product_table_01.php',
     'AlterAllOrderProducts01' => $baseDir . '/database/migrations/2016_08_03_133725_alter_all_order_products_01.php',
     'AlterDeliveryChallan01' => $baseDir . '/database/migrations/2016_08_24_140726_alter_delivery_challan_01.php',
     'AlterDeliveryChallan02' => $baseDir . '/database/migrations/2016_08_25_054947_alter_delivery_challan_02.php',

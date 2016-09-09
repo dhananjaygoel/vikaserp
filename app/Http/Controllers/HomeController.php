@@ -1017,6 +1017,7 @@ class HomeController extends Controller {
             foreach ($deliverychallanproducts as $product_data) {
                 if ($product_data->delivery_challan_id == $value->id) {
                     $delivery_challan_products = [
+                        'app_product_id'=>$product_data->id,
                         'order_id' => $delivery_challan_id,
                         'order_type' => 'delivery_challan',
                         'product_category_id' => $product_data->product_category_id,
@@ -1128,6 +1129,7 @@ class HomeController extends Controller {
                 foreach ($deliveryorderproducts as $product_data) {
                     if ($product_data->delivery_order_id == $value->id) {
                         $delivery_order_products = [
+                            'app_product_id'=>$product_data->id,
                             'order_id' => $delivery_order_id,
                             'order_type' => 'delivery_order',
                             'product_category_id' => $product_data->product_category_id,
@@ -1175,6 +1177,7 @@ class HomeController extends Controller {
                 foreach ($deliveryorderproducts as $product_data) {
                     if ($product_data->delivery_order_id == $value->id) {
                         $delivery_order_products = [
+                            'app_product_id'=>$product_data->id,
                             'order_id' => $delivery_order_id,
                             'order_type' => 'delivery_order',
                             'product_category_id' => $product_data->product_category_id,
@@ -1288,6 +1291,7 @@ class HomeController extends Controller {
                 foreach ($orderproduct as $product_data) {
                     if ($product_data->order_id == $value->id) {
                         $order_products = [
+                            'app_product_id'=>$product_data->id,
                             'order_id' => $order_id,
                             'order_type' => 'order',
                             'product_category_id' => $product_data->product_category_id,
@@ -1339,6 +1343,7 @@ class HomeController extends Controller {
                     $order_products = array();
                     if ($product_data->order_id == $value->id) {
                         $order_products = [
+                            'app_product_id'=>$product_data->id,
                             'order_id' => $value->server_id,
                             'product_category_id' => $product_data->product_category_id,
                             'unit_id' => $product_data->unit_id,
@@ -1477,7 +1482,7 @@ class HomeController extends Controller {
                         $inquiry_products = array();
                         if ($product_data->inquiry_id == $value->id) {
                             $inquiry_products = [
-                                'app_product_id'=>$product_data->id,
+                                'app_product_id'=> $product_data->id,
                                 'inquiry_id' => $value->server_id,
                                 'product_category_id' => $product_data->inquiry_product_id,
                                 'unit_id' => $product_data->unit_id,
