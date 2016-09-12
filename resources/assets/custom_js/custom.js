@@ -1414,6 +1414,10 @@ $('body').delegate(".btn_delorderto_delchallan", "click", function () {
                 status_form = 1;
             }
         }
+        if ($("#challan_vehicle_number").val() == "") {
+            $('#challan_vehicle_number').addClass('error_validation');
+            status_form = 1;
+        }
     }
 //    if (j == tot_products) {
 //        for (i = 0; i <= tot_products; i++) {
