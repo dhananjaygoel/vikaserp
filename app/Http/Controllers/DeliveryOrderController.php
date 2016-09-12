@@ -578,7 +578,17 @@ class DeliveryOrderController extends Controller {
             array_push($forms_array, $input_data['form_key']);
             Session::put('forms_delivery_challan', $forms_array);
         }
-
+        
+        if(isset($input_data['challan_driver_contact'])){
+            $delivery_order_details->driver_contact_no = $input_data['challan_driver_contact'];
+        }        
+        
+        if(isset($input_data['challan_vehicle_number'])){
+            $delivery_order_details->vehicle_number = $input_data['challan_vehicle_number'];
+        }
+        
+        $delivery_order_details->save();
+                
         $total_product_count = count($input_data['product']);
         $total_vat_items = 0;
         $total_vat_price = 0;
@@ -641,7 +651,7 @@ class DeliveryOrderController extends Controller {
             $vat_input_data['total_price'] = round($total_vat_price, 2);
             $vat_input_data['discount'] = round(($ratio_with_vat * $input_data['discount']) / 100, 2);
             $vat_input_data['freight'] = round(($ratio_with_vat * $input_data['freight']) / 100, 2);
-            $vat_input_data['loading'] = round(($ratio_with_vat * $input_data['freight']) / 100, 2);
+            $vat_input_data['loading'] = round(($ratio_with_vat * $input_data['loading']) / 100, 2);
             $vat_input_data['round_off'] = round(($ratio_with_vat * $input_data['round_off']) / 100, 2);
             $vat_input_data['freight_vat_percentage'] = $vat_input_data['loading_vat_percentage'] = $vat_input_data['discount_vat_percentage'] = round($vat_input_data['vat_percentage'], 2);
             $vat_input_data['grand_total'] = round($total_vat_price + $vat_on_price_count + $vat_share_overhead + $vat_on_overhead_count+$vat_input_data['round_off'], 2);
@@ -653,7 +663,7 @@ class DeliveryOrderController extends Controller {
             $without_vat_input_data['total_price'] = round($total_without_vat_price, 2);
             $without_vat_input_data['discount'] = round(($ratio_without_vat * $input_data['discount']) / 100, 2);
             $without_vat_input_data['freight'] = round(($ratio_without_vat * $input_data['freight']) / 100, 2);
-            $without_vat_input_data['loading'] = round(($ratio_without_vat * $input_data['freight']) / 100, 2);
+            $without_vat_input_data['loading'] = round(($ratio_without_vat * $input_data['loading']) / 100, 2);
             $without_vat_input_data['round_off'] = round(($ratio_without_vat * $input_data['round_off']) / 100, 2);
             $without_vat_input_data['freight_vat_percentage'] = $without_vat_input_data['loading_vat_percentage'] = $without_vat_input_data['discount_vat_percentage'] = $without_vat_input_data['vat_percentage'] = 0;
             $without_vat_input_data['grand_total'] = round($total_without_vat_price + $without_vat_share_overhead+ $without_vat_input_data['round_off'], 2);
