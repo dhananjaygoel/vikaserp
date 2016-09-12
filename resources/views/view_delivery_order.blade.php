@@ -126,14 +126,14 @@
                                     <tr><td><span>Remark: </span>{{ $delivery_data->remarks }}</td></tr>
                                     @if($delivery_data->order_id > 0)
                                     <tr>
-                                        <td><span>Order By : </span>{{$delivery_data->order_details->createdby->first_name." ".$delivery_data->order_details->createdby->last_name}}</td>
+                                        <td><span>Order By : </span>{{isset($delivery_data->order_details->createdby->first_name)?$delivery_data->order_details->createdby->first_name:''." ".isset($delivery_data->order_details->createdby->last_name)?$delivery_data->order_details->createdby->last_name:''}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Order Time/Date : </span>{{$delivery_data->order_details->updated_at}}</td>
                                     </tr>
                                     @endif                                    
                                     <tr>
-                                        <!--<td><span>Delivery Order By : </span>{{isset($delivery_data->user->first_name)?$delivery_data->user->first_name:''." ".isset($delivery_data->user->last_name)?$delivery_data->user->last_name:''}}</td>-->
+                                        <td><span>Delivery Order By : </span>{{isset($delivery_data->user->first_name)?$delivery_data->user->first_name:''." ".isset($delivery_data->user->last_name)?$delivery_data->user->last_name:''}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Delivery Order Time/Date : </span>{{$delivery_data->updated_at}}</td>
