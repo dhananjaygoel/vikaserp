@@ -129,14 +129,14 @@
                                         <td><span>Order By : </span>{{isset($delivery_data->order_details->createdby->first_name)?$delivery_data->order_details->createdby->first_name:''." ".isset($delivery_data->order_details->createdby->last_name)?$delivery_data->order_details->createdby->last_name:''}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Order Time/Date : </span>{{$delivery_data->order_details->updated_at}}</td>
+                                        <td><span>Order Time/Date : </span>{{isset($delivery_data->order_details->updated_at)?$delivery_data->order_details->updated_at:''}}</td>
                                     </tr>
                                     @endif                                    
                                     <tr>
                                         <td><span>Delivery Order By : </span>{{isset($delivery_data->user->first_name)?$delivery_data->user->first_name:''." ".isset($delivery_data->user->last_name)?$delivery_data->user->last_name:''}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Delivery Order Time/Date : </span>{{$delivery_data->updated_at}}</td>
+                                        <td><span>Delivery Order Time/Date : </span>{{isset($delivery_data->updated_at)?$delivery_data->updated_at:''}}</td>
                                     </tr>
                                 </tbody>
                             </table>
