@@ -1270,6 +1270,9 @@ class HomeController extends Controller {
                 $order = new Order();
                 $order->order_source = $order_status;
                 $order->supplier_id = $supplier_id;
+                if(isset($value->vat_percentage)){
+                    $order->vat_percentage = $value->vat_percentage;
+                }
                 $order->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
                 $order->created_by = 1;
 //                $order->vat_percentage = ($value->vat_percentage == '') ? '' : $value->vat_percentage;
@@ -1330,6 +1333,9 @@ class HomeController extends Controller {
                 $order->supplier_id = $supplier_id;
                 $order->remarks = ($value->remarks != '') ? $value->remarks : '';
                 $order->order_status = $value->order_status;
+                if(isset($value->vat_percentage)){
+                    $order->vat_percentage = $value->vat_percentage;
+                }
                 $order->flaged = ($value->flaged != '') ? $value->flaged : 0;
                 if ($value->delivery_location_id > 0) {
                     $order->delivery_location_id = $value->delivery_location_id;
