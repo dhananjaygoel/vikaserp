@@ -6,14 +6,14 @@
         <div class="row">
             <div class="col-lg-12">
                 <?php
-                            $session_sort_type_order = Session::get('order-sort-type');
-                            $qstring_sort_type_order = Input::get('order_filter');
-                            if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
-                                $qstring_sort_type_order = $qstring_sort_type_order;
-                            } else {
-                                $qstring_sort_type_order = $session_sort_type_order;
-                            }
-                            ?>
+                $session_sort_type_order = Session::get('order-sort-type');
+                $qstring_sort_type_order = Input::get('order_filter');
+                if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
+                    $qstring_sort_type_order = $qstring_sort_type_order;
+                } else {
+                    $qstring_sort_type_order = $session_sort_type_order;
+                }
+                ?>
                 <ol class="breadcrumb">
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Orders</span></li>
@@ -33,10 +33,10 @@
                     </a>
                     @endif
                 </ol>
-                 
+
                 <input type="hidden" id="module" value="order">
                 <div class="filter-block">
-                    
+
                     <form action="{{url('orders')}}" method="GET" id="orderForm">
                         <h1 class="pull-left">Orders</h1>
                         <div class="pull-right">
@@ -47,7 +47,7 @@
                             @endif
                         </div>
                         <div class="col-md-2 pull-right" style="padding: 0;">
-                            
+
                             <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
                                 <option <?php if ($qstring_sort_type_order == 'pending') echo 'selected=""'; ?> value="pending">Pending</option>
                                 <option <?php if ($qstring_sort_type_order == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
@@ -208,7 +208,7 @@
                                 </thead>
                                 @endif
                                 <tr id="order_row_{{isset($order->id) ? $order->id:''}}">
-                                    <td>{{$k++}}</td>                                    
+                                    <td>{{isset($k)?$k++:''}}</td>                                    
                                     <td>{{(isset($order["customer"]->tally_name) && $order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}</td>
                                     @if(count($pending_orders) > 0)
                                     @foreach($pending_orders as $porder)
@@ -233,7 +233,7 @@
                                         }
                                         ?></td>
                                     <td class="text-center">
-                                        <?php $order_id=isset($order->id) ?$order->id:'';  ?>
+                                        <?php $order_id = isset($order->id) ? $order->id : ''; ?>
                                         <a href="{{url('orders/'.$order_id)}}" class="table-link" title="view">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
