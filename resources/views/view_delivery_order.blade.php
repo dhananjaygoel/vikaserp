@@ -115,29 +115,29 @@
                             </table>
                             <table id="table-example" class="table table-hover customerview_table  ">
                                 <tbody>
-                                    @if($delivery_data->vat_percentage != "" || $delivery_data->vat_percentage > 0)
+                                    <!--@if($delivery_data->vat_percentage != "" || $delivery_data->vat_percentage > 0)-->
 <!--                                    <tr><td><span>Plus VAT: </span> Yes</td></tr>
                                     <tr><td><span>VAT Percentage: </span>{{ $delivery_data->vat_percentage }}</td></tr>-->
-                                    @else
+                                    <!--@else-->
                                     <!--<tr><td><span>Plus VAT: </span> No</td></tr>-->
-                                    @endif
-                                    <tr><td><b>Vehicle Name:</b> {{ $delivery_data->vehicle_number }} </td> </tr>
+                                    <!--@endif-->
+<!--                                    <tr><td><b>Vehicle Name:</b> {{ $delivery_data->vehicle_number }} </td> </tr>
                                     <tr><td><b>Driver Contact:</b> {{ $delivery_data->driver_contact_no }} </td> </tr>
-                                    <tr><td><span>Remark: </span>{{ $delivery_data->remarks }}</td></tr>
-                                    @if($delivery_data->order_id > 0)
-                                    <tr>
+                                    <tr><td><span>Remark: </span>{{ $delivery_data->remarks }}</td></tr>-->
+                                    <!--@if($delivery_data->order_id > 0)-->
+<!--                                    <tr>
                                         <td><span>Order By : </span>{{isset($delivery_data->order_details->createdby->first_name)?$delivery_data->order_details->createdby->first_name:''." ".isset($delivery_data->order_details->createdby->last_name)?$delivery_data->order_details->createdby->last_name:''}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Order Time/Date : </span>{{isset($delivery_data->order_details->updated_at)?$delivery_data->order_details->updated_at:''}}</td>
-                                    </tr>
-                                    @endif                                    
-                                    <tr>
+                                    </tr>-->
+                                    <!--@endif-->                                    
+<!--                                    <tr>
                                         <td><span>Delivery Order By : </span>{{isset($delivery_data->user->first_name)?$delivery_data->user->first_name:''." ".isset($delivery_data->user->last_name)?$delivery_data->user->last_name:''}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Delivery Order Time/Date : </span>{{isset($delivery_data->updated_at)?$delivery_data->updated_at:''}}</td>
-                                    </tr>
+                                    </tr>-->
                                 </tbody>
                             </table>
                             <a href="{{url('delivery_order')}}" class="btn btn-default form_button_footer">Back</a>
