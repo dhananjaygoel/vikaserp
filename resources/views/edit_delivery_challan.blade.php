@@ -269,7 +269,7 @@
                                     <input id="freight_total_charge" readonly="" class="form-control" value="">
                                 </div>-->
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style="display: none">
                                 <label for="Total"><b class="challan">Total </b></label>
                                 <div id="total_l_d_f"></div>
                             </div>
@@ -300,7 +300,7 @@
                                                             </label>
                                                         </div>-->
                             @endif
-                            <div class="form-group">
+                            <div class="form-group" style="display: none">
                                 <label for="total"><b class="challan">Grand Total </b>
                                     <span class="gtotal">
                                         <input type="text" class="form-control" name="grand_total" id="grand_total" readonly="readonly">
