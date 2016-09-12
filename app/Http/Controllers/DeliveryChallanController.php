@@ -134,7 +134,19 @@ class DeliveryChallanController extends Controller {
         if ($i == $j) {
             return Redirect::back()->with('validation_message', 'Please enter at least one product details');
         }
-        $delivery_challan = DeliveryChallan::find($id);
+        $delivery_challan = DeliveryChallan::find($id);       
+        $delivery_order_id = $delivery_challan->delivery_order_id;
+        $delivery_order = DeliveryOrder::find($delivery_order_id);
+         
+        if(isset($input_data['challan_driver_contact'])){
+            $delivery_order->driver_contact_no = $input_data['challan_driver_contact'];
+        }        
+        
+        if(isset($input_data['challan_vehicle_number'])){
+            $delivery_order->vehicle_number = $input_data['challan_vehicle_number'];
+        }
+        $delivery_order->save();       
+        
         $delivery_challan->bill_number = $input_data['billno'];
         $delivery_challan->loaded_by = $input_data['loadedby'];
 //        $delivery_challan->labours = $input_data['labour'];

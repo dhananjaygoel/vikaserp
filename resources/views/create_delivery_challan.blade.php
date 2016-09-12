@@ -217,7 +217,7 @@
                                                             <input id="freight_total_charge" readonly="" class="form-control" value="">
                                                         </div>-->
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="display: none">
                             <label for="Total"><b class="challan">Total</b></label>
                             <div id="total_l_d_f"></div>
                         </div>
@@ -257,7 +257,7 @@
                                                     </label>
                                                 </div>-->
                         @endif
-                        <div class="form-group">
+                        <div class="form-group" style="display: none">
                             <label for="vatp"><b class="challan">Total : </b>
                                 <span class="gtotal">
                                     <input type="text" class="form-control" name="vat_total" id="vat_tot_val" readonly="readonly">
@@ -268,7 +268,7 @@
                             <label for="RoundOff"><b class="challan">Round Off</b></label>
                             <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="" type="tel" onblur="grand_total_challan();">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="display: none">
                             <label for="Grand_total"><b class="challan">Grand Total : </b>
                                 <span class="gtotal">
                                     <input type="text" class="form-control" name="grand_total" id="grand_total" readonly="readonly">
@@ -276,18 +276,18 @@
                             </label>
                         </div>
                         @if($delivery_data->vat_percentage > 0)
-                        <div class="form-group">
+                        <div class="form-group" style="display: none">
                             <label for="billno"><b class="challan">Bill Number</b></label>
-                            <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="text">
+                            <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="hidden">
                         </div>
                         @endif
                         <div class="form-group">
                             <label for="challan_vehicle_number"><b class="challan">Vehicle Number</b></label>
-                            <input id="challan_vehicle_number" class="form-control" name="challan_vehicle_number" readonly="" value="{{isset($delivery_data->vehicle_number)?$delivery_data->vehicle_number:''}}" type="text">
+                            <input id="challan_vehicle_number" class="form-control" name="challan_vehicle_number" value="{{isset($delivery_data->vehicle_number)?$delivery_data->vehicle_number:''}}" type="text">
                         </div>
                         <div class="form-group">
                             <label for="challan_driver_contact"><b class="challan">Driver Contact</b></label>
-                            <input id="challan_driver_contact" class="form-control" name="challan_driver_contact" readonly="" value="{{isset($delivery_data->driver_contact_no)?$delivery_data->driver_contact_no:''}}" type="text">
+                            <input id="challan_driver_contact" class="form-control" name="challan_driver_contact"  value="{{isset($delivery_data->driver_contact_no)?$delivery_data->driver_contact_no:''}}" type="text">
                         </div>
                         <div class="form-group">
                             <label for="challan_remark"><b class="challan">Remark</b></label>
