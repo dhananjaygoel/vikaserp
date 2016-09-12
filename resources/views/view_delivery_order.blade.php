@@ -133,7 +133,7 @@
                                     </tr>
                                     @endif                                    
                                     <tr>
-                                        <td><span>Delivery Order By : </span>{{isset($delivery_data->user->first_name)?$delivery_data->user->first_name:''." ".isset($delivery_data->user->last_name)?$delivery_data->user->last_name:''}}</td>
+                                        <!--<td><span>Delivery Order By : </span>{{isset($delivery_data->user->first_name)?$delivery_data->user->first_name:''." ".isset($delivery_data->user->last_name)?$delivery_data->user->last_name:''}}</td>-->
                                     </tr>
                                     <tr>
                                         <td><span>Delivery Order Time/Date : </span>{{$delivery_data->updated_at}}</td>
