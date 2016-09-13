@@ -634,7 +634,7 @@ class DeliveryOrderController extends Controller {
                 $ratio_without_vat = (($total_without_vat_price) * 100) / $input_data['total_price'];
             }
 
-            $total_overhead = $input_data['freight'] + $input_data['freight'] - $input_data['discount'];
+            $total_overhead = $input_data['loading'] + $input_data['freight'] - $input_data['discount'];
             $vat_share_overhead = ($ratio_with_vat * $total_overhead) / 100;
             $without_vat_share_overhead = ($ratio_without_vat * $total_overhead) / 100;
 
@@ -656,7 +656,7 @@ class DeliveryOrderController extends Controller {
             $vat_input_data['freight_vat_percentage'] = $vat_input_data['loading_vat_percentage'] = $vat_input_data['discount_vat_percentage'] = round($vat_input_data['vat_percentage'], 2);
             $vat_input_data['grand_total'] = round($total_vat_price + $vat_on_price_count + $vat_share_overhead + $vat_on_overhead_count+$vat_input_data['round_off'], 2);
 
-
+            
 
             $without_vat_input_data['product'] = $without_vat_product;
             $without_vat_input_data['total_actual_quantity'] = $total_actual_quantity_without_vat;
