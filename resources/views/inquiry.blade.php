@@ -76,7 +76,7 @@
                                     <tr id="inquiry_row_{{$inquiry['id']}}">
                                         <td class="text-center">{{$i++}}</td>
                                         <td class="text-center">
-                                            {{(isset($inquiry["customer"]->tally_name) && $inquiry["customer"]->tally_name != "")? $inquiry["customer"]->tally_name :isset($inquiry["customer"]->owner_name) ? $inquiry["customer"]->owner_name:''}}
+                                            {{(isset($inquiry["customer"]->tally_name) && $inquiry["customer"]->tally_name != "")? $inquiry["customer"]->tally_name :(isset($inquiry["customer"]->owner_name) ? $inquiry["customer"]->owner_name:'')}}
                                         </td>
 
                                         <?php $qty = 0; ?>
