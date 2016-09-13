@@ -402,7 +402,7 @@ class BulkDeleteController extends Controller {
                 }
                 break;
 //----------------------------------------------------            
-            case 'purchase_order_completed':
+            case 'purchase_orders_completed':
                 $head[0] = 'SUPPLIER NAME';
                 $head[1] = 'MOBILE';
                 $head[2] = 'DELIVERY LOCATION';
@@ -448,7 +448,7 @@ class BulkDeleteController extends Controller {
 
                 break;
                 
-            case 'purchase_order_pending':
+            case 'purchase_orders_pending':
                 $head[0] = 'SUPPLIER NAME';
                 $head[1] = 'MOBILE';
                 $head[2] = 'DELIVERY LOCATION';
