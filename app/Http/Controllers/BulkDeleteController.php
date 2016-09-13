@@ -55,7 +55,7 @@ class BulkDeleteController extends Controller {
 
         switch ($module) {
 //----------------------------------------------------           
-            case 'inquiry':
+            case 'inquiry-completed':
                 $head[0] = 'TALLY NAME';
                 $head[1] = 'TOTAL QUANTITY';
                 $head[2] = 'PHONE NUMBER';
@@ -88,14 +88,68 @@ class BulkDeleteController extends Controller {
                             $qty += ($prod->quantity / $prod['inquiry_product_details']->standard_length) * $prod['inquiry_product_details']->weight;
                         }
                     }
-                    if ($temp['customer']->tally_name != '')
+                    if (isset($temp['customer']->tally_name) && $temp['customer']->tally_name != '')
                         $result_data[$key][0] = $temp['customer']->tally_name;
-                    else
+                    elseif(isset($temp['customer']->owner_name))
                         $result_data[$key][0] = $temp['customer']->owner_name;
                     $result_data[$key][1] = '';
                     if (isset($temp['inquiry_products'][0]))
                         $result_data[$key][1] = round($qty, 2);
-                    $result_data[$key][2] = $temp['customer']->phone_number1;
+                    if(isset($temp['customer']->phone_number1)){
+                        $result_data[$key][2] = $temp['customer']->phone_number1;                           }
+                    
+                    $result_data[$key][3] = '';
+                    if (isset($temp['delivery_location']))
+                        $result_data[$key][3] = $temp['delivery_location']->area_name;
+                }
+                break;
+                
+                 case 'inquiry-pending':
+                $head[0] = 'TALLY NAME';
+                $head[1] = 'TOTAL QUANTITY';
+                $head[2] = 'PHONE NUMBER';
+                $head[3] = 'DELIVERY LOCATION';
+                /*
+                 * Delete selected inquiries.
+                 */
+                if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
+                    foreach ($delete_seletected_module as $delete_module) {
+                        Inquiry::find($delete_module)->delete();
+                    }
+                }
+                $newdate = ((strlen(Input::get('expected_date')) > 1) ? Input::get('expected_date') : date('Y-m-d')) . ' 23:59:59';
+                /*
+                 * Delete selected inquiries end.
+                 */
+                $result_temp = Inquiry::where('inquiry_status', '=', 'pending')
+                                ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')
+                                ->where('created_at', '<=', $newdate)
+                                ->orderBy('created_at', 'desc')->Paginate(20);
+                foreach ($result_temp as $key => $temp) {
+                    $tr_id[$key] = $temp->id;
+                    $qty = 0;
+                    foreach ($temp['inquiry_products'] as $prod) {
+                        if ($prod['unit']->unit_name == 'KG') {
+                            $qty += $prod->quantity;
+                        } elseif ($prod['unit']->unit_name == 'Pieces') {
+                            $qty += $prod->quantity * $prod['inquiry_product_details']->weight;
+                        } elseif ($prod['unit']->unit_name == 'Meter') {
+                            $qty += ($prod->quantity / $prod['inquiry_product_details']->standard_length) * $prod['inquiry_product_details']->weight;
+                        }
+                    }
+                    if (isset($temp['customer']->tally_name) && $temp['customer']->tally_name != '')
+                        $result_data[$key][0] = $temp['customer']->tally_name;
+                    elseif(isset ($temp['customer']->owner_name))
+                        $result_data[$key][0] = $temp['customer']->owner_name;
+                    else
+                        $result_data[$key][0] ="";
+                    $result_data[$key][1] = '';
+                    if (isset($temp['inquiry_products'][0]))
+                        $result_data[$key][1] = round($qty, 2);
+                    if(isset($temp['customer']->phone_number1))
+                        $result_data[$key][2] = $temp['customer']->phone_number1;
+                    else
+                        $result_data[$key][2] ="";
                     $result_data[$key][3] = '';
                     if (isset($temp['delivery_location']))
                         $result_data[$key][3] = $temp['delivery_location']->area_name;
@@ -201,7 +255,7 @@ class BulkDeleteController extends Controller {
                 }
                 break;
 //----------------------------------------------------                
-            case 'delivery_order':
+            case 'delivery_order_completed':
                 $head[0] = 'DATE';
                 $head[1] = 'TALLY NAME';
                 $head[2] = 'DELIVERY LOCATION';
@@ -245,8 +299,52 @@ class BulkDeleteController extends Controller {
                     $result_data[$key][5] = $temp->vehicle_number;
                 }
                 break;
+                 case 'delivery_order_pending':
+                $head[0] = 'DATE';
+                $head[1] = 'TALLY NAME';
+                $head[2] = 'DELIVERY LOCATION';
+                $head[3] = 'QUANTITY';
+                $head[4] = 'PRESENT SHIPPING';
+                $head[5] = 'VEHICLE NUMBER';
+                /*
+                 * Delete selected delivery orders.
+                 */
+                if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
+                    foreach ($delete_seletected_module as $delete_module) {
+                        DeliveryOrder::find($delete_module)->delete();
+                    }
+                }
+                /*
+                 * Delete selected delivery orders end.
+                 */
+                $newdate = ((strlen(Input::get('expected_date')) > 1) ? Input::get('expected_date') : date('Y-m-d')) . ' 23:59:59';
+                $result_temp = DeliveryOrder::orderBy('created_at', 'desc')
+                                ->where('created_at', '<=', $newdate)
+                                ->where('order_status', 'pending')->with('delivery_product', 'customer')->paginate(20);
+                $result_temp = $this->checkpending_quantity($result_temp);
+                foreach ($result_temp as $key => $temp) {
+                    $tr_id[$key] = $temp->id;
+                    $result_data[$key][0] = date("F jS, Y", strtotime($temp->created_at));
+                    if ($temp['customer']->tally_name != '')
+                        $result_data[$key][1] = $temp['customer']->tally_name;
+                    else
+                        $result_data[$key][1] = $temp['customer']->owner_name;
+                    if ($temp->delivery_location_id != 0) {
+                        foreach ($delivery_locations as $location) {
+                            if ($location->id == $temp->delivery_location_id) {
+                                $result_data[$key][2] = $location->area_name;
+                            }
+                        }
+                    } else {
+                        $result_data[$key][2] = $temp->other_location;
+                    }
+                    $result_data[$key][3] = round($temp->total_quantity, 2);
+                    $result_data[$key][4] = round($temp->present_shipping, 2);
+                    $result_data[$key][5] = $temp->vehicle_number;
+                }
+                break;
 //----------------------------------------------------            
-            case 'delivery_challan':
+            case 'delivery_challan_completed':
                 $head[0] = 'TALLY NAME';
                 $head[1] = 'SERIAL NUMBER';
                 $head[2] = 'PRESENT SHIPPING';
@@ -263,6 +361,35 @@ class BulkDeleteController extends Controller {
                  */
                 $newdate = ((strlen(Input::get('expected_date')) > 1) ? Input::get('expected_date') : date('Y-m-d')) . ' 23:59:59';
                 $result_temp = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'delivery_challan_products', 'delivery_order')
+                                ->where('created_at', '<=', $newdate)->orderBy('created_at', 'desc')->Paginate(20);
+                foreach ($result_temp as $key => $temp) {
+                    $tr_id[$key] = $temp->id;
+                    if ($temp['customer']->tally_name != '')
+                        $result_data[$key][0] = $temp['customer']->tally_name;
+                    else
+                        $result_data[$key][0] = $temp['customer']->owner_name;
+                    $result_data[$key][1] = $temp->serial_number;
+                    $result_data[$key][2] = round($temp->total_quantity, 2);
+                }
+                break;
+                
+            case 'delivery_challan_pending':
+                $head[0] = 'TALLY NAME';
+                $head[1] = 'SERIAL NUMBER';
+                $head[2] = 'PRESENT SHIPPING';
+                /*
+                 * Delete selected delivery challan.
+                 */
+                if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
+                    foreach ($delete_seletected_module as $delete_module) {
+                        DeliveryChallan::find($delete_module)->delete();
+                    }
+                }
+                /*
+                 * Delete selected delivery challan end.
+                 */
+                $newdate = ((strlen(Input::get('expected_date')) > 1) ? Input::get('expected_date') : date('Y-m-d')) . ' 23:59:59';
+                $result_temp = DeliveryChallan::where('challan_status', '=', 'pending')->with('customer', 'delivery_challan_products', 'delivery_order')
                                 ->where('created_at', '<=', $newdate)->orderBy('created_at', 'desc')->Paginate(20);
                 foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;
