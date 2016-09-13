@@ -402,7 +402,7 @@ class BulkDeleteController extends Controller {
                 }
                 break;
 //----------------------------------------------------            
-            case 'purchase_order':
+            case 'purchase_order_completed':
                 $head[0] = 'SUPPLIER NAME';
                 $head[1] = 'MOBILE';
                 $head[2] = 'DELIVERY LOCATION';
@@ -423,6 +423,52 @@ class BulkDeleteController extends Controller {
                 $newdate = ((strlen(Input::get('expected_date')) > 1) ? Input::get('expected_date') : date('Y-m-d')) . ' 23:59:59';
                 $purchase_orders = PurchaseOrder::with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')
                                 ->where('created_at', '<=', $newdate)->where('order_status', '=', 'completed')
+                                ->orderBy('created_at', 'desc')->Paginate(20);
+                $result_temp = $this->quantity_calculation($purchase_orders);
+                foreach ($result_temp as $key => $temp) {
+                    $tr_id[$key] = $temp->id;
+                    if ($temp['customer']->tally_name != '')
+                        $result_data[$key][0] = $temp['customer']->tally_name;
+                    else
+                        $result_data[$key][0] = $temp['customer']->owner_name;
+                    $result_data[$key][1] = $temp['customer']->phone_number1;
+                    if ($temp->delivery_location_id != 0) {
+                        foreach ($delivery_locations as $location) {
+                            if ($location->id == $temp->delivery_location_id) {
+                                $result_data[$key][2] = $location->area_name;
+                            }
+                        }
+                    } else {
+                        $result_data[$key][2] = $temp->other_location;
+                    }
+                    $result_data[$key][3] = $temp['user']->first_name;
+                    $result_data[$key][4] = round($temp->total_quantity, 2);
+                    $result_data[$key][5] = round($temp->pending_quantity, 2);
+                }
+
+                break;
+                
+            case 'purchase_order_pending':
+                $head[0] = 'SUPPLIER NAME';
+                $head[1] = 'MOBILE';
+                $head[2] = 'DELIVERY LOCATION';
+                $head[3] = 'ORDER BY';
+                $head[4] = 'TOTAL QUANTITY';
+                $head[5] = 'PENDING QUANTITY';
+                /*
+                 * Delete selected purchase orders.
+                 */
+                if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
+                    foreach ($delete_seletected_module as $delete_module) {
+                        PurchaseOrder::find($delete_module)->delete();
+                    }
+                }
+                /*
+                 * Delete selected purchase orders end.
+                 */
+                $newdate = ((strlen(Input::get('expected_date')) > 1) ? Input::get('expected_date') : date('Y-m-d')) . ' 23:59:59';
+                $purchase_orders = PurchaseOrder::with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')
+                                ->where('created_at', '<=', $newdate)->where('order_status', '=', 'pending')
                                 ->orderBy('created_at', 'desc')->Paginate(20);
                 $result_temp = $this->quantity_calculation($purchase_orders);
                 foreach ($result_temp as $key => $temp) {
