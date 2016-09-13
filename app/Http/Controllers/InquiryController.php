@@ -542,7 +542,12 @@ class InquiryController extends Controller {
 
         $term = Input::get('term');
         if($term!=''){
-             $term = '%' . $term . '%';
+          
+            $tally_name_search = substr($term, strpos($term," - ")+strlen(" - "));
+            $term = '%' . $term . '%';
+//            $tally_name_search = '%' . $tally_name_search . '%';           
+           
+             
             $customers = Customer::where(function($query) use($term) {
                             $query->whereHas('only_city', function($q) use ($term) {
                                 $q->where('city_name', 'like', $term);
@@ -551,12 +556,14 @@ class InquiryController extends Controller {
                         ->where('tally_name', '<>', '')
                         ->where('customer_status', '=', 'permanent')
                         ->orWhere('company_name', $term)
+                        ->orWhere('tally_name', 'like', $tally_name_search)
                         ->orWhere('tally_name', 'like', $term)
+                        ->orWhere('id', 'like', $term)        
                         ->with('delivery_location')
                         ->orderBy('tally_name', 'ASC')
-                        ->select('tally_name AS value','id AS id', 'delivery_location_id AS delivery_location_id')->get(array('delivery_location.difference.id as difference'));
+                        ->select('id AS id',DB::raw('CONCAT(id," - ",tally_name) AS value'),/*('tally_name AS value'),*/ 'delivery_location_id AS delivery_location_id')->get(array('delivery_location.difference.id as difference'));
         }else{
-            $customers = Customer::with('delivery_location')->where('tally_name', '<>', '')->orderBy('tally_name', 'ASC')->select('tally_name AS value','id AS id', 'delivery_location_id AS delivery_location_id')->get();
+            $customers = Customer::with('delivery_location')->where('tally_name', '<>', '')->orderBy('tally_name', 'ASC')->select(DB::raw('CONCAT(id," - ",tally_name) AS value'),'id AS id', 'delivery_location_id AS delivery_location_id')->get();
         }
         
 //        if (count($customers) > 0) {
