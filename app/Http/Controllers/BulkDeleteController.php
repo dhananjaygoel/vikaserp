@@ -181,7 +181,13 @@ class BulkDeleteController extends Controller {
                         $total_size_quantity+=$order_product_array->quantity;
                     }
                     $result_data[$key][1] = round($total_size_quantity, 2);
-                    $result_data[$key][2] = $temp['customer']->phone_number1;
+                    if(isset($temp['customer']->phone_number1)){
+                        $result_data[$key][2] = $temp['customer']->phone_number1;
+                    }
+                    else{
+                        $result_data[$key][2] =0;
+                    }
+                    
                     if ($temp->delivery_location_id != 0)
                         $result_data[$key][3] = $temp['delivery_location']->area_name;
                     elseif ($temp->delivery_location_id == 0)
