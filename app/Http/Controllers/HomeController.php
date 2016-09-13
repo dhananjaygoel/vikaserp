@@ -437,7 +437,7 @@ class HomeController extends Controller {
     public function appdeletedelivery_order() {
 
         $input_data = Input::all();
-        $delievry_orders = (json_decode($input_data['delievry_order_deleted']));
+        $delievry_orders = (json_decode($input_data['delivery_order_deleted']));
         if (count($delievry_orders) > 0) {
             foreach ($delievry_orders as $delievry_order) {
                 $delievry_order_details = DeliveryOrder::find($delievry_order);
@@ -457,7 +457,7 @@ class HomeController extends Controller {
     public function appdeletedelivery_challan() {
 
         $input_data = Input::all();
-        $delievry_challans = (json_decode($input_data['delievry_challan_deleted']));
+        $delievry_challans = (json_decode($input_data['delivery_challan_deleted']));
         if (count($delievry_challans) > 0) {
             foreach ($delievry_challans as $delievry_challan) {
                 $delievry_challan_details = DeliveryChallan::find($delievry_challan);
