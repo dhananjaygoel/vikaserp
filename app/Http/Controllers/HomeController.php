@@ -1135,7 +1135,9 @@ class HomeController extends Controller {
                             ->where('product_category_id','=',$product_data->product_category_id)
                             ->select('id')
                             ->get();
-                    if(isset($product[0]->id)){
+                    
+                   
+                    if(isset($product[0])){
                         $product_id = $product[0]->id;
                     }
                     else{
@@ -2539,7 +2541,7 @@ class HomeController extends Controller {
             $DO = DeliveryOrder::select('serial_no')->find($id);
             
             if( $DO['serial_no']!=""){
-                $delivery_data ="hi";
+                $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'unit', 'location')->find($id);
             }else{
                 $current_date = date("m/d/");
             $date_letter = 'DO/' . $current_date . "" . $id;
@@ -2555,9 +2557,7 @@ class HomeController extends Controller {
     }
     
     
-     public function appprintdeliverychallan() {
-     
-     }
+    
 
 // All Functions added by user 157 for app ends here //
 
