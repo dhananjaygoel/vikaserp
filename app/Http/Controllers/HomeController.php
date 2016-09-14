@@ -2526,6 +2526,38 @@ class HomeController extends Controller {
 
         return json_encode($order_response);
     }
+    
+    /**
+     * App sync Generate Serial Number DO
+     */
+    public function appprintdeliveryorder() {
+        $data = Input::all();
+        $server_id = json_decode($data['delivery_order']);
+         
+        if(isset($server_id)){
+             $id = $server_id[0]->server_id;
+            $DO = DeliveryOrder::select('serial_no')->find($id);
+            
+            if( $DO['serial_no']!=""){
+                $delivery_data ="hi";
+            }else{
+                $current_date = date("m/d/");
+            $date_letter = 'DO/' . $current_date . "" . $id;
+            DeliveryOrder:: where('id', $id)->update(array('serial_no' => $date_letter));
+            $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'unit', 'location')->find($id);
+            }
+            
+        }
+        else{
+             $delivery_data ="";
+        }
+        return json_encode($delivery_data);
+    }
+    
+    
+     public function appprintdeliverychallan() {
+     
+     }
 
 // All Functions added by user 157 for app ends here //
 
