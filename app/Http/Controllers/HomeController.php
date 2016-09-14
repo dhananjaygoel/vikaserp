@@ -1080,7 +1080,7 @@ class HomeController extends Controller {
         if (Input::has('delivery_order_product')) {
             $deliveryorderproducts = (json_decode($data['delivery_order_product']));
         }
-
+        
         if (Input::has('delivery_order_sync_date') && Input::get('delivery_order_sync_date') != '') {
             $last_sync_date = Input::get('delivery_order_sync_date');
             $delivery_order_server = DeliveryOrder::where('created_at', '>', $last_sync_date)->with('delivery_product')->get();
@@ -1130,6 +1130,18 @@ class HomeController extends Controller {
                 $delivery_order_id = $delivery_order->id;
                 $delivery_order_products = array();
                 foreach ($deliveryorderproducts as $product_data) {
+                    $product = AllOrderProducts::where('order_id','=',$value->server_order_id)
+                            ->where('order_type','=','order')
+                            ->where('product_category_id','=',$product_data->product_category_id)
+                            ->select('id')
+                            ->get();
+                    if(isset($product[0]->id)){
+                        $product_id = $product[0]->id;
+                    }
+                    else{
+                         $product_id =0;
+                    }
+                    
                     if ($product_data->delivery_order_id == $value->id) {
                         $delivery_order_products = [
                             'app_product_id'=>$product_data->id,
@@ -1137,6 +1149,8 @@ class HomeController extends Controller {
                             'order_type' => 'delivery_order',
                             'product_category_id' => $product_data->product_category_id,
                             'unit_id' => $product_data->unit_id,
+                            'from' => $value->server_order_id,
+                            'parent'=>$product_id,
                             'quantity' => $product_data->present_shipping,
                             'present_shipping' => $product_data->present_shipping,
                             'price' => $product_data->actualPrice,
@@ -1178,6 +1192,18 @@ class HomeController extends Controller {
                 $delivery_order_products = array();
                 AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $delivery_order->id)->delete();
                 foreach ($deliveryorderproducts as $product_data) {
+                     $product = AllOrderProducts::where('order_id','=',$value->server_order_id)
+                            ->where('order_type','=','order')
+                            ->where('product_category_id','=',$product_data->product_category_id)
+                            ->select('id')
+                            ->get();
+                    if(isset($product[0]->id)){
+                        $product_id = $product[0]->id;
+                    }
+                    else{
+                         $product_id =0;
+                    }
+                    
                     if ($product_data->delivery_order_id == $value->id) {
                         $delivery_order_products = [
                             'app_product_id'=>$product_data->id,
@@ -1185,6 +1211,8 @@ class HomeController extends Controller {
                             'order_type' => 'delivery_order',
                             'product_category_id' => $product_data->product_category_id,
                             'unit_id' => $product_data->unit_id,
+                            'from' => $value->server_order_id,
+                            'parent'=>$product_id,
                             'quantity' => $product_data->quantity,
                             'present_shipping' => $product_data->present_shipping,
                             'price' => $product_data->actualPrice,
