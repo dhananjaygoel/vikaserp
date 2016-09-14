@@ -1199,7 +1199,7 @@ class HomeController extends Controller {
                             ->where('product_category_id','=',$product_data->product_category_id)
                             ->select('id')
                             ->get();
-                    if(isset($product[0]->id)){
+                    if(isset($product[0])){
                         $product_id = $product[0]->id;
                     }
                     else{
@@ -2557,7 +2557,100 @@ class HomeController extends Controller {
     }
     
     
-    
+     public function appprintdeliverychallan() {
+         $data = Input::all();
+        $server_id = json_decode($data['delivery_challan']);
+        
+        
+        if($server_id[0]->server_id!=""){
+            $id = $server_id[0]->server_id;
+            $DC = DeliveryChallan::with('delivery_challan_products')->find($id);
+            $update_delivery_challan = $DC;
+            $vat_applicable = 0;
+            $total_vat_amount = 0;
+           
+            if( $DC->serial_number!=""){
+                 $delivery_data = DeliveryChallan::where('id', '=', $id)
+                        ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
+            }
+            else
+            {
+                if(isset($DC->delivery_order_id)){
+                $delivery_order_id = $DC->delivery_order_id;
+                }
+                else{
+                    $delivery_order_id =0;
+                }
+
+                if($delivery_order_id !=0){
+                    $DO = DeliveryOrder::where('id','=',$delivery_order_id)->get();
+                    $serial_number_delivery_order = $DO[0]['serial_no'];
+                }
+                else{
+                    $serial_number_delivery_order =0;
+                }
+                $current_date = date("m/d/");
+
+                if (isset($update_delivery_challan->delivery_challan_products) && count($update_delivery_challan->delivery_challan_products) > 0) {
+                    foreach ($update_delivery_challan->delivery_challan_products as $key => $delivery_challan_products) {
+                    if ($delivery_challan_products->vat_percentage > 0) {
+                        $vat_applicable = 1;
+                        if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
+                            $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
+                        }
+                    }
+                    }
+                }
+                if($update_delivery_challan->ref_delivery_challan_id  ==0){
+                    $modified_id = $id;
+                }else{
+                    $modified_id = $update_delivery_challan->ref_delivery_challan_id;
+                }
+                $date_letter = 'DC/' . $current_date . $modified_id . (($vat_applicable > 0) ? "P" : "A");   
+
+
+                $update_delivery_challan->serial_number = $date_letter;
+                $update_delivery_challan->challan_status = 'completed';
+                $update_delivery_challan->save();
+                $delivery_challan_obj = new DeliveryChallanController();
+                $delivery_challan_obj->checkpending_quantity();
+                $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
+                                ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
+        //        $calculated_vat_value = $allorder->grand_price * ($allorder->vat_percentage / 100);
+        //        $allorder['calculated_vat_price'] = $calculated_vat_value;
+                $number = $allorder->grand_price;
+                $exploded_value = explode(".", $number);
+
+                if(!isset($exploded_value[1]))
+                {
+                    $number = number_format($number, 2, '.', '');
+                    $allorder->grand_price = $number;
+                    $allorder->save();
+                    $exploded_value = explode(".", $number);
+                }        
+
+                $result_paisa = $exploded_value[1] % 10;
+                if (isset($exploded_value[1]) && strlen($exploded_value[1]) > 1 && $result_paisa != 0) {
+                    $convert_value = $delivery_challan_obj->convert_number_to_words($allorder->grand_price);
+            } else {
+                $convert_value = $delivery_challan_obj->convert_number($allorder->grand_price);
+            }
+            $allorder['convert_value'] = $convert_value;
+
+               $delivery_data = DeliveryChallan::where('id', '=', $id)
+                            ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
+                }
+            
+            
+        }
+        else{
+             $delivery_data ="";
+        }
+        
+       return json_encode($delivery_data);  
+        
+     
+     }
 
 // All Functions added by user 157 for app ends here //
 
