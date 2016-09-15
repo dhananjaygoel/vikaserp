@@ -47,6 +47,10 @@ class HomeController extends Controller {
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
     }
+    
+    public function getInfo() {
+        phpinfo();
+    }
 
     /**
      * Generate user OTP
@@ -546,12 +550,12 @@ class HomeController extends Controller {
         }
         if (Input::has('customer_name') )
             $customer->owner_name = Input::get('customer_name');
-        if (Input::has('contact_person') && !empty(Input::get('contact_person')))
+        if (Input::has('contact_person'))
             $customer->contact_person = Input::get('contact_person');
         $customer->address1 = (Input::has('address1') && Input::get('address1')) ? Input::get('address1') : '';
         if (Input::has('mobile') )
             $customer->phone_number1 = Input::get('mobile');
-        if (Input::has('password') && !empty(Input::get('password')))
+        if (Input::has('password'))
             $customer->password = Hash::make(Input::get('password'));
         $customer->customer_status = 'pending';
         $customer->company_name = (Input::has('company_name') ) ? Input::get('company_name') : '';
