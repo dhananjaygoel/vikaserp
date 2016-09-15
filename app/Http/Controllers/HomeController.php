@@ -540,7 +540,7 @@ class HomeController extends Controller {
         if (!isset($customer->id)) {
             return json_encode(array('result' => false, 'message' => 'Customer not found'));
         }
-        if (Input::has('mobile') && !empty(Input::get('mobile'))) {
+        if (Input::has('mobile') && !empty(trim(Input::get('mobile')))) {
             if ($customer->phone_number1 != Input::get('mobile'))
                 return json_encode(array('result' => false, 'message' => 'Username does not match'));
         }
