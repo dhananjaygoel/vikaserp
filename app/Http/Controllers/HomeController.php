@@ -2265,7 +2265,7 @@ class HomeController extends Controller {
                         $add_inquiry->other_location = $value->other_location;
                         $add_inquiry->location_difference = $value->location_difference;
                     }
-                    if (isset($customer_list[$value->id]) && !empty($customer_list[$value->id] > 0)) {
+                    if (isset($customer_list[$value->id])/* && !empty($customer_list[$value->id] > 0)*/) {
                         $add_inquiry->customer_id = $customer_list[$value->id];
                     } else {
                         $add_inquiry->customer_id = $value->customer_server_id;
