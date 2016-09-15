@@ -323,7 +323,7 @@
                             <!--  <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> -->
                             <hr>
                             <div>
-                                <button type="submit" class="btn btn-primary" >Submit</button>
+                                <button type="submit" class="btn btn-primary btn_edit_delivery_challan" >Submit</button>
 
                             </div>
                             <div class="clearfix"></div>

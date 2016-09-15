@@ -1382,6 +1382,52 @@ $('body').delegate(".btn_add_delivery_order", "click", function () {
     }
 
 });
+
+$('body').delegate(".btn_edit_delivery_challan", "click", function () {
+ if ($("#challan_vehicle_number").val() == "") {
+            $('#challan_vehicle_number').addClass('error_validation');
+            status_form = 1;
+        } 
+        else{
+            $('#challan_vehicle_number').removeClass('error_validation');
+            status_form = 0;
+        }
+        var tot_products = $(".add_product_row").length;
+        var j = 0;
+        for (i = 1; i <= tot_products; i++) {
+            if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
+                j++;
+            } else {
+                if ($("#add_product_id_" + i).val() == "") {
+                    $('#add_product_name_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
+                if ($("#quantity_" + i).val() == "") {
+                    $('#quantity_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
+            }
+        }
+        if (j == tot_products) {
+            if ($("#add_product_id_1").val() == "") {
+                $('#add_product_name_1').addClass('error_validation');
+            }
+            if ($("#quantity_1").val() == "") {
+                $('#quantity_1').addClass('error_validation');
+            }
+            status_form = 1;
+        }
+        if (status_form == 1) {
+            $('html, body').animate({
+                scrollTop: $('.breadcrumb').offset().top
+            }, 1000);
+            return false;
+        } else {
+            $('#onenter_prevent').submit();
+        }
+});
+
+
 $('body').delegate(".btn_puradvice_to_purchallan", "click", function () {
 
     var status_form = 0;
