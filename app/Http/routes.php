@@ -80,7 +80,7 @@ Route::get('app_customer_inquiry/{id}', 'HomeController@customerInquiry');
 Route::get('app_customer_orders/{id}', 'HomeController@customerOrders');
 Route::get('appprintdeliveryorder', 'HomeController@appprintdeliveryorder');
 Route::get('appprintdeliverychallan', 'HomeController@appprintdeliverychallan');
-Route::get('getinfo', 'HomeController@getinfo');
+Route::get('getinfo', 'PasswordController@getinfo');
 /* All customer app routes ends here */
 /*
   Route::get('demorouteandroid', 'HomeController@demorouteandroid');
