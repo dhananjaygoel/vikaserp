@@ -88,10 +88,13 @@
 //  --------------------------------------Dynamic inquiry product name--------------------------------------------- 
             $("#add_product_row").on("click", function() {
     var current_row_count = $(".add_product_row").length + 1;
+    var row_id = $(".add_product_row").length;
+    
             $.ajax({
             type: "GET",
                     url: baseurl + '/get_units'
             }).done(function(data) {
+               $('#quantity_' + row_id).focus();
     var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
@@ -176,10 +179,12 @@
 //  --------------------------------------Dynamic add product delivery challan name---------------------------------------------     
             $("#add_product_row_delivery_challan").on("click", function () {
     var current_row_count = $(".add_product_row").length + 1;
-            $.ajax({
+     var row_id = $(".add_product_row").length;
+        $.ajax({
             type: "GET",
                     url: baseurl + '/get_units'
             }).done(function (data) {
+                $('#quantity_' + row_id).focus();
     var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
@@ -239,10 +244,13 @@
     
             $("#add_purchase_advise_product_row").on("click", function() {
     var current_row_count = $(".add_product_row").length + 1;
+    var row_id = $(".add_product_row").length;
+     
             $.ajax({
             type: "GET",
                     url: baseurl + '/get_units'
             }).done(function(data) {
+                 $('#quantity_' + row_id).focus();
     var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
@@ -323,10 +331,13 @@
     
             $("#add_purchase_advice_product_row").on("click", function() {
     var current_row_count = $(".add_product_row").length + 1;
+    var row_id = $(".add_product_row").length;
+      
             $.ajax({
             type: "GET",
                     url: baseurl + '/get_units'
             }).done(function(data) {
+                $('#quantity_' + row_id).focus();
     var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
@@ -384,10 +395,13 @@
 
             $("#add_editadvice_product_row").on("click", function() {
     var current_row_count = $(".add_product_row").length + 1;
+    var row_id = $(".add_product_row").length;
+     
             $.ajax({
             type: "GET",
                     url: baseurl + '/get_units'
             }).done(function(data) {
+                 $('#quantity_' + row_id).focus();
     var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';

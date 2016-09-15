@@ -966,7 +966,7 @@ class OrderController extends Controller {
             $delivery_order_quantity = 0;
             $delievry_order_details = DeliveryOrder::where('order_id', '=', $order->id)->first();
             if (!empty($delievry_order_details)) {
-                $delivery_order_products = AllOrderProducts::where('order_id', '=', $delievry_order_details->id)->where('order_type', '=', 'delivery_order')->get();
+                $delivery_order_products = AllOrderProducts::where('from', '=', $delievry_order_details->order_id)->where('order_type', '=', 'delivery_order')->get();
             } else {
                 $delivery_order_products = NULL;
             }
