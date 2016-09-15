@@ -1114,6 +1114,7 @@ class HomeController extends Controller {
                 $delivery_order->created_by = 1;
 //                $delivery_order->vat_percentage = ($value->vatPercentage > 0 ) ? $value->vatPercentage : '';
                 $delivery_order->estimate_price = 0;
+                $delivery_order->vat_percentage =$value->vat_percentage;
                 $delivery_order->expected_delivery_date = date_format(date_create(date("Y-m-d")), 'Y-m-d');
                 $delivery_order->remarks = $value->remarks;
                 $delivery_order->vehicle_number = ($value->vehicle_number != '') ? $value->vehicle_number : '';
