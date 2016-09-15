@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\ChangePasswordRequest;
 
 class PasswordController extends Controller {
+    
+    public function getInfo() {
+        phpinfo();
+    }
     /*
      * Get change password form
      */

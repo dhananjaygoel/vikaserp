@@ -48,10 +48,7 @@ class HomeController extends Controller {
         date_default_timezone_set("Asia/Calcutta");
     }
     
-    public function getInfo() {
-        phpinfo();
-    }
-
+    
     /**
      * Generate user OTP
      */
