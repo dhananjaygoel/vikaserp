@@ -76,6 +76,7 @@ Route::post('verify_otp', 'HomeController@verifyOtp');
 Route::get('app_track_order/{id}', 'HomeController@trackOrder');
 Route::get('app_track_inquiry/{id}', 'HomeController@trackInquiry');
 Route::get('app_customer_info/{id}', 'HomeController@customerInfo');
+Route::post('app_customer_status', 'HomeController@customerStatus');
 Route::get('app_customer_inquiry/{id}', 'HomeController@customerInquiry');
 Route::get('app_customer_orders/{id}', 'HomeController@customerOrders');
 Route::get('appprintdeliveryorder', 'HomeController@appprintdeliveryorder');

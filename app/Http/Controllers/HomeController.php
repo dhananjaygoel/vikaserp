@@ -293,6 +293,28 @@ class HomeController extends Controller {
         $customer_details = Customer::with('deliverylocation', 'customerproduct', 'manager')->find($id);
         return json_encode($customer_details);
     }
+    
+     /**
+     * App customer status
+     */
+    public function customerStatus() {
+
+         $input_data = Input::all();
+         $customer_id = (json_decode($input_data['customer_id']));
+         if(isset($customer_id[0])){
+             $id = $customer_id[0]->customer_id;
+             $customer_details = Customer::with('deliverylocation', 'customerproduct', 'manager')->find($id);
+             if(!isset($customer_details))             {
+                  return json_encode(array('result' => false, 'mobile_status' => false, 'message' => 'User not found'));
+             }
+         }
+         else{
+              return json_encode(array('result' => false, 'mobile_status' => false, 'message' => 'User not found'));
+         }
+         return json_encode($customer_details);
+       // $customer_details = Customer::with('deliverylocation', 'customerproduct', 'manager')->find($id);
+        //$input_data = Input::all(); return json_encode($customer_details);
+    }
 
     /**
      * App customer profile
