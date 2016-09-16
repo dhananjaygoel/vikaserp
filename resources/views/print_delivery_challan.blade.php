@@ -277,10 +277,13 @@
                             <td> {{ round($total_price+$final_vat_amount, 2) }} </td>
                         </tr>
                     </table>
-                    <div class="ruppes grand_price">
+                    <div>
+                        &nbsp; Remarks : {{$allorder->remarks}}
+                    </div>
+<!--                    <div class="ruppes grand_price">
                         &nbsp; <?php $gt = round($allorder->grand_price, 2) ?>
                         Rupees <?php //echo ucwords(str_replace(".", "", convert_number($allorder->grand_price))); ?> Only.
-                    </div>
+                    </div>-->
                 </div>
                 <div class="total">
                     <div class="">
@@ -332,7 +335,14 @@
                         </div>
                         <div class="label">&nbsp; GT</div>
                         <div class="value">
-                            {{ round(($with_total + $vat + $roundoff), 2) }}
+                             <?php
+                            if (isset($allorder->grand_price) && ($allorder->grand_price != "")) {
+                                $grand_price = $allorder->grand_price;
+                            } else {
+                                $grand_price = 0;
+                            }
+                            ?>
+                            {{ round($grand_price, 2) }}
                             &nbsp;
                         </div>
                     </div>
