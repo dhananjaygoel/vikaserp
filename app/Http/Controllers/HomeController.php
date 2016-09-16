@@ -1536,8 +1536,9 @@ class HomeController extends Controller {
                         $add_inquiry->customer_id = $customer_list[$value->id];
                     } else {
                         $add_inquiry->customer_id = $value->customer_server_id;
+                        if($value->customer_name=="" && $value->customer_contact_peron=="" && $value->customer_mobile="" && $value->customer_credit_period=""){
                         $update_customers = Customer::find($value->customer_server_id);
-                        $update_customers->addNewCustomer($value->customer_name, $value->customer_contact_peron, $value->customer_mobile, $value->customer_credit_period);
+                        $update_customers->addNewCustomer($value->customer_name, $value->customer_contact_peron, $value->customer_mobile, $value->customer_credit_period);}
                     }
                     $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
                     $add_inquiry->remarks = ($value->remarks != '') ? $value->remarks : '';
