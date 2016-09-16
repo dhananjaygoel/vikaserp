@@ -1052,6 +1052,11 @@ function delete_delivery_order(deliver_order_id) {
     $('#user_id').val(deliver_order_id);
 }
 
+function delete_order_row(order_id) {
+    $("#delete_order_row").attr('action', baseurl + '/delivery_order/' + order_id + '-delete');
+    $('#user_id').val(order_id);
+}
+
 /*
  * Delete delivery order from delivery order page
  */
@@ -1102,7 +1107,7 @@ function delete_challan(challan_id) {
  * Delete the challan by challan_id
  */
 $('.delete_challan_submit').click(function () {
-    $('#delete_challan').modal('hide');
+    $('#delete_challan').modal('hide'); 
     /*Form token set up*/
     $.ajaxSetup({
         headers: {

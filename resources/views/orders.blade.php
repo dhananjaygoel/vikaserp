@@ -373,15 +373,17 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                             <h4 class="modal-title" id="myModalLabel"></h4>
                                         </div>
-                                        <form method="post" class="delete_order_form" >
+                                        <form method="post" class="delete_order_form" action="#" id="delete_order_row">
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 <!--                                            <input name="_method" type="hidden" value="DELETE">-->
                                             <div class="modal-body">
                                                 <div class="delete">
                                                     <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
+                                                    <input type="hidden" name="mobile" value="{{auth()->user()->mobile_number}}"/>
+                                                            <input type="hidden" name="user_id" id="user_id"/>
                                                     <div class="pwd">
                                                         <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr" id="pwdr"><input class="form-control" placeholder="" name="password" type="password"></div>
+                                                        <div class="pwdr"><input class="form-control" placeholder="" name="password" type="password" id="pwdr delivery_order_password"></div>
                                                     </div>
                                                     <div class="clearfix"></div>
                                                     <div class="delp">Are you sure you want to <b>cancel </b> order?</div>

@@ -474,12 +474,12 @@ $('#onenter_prevent input,#onenter_prevent textarea').keypress(function (e) {
     }
 });
 
-$('#pwdr').keypress(function (e) {
-    if (e.which == 13) {
-        $('.delete_orders_modal_submit').focus();
-        return false;
-    }
-});
+//$('#pwdr').keypress(function (e) {
+//    if (e.which == 13) {
+//        $('.delete_orders_modal_submit').focus();
+//        return false; 
+//    }
+//});
 
 $('form#onenter_prevent').keypress(function (e) {
     
