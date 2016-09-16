@@ -137,7 +137,10 @@ class CustomerController extends Controller {
         }
         if (Input::has('credit_period')) {
             $customer->credit_period = Input::get('credit_period');
+        }else{
+             $customer->credit_period = 0;
         }
+        
         if (Input::has('relationship_manager')) {
             $customer->relationship_manager = Input::get('relationship_manager');
         }
