@@ -104,6 +104,17 @@
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
                         <div id="flash_message" class="alert no_data_msg_container"></div>
+                        @if(Session::has('error'))
+                        <div class="clearfix"> &nbsp;</div>
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <strong> {{ Session::get('error') }} </strong>
+                        </div>
+                        @endif
+                       
+                        @if (Session::has('success'))
+                        <div class="alert alert-success alert-success1">{{Session::get('success')}}</div>
+                        @endif
                         @if (Session::has('flash_message'))
                         <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
                         @endif
@@ -383,7 +394,7 @@
                                                             <input type="hidden" name="user_id" id="user_id"/>
                                                     <div class="pwd">
                                                         <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" placeholder="" name="password" type="password" id="pwdr delivery_order_password"></div>
+                                                        <div class="pwdr"><input class="form-control" placeholder="" name="password" type="password" id="pwdr"></div>
                                                     </div>
                                                     <div class="clearfix"></div>
                                                     <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
@@ -392,7 +403,7 @@
                                             <div class="modal-footer">
                                                 <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="button" class="btn btn-default delete_orders_modal_submit">Yes</button>
+                                                <button type="submit" class="btn btn-default delete_orders_modal_submit">Yes</button>
                                             </div>
                                         </form>
                                     </div>

@@ -647,7 +647,14 @@ class OrderController extends Controller {
     public function destroy($id) {
 
         $inputData = Input::get('formData');
-        parse_str($inputData, $formFields);
+        $flag = 0;
+        if(empty($inputData)){
+            $formFields = Input::all();
+            $flag = 1;
+        }else{
+            parse_str($inputData, $formFields);
+        }
+        
         $password = $formFields['password'];
         $userinfo = auth()->user();
         $order_sort_type = $formFields['order_sort_type'];
@@ -660,8 +667,16 @@ class OrderController extends Controller {
             AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'order')->delete();
             Order::find($id)->delete();
             Session::put('order-sort-type', $order_sort_type);
+            if($flag == 1)
+            {
+                return Redirect::to('orders')->with('success', 'Record deleted successfully.');
+            }
             return array('message' => 'success');
         } else {
+            if($flag == 1)
+            {
+                return Redirect::to('orders')->with('error', 'Please enter correct password.');
+            }
             return array('message' => 'failed');
         }
     }

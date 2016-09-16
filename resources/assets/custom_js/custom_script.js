@@ -963,41 +963,41 @@ function delete_order_row(order_id) {
 /*
  * Delete order by AJAX call
  */
-$('.delete_orders_modal_submit').click(function () {
-
-    $('#delete_orders_modal').modal('hide');
-    /*Form token set up*/
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('input[name="_token"]').val()
-        }});
-    order_id = $('.delete_orders_modal_submit').val();
-    /* Delete order form id object*/
-    $form = $('.delete_order_form');
-    /*Delete order form data*/
-    $data = $form.serialize();
-    /*Delete order url*/
-    url = baseurl + '/order/' + order_id + '-delete';
-    var posting = $.post(url, {formData: $data});
-    posting.done(function (data) {
-        $("#pwdr").val('');
-        if (data['message'] == 'success') {
-            $("#order_row_" + order_id).remove();
-            $('#flash_message').html("Order Deleted Successfully");
-            $('#flash_message').removeClass('alert-danger');
-            $('#flash_message').addClass('alert-success');
-            $('#flash_message').fadeIn();
-            $('#flash_message').fadeOut(5000);
-        } else {
-            $('#flash_message').html("Delete Opration Failed");
-            $('#flash_message').removeClass('alert-success');
-            $('#flash_message').addClass('alert-danger');
-            $('#flash_message').fadeIn();
-            $('#flash_message').fadeOut(5000);
-        }
-    }, 'json'); //done 
-
-});
+//$('.delete_orders_modal_submit').click(function () {
+//
+//    $('#delete_orders_modal').modal('hide');
+//    /*Form token set up*/
+//    $.ajaxSetup({
+//        headers: {
+//            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+//        }});
+//    order_id = $('.delete_orders_modal_submit').val();
+//    /* Delete order form id object*/
+//    $form = $('.delete_order_form');
+//    /*Delete order form data*/
+//    $data = $form.serialize();
+//    /*Delete order url*/
+//    url = baseurl + '/order/' + order_id + '-delete';
+//    var posting = $.post(url, {formData: $data});
+//    posting.done(function (data) {
+//        $("#pwdr").val('');
+//        if (data['message'] == 'success') {
+//            $("#order_row_" + order_id).remove();
+//            $('#flash_message').html("Order Deleted Successfully");
+//            $('#flash_message').removeClass('alert-danger');
+//            $('#flash_message').addClass('alert-success');
+//            $('#flash_message').fadeIn();
+//            $('#flash_message').fadeOut(5000);
+//        } else {
+//            $('#flash_message').html("Delete Opration Failed");
+//            $('#flash_message').removeClass('alert-success');
+//            $('#flash_message').addClass('alert-danger');
+//            $('#flash_message').fadeIn();
+//            $('#flash_message').fadeOut(5000);
+//        }
+//    }, 'json'); //done 
+//
+//});
 /*
  * cancel order form set orderId to order_id in form
  * @param {type} order_id
@@ -1053,7 +1053,7 @@ function delete_delivery_order(deliver_order_id) {
 }
 
 function delete_order_row(order_id) {
-    $("#delete_order_row").attr('action', baseurl + '/delivery_order/' + order_id + '-delete');
+    $("#delete_order_row").attr('action', baseurl + '/order/' + order_id + '-delete');
     $('#user_id').val(order_id);
 }
 
