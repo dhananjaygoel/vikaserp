@@ -544,28 +544,28 @@ class HomeController extends Controller {
             if ($customer->phone_number1 != Input::get('mobile'))
                 return json_encode(array('result' => false, 'message' => 'Username does not match'));
         }
-        if (Input::has('customer_name') && !empty(trim(Input::get('customer_name'))))
+        if (Input::has('customer_name') && Input::get('customer_name')!="")
             $customer->owner_name = Input::get('customer_name');
-        if (Input::has('contact_person') && !empty(trim(Input::get('contact_person'))))
+        if (Input::has('contact_person') && Input::get('contact_person')!="")
             $customer->contact_person = Input::get('contact_person');
         $customer->address1 = (Input::has('address1') && Input::get('address1')) ? Input::get('address1') : '';
-        if (Input::has('mobile') && !empty(trim(Input::get('mobile'))))
+        if (Input::has('mobile') && Input::get('mobile')!="")
             $customer->phone_number1 = Input::get('mobile');
-        if (Input::has('password') && !empty(trim(Input::get('password'))))
+        if (Input::has('password') && Input::get('password')!="")
             $customer->password = Hash::make(Input::get('password'));
         $customer->customer_status = 'pending';
-        $customer->company_name = (Input::has('company_name') && !empty(trim(Input::get('company_name')))) ? Input::get('company_name') : '';
-        $customer->address2 = (Input::has('address2') && !empty(trim(Input::get('address2')))) ? Input::get('address2') : '';
-        $customer->city = (Input::has('city') && !empty(trim(Input::get('city')))) ? Input::get('city') : '';
-        $customer->state = (Input::has('state') && !empty(trim(Input::get('state')))) ? Input::get('state') : '';
-        $customer->zip = (Input::has('zip') && !empty(trim(Input::get('zip')))) ? Input::get('zip') : '';
-        $customer->email = (Input::has('email') && !empty(trim(Input::get('email')))) ? Input::get('email') : '';
-        $customer->tally_name = (Input::has('tally_name') && !empty(trim(Input::get('tally_name')))) ? Input::get('tally_name') : '';
-        $customer->phone_number2 = (Input::has('phone_number2') && !empty(trim(Input::get('phone_number2')))) ? Input::get('phone_number2') : '';
-        $customer->username = (Input::has('username') && !empty(trim(Input::get('username')))) ? Input::get('username') : '';
-        $customer->credit_period = (Input::has('credit_period') && !empty(trim(Input::get('credit_period')))) ? Input::get('credit_period') : 0;
-        $customer->relationship_manager = (Input::has('relationship_manager') && !empty(trim(Input::get('delivery_location_id')))) ? Input::get('relationship_manager') : '';
-        $customer->delivery_location_id = (Input::has('delivery_location_id') && !empty(trim(Input::get('delivery_location_id')))) ? Input::get('delivery_location_id') : '';
+        $customer->company_name = (Input::has('company_name') && Input::get('company_name')!="") ? Input::get('company_name') : '';
+        $customer->address2 = (Input::has('address2') && Input::get('address2')!="") ? Input::get('address2') : '';
+        $customer->city = (Input::has('city') && Input::get('city')!="") ? Input::get('city') : '';
+        $customer->state = (Input::has('state') && Input::get('state')!="") ? Input::get('state') : '';
+        $customer->zip = (Input::has('zip') && Input::get('zip')!="") ? Input::get('zip') : '';
+        $customer->email = (Input::has('email') && Input::get('email')!="") ? Input::get('email') : '';
+        $customer->tally_name = (Input::has('tally_name') && Input::get('tally_name')!="") ? Input::get('tally_name') : '';
+        $customer->phone_number2 = (Input::has('phone_number2') && Input::get('phone_number2')!="") ? Input::get('phone_number2') : '';
+        $customer->username = (Input::has('username') && Input::get('username')!="") ? Input::get('username') : '';
+        $customer->credit_period = (Input::has('credit_period') && Input::get('credit_period')!="") ? Input::get('credit_period') : 0;
+        $customer->relationship_manager = (Input::has('relationship_manager') && Input::get('delivery_location_id')!="") ? Input::get('relationship_manager') : '';
+        $customer->delivery_location_id = (Input::has('delivery_location_id') && Input::get('delivery_location_id')!="") ? Input::get('delivery_location_id') : '';
         if ($customer->save())
             return json_encode(array('result' => true, 'customer_id' => $customer->id, 'message' => 'Customer details updated successfully'));
         else
