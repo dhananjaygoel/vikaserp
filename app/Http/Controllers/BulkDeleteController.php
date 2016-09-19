@@ -166,10 +166,6 @@ class BulkDeleteController extends Controller {
                  * Delete selected orders.
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
-                    echo "<pre>";
-                    print_r($delete_seletected_module);
-                    echo "</pre>";
-                    exit;
                     foreach ($delete_seletected_module as $delete_module) {
                         Order::find($delete_module)->delete();
                     }
