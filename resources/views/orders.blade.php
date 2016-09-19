@@ -155,8 +155,9 @@
                                         <td>
                                             <span class="{{($order->flaged==true)?'filled_star flags':'empty_star flags'}}" data-orderid="{{$order->id}}" ></span>
                                         </td>
-                                         <?php exit ;?>
                                         <td>{{$k++}}</td>
+                                        
+                                         <?php exit ;?>
                                         <td>{{($order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}</td>
                                         <td>{{$order['customer']['phone_number1']}}</td>
                                         @if($order->delivery_location_id !=0)
