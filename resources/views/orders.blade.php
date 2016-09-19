@@ -157,8 +157,9 @@
                                         </td>
                                         <td>{{$k++}}</td>
                                         
-                                         <?php exit ;?>
+                                        
                                         <td>{{($order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}</td>
+                                         <?php exit ;?>
                                         <td>{{$order['customer']['phone_number1']}}</td>
                                         @if($order->delivery_location_id !=0)
                                         <td class="text">{{$order['delivery_location']['area_name']}}</td>
