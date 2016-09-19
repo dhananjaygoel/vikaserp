@@ -60,14 +60,14 @@
                             ?>
                         </div>
                         <div class="col-md-2 pull-right">
-<!--                            <select class="form-control" id="user_filter3" name="party_filter" onchange="this.form.submit();">
+                            <select class="form-control" id="user_filter3" name="party_filter" onchange="this.form.submit();">
                                 <option value="" selected="">--Select Party--</option>
                                 @foreach($customers as $customer)
                                 @if($customer->customer_status == 'permanent')
                                 <option <?php if (Input::get('party_filter') == $customer->id) echo 'selected=""'; ?> value="{{$customer->id}}">{{$customer->tally_name}}</option>
                                 @endif
                                 @endforeach
-                            </select>-->
+                            </select>
                         </div>
                         <div class="col-md-2 pull-right">                            
                             <select class="form-control" id="user_filter3" name="fulfilled_filter" onchange="this.form.submit();">
@@ -129,7 +129,7 @@
                                 $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
                                 ?>
                                 @foreach($allorders as $order)
-<!--                                @if(isset($order->order_status) && $order->order_status == 'pending')
+                                @if(isset($order->order_status) && $order->order_status == 'pending')
                                 @if($k==1)
                                 <thead>
                                     <tr>
@@ -148,6 +148,7 @@
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
+                                <?php exit ;?>
                                 <tbody>
                                     @endif
                                     <tr id="order_row_{{$order->id}}">
@@ -203,7 +204,7 @@
                                             @endif
                                         </td>
                                     </tr>
-                                    @endif-->
+                                    @endif
                                     @if(isset($order->order_status) && $order->order_status == 'completed')
                                     @if($k==1)
                                 <thead>
