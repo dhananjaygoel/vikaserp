@@ -662,10 +662,6 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
            
            
         }
-        
-        
-        
-        alert(status_form);
         if (status_form == 1) {
             $('html, body').animate({
                 scrollTop: $('.breadcrumb').offset().top
