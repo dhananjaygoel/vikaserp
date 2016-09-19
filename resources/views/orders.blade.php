@@ -129,7 +129,7 @@
                                 $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
                                 ?>
                                 @foreach($allorders as $order)
-                                @if(isset($order->order_status) && $order->order_status == 'pending')
+<!--                                @if(isset($order->order_status) && $order->order_status == 'pending')
                                 @if($k==1)
                                 <thead>
                                     <tr>
@@ -151,7 +151,7 @@
                                 <tbody>
                                     @endif
                                     <tr id="order_row_{{$order->id}}">
-<!--                                        <td>
+                                        <td>
                                             <span class="{{($order->flaged==true)?'filled_star flags':'empty_star flags'}}" data-orderid="{{$order->id}}" ></span>
                                         </td>
                                         <td>{{$k++}}</td>
@@ -163,16 +163,16 @@
                                         <td class="text">{{$order['other_location']}}</td>
                                         @endif
                                         <td>{{ round($order->total_quantity, 2) }}</td>
-                                        <td>{{ round($order->pending_quantity, 2) }}</td>                                        -->
-<!--                                        <td class="text-center">
+                                        <td>{{ round($order->pending_quantity, 2) }}</td>                                        
+                                        <td class="text-center">
                                             <a href="{{url('create_delivery_order/'.$order->id)}}" class="table-link" title="Create Delivery order">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-book fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                        </td>-->
-<!--                                        <td class="text-center">
+                                        </td>
+                                        <td class="text-center">
                                             <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -201,9 +201,9 @@
                                                 </span>
                                             </a>
                                             @endif
-                                        </td>-->
+                                        </td>
                                     </tr>
-                                    @endif
+                                    @endif-->
                                     @if(isset($order->order_status) && $order->order_status == 'completed')
                                     @if($k==1)
                                 <thead>
