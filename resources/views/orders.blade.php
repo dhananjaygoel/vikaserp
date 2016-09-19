@@ -126,7 +126,8 @@
                         <div class="table-responsive tablepending">
                             <table id="table-example" class="table table-hover">
                                 <?php
-                                $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
+//                                $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
+                                $k = 1;
                                 ?>
                                 @foreach($allorders as $order)
 <!--                                @if(isset($order->order_status) && $order->order_status == 'pending')
