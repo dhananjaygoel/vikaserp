@@ -257,6 +257,44 @@ class HomeController extends Controller {
         $order_details = Order::find($id);
         return json_encode($order_details->order_status);
     }
+    
+     /**
+     * App track order for customer app
+     */
+    public function trackOrderStatus() {
+        $input_data = Input::all();
+        if(isset($input_data['order_id'])){
+            $order_info = (json_decode($input_data['order_id']));
+            if(isset($order_info[0])){
+              $order_id=$order_info[0]->order_id;  
+            }                
+            else
+                $order_id=0;
+        }
+        else{
+            return json_encode(array('result' => false, 'track_order_status' => false, 'message' => 'Order not found'));
+        }
+        
+        
+        if(isset($input_data['customer_id'])){
+            $customer_info = (json_decode($input_data['customer_id']));
+            if(isset($customer_info[0]))
+                $customer_id=$customer_info[0]->customer_id;
+            else
+                $customer_id =0;
+        }
+        $order_status_responase=array();
+        if(isset($order_id) && $order_id> 0 && isset($customer_id) && $customer_id >0){
+            $order_status_responase['order_details'] = Order::where('id','=',$order_id)->where('customer_id','=',$customer_id)->get();
+            $order_status_responase['delivery_order_details'] = DeliveryOrder::where('order_id','=',$order_id)->where('customer_id','=',$customer_id)->get();
+            $order_status_responase['delivery_challan_details'] = DeliveryChallan::where('order_id','=',$order_id)->where('customer_id','=',$customer_id)->get();
+        }
+        else{
+            return json_encode(array('result' => false, 'track_order_status' => false, 'message' => 'Order not found'));
+        }
+        
+        return json_encode($order_status_responase);
+    }
 
     /**
      * App track inquiry

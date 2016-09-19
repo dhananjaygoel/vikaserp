@@ -49,6 +49,7 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
         'appsync_customerorder',
         'appsync_customerinquiry',
         'app_customer_status',
+        'app_track_order_status',
     ];
 
     /**
