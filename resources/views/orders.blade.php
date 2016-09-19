@@ -150,7 +150,7 @@
                                 </thead>
                                 <tbody>
                                     @endif
-                                    <tr id="order_row_{{$order->id}}">
+<!--                                    <tr id="order_row_{{$order->id}}">
                                         <td>
                                             <span class="{{($order->flaged==true)?'filled_star flags':'empty_star flags'}}" data-orderid="{{$order->id}}" ></span>
                                         </td>
@@ -202,7 +202,7 @@
                                             </a>
                                             @endif
                                         </td>
-                                    </tr>
+                                    </tr>-->
                                     @endif
                                     @if(isset($order->order_status) && $order->order_status == 'completed')
                                     @if($k==1)
