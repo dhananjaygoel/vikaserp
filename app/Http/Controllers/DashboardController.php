@@ -110,11 +110,26 @@ class DashboardController extends Controller {
         $kg_qty = 0;
         $product_info = ProductSubCategory::find($product_category_id);
         if ($unit_id == 1) {
-            $kg_qty = $product_info->quantity;
+            if(isset($product_info->quantity)){
+                 $kg_qty = $product_info->quantity;
+            }else{
+                $kg_qty = 0;
+            }
+           
         } elseif ($unit_id == 2) {
-            $kg_qty = $kg_qty + ($product_qty * $product_info->weight);
+            if(isset($product_info->weight)){
+                $weight = $product_info->weight;
+            }else{
+                 $weight =0;
+            }
+            $kg_qty = $kg_qty + ($product_qty * $weight);
         } elseif ($unit_id == 3) {
-            $kg_qty = $kg_qty + (($product_qty / $product_info->standard_length ) * $product_info->weight);
+            if(isset($product_info->standard_length)){
+                $std_length = $product_info->standard_length;
+            }else{
+                $std_length =  0;
+            }
+            $kg_qty = $kg_qty + (($product_qty /  $std_length ) * $weight);
         }
         return $kg_qty;
     }
