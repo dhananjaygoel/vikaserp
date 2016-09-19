@@ -91,8 +91,13 @@
                         if ($value1->unit_id == 1) {
                             $order_quantity = $order_quantity + $value1->quantity;
                         }
-                        if ($value1->unit_id == 2) {
-                            $order_quantity = $order_quantity + ($value1->quantity * $value1['order_product_details']->weight);
+                         if ($value1->unit_id == 2) {
+                            if(isset($value1['order_product_details']->weight)){
+                            $order_quantity = $order_quantity + ($value1->quantity * $value1['order_product_details']->weight);                            
+                            }
+                            else{
+                                $order_quantity = $order_quantity + ($value1->quantity); 
+                            }
                         }
                         if ($value1->unit_id == 3) {
                             $order_quantity = $order_quantity + (($value1->quantity / $value1['order_product_details']->standard_length ) * $value1['order_product_details']->weight);
