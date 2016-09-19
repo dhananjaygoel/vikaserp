@@ -130,17 +130,17 @@
                                                 @endif
                                                 @endforeach
                                                 @else
-                                                {{$challan["delivery_order"]->order_source}}
+                                                {{isset($challan["delivery_order"]->order_source) ? $challan["delivery_order"]->order_source:''}}
                                                 @endif
                                             </td>
                                             <td>
-                                                @if($challan->order_id > 0)
-                                                {{$challan->order_details->createdby['first_name']." ".$challan->order_details->createdby['last_name']}}
+                                                @if(isset($challan->order_id) && $challan->order_id > 0)
+                                                {{(isset($challan->order_details->createdby['first_name'])&&isset($challan->order_details->createdby['last_name']))?$challan->order_details->createdby['first_name']." ".$challan->order_details->createdby['last_name']:''}}
                                                 @else
                                                 {{$challan->delivery_order->user['first_name']." ".$challan->delivery_order->user['last_name']}}
                                                 @endif
                                             </td>
-                                            <td>{{$challan->loaded_by}}</td>
+                                            <td>{{isset($challan->loaded_by)?$challan->loaded_by:''}}</td>
                                             <td>{{$challan->labours}}</td>
                                             <td>
                                                 <?php
@@ -156,7 +156,12 @@
                                                         $total_qunatity +=(($products->quantity / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
                                                     }
                                                 }
-                                                echo round($challan['delivery_challan_products']->sum('actual_quantity'), 2);
+                                                if(isset($challan['delivery_challan_products'])){
+                                                  echo round($challan['delivery_challan_products']->sum('actual_quantity'), 2);  
+                                                }else{
+                                                    echo round(0,2);
+                                                }
+                                                
                                                 ?>
                                             </td>
                                             <td >{{round($challan->grand_price, 2)}}</td>
