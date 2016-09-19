@@ -145,28 +145,28 @@
                                             <td>
                                                 <?php
                                                 $total_qunatity = 0;
-                                                foreach ($challan["delivery_challan_products"] as $products) {
-                                                    if ($products['unit']->id == 1) {
-                                                        $total_qunatity += $products->quantity;
-                                                    }
-                                                    if ($products['unit']->id == 2) {
-                                                        $total_qunatity +=($products->quantity * $products['order_product_details']->weight);
-                                                    }
-                                                    if ($products['unit']->id == 3) {
-                                                        $total_qunatity +=(($products->quantity / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
-                                                    }
-                                                }
+//                                                foreach ($challan["delivery_challan_products"] as $products) {
+//                                                    if ($products['unit']->id == 1) {
+//                                                        $total_qunatity += $products->quantity;
+//                                                    }
+//                                                    if ($products['unit']->id == 2) {
+//                                                        $total_qunatity +=($products->quantity * $products['order_product_details']->weight);
+//                                                    }
+//                                                    if ($products['unit']->id == 3) {
+//                                                        $total_qunatity +=(($products->quantity / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
+//                                                    }
+//                                                }
 //                                                if(isset($challan['delivery_challan_products']) && isset($products['actual_quantity'])){
 //                                                   
 //                                                  echo round($challan['delivery_challan_products']->sum('actual_quantity'), 2);  
 //                                                }else{
 //                                                    echo round(0,2);
 //                                                }
-                                                echo round(0,2);
+                                                echo round($challan['delivery_challan_products']->sum('actual_quantity'), 2);  
                                                 
                                                 ?>
                                             </td>
-                                            <td >{{round($challan->grand_price, 2)}}</td>
+                                            <td >{{round(isset($challan->grand_price)?$challan->grand_price:0, 2)}}</td>
                                             <td >{{$challan->bill_number}}</td>
                                             <td>
                                                 @if((strlen(trim($challan->remarks))) > 50)
