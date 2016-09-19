@@ -509,10 +509,16 @@ $(document).ready(function () {
             $("#add_order_location").focus();
         } else {
             $('#add_order_location').removeClass('error_validation');
-            if ($("#add_order_location").val() == "other")
+            if ($("#add_order_location").val() == "other"){
                 $("#other_location_input_wrapper").show();
-            else
+                $(".tabindex4").attr("tabindex", 5);
+                $(".tabindex5").attr("tabindex", 4);
+            }
+            else{
                 $("#other_location_input_wrapper").hide();
+                 $(".tabindex4").attr("tabindex", 4);
+                 $(".tabindex5").attr("tabindex", 0);
+            }
         }
     });
     //flash message should be hide 

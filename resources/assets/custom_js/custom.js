@@ -640,7 +640,32 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
             }
             status_form = 1;
         }
-//        alert(status_form);
+        
+        if ($("#add_order_location").val() == "other"){
+             
+            if($("#location_difference").val() == ""){
+                $('#location_difference').addClass('error_validation');
+                  status_form = 1;  
+            }else{
+                $('#location_difference').removeClass('error_validation');
+                  status_form = 0; 
+                 
+            }
+            
+            if($("#location").val() == ""){
+                $('#location').addClass('error_validation');
+                  status_form = 1;  
+            }else{
+                $('#location').removeClass('error_validation');
+                  status_form = 0; 
+            }
+           
+           
+        }
+        
+        
+        
+        alert(status_form);
         if (status_form == 1) {
             $('html, body').animate({
                 scrollTop: $('.breadcrumb').offset().top
@@ -2041,6 +2066,34 @@ $('body').delegate("#vat_percentage", "blur", function () {
         $(this).css('border-color', 'red');
         $(this).css('box-shadow', 'none');
         $(this).addClass('error_validation');
+    } else {
+        $(this).css('border-color', '#e7ebee');
+        $(this).removeClass('error_validation');
+    }
+});
+
+$('body').delegate("#location", "blur", function () {
+    var location = $(this).val()
+    //var cur_product_id = $(this).attr("data-productid");
+    //var related_cur_product_id = $('#add_product_id_' + cur_product_id).val();
+    if (location == "") {
+        $(this).focus();
+        $(this).css('border-color', 'red');
+        $(this).css('box-shadow', 'none');
+        $(this).addClass('error_validation');
+      
+    } else {
+        $(this).css('border-color', '#e7ebee');
+        $(this).removeClass('error_validation');
+    }
+});
+
+$('body').delegate("#location_difference", "blur", function () {
+    var location_difference = $(this).val()
+    //var cur_product_id = $(this).attr("data-productid");
+    //var related_cur_product_id = $('#add_product_id_' + cur_product_id).val();
+    if (location_difference == "") {
+       
     } else {
         $(this).css('border-color', '#e7ebee');
         $(this).removeClass('error_validation');

@@ -96,7 +96,7 @@
                                 <div class="row">
                                     <div class="form-group col-md-4">
                                         <label for="location">Location </label>
-                                        <input id="location" class="form-control" placeholder="Location " name="other_location_name" value="" type="text">
+                                        <input id="location" class="form-control focus_on_enter tabindex5" placeholder="Location " name="other_location_name" value="" type="text">
                                     </div>
                                 </div>
                             </div>
