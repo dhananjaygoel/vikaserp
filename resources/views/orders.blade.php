@@ -167,7 +167,7 @@
                                         @elseif($order->delivery_location_id ==0 )
                                         <td class="text">{{$order['other_location']}}</td>
                                         @endif
-                                        <?php exit ;?>
+                                        
                                         <td>{{ round($order->total_quantity, 2) }}</td>
                                         <td>{{ round($order->pending_quantity, 2) }}</td>                                        
                                         <td class="text-center">
@@ -178,6 +178,7 @@
                                                 </span>
                                             </a>
                                         </td>
+                                        <?php exit ;?>
                                         <td class="text-center">
                                             <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
