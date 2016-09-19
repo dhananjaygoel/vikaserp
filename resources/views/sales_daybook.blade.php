@@ -156,12 +156,13 @@
                                                         $total_qunatity +=(($products->quantity / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
                                                     }
                                                 }
-                                                if(isset($challan['delivery_challan_products']) && isset($products['actual_quantity'])){
-                                                   
-                                                  echo round($challan['delivery_challan_products']->sum('actual_quantity'), 2);  
-                                                }else{
-                                                    echo round(0,2);
-                                                }
+//                                                if(isset($challan['delivery_challan_products']) && isset($products['actual_quantity'])){
+//                                                   
+//                                                  echo round($challan['delivery_challan_products']->sum('actual_quantity'), 2);  
+//                                                }else{
+//                                                    echo round(0,2);
+//                                                }
+                                                echo round(0,2);
                                                 
                                                 ?>
                                             </td>
