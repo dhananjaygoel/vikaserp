@@ -154,9 +154,9 @@
 <!--                                        <td>
                                             <span class="{{($order->flaged==true)?'filled_star flags':'empty_star flags'}}" data-orderid="{{$order->id}}" ></span>
                                         </td>-->
-                                        <td>{{$k++}}</td>
+                                        <!--<td>{{$k++}}</td>-->
 <!--                                        <td>{{($order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}</td>-->
-                                        <td>{{$order['customer']['phone_number1']}}</td>
+                                        <!--<td>{{$order['customer']['phone_number1']}}</td>-->
                                         @if($order->delivery_location_id !=0)
                                         <td class="text">{{$order['delivery_location']['area_name']}}</td>
                                         @elseif($order->delivery_location_id ==0 )
