@@ -128,12 +128,6 @@
                                 <?php
                                 $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
                                 ?>
-                                <?php 
-                                echo "<pre>";
-                                print_r($allorders->toArray());
-                                echo "</pre>";
-                                exit;
-                                ?>
                                 @foreach($allorders as $order)
                                 @if(isset($order->order_status) && $order->order_status == 'pending')
                                 @if($k==1)
@@ -157,12 +151,12 @@
                                 <tbody>
                                     @endif
                                     <tr id="order_row_{{$order->id}}">
-<!--                                        <td>
+                                        <td>
                                             <span class="{{($order->flaged==true)?'filled_star flags':'empty_star flags'}}" data-orderid="{{$order->id}}" ></span>
-                                        </td>-->
-                                        <!--<td>{{$k++}}</td>-->
-<!--                                        <td>{{($order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}</td>-->
-                                        <!--<td>{{$order['customer']['phone_number1']}}</td>-->
+                                        </td>
+                                        <td>{{$k++}}</td>
+                                        <td>{{($order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}</td>
+                                        <td>{{$order['customer']['phone_number1']}}</td>
                                         @if($order->delivery_location_id !=0)
                                         <td class="text">{{$order['delivery_location']['area_name']}}</td>
                                         @elseif($order->delivery_location_id ==0 )
