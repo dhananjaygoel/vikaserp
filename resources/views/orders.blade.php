@@ -148,13 +148,14 @@
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
-                                <?php exit ;?>
+                               
                                 <tbody>
                                     @endif
                                     <tr id="order_row_{{$order->id}}">
                                         <td>
                                             <span class="{{($order->flaged==true)?'filled_star flags':'empty_star flags'}}" data-orderid="{{$order->id}}" ></span>
                                         </td>
+                                         <?php exit ;?>
                                         <td>{{$k++}}</td>
                                         <td>{{($order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}</td>
                                         <td>{{$order['customer']['phone_number1']}}</td>
