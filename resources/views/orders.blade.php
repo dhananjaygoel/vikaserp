@@ -178,7 +178,7 @@
                                                 </span>
                                             </a>
                                         </td>
-                                        <?php exit ;?>
+                                        
                                         <td class="text-center">
                                             <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -209,6 +209,7 @@
                                             </a>
                                             @endif
                                         </td>
+                                        <?php exit ;?>
                                     </tr>
                                     @endif
                                     @if(isset($order->order_status) && $order->order_status == 'completed')
