@@ -52,6 +52,7 @@
             $next_cnt = count($value['delivery_challan_products']);
             $current_number = 1;
             $grand_vat_amt = 0;
+            $type_of_bill = 0;
             foreach ($value['delivery_challan_products'] as $key1 => $value1) {
                 $order_quantity = 0;
                 $value_cnt = "";
@@ -70,7 +71,12 @@
                     @else
                     <td>{{$value_cnt}}</td>
                     @endif
-                    <td>{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
+                    <td>
+                        {{ isset($value->serial_number) ? $value->serial_number :'' }}
+                        <?php 
+                         $type_of_bill = substr($value->serial_number, -1);
+                        ?>
+                    </td>
                     <td>Sales</td>
                     <td>{{ date("m-d-Y", strtotime($value->updated_at)) }}</td>
                     <td></td>
@@ -186,14 +192,19 @@
 
                     <td>{{ ($next_cnt == $current_number) ? (isset($value->freight) ? $value->freight : '') : '' }}</td>
 
-                    <td>{{ ($next_cnt == $current_number) ? (($value->delivery_order->vat_percentage !== "") ? "VAT" : "All inclusive") : '' }}</td>
+                    <td>{{ ($next_cnt == $current_number) ? (($type_of_bill == "P") ? "VAT" : "All inclusive") : '' }}</td>
+<!--                    <td><?php 
+                    echo  substr($value->serial_number, -1);
+                    ?></td>-->
 
 
                     @if($next_cnt == $current_number)
                     <td>
                         <?php
-                        if ($value->delivery_order->vat_percentage !== "")
-                            echo $value->delivery_order->vat_percentage . "%";
+                        if ($value->vat_percentage !== "" & $type_of_bill == "P")
+                            echo $value->vat_percentage . "%";
+                        else
+                            echo "0%"
                         ?>
                     </td>
                     @else
@@ -203,8 +214,10 @@
                     @if($next_cnt == $current_number)
                     <td>
                         <?php
-                        if ($value->delivery_order->vat_percentage !== "")
+                        if ($type_of_bill == "P")
                             echo number_format($grand_vat_amt, 2, '.', '');
+                        else
+                            echo "0";
                         ?>
                     </td>
                     @else
