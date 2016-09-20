@@ -133,7 +133,7 @@
                                 echo "<pre>";
                                 print_r($order->toArray());
                                 echo "</pre>";
-                                exit;
+                               
                                 ?>
                                 @if(isset($order->order_status) && $order->order_status == 'pending1')
                                 @if($k==1)
