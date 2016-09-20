@@ -159,14 +159,14 @@
                                             @if(isset($order["customer"]))
                                             {{($order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}
                                             @else
-                                            {{"Unkown User"}}
+                                            {{"Anonymous User"}}
                                             @endif
                                         </td>
                                         <td>
                                             @if(isset($order["customer"]))
                                             {{$order['customer']['phone_number1']}}
                                             @else
-                                            {{"Unkown User"}}
+                                            {{"Anonymous User"}}
                                             @endif
                                         </td>
                                         @if($order->delivery_location_id !=0)
