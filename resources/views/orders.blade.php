@@ -135,7 +135,7 @@
                                 echo "</pre>";
                                
                                 ?>
-                                @if(isset($order->order_status) && $order->order_status == 'pending1')
+                                @if(isset($order->order_status) && $order->order_status == 'pending' && isset($order['customer']))
                                 @if($k==1)
                                 <thead>
                                     <tr>
