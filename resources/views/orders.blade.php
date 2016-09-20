@@ -131,7 +131,7 @@
                                 @foreach($allorders as $order)
                                 <?php 
                                 echo "<pre>";
-                                print_r($order['customer']->toArray());
+                                print_r($order->id);
                                 echo "</pre>";
                                
                                 ?>
