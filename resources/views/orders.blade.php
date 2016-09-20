@@ -128,13 +128,7 @@
                                 <?php
                                 $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
                                 ?>
-                                @foreach($allorders as $order)
-                                <?php 
-                                echo "<pre>";
-                                print_r($order->id);
-                                echo "</pre>";
-                               
-                                ?>
+                                @foreach($allorders as $order)                              
                                 @if(isset($order->order_status) && $order->order_status == 'pending')
                                 @if($k==1)
                                 <thead>
