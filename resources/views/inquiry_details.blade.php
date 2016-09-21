@@ -54,9 +54,15 @@
                                         <tr>
                                             <td><span>Phone Number: </span>{{isset($inquiry['customer']->phone_number1) ? $inquiry['customer']->phone_number1:""}}</td>
                                         </tr>
+                                        @if(isset($inquiry['customer']->credit_period))
                                         @if($inquiry['customer']->credit_period !='' || $inquiry['customer']->credit_period > 0)
                                         <tr>
                                             <td><span>Credit Period(Days): </span>{{$inquiry['customer']->credit_period}}</td>
+                                        </tr>
+                                        @endif
+                                        @else
+                                            <tr>
+                                            <td><span>Credit Period(Days): </span>{{"0"}}</td>
                                         </tr>
                                         @endif
                                         @if($inquiry->delivery_location_id != 0)
