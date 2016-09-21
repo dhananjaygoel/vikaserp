@@ -285,9 +285,12 @@ class HomeController extends Controller {
         }
         $order_status_responase=array();
         if(isset($order_id) && $order_id> 0 && isset($customer_id) && $customer_id >0){
-            $order_status_responase['order_details'] = Order::where('id','=',$order_id)->where('customer_id','=',$customer_id)->get();
-            $order_status_responase['delivery_order_details'] = DeliveryOrder::where('order_id','=',$order_id)->where('customer_id','=',$customer_id)->get();
-            $order_status_responase['delivery_challan_details'] = DeliveryChallan::where('order_id','=',$order_id)->where('customer_id','=',$customer_id)->get();
+            
+            $order_status_responase['order_details'] = Order::with('all_order_products')->where('id','=',$order_id)->where('customer_id','=',$customer_id)->get();
+           
+            $order_status_responase['delivery_order_details'] = DeliveryOrder::with('delivery_product')->where('order_id','=',$order_id)->where('customer_id','=',$customer_id)->get();
+           
+            $order_status_responase['delivery_challan_details'] = DeliveryChallan::with('delivery_challan_products')->where('order_id','=',$order_id)->where('customer_id','=',$customer_id)->get();
         }
         else{
             return json_encode(array('result' => false, 'track_order_status' => false, 'message' => 'Order not found'));
