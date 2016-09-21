@@ -52,7 +52,7 @@
                                             <td><span>Contact Person: </span>{{isset($inquiry['customer']->contact_person) ? $inquiry['customer']->contact_person: ""}}</td>
                                         </tr>
                                         <tr>
-                                            <td><span>Phone Number: </span>{{isset(inquiry['customer']->phone_number1) ? $inquiry['customer']->phone_number1:""}}</td>
+                                            <td><span>Phone Number: </span>{{isset($inquiry['customer']->phone_number1) ? $inquiry['customer']->phone_number1:""}}</td>
                                         </tr>
                                         @if($inquiry['customer']->credit_period !='' || $inquiry['customer']->credit_period > 0)
                                         <tr>
