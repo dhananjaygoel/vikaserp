@@ -73,11 +73,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="mobile_number">Mobile Number<span class="mandatory">*</span> </label>
-                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{ old('mobile_number') }}" type="tel">
+                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number " onkeypress="return validation_only_digit();" maxlength="10" name="mobile_number" value="{{ old('mobile_number') }}" type="tel">
                                 </div>
                                 <div class="form-group">
                                     <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
-                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ old('mobile_number') }}" type="tel">
+                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" onkeypress="return validation_only_digit();" value="{{ old('mobile_number') }}" type="tel">
                                 </div>
                             </div>
                             <div class="row col-md-12">
@@ -96,7 +96,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="location">Location Difference</label>
-                                        <input id="location_difference" class="form-control focus_on_enter tabindex3" placeholder="Location Difference " name="location_difference" value="" type="tel" tabindex="3"/>
+                                        <input id="location_difference" class="form-control focus_on_enter tabindex3" placeholder="Location Difference " onkeypress=" return validation_digit();" name="location_difference" value="" type="tel" tabindex="3"/>
                                     </div>
                                 </div>
                             </div>
@@ -142,7 +142,7 @@
                                                     </td>
                                                     <td class="col-md-1">
                                                         <div class="form-group">
-                                                            <input id="quantity_{{$i}}" class="form-control each_product_qty" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" onblur="calculate_grand_total();" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
+                                                            <input id="quantity_{{$i}}" class="form-control each_product_qty" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" onblur="calculate_grand_total();" onkeypress=" return validation_digit();" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-2">
@@ -157,7 +157,7 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group ">
                                                             <!-- form for save product value-->
-                                                            <input type="tel" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value = "{{(isset($session_data['product'][$i]['price'])) ?$session_data['product'][$i]['price'] : ''}}">
+                                                            <input type="tel" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" onkeypress=" return validation_digit();" value = "{{(isset($session_data['product'][$i]['price'])) ?$session_data['product'][$i]['price'] : ''}}">
                                                             <!--
                                                         <div class="form-group col-md-6 difference_form">
                                                             <input class="btn btn-primary" type="button" class="form-control" value="save" >
@@ -213,7 +213,7 @@
                                         <tbody>
                                             <tr class="cdtable">
                                                 <td class="cdfirst">VAT Percentage:</td>
-                                                <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="" type="text" onblur="calculate_grand_total();"></td>
+                                                <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="" onkeypress=" return validation_digit();" type="text" onblur="calculate_grand_total();"></td>
                                             </tr>
                                         </tbody>
                                     </table>

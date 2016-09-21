@@ -153,7 +153,7 @@
                                                 <div class="form-group">
                                                     <?php $present_shipping = 0; ?>
                                                     <?php $present_shipping = $product->quantity; ?>
-                                                    <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$product->pending_quantity}}" type="tel" onblur="change_quantity({{$key}});">
+                                                    <input id="present_shipping_{{$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{$product->pending_quantity}}" onkeypress=" return validation_digit();" type="tel" onblur="change_quantity({{$key}});">
 
                                                 </div>
                                             </td>

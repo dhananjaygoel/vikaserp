@@ -68,7 +68,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
-                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ $delivery_data['customer']->credit_period }}" type="tel">
+                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" onkeypress=" return validation_digit();" value="{{ $delivery_data['customer']->credit_period }}" type="tel">
                             </div>
                         </div>
                         @elseif($delivery_data['customer']->customer_status == "permanent")
@@ -126,7 +126,7 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="location">Location Difference</label>
-                                    <input id="location_difference" class="form-control focus_on_enter" placeholder="Location Difference " name="location_difference" value="{{ $delivery_data->location_difference}}" type="tel" tabindex="3" >
+                                    <input id="location_difference" class="form-control focus_on_enter" placeholder="Location Difference " onkeypress=" return validation_digit();" name="location_difference" value="{{ $delivery_data->location_difference}}" type="tel" tabindex="3" >
                                 </div>
                             </div>
                         </div>
@@ -176,7 +176,7 @@
                                                             </td>
                                                             <td class="col-md-1">
                                                                 <div class="form-group">
-                                                                    <input onblur="change_quantity2({{$i}});" id="quantity_{{$i}}" class="form-control focus_on_enter" placeholder="Qnty" name="product[{{$i}}][quantity]" value="{{$session_data['product'][$i]['quantity']}}" type="text" tabindex="4" >
+                                                                    <input onblur="change_quantity2({{$i}});" id="quantity_{{$i}}" class="form-control focus_on_enter" placeholder="Qnty" name="product[{{$i}}][quantity]" onkeypress=" return validation_digit();" value="{{$session_data['product'][$i]['quantity']}}" type="text" tabindex="4" >
                                                                 </div>
                                                             </td>
                                                             <td class="col-md-1">
@@ -249,7 +249,7 @@
                                                             </td>
                                                             <td class="col-md-1">
                                                                 <div class="form-group">
-                                                                    <input onblur="change_quantity2({{$i}});" id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" value="{{$session_data['product'][$i]['quantity']}}" type="text" onblur="create_delivery_order_PS({{$i}});" type="text" tabindex="4">
+                                                                    <input onblur="change_quantity2({{$i}});" id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" onkeypress=" return validation_digit();" value="{{$session_data['product'][$i]['quantity']}}" type="text" onblur="create_delivery_order_PS({{$i}});" type="text" tabindex="4">
                                                                     <!--{{$session_data['product'][$i]['quantity']}}-->
                                                                 </div>
                                                             </td>
@@ -338,7 +338,7 @@
                                                 </td>
                                                 <td class="col-md-1">
                                                     <div class="form-group">
-                                                        <input onblur="change_quantity2({{$key}});" id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" type="text" type="text" @if($counter==0) tabindex="4" class="ui-dform-text" @endif>                                                    <?php $counter++; ?>
+                                                        <input onblur="change_quantity2({{$key}});" id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" onkeypress=" return validation_digit();" type="text" type="text" @if($counter==0) tabindex="4" class="ui-dform-text" @endif>                                                    <?php $counter++; ?>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-1">
@@ -352,7 +352,7 @@
                                                 </td>
                                                 <td class="col-md-1">
                                                     <!--                                                            form for save product value-->
-                                                    <input type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" placeholder="Present Shipping" onblur="change_quantity2({{$key}});">
+                                                    <input type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" onkeypress=" return validation_digit();" placeholder="Present Shipping" onblur="change_quantity2({{$key}});">
                                                     <!--
                                                     <div class="form-group col-md-6 difference_form">
                                                         <input class="btn btn-primary" type="button" class="form-control" value="save" >
@@ -361,7 +361,7 @@
                                                 </td>
                                                 <td class="col-md-2">
                                                     <!--                                                            form for save product value-->
-                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price">
+                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" onkeypress=" return validation_digit();" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price">
                                                     <!--
                                                     <div class="form-group col-md-6 difference_form">
                                                         <input class="btn btn-primary" type="button" class="form-control" value="save" >
@@ -434,7 +434,7 @@
                                     <tbody>
                                         <tr class="cdtable">
                                             <td class="cdfirst" style="font-weight: 500;">VAT Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ isset($delivery_data->vat_percentage)? $delivery_data->vat_percentage:0}}" type="text" onblur="grand_total_delivery_order({{($key!='')?$key:1}});"></td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ isset($delivery_data->vat_percentage)? $delivery_data->vat_percentage:0}}" onkeypress=" return validation_digit();" type="text" onblur="grand_total_delivery_order({{($key!='')?$key:1}});"></td>
                                         </tr>
                                     </tbody>
                                 </table>

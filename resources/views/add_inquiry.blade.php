@@ -63,11 +63,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
-                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number" name="mobile_number" value="{{ old('mobile_number') }}" type="tel">
+                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number" name="mobile_number" value="{{ old('mobile_number') }}" type="tel" onkeypress=" return validation_only_digit();" maxlength="10">
                                 </div>
                                 <div class="form-group">
                                     <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
-                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ old('credit_period') }}" type="tel">
+                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ old('credit_period') }}" type="tel" onkeypress=" return validation_only_digit();">
                                 </div>
                             </div>
                             <div class="row col-md-12">
@@ -87,7 +87,7 @@
                                     <div class="col-md-4">
                                         <label for="location">Location Difference: </label>
                                         <!--<input id="location_difference" class="form-control" placeholder="Location Difference " name="location_difference" value="" type="tel">-->
-                                        <input id="location_difference" class="form-control focus_on_enter tabindex3" placeholder="Location Difference " name="location_difference" value="" type="tel" tabindex="3" >
+                                        <input id="location_difference" class="form-control focus_on_enter tabindex3" placeholder="Location Difference " name="location_difference" value="" type="tel" tabindex="3" onkeypress=" return validation_digit();">
                                     </div>
                                 </div>
                             </div>
@@ -130,7 +130,7 @@
                                                     </td>
                                                     <td class="col-md-1">
                                                         <div class="form-group">
-                                                            <input id="quantity_{{$i}}" class="form-control each_product_qty" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
+                                                            <input id="quantity_{{$i}}" class="form-control each_product_qty" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" onkeypress=" return validation_digit();" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-2">
@@ -144,7 +144,7 @@
                                                     </td>
                                                     <td class="col-md-2">
                                                         <div class="form-group">
-                                                            <input type="tel" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
+                                                            <input type="tel" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" onkeypress=" return validation_digit();"  value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-1">
@@ -209,7 +209,7 @@
                                             <tr class="cdtable">
                                                 <td class="cdfirst">VAT Percentage:</td>
                                                 <td>
-                                                    <input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="" type="text">
+                                                    <input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="" type="text" onkeypress=" return validation_digit();">
                                                     
                                                 </td>
                                             </tr>

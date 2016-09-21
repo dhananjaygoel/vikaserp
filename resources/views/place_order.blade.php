@@ -86,11 +86,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="mobile_number">Phone Number </label>
-                                <input id="mobile_number" class="form-control" placeholder="Phone Number " name="mobile_number" value="{{$inquiry['customer']->phone_number1}}" type="tel">
+                                <input id="mobile_number" class="form-control" placeholder="Phone Number " onkeypress="return validation_only_digit();" maxlength="10" name="mobile_number" value="{{$inquiry['customer']->phone_number1}}" type="tel">
                             </div>
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)</label>
-                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$inquiry['customer']->credit_period}}" type="tel">
+                                <input id="period" class="form-control" placeholder="Credit Period" onkeypress="return validation_only_digit();" name="credit_period" value="{{$inquiry['customer']->credit_period}}" type="tel">
                             </div>
                         </div>
                         @elseif($inquiry['customer']->customer_status == "permanent")
@@ -125,11 +125,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="mobile_number">Mobile Number </label>
-                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" type="tel">
+                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" onkeypress="return validation_only_digit();" maxlength="10" type="tel">
                             </div>
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)</label>
-                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="tel">
+                                <input id="period" class="form-control" placeholder="Credit Period" onkeypress="return validation_only_digit();" name="credit_period" value="" type="tel">
                             </div>
                         </div>
                         @endif
@@ -156,7 +156,7 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel">
+                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" onkeypress=" return validation_digit();" value="{{$product->quantity}}" type="tel">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -170,7 +170,7 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
+                                                    <input type="text" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" onkeypress=" return validation_digit();" name="product[{{$key}}][price]">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -236,7 +236,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="location">Location Difference</label>
-                                    <input id="location_difference" class="form-control" placeholder="Location Difference " name="location_difference" value="{{$inquiry->location_difference}}" type="tel">
+                                    <input id="location_difference" class="form-control" placeholder="Location Difference " onkeypress=" return validation_digit();" name="location_difference" value="{{$inquiry->location_difference}}" type="tel">
                                 </div>
                             </div>
                         </div>
@@ -268,7 +268,7 @@
                                     <tbody>
                                         <tr class="cdtable">
                                             <td class="cdfirst">VAT Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$inquiry->vat_percentage}}" type="text"></td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" onkeypress=" return validation_digit();" value="{{$inquiry->vat_percentage}}" type="text"></td>
                                         </tr>
                                     </tbody>
                                 </table>

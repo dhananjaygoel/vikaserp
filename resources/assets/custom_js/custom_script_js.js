@@ -698,6 +698,10 @@ function create_delivery_order_PS(row_id) {
 function validation_digit() {
     return ((event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46);
 }
+
+function validation_only_digit() {
+    return ((event.charCode >= 48 && event.charCode <= 57));
+}
 $(document).ready(function () {
     $('body').on('keypress','.focus_on_enter',function(e){
      

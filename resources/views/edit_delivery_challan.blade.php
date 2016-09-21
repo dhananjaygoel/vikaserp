@@ -70,15 +70,15 @@
                                                 <div class="form-group">
                                                     <input id="quantity_{{$key}}" type="hidden" value="{{ $product->quantity}}" name="product[{{$key}}][quantity]">
                                                     @if($product->present_shipping >=0)
-                                                    <input id="actual_quantity_{{$key}}" class="form-control delivery_challan_qty" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{ $product->quantity}}" type="tel" onblur="fetch_price();">
+                                                    <input id="actual_quantity_{{$key}}" class="form-control delivery_challan_qty" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{ $product->quantity}}" type="tel" onkeypress=" return validation_digit();" onblur="fetch_price();">
                                                     @elseif($product->present_shipping <0)
-                                                    <input id="actual_quantity_{{$key}}" class="form-control delivery_challan_qty" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{ $product->quantity}}" type="tel" onblur="fetch_price();">
+                                                    <input id="actual_quantity_{{$key}}" class="form-control delivery_challan_qty" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{ $product->quantity}}" type="tel" onkeypress=" return validation_digit();" onblur="fetch_price();">
                                                     @endif
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input id="actual_pieces_{{$key}}" class="form-control" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{$product->actual_pieces}}" type="tel" onblur="fetch_price();">
+                                                    <input id="actual_pieces_{{$key}}" class="form-control" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{$product->actual_pieces}}" type="tel" onkeypress=" return validation_digit();" onblur="fetch_price();">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -88,7 +88,7 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="fetch_price({{$key}})">
+                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onkeypress=" return validation_digit();" onblur="fetch_price({{$key}})">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -126,22 +126,22 @@
                                             <td class="col-md-1">
                                                 <div class="form-group">
                                                     <input id="quantity_{{$key}}" type="hidden" value="" name="product[{{$key}}][quantity]">
-                                                    <input id="actual_quantity_{{$key}}" class="form-control delivery_challan_qty" placeholder="Qnty" name="product[{{$key}}][actual_quantity]" value="" type="tel" onblur="fetch_price();">
+                                                    <input id="actual_quantity_{{$key}}" class="form-control delivery_challan_qty" placeholder="Qnty" name="product[{{$key}}][actual_quantity]" value="" type="tel" onkeypress=" return validation_digit();" onblur="fetch_price();">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input id="actual_pieces_{{$key}}" class="form-control" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="" type="tel" onblur="fetch_price();">
+                                                    <input id="actual_pieces_{{$key}}" class="form-control" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="" type="tel" onkeypress=" return validation_digit();" onblur="fetch_price();">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input id="present_shipping_{{$key}}" class="form-control text-center" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="" type="input" >
+                                                    <input id="present_shipping_{{$key}}" class="form-control text-center" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="" type="input" onkeypress=" return validation_digit();">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="" name="product[{{$key}}][price]" placeholder="Price" onblur="fetch_price({{$key}})">
+                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="" name="product[{{$key}}][price]" placeholder="Price" onkeypress=" return validation_digit();" onblur="fetch_price({{$key}})">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -216,7 +216,7 @@
                             <div class="form-group">
                                 <div class="col-md-12 no_left_margin">
                                     <label for="loading"><b class="challan">Loading</b></label>
-                                    <input id="loading_charge" class="form-control" placeholder="Loading Charges" name="loading" value="{{$allorder->loading_charge}}" type="tel" onblur="grand_total_challan();">
+                                    <input id="loading_charge" class="form-control" placeholder="Loading Charges" name="loading" onkeypress=" return validation_digit();"value="{{$allorder->loading_charge}}" type="tel" onblur="grand_total_challan();">
                                 </div>
                                 
 <!--                                <div class="col-md-4">
@@ -239,7 +239,7 @@
                             <div class="form-group">
                                 <div class="col-md-12 no_left_margin">
                                     <label for="Discount"><b class="challan">Discount</b></label>
-                                    <input id="discount_value" class="form-control" placeholder="Discount " name="discount" value="{{$allorder->discount}}" type="tel" onblur="grand_total_challan(); " onkeypress=" return validation_digit();">
+                                    <input id="discount_value" class="form-control" placeholder="Discount " name="discount" value="{{$allorder->discount}}" type="tel" onblur="grand_total_challan(); " onkeypress=" return validation_digit();" onkeypress=" return validation_digit();">
                                 </div>
 <!--                                <div class="col-md-4">
                                     <label for="Loading_discount_percentage"><b class="challan">Discount Vat Percentage</b></label>
@@ -258,7 +258,7 @@
                             <div class="form-group">
                                 <div class="col-md-12 no_left_margin">
                                     <label for="Freight"><b class="challan">Freight</b></label>
-                                    <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="{{$allorder->freight}}" type="text" onblur="grand_total_challan();">
+                                    <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="{{$allorder->freight}}" type="text" onkeypress=" return validation_digit();" onblur="grand_total_challan();">
                                 </div>
 <!--                                <div class="col-md-4">
                                     <label for="Loading_frieght_percentage"><b class="challan">Freight Vat Percentage</b></label>
@@ -280,7 +280,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="roundoff"><b class="challan">Round Off</b></label>
-                                <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="{{($allorder->round_off != '')?$allorder->round_off:''}}" type="tel" onblur="grand_total_challan();">
+                                <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" onkeypress=" return validation_digit();" value="{{($allorder->round_off != '')?$allorder->round_off:''}}" type="tel" onblur="grand_total_challan();">
                             </div>
                             @if($allorder->vat_percentage==0 || $allorder->vat_percentage=='')
                             <!--                            <div class="form-group">

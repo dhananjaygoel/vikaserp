@@ -110,12 +110,12 @@
                             </div>
                             <div class="form-group">
                                 <label for="mobile_number">Phone Number </label>
-                                <input id="mobile_number" class="form-control" placeholder="Phone Number " name="mobile_number" value="{{$order['customer']->phone_number1}}" type="tel">
+                                <input id="mobile_number" class="form-control" placeholder="Phone Number " onkeypress="return validation_only_digit();" maxlength="10" name="mobile_number" value="{{$order['customer']->phone_number1}}" type="tel">
                             </div>
 
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)</label>
-                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$order['customer']->credit_period}}" type="tel">
+                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" onkeypress="return validation_only_digit();" value="{{$order['customer']->credit_period}}" type="tel">
                             </div>
                         </div>
                         @elseif($order['customer']->customer_status == "permanent")
@@ -149,12 +149,12 @@
                             </div>
                             <div class="form-group">
                                 <label for="mobile_number">Mobile Number </label>
-                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" type="tel">
+                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " onkeypress="return validation_only_digit();" maxlength="10" name="mobile_number" value="" type="tel">
                             </div>
 
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)</label>
-                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="" type="tel">
+                                <input id="period" onkeypress="return validation_only_digit();"  class="form-control" placeholder="Credit Period" name="credit_period" value="" type="tel">
                             </div>
                         </div>
                         @endif
@@ -172,7 +172,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="location">Location Difference</label>
-                                    <input id="location_difference" class="form-control focus_on_enter" placeholder="Location Difference" name="location_difference" value="{{$order->location_difference}}" type="tel" tabindex="3">
+                                    <input id="location_difference" class="form-control focus_on_enter" placeholder="Location Difference" onkeypress=" return validation_digit();" name="location_difference" value="{{$order->location_difference}}" type="tel" tabindex="3">
                                 </div>
                             </div>
                         </div>
@@ -227,7 +227,7 @@
                                                         </td>
                                                         <td class="col-md-1">
                                                             <div class="form-group">
-                                                                <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
+                                                                <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" onkeypress=" return validation_digit();" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
                                                             </div>
                                                         </td>
                                                         <td class="col-md-2">
@@ -241,7 +241,7 @@
                                                         </td>
                                                         <td class="col-md-2">
                                                             <div class="form-group">
-                                                                <input type="text" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
+                                                                <input type="text" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" onkeypress=" return validation_digit();" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
                                                             </div>
                                                         </td>
                                                         <td class="col-md-1">
@@ -274,7 +274,7 @@
                                                 </td>
                                                 <td class="col-md-1">
                                                     <div class="form-group">
-                                                        <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel">
+                                                        <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" onkeypress=" return validation_digit();" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel">
                                                     </div>
                                                 </td>
                                                 <td class="col-md-2">
@@ -292,7 +292,7 @@
                                                 </td>
                                                 <td class="col-md-2">
                                                     <div class="form-group">
-                                                        <input type="tel" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
+                                                        <input type="tel" class="form-control" value="{{$product->price}}" onkeypress=" return validation_digit();" id="product_price_{{$key}}" name="product[{{$key}}][price]">
                                                     </div>
                                                 </td>
                                                 <td class="col-md-2">
@@ -345,7 +345,7 @@
                                     <tbody>
                                         <tr class="cdtable">
                                             <td class="cdfirst">VAT Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->vat_percentage}}" type="tel"></td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" onkeypress=" return validation_digit();" name="vat_percentage" value="{{$order->vat_percentage}}" type="tel"></td>
                                         </tr>
                                     </tbody>
                                 </table>
