@@ -345,7 +345,7 @@
                                     <tbody>
                                         <tr class="cdtable">
                                             <td class="cdfirst">VAT Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" onkeypress=" return validation_digit();" name="vat_percentage" value="{{$order->vat_percentage}}" type="tel"></td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" onkeypress=" return onlyPercentage(event);" name="vat_percentage" value="{{$order->vat_percentage}}" type="tel"></td>
                                         </tr>
                                     </tbody>
                                 </table>

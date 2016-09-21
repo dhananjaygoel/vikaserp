@@ -695,12 +695,15 @@ function create_delivery_order_PS(row_id) {
  * Comment: validation for digit, skip alphabets and symbols except dot
  * 
  */
-function validation_digit() {
-    return ((event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46);
+function validation_digit(evt) {
+    var event = (evt.which) ? evt.which : event.keyCode
+    return ((event >= 48 && event <= 57) || event == 46 || event == 8 || event == 46
+ || event == 37 || event == 39);
 }
 
-function validation_only_digit() {
-    return ((event.charCode >= 48 && event.charCode <= 57));
+function validation_only_digit(evt) {
+    var event = (evt.which) ? evt.which : event.keyCode
+    return ((event >= 48 && event <= 57));
 }
 $(document).ready(function () {
     $('body').on('keypress','.focus_on_enter',function(e){
@@ -725,3 +728,66 @@ $(document).ready(function () {
         }
     });
 });
+
+function numbersOnly(Sender,evt,isFloat,isNegative) {
+            if(Sender.readOnly) return false;       
+
+            var key   = evt.which || !window.event ? evt.which : event.keyCode;
+            var value = Sender.value;
+
+            if((key == 46 || key == 44) && isFloat){                
+                var selected = document.selection ? document.selection.createRange().text : "";
+                if(selected.length == 0 && value.indexOf(".") == -1 && value.length > 0) Sender.value += ".";
+                return false;
+            }
+            if(key == 45) { // minus sign '-'
+                if(!isNegative) return false;
+                if(value.indexOf('-')== -1) Sender.value = '-'+value; else Sender.value = value.substring(1);
+                if(Sender.onchange != null) {
+                    if(Sender.fireEvent){
+                        Sender.fireEvent('onchange');
+                    } else {
+                        var e = document.createEvent('HTMLEvents');
+                            e.initEvent('change', false, false);
+                        Sender.dispatchEvent(e);
+                    }
+                }
+
+                var begin = Sender.value.indexOf('-') > -1 ? 1 : 0;
+                if(Sender.setSelectionRange){
+                    Sender.setSelectionRange(begin,Sender.value.length);
+                } else {
+                    var range = Sender.createTextRange();
+                    range.moveStart('character',begin);
+                    range.select();                 
+                }
+
+                return false;
+            }
+            if(key > 31 && (key < 48 || key > 57)) return false;
+        }
+        
+    function onlyPercentage(evt) {
+            var val1;
+            evt = evt || window.event;
+            sVal = (evt.srcElement || evt.target).value;
+            var evt   = evt.which || !window.event ? evt.which : event.keyCode;
+            
+            if (!(evt == 46 || evt == 8 ||(evt >= 48 && evt <= 57)))
+                return false;
+            var parts = sVal.split('.');            
+            if (parts.length > 2)
+                return false;
+            if (evt == 46)
+                return (parts.length == 1);
+            if (evt != 46) {
+                var currVal = String.fromCharCode(evt);
+                val1 = parseFloat(String(parts[0]) + String(currVal));
+                if(parts.length==2)
+                    val1 = parseFloat(String(parts[0])+ "." + String(currVal));
+            }
+ 
+            if (val1 > 99.99)
+                return false;
+            if (parts.length == 2 && parts[1].length >= 2) return false;
+        }    

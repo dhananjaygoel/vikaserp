@@ -434,7 +434,7 @@
                                     <tbody>
                                         <tr class="cdtable">
                                             <td class="cdfirst" style="font-weight: 500;">VAT Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ isset($delivery_data->vat_percentage)? $delivery_data->vat_percentage:0}}" onkeypress=" return validation_digit();" type="text" onblur="grand_total_delivery_order({{($key!='')?$key:1}});"></td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ isset($delivery_data->vat_percentage)? $delivery_data->vat_percentage:0}}" onkeypress=" return onlyPercentage(event);" type="text" onblur="grand_total_delivery_order({{($key!='')?$key:1}});"></td>
                                         </tr>
                                     </tbody>
                                 </table>
