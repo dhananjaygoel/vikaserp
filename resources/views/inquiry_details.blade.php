@@ -41,7 +41,7 @@
                                     <tbody>
                                         <tr>
                                             <td><span>Tally Name:</span>
-                                                @if($inquiry['customer']->owner_name != "" && $inquiry['customer']->tally_name != "")
+                                                @if(isset($inquiry['customer']->owner_name) && isset($inquiry['customer']->tally_name) && $inquiry['customer']->owner_name != "" && $inquiry['customer']->tally_name != "")
                                                 {{$inquiry['customer']->owner_name}}{{'-'.$inquiry['customer']->tally_name}}
                                                 @else
                                                 {{isset($inquiry['customer']->owner_name)? $inquiry['customer']->owner_name:""}}
