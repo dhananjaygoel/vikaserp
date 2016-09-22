@@ -119,12 +119,12 @@
                                             @if(auth()->user()->role_id == 0)
                                             <td class="{{ ($inventory->minimal < $total) ?'minimum_reach': '' }}">
                                                 <div class="form-group">                                                    
-                                                    <input type="text" name="minimal_{{$inventory->id}}" id="minimal_{{$inventory->id}}" value="{{$inventory->minimal}}" maxlength="9" class="form-control no_alphabets" />
+                                                    <input type="text" name="minimal_{{$inventory->id}}" id="minimal_{{$inventory->id}}" value="{{$inventory->minimal}}" maxlength="9" class="form-control no_alphabets" onkeypress=" return numbersOnly(this,event,true,true);"/>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-group">                                                    
-                                                    <input type="text" name="{{$inventory->id}}" placeholder="Stock in(kg)" value="{{$inventory->opening_qty}}" maxlength="9" class="form-control no_alphabets txt_open_stock" />
+                                                    <input type="text" name="{{$inventory->id}}" placeholder="Stock in(kg)" value="{{$inventory->opening_qty}}" maxlength="9" class="form-control no_alphabets txt_open_stock" onkeypress=" return numbersOnly(this,event,true,true);"/>
                                                 </div>
                                             </td>
                                             @else
@@ -157,12 +157,12 @@
                                             @if(auth()->user()->role_id == 0)
                                             <td class="{{ ($inventory->minimal < $total) ?'minimum_reach': '' }}">
                                                 <div class="form-group">                                                    
-                                                    <input type="text" name="minimal_{{$inventory->id}}" id="minimal_{{$inventory->id}}" value="{{$inventory->minimal}}" maxlength="9" class="form-control no_alphabets" />
+                                                    <input type="text" name="minimal_{{$inventory->id}}" id="minimal_{{$inventory->id}}" value="{{$inventory->minimal}}" maxlength="9" class="form-control no_alphabets" onkeypress=" return numbersOnly(this,event,true,true);"/>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-group">                                                    
-                                                    <input type="text" name="{{$inventory->id}}" placeholder="Stock in(kg)" value="{{$inventory->opening_qty}}" maxlength="9" class="form-control no_alphabets txt_open_stock" />
+                                                    <input type="text" name="{{$inventory->id}}" placeholder="Stock in(kg)" value="{{$inventory->opening_qty}}" maxlength="9" class="form-control no_alphabets txt_open_stock" onkeypress=" return numbersOnly(this,event,true,true);"/>
                                                 </div>
                                             </td>
                                             @else

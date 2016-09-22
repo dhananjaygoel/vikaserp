@@ -70,7 +70,7 @@
                         </div>
                         <div class="form-group">
                             <label for="area_name">Difference</label>
-                            <input id="difference" class="form-control" placeholder="Difference" name="difference" value="{{$delivery_location->difference}}" type="tel">
+                            <input id="difference" class="form-control" placeholder="Difference" name="difference" value="{{$delivery_location->difference}}" type="tel" onkeypress=" return numbersOnly(this,event,true,true);">
                         </div>
                         <hr>
                         <div>

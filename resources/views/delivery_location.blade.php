@@ -66,7 +66,7 @@
                                             <form method="post" action="{{URL::action('DeliveryLocationController@delivery_difference')}}">
                                                 <div class="row product-price">
                                                     <div class="form-group col-md-6">
-                                                        <input type="tel" class="form-control" required="" name="difference" onkeypress="return isNumberFormat(event)" value="{{ $location_data->difference }}">
+                                                        <input type="tel" class="form-control" required="" name="difference" onkeypress=" return numbersOnly(this,event,true,true);" value="{{ $location_data->difference }}">
                                                         <input type="hidden" class="form-control" name="id" value="{{ $location_data->id}}">
                                                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                                                     </div>
