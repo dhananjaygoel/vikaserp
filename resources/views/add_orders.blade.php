@@ -86,11 +86,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
-                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number" onkeypress="return validation_only_digit();" maxlength="10" name="mobile_number" value="{{old('mobile_number')}}" type="tel">
+                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10" name="mobile_number" value="{{old('mobile_number')}}" type="tel">
                                 </div>
                                 <div class="form-group">
                                     <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
-                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" onkeypress="return validation_only_digit();" value="{{old('credit_period')}}" type="tel">
+                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" onkeypress=" return numbersOnly(this,event,false,false);" value="{{old('credit_period')}}" type="tel">
                                 </div>
                             </div>
                             <div class="row col-md-12">

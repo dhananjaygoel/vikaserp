@@ -110,12 +110,12 @@
                             </div>
                             <div class="form-group">
                                 <label for="mobile_number">Phone Number </label>
-                                <input id="mobile_number" class="form-control" placeholder="Phone Number " onkeypress="return validation_only_digit();" maxlength="10" name="mobile_number" value="{{$order['customer']->phone_number1}}" type="tel">
+                                <input id="mobile_number" class="form-control" placeholder="Phone Number " onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10" name="mobile_number" value="{{$order['customer']->phone_number1}}" type="tel">
                             </div>
 
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)</label>
-                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" onkeypress="return validation_only_digit();" value="{{$order['customer']->credit_period}}" type="tel">
+                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" onkeypress=" return numbersOnly(this,event,false,false);" value="{{$order['customer']->credit_period}}" type="tel">
                             </div>
                         </div>
                         @elseif($order['customer']->customer_status == "permanent")
@@ -149,12 +149,12 @@
                             </div>
                             <div class="form-group">
                                 <label for="mobile_number">Mobile Number </label>
-                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " onkeypress="return validation_only_digit();" maxlength="10" name="mobile_number" value="" type="tel">
+                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10" name="mobile_number" value="" type="tel">
                             </div>
 
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)</label>
-                                <input id="period" onkeypress="return validation_only_digit();"  class="form-control" placeholder="Credit Period" name="credit_period" value="" type="tel">
+                                <input id="period" onkeypress=" return numbersOnly(this,event,false,false);"  class="form-control" placeholder="Credit Period" name="credit_period" value="" type="tel">
                             </div>
                         </div>
                         @endif

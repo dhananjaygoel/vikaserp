@@ -110,7 +110,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
-                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" type="tel"  maxlength="10" onkeypress="return validation_only_digit();">
+                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" type="tel"  maxlength="10" onkeypress=" return numbersOnly(this,event,false,false);">
                             </div>
 
                             <div class="form-group">
