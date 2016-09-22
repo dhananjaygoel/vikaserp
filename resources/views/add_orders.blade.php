@@ -109,7 +109,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="location">Location Difference</label>
-                                        <input id="location_difference" class="form-control focus_on_enter tabindex3" placeholder="Location Difference " name="location_difference" value="" type="tel" onkeypress=" return validation_digit();" tabindex="3" >
+                                        <input id="location_difference" class="form-control focus_on_enter tabindex3" placeholder="Location Difference " name="location_difference" value="" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" tabindex="3" >
                                     </div>
                                 </div>
                             </div>
@@ -154,7 +154,7 @@
                                                     </td>
                                                     <td class="col-md-1">
                                                         <div class = "form-group">
-                                                            <input id = "quantity_{{$i}}" class = "form-control each_product_qty" data-productid="{{$i}}" placeholder = "Qnty" name = "product[{{$i}}][quantity]" type = "tel" onkeypress=" return validation_digit();" value = "<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
+                                                            <input id = "quantity_{{$i}}" class = "form-control each_product_qty" data-productid="{{$i}}" placeholder = "Qnty" name = "product[{{$i}}][quantity]" type = "tel" onkeypress=" return numbersOnly(this,event,true,true);" value = "<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-2">
@@ -168,7 +168,7 @@
                                                     </td>
                                                     <td class="col-md-2">
                                                         <div class = "form-group">
-                                                            <input type = "tel" class = "form-control" id = "product_price_{{$i}}" name = "product[{{$i}}][price]" placeholder = "Price" onkeypress=" return validation_digit();" value = "{{(isset($session_data['product'][$i]['price'])) ?$session_data['product'][$i]['price'] : ''}}">
+                                                            <input type = "tel" class = "form-control" id = "product_price_{{$i}}" name = "product[{{$i}}][price]" placeholder = "Price" onkeypress=" return numbersOnly(this,event,true,true);" value = "{{(isset($session_data['product'][$i]['price'])) ?$session_data['product'][$i]['price'] : ''}}">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-1">

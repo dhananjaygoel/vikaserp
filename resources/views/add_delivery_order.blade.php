@@ -96,7 +96,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="location">Location Difference</label>
-                                        <input id="location_difference" class="form-control focus_on_enter tabindex3" placeholder="Location Difference " onkeypress=" return validation_digit();" name="location_difference" value="" type="tel" tabindex="3"/>
+                                        <input id="location_difference" class="form-control focus_on_enter tabindex3" placeholder="Location Difference " onkeypress=" return numbersOnly(this,event,true,true);" name="location_difference" value="" type="tel" tabindex="3"/>
                                     </div>
                                 </div>
                             </div>
@@ -142,7 +142,7 @@
                                                     </td>
                                                     <td class="col-md-1">
                                                         <div class="form-group">
-                                                            <input id="quantity_{{$i}}" class="form-control each_product_qty" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" onblur="calculate_grand_total();" onkeypress=" return validation_digit();" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
+                                                            <input id="quantity_{{$i}}" class="form-control each_product_qty" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" onblur="calculate_grand_total();" onkeypress=" return numbersOnly(this,event,true,false);" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-2">

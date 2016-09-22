@@ -81,15 +81,15 @@
                                                 <div class="form-group">
                                                     <input id="quantity_{{$key}}" type="hidden" value="{{ $product->present_shipping}}" name="product[{{$key}}][quantity]">
                                                     @if($product->present_shipping >=0)
-                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="" type="text" onkeypress=" return validation_digit();" onblur="fetch_price();">
+                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="" type="text" onkeypress=" return numbersOnly(this,event,true,true);" onblur="fetch_price();">
                                                     @elseif($product->present_shipping <0)
-                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="" type="text" onkeypress=" return validation_digit();" onblur="fetch_price();">
+                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="" type="text" onkeypress=" return numbersOnly(this,event,true,true);" onblur="fetch_price();">
                                                     @endif
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input id="actual_pieces_{{$key}}" class="form-control calc_actual_quantity" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="" type="tel" onkeypress=" return validation_digit();" onblur="fetch_price();">
+                                                    <input id="actual_pieces_{{$key}}" class="form-control calc_actual_quantity" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" onblur="fetch_price();">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -172,7 +172,7 @@
                         <div class="form-group">
                             <div class="col-md-12 no_left_margin">
                                 <label for="Loading"><b class="challan">Loading</b></label>
-                                <input id="loading_charge" class="form-control" placeholder="Loading Charges" name="loading" value="" type="tel" onkeypress=" return validation_digit();" onblur="grand_total_challan();">
+                                <input id="loading_charge" class="form-control" placeholder="Loading Charges" name="loading" value="" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" onblur="grand_total_challan();">
                             </div>
 <!--                            <div class="col-md-4">
                                 <label for="Loading Vat Percentage"><b class="challan">Loading Vat Percentage</b></label>
@@ -186,7 +186,7 @@
                         <div class="form-group">
                             <div class="col-md-12 no_left_margin">
                                 <label for="Discount"><b class="challan">Discount</b></label>
-                                <input id="discount_value" class="form-control" placeholder="Discount " name="discount" value="" type="tel" onblur="grand_total_challan();" onkeypress=" return validation_digit();">
+                                <input id="discount_value" class="form-control" placeholder="Discount " name="discount" value="" type="tel" onblur="grand_total_challan();" onkeypress=" return numbersOnly(this,event,true,true);">
                             </div>
 <!--                            <div class="col-md-4">
                                 <label for="Loading_discount_percentage"><b class="challan">Discount Vat Percentage</b></label>
@@ -206,7 +206,7 @@
                         <div class="form-group">
                             <div class="col-md-12 no_left_margin">
                                 <label for="Freight"><b class="challan">Freight</b></label>
-                                <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="" type="tel" onkeypress=" return validation_digit();" onblur="grand_total_challan();">
+                                <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" onblur="grand_total_challan();">
                             </div>
                             <!--                            <div class="col-md-4">
                                                             <label for="Loading_frieght_percentage"><b class="challan">Freight Vat Percentage</b></label>
@@ -266,7 +266,7 @@
                         </div>
                         <div class="form-group">
                             <label for="RoundOff"><b class="challan">Round Off</b></label>
-                            <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="" type="tel" onkeypress=" return validation_digit();" onblur="grand_total_challan();">
+                            <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" onblur="grand_total_challan();">
                         </div>
                         <div class="form-group" style="display: none">
                             <label for="Grand_total"><b class="challan">Grand Total : </b>

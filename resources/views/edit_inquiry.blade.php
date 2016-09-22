@@ -143,7 +143,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="location">Location Difference</label>
-                                    <input id="location_difference" class="form-control focus_on_enter" placeholder="Location Difference " name="location_difference" value="{{$inquiry->location_difference}}" type="tel" onkeypress=" return validation_digit();" tabindex="3" >
+                                    <input id="location_difference" class="form-control focus_on_enter" placeholder="Location Difference " name="location_difference" value="{{$inquiry->location_difference}}" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" tabindex="3" >
                                 </div>
                             </div>
                         </div>
@@ -197,7 +197,7 @@
                                                         </td>
                                                         <td class="col-md-1">
                                                             <div class="form-group">
-                                                                <input id="quantity_{{$i}}" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return validation_digit();" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
+                                                                <input id="quantity_{{$i}}" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
                                                             </div>
                                                         </td>
                                                         <td class="col-md-2">
@@ -211,7 +211,7 @@
                                                         </td>
                                                         <td class="col-md-2">
                                                             <div class="form-group">
-                                                                <input type="text" class="form-control" id="product_price_{{$i}}" onkeypress=" return validation_digit();" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
+                                                                <input type="text" class="form-control" id="product_price_{{$i}}" onkeypress=" return numbersOnly(this,event,true,true);" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
                                                             </div>
                                                         </td>
                                                         <td class="col-md-1">
@@ -244,7 +244,7 @@
                                                 </td>
                                                 <td class="col-md-1">
                                                     <div class="form-group">
-                                                        <input id="quantity_{{$key}}" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return validation_digit();" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel">
+                                                        <input id="quantity_{{$key}}" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel">
                                                     </div>
                                                 </td>
                                                 <td class="col-md-2">
@@ -262,7 +262,7 @@
                                                 </td>
                                                 <td class="col-md-2">
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control" value="{{$product->price}}" onkeypress=" return validation_digit();" id="product_price_{{$key}}" name="product[{{$key}}][price]">
+                                                        <input type="text" class="form-control" value="{{$product->price}}" onkeypress=" return numbersOnly(this,event,true,true);" id="product_price_{{$key}}" name="product[{{$key}}][price]">
                                                     </div>
                                                 </td>
                                                 <td class="col-md-2">

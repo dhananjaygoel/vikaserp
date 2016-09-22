@@ -156,7 +156,7 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" onkeypress=" return validation_digit();" value="{{$product->quantity}}" type="tel">
+                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$product->quantity}}" type="tel">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -170,7 +170,7 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" onkeypress=" return validation_digit();" name="product[{{$key}}][price]">
+                                                    <input type="text" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" onkeypress=" return numbersOnly(this,event,true,true);" name="product[{{$key}}][price]">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -236,7 +236,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="location">Location Difference</label>
-                                    <input id="location_difference" class="form-control" placeholder="Location Difference " onkeypress=" return validation_digit();" name="location_difference" value="{{$inquiry->location_difference}}" type="tel">
+                                    <input id="location_difference" class="form-control" placeholder="Location Difference " onkeypress=" return numbersOnly(this,event,true,true);" name="location_difference" value="{{$inquiry->location_difference}}" type="tel">
                                 </div>
                             </div>
                         </div>

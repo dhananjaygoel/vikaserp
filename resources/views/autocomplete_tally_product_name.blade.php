@@ -113,7 +113,7 @@
             '</td>' +
             '<td class="col-md-1">' +
             '<div class="form-group">' +
-            '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return validation_digit();" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
+            '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
             '</div>' +
             '</td>' +
             '<td class="col-md-2">' +
@@ -124,7 +124,7 @@
             '</td>' +
             '<td class="col-md-2">' +
             '<div class="form-group">' +
-            '<input type="tel" class="form-control" placeholder="price" onkeypress=" return validation_digit();" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+            '<input type="tel" class="form-control" placeholder="price" onkeypress=" return numbersOnly(this,event,true,true);" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
             '</div>' +
             '</td>' +
             '<td class="col-md-1">' +
@@ -150,7 +150,7 @@
             '</td>' +
             '<td class="col-md-1">' +
             '<div class="form-group">' +
-            '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return validation_digit();" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
+            '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
             '</div>' +
             '</td>' +
             '<td class="col-md-2">' +
@@ -161,7 +161,7 @@
             '</td>' +
             '<td class="col-md-2">' +
             '<div class="form-group">' +
-            '<input type="tel" class="form-control" placeholder="price" onkeypress=" return validation_digit();" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+            '<input type="tel" class="form-control" placeholder="price" onkeypress=" return numbersOnly(this,event,true,true);" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
             '</div>' +
             '</td>' +
             '<td class="col-md-4">' +
@@ -269,7 +269,7 @@
             '</td>' +
             '<td class="col-md-1">' +
             '<div class="form-group">' +
-            '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return validation_digit();" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
+            '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
             '</div>' +
             '</td>' +
             '<td class="col-md-2">' +
@@ -280,7 +280,7 @@
             '</td>' +
             '<td class="col-md-2">' +
             '<div class="form-group">' +
-            '<input type="tel" class="form-control" placeholder="price" onkeypress=" return validation_digit();" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+            '<input type="tel" class="form-control" placeholder="price" onkeypress=" return numbersOnly(this,event,true,true);" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
             '</div>' +
             '</td>' +
             '<td class="col-md-4">' +
@@ -301,7 +301,7 @@
             '</td>' +
             '<td class="col-md-1">' +
             '<div class="form-group">' +
-            '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return validation_digit();" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
+            '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
             '</div>' +
             '</td>' +
             '<td class="col-md-2">' +
@@ -312,7 +312,7 @@
             '</td>' +
             '<td class="col-md-2">' +
             '<div class="form-group">' +
-            '<input type="tel" class="form-control" placeholder="price" onkeypress=" return validation_digit();" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+            '<input type="tel" class="form-control" placeholder="price" onkeypress=" return numbersOnly(this,event,true,true);" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
             '</div>' +
             '</td>' +
             '<td class="col-md-4">' +
@@ -368,7 +368,7 @@
             '</td>' +
             '<td>' +
             '<div class="form-group" >' +
-            '<input id="quantity_' + current_row_count + '" readonly="" class="form-control each_product_qty" placeholder="" onkeypress=" return validation_digit();" name="product[' + current_row_count + '][quantity]" value="" type="tel">' +
+            '<input id="quantity_' + current_row_count + '" readonly="" class="form-control each_product_qty" placeholder="" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][quantity]" value="" type="tel">' +
             '</div>' +
             '</td>' +
             '<td class="col-md-2">' +
@@ -378,7 +378,7 @@
             '</td>' +
             '<td class="col-md-1">' +
             '<div class="form-group">' +
-            '<input type="tel" class="form-control units_dropdown" placeholder="price" onkeypress=" return validation_digit();" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+            '<input type="tel" class="form-control units_dropdown" placeholder="price" onkeypress=" return numbersOnly(this,event,true,true);" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
             '</div>' +
             '</td>' +
             '<td class="col-md-2">' +
@@ -426,12 +426,12 @@
             '</td>' +
             '<td class="col-md-1">' +
             '<div class="form-group">' +
-            '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Present shipping" onkeypress=" return validation_digit();" name="product[' + current_row_count + '][present_shipping]" value="" type="tel">' +
+            '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Present shipping" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][present_shipping]" value="" type="tel">' +
             '</div>' +
             '</td>' +
             '<td class="col-md-2">' +
             '<div class="form-group">' +
-            '<input type="tel" class="form-control" placeholder="price" onkeypress=" return validation_digit();" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
+            '<input type="tel" class="form-control" placeholder="price" onkeypress=" return numbersOnly(this,event,true,true);" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
             '</div>' +
             '</td><td></td>' +
             '<td class="col-md-4">' +
