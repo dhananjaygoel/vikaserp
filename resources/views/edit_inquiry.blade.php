@@ -115,7 +115,7 @@
 
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
-                                <input id="period" class="form-control" placeholder="Credit Period" onkeypress=" return validation_only_digit();" name="credit_period" value="" type="text">
+                                <input id="period" class="form-control" placeholder="Credit Period" onkeypress=" return numbersOnly(this,event,false,false);" name="credit_period" value="" type="text">
                             </div>
                         </div>
                         @endif
