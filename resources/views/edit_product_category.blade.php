@@ -46,7 +46,7 @@
                 </div>-->
                 <div class="form-group">
                     <label for="price">Price<span class="mandatory">*</span></label>
-                    <input id="price" class="form-control" placeholder="Price" name="price" value="{{ $product_cat[0]['price'] }}" type="tel">
+                    <input id="price" class="form-control" placeholder="Price" name="price" value="{{ $product_cat[0]['price'] }}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                 </div>
                 <hr>
                 <div >

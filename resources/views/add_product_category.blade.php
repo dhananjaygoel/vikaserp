@@ -51,7 +51,7 @@
                             </div>                            
                             <div class="form-group">
                                 <label for="price">Price<span class="mandatory">*</span></label>
-                                <input id="price" class="form-control" placeholder="Price" name="price" value="{{ old('price') }}" type="tel">
+                                <input id="price" class="form-control" placeholder="Price" name="price" value="{{ old('price') }}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                             </div>
                             <div>
                                 <button type="button" class="btn btn-primary" id="sendSMS" data-id='product-id-submit-btn'>Send SMS</button>

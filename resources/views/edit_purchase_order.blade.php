@@ -79,11 +79,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
-                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{$purchase_order['customer']->phone_number1 }}" type="tel">
+                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{$purchase_order['customer']->phone_number1 }}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10">
                             </div>
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
-                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$purchase_order['customer']->credit_period}}" type="tel">
+                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$purchase_order['customer']->credit_period}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);">
                             </div>
                         </div>
                         @elseif($purchase_order['customer']->customer_status =="permanent")
@@ -146,7 +146,7 @@
                                                     </td>
                                                     <td class="col-md-1">
                                                         <div class="form-group">
-                                                            <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
+                                                            <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>" onkeypress=" return numbersOnly(this,event,true,false);">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-2">
@@ -160,7 +160,7 @@
                                                     </td>
                                                     <td class="col-md-2">
                                                         <div class="form-group">
-                                                            <input type="text" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
+                                                            <input type="text" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>" onkeypress=" return numbersOnly(this,event,true,false);">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-4">
@@ -187,7 +187,7 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel">
+                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -205,7 +205,7 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input type="tel" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
+                                                    <input type="tel" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]" onkeypress=" return numbersOnly(this,event,true,false);">
                                                 </div>
                                             </td>
                                             <td class="col-md-4">
@@ -348,7 +348,7 @@
                                 <tbody>
                                     <tr class="cdtable">
                                         <td class="cdfirst">VAT Percentage:</td>
-                                        <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$purchase_order->vat_percentage}}" type="tel"></td>
+                                        <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$purchase_order->vat_percentage}}" type="tel" onkeypress=" return onlyPercentage(event);"></td>
                                     </tr>
                                 </tbody>
                             </table>

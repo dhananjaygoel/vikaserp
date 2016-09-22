@@ -92,7 +92,7 @@
                                                 </td>
 
                                                 <td class="col-md-1">
-                                                    <input type="tel" class="form-control" name="product[{{$key}}][actual_pieces]" value="">
+                                                    <input type="tel" class="form-control" name="product[{{$key}}][actual_pieces]" value="" onkeypress=" return numbersOnly(this,event,true,false);">
 
                                                 </td>
 
@@ -103,9 +103,9 @@
                                                 <td>
                                                     <div class="form-group pshipping">
                                                         @if($product_data->present_shipping != 0)
-                                                        <input id="{{"present_shipping_".$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" onblur="calutate_pending_order(<?php echo $product_data->pending_quantity . ',' . $key; ?>)" value="{{$product_data->present_shipping}}" type="tel">
+                                                        <input id="{{"present_shipping_".$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" onblur="calutate_pending_order(<?php echo $product_data->pending_quantity . ',' . $key; ?>)" value="{{$product_data->present_shipping}}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                                                         @else
-                                                        <input id="{{"present_shipping_".$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" onblur="calutate_pending_order(<?php echo $product_data->pending_quantity . ',' . $key; ?>);" value="" type="tel">
+                                                        <input id="{{"present_shipping_".$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" onblur="calutate_pending_order(<?php echo $product_data->pending_quantity . ',' . $key; ?>);" value="" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                                                         @endif
                                                     </div>
                                                 </td>

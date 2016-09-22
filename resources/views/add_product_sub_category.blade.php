@@ -63,16 +63,16 @@
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="weight">Product Weight<span class="mandatory">*</span></label>
-                                <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="1" type="tel">
+                                <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="1" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                             </div>
                             <div class="clearfix"></div>
                             <div class="form-group">
                                 <label for="difference">Standard Length<span class="mandatory">*</span></label>
-                                <input id="standard_length" class="form-control" placeholder=" Standard Length" name="standard_length" value="{{ old('standard_length') }}" type="tel">
+                                <input id="standard_length" class="form-control" placeholder=" Standard Length" name="standard_length" value="{{ old('standard_length') }}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                             </div>
                             <div class="form-group">
                                 <label for="difference">Difference<span class="mandatory">*</span></label>
-                                <input id="difference" class="form-control" placeholder=" Difference" name="difference" value="{{ old('difference') }}" type="tel">
+                                <input id="difference" class="form-control" placeholder=" Difference" name="difference" value="{{ old('difference') }}" type="tel" onkeypress=" return numbersOnly(this,event,true,true);">
                             </div>
                             <div>
                                 <button type="button" class="btn btn-primary " id="sendSMS" >Send SMS</button>

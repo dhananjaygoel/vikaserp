@@ -75,7 +75,7 @@
                             <td>
                                 <div class="form-group">
                                     <!--<input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="{{$products->present_shipping}}" type="text">-->
-                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][quantity]" value="{{$products->present_shipping}}" type="text" onblur="purchase_challan_calculation();">
+                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][quantity]" value="{{$products->present_shipping}}" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this,event,true,false);">
                                 </div>
                             </td>
                             <td>
@@ -94,7 +94,7 @@
                                 <div class="row ">
                                     <div class="form-group col-md-12">
                                         <!--<input type="text" class="form-control" id="difference" value="{{$products->price}}" placeholder="Rate">-->
-                                        <input type="text" class="form-control" id="product_price_{{$key}}" value="{{$products->price}}" name="product[{{$key}}][price]" placeholder="Rate">
+                                        <input type="text" class="form-control" id="product_price_{{$key}}" value="{{$products->price}}" name="product[{{$key}}][price]" placeholder="Rate" onkeypress=" return numbersOnly(this,event,true,false);">
                                     </div>
                                 </div>
                             </td>
@@ -145,11 +145,11 @@
                     </div>
                     <div class="form-group">
                         <label for="vehicle_name"><b class="challan">Discount</b></label>
-                        <input id="discount" class="form-control" placeholder="Discount" name="discount" value="" type="text" onblur="purchase_challan_calculation();">
+                        <input id="discount" class="form-control" placeholder="Discount" name="discount" value="" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this,event,true,true);">
                     </div>
                     <div class="form-group">
                         <label for="driver_name"><b class="challan">Freight</b><span class="mandatory">*</span></label>
-                        <input id="freight" class="form-control" placeholder="Freight " name="Freight" value="" type="text" onblur="purchase_challan_calculation();">
+                        <input id="freight" class="form-control" placeholder="Freight " name="Freight" value="" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this,event,true,true);">
                     </div>
                     <div class="form-group">
                         <label for="total"><b class="challan">Total :</b> <div id="total_price">{{ $total_price }}</div></label>
@@ -187,7 +187,7 @@
                     </div>
                     <div class="form-group">
                         <label for="labour"><b class="challan">Round Off</b></label>
-                        <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="" type="text" onblur="purchase_challan_calculation();">
+                        <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this,event,true,true);">
                     </div>
 
                     <div class="form-group">

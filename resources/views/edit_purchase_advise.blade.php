@@ -88,7 +88,7 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input type="tel" class="form-control" value="{{$product->actual_pieces}}" name="product[{{$key}}][actual_pieces]">
+                                                    <input type="tel" class="form-control" value="{{$product->actual_pieces}}" name="product[{{$key}}][actual_pieces]" onkeypress=" return numbersOnly(this,event,true,false);">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -99,12 +99,12 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input type="tel" class="form-control" value="{{$product->present_shipping}}" id='present_shipping_{{$key}}' onblur="calutate_pending_order111(<?php echo $product->quantity . ',' . $key; ?>)"  name="product[{{$key}}][present_shipping]">
+                                                    <input type="tel" class="form-control" value="{{$product->present_shipping}}" id='present_shipping_{{$key}}' onblur="calutate_pending_order111(<?php echo $product->quantity . ',' . $key; ?>)"  name="product[{{$key}}][present_shipping]" onkeypress=" return numbersOnly(this,event,true,false);">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input type="tel" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
+                                                    <input type="tel" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]" onkeypress=" return numbersOnly(this,event,true,false);">
                                                 </div>
                                             </td>
                                             <td class="col-md-3">

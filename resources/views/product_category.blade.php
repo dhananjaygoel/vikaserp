@@ -95,7 +95,7 @@
                                                 @if(Auth::user()->role_id == 0)
                                                 <div class="row product-price">
                                                     <div class="form-group col-md-6">
-                                                        <input type="tel" class="form-control" id="price_{{$product->id}}" name="price[{{$product->id}}][price]" value="{{ $product->price }}">
+                                                        <input type="tel" class="form-control" id="price_{{$product->id}}" name="price[{{$product->id}}][price]" value="{{ $product->price }}" onkeypress=" return numbersOnly(this,event,true,false);">
                                                         <input type="hidden" class="form-control" name="id[]" value="{{$product->id}}">
                                                         <input type="hidden" id="token" name="_token" value="{{csrf_token()}}">
                                                     </div>

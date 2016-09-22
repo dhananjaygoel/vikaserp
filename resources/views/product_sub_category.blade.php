@@ -134,7 +134,7 @@
                                                 @if(Auth::user()->role_id == 0)
                                                 <div class="row product-price">
                                                     <div class="form-group col-md-6">
-                                                        <input type="tel" class="form-control" required="" name="difference_{{$i}}" value="{{ $produ_sub->difference}}">
+                                                        <input type="tel" class="form-control" required="" name="difference_{{$i}}" value="{{ $produ_sub->difference}}" onkeypress=" return numbersOnly(this,event,true,true);">
                                                         <input type="hidden" class="form-control" name="id_{{$i}}" value="{{ $produ_sub->id}}">
                                                         <input type="hidden" name="_token" value="{{csrf_token()}}" id="_token">
                                                     </div>
