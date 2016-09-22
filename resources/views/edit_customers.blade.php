@@ -43,7 +43,7 @@
                             @endif
                             <div class="form-group">
                                 <label for="owner_name">Owner Name<span class="mandatory">*</span></label>
-                                <input id="owner_name" class="form-control" placeholder="Owner Name" name="owner_name" value="{{$customer->owner_name}}" type="text">
+                                <input id="owner_name" class="form-control" placeholder="Owner Name" name="owner_name" value="{{$customer->owner_name}}" type="text" maxlength="30">
                             </div>
                             <div class="form-group">
                                 <label for="company_name">Company  Name</label>

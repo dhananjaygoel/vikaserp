@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    $('form').attr('autocomplete', 'off');
+    
     $("#warehouse_radio").click(function () {
         $(".supplier_order").hide();
     });
