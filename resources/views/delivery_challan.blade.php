@@ -236,7 +236,14 @@
                                 </tbody>
                             </table>
                             <span class="pull-right">
-                                <?php echo $allorders->render(); ?>
+                                <?php //echo $allorders->render(); ?>
+                                <?php
+                                    if (!isset($_GET)){
+                                        echo $allorders->render();
+                                    }else{
+                                        echo $allorders->appends($_GET)->render();
+                                    }
+                                ?>
                             </span>
                             <span class="clearfix"></span>
 
