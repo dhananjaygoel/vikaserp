@@ -157,7 +157,7 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group ">
                                                             <!-- form for save product value-->
-                                                            <input type="tel" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" onkeypress=" return validation_digit();" value = "{{(isset($session_data['product'][$i]['price'])) ?$session_data['product'][$i]['price'] : ''}}">
+                                                            <input type="tel" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" onkeypress=" return numbersOnly(this,event,true,false);" value = "{{(isset($session_data['product'][$i]['price'])) ?$session_data['product'][$i]['price'] : ''}}">
                                                             <!--
                                                         <div class="form-group col-md-6 difference_form">
                                                             <input class="btn btn-primary" type="button" class="form-control" value="save" >
@@ -213,7 +213,7 @@
                                         <tbody>
                                             <tr class="cdtable">
                                                 <td class="cdfirst">VAT Percentage:</td>
-                                                <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="" onkeypress=" return validation_digit();" type="text" onblur="calculate_grand_total();"></td>
+                                                <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="" onkeypress=" return onlyPercentage(event);" type="text" onblur="calculate_grand_total();"></td>
                                             </tr>
                                         </tbody>
                                     </table>
