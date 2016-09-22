@@ -96,7 +96,7 @@
                                                         </div>-->
                             <div class="form-group">
                                 <label for="zip">Zip</label>
-                                <input id="zip" class="form-control" placeholder="Zip" name="zip" value="{{$customer->zip}}" type="tel">
+                                <input id="zip" class="form-control" placeholder="Zip" name="zip" value="{{$customer->zip}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="6">
                             </div>
                             <div class="form-group">
                                 <label for="email">Email<span class="mandatory">*</span></label>
@@ -116,11 +116,11 @@
                                                         </div> -->
                             <div class="form-group">
                                 <label for="phone_number1">Phone number 1<span class="mandatory">*</span></label>
-                                <input id="phone_number1" class="form-control" placeholder="Phone number " name="phone_number1" value="{{$customer->phone_number1}}" type="tel">
+                                <input id="phone_number1" class="form-control" placeholder="Phone number " name="phone_number1" value="{{$customer->phone_number1}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10">
                             </div>
                             <div class="form-group">
                                 <label for="phone_number2">Phone Number 2</label>
-                                <input id="phone_number2" class="form-control" placeholder="Phone Number 2" name="phone_number2" value="{{$customer->phone_number2}}" type="tel">
+                                <input id="phone_number2" class="form-control" placeholder="Phone Number 2" name="phone_number2" value="{{$customer->phone_number2}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10">
                             </div>
                             <!--                            <div class="form-group">
                                                             <label for="vat_tin_number">VAT-TIN Number</label>
@@ -158,7 +158,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="credit_period">Credit Period(Days)</label>
-                                <input id="credit_period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$customer->credit_period}}" type="tel">
+                                <input id="credit_period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$customer->credit_period}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);">
                             </div>
                             <div class="form-group col-md-4 del_loc ">
                                 <label for="relationship_manager">Relationship Manager:</label>

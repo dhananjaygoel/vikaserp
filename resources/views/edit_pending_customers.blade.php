@@ -52,7 +52,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="phone_number1">Phone<span class="mandatory"></span></label>
-                                <input id="phone_number1" class="form-control" placeholder="Phone number" name="phone_number1" value="{{$customer->phone_number1}}" type="tel">
+                                <input id="phone_number1" class="form-control" placeholder="Phone number" name="phone_number1" value="{{$customer->phone_number1}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10">
                             </div>
                             <div class="form-group col-md-4 del_loc ">
                                 <label for="delivery_location">Delivery Location:<span class="mandatory"></span></label>
