@@ -52,12 +52,12 @@
                         </div>                                               
                         <div class="form-group">
                             <label for="Phone_number">Phone number </label>
-                            <input id="Phone_number" class="form-control" placeholder="Phone number " name="telephone_number" value="{{$user_data['phone_number']}}" type="tel">
+                            <input id="Phone_number" class="form-control" placeholder="Phone number " name="telephone_number" value="{{$user_data['phone_number']}}" type="tel" maxlength="10" onkeypress=" return numbersOnly(this,event,false,false);">
                         </div>
 
                         <div class="form-group">
                             <label for="mobile_number">Mobile Number<span class="mandatory">*</span></label>
-                            <input id="mobile_number" class="form-control" placeholder="Mobile Number" name="mobile_number" value="{{$user_data['mobile_number']}}" type="tel">
+                            <input id="mobile_number" class="form-control" placeholder="Mobile Number" name="mobile_number" value="{{$user_data['mobile_number']}}" type="tel" maxlength="10" onkeypress=" return numbersOnly(this,event,false,false);">
                         </div>
 
                         <div class="form-group">
