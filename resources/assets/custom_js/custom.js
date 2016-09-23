@@ -1119,15 +1119,15 @@ $('body').delegate(".btn_edit_order, .btn_edit_order_sms", "click", function () 
         {
              $('#vat_percentage').removeClass('error_validation');
              if(status_form != 1)
-                  status_form = 0;  
+                  status_form = 0; 
         }
         var tot_products = $(".add_product_row").length;
         var j = 0;
-        for (i = 1; i <= tot_products; i++) {
+        for (i = 0; i <= tot_products; i++) {
             if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
                 j++;
             } else {
-                if ($("#add_product_id_" + i).val() == "" || $('#existing_customer_name').val() == "") {
+                if ($("#add_product_id_" + i).val() == "" || $('#add_product_name_' + i).val() == "") {
                     $('#add_product_name_' + i).addClass('error_validation');
                     status_form = 1;
                 }
