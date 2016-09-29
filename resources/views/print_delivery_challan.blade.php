@@ -235,7 +235,7 @@
                     <div class="divCell">{{ $prod->order_product_details->alias_name }}</div>
                     <div class="divCell">{{ $prod->actual_pieces }}</div>
                     <div class="divCell">{{ round($prod->actual_quantity) }}</div>
-                    <div class="divCell">{{($prod->vat_percentage!='')?round($prod->vat_percentage):''}}</div>
+                    <div class="divCell">{{(isset($prod->vat_percentage) && $prod->vat_percentage!='')?round($allorder->vat_percentage):''}}</div>
                     <div class="divCell"><?php echo $rate = $prod->price; ?></div>
                     <div class="divCell">
                         <?php $total_price += $rate * $prod->actual_quantity; ?>
