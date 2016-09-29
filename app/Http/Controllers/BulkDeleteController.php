@@ -494,7 +494,7 @@ class BulkDeleteController extends Controller {
 
                 break;
 //----------------------------------------------------            
-            case 'purchase_advice':
+            case 'purchase_advice_completed':
                 $head[0] = 'DATE';
                 $head[1] = 'TALLY NAME';
                 $head[2] = 'VECHILE NUMBER';
@@ -530,8 +530,45 @@ class BulkDeleteController extends Controller {
                 }
 
                 break;
+                
+                case 'purchase_advice_pending':
+                $head[0] = 'DATE';
+                $head[1] = 'TALLY NAME';
+                $head[2] = 'VECHILE NUMBER';
+                $head[3] = 'QUANTITY';
+                $head[4] = 'SERIAL NUMBER';
+                /*
+                 * Delete selected purchase advice.
+                 */
+                if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
+                    foreach ($delete_seletected_module as $delete_module) {
+                        PurchaseAdvise::find($delete_module)->delete();
+                    }
+                }
+                /*
+                 * Delete selected purchase advice end.
+                 */
+                $newdate = ((strlen(Input::get('expected_date')) > 1) ? Input::get('expected_date') : date('Y-m-d')) . ' 23:59:59';
+
+                $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products')
+                                ->where('created_at', '<=', $newdate)
+                                ->where('advice_status', '=', 'in_process')->orderBy('created_at', 'desc')->paginate(20);
+                $result_temp = $this->checkpending_quantity($purchase_advise);
+                foreach ($result_temp as $key => $temp) {
+                    $tr_id[$key] = $temp->id;
+                    $result_data[$key][0] = date("F jS, Y", strtotime($temp->purchase_advice_date));
+                    if ($temp['supplier']->tally_name != '')
+                        $result_data[$key][1] = $temp['supplier']->tally_name;
+                    else
+                        $result_data[$key][1] = $temp['supplier']->owner_name;
+                    $result_data[$key][2] = $temp->vehicle_number;
+                    $result_data[$key][3] = $temp['total_quantity'];
+                    $result_data[$key][4] = $temp->serial_number;
+                }
+
+                break;
 //----------------------------------------------------            
-            case 'purchase_challan':
+            case 'purchase_challan_completed':
                 $head[0] = 'TALLY NAME';
                 $head[1] = 'SERIAL NUMBER';
                 $head[2] = 'BILL NUMBER';
@@ -551,6 +588,54 @@ class BulkDeleteController extends Controller {
                 $newdate = ((strlen(Input::get('expected_date')) > 1) ? Input::get('expected_date') : date('Y-m-d')) . ' 23:59:59';
                 $result_temp = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
                                 ->where('created_at', '<=', $newdate)->where('order_status', 'completed')
+                                ->orderBy('created_at', 'desc')->Paginate(20);
+                foreach ($result_temp as $key => $temp) {
+                    $tr_id[$key] = $temp->id;
+                    if ($temp['supplier']->tally_name != '')
+                        $result_data[$key][0] = $temp['supplier']->tally_name;
+                    else
+                        $result_data[$key][0] = $temp['supplier']->owner_name;
+
+                    $result_data[$key][1] = $temp->serial_number;
+                    $result_data[$key][2] = $temp->bill_number;
+                    $result_data[$key][3] = date("F jS, Y", strtotime($temp['purchase_advice']->purchase_advice_date));
+                    $total_qty = 0;
+
+                    foreach ($temp['all_purchase_products'] as $pc) {
+                        if ($pc->unit_id == 1) {
+                            $total_qty += $pc->quantity;
+                        }
+                        if ($pc->unit_id == 2) {
+                            $total_qty += ($pc->quantity * $pc['purchase_product_details']->weight);
+                        }
+                        if ($pc->unit_id == 3) {
+                            $total_qty += (($pc->quantity / $pc['purchase_product_details']->standard_length ) * $pc['purchase_product_details']->weight);
+                        }
+                    }
+                    $result_data[$key][4] = round($temp['all_purchase_products']->sum('quantity'), 2);
+                }
+                break;
+                
+                case 'purchase_challan_pending':
+                $head[0] = 'TALLY NAME';
+                $head[1] = 'SERIAL NUMBER';
+                $head[2] = 'BILL NUMBER';
+                $head[3] = 'BILL DATE';
+                $head[4] = 'TOTAL QUANTITY';
+                /*
+                 * Delete selected purchase challan.
+                 */
+                if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
+                    foreach ($delete_seletected_module as $delete_module) {
+                        PurchaseChallan::find($delete_module)->delete();
+                    }
+                }
+                /*
+                 * Delete selected purchase challan end.
+                 */
+                $newdate = ((strlen(Input::get('expected_date')) > 1) ? Input::get('expected_date') : date('Y-m-d')) . ' 23:59:59';
+                $result_temp = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
+                                ->where('created_at', '<=', $newdate)->where('order_status', 'pending')
                                 ->orderBy('created_at', 'desc')->Paginate(20);
                 foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;

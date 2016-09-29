@@ -71,8 +71,17 @@ use Illuminate\Support\Facades\Session;
                                             <option id="other_location" {{(isset($module) && $module == "purchase_orders_completed")?'selected':''}} value="purchase_orders_completed">Completed</option>
                                             </optgroup>
                                             <!--<option id="other_location" {{(isset($module) && $module == "purchase_order")?'selected':''}} value="purchase_order">Purchase Orders</option>-->
-                                            <option id="other_location" {{(isset($module) && $module == "purchase_advice")?'selected':''}} value="purchase_advice">Purchase Advise</option>
-                                            <option id="other_location" {{(isset($module) && $module == "purchase_challan")?'selected':''}} value="purchase_challan">Purchase Challan</option>
+                                            <optgroup label="Purchase Advise">
+                                                <option id="other_location" {{(isset($module) && $module == "purchase_advice_pending")?'selected':''}} value="purchase_advice_pending">Pending</option>
+                                            <option id="other_location" {{(isset($module) && $module == "purchase_advice_completed")?'selected':''}} value="purchase_advice_completed">Completed</option>
+                                            </optgroup>
+                                            
+<!--                                            <option id="other_location" {{(isset($module) && $module == "purchase_advice")?'selected':''}} value="purchase_advice">Purchase Advise</option>-->
+                                            <optgroup label="Purchase Challan">
+                                                <option id="other_location" {{(isset($module) && $module == "purchase_challan_pending")?'selected':''}} value="purchase_challan_pending">Pending</option>
+                                            <option id="other_location" {{(isset($module) && $module == "purchase_challan_completed")?'selected':''}} value="purchase_challan_completed">Completed</option>
+                                            </optgroup>
+<!--                                            <option id="other_location" {{(isset($module) && $module == "purchase_challan")?'selected':''}} value="purchase_challan">Purchase Challan</option>-->
                                         </select>
                                     </div>
 
