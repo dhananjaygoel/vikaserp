@@ -226,7 +226,7 @@
                 $loading_vat_amount = ($allorder->loading_charge * $allorder->loading_vat_percentage) / 100;
                 $freight_vat_amount = ($allorder->freight * $allorder->freight_vat_percentage) / 100;
                 $discount_vat_amount = ($allorder->discount * $allorder->discount_vat_percentage) / 100;
-                $final_vat_amount = ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) - $discount_vat_amount;
+               
                 ?>
                 @foreach($allorder['delivery_challan_products'] as $prod)
                 @if($prod->order_type == 'delivery_challan')
@@ -243,6 +243,12 @@
                     </div>
                 </div>
                 <?php
+                
+                 $total_vat_amount =  ($total_price * $allorder->vat_percentage) / 100;
+                 
+                  $final_vat_amount = ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) - $discount_vat_amount;
+                
+               
 //                if ($prod->unit_id == 1) {
 //                    $total_qty += $prod->actual_quantity;
 //                }
@@ -272,9 +278,9 @@
                             <th> Total Inc. Vat </th>
                         </tr>
                         <tr class="secondrow">
-                            <td> {{ round($total_price, 2) }}  </td>
+                            <td> {{ round($total_price+$allorder->loading_charge+ $allorder->freight - $allorder->discount, 2) }}  </td>
                             <td> {{ $final_vat_amount }}  </td>
-                            <td> {{ round($total_price+$final_vat_amount, 2) }} </td>
+                            <td> {{ round($allorder->grand_price, 2) }} </td>
                         </tr>
                     </table>
                     <div>
