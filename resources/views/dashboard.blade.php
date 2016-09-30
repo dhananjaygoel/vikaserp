@@ -95,7 +95,7 @@
                 </a>
             </div>
             <div class="col-lg-3 col-sm-6 col-xs-12">
-                <a class="indexlink" href="{{url('delivery_challan')}}">
+                <a class="indexlink" href="{{url('delivery_challan?status_filter=completed')}}">
                     <div class="main-box infographic-box">
                         <i class="fa fa-desktop green-bg"></i>
                         <span class="headline">Total Challan</span>
