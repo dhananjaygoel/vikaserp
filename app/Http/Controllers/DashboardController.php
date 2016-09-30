@@ -129,6 +129,10 @@ class DashboardController extends Controller {
             }
             $kg_qty = $kg_qty + ($product_qty * $weight);
         } elseif ($unit_id == 3) {
+            if(!isset($weight) )
+            {
+                $weight=1;
+            }
             if(isset($product_info->standard_length)){
                 $std_length = $product_info->standard_length;
             }else{
