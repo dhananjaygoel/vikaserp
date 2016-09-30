@@ -79,10 +79,15 @@ class DashboardController extends Controller {
 //        }
         foreach ($delivery_challan as $delivery_challan_info) {
             foreach ($delivery_challan_info->delivery_challan_products as $delivery_challan_productinfo) {
-                if ($delivery_challan_productinfo->unit_id == 1)
-                    $delivery_challan_sum += $delivery_challan_productinfo->quantity;
-                else
-                    $delivery_challan_sum += $this->checkpending_quantity($delivery_challan_productinfo->unit_id, $delivery_challan_productinfo->product_category_id, $delivery_challan_productinfo->quantity);
+//                if ($delivery_challan_productinfo->unit_id == 1)
+//                    $delivery_challan_sum += $delivery_challan_productinfo->quantity;
+//                else
+//                    $delivery_challan_sum += $this->checkpending_quantity($delivery_challan_productinfo->unit_id, $delivery_challan_productinfo->product_category_id, $delivery_challan_productinfo->quantity);
+               
+               
+                if($delivery_challan_info->challan_status == 'completed'){
+                    $delivery_challan_sum =  $delivery_challan_sum + $delivery_challan_productinfo->actual_quantity;
+                }
             }
         }
         $delivery_challan_sum = $delivery_challan_sum / 1000;
@@ -118,7 +123,7 @@ class DashboardController extends Controller {
            
         } elseif ($unit_id == 2) {
             if(isset($product_info->weight)){
-                $weight = $product_info->weight;
+                    $weight = $product_info->weight;
             }else{
                  $weight =0;
             }
