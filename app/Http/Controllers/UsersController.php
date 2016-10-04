@@ -37,7 +37,8 @@ class UsersController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $users_data = User::where('role_id', '!=', 0)->with('user_role')->orderBy('created_at', 'desc')->Paginate(20);
+//        $users_data = User::where('role_id', '!=', 0)->with('user_role')->orderBy('created_at', 'desc')->Paginate(20);
+        $users_data = User::with('user_role')->where('first_name', '!=', 'Super')->orderBy('created_at', 'desc')->Paginate(20);
         $users_data->setPath('users');
         return view('users', compact('users_data'));
     }
@@ -51,7 +52,8 @@ class UsersController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $roles = UserRoles::where('role_id', '!=', 0)->get();
+        //$roles = UserRoles::where('role_id', '!=', 0)->get();
+        $roles = UserRoles::where('name', '!=', 'Super Admin')->get();
         return view('add_user', compact('roles'));
     }
 
@@ -138,7 +140,8 @@ class UsersController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
-        $roles = UserRoles::where('role_id', '!=', 0)->get();
+       // $roles = UserRoles::where('role_id', '!=', 0)->get();
+        $roles = UserRoles::where('name', '!=', 'Super Admin')->get();
         $user_data = User::find($id);
         return view('edit_user', compact('user_data', 'roles'));
     }
