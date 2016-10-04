@@ -1257,7 +1257,7 @@ $('body').delegate(".btn_edit_delivery_order", "click", function () {
             if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
                 j++;
             } else {
-                if ($("#add_product_id_" + i).val() == "" || $('#existing_customer_name').val() == "") {
+                if ($("#add_product_id_" + i).val() == "" ||$('#add_product_name_' + i).val() == "") {
                     $('#add_product_name_' + i).addClass('error_validation');
                     status_form = 1;
                     console.log('#add_product_name_' + i+"--" + status_form);
