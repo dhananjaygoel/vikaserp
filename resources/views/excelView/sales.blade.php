@@ -43,7 +43,8 @@
             <td class="heading1">Tax</td>
             <td class="heading1">Round Off</td>
             <td class="heading1">Grand total</td>
-            <td class="heading1">Narration</td>
+            <td class="heading1">Vehicle Number</td>
+            <td class="heading1">Remark</td>
         </tr>
         <?php
         $i = 1;
@@ -88,7 +89,7 @@
                     <!--<td>{{ isset($value['customer']->zip) ? $value['customer']->zip : '' }}</td>-->
                     <td>{{ isset($value['customer']->vat_tin_number) ? $value['customer']->vat_tin_number : '' }}</td>
                     <td>{{ isset($value1['order_product_details']->alias_name) ? $value1['order_product_details']->alias_name : '' }}</td>
-                    <td>{{ isset($value1['order_product_details']->product_category->product_category_name) ? $value1['order_product_details']->product_category->product_category_name : '1' }}</td>
+                    <td>{{ isset($value1['order_product_details']->product_category->product_category_name) ? $value1['order_product_details']->product_category->product_category_name : '' }}</td>
                     <td></td>
 
                     @if($value1->actual_quantity != 0 )
@@ -239,6 +240,7 @@
                             echo "[" . $value['delivery_location']->area_name . "]";
                         ?>
                     </td>
+                    <td>{{ isset($value1->remarks) ? $value1->remarks : '' }}</td>
                 </tr>
                 <?php
                 $current_number++;
