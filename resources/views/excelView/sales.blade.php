@@ -23,11 +23,12 @@
             <td class="heading1">Code</td>
             <td class="heading1">Name</td>
             <td class="heading1">Address1</td>
-            <td class="heading1">Address2</td>
+            <!--<td class="heading1">Address2</td>-->
             <td class="heading1">State</td>
-            <td class="heading1">Pin Code</td>
+            <!--<td class="heading1">Pin Code</td>-->
             <td class="heading1">Tin No</td>
             <td class="heading1">Item Name</td>
+            <td class="heading1">Product Name</td>
             <td class="heading1">Godown</td>
             <td class="heading1">Pcs</td>
             <td class="heading1">Unit</td>
@@ -82,11 +83,12 @@
                     <td></td>
                     <td>{{ ($value['customer']->tally_name != "") ? $value['customer']->tally_name : "Advance Sales" }}</td>
                     <td>{{ isset($value['customer']->address1) ? $value['customer']->address1 : '' }}</td>
-                    <td>{{ isset($value['customer']->address2) ? $value['customer']->address2 : '' }}</td>
+<!--                    <td>{{ isset($value['customer']->address2) ? $value['customer']->address2 : '' }}</td>-->
                     <td>{{ isset($value['customer']->states) ? $value->customer->states->state_name : '' }}</td>
-                    <td>{{ isset($value['customer']->zip) ? $value['customer']->zip : '' }}</td>
+                    <!--<td>{{ isset($value['customer']->zip) ? $value['customer']->zip : '' }}</td>-->
                     <td>{{ isset($value['customer']->vat_tin_number) ? $value['customer']->vat_tin_number : '' }}</td>
                     <td>{{ isset($value1['order_product_details']->alias_name) ? $value1['order_product_details']->alias_name : '' }}</td>
+                    <td>{{ isset($value1['order_product_details']->product_category->product_category_name) ? $value1['order_product_details']->product_category->product_category_name : '1' }}</td>
                     <td></td>
 
                     @if($value1->actual_quantity != 0 )
