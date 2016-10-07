@@ -240,7 +240,7 @@
                             echo "[" . $value['delivery_location']->area_name . "]";
                         ?>
                     </td>
-                    <td>{{ isset($value1->remarks) ? $value1->remarks : '' }}</td>
+                    <td>{{ isset($value->remarks) ? $value->remarks : '' }}</td>
                 </tr>
                 <?php
                 $current_number++;
