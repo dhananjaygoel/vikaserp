@@ -182,7 +182,7 @@
                     @endif
                     <td>{{ isset($value1->price) ? $value1->price : '0' }}</td>
                     <td><?php $total_amt_for_pices = ($value1['order_product_details']['weight'] * $value1->actual_pieces * $value1->price) ;
-                    echo number_format($total_amt_for_pices, 2, '.', '');
+                    echo number_format(0, 2, '.', '');
                     ?></td>      
               @endif 
               <!--<td>{{  (($type_of_bill == "P") ? "VAT" : "All inclusive")  }}</td>-->
@@ -222,7 +222,7 @@
             <td></td><td></td><td></td>
             <td>Loading</td>
             <td></td><td></td><td></td><td></td><td></td>
-            <td>{{isset($value->loading_charge) ? $value->loading_charge :'0'}}</td>
+            <td>{{isset($value->loading_charge) ? $value->loading_charge :'0.00'}}</td>
            <td></td>
         </tr> 
         <tr>  
@@ -231,7 +231,7 @@
             <td></td><td></td><td></td>
             <td>Freight</td>
             <td></td><td></td><td></td><td></td><td></td>
-            <td>{{isset($value->freight) ? $value->freight :'0'}}</td>
+            <td>{{isset($value->freight) ? $value->freight :'0.00'}}</td>
            <td></td>
         </tr>
         <tr>    
