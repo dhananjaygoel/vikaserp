@@ -20,7 +20,7 @@
         <tr>
             <td class="heading1">Date</td>
             <td class="heading1">Vch No</td>
-            <td class="heading1">Ref NUM</td>
+            
             <td class="heading1">Vch Type</td>
             
 <!--            <td class="heading1">Code</td>-->
@@ -49,6 +49,7 @@
             <td class="heading1">Grand total</td>-->
             <td class="heading1">Vehicle Number/Remark</td>
             <!--<td class="heading1">Remark</td>-->
+            <td class="heading1">Ref NUM</td>
         </tr>
         <?php
          $VchNo=1;
@@ -66,12 +67,12 @@
         <tr>
             <td>{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
             <td>{{$VchNo}}</td>
-            <td>
-                        {{ isset($value->serial_number) ? $value->serial_number :'' }}
+            <!--<td>-->
+                        <!--{{ isset($value->serial_number) ? $value->serial_number :'' }}-->
                         <?php 
                          $type_of_bill = substr($value->serial_number, -1);
                         ?>
-                    </td>
+                    <!--</td>-->
                     <td>Sales</td>
                     
                     <!--<td></td>-->
@@ -107,7 +108,7 @@
                         ?>
                         <?= round($value1->actual_quantity, 2) ?>
                     </td>
-                    <td>{{ isset($value1->price) ? $value1->price : '' }}</td>
+                    <td>{{ isset($value1->price) ? $value1->price : '0' }}</td>
                     
                     <?php $value1['order_product_details']['product_category']['id'] ?>
                     <?php
@@ -172,15 +173,17 @@
                         ?>
                     </td>
               @else
-                    <td>{{ isset($value1->actual_pieces) ? $value1->actual_pieces : '' }}</td>
+                    <td>{{ isset($value1->actual_pieces) ? $value1->actual_pieces : '0' }}</td>
                     <td>Pieces</td>
                     @if((isset($value1->actual_quantity)) && ($value1->actual_quantity!=""))
                     <td><?= round($value1->actual_quantity, 2) ?></td>
                     @else
                     <td></td>
                     @endif
-                    <td>{{ isset($value1->price) ? $value1->price : '' }}</td>
-                    <td><?php ($value1['order_product_details']['weight'] * $value1->actual_pieces * $value1->price) ?></td>      
+                    <td>{{ isset($value1->price) ? $value1->price : '0' }}</td>
+                    <td><?php $total_amt_for_pices = ($value1['order_product_details']['weight'] * $value1->actual_pieces * $value1->price) ;
+                    echo number_format($total_amt_for_pices, 2, '.', '');
+                    ?></td>      
               @endif 
               <!--<td>{{  (($type_of_bill == "P") ? "VAT" : "All inclusive")  }}</td>-->
 <!--                    <td><?php 
@@ -196,8 +199,11 @@
 //                            echo "0%"
                         ?>
                     </td>-->
-                   
-                 
+                    <td></td>
+                  <td>
+                        {{ isset($value->serial_number) ? $value->serial_number :'' }}
+                       
+                    </td>
        
        
             <?php }?>
@@ -206,34 +212,34 @@
             <td>{{$VchNo}}</td>            
             <td></td><td></td><td></td>
             <td>Discount</td>
-            <td></td><td></td><td></td><td></td><td></td><td></td>
-            <td>{{(isset($value->discount))? '-'.$value->discount :'(-)0.00'}}</td>
-           
+            <td></td><td></td><td></td><td></td><td></td>
+            <td>{{(isset($value->discount)&& !empty($value->discount))? $value->discount :'0.00'}}</td>
+            <td></td>
         </tr> 
         <tr> 
             <td>{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
             <td>{{$VchNo}}</td>           
             <td></td><td></td><td></td>
             <td>Loading</td>
-            <td></td><td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td>
             <td>{{isset($value->loading_charge) ? $value->loading_charge :'0'}}</td>
-           
+           <td></td>
         </tr> 
         <tr>  
             <td>{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
             <td>{{$VchNo}}</td>
             <td></td><td></td><td></td>
             <td>Freight</td>
-            <td></td><td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td>
             <td>{{isset($value->freight) ? $value->freight :'0'}}</td>
-           
+           <td></td>
         </tr>
         <tr>    
             <td>{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
             <td>{{$VchNo}}</td>
             <td></td><td></td><td></td>
             <td>Tax</td>
-            <td></td><td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td>
             <td>   <?php
                         if ($type_of_bill == "P"){
                             $discount =0;
@@ -251,7 +257,7 @@
                             }
                             
                             if(isset($value->vat_percentage)){
-                                $overhead_total =  $discount +$loading_charge +$freight;
+                                $overhead_total =  $loading_charge +$freight-$discount;
                                 
                                 $percent_overhead_total = ($overhead_total * $value->vat_percentage)/100;
                                 $grand_vat_amt = $grand_vat_amt +$percent_overhead_total;
@@ -266,7 +272,7 @@
 //                            }
                             echo number_format($grand_vat_amt, 2, '.', '');
                         }else
-                            echo "0";
+                            echo "0.00";
                         ?></td><td></td>
            
         </tr>
@@ -276,9 +282,9 @@
             <td>{{$VchNo}}</td>
             <td></td><td></td><td></td>
             <td>Round Off</td>
-            <td></td><td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td>
             <td>{{  (isset($value->round_off) ? $value->round_off : '')  }}</td>
-            
+            <td></td>
         </tr>
                     
         <tr style="border:2px solid black">    
@@ -286,7 +292,7 @@
             <td>{{$VchNo}}</td>
             <td></td><td></td><td></td>
             <td> <b>Total</b></td>
-            <td></td><td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td>
            <td><b>{{  (isset($value->grand_price) ? number_format($value->grand_price, 2, '.', '') : '')  }}</b></td>
             <td>
                         <?php
@@ -298,7 +304,7 @@
                             echo "[" . $value['delivery_location']->area_name . "]";
                         ?>
                     {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
-            </td> 
+            </td><td></td> 
         </tr>
         
          
