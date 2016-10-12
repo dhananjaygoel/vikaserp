@@ -47,8 +47,8 @@
             <!--<td class="heading1">Tax</td>-->
 <!--            <td class="heading1">Round Off</td>
             <td class="heading1">Grand total</td>-->
-            <td class="heading1">Vehicle Number</td>
-            <td class="heading1">Remark</td>
+            <td class="heading1">Vehicle Number/Remark</td>
+            <!--<td class="heading1">Remark</td>-->
         </tr>
         <?php
          $VchNo=1;
@@ -207,7 +207,7 @@
             <td></td><td></td><td></td>
             <td>Discount</td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
-            <td>{{(isset($value->discount))? '(-)'.$value->discount :'(-)0.00'}}</td><td></td><td></td>
+            <td>{{(isset($value->discount))? '(-)'.$value->discount :'(-)0.00'}}</td><td></td>
            
         </tr> 
         <tr> 
@@ -216,7 +216,7 @@
             <td></td><td></td><td></td>
             <td>Loading</td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
-            <td>{{isset($value->loading_charge) ? $value->loading_charge :'0'}}</td><td></td><td></td>
+            <td>{{isset($value->loading_charge) ? $value->loading_charge :'0'}}</td><td></td>
            
         </tr> 
         <tr>  
@@ -225,7 +225,7 @@
             <td></td><td></td><td></td>
             <td>Freight</td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
-            <td>{{isset($value->freight) ? $value->freight :'0'}}</td><td></td><td></td>
+            <td>{{isset($value->freight) ? $value->freight :'0'}}</td><td></td>
            
         </tr>
         <tr>    
@@ -239,7 +239,7 @@
                             echo number_format($grand_vat_amt, 2, '.', '');
                         else
                             echo "0";
-                        ?></td><td></td><td></td>
+                        ?></td><td></td>
            
         </tr>
          
@@ -250,7 +250,7 @@
             <td>Round Off</td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
             <td>{{  (isset($value->round_off) ? $value->round_off : '')  }}</td><td></td><td></td>
-            <td></td><td></td> 
+            
         </tr>
                     
         <tr style="border:2px solid black">    
@@ -269,8 +269,8 @@
                         if ((isset($value['delivery_location']->area_name)) && ($value['delivery_location']->area_name != ""))
                             echo "[" . $value['delivery_location']->area_name . "]";
                         ?>
-                    </td>
-                    <td>{{ isset($value->remarks) ? $value->remarks : '' }}</td> 
+                    {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
+            </td> 
         </tr>
         
          
