@@ -42,8 +42,8 @@
 <!--            <td class="heading1">Discount</td>
             <td class="heading1">Loading</td>
             <td class="heading1">Freight</td>-->
-            <td class="heading1">Tax Type</td>
-            <td class="heading1">Tax Rate</td>
+            <!--<td class="heading1">Tax Type</td>-->
+            <!--<td class="heading1">Tax Rate</td>-->
             <!--<td class="heading1">Tax</td>-->
 <!--            <td class="heading1">Round Off</td>
             <td class="heading1">Grand total</td>-->
@@ -182,20 +182,20 @@
                     <td>{{ isset($value1->price) ? $value1->price : '' }}</td>
                     <td><?php ($value1['order_product_details']['weight'] * $value1->actual_pieces * $value1->price) ?></td>      
               @endif 
-              <td>{{  (($type_of_bill == "P") ? "VAT" : "All inclusive")  }}</td>
+              <!--<td>{{  (($type_of_bill == "P") ? "VAT" : "All inclusive")  }}</td>-->
 <!--                    <td><?php 
-                    echo  substr($value->serial_number, -1);
+//                    echo  substr($value->serial_number, -1);
                     ?></td>-->
                     
              
-                    <td>
+<!--                    <td>
                         <?php
-                        if ($value->vat_percentage !== "" & $type_of_bill == "P")
-                            echo $value->vat_percentage . "%";
-                        else
-                            echo "0%"
+//                        if ($value->vat_percentage !== "" & $type_of_bill == "P")
+//                            echo $value->vat_percentage . "%";
+//                        else
+//                            echo "0%"
                         ?>
-                    </td>
+                    </td>-->
                    
                  
        
@@ -207,7 +207,7 @@
             <td></td><td></td><td></td>
             <td>Discount</td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
-            <td>{{(isset($value->discount))? '(-)'.$value->discount :'(-)0.00'}}</td><td></td>
+            <td>{{(isset($value->discount))? '(-)'.$value->discount :'(-)0.00'}}</td>
            
         </tr> 
         <tr> 
@@ -216,7 +216,7 @@
             <td></td><td></td><td></td>
             <td>Loading</td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
-            <td>{{isset($value->loading_charge) ? $value->loading_charge :'0'}}</td><td></td>
+            <td>{{isset($value->loading_charge) ? $value->loading_charge :'0'}}</td>
            
         </tr> 
         <tr>  
@@ -225,7 +225,7 @@
             <td></td><td></td><td></td>
             <td>Freight</td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
-            <td>{{isset($value->freight) ? $value->freight :'0'}}</td><td></td>
+            <td>{{isset($value->freight) ? $value->freight :'0'}}</td>
            
         </tr>
         <tr>    
@@ -249,7 +249,7 @@
             <td></td><td></td><td></td>
             <td>Round Off</td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
-            <td>{{  (isset($value->round_off) ? $value->round_off : '')  }}</td><td></td><td></td>
+            <td>{{  (isset($value->round_off) ? $value->round_off : '')  }}</td>
             
         </tr>
                     
@@ -259,7 +259,7 @@
             <td></td><td></td><td></td>
             <td> <b>Total</b></td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
-           <td><b>{{  (isset($value->grand_price) ? number_format($value->grand_price, 2, '.', '') : '')  }}</b></td><td></td><td></td>
+           <td><b>{{  (isset($value->grand_price) ? number_format($value->grand_price, 2, '.', '') : '')  }}</b></td>
             <td>
                         <?php
                         if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
