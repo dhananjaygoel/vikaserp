@@ -149,7 +149,8 @@ class SalesDaybookController extends Controller {
     public function export_sales_daybook() {
 
         $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details','delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
-        
+//        return view('excelView.sales', array('allorders' => $allorders));
+//        exit();        
         Excel::create('Sales Daybook', function($excel) use($allorders) {
             $excel->sheet('Sales-Daybook', function($sheet) use($allorders) {
                 $sheet->loadView('excelView.sales', array('allorders' => $allorders));

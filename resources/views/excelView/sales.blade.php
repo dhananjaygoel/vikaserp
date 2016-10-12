@@ -18,21 +18,22 @@
         
         
         <tr>
+            <td class="heading1">Date</td>
             <td class="heading1">Vch No</td>
             <td class="heading1">Ref NUM</td>
             <td class="heading1">Vch Type</td>
-            <td class="heading1">Date</td>
-            <td class="heading1">Code</td>
+            
+<!--            <td class="heading1">Code</td>-->
             <td class="heading1">Name</td>
-            <td class="heading1">Address1</td>
+            <!--<td class="heading1">Address1</td>-->
             <!--<td class="heading1">Address2</td>-->
-            <td class="heading1">State</td>
+            <!--<td class="heading1">State</td>-->
             <!--<td class="heading1">Pin Code</td>-->
-            <td class="heading1">Tin No</td>
+            <!--<td class="heading1">Tin No</td>-->
             <td class="heading1">Account</td>
             <td class="heading1">Item Name</td>
             <td class="heading1">Product Name</td>
-            <td class="heading1">Godown</td>
+            <!--<td class="heading1">Godown</td>-->
             <td class="heading1">Pcs</td>
             <td class="heading1">Unit</td>
             <td class="heading1">Qty</td>
@@ -63,6 +64,7 @@
                   $order_quantity = 0;
             ?>
         <tr>
+            <td>{{ date("m-d-Y", strtotime($value->updated_at)) }}</td>
             <td>{{$VchNo}}</td>
             <td>
                         {{ isset($value->serial_number) ? $value->serial_number :'' }}
@@ -71,18 +73,18 @@
                         ?>
                     </td>
                     <td>Sales</td>
-                    <td>{{ date("m-d-Y", strtotime($value->updated_at)) }}</td>
-                    <td></td>
+                    
+                    <!--<td></td>-->
             <td>{{ ($value['customer']->tally_name != "") ? $value['customer']->tally_name : "Advance Sales" }}</td>
-                    <td>{{ isset($value['customer']->address1) ? $value['customer']->address1 : '' }}</td>
+                    <!--<td>{{ isset($value['customer']->address1) ? $value['customer']->address1 : '' }}</td>-->
 <!--                    <td>{{ isset($value['customer']->address2) ? $value['customer']->address2 : '' }}</td>-->
-                    <td>{{ isset($value['customer']->states) ? $value->customer->states->state_name : '' }}</td>
+                    <!--<td>{{ isset($value['customer']->states) ? $value->customer->states->state_name : '' }}</td>-->
                     <!--<td>{{ isset($value['customer']->zip) ? $value['customer']->zip : '' }}</td>-->
-                    <td>{{ isset($value['customer']->vat_tin_number) ? $value['customer']->vat_tin_number : '' }}</td>  
+                    <!--<td>{{ isset($value['customer']->vat_tin_number) ? $value['customer']->vat_tin_number : '' }}</td>-->  
                     <td>Sales Account</td>
             <td>{{ isset($value1['order_product_details']->alias_name) ? $value1['order_product_details']->alias_name : '' }}</td>
              <td>{{ isset($value1['order_product_details']->product_category->product_category_name) ? $value1['order_product_details']->product_category->product_category_name : '' }}</td>
-                    <td></td>
+                    <!--<td></td>-->
               @if($value1->actual_quantity != 0 )
                     <td>{{ isset($value1->actual_pieces) ? $value1->actual_pieces : '' }}</td>
                     <td>Kg</td>
@@ -199,39 +201,39 @@
        
        
             <?php }?>
-        <tr>    
-            <td>{{$VchNo}}</td>
-            <td></td>
-            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <tr>
+            <td>{{ date("m-d-Y", strtotime($value->updated_at)) }}</td>
+            <td>{{$VchNo}}</td>            
+            <td></td><td></td><td></td>
             <td>Discount</td>
-            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td><td></td>
             <td>{{(isset($value->discount))? '(-)'.$value->discount :'(-)0.00'}}</td><td></td><td></td>
            
         </tr> 
-        <tr>    
-            <td>{{$VchNo}}</td>
-            <td></td>
-            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <tr> 
+            <td>{{ date("m-d-Y", strtotime($value->updated_at)) }}</td>
+            <td>{{$VchNo}}</td>           
+            <td></td><td></td><td></td>
             <td>Loading</td>
-            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td><td></td>
             <td>{{isset($value->loading_charge) ? $value->loading_charge :'0'}}</td><td></td><td></td>
            
         </tr> 
-        <tr>    
+        <tr>  
+            <td>{{ date("m-d-Y", strtotime($value->updated_at)) }}</td>
             <td>{{$VchNo}}</td>
-            <td></td>
-            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td>
             <td>Freight</td>
-            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td><td></td>
             <td>{{isset($value->freight) ? $value->freight :'0'}}</td><td></td><td></td>
            
         </tr>
         <tr>    
+            <td>{{ date("m-d-Y", strtotime($value->updated_at)) }}</td>
             <td>{{$VchNo}}</td>
-            <td></td>
-            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td>
             <td>Tax</td>
-            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td><td></td>
             <td>   <?php
                         if ($type_of_bill == "P")
                             echo number_format($grand_vat_amt, 2, '.', '');
@@ -242,21 +244,21 @@
         </tr>
          
          <tr>    
+            <td>{{ date("m-d-Y", strtotime($value->updated_at)) }}</td>
             <td>{{$VchNo}}</td>
-            <td></td>
-            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td>
             <td>Round Off</td>
-            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td><td></td>
             <td>{{  (isset($value->round_off) ? $value->round_off : '')  }}</td><td></td><td></td>
             <td></td><td></td> 
         </tr>
                     
         <tr style="border:2px solid black">    
+            <td>{{ date("m-d-Y", strtotime($value->updated_at)) }}</td>
             <td>{{$VchNo}}</td>
-            <td></td>
-            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td>
             <td> <b>Total</b></td>
-            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td><td></td>
            <td><b>{{  (isset($value->grand_price) ? number_format($value->grand_price, 2, '.', '') : '')  }}</b></td><td></td><td></td>
             <td>
                         <?php
