@@ -47,6 +47,7 @@
             <!--<td class="heading1">Tax</td>-->
 <!--            <td class="heading1">Round Off</td>
             <td class="heading1">Grand total</td>-->
+            <td></td><td></td>
             <td class="heading1">Vehicle Number/Remark</td>
             <!--<td class="heading1">Remark</td>-->
             <td class="heading1">Ref NUM</td>
@@ -199,6 +200,7 @@
 //                            echo "0%"
                         ?>
                     </td>-->
+                    <td></td><td></td>
                     <td></td>
                   <td>
                         {{ isset($value->serial_number) ? $value->serial_number :'' }}
@@ -214,7 +216,7 @@
             <td>Discount</td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
             <td>{{(isset($value->discount)&& !empty($value->discount))? $value->discount :'0.00'}}</td>
-            <td></td>
+            <td></td><td></td><td></td>
         </tr> 
         <tr> 
             <td>{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
@@ -223,7 +225,7 @@
             <td>Loading</td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
             <td>{{isset($value->loading_charge) ? $value->loading_charge :'0.00'}}</td>
-           <td></td>
+           <td></td><td></td><td></td>
         </tr> 
         <tr>  
             <td>{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
@@ -232,7 +234,7 @@
             <td>Freight</td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
             <td>{{isset($value->freight) ? $value->freight :'0.00'}}</td>
-           <td></td>
+           <td></td><td></td><td></td>
         </tr>
         <tr>    
             <td>{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
@@ -266,7 +268,8 @@
                             echo number_format($grand_vat_amt, 2, '.', '');
                         }else
                             echo "0.00";
-                        ?></td><td></td>
+                        ?></td>
+            <td></td><td></td><td></td>
            
         </tr>
          
@@ -277,7 +280,7 @@
             <td>Round Off</td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
             <td>{{  (isset($value->round_off) ? $value->round_off : '')  }}</td>
-            <td></td>
+            <td></td><td></td><td></td>
         </tr>
                     
         <tr style="border:2px solid black">    
@@ -287,6 +290,7 @@
             <td> <b>Total</b></td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
            <td><b>{{  (isset($value->grand_price) ? number_format($value->grand_price, 2, '.', '') : '')  }}</b></td>
+           <td></td><td></td>
             <td>
                         <?php
                         if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
@@ -297,7 +301,8 @@
                             echo "[" . $value['delivery_location']->area_name . "]";
                         ?>
                     {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
-            </td><td></td> 
+            </td>
+            <td></td> 
         </tr>
         
          
