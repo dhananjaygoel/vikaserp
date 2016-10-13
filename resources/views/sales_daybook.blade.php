@@ -30,7 +30,15 @@
                         @if(sizeof($allorders) > 0)
                         <div class="pull-right col-md-4">
                             <a class="btn btn-primary form_button_footer print_sales_order_daybook" >Print</a>
-                            <a href="{{url('export_sales_daybook')}}" class="btn btn-primary form_button_footer" >Export</a>
+                            <?php 
+                            $temp =Request::get('challan_date');
+                            if(isset($temp) && $temp<>""){
+                             $urltemp = url('export_sales_daybook/'.$temp);   
+                            }else{
+                            $urltemp = url('export_sales_daybook/'.'all');
+                            }
+                            ?>
+                            <a href="{{$urltemp}}" class="btn btn-primary form_button_footer" >Export</a>                            
                         </div>
                         @endif
                     </div>

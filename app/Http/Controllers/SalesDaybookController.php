@@ -145,10 +145,20 @@ class SalesDaybookController extends Controller {
             return Redirect::to('sales_daybook')->with('error', 'Invalid password');
         }
     }
-
-    public function export_sales_daybook() {
-
-        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details','delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
+    
+    public function export_sales_daybook($id) {
+       
+     if($id <> "all" && $id<>"")
+        $newDate = date("Y-m-d", strtotime($id));
+     else
+      $newDate=""; 
+       
+        
+        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
+                ->where('updated_at','like',$newDate.'%')
+                ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details','delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location')
+                ->orderBy('created_at', 'desc')
+                ->get();
 //        return view('excelView.sales', array('allorders' => $allorders));
 //        exit();        
         Excel::create('Sales Daybook', function($excel) use($allorders) {
@@ -293,6 +303,17 @@ class SalesDaybookController extends Controller {
 
         $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'delivery_challan_products', 'delivery_order.location', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
         return view('print_sales_order_daybook', compact('allorders'));
+    }
+    
+    public function recover() {
+         $allorders = DeliveryChallan::all();
+         $allorders = DeliveryChallan::where('serial_number','=','DC/10/12/1603P')->get();
+         $allorders[0]->grand_price = 65788.02;
+         $allorders[0]->save();
+         echo "<pre>";
+         print_r($allorders[0]);
+         echo "</pre>";
+         exit;
     }
 
 }

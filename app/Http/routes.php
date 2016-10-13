@@ -223,7 +223,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('print_delivery_challan/{id}', 'DeliveryChallanController@print_delivery_challan');
     Route::get('place_order/{id}', 'InquiryController@place_order');
     Route::post('store_order/{id}', 'InquiryController@store_place_order');
-    Route::get('export_sales_daybook', 'SalesDaybookController@export_sales_daybook');
+    Route::get('export_sales_daybook/{id}', 'SalesDaybookController@export_sales_daybook');
     Route::get('export_product_size', 'ProductsubController@exportProductSize');
     Route::get('print_sales_order_daybook', 'SalesDaybookController@print_sales_order_daybook');
     Route::post('get_product_weight', 'ProductsubController@get_product_weight');
@@ -268,6 +268,9 @@ Route::get('get-data', 'DeliveryOrderController@get_data');
 Route::get('reponse/dropbox/callback',function(){
     echo "Comes";
 });
+
+ Route::get('recover', 'SalesDaybookController@recover');
+
 Route::get('dropbax-demo-functionality', function() {
     $url = 'https://www.dropbox.com/oauth2/authorize';
     $url = '?response_type=';

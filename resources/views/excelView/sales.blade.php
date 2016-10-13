@@ -240,21 +240,22 @@
             <td></td><td></td>
             <td>Tax</td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
-            <td>   <?php
-                        if ($type_of_bill == "P"){
-                            $discount =0;
-                            $loading_charge =0;
-                            $freight =0;
-                            $percent_overhead_total=0;
-                            if(isset($value->discount)){
-                                $discount = $value->discount;
-                            }
-                            if(isset($value->loading_charge)){
-                                $loading_charge = $value->loading_charge;
-                            }
-                            if(isset($value->freight)){
-                                $freight = $value->freight;
-                            }
+            <td>   
+                <?php
+                    if ($type_of_bill == "P"){
+                        $discount =0;
+                        $loading_charge =0;
+                        $freight =0;
+                        $percent_overhead_total=0;
+                        if(isset($value->discount)){
+                            $discount = $value->discount;
+                        }
+                        if(isset($value->loading_charge)){
+                            $loading_charge = $value->loading_charge;
+                        }
+                        if(isset($value->freight)){
+                            $freight = $value->freight;
+                        }
                             
                             if(isset($value->vat_percentage)){
                                 $overhead_total =  $loading_charge +$freight-$discount;
@@ -262,14 +263,6 @@
                                 $percent_overhead_total = ($overhead_total * $value->vat_percentage)/100;
                                 $grand_vat_amt = $grand_vat_amt +$percent_overhead_total;
                             }
-                            
-                            
-                            
-//                            if(isset ($grand_vat_amt) && isset ($value->grand_price))
-//                            {
-//                                $tax_head = $value->grand_price - $grand_vat_amt;
-//                                $grand_vat_amt = $grand_vat_amt + $tax_head;
-//                            }
                             echo number_format($grand_vat_amt, 2, '.', '');
                         }else
                             echo "0.00";
