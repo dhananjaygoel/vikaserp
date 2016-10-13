@@ -183,9 +183,15 @@
                                 $percent_overhead_total = ($overhead_total * $value->vat_percentage)/100;
                                 $grand_vat_amt = $grand_vat_amt +$percent_overhead_total;
                             }
-                        }        
+                               
                 ?>
-                {{ ($value->purchase_advice->vat_percentage != "") ? number_format($grand_vat_amt, 2, '.', '') : '' }}
+                {{ (!empty($grand_vat_amt) ) ? number_format($grand_vat_amt, 2, '.', '') : '0.00' }}
+                
+                        <?php } 
+                        else {
+                            echo "0.00";
+                        }
+                ?>
             
             </td>
             <td></td>
@@ -209,7 +215,12 @@
             <td> <b>Total</b></td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
             <td><b>{{  isset($value->grand_total) ? number_format($value->grand_total, 2, '.', '') : '0.00' }}</b></td>
-            <td><?= "[" . $value['purchase_advice']->vehicle_number . "] / " . $value->remark  ?></td> 
+            <td>
+                <?php
+                 if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
+                            echo "[" . $value['purchase_advice']->vehicle_number . "]";                  ?>
+                    {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}    
+            </td> 
             <td></td>
         </tr>
         
