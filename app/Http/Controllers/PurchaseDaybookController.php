@@ -110,6 +110,9 @@ class PurchaseDaybookController extends Controller {
                 ->where('order_status', 'completed')
                 ->orderBy('created_at', 'desc')
                 ->get();
+        
+//        return view('excelView.purchase',  array('purchase_orders' => $purchase_daybook));
+//        exit;
 
         Excel::create('Purchase Daybook', function($excel) use($purchase_daybook) {
             $excel->sheet('Purchase-Daybook', function($sheet) use($purchase_daybook) {
