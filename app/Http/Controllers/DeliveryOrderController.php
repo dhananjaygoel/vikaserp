@@ -647,8 +647,8 @@ class DeliveryOrderController extends Controller {
             $case = 'all_mixed';
             $vat_input_data = $without_vat_input_data = $input_data;
             if ($input_data['total_price'] <> 0) {
-                $ratio_with_vat = (($total_vat_price) * 100) / $input_data['total_price'];
-                $ratio_without_vat = (($total_without_vat_price) * 100) / $input_data['total_price'];
+                $ratio_with_vat = number_format((float)((($total_vat_price) * 100) / $input_data['total_price']), 2, '.', '');
+                $ratio_without_vat = number_format((float)((($total_without_vat_price) * 100) / $input_data['total_price']), 2, '.', '');
             }
 
             $total_overhead = $input_data['loading'] + $input_data['freight'] + $input_data['discount'];
@@ -657,10 +657,10 @@ class DeliveryOrderController extends Controller {
             $without_vat_share_overhead = number_format((float)(($ratio_without_vat * $total_overhead) / 100),2, '.', '');
 
 
-
+            
            
 
-            $vat_on_price_count = ($total_vat_price * $input_data['vat_percentage']) / 100;
+            $vat_on_price_count = number_format((float)(($total_vat_price * $input_data['vat_percentage']) / 100),2, '.', '');
             $vat_on_overhead_count = number_format((float)(($vat_share_overhead * $input_data['vat_percentage']) / 100),2, '.', '');
 
 
@@ -672,8 +672,25 @@ class DeliveryOrderController extends Controller {
             $vat_input_data['loading'] = number_format((float)($ratio_with_vat * $input_data['loading']) / 100, 2,'.', '');
             $vat_input_data['round_off'] = number_format((float)($ratio_with_vat * $input_data['round_off']) / 100, 2,'.', '');
             $vat_input_data['freight_vat_percentage'] = $vat_input_data['loading_vat_percentage'] = $vat_input_data['discount_vat_percentage'] = number_format((float)$vat_input_data['vat_percentage'], 2,'.', '');
-            $vat_input_data['grand_total'] = number_format((float)$total_vat_price + $vat_on_price_count + $vat_share_overhead + $vat_on_overhead_count+$vat_input_data['round_off'], 2,'.', '');
-
+            $vat_input_data['grand_total'] = number_format((float)($total_vat_price + $vat_on_price_count + $vat_share_overhead + $vat_on_overhead_count+$vat_input_data['round_off']), 2,'.', '');
+//            echo "<pre>";
+//            print_r($total_vat_price );
+//            echo "<br>";
+//            print_r($vat_on_price_count );
+//            echo "<br>";
+//            print_r( $vat_share_overhead );
+//            echo "<br>";
+//            print_r( $vat_on_overhead_count);
+//            echo "<br>";
+//            print_r($vat_input_data['round_off']);
+//            echo "<br>";
+//            print_r($ratio_with_vat);
+//            echo "<br>";
+//            print_r($vat_input_data['grand_total']);
+//            echo "</pre>";
+//            
+//            
+//            exit;
            
 
             $without_vat_input_data['product'] = $without_vat_product;
