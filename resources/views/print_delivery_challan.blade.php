@@ -246,7 +246,7 @@
                 
                  $total_vat_amount =  ($total_price * $allorder->vat_percentage) / 100;
                  
-                  $final_vat_amount = ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) - $discount_vat_amount;
+                  $final_vat_amount = ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
                 
                
 //                if ($prod->unit_id == 1) {
@@ -278,8 +278,11 @@
                             <th> Total Inc. Vat </th>
                         </tr>
                         <tr class="secondrow">
-                            <td> {{ round($total_price+$allorder->loading_charge+ $allorder->freight - $allorder->discount, 2) }}  </td>
-                            <td> {{ $final_vat_amount }}  </td>
+                            <td> {{ round($total_price+$allorder->loading_charge+ $allorder->freight + $allorder->discount, 2) }}  </td>
+                            <td> <?php
+                            $vat = $final_vat_amount;
+                            ?>
+                            {{ round($vat,2) }} </td>
                             <td> {{ round($allorder->grand_price, 2) }} </td>
                         </tr>
                     </table>
@@ -314,7 +317,7 @@
                         </div>
                         <div class="label">&nbsp; Total</div>
                         <div class="value">
-                            <?php $with_total = $total_price + $loading_charge + $allorder->freight - $allorder->discount; ?>
+                            <?php $with_total = $total_price + $loading_charge + $allorder->freight + $allorder->discount; ?>
                             {{ round($with_total, 2) }}
                             &nbsp;
                         </div>

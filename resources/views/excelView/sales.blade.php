@@ -259,21 +259,21 @@
                             $freight = $value->freight;
                         }
                             
-                            if(isset($value->vat_percentage)){
-                                $overhead_total =  $loading_charge +$freight-$discount;
+                        if(isset($value->vat_percentage)){
+                            $overhead_total =  $loading_charge +$freight+$discount;
                                 
-                                $percent_overhead_total = ($overhead_total * $value->vat_percentage)/100;
-                                $grand_vat_amt = $grand_vat_amt +$percent_overhead_total;
-                            }
-                            echo number_format($grand_vat_amt, 2, '.', '');
-                        }else
-                            echo "0.00";
-                        ?></td>
+                            $percent_overhead_total = ($overhead_total * $value->vat_percentage)/100;
+                            $grand_vat_amt = $grand_vat_amt +$percent_overhead_total;
+                        }
+                        echo number_format($grand_vat_amt, 2, '.', '');
+                    }else
+                        echo "0.00";?>
+            </td>
             <td></td><td></td><td></td>
            
         </tr>
          
-         <tr>    
+        <tr>    
             <td>{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
             <td>{{$VchNo}}</td>
             <td></td><td></td>

@@ -477,7 +477,7 @@ function grand_total_challan() {
         if (parseFloat($("#discount_value").val())) {
             discount_value = parseFloat($("#discount_value").val());
             $("#discount_value").val(discount_value.toFixed(2));
-            total_price = parseFloat(total_price) - parseFloat(discount_value);
+            total_price = parseFloat(total_price) + parseFloat(discount_value);
         }
 //        if (parseFloat(discount_vat_percentage) > 0 && parseFloat(discount_value) > 0) {
 //            var subtotal_discount = ((parseFloat(discount_vat_percentage) * parseFloat($("#discount_value").val())) / 100);
