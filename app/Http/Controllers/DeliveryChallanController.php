@@ -256,10 +256,17 @@ class DeliveryChallanController extends Controller {
      */
 
     public function print_delivery_challan($id) {
-
+        
         $serial_number_delivery_order = Input::get('serial_number');
+        
         $current_date = date("m/d/");
         $update_delivery_challan = DeliveryChallan::with('delivery_challan_products')->find($id);
+        
+        if(isset($update_delivery_challan->serial_number) && $update_delivery_challan->challan_status =='completed'){
+            $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
+                        ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
+        }
+        else{
         $vat_applicable = 0;
         $total_vat_amount = 0;
         if (isset($update_delivery_challan->delivery_challan_products) && count($update_delivery_challan->delivery_challan_products) > 0) {
@@ -351,6 +358,7 @@ class DeliveryChallanController extends Controller {
                     curl_close($ch);
                 }
             }
+        }
         }
         return view('print_delivery_challan', compact('allorder', 'total_vat_amount'));
     }
