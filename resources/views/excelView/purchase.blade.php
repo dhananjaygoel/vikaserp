@@ -53,7 +53,7 @@
             <td>{{$VchNo}}</td>
             <td>Purchase</td>
             <td>{{ ($value['supplier']->tally_name != "") ? $value['supplier']->tally_name : 'Advance Sales' }}</td>
-            <td>Sales Account</td>
+            <td>Purchase Account</td>
             <td>{{ isset($value1['purchase_product_details']->alias_name) ? $value1['purchase_product_details']->alias_name : '' }}</td>
              <td>{{ isset($value1['purchase_product_details']->product_category->product_category_name) ? $value1['purchase_product_details']->product_category->product_category_name : '' }}</td>
             <td>{{ isset($value1->actual_pieces) ? $value1->actual_pieces : '' }}</td>
@@ -117,7 +117,12 @@
                         echo number_format($tot_amt, 2, '.', '');
                         ?>
             </td>
-            <td></td>
+            <td>
+                <?php
+                 if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
+                            echo "[" . $value['purchase_advice']->vehicle_number . "]";                  ?>
+                    {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}    
+            </td> 
              <td>{{isset($value->serial_number)?$value->serial_number:''}}</td>
        
             <?php }?>
@@ -134,7 +139,13 @@
             <td>Discount</td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
             <td>{{ isset($value->discount) ? $value->discount : '0.00' }}</td>
-            <td></td>
+            <td>
+                <?php
+                 if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
+                            echo "[" . $value['purchase_advice']->vehicle_number . "]";                  ?>
+                    {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}    
+            </td> 
+            <td>{{isset($value->serial_number)?$value->serial_number:''}}</td>
         </tr> 
         <tr> 
             <td>{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
@@ -143,7 +154,13 @@
             <td>Loading</td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
             <td>{{ isset($value->loading_charge) ? $value->loading_charge : '0.00' }}</td>
-           <td></td>
+            <td>
+                <?php
+                 if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
+                            echo "[" . $value['purchase_advice']->vehicle_number . "]";                  ?>
+                    {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}    
+            </td> 
+           <td>{{isset($value->serial_number)?$value->serial_number:''}}</td>
         </tr> 
         <tr>  
             <td>{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
@@ -152,7 +169,13 @@
             <td>Freight</td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
             <td>{{isset($value->freight) ? $value->freight : '0.00'}}</td>
-           <td></td>
+            <td>
+                <?php
+                 if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
+                            echo "[" . $value['purchase_advice']->vehicle_number . "]";                  ?>
+                    {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}    
+            </td> 
+           <td>{{isset($value->serial_number)?$value->serial_number:''}}</td>
         </tr>
         <tr>    
             <td>{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
@@ -194,7 +217,13 @@
                 ?>
             
             </td>
-            <td></td>
+            <td>
+                <?php
+                 if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
+                            echo "[" . $value['purchase_advice']->vehicle_number . "]";                  ?>
+                    {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}    
+            </td> 
+            <td>{{isset($value->serial_number)?$value->serial_number:''}}</td>
            
         </tr>
          
@@ -205,7 +234,13 @@
             <td>Round Off</td>
             <td></td><td></td><td></td><td></td><td></td><td></td>
             <td>{{ isset($value->round_off) ? $value->round_off : '' }}</td>
-            <td></td>
+            <td>
+                <?php
+                 if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
+                            echo "[" . $value['purchase_advice']->vehicle_number . "]";                  ?>
+                    {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}    
+            </td> 
+           <td>{{isset($value->serial_number)?$value->serial_number:''}}</td>
         </tr>
                     
         <tr style="border:2px solid black">    
@@ -221,7 +256,7 @@
                             echo "[" . $value['purchase_advice']->vehicle_number . "]";                  ?>
                     {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}    
             </td> 
-            <td></td>
+            <td>{{isset($value->serial_number)?$value->serial_number:''}}</td>
         </tr>
         
          
