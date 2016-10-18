@@ -145,7 +145,7 @@
                                         <th>Total Quantity</th>
                                         <th>Pending Quantity</th>
                                         <th class="text-center">Create Delivery Order</th>
-                                        <th class="text-center">Actions</th>
+                                        <th class="text-center" style="width: 15%">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
