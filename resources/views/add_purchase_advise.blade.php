@@ -87,7 +87,7 @@ use Illuminate\Support\Facades\Session;
                                 else
                                     $style = 'style="display: block"';
                                 ?>
-                                <div class="supplier" <?= $style ?>>
+<!--                                <div class="supplier" <?= $style ?>>
                                     <select class="form-control" name="supplier_id" id="supplier_select" onchange="get_default_location();">
                                         <option value="0" selected="">Select supplier</option>
                                         @if(count($customers))
@@ -97,6 +97,16 @@ use Illuminate\Support\Facades\Session;
                                         @endif
                                         <input type="hidden" id="customer_default_location">
                                     </select>
+                                </div>-->
+                                <div class="customer_select_order" style="{{(Input::old('customer_status') == "new_customer")?'display:none':'display:block'}}">
+                                    <div class="col-md-4">
+                                        <div class="form-group searchproduct">
+                                            <input class="form-control focus_on_enter tabindex1" placeholder="Enter Tally Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name" tabindex="1" >
+                                            <input type="hidden" id="existing_customer_id" name="supplier_id">
+                                            <input type="hidden" id="customer_default_location">
+                                                <!--<i class="fa fa-sort-desc " id='existing_customer_id_focus'></i>-->
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <?php
