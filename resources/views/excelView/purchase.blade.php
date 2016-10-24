@@ -100,7 +100,13 @@
                         } else {
                             $vat_amt = 0;
 //                            $total_amt = $total_amt * $value1->actual_pieces * $value1->order_product_details->weight;
+                            if(isset($value1->order_product_details->weight))
                             $tot_amt = $value1->price * $value1->actual_pieces * $value1->order_product_details->weight;
+                        else {
+                             $tot_amt = $value1->price * $value1->actual_pieces;
+                        }
+                            
+                            
                             if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
                                 $grand_vat_amt = $grand_vat_amt + ($tot_amt * ($value['purchase_advice']->vat_percentage / 100));
                             }
