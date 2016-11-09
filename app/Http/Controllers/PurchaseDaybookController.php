@@ -112,7 +112,7 @@ class PurchaseDaybookController extends Controller {
 
         $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
                 ->where('order_status', 'completed')
-                ->where('updated_at','like',$newDate.'%')
+                ->where('expected_delivery_date','like',$newDate.'%')
                 ->orderBy('created_at', 'desc')
                 ->get();
         
