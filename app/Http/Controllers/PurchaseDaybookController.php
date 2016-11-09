@@ -102,12 +102,17 @@ class PurchaseDaybookController extends Controller {
     /*
      * Export/download purchase day book data into excel file
      *
-     */
+     */ 
 
-    public function expert_purchase_daybook() {
+    public function expert_purchase_daybook($id) {
+        if($id <> "all" && $id<>"")
+        $newDate = date("Y-m-d", strtotime($id));
+     else
+      $newDate=""; 
 
         $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
                 ->where('order_status', 'completed')
+                ->where('updated_at','like',$newDate.'%')
                 ->orderBy('created_at', 'desc')
                 ->get();
         

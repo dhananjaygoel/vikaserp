@@ -175,7 +175,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('purchase_order_daybook', 'PurchaseDaybookController');
     Route::post('purchase_order_daybook/{id}', 'PurchaseDaybookController@destroy');
     Route::post('delete_all_daybook', 'PurchaseDaybookController@delete_all_daybook');
-    Route::get('export_purchasedaybook', 'PurchaseDaybookController@expert_purchase_daybook');
+    Route::get('export_purchasedaybook/{id}', 'PurchaseDaybookController@expert_purchase_daybook');
     Route::get('print_purchase_daybook', 'PurchaseDaybookController@print_purchase_daybook');
     Route::get('change_password', 'PasswordController@getPassword');
     Route::post('change_password', 'PasswordController@postPassword');

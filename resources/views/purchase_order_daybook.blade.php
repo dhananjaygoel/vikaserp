@@ -33,10 +33,21 @@
                                 </div>
                             </div>
                         </div>
+                        @if(sizeof($purchase_daybook) > 0)
                         <div class="col-md-4">
                             <a class="btn btn-primary form_button_footer print_purchase_daybook" > Print </a>
-                            <a href="{{url('export_purchasedaybook')}}" class="btn btn-primary form_button_footer" > Export </a>
+                             <?php 
+                            $temp =Request::get('date');
+                           
+                            if(isset($temp) && $temp<>""){
+                             $urltemp = url('export_purchasedaybook/'.$temp);   
+                            }else{
+                            $urltemp = url('export_purchasedaybook/'.'all');
+                            }
+                            ?>
+                            <a href="{{$urltemp}}" class="btn btn-primary form_button_footer" > Export </a>
                         </div>
+                        @endif
                         <div class="clearfix"></div>
                     </div>
                     <div class="clearfix"></div>
