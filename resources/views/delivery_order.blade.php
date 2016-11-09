@@ -12,9 +12,9 @@
                 <input type="hidden" id="module" value="deliveryorder">
                 <h1 class="pull-left">Delivery Orders</h1>
                 <div class="pull-right top-page-ui">
-                    <a href="{{URL::action('DeliveryOrderController@create')}}" class="btn btn-primary pull-right">
+<!--                    <a href="{{URL::action('DeliveryOrderController@create')}}" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Create Delivery order Independently
-                    </a>
+                    </a>-->
                     <div class="form-group pull-right">
                         <div class="col-md-12">
                             <form method="GET" action="{{URL::action('DeliveryOrderController@index')}}" id="filter_form">
