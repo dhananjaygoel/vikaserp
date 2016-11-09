@@ -605,8 +605,8 @@ function product_autocomplete(id) {
                 if (customer_id > 0) {
                     var temp = $.grep(all_data.customer_product_difference, function(e){ return (e.customer_id == customer_id); });
                     var customer = $.grep(temp, function(e){ return (e.product_category_id == result[0].product_category.id); }); 
-                    if (customer.length > 0) {
-                       cust = customer.difference_amount;
+                    if (customer.length > 0) {                       
+                       cust = customer[0].difference_amount;
                     }
                     value = result[0].alias_name;
                     id_value = result[0].id;

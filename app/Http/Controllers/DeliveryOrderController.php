@@ -90,7 +90,7 @@ class DeliveryOrderController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create() {
-
+        return Redirect::to('delivery_order');
         $units = Units::all();
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
