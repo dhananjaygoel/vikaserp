@@ -141,7 +141,7 @@
                                                     <span class="cbt">{{ $i++ }}</span>
                                                 </td>
 
-                                                <td>{{ date("m-d-Y", strtotime($daybook->expected_delivery_date)) }}</td>
+                                                <td>{{ date("m-d-Y", strtotime($daybook->created_at)) }}</td>
                                                 <td>{{ $daybook->serial_number }}</td>
                                                 <td>
                                                     @if($daybook['supplier']->tally_name != "")

@@ -36,11 +36,17 @@ class PurchaseDaybookController extends Controller {
         }
         $purchase_daybook = 0;
         if (Input::get('date') != "") {
-            $purchase_daybook = PurchaseChallan::with('orderedby', 'supplier')
+//            $purchase_daybook = PurchaseChallan::with('orderedby', 'supplier')
+//                    ->where('order_status', 'completed')
+//                    ->whereHas('purchase_advice', function($query) {
+//                        $query->where('purchase_advice_date', '=', date("Y-m-d", strtotime(Input::get('date'))));
+//                    })
+//                    ->with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
+//                    ->orderBy('created_at', 'desc')
+//                    ->Paginate(20);
+            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
                     ->where('order_status', 'completed')
-                    ->whereHas('purchase_advice', function($query) {
-                        $query->where('purchase_advice_date', '=', date("Y-m-d", strtotime(Input::get('date'))));
-                    })
+                    ->where('created_at', 'like','%'.date("Y-m-d", strtotime(Input::get('date'))).'%')
                     ->with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
                     ->orderBy('created_at', 'desc')
                     ->Paginate(20);
@@ -112,7 +118,7 @@ class PurchaseDaybookController extends Controller {
 
         $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
                 ->where('order_status', 'completed')
-                ->where('expected_delivery_date','like',$newDate.'%')
+                ->where('created_at','like',$newDate.'%')
                 ->orderBy('created_at', 'desc')
                 ->get();
         
