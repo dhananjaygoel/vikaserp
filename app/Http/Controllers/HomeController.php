@@ -1861,6 +1861,200 @@ class HomeController extends Controller {
 
 //        }
     }
+    
+    
+        /**
+     * customer App sync inquiries
+     */
+
+//    public function appsyncinquiry($inquiryies = NULL, $inquiry_customers = NULL, $inquiryiesproduct = NULL) {
+    public function appsyncinquiry_customer() {
+
+        $data = Input::all();
+        
+        if (Input::has('flag')) {
+            $flag = (json_decode($data['flag']));
+            if($flag == 1){
+                if (Input::has('customer_id')) {
+                    $customer_id = (json_decode($data['customer_id']));
+                    
+                    return  $customer_id;
+                }
+            }
+            
+        }
+        
+        
+        
+        if (Input::has('inquiry')) {
+            $inquiries = (json_decode($data['inquiry']));
+        }
+
+        if (Input::has('customer')) {
+            $customers = (json_decode($data['customer']));
+        }
+    
+        if (Input::has('inquiry_product')) {
+            $inquiryproduct = (json_decode($data['inquiry_product']));
+        }
+
+        $inquiry_response = [];
+        $customer_list = [];
+        if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '' && Input::get('inquiry_sync_date') != NULL) {
+            $last_sync_date = Input::get('inquiry_sync_date');
+            $inquiry_added_server = Inquiry::where('created_at', '>', $last_sync_date)->with('inquiry_products')->get();
+            $inquiry_response['inquiry_server_added'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : array();
+
+            $inquiry_updated_server = Inquiry::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('inquiry_products')->get();
+            $inquiry_response['inquiry_server_updated'] = ($inquiry_updated_server && count($inquiry_updated_server) > 0) ? $inquiry_updated_server : array();
+
+            /* Send Updated customers */
+            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+            $inquiry_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
+            /* Send New customers */
+            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
+            $inquiry_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
+        } else {
+            $inquiry_added_server = Inquiry::with('inquiry_products')->get();
+            $inquiry_response['inquiry_server_added'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : array();
+        }
+        if (isset($inquiries)) {
+            foreach ($inquiries as $key => $value) {
+                if ($value->server_id > 0) {
+                    $add_inquiry = Inquiry::find($value->server_id);
+                    if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
+                        $add_customers = new Customer();
+                        $add_customers->owner_name = $value->customer_name;
+                        $add_customers->contact_person = $value->customer_contact_peron;
+                        $add_customers->phone_number1 = $value->customer_mobile;
+                        $add_customers->credit_period = $value->customer_credit_period;
+                        $add_customers->customer_status = $value->customer_status;
+                        $add_customers->save();
+                        $customer_list[$value->id] = $add_customers->id;
+                    }
+                   
+                    $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
+                    $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+                    $datetime = new DateTime($date);
+                    $add_inquiry->vat_percentage = ($value->vat_percentage == "" || empty($value->vat_percentage)) ? 0 : $value->vat_percentage;
+                    if (($value->other_location == "") || empty($value->other_location)) {
+                        $add_inquiry->delivery_location_id = $value->delivery_location_id;
+                        $add_inquiry->location_difference = $value->location_difference;
+                    } else {
+                        $add_inquiry->delivery_location_id = 0;
+                        $add_inquiry->other_location = $value->other_location;
+                        $add_inquiry->location_difference = $value->location_difference;
+                    }
+                    if (isset($customer_list[$value->id]) && $customer_list[$value->id] > 0) {
+                        $add_inquiry->customer_id = $customer_list[$value->id];
+                    } else {
+                        $add_inquiry->customer_id = $value->customer_server_id;
+                        if($value->customer_name=="" && $value->customer_contact_peron=="" && $value->customer_mobile="" && $value->customer_credit_period=""){
+                        $update_customers = Customer::find($value->customer_server_id);
+                        $update_customers->addNewCustomer($value->customer_name, $value->customer_contact_peron, $value->customer_mobile, $value->customer_credit_period);}
+                    }
+                    $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
+                    $add_inquiry->remarks = ($value->remarks != '') ? $value->remarks : '';
+                    $add_inquiry->inquiry_status = $value->inquiry_status;
+                    $delete_old_inquiry_products = InquiryProducts::where('inquiry_id', '=', $value->server_id)->delete();
+                    foreach ($inquiryproduct as $product_data) {
+                        $inquiry_products = array();
+                        if ($product_data->inquiry_id == $value->id) {
+                            $inquiry_products = [
+                                'app_product_id'=> $product_data->id,
+                                'inquiry_id' => $value->server_id,
+                                'product_category_id' => $product_data->inquiry_product_id,
+                                'unit_id' => $product_data->unit_id,
+                                'quantity' => $product_data->quantity,
+                                'price' => $product_data->price,
+                                'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
+                                'remarks' => '',
+                            ];
+                            $add_inquiry_products = InquiryProducts::create($inquiry_products);
+                        }
+                    }
+                    $inquiry_products = InquiryProducts::where('inquiry_id', '=', $value->server_id)->first();
+                    $add_inquiry->updated_at = $inquiry_products->updated_at;
+                    $add_inquiry->save();
+                    $inquiry_response[$value->server_id] = Inquiry::find($value->server_id);
+                    $inquiry_response[$value->server_id]['inquiry_products'] = InquiryProducts::where('inquiry_id', '=', $value->server_id)->get();
+                } else {
+
+                    if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
+                        $add_customers = new Customer();
+                        $add_customers->owner_name = $value->customer_name;
+                        $add_customers->contact_person = $value->customer_contact_peron;
+                        $add_customers->phone_number1 = $value->customer_mobile;
+                        $add_customers->credit_period = $value->customer_credit_period;
+                        $add_customers->customer_status = $value->customer_status;
+                        $add_customers->save();
+                        $customer_list[$value->id] = $add_customers->id;
+                    }
+                    $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
+                    $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+                    $datetime = new DateTime($date);
+                    $add_inquiry = new Inquiry();
+                    $add_inquiry->customer_id = (!empty($value->customer_server_id) && $value->customer_server_id > 0) ? $value->customer_server_id : $customer_list[$value->id];
+                    $add_inquiry->created_by = 1;
+                    if (($value->other_location == "") || empty($value->other_location)) {
+                        $add_inquiry->delivery_location_id = $value->delivery_location_id;
+                        $add_inquiry->location_difference = $value->location_difference;
+                    } else {
+                        $add_inquiry->delivery_location_id = 0;
+                        $add_inquiry->other_location = $value->other_location;
+                        $add_inquiry->location_difference = $value->location_difference;
+                    }
+
+                    $add_inquiry->vat_percentage = ($value->vat_percentage != "") ? $value->vat_percentage : 0;
+                    $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
+                    $add_inquiry->remarks = ($value->remarks != '') ? $value->remarks : '';
+                    $add_inquiry->inquiry_status = $value->inquiry_status;
+                    $add_inquiry->save();
+                    $inquiry_id = $add_inquiry->id;
+                    $inquiry_products_track = 0;
+                    foreach ($inquiryproduct as $product_data) {
+                        $inquiry_products = array();
+                        if ($product_data->inquiry_id == $value->id) {
+                            $inquiry_products = [
+                                'app_product_id'=>$product_data->id,
+                                'inquiry_id' => $inquiry_id,
+                                'product_category_id' => $product_data->inquiry_product_id,
+                                'unit_id' => $product_data->unit_id,
+                                'quantity' => $product_data->quantity,
+                                'price' => $product_data->price,
+                                'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
+                                'remarks' => '',
+                            ];
+                            $add_inquiry_products = InquiryProducts::create($inquiry_products);
+                        }
+                    }
+                    $inquiry_response[$value->id] = $inquiry_id;
+                }
+            }
+        }
+
+       
+
+        if (count($customer_list) > 0) {
+            $inquiry_response['customer_new'] = $customer_list;
+        }
+        if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '' && Input::get('inquiry_sync_date') != NULL) {
+            $inquiry_response['inquiry_deleted'] = Inquiry::withTrashed()->where('deleted_at', '>=', Input::get('inquiry_sync_date'))->select('id')->get();
+        }
+        $inquiry_date = Inquiry::select('updated_at')->
+                        orderby('updated_at', 'DESC')->first();
+        if (!empty($inquiry_date))
+            $inquiry_response[
+                    'latest_date'] = $inquiry_date->updated_at->toDateTimeString();
+        else
+            $inquiry_response['latest_date'] = "";
+
+        return json_encode($inquiry_response);
+
+    }
+    
+    
+    
 
     /**
      * App sync and comare last sync dated and send updated date

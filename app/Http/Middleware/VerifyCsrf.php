@@ -17,6 +17,7 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
         'applogin',
         'appsync',
         'appsyncinquiry',
+        'appsyncinquiry_customer',
         'app_customer_login',
         'app_contactus',
         'app_addcustomer',
