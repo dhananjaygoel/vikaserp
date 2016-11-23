@@ -1878,12 +1878,6 @@ class HomeController extends Controller {
                 if (Input::has('customer_id')) {
                     $customer_id = (json_decode($data['customer_id']));
                     
-                    return  $customer_id;
-                }
-            }
-            
-        }
-        
         
         
         if (Input::has('inquiry')) {
@@ -1902,20 +1896,20 @@ class HomeController extends Controller {
         $customer_list = [];
         if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '' && Input::get('inquiry_sync_date') != NULL) {
             $last_sync_date = Input::get('inquiry_sync_date');
-            $inquiry_added_server = Inquiry::where('created_at', '>', $last_sync_date)->with('inquiry_products')->get();
+            $inquiry_added_server = Inquiry::where('created_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->with('inquiry_products')->get();
             $inquiry_response['inquiry_server_added'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : array();
 
-            $inquiry_updated_server = Inquiry::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('inquiry_products')->get();
+            $inquiry_updated_server = Inquiry::where('updated_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->whereRaw('updated_at > created_at')->with('inquiry_products')->get();
             $inquiry_response['inquiry_server_updated'] = ($inquiry_updated_server && count($inquiry_updated_server) > 0) ? $inquiry_updated_server : array();
 
             /* Send Updated customers */
-            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->whereRaw('updated_at > created_at')->get();
             $inquiry_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
             /* Send New customers */
-            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
+            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->get();
             $inquiry_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
-            $inquiry_added_server = Inquiry::with('inquiry_products')->get();
+            $inquiry_added_server = Inquiry::where('customer_id', '=', $customer_id)->with('inquiry_products')->get();
             $inquiry_response['inquiry_server_added'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : array();
         }
         if (isset($inquiries)) {
@@ -2050,7 +2044,13 @@ class HomeController extends Controller {
             $inquiry_response['latest_date'] = "";
 
         return json_encode($inquiry_response);
-
+                      
+                }
+            }
+            
+        }
+        
+       
     }
     
     
