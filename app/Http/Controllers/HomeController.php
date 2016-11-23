@@ -1488,7 +1488,13 @@ class HomeController extends Controller {
      */
     public function appSyncOrder_customer() {
         
-
+                if (Input::has('flag')) {
+            $flag = (json_decode($data['flag']));
+            if($flag == 1){
+                if (Input::has('customer_id')) {
+                    $customer_id = (json_decode($data['customer_id']));
+                    
+               
         $data = Input::all();
         $flag=0 ;
         $order_response = [];
@@ -1509,20 +1515,20 @@ class HomeController extends Controller {
         }
         if (Input::has('order_sync_date') && Input::get('order_sync_date') != '') {
             $last_sync_date = Input::get('order_sync_date');
-            $order_added_server = Order::where('created_at', '>', $last_sync_date)->with('all_order_products')->get();
+            $order_added_server = Order::where('created_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->with('all_order_products')->get();
             $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
 
-            $order_updated_server = Order::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('all_order_products')->get();
+            $order_updated_server = Order::where('updated_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->whereRaw('updated_at > created_at')->with('all_order_products')->get();
             $order_response['order_server_updated'] = ($order_updated_server && count($order_updated_server) > 0) ? $order_updated_server : '';
 
             /* Send Updated customers */
-            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->whereRaw('updated_at > created_at')->get();
             $order_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
             /* Send New customers */
-            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
+            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->get();
             $order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
-            $order_added_server = Order::with('all_order_products')->get();
+            $order_added_server = Order::where('customer_id', '=', $customer_id)->with('all_order_products')->get();
             $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
         }
 
@@ -1658,6 +1664,10 @@ class HomeController extends Controller {
             $order_response['latest_date'] = "";
 
         return json_encode($order_response);
+        
+         }                
+        }                
+      }
     }
 
     /**
