@@ -1482,6 +1482,183 @@ class HomeController extends Controller {
 
         return json_encode($order_response);
     }
+        
+    /**
+     * App sync order for customer app
+     */
+    public function appSyncOrder_customer() {
+        
+
+        $data = Input::all();
+        $flag=0 ;
+        $order_response = [];
+        $customer_list = [];
+        if(Input::has('flag')){
+            $flag = (json_decode($data['flag']));
+            
+        }
+        return $flag;
+        if (Input::has('order')) {
+            $orders = (json_decode($data['order']));
+        }
+        if (Input::has('customer')) {
+            $customers = (json_decode($data['customer']));
+        }
+        if (Input::has('order_product')) {
+            $orderproduct = (json_decode($data['order_product']));
+        }
+        if (Input::has('order_sync_date') && Input::get('order_sync_date') != '') {
+            $last_sync_date = Input::get('order_sync_date');
+            $order_added_server = Order::where('created_at', '>', $last_sync_date)->with('all_order_products')->get();
+            $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
+
+            $order_updated_server = Order::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('all_order_products')->get();
+            $order_response['order_server_updated'] = ($order_updated_server && count($order_updated_server) > 0) ? $order_updated_server : '';
+
+            /* Send Updated customers */
+            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+            $order_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
+            /* Send New customers */
+            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
+            $order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
+        } else {
+            $order_added_server = Order::with('all_order_products')->get();
+            $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
+        }
+
+        foreach ($orders as $key => $value) {
+            if ($value->server_id == 0) {
+                if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
+                    $add_customers = new Customer();
+                    $add_customers->addNewCustomer($value->customer_name, $value->customer_contact_person, $value->customer_mobile, $value->customer_credit_period);
+                    $customer_list[$value->id] = $add_customers->id;
+                }
+                if ($value->supplier_server_id == 0) {
+                    $order_status = 'warehouse';
+                    $supplier_id = 0;
+                } else {
+                    $other_location_difference;
+                    $order_status = 'supplier';
+                    $supplier_id = $value->supplier_server_id;
+                }
+                $order = new Order();
+                $order->order_source = $order_status;
+                $order->supplier_id = $supplier_id;
+                if(isset($value->vat_percentage)){
+                    $order->vat_percentage = $value->vat_percentage;
+                }
+                $order->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
+                $order->created_by = 1;
+//                $order->vat_percentage = ($value->vat_percentage == '') ? '' : $value->vat_percentage;
+                $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
+                $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+                $datetime = new DateTime($date);
+                $order->expected_delivery_date = $datetime->format('Y-m-d');
+                $order->remarks = $value->remarks;
+                $order->flaged = ($value->flaged != '') ? $value->flaged : 0;
+                $order->order_status = $value->order_status;
+                if ($value->delivery_location_id > 0) {
+                    $order->delivery_location_id = $value->delivery_location_id;
+                    $order->location_difference = $value->location_difference;
+                } else {
+                    $order->delivery_location_id = 0;
+                    $order->other_location = $value->other_location;
+                    $order->location_difference = $value->other_location_difference;
+                }
+                $order->save();
+                $order_id = $order->id;
+                $order_products = array();
+                foreach ($orderproduct as $product_data) {
+                    if ($product_data->order_id == $value->id) {
+                        $order_products = [
+                            'app_product_id'=>$product_data->id,
+                            'order_id' => $order_id,
+                            'order_type' => 'order',
+                            'product_category_id' => $product_data->product_category_id,
+                            'unit_id' => $product_data->unit_id,
+                            'quantity' => $product_data->quantity,
+                            'price' => $product_data->price,
+                            'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
+                            'remarks' => '',
+                        ];
+                        AllOrderProducts::create($order_products);
+                    }
+                }
+                $order_response[$value->id] = $order_id;
+            } else {
+                $order = Order::find($value->server_id);
+                if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
+                    $add_customers = new Customer();
+                    $add_customers->addNewCustomer($value->customer_name, $value->customer_contact_person, $value->customer_mobile, $value->customer_credit_period);
+                    $customer_list[$value->id] = $add_customers->id;
+                }
+                $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
+                $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+                $datetime = new DateTime($date);
+//                $order->vat_percentage = ($value->vat_percentage == '') ? '' : $value->vat_percentage;
+                if ($value->supplier_server_id == 0) {
+                    $order_status = 'warehouse';
+                    $supplier_id = 0;
+                } else {
+                    $other_location_difference;
+                    $order_status = 'supplier';
+                    $supplier_id = $value->supplier_server_id;
+                }
+                $order->supplier_id = $supplier_id;
+                $order->remarks = ($value->remarks != '') ? $value->remarks : '';
+                $order->order_status = $value->order_status;
+                if(isset($value->vat_percentage)){
+                    $order->vat_percentage = $value->vat_percentage;
+                }
+                $order->flaged = ($value->flaged != '') ? $value->flaged : 0;
+                if ($value->delivery_location_id > 0) {
+                    $order->delivery_location_id = $value->delivery_location_id;
+                    $order->location_difference = $value->location_difference;
+                } else {
+                    $order->delivery_location_id = 0;
+                    $order->other_location = $value->other_location;
+                    $order->location_difference = $value->other_location_difference;
+                }
+                $order->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
+                $order->expected_delivery_date = $datetime->format('Y-m-d');
+                AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->delete();
+                foreach ($orderproduct as $product_data) {
+                    $order_products = array();
+                    if ($product_data->order_id == $value->id) {
+                        $order_products = [
+                            'app_product_id'=>$product_data->id,
+                            'order_id' => $value->server_id,
+                            'product_category_id' => $product_data->product_category_id,
+                            'unit_id' => $product_data->unit_id,
+                            'quantity' => $product_data->quantity,
+                            'price' => $product_data->price,
+                            'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
+                            'remarks' => '',
+                        ];
+                        AllOrderProducts::create($order_products);
+                    }
+                }
+                $order_prod = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $value->server_id)->first();
+                $order->updated_at = $order_prod->updated_at;
+                $order->save();
+                $order_response[$value->server_id] = Order::find($value->server_id);
+                $order_response[$value->server_id]['all_order_products'] = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->get();
+            }
+        }
+        if (count($customer_list) > 0) {
+            $order_response['customer_new'] = $customer_list;
+        }
+        if (Input::has('order_sync_date') && Input::get('order_sync_date') != '' && Input::get('order_sync_date') != NULL) {
+            $order_response['order_deleted'] = Order::withTrashed()->where('deleted_at', '>=', Input::get('order_sync_date'))->select('id')->get();
+        }
+        $order_date = Order::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($order_date))
+            $order_response['latest_date'] = $order_date->updated_at->toDateTimeString();
+        else
+            $order_response['latest_date'] = "";
+
+        return json_encode($order_response);
+    }
 
     /**
      * App sync inquiries
