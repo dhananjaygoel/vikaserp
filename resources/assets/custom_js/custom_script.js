@@ -606,7 +606,7 @@ function product_autocomplete(id) {
                     var temp = $.grep(all_data.customer_product_difference, function(e){ return (e.customer_id == customer_id); });
                     var customer = $.grep(temp, function(e){ return (e.product_category_id == result[0].product_category.id); }); 
                     if (customer.length > 0) {                       
-                       cust = customer[0].difference_amount;
+                       cust = customer[0].difference_amount;                       
                     }
                     value = result[0].alias_name;
                     id_value = result[0].id;
@@ -620,10 +620,12 @@ function product_autocomplete(id) {
                                   // product_price=parseFloat(result[0].product_category.price+parseFloat(result[0].difference)+location_difference) ;
                 }             
              }
+             
              else
              {
                  value = 'No Products';
              }
+             product_price = parseFloat(product_price).toFixed(1);             
               $("#product_price_" + id).val(product_price); // to add price in the textbox
                     $("#add_product_id_" + id).val(id_value);
                     $("#add_product_id_" + id).attr('data-curname', value);
