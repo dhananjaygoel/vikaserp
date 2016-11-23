@@ -1650,7 +1650,7 @@ class HomeController extends Controller {
         if (Input::has('order_sync_date') && Input::get('order_sync_date') != '' && Input::get('order_sync_date') != NULL) {
             $order_response['order_deleted'] = Order::withTrashed()->where('deleted_at', '>=', Input::get('order_sync_date'))->select('id')->get();
         }
-        $order_date = Order::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $order_date = Order::select('updated_at')->where('customer_id','=',$customer_id)->orderby('updated_at', 'DESC')->first();
         if (!empty($order_date))
             $order_response['latest_date'] = $order_date->updated_at->toDateTimeString();
         else
@@ -2038,8 +2038,9 @@ class HomeController extends Controller {
         if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '' && Input::get('inquiry_sync_date') != NULL) {
             $inquiry_response['inquiry_deleted'] = Inquiry::withTrashed()->where('deleted_at', '>=', Input::get('inquiry_sync_date'))->select('id')->get();
         }
-        $inquiry_date = Inquiry::select('updated_at')->
-                        orderby('updated_at', 'DESC')->first();
+        $inquiry_date = Inquiry::select('updated_at')
+                                ->where('customer_id','=',$customer_id)
+                                ->orderby('updated_at', 'DESC')->first();
         if (!empty($inquiry_date))
             $inquiry_response[
                     'latest_date'] = $inquiry_date->updated_at->toDateTimeString();
