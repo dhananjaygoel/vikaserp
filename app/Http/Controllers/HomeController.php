@@ -1496,14 +1496,7 @@ class HomeController extends Controller {
             if($flag == 1){
                 if (Input::has('customer_id')) {
                     $customer_id = (json_decode($data['customer_id']));
-                    
-               
-       
-        if(Input::has('flag')){
-            $flag = (json_decode($data['flag']));
-            
-        }
-        return $flag;
+        
         if (Input::has('order')) {
             $orders = (json_decode($data['order']));
         }
