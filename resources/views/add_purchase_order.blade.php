@@ -75,8 +75,17 @@ use Illuminate\Support\Facades\Session;
                                     $style = 'style="display: block"';
                                 }
                                 ?>
-
-                                <div class="supplier customer_select" <?= $style ?>>
+                                 <div class="customer_select_order" style="{{(Input::old('customer_status') == "new_customer")?'display:none':'display:block'}}">
+                                    <div class="col-md-4">
+                                        <div class="form-group searchproduct">
+                                            <input class="form-control focus_on_enter tabindex1" placeholder="Enter Tally Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name" tabindex="1" >
+                                            <input type="hidden" id="existing_customer_id" name="autocomplete_supplier_id">
+                                            <input type="hidden" id="customer_default_location">
+                                                <!--<i class="fa fa-sort-desc " id='existing_customer_id_focus'></i>-->
+                                        </div>
+                                    </div>
+                                </div>
+<!--                                <div class="supplier customer_select" <?= $style ?>>
                                     <div class="col-md-12">
                                         <div class="form-group searchproduct">
                                             <input class="form-control" placeholder="Enter Supplier Name " type="text" name="existing_supplier_name" id="existing_supplier_name">
@@ -85,7 +94,7 @@ use Illuminate\Support\Facades\Session;
                                             <i class="fa fa-search search-icon"></i>
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
                             </div>
                             <?php
                             if (Input::old('supplier_status') == "new_supplier") {
