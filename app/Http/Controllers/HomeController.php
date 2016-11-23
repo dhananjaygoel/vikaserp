@@ -1487,18 +1487,18 @@ class HomeController extends Controller {
      * App sync order for customer app
      */
     public function appSyncOrder_customer() {
-        
-                if (Input::has('flag')) {
+         $data = Input::all();
+        $flag=0 ;
+        $order_response = [];
+        $customer_list = [];
+        if (Input::has('flag')) {
             $flag = (json_decode($data['flag']));
             if($flag == 1){
                 if (Input::has('customer_id')) {
                     $customer_id = (json_decode($data['customer_id']));
                     
                
-        $data = Input::all();
-        $flag=0 ;
-        $order_response = [];
-        $customer_list = [];
+       
         if(Input::has('flag')){
             $flag = (json_decode($data['flag']));
             
