@@ -1906,7 +1906,7 @@ class HomeController extends Controller {
             $inquiry_response['inquiry_server_updated'] = ($inquiry_updated_server && count($inquiry_updated_server) > 0) ? $inquiry_updated_server : array();
 
             /* Send Updated customers */
-            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->whereRaw('updated_at > created_at')->get();
+            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->where('id', '=', $customer_id)->whereRaw('updated_at > created_at')->get();
             $inquiry_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
             /* Send New customers */
             $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->get();
