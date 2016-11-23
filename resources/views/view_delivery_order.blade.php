@@ -67,7 +67,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><span>Delivery Location Difference: </span>
+                                        <td><span>Delivery Freight: </span>
                                             {{$delivery_data->location_difference}}
                                         </td>
                                     </tr>

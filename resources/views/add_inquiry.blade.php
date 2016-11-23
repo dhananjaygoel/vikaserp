@@ -85,9 +85,9 @@
                                         </select>
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="location">Location Difference: </label>
-                                        <!--<input id="location_difference" class="form-control" placeholder="Location Difference " name="location_difference" value="" type="tel">-->
-                                        <input id="location_difference" class="form-control focus_on_enter tabindex3" placeholder="Location Difference " name="location_difference" value="" type="tel" tabindex="3" onkeypress=" return numbersOnly(this,event,true,true);">
+                                        <label for="location">Freight: </label>
+                                        <!--<input id="location_difference" class="form-control" placeholder="Freight " name="location_difference" value="" type="tel">-->
+                                        <input id="location_difference" class="form-control focus_on_enter tabindex3" placeholder="Freight " name="location_difference" value="" type="tel" tabindex="3" onkeypress=" return numbersOnly(this,event,true,true);">
                                     </div>
                                 </div>
                             </div>

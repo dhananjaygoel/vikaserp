@@ -64,12 +64,12 @@
                                             @foreach($delivery_location as $location)
                                             @if($order->delivery_location_id == $location->id)
                                             <td><span>Delivery Location: </span>{{$location->area_name}}</td>
-                                            <td><span>Delivery Location Difference: </span>{{$order->location_difference}}</td>
+                                            <td><span>Delivery Freight: </span>{{$order->location_difference}}</td>
                                             @endif
                                             @endforeach
                                             @else
                                             <td><span>Delivery Location: </span>{{$order->other_location}}</td>
-                                            <td><span>Delivery Location Difference: </span>{{$order->location_difference}}</td>
+                                            <td><span>Delivery Freight: </span>{{$order->location_difference}}</td>
                                             @endif
                                         </tr>
                                         <tr><td colspan="2"><span class="underline">Ordered Product Details </span></td></tr>

@@ -9,7 +9,7 @@
             <td class="heading1">Phone Number</td>
             <td class="heading1">Credit Period(Days)</td>
             <td class="heading1">Delivery Location</td>
-            <td class="heading1">Location Difference</td>
+            <td class="heading1">Freight</td>
 
             <td class="heading1">Product(Alias)</td>
             <td class="heading1">Quantity</td>

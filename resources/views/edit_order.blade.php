@@ -171,8 +171,8 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="location">Location Difference</label>
-                                    <input id="location_difference" class="form-control focus_on_enter" placeholder="Location Difference" onkeypress=" return numbersOnly(this,event,true,true);" name="location_difference" value="{{$order->location_difference}}" type="tel" tabindex="3">
+                                    <label for="location">Freight</label>
+                                    <input id="location_difference" class="form-control focus_on_enter" placeholder="Freight" onkeypress=" return numbersOnly(this,event,true,true);" name="location_difference" value="{{$order->location_difference}}" type="tel" tabindex="3">
                                 </div>
                             </div>
                         </div>

@@ -10,7 +10,7 @@
             <td class="heading1">Serial Number</td>
             <td class="heading1">Mobile Number</td>
             <td class="heading1">Delivery Location</td>
-            <td class="heading1">Delivery Location Difference</td>
+            <td class="heading1">Delivery Freight</td>
             <td class="heading1">Product(Alias)</td>
             <td class="heading1">Present shipping</td>
             <td class="heading1">Unit</td>
