@@ -23,7 +23,7 @@ Route::post('appsync', 'HomeController@appsync');
 Route::post('appsyncinquiry', 'HomeController@appsyncinquiry');
 Route::post('appsyncinquiry_customer', 'HomeController@appsyncinquiry_customer');
 Route::post('appsyncorder', 'HomeController@appSyncOrder');
-Route::post('appSyncOrder_customer', 'HomeController@appSyncOrder_customer');
+Route::post('appsyncorder_customer', 'HomeController@appSyncOrder_customer');
 Route::post('appsyncdeliveryorder', 'HomeController@appSyncDeliveryOrder');
 Route::post('appsyncdeliverychallan', 'HomeController@appSyncDeliveryChallan');
 Route::post('appsyncpurchaseadvise', 'HomeController@appSyncPurchaseAdvise');
