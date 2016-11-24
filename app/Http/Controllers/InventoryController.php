@@ -318,7 +318,15 @@ class InventoryController extends Controller {
             });
         }
         $product_category = ProductCategory::orderBy('created_at', 'desc')->get();
-        $inventory_newlist = $query->with('product_sub_category')->paginate(50);
+        //$inventory_newlist = $query->with('product_sub_category')->paginate(50);
+//        $inventory_newlist = $query->with(array('product_sub_category' => function($query1) {
+//        $query1->orderBy('alias_name', 'ASC');
+//    }))->paginate(50);
+        
+        $inventory_newlist = $query->with('product_sub_category')
+                            ->join('product_sub_category', 'inventory.product_sub_category_id', '=', 'product_sub_category.id')
+                            ->orderBy('product_sub_category.alias_name', 'ASC')
+                            ->paginate(50);
         $inventory_newlist->setPath('inventory');
         return view('add_inventory')->with(['inventory_list' => $inventory_newlist, 'product_category' => $product_category]);
     }

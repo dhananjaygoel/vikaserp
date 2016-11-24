@@ -226,7 +226,7 @@ class CustomerController extends Controller {
         }
         $managers = User::where('role_id', '=', 0)->get();
         $locations = DeliveryLocation::all();
-        $product_category = ProductCategory::all();
+        $product_category = ProductCategory::whereNotIn('product_category_name',['Local Coil- Light','Local Coil'])->get();
         return View::make('edit_customers', array('customer' => $customer, 'managers' => $managers, 'locations' => $locations, 'product_category' => $product_category, 'states' => $states, 'cities' => $cities));
     }
 
