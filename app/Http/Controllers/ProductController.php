@@ -40,7 +40,8 @@ class ProductController extends Controller {
 
     public function index() {
         /*client want to delete 2 record so just elimated from query */
-        $product_cat = ProductCategory::orderBy('created_at', 'desc')->whereNotIn('product_category_name',['Local Coil- Light','Local Coil'])->Paginate(20);
+       // $product_cat = ProductCategory::orderBy('created_at', 'desc')->whereNotIn('product_category_name',['Local Coil- Light','Local Coil'])->Paginate(20);
+        $product_cat = ProductCategory::orderBy('created_at', 'desc')->Paginate(20);
         $product_cat->setPath('product_category');
         return view('product_category', compact('product_cat'));
     }
