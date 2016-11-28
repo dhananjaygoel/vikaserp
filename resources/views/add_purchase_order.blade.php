@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title','Create Purchase Orders')
-@section('content')sdfds
+@section('content')
 <?php
 
 use Illuminate\Support\Facades\Session;
@@ -140,11 +140,10 @@ use Illuminate\Support\Facades\Session;
                                                 $j = 10;
                                             }
                                             for ($i = 1; $i <= $j; $i++) {
-                                                if($i == 1)
+                                                 if($i == 1)
                                                 $z = $i +1;
                                             else {
-                                                $z = 0;
-                                            }
+                                            $z = 0;}
                                                 ?>
                                                 <tr id="add_row_{{$i}}" class="add_product_row">
                                                     <td class="col-md-3">
@@ -156,12 +155,12 @@ use Illuminate\Support\Facades\Session;
                                                     </td>
                                                     <td class="col-md-1">
                                                         <div class="form-group">
-                                                            <input id="quantity_{{$i}}"  class="form-control each_product_qty focus_on_enter " placeholder="Qnty" name="product[{{$i+1}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>" onkeypress=" return numbersOnly(this,event,true,false); " >
+                                                            <input id="quantity_{{$i}}"  class="form-control each_product_qty" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>" onkeypress=" return numbersOnly(this,event,true,false);">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-2">
                                                         <div class="form-group ">
-                                                            <select class="form-control focus_on_enter tabindex{{$i}}" name="product[{{$i}}][units]" id="units_{{$i}}">
+                                                            <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
                                                                 @foreach($units as $unit)
                                                                 <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
                                                                 @endforeach
