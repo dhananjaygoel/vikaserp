@@ -634,6 +634,7 @@ function product_autocomplete_purchase(id) {
                 success: function (data) {
                     var obj = jQuery.parseJSON(data);
                     $("#add_product_id_" + id).val(obj.data_array[0].id);
+                    $('#quantity_' + id).focus();
                 },
             });
         }

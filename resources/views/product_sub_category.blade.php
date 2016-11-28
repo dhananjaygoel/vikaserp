@@ -88,7 +88,7 @@
                                             <th>Standard Length</th>
                                             <th>Today's Price</th>
                                             <th class="col-md-2">Difference</th>
-                                            <th >Total Difference</th>
+                                            <th >Total Price </th>
                                             @if( Auth::user()->role_id == 0 )
                                             <th >Actions</th>
                                             @endif
