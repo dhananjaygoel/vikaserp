@@ -64,13 +64,18 @@ header('Content-Type: text/html');?>
                                                 <button type="submit" class="btn btn-success col-xs-12" >Login</button>
                                             </div>
                                         </div>
-
+                                         
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-
+<div class="row">
+    <div class="col-xs-3"></div>
+                                            <div class="col-xs-6">
+                                        <a class ="btn btn-default btn-primary btn-success website col-xs-12" href="http://www.vikasinfra.com/" target="_blank">Website </a>
+  </div>
+                                        </div>
 
                 </div>
             </div>
