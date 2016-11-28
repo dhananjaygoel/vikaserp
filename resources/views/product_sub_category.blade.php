@@ -88,6 +88,7 @@
                                             <th>Standard Length</th>
                                             <th>Today's Price</th>
                                             <th class="col-md-2">Difference</th>
+                                            <th >Total Difference</th>
                                             @if( Auth::user()->role_id == 0 )
                                             <th >Actions</th>
                                             @endif
@@ -126,8 +127,10 @@
                                                 ?>
                                                 @if($sign == '-')
                                                 {{ $produ_sub['product_category']->price - substr($produ_sub->difference,1) }}
+                                                <?php $prod_diff = $produ_sub['product_category']->price - substr($produ_sub->difference,1); ?>
                                                 @else
                                                 {{ $produ_sub['product_category']->price + $produ_sub->difference }}
+                                                <?php $prod_diff = $produ_sub['product_category']->price + $produ_sub->difference; ?>
                                                 @endif
                                             </td>
                                             <td>
@@ -137,6 +140,8 @@
                                                         <input type="tel" class="form-control" required="" name="difference_{{$i}}" value="{{ $produ_sub->difference}}" onkeypress=" return numbersOnly(this,event,true,true);">
                                                         <input type="hidden" class="form-control" name="id_{{$i}}" value="{{ $produ_sub->id}}">
                                                         <input type="hidden" name="_token" value="{{csrf_token()}}" id="_token">
+                                                        
+                                                        <?php $price_diff = $produ_sub->difference ;?>
                                                     </div>
                                                     <div class="form-group col-md-2 difference_form">
                                                         <input class="btn btn-primary" type="button" class="form-control" value="save" onclick="update_difference(this);" >
@@ -144,7 +149,11 @@
                                                 </div>
                                                 @else
                                                 <div class="form-group col-md-6">{{ $produ_sub->difference }} </div>
+                                                 <?php $price_diff = $produ_sub->difference;?>
                                                 @endif
+                                            </td>
+                                            <td>
+                                                <label>{{ $produ_sub->difference + $prod_diff}}</label>
                                             </td>
                                             @if( Auth::user()->role_id == 0 )
                                             <td>
