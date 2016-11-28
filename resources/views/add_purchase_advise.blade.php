@@ -152,11 +152,17 @@ use Illuminate\Support\Facades\Session;
                                                 $j = 10;
                                             }
                                             for ($i = 1; $i <= $j; $i++) {
+                                                 if($i == 1)
+                                                $z = $i +1;
+                                            else {
+                                                $z = 0;
+                                            }
+                                                
                                                 ?>
                                                 <tr id="add_row_{{$i}}" class="add_product_row">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
-                                                            <input class="form-control each_product_detail" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="purchase_order_advise_product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>">
+                                                            <input class="form-control each_product_detail focus_on_enter tabindex{{$i}}" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="purchase_order_advise_product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>" tabindex="{{$z}}">
                                                             <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
                                                             <input type="hidden" name="product[{{$i}}][purchase]" value="">
                                                             <i class="fa fa-search search-icon"></i>

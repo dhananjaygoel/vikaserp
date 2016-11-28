@@ -833,11 +833,14 @@ function purchase_order_advise_product_autocomplete(id) {
                     var arr1 = main_array['data_array'];
                     response(arr1);
                     $("#add_product_name_" + id).removeClass('loadinggif');
+                    
                 },
             });
         },
         select: function (event, ui) {
             $("#add_product_id_" + id).val(ui.item.id);
+             $("#quantity_" + id).removeClass('error_validation');
+             $('#quantity_' + id).focus();
         }
     });
 }
