@@ -386,6 +386,62 @@ $("body").delegate(".calc_actual_quantity", "keyup", function (event) {
     }
     fetch_price();
 });
+
+
+
+/**
+ *  DC : to check we get all data
+ */
+function error_check() {
+        var rowId = 1;
+        
+    var current_row_count = $(".add_product_row").length;
+     for (var i = 0; i <= current_row_count + 1; i++) {
+         $('#actual_pieces_' + i).removeClass('error_validation');
+         $('#average_weight_' + i).removeClass('error_validation');
+         var actual_pieces = $('#actual_pieces_' + i).val();
+          if (actual_pieces == '') {
+              $('#actual_pieces_' + i).addClass('error_validation');
+              if(rowId == 1){
+               $('#actual_pieces_' + i).focus();
+               rowId =2;
+               $('#total_actual_qty').val(0);
+                $('#total_avg_qty').val(0);
+                $('#total_price').val('0.00');
+                $('#total_actual_quantity_calc').val(0);
+                 for (var j = 0; j <= current_row_count + 1; j++) {
+                     $('#amount_'+j).val(0);
+                 }
+           }
+        }
+        
+        var actual_pieces = $('#average_weight_' + i).val();
+          if (actual_pieces == '') {
+              $('#average_weight_' + i).addClass('error_validation');
+              if(rowId == 1){
+               $('#average_weight_' + i).focus();
+               rowId =2;
+               $('#total_actual_qty').val(0);
+                $('#total_avg_qty').val(0);
+                $('#total_price').val('0.00');
+                $('#total_actual_quantity_calc').val(0);
+                 for (var j = 0; j <= current_row_count + 1; j++) {
+                     $('#amount_'+j).val(0);
+                 }
+           }
+        }
+     }
+   
+   
+   }
+
+
+
+$("body").delegate(".error_check", "keyup", function (event) {    
+       error_check();
+ 
+});
+
 /**
  * Grand total for creating independent delivery order
  */
@@ -413,6 +469,122 @@ function default_delivery_location() {
             if (opt.value === location_id)
                 $(opt).attr('selected', 'selected');
         });
+    }
+}
+
+
+/*
+ * 
+ * @returns {undefined}\
+ * 
+ */
+
+function fetch_average_quantity() { 
+   
+    var total_avg_qty = 0;
+    var current_row_count = $(".add_product_row").length;
+    for (var i = 0; i <= current_row_count + 1; i++) {
+        if (parseFloat($('#product_price_' + i).val())) {
+            var quantity = $("#actual_quantity_readonly_" + i).val();
+            if (quantity > 0) {               
+                if ($("#actual_pieces_" + i).val() > 0 && $("#actual_pieces_" + i).val() != 0 || $("#actual_quantity_readonly_" + i).val() != '') {
+                    quantity = parseFloat($("#actual_pieces_" + i).val());
+                }
+                if ($("#average_weight_" + i).val() > 0 && $("#average_weight_" + i).val() != 0 || $("#actual_quantity_readonly_" + i).val() != '') {
+                    rate = parseFloat($("#average_weight_" + i).val());
+                }
+            } else {
+                if ($("#actual_pieces_" + i).val() > 0 && $("#actual_pieces_" + i).val() == 0 || $("#actual_quantity_readonly_" + i).val() == '') {
+                    quantity = parseFloat($("#actual_pieces_" + i).val());
+                }
+                if ($("#average_weight_" + i).val() > 0 && $("#average_weight_" + i).val() == 0 || $("#actual_quantity_readonly_" + i).val() == '') {
+                    rate = parseFloat($("#average_weight_" + i).val());
+                }
+            }
+           // var rate = $("#product_price_" + i).val();
+          
+            var amount = parseFloat(rate) * parseInt(quantity);
+            
+            total_avg_qty = parseFloat(total_avg_qty) + parseInt(amount);
+            if (amount > 0) {
+                $("#average_quantity_" + i).html('<span class="text-center">' + amount.toFixed(0) + '</span>');
+//                $("#total_avg_qty").html('<span class="text-center">' + total_avg_qty.toFixed(2) + '</span>');
+                 $('#total_avg_qty').val(total_avg_qty.toFixed(0));
+            }
+        }
+    }
+}
+
+
+/*
+ * 
+ * @returns {undefined}\
+ * 
+ */
+
+function fetch_actual_quantity() {   
+    var total_avg_qty = 0;
+    var current_row_count = $(".add_product_row").length;
+     
+    Total_Avg_qty = parseFloat($("#total_avg_qty").val()); 
+    Total_Actual_qty = parseFloat($("#total_actual_qty").val());
+    Total_Actual_qty_calc = 0;
+    Total_Amount = 0;
+    for (var i = 0; i <= current_row_count + 1; i++) {
+        if (parseFloat($('#product_price_' + i).val())) {
+            
+            actual_pieces = parseFloat($("#actual_pieces_" + i).val());
+            average_weight = parseFloat($("#average_weight_" + i).val());
+             
+            var average_quantity = parseFloat(average_weight) * parseInt(actual_pieces);
+            total_avg_qty = parseFloat(total_avg_qty) + parseInt(average_quantity);
+            
+            
+            var actual_qty =  parseFloat(average_quantity)/parseFloat(Total_Avg_qty) * parseFloat(Total_Actual_qty);
+           if(! isNaN(actual_qty) ){
+            $("#actual_quantity_readonly_" + i).html('<span class="text-center">' + actual_qty.toFixed(0) + '</span>');
+           $("#actual_quantity_" + i).val(actual_qty.toFixed(0));
+            }
+           
+            product_price = parseFloat($("#product_price_" + i).val());
+            
+            var amount  = parseFloat(actual_qty)+ parseFloat(product_price);
+            if (amount > 0) {
+                $("#amount_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
+            }
+            Total_Actual_qty_calc = parseFloat(Total_Actual_qty_calc)+ parseFloat(actual_qty);
+            Total_Amount = parseFloat(Total_Amount)+ parseFloat(amount);
+          
+        }
+         
+    }
+    $('#total_actual_quantity_calc').val(Total_Actual_qty_calc.toFixed(0));
+    $('#total_price').val(Total_Amount.toFixed(2));
+    
+    /*to check is actual qty and total avg qty have diffence less than 5%*/
+    
+    var aq =  $('#total_actual_quantity_calc').val();
+    var tavgq = $('#total_avg_qty').val();
+    
+    var diff = Math.abs( parseFloat(aq)- parseFloat(tavgq));
+    var percentage_diff = parseFloat(tavgq)* 0.05;
+    
+    if(percentage_diff >= diff){
+         $('#total_actual_qty').removeClass('error_validation');
+    }
+    else{
+        $('#total_actual_qty').addClass('error_validation');
+        $('#total_actual_qty').focus();
+        
+                
+                $('#total_price').val('0.00');
+                $('#total_actual_quantity_calc').val(0);
+                var current_row_count = $(".add_product_row").length;
+              
+                 for (var j = 0; j <= current_row_count + 1; j++) {
+                     console.log(current_row_count);
+                     $("#amount_" + j).html('<span class="text-center">' + 0 + '</span>');
+                 }
     }
 }
 

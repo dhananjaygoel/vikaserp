@@ -56,8 +56,10 @@
                                     <tbody>
                                         <tr class="headingunderline">
                                             <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
-                                                <td><span>Actual Quantity</span></td>
                                             <td><span>Actual Pieces</span></td>
+                                            <td><span>Average Weight</span></td>
+                                            <td><span>Average Quantity</span></td>
+                                            <td><span>Actual Quantity</span></td>    
                                             <td><span>Present Shipping</span></td>
                                             <td><span>Rate</span></td>
                                             <td><span>Vat</span></td>
@@ -77,20 +79,33 @@
                                                     <input type="hidden" name="product[{{$key}}][order]" value="{{$product->id}}">
                                                 </div>
                                             </td>
-                                            <td class="col-md-1 sfdsf">
+                                            <td class="col-md-2">
                                                 <div class="form-group">
+                                                    <input id="actual_pieces_{{$key}}" class="form-control " placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" >
+                                                </div>
+                                            </td>
+                                             <td class="col-md-2">
+                                                <div class="form-group">
+                                                    <input id="average_weight_{{$key}}" class="form-control" placeholder="Average Weight" name="product[{{$key}}][average_weight]" value="" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" onblur="fetch_average_quantity();">
+                                                </div>
+                                            </td>
+                                             <td class="col-md-1">
+<!--                                                <div class="form-group">
+                                                    <input type="text" class="form-control" name="average_quantity" id="average_quantity" readonly="readonly">-->
+                                                     <div class="form-group"><div id="average_quantity_{{$key}}"></div></div>
+                                                </div>
+                                            </td>
+                                            <td class="col-md-1 sfdsf">
+                                                <div class="form-group"><div id="actual_quantity_readonly_{{$key}}" name="product[{{$key}}][actual_quantity]"></div></div>
+                                                <input id="actual_quantity_{{$key}}"  name="product[{{$key}}][actual_quantity]" value="" type="hidden" >
+<!--                                                <div class="form-group">
                                                     <input id="quantity_{{$key}}" type="hidden" value="{{ $product->present_shipping}}" name="product[{{$key}}][quantity]">
                                                     @if($product->present_shipping >=0)
                                                     <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="" type="text" onkeypress=" return numbersOnly(this,event,true,true);" onblur="fetch_price();">
                                                     @elseif($product->present_shipping <0)
                                                     <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="" type="text" onkeypress=" return numbersOnly(this,event,true,true);" onblur="fetch_price();">
                                                     @endif
-                                                </div>
-                                            </td>
-                                            <td class="col-md-2">
-                                                <div class="form-group">
-                                                    <input id="actual_pieces_{{$key}}" class="form-control calc_actual_quantity" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" onblur="fetch_price();">
-                                                </div>
+                                                </div>-->
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
@@ -98,7 +113,7 @@
                                                     <input id="present_shipping_{{$key}}" class="form-control text-center" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{ $product->present_shipping}}" type="hidden" >
                                                 </div>
                                             </td>
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
                                                 <div class="form-group">{{$product->price}}<input type="hidden" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="fetch_price();"></div>
                                             </td>
                                             <td class="col-md-1">
@@ -155,6 +170,18 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="form-group">
+                            
+                            <label for="total_actual_qty">
+                                <b class="challan">Actual Quantity*</b> 
+                                    <input type="text" class="form-control error_check" id="total_actual_qty" name="total_actual_qty" placeholder="Enter Actual Quantity" onblur="fetch_actual_quantity();" onfocus="error_check(this)" onkeypress=" return numbersOnly(this,event,false,false);"> 
+                            </label>
+                         &nbsp;&nbsp;
+                             <label for="total_avg_qty">
+                                <b class="challan">Total Avg Quantity*</b>
+                                <input type="text" class="form-control" id="total_avg_qty" name="total_avg_qty" placeholder="" readonly="readonly">
+<!--                                <div class="form-group"><div id="total_avg_qty"></div></div>-->
+                                </div>
+                                <div class="form-group">    
                             <label for="total">
                                 <b class="challan">Total</b>
                                 <span class="gtotal">
@@ -165,7 +192,7 @@
                             <label for="total">
                                 <b class="challan">Total Actual Quantity</b>
                                 <span class="gtotal">
-                                    <input type="text" class="form-control" id="total_actual_quantity" name="total_actual_quantity" placeholder="" readonly="readonly">
+                                    <input type="text" class="form-control" id="total_actual_quantity_calc" name="total_actual_quantity_calc" placeholder="" readonly="readonly">
                                 </span>
                             </label>
                         </div>

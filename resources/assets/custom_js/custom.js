@@ -1736,6 +1736,16 @@ $('body').delegate(".btn_delorderto_delchallan", "click", function () {
             $('#challan_vehicle_number').addClass('error_validation');
             status_form = 1;
         }
+        
+        if ($("#total_actual_qty").val() == "") {
+            $('#total_actual_qty').addClass('error_validation');
+            status_form = 1;
+        }
+        
+        if($( "#total_actual_qty" ).hasClass( "error_validation" ))
+        {
+            status_form = 1;
+        }
     }
 //    if (j == tot_products) {
 //        for (i = 0; i <= tot_products; i++) {
