@@ -46,6 +46,7 @@
                                 <table id="add_product_table_delivery_challan" class="table table-hover">
                                     <tbody>
                                         <tr class="headingunderline">
+                                            
                                             <td><span>Select Product</span></td>
                                             <td><span>Actual Quantity</span></td>
                                             <td><span>Actual Pieces</span></td>
@@ -54,6 +55,7 @@
                                             <td class="inquiry_vat_chkbox"><span>Vat</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Amount</span></td>
+                                            <td><span>Remove Product</span></td>
                                         </tr>
                                         <?php $key = 1; ?>
                                         @foreach($allorder['all_order_products'] as $product)
@@ -94,7 +96,9 @@
                                             <td class="col-md-1">
                                                 <div class="form-group inquiry_vat_chkbox">
                                                     <!--<input type="text" class="form-control" id="product_vatpercentage_{{$key}}" value="{{$product->vat_percentage}}" name="product[{{$key}}][vat_percentage]" placeholder="Vat Percenatge" onblur="fetch_price({{$key}})">-->
-                                                    <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes">
+                                                    <input class="vat_chkbox" disabled="" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes">
+                                                    
+                                                    <input class="vat_chkbox" type="hidden" value="{{($product->vat_percentage>0)?'1':'0'}}" name="product[{{$key}}][vat_percentage_value]" value="yes" id = "product_vat_percentage_value_{{$key}}">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -111,6 +115,10 @@
                                             <td class="col-md-1">
                                                 <div class="form-group"><div id="amount_{{$key}}"></div></div>
                                             </td>
+                                            <td class="col-md-1">
+                                                <button id="delete_{{$key}}" type="button" onclick="clear_data(this); fetch_price();" class="btn btn-default"><i class="fa  fa-times fa-lg red"></i></button>
+                                              
+                                            </td>
                                         </tr>
                                         <?php $key++ ?>
                                         @endif
@@ -126,7 +134,7 @@
                                             <td class="col-md-1">
                                                 <div class="form-group">
                                                     <input id="quantity_{{$key}}" type="hidden" value="" name="product[{{$key}}][quantity]">
-                                                    <input id="actual_quantity_{{$key}}" class="form-control delivery_challan_qty" placeholder="Qnty" name="product[{{$key}}][actual_quantity]" value="" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" onblur="fetch_price();">
+                                                    <input id="actual_quantity_{{$key}}" class="form-control delivery_challan_qty" placeholder="Qnty" name="product[{{$key}}][actual_quantity]" value="" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" onblur="fetch_price(); set_value(this); " data-bind="{{$key}}">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -147,7 +155,9 @@
                                             <td class="col-md-1">
                                                 <div class="form-group inquiry_vat_chkbox">
                                                     <!--<input type="tel" class="form-control" id="product_vatpercentage_{{$key}}" value="" name="product[{{$key}}][vat_percentage]" placeholder="Vat Percentage" onblur="fetch_price({{$key}})">-->
-                                                    <input class="vat_chkbox" type="checkbox" name="product[{{$key}}][vat_percentage]" value="yes">
+                                                    <input class="vat_chkbox" type="checkbox" id = "product[{{$key}}][vat_percentage]" name="product[{{$key}}][vat_percentage]" {{($product->vat_percentage>0)?'checked':''}} disabled="" value="yes" >
+                                                    
+                                                    <input class="vat_chkbox" type="hidden" value="{{($product->vat_percentage>0)?'1':'0'}}" id ="product_vat_percentage_value_{{$key}}" name="product[{{$key}}][vat_percentage_value]" value="yes">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -166,6 +176,8 @@
                                                     <div id="amount_{{$key}}"></div>
                                                 </div>
                                             </td>
+                                            
+                                            
                                         </tr>
                                     </tbody>
                                 </table>
@@ -216,7 +228,7 @@
                             <div class="form-group">
                                 <div class="col-md-12 no_left_margin">
                                     <label for="loading"><b class="challan">Loading</b></label>
-                                    <input id="loading_charge" class="form-control" placeholder="Loading Charges" name="loading" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$allorder->loading_charge}}" type="tel" onblur="grand_total_challan();">
+                                    <input id="loading_charge" class="form-control" placeholder="Loading Charges" name="loading" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$allorder->loading_charge}}" type="tel" onblur="grand_total_challan();" readonly="readonly">
                                 </div>
                                 
 <!--                                <div class="col-md-4">
@@ -239,7 +251,7 @@
                             <div class="form-group">
                                 <div class="col-md-12 no_left_margin">
                                     <label for="Discount"><b class="challan">Discount</b></label>
-                                    <input id="discount_value" class="form-control" placeholder="Discount " name="discount" value="{{$allorder->discount}}" type="tel" onblur="grand_total_challan(); " onkeypress=" return numbersOnly(this,event,true,true);" onkeypress=" return numbersOnly(this,event,true,true);">
+                                    <input id="discount_value" class="form-control" placeholder="Discount " name="discount" value="{{$allorder->discount}}" type="tel" onblur="grand_total_challan(); " onkeypress=" return numbersOnly(this,event,true,true);" onkeypress=" return numbersOnly(this,event,true,true);" readonly="readonly">
                                 </div>
 <!--                                <div class="col-md-4">
                                     <label for="Loading_discount_percentage"><b class="challan">Discount Vat Percentage</b></label>
@@ -258,7 +270,7 @@
                             <div class="form-group">
                                 <div class="col-md-12 no_left_margin">
                                     <label for="Freight"><b class="challan">Freight</b></label>
-                                    <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="{{$allorder->freight}}" type="text" onkeypress=" return numbersOnly(this,event,true,true);" onblur="grand_total_challan();">
+                                    <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="{{$allorder->freight}}" type="text" onkeypress=" return numbersOnly(this,event,true,true);" onblur="grand_total_challan();" readonly="readonly">
                                 </div>
 <!--                                <div class="col-md-4">
                                     <label for="Loading_frieght_percentage"><b class="challan">Freight Vat Percentage</b></label>
@@ -280,7 +292,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="roundoff"><b class="challan">Round Off</b></label>
-                                <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" onkeypress=" return numbersOnly(this,event,true,true);" value="{{($allorder->round_off != '')?$allorder->round_off:''}}" type="tel" onblur="grand_total_challan();">
+                                <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" onkeypress=" return numbersOnly(this,event,true,true);" value="{{($allorder->round_off != '')?$allorder->round_off:''}}" type="tel" onblur="grand_total_challan();" readonly="readonly">
                             </div>
                             @if($allorder->vat_percentage==0 || $allorder->vat_percentage=='')
                             <!--                            <div class="form-group">

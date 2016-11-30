@@ -172,6 +172,11 @@ $(document).ready(function () {
     });
     $("#add_product_row_delivery_challan").on("click", function () {
         var current_row_count = $(".add_product_row").length + 1;
+        var vat_count = $(".add_product_row").length - 2;       
+        var isVAT = $("#product_vat_percentage_value_"+vat_count).val();       
+        var isChecked = 'checked';
+        if(isVAT == 0)
+            isChecked = '';
         var baseurl = $('#baseurl').attr('name');
         $.ajax({
             type: "GET",
@@ -216,7 +221,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-1">' +
                 '<div class="form-group inquiry_vat_chkbox">' +
-                '<input type="checkbox" class="vat_chkbox" name="product[' + current_row_count + '][vat_percentage]" value="yes">' +
+                '<input type="checkbox" class="vat_chkbox" name="product[' + current_row_count + '][vat_percentage]" disabled="" '+isChecked+' value="yes">' +
                 '</div>' +
                 '</td>' +
                 '<td class="col-md-2">' +
@@ -1593,7 +1598,8 @@ $('body').delegate(".btn_edit_delivery_challan", "click", function () {
         }
         var tot_products = $(".add_product_row").length;
         var j = 0;
-        for (i = 1; i <= tot_products; i++) {
+       
+        for (i = 1; i <= tot_products-1; i++) {
             if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
                 j++;
             } else {

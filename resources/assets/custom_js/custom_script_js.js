@@ -334,6 +334,35 @@ function grand_total_delivery_order() {
     $('#grand_total').val(grand_total);
 }
 
+function  set_value(id)
+{
+    $('#quantity_'+$('#'+id.id).data().bind).val($('#'+id.id).val());
+}
+
+
+/*
+ * 
+ * function use to clear data/ delete data
+ * 
+ */
+function  clear_data(id)
+{
+   // $('#quantity_'+$('#'+id.id).data().bind).val($('#'+id.id).val());
+    var retVal = confirm("Do you want to continue ?");
+    
+     if( retVal == true ){
+    var myID = id.id.split('delete_');   
+    
+    $('#delivery_challan_product_name_'+myID[1]).val('');
+    $('#actual_quantity_'+myID[1]).val('');
+    $('#actual_pieces_'+myID[1]).val('');
+    $('#product_price_'+myID[1]).val('');
+    $('#add_row_'+myID[1]).css('display','none');
+    
+     }
+   
+}
+
 /**
  * Fetch price of the product
  */

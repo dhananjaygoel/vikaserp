@@ -139,21 +139,21 @@
                                                 </span>
                                             </a>
                                             @if(Auth::user()->role_id == 0)
-<!--                                            <a href="{{URL::action('DeliveryChallanController@edit', ['id'=> $challan->id])}}" class="table-link" title="edit">
+                                            <a href="{{URL::action('DeliveryChallanController@edit', ['id'=> $challan->id])}}" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a>-->
+                                            </a>
                                             @endif
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                            <!--                                        <a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
+<!--                                                                                    <a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
                                                                                         <span class="fa-stack">
                                                                                             <i class="fa fa-square fa-stack-2x"></i>
                                                                                             <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                                                         </span>
-                                                                                    </a>
-                                            -->
+                                                                                    </a>-->
+                                            
                                             <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_delivery_challan({{$challan->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>

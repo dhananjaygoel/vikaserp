@@ -138,6 +138,7 @@ class DeliveryChallanController extends Controller {
         $delivery_order_id = $delivery_challan->delivery_order_id;
         $delivery_order = DeliveryOrder::find($delivery_order_id);
          
+        if(isset($delivery_order)){
         if(isset($input_data['challan_driver_contact'])){
             $delivery_order->driver_contact_no = $input_data['challan_driver_contact'];
         }        
@@ -146,7 +147,15 @@ class DeliveryChallanController extends Controller {
             $delivery_order->vehicle_number = $input_data['challan_vehicle_number'];
         }
         $delivery_order->save();       
+        }
         
+        if(isset($delivery_challan->vat_percentage) && $delivery_challan->vat_percentage>0){
+            $input_data['grand_total'] = $input_data['grand_total'] + ($input_data['grand_total']*$delivery_challan->vat_percentage/100);
+            
+            $input_data['grand_total'] = number_format((float)$input_data['grand_total'], 2,'.', '');
+        
+        }
+       
         $delivery_challan->bill_number = $input_data['billno'];
         $delivery_challan->loaded_by = $input_data['loadedby'];
 //        $delivery_challan->labours = $input_data['labour'];
@@ -156,11 +165,11 @@ class DeliveryChallanController extends Controller {
         $delivery_challan->round_off = $input_data['round_off'];
         $delivery_challan->grand_price = $input_data['grand_total'];
         $delivery_challan->remarks = trim($input_data['challan_remark']);
-        if (isset($input_data['loading_vat_percentage'])) {
-            $delivery_challan->loading_vat_percentage = $input_data['loading_vat_percentage'];
-        } else {
-            $delivery_challan->loading_vat_percentage = 0;
-        }
+//        if (isset($input_data['loading_vat_percentage'])) {
+//            $delivery_challan->loading_vat_percentage = $input_data['loading_vat_percentage'];
+//        } else {
+//            $delivery_challan->loading_vat_percentage = 0;
+//        }
         if (isset($input_data['freight_vat_percentage'])) {
             $delivery_challan->freight_vat_percentage = $input_data['freight_vat_percentage'];
         } else {
@@ -196,7 +205,7 @@ class DeliveryChallanController extends Controller {
 //            $delivery_challan->update([
 //                "bill_number" => $input_data['billno']]);
 //        }
-
+        
         AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
         if ($j != 0) {
             $order_products = array();
@@ -212,7 +221,7 @@ class DeliveryChallanController extends Controller {
                         'quantity' => $product_data['actual_quantity'],
                         'present_shipping' => $product_data['actual_quantity'],
                         'price' => $product_data['price'],
-                        'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
+'vat_percentage' => (isset($product_data['vat_percentage_value']) && $product_data['vat_percentage_value'] == '1') ? 1 : 0,
                         'from' => $input_data['order_id'],
                         'parent' => $input_data['order'],
                     ];
