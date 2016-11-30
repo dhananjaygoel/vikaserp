@@ -548,7 +548,7 @@ function fetch_actual_quantity() {
            
             product_price = parseFloat($("#product_price_" + i).val());
             
-            var amount  = parseFloat(actual_qty)+ parseFloat(product_price);
+            var amount  = parseFloat(actual_qty)* parseFloat(product_price);
             if (amount > 0) {
                 $("#amount_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
             }
