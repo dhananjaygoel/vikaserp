@@ -112,7 +112,7 @@
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label for="total"><b class="challan">Total: </b></label> <?php print_r($total_amount + $allorder->freight + $allorder->loading_charge - $allorder->discount);?>
+                            <label for="total"><b class="challan">Total: </b></label> <?php print_r($total_amount + $allorder->freight + $allorder->loading_charge + $allorder->discount);?>
                         </div>
                         <hr>
                         <div class="form-group">
