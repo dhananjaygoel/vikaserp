@@ -147,17 +147,28 @@ class SalesDaybookController extends Controller {
     }
     
     public function export_sales_daybook($id) {
-       
+     set_time_limit(0);
      if($id <> "all" && $id<>"")
         $newDate = date("Y-m-d", strtotime($id));
      else
       $newDate=""; 
+//       $count = DeliveryChallan::where('challan_status', '=', 'completed')
+//                ->where('updated_at','like',$newDate.'%')
+//                ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details','delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location')
+//                ->orderBy('created_at', 'desc')
+//                ->count();
+//        echo "<pre>";
+//        print_r($count);
+//        echo "</pre>";
+//        exit;
+//        $total_count =   $count /4;       
        
-        
+       
         $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
                 ->where('updated_at','like',$newDate.'%')
                 ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details','delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location')
                 ->orderBy('created_at', 'desc')
+//                ->take($total_count)
                 ->get();
 //        return view('excelView.sales', array('allorders' => $allorders));
 //        exit();        

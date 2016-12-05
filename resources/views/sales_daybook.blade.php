@@ -38,7 +38,7 @@
                             $urltemp = url('export_sales_daybook/'.'all');
                             }
                             ?>
-                            <a href="{{$urltemp}}" class="btn btn-primary form_button_footer" >Export</a>                            
+                            <a href="{{$urltemp}}" class="btn btn-primary form_button_footer" target="_blank" >Export</a>                            
                         </div>
                         @endif
                     </div>
