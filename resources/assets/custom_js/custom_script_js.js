@@ -599,8 +599,8 @@ function fetch_actual_quantity() {
     var taq =  $('#total_actual_qty').val();
     var tavgq = $('#total_avg_qty').val();
     
-    var diff = Math.abs( parseFloat(aq)- parseFloat(tavgq));
-    var percentage_diff = parseFloat(tavgq)* 0.05;
+    var diff = Math.abs( parseFloat(taq)- parseFloat(tavgq));
+    var percentage_diff = parseFloat(tavgq)* 0.05;    
     
     if(percentage_diff >= diff){
          $('#total_actual_qty').removeClass('error_validation');         
