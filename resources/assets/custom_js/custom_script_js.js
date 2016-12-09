@@ -556,7 +556,7 @@ function fetch_average_quantity() {
 function fetch_actual_quantity() {   
     var total_avg_qty = 0;
     var current_row_count = $(".add_product_row").length;
-     
+    
     Total_Avg_qty = parseFloat($("#total_avg_qty").val()); 
     Total_Actual_qty = parseFloat($("#total_actual_qty").val());
     Total_Actual_qty_calc = 0;
@@ -596,25 +596,48 @@ function fetch_actual_quantity() {
     /*to check is actual qty and total avg qty have diffence less than 5%*/
     
     var aq =  $('#total_actual_quantity_calc').val();
+    var taq =  $('#total_actual_qty').val();
     var tavgq = $('#total_avg_qty').val();
     
     var diff = Math.abs( parseFloat(aq)- parseFloat(tavgq));
     var percentage_diff = parseFloat(tavgq)* 0.05;
     
     if(percentage_diff >= diff){
-         $('#total_actual_qty').removeClass('error_validation');
+         $('#total_actual_qty').removeClass('error_validation');         
+         
+         if(parseFloat(taq) != parseFloat(aq))
+         {
+            var diffreancce = parseFloat(taq) - parseFloat(aq);
+            var current_row_count = $(".add_product_row").length;
+            actual_qty = actual_qty + parseFloat(diffreancce);
+             
+            $("#actual_quantity_readonly_"+current_row_count).html('<span class="text-center">' + actual_qty.toFixed(0) + '</span>');
+            $("#actual_quantity_"+current_row_count).val(actual_qty.toFixed(0));
+            
+            product_price = parseFloat($("#product_price_" + current_row_count).val());
+            
+            var amount  = actual_qty* parseFloat(product_price);
+            var all_toatl_after_calc =0;
+            $("#amount_" + current_row_count).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
+            $('#total_actual_quantity_calc').val(parseFloat(aq)+parseFloat(diffreancce));
+             for (var i = 1; i <= current_row_count ; i++) {
+                all_toatl_after_calc = parseFloat(all_toatl_after_calc) +(parseFloat($("#actual_quantity_"+i).val()) * parseFloat($("#product_price_" + i).val()));
+             }      
+            $("#total_price").val(all_toatl_after_calc.toFixed(2));
+           
+         }
+       
     }
     else{
         $('#total_actual_qty').addClass('error_validation');
         $('#total_actual_qty').focus();
-        
                 
                 $('#total_price').val('0.00');
                 $('#total_actual_quantity_calc').val(0);
                 var current_row_count = $(".add_product_row").length;
               
                  for (var j = 0; j <= current_row_count + 1; j++) {
-                     console.log(current_row_count);
+//                     console.log(current_row_count);
                      $("#amount_" + j).html('<span class="text-center">' + 0 + '</span>');
                  }
     }
