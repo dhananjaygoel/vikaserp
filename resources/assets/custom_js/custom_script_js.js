@@ -571,15 +571,16 @@ function fetch_actual_quantity() {
             total_avg_qty = parseFloat(total_avg_qty).toFixed(2) + parseInt(average_quantity).toFixed(2);
             
            
-            var actual_qty =  parseFloat(average_quantity)/parseFloat(Total_Avg_qty) * parseFloat(Total_Actual_qty);
-           if(! isNaN(actual_qty) ){
-            $("#actual_quantity_readonly_" + i).html('<span class="text-center">' + actual_qty.toFixed(2) + '</span>');
-           $("#actual_quantity_" + i).val(actual_qty.toFixed(0));
+            var actual_qty =  (parseFloat(average_quantity)/parseFloat(Total_Avg_qty) * parseFloat(Total_Actual_qty));
+           actual_qty = parseFloat(actual_qty.toFixed(0));
+            if(! isNaN(actual_qty) ){
+            $("#actual_quantity_readonly_" + i).html('<span class="text-center">' + actual_qty.toFixed(0) + '</span>');
+           $("#actual_quantity_" + i).val(actual_qty);
             }
            
             product_price = parseFloat($("#product_price_" + i).val());
             
-            var amount  = parseFloat(actual_qty)* parseFloat(product_price);
+            var amount  = actual_qty* parseFloat(product_price);
             if (amount > 0) {
                 $("#amount_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
             }
