@@ -531,14 +531,16 @@ function fetch_average_quantity() {
                 }
             }
            // var rate = $("#product_price_" + i).val();
-          
-            var amount = parseFloat(rate) * parseInt(quantity);
             
-            total_avg_qty = parseFloat(total_avg_qty) + parseInt(amount);
+            var amount = parseFloat(rate.toFixed(2)) * parseInt(quantity.toFixed(2));
+           
+            total_avg_qty = total_avg_qty + amount;
+//            total_avg_qty = parseFloat(total_avg_qty.toFixed(2)) + parseInt(amount.toFixed(2));
+           
             if (amount > 0) {
-                $("#average_quantity_" + i).html('<span class="text-center">' + amount.toFixed(0) + '</span>');
+                $("#average_quantity_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
 //                $("#total_avg_qty").html('<span class="text-center">' + total_avg_qty.toFixed(2) + '</span>');
-                 $('#total_avg_qty').val(total_avg_qty.toFixed(0));
+                 $('#total_avg_qty').val(total_avg_qty.toFixed(2));
             }
         }
     }
@@ -565,13 +567,13 @@ function fetch_actual_quantity() {
             actual_pieces = parseFloat($("#actual_pieces_" + i).val());
             average_weight = parseFloat($("#average_weight_" + i).val());
              
-            var average_quantity = parseFloat(average_weight) * parseInt(actual_pieces);
-            total_avg_qty = parseFloat(total_avg_qty) + parseInt(average_quantity);
+            var average_quantity = parseFloat(average_weight).toFixed(2) * parseInt(actual_pieces).toFixed(2);
+            total_avg_qty = parseFloat(total_avg_qty).toFixed(2) + parseInt(average_quantity).toFixed(2);
             
-            
+           
             var actual_qty =  parseFloat(average_quantity)/parseFloat(Total_Avg_qty) * parseFloat(Total_Actual_qty);
            if(! isNaN(actual_qty) ){
-            $("#actual_quantity_readonly_" + i).html('<span class="text-center">' + actual_qty.toFixed(0) + '</span>');
+            $("#actual_quantity_readonly_" + i).html('<span class="text-center">' + actual_qty.toFixed(2) + '</span>');
            $("#actual_quantity_" + i).val(actual_qty.toFixed(0));
             }
            
