@@ -3306,9 +3306,9 @@ class HomeController extends Controller {
      * This function takes backup of whole datbase of production server machine
      */
     public function database_backup_live() {
-        $DBUSER = "vikaserp_agsus";
-        $DBPASSWD = "passags756";
-        $DATABASE = "vikaserp_ags";
+        $DBUSER = "agstechn_vauser";
+        $DBPASSWD = "vikasuser23210";
+        $DATABASE = "agstechn_vauser";
         $filename = "backup-" . date("d-m-Y") . ".sql.gz";
         $mime = "application/x-gzip";
         header("Content-Type: " . $mime);
