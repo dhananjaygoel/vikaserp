@@ -156,9 +156,9 @@
     padding-left: 10px;
     padding-right:0px;
     width:100%;
-}.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
     background: none;
-
 }
 .search_form{
     float: left !important;
@@ -191,14 +191,12 @@
 .search_button{
     margin-left: 7px !important;
 }
-.orders_search_wrapper{
-    float: right;
-    margin-bottom: 10px;
-    width: 43%;
-}
-.delivery_challan_search_form_wrapper{
+.orders_search_wrapper,.delivery_challan_search_form_wrapper{
     float: right !important;
-    width: 43%;
+    width: 45%;
+}
+.orders_search_wrapper{
+    margin-bottom: 10px;
 }
 .sales_book_search_form_wrapper{
     width: 68% !important;   
