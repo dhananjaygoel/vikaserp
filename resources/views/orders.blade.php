@@ -7,7 +7,13 @@
             <div class="col-lg-12">
                 <?php
                 $session_sort_type_order = Session::get('order-sort-type');
-                $qstring_sort_type_order = Input::get('order_filter');
+                if ((Input::get('order_filter') != "") || (Input::get('order_status') != "")) {
+                    if (Input::get('order_filter') != "") {
+                        $qstring_sort_type_order = Input::get('order_filter');
+                    } elseif (Input::get('order_status') != "") {
+                        $qstring_sort_type_order = Input::get('order_status');
+                    }
+                } 
                 if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
                     $qstring_sort_type_order = $qstring_sort_type_order;
                 } else {
@@ -21,15 +27,15 @@
                 <div class="search_form_wrapper orders_search_wrapper">
                     <form class="search_form" method="GET" action="{{URL::action('OrderController@index')}}">
                         <input type="text" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
-                        if (Input::get('export_from_date') != "") {
-                            echo "value='" . Input::get('export_from_date') . "'";
-                        }
-                        ?>>
+                if (Input::get('export_from_date') != "") {
+                    echo "value='" . Input::get('export_from_date') . "'";
+                }
+                ?>>
                         <input type="text" name="export_to_date" class="form-control export_to_date" id="export_to_date" <?php
                         if (Input::get('export_to_date') != "") {
                             echo "value='" . Input::get('export_to_date') . "'";
                         }
-                        ?>>
+                ?>>
                         @if(sizeof($allorders)!=0 && ($qstring_sort_type_order=='pending' || $qstring_sort_type_order=='' ))
                         <input type="hidden" name="order_status" value="pending">
                         @elseif(sizeof($allorders)!=0 && $qstring_sort_type_order=='completed')
@@ -47,12 +53,12 @@
                         if (Input::get('export_to_date') != "") {
                             echo "value='" . Input::get('export_from_date') . "'";
                         }
-                        ?>>
+                ?>>
                         <input type="hidden"  name="export_to_date" id="export_to_date" <?php
                         if (Input::get('export_to_date') != "") {
                             echo "value='" . Input::get('export_to_date') . "'";
                         }
-                        ?>>
+                ?>>
                         @if(sizeof($allorders)!=0 && ($qstring_sort_type_order=='pending' || $qstring_sort_type_order=='' ))
                         <input type="hidden" name="order_status" value="pending">
                         @elseif(sizeof($allorders)!=0 && $qstring_sort_type_order=='completed')
@@ -282,12 +288,12 @@
                                     <td class="text">{{isset($order['other_location']) ? $order['other_location']:''}}</td>
                                     @endif
                                     <td class="text"><?php
-                                        foreach ($users as $u) {
-                                            if ($u['id'] == $order['created_by']) {
-                                                echo $u['first_name'];
-                                            }
-                                        }
-                                        ?></td>
+                                foreach ($users as $u) {
+                                    if ($u['id'] == $order['created_by']) {
+                                        echo $u['first_name'];
+                                    }
+                                }
+                                ?></td>
                                     <td class="text-center">
                                         <?php $order_id = isset($order->id) ? $order->id : ''; ?>
                                         <a href="{{url('orders/'.$order_id)}}" class="table-link" title="view">
@@ -333,7 +339,7 @@
 //                                                $total_quantity = $total_quantity + $product['quantity'];
 //                                            }
 //                                            echo $total_quantity;
-                                            ?>
+                                        ?>
                                             {{ round($order['total_quantity'], 2) }}
                                         </td>
                                         <td>{{$order['customer']['phone_number1']}}</td>
