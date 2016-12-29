@@ -45,7 +45,7 @@ class DeliveryOrderController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-
+        $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
         }
@@ -64,16 +64,29 @@ class DeliveryOrderController extends Controller {
         $q = DeliveryOrder::query();
         if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
             if ($qstring_sort_type_order == 'Inprocess') {
-//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
                 $q->where('order_status', 'pending');
             } elseif ($qstring_sort_type_order == 'Delivered') {
-//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
                 $q->where('order_status', 'completed');
             }
         } else {
             $q->where('order_status', 'pending');
-//            $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
         }
+        $search_dates = [];
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+            $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+            $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+            if ($date1 == $date2) {
+                $q->where('updated_at', 'like', $date1 . '%');
+            } else {
+                $q->where('updated_at', '>=', $date1);
+                $q->where('updated_at', '<=', $date2);
+            }
+            $search_dates = [
+                'export_from_date' => $data["export_from_date"],
+                'export_to_date' => $data["export_to_date"]
+            ];
+        }
+
         if (Input::has('flag') && Input::get('flag') == 'true') {
             $q->orderBy('flaged', 'desc')->orderBy('created_at', 'desc');
         } else {
@@ -83,7 +96,7 @@ class DeliveryOrderController extends Controller {
         $delivery_data = $this->checkpending_quantity($delivery_data);
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_data->setPath('delivery_order');
-        return view('delivery_order', compact('delivery_data', 'delivery_locations'));
+        return view('delivery_order', compact('delivery_data', 'delivery_locations', 'search_dates'));
     }
 
     /**
@@ -164,10 +177,8 @@ class DeliveryOrderController extends Controller {
 //        }
         if (isset($input_data['vat_price'])) {
             $vat_price = $input_data['vat_price'];
-        }
-        else
-        {
-             $vat_price = 0;
+        } else {
+            $vat_price = 0;
         }
         $delivery_order = new DeliveryOrder();
         $delivery_order->order_id = 0;
@@ -311,12 +322,10 @@ class DeliveryOrderController extends Controller {
 //        }
         if (isset($input_data['vat_price'])) {
             $vat_price = $input_data['vat_price'];
+        } else {
+            $vat_price = 0;
         }
-        else
-        {
-             $vat_price = 0;
-        }
-        
+
         $delivery_location = 0;
         $location = "";
         $other_location_difference = "";
@@ -578,17 +587,17 @@ class DeliveryOrderController extends Controller {
             array_push($forms_array, $input_data['form_key']);
             Session::put('forms_delivery_challan', $forms_array);
         }
-        
-        if(isset($input_data['challan_driver_contact'])){
+
+        if (isset($input_data['challan_driver_contact'])) {
             $delivery_order_details->driver_contact_no = $input_data['challan_driver_contact'];
-        }        
-        
-        if(isset($input_data['challan_vehicle_number'])){
+        }
+
+        if (isset($input_data['challan_vehicle_number'])) {
             $delivery_order_details->vehicle_number = $input_data['challan_vehicle_number'];
         }
-        
+
         $delivery_order_details->save();
-                
+
         $total_product_count = count($input_data['product']);
         $total_vat_items = 0;
         $total_vat_price = 0;
@@ -617,62 +626,58 @@ class DeliveryOrderController extends Controller {
             }
         }
 
-           /* all items with puls VAT*/ 
+        /* all items with puls VAT */
         if ($total_product_count == $total_vat_items) {
             $case = 'all_vat';
-            
+
             $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $input_data['vat_percentage'];
-           
-            
-            $all_vat_share_overhead=  number_format((float)$input_data['total_price']+$input_data['loading']+$input_data['discount']+$input_data['freight'], 2, '.', '');
-             $all_vat_on_overhead_count = ($all_vat_share_overhead * $input_data['vat_percentage']) / 100;
-            
-              $input_data['grand_total'] =$input_data['vat_total']= round($all_vat_share_overhead + $all_vat_on_overhead_count+$input_data['round_off'], 2);
-           
+
+
+            $all_vat_share_overhead = number_format((float) $input_data['total_price'] + $input_data['loading'] + $input_data['discount'] + $input_data['freight'], 2, '.', '');
+            $all_vat_on_overhead_count = ($all_vat_share_overhead * $input_data['vat_percentage']) / 100;
+
+            $input_data['grand_total'] = $input_data['vat_total'] = round($all_vat_share_overhead + $all_vat_on_overhead_count + $input_data['round_off'], 2);
+
             $this->store_delivery_challan_vat_wise($input_data, $id);
-            
-            
-        } 
-        /* all items without VAT*/ 
-        elseif ($total_product_count == $total_without_vat_items) {
-           
-            $input_data['grand_total']=  number_format((float)$input_data['total_price']+$input_data['loading']+$input_data['discount']+$input_data['freight'], 2, '.', '');
-           // exit;
-            $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $input_data['vat_percentage'] = $input_data['vat_total']= number_format((float)0.00, 2, '.', '');
+        }
+        /* all items without VAT */ elseif ($total_product_count == $total_without_vat_items) {
+
+            $input_data['grand_total'] = number_format((float) $input_data['total_price'] + $input_data['loading'] + $input_data['discount'] + $input_data['freight'], 2, '.', '');
+            // exit;
+            $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $input_data['vat_percentage'] = $input_data['vat_total'] = number_format((float) 0.00, 2, '.', '');
             $case = 'all_without_vat';
             $this->store_delivery_challan_vat_wise($input_data, $id);
-        } 
-        /* all items with and without VAT*/
-        else {
+        }
+        /* all items with and without VAT */ else {
             $case = 'all_mixed';
             $vat_input_data = $without_vat_input_data = $input_data;
             if ($input_data['total_price'] <> 0) {
-                $ratio_with_vat = number_format((float)((($total_vat_price) * 100) / $input_data['total_price']), 2, '.', '');
-                $ratio_without_vat = number_format((float)((($total_without_vat_price) * 100) / $input_data['total_price']), 2, '.', '');
+                $ratio_with_vat = number_format((float) ((($total_vat_price) * 100) / $input_data['total_price']), 2, '.', '');
+                $ratio_without_vat = number_format((float) ((($total_without_vat_price) * 100) / $input_data['total_price']), 2, '.', '');
             }
 
             $total_overhead = $input_data['loading'] + $input_data['freight'] + $input_data['discount'];
-            
-            $vat_share_overhead = number_format((float)(($ratio_with_vat * $total_overhead) / 100), 2, '.', '');
-            $without_vat_share_overhead = number_format((float)(($ratio_without_vat * $total_overhead) / 100),2, '.', '');
+
+            $vat_share_overhead = number_format((float) (($ratio_with_vat * $total_overhead) / 100), 2, '.', '');
+            $without_vat_share_overhead = number_format((float) (($ratio_without_vat * $total_overhead) / 100), 2, '.', '');
 
 
-            
-           
 
-            $vat_on_price_count = number_format((float)(($total_vat_price * $input_data['vat_percentage']) / 100),2, '.', '');
-            $vat_on_overhead_count = number_format((float)(($vat_share_overhead * $input_data['vat_percentage']) / 100),2, '.', '');
+
+
+            $vat_on_price_count = number_format((float) (($total_vat_price * $input_data['vat_percentage']) / 100), 2, '.', '');
+            $vat_on_overhead_count = number_format((float) (($vat_share_overhead * $input_data['vat_percentage']) / 100), 2, '.', '');
 
 
             $vat_input_data['product'] = $vat_product;
             $vat_input_data['total_actual_quantity'] = $total_actual_quantity_vat;
-            $vat_input_data['total_price'] = number_format((float)$total_vat_price, 2, '.', '');
-            $vat_input_data['discount'] = number_format((float)($ratio_with_vat * $input_data['discount']) / 100, 2,'.', '');
-            $vat_input_data['freight'] =  number_format((float)($ratio_with_vat * $input_data['freight']) / 100, 2,'.', '');
-            $vat_input_data['loading'] = number_format((float)($ratio_with_vat * $input_data['loading']) / 100, 2,'.', '');
-            $vat_input_data['round_off'] = number_format((float)($ratio_with_vat * $input_data['round_off']) / 100, 2,'.', '');
-            $vat_input_data['freight_vat_percentage'] = $vat_input_data['loading_vat_percentage'] = $vat_input_data['discount_vat_percentage'] = number_format((float)$vat_input_data['vat_percentage'], 2,'.', '');
-            $vat_input_data['grand_total'] = number_format((float)($total_vat_price + $vat_on_price_count + $vat_share_overhead + $vat_on_overhead_count+$vat_input_data['round_off']), 2,'.', '');
+            $vat_input_data['total_price'] = number_format((float) $total_vat_price, 2, '.', '');
+            $vat_input_data['discount'] = number_format((float) ($ratio_with_vat * $input_data['discount']) / 100, 2, '.', '');
+            $vat_input_data['freight'] = number_format((float) ($ratio_with_vat * $input_data['freight']) / 100, 2, '.', '');
+            $vat_input_data['loading'] = number_format((float) ($ratio_with_vat * $input_data['loading']) / 100, 2, '.', '');
+            $vat_input_data['round_off'] = number_format((float) ($ratio_with_vat * $input_data['round_off']) / 100, 2, '.', '');
+            $vat_input_data['freight_vat_percentage'] = $vat_input_data['loading_vat_percentage'] = $vat_input_data['discount_vat_percentage'] = number_format((float) $vat_input_data['vat_percentage'], 2, '.', '');
+            $vat_input_data['grand_total'] = number_format((float) ($total_vat_price + $vat_on_price_count + $vat_share_overhead + $vat_on_overhead_count + $vat_input_data['round_off']), 2, '.', '');
 //            echo "<pre>";
 //            print_r($total_vat_price );
 //            echo "<br>";
@@ -691,18 +696,18 @@ class DeliveryOrderController extends Controller {
 //            
 //            
 //            exit;
-           
+
 
             $without_vat_input_data['product'] = $without_vat_product;
             $without_vat_input_data['total_actual_quantity'] = $total_actual_quantity_without_vat;
-            $without_vat_input_data['total_price'] = number_format((float)$total_without_vat_price, 2,'.', '');
-            $without_vat_input_data['discount'] = number_format((float)($ratio_without_vat * $input_data['discount']) / 100, 2,'.', '');
-            $without_vat_input_data['freight'] = number_format((float)($ratio_without_vat * $input_data['freight']) / 100, 2,'.', '');
-            $without_vat_input_data['loading'] = number_format((float)($ratio_without_vat * $input_data['loading']) / 100, 2,'.', '');
-            $without_vat_input_data['round_off'] = number_format((float)($ratio_without_vat * $input_data['round_off']) / 100, 2,'.', '');
+            $without_vat_input_data['total_price'] = number_format((float) $total_without_vat_price, 2, '.', '');
+            $without_vat_input_data['discount'] = number_format((float) ($ratio_without_vat * $input_data['discount']) / 100, 2, '.', '');
+            $without_vat_input_data['freight'] = number_format((float) ($ratio_without_vat * $input_data['freight']) / 100, 2, '.', '');
+            $without_vat_input_data['loading'] = number_format((float) ($ratio_without_vat * $input_data['loading']) / 100, 2, '.', '');
+            $without_vat_input_data['round_off'] = number_format((float) ($ratio_without_vat * $input_data['round_off']) / 100, 2, '.', '');
             $without_vat_input_data['freight_vat_percentage'] = $without_vat_input_data['loading_vat_percentage'] = $without_vat_input_data['discount_vat_percentage'] = $without_vat_input_data['vat_percentage'] = 0.00;
-            $without_vat_input_data['grand_total'] = number_format((float)$total_without_vat_price + $without_vat_share_overhead+ $without_vat_input_data['round_off'], 2,'.', '');
-            
+            $without_vat_input_data['grand_total'] = number_format((float) $total_without_vat_price + $without_vat_share_overhead + $without_vat_input_data['round_off'], 2, '.', '');
+
             $savedid = $this->store_delivery_challan_vat_wise($vat_input_data, $id);
             $this->store_delivery_challan_vat_wise($without_vat_input_data, $id, $savedid);
         }
@@ -857,23 +862,34 @@ class DeliveryOrderController extends Controller {
 
     /* Function used to export dilivery order list based on order status */
 
-    public function exportDeliveryOrderBasedOnStatus($delivery_order_status) {
-
-        if ($delivery_order_status == 'Inprocess') {
-//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+    public function exportDeliveryOrderBasedOnStatus() {
+        $data = Input::all();
+        if ($data['delivery_order_status'] == 'Inprocess') {
             $delivery_order_status = 'pending';
-
-
             $excel_sheet_name = 'Inprocess';
             $excel_name = 'DeliveryOrder-InProcess-' . date('dmyhis');
-        } elseif ($delivery_order_status == 'Delivered') {
-//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+        } elseif ($data['delivery_order_status'] == 'Delivered') {
             $delivery_order_status = 'completed';
             $excel_sheet_name = 'Delivered';
             $excel_name = 'DeliveryOrder-Delivered-' . date('dmyhis');
         }
-        $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')->get();
-
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+            $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+            $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+            if ($date1 == $date2) {
+                $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)
+                                ->where('updated_at', 'like', $date1 . '%')
+                                ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')->get();
+            } else {
+                $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)
+                                ->where('updated_at', '>=', $date1)
+                                ->where('updated_at', '<=', $date2)
+                                ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')->get();
+            }
+        } else {
+            $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)
+                            ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')->get();
+        }
         if (count($delivery_order_objects) == 0) {
             return redirect::back()->with('error', 'No data found');
         } else {
@@ -905,9 +921,8 @@ class DeliveryOrderController extends Controller {
         echo json_encode(array(
             'product_sub_category' => $product_sub_category,
             'customer_product_difference' => $customer_product_difference,
-            //'customers' => $customers,
+                //'customers' => $customers,
         ));
     }
 
 }
- 

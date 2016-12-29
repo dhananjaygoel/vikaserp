@@ -31,16 +31,29 @@ class SalesDaybookController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
+        $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        if (Input::get('challan_date') != "") {
-            $date = date('Y-m-d', strtotime(Input::get('challan_date')));
-            $date = '%' . $date . '%';
-            $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
-                            ->where('updated_at', 'like', $date)
-                            ->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order.location', 'user', 'order_details', 'order_details.createdby', 'delivery_order', 'delivery_order.user')
-                            ->orderBy('updated_at', 'desc')->Paginate(20);
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+            $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+            $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+            if ($date1 == $date2) {
+                $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
+                                ->where('updated_at', 'like', $date1 . '%')
+                                ->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order.location', 'user', 'order_details', 'order_details.createdby', 'delivery_order', 'delivery_order.user')
+                                ->orderBy('updated_at', 'desc')->Paginate(20);
+            } else {
+                $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
+                                ->where('updated_at', '>=', $date1)
+                                ->where('updated_at', '<=', $date2)
+                                ->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order.location', 'user', 'order_details', 'order_details.createdby', 'delivery_order', 'delivery_order.user')
+                                ->orderBy('updated_at', 'desc')->Paginate(20);
+            }
+            $search_dates = [
+                'export_from_date' => $data["export_from_date"],
+                'export_to_date' => $data["export_to_date"]
+            ];
         } else {
             $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
                             ->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order.location', 'user', 'order_details', 'order_details.createdby', 'delivery_order', 'delivery_order.user')
@@ -49,7 +62,7 @@ class SalesDaybookController extends Controller {
         $supplier = Customer::all();
         $challan_date = array('challan_date' => Input::get('challan_date'));
         $allorders->setPath('sales_daybook');
-        return view('sales_daybook', compact('allorders', 'challan_date', 'supplier'));
+        return view('sales_daybook', compact('allorders', 'challan_date', 'supplier', 'search_dates'));
     }
 
     /*
@@ -87,7 +100,7 @@ class SalesDaybookController extends Controller {
      */
 
     public function delete_multiple_challan() {
-        
+
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -126,7 +139,7 @@ class SalesDaybookController extends Controller {
      */
 
     public function delete_challan($id) {
-        
+
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -145,13 +158,13 @@ class SalesDaybookController extends Controller {
             return Redirect::to('sales_daybook')->with('error', 'Invalid password');
         }
     }
-    
-    public function export_sales_daybook($id) {
-     set_time_limit(0);
-     if($id <> "all" && $id<>"")
-        $newDate = date("Y-m-d", strtotime($id));
-     else
-      $newDate=""; 
+
+    public function export_sales_daybook() {
+        set_time_limit(0);
+//        if ($id <> "all" && $id <> "")
+//            $newDate = date("Y-m-d", strtotime($id));
+//        else
+//            $newDate = "";
 //       $count = DeliveryChallan::where('challan_status', '=', 'completed')
 //                ->where('updated_at','like',$newDate.'%')
 //                ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details','delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location')
@@ -161,17 +174,31 @@ class SalesDaybookController extends Controller {
 //        print_r($count);
 //        echo "</pre>";
 //        exit;
-//        $total_count =   $count /4;       
-       
-       
-        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
-                ->where('updated_at','like',$newDate.'%')
-                ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details','delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location')
-                ->orderBy('created_at', 'desc')
-//                ->take($total_count)
-                ->get();
-//        return view('excelView.sales', array('allorders' => $allorders));
-//        exit();        
+//        $total_count =   $count /4;
+        $data = Input::all();
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+            $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+            $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+            if ($date1 == $date2) {
+                $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
+                        ->where('updated_at', 'like', $date1 . '%')
+                        ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location')
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+            } else {
+                $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
+                        ->where('updated_at', '>=', $date1)
+                        ->where('updated_at', '<=', $date2)
+                        ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location')
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+            }
+        } else {
+            $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
+                    ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+        }
         Excel::create('Sales Daybook', function($excel) use($allorders) {
             $excel->sheet('Sales-Daybook', function($sheet) use($allorders) {
                 $sheet->loadView('excelView.sales', array('allorders' => $allorders));
@@ -315,16 +342,16 @@ class SalesDaybookController extends Controller {
         $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'delivery_challan_products', 'delivery_order.location', 'user', 'delivery_location')->orderBy('created_at', 'desc')->get();
         return view('print_sales_order_daybook', compact('allorders'));
     }
-    
+
     public function recover() {
-         $allorders = DeliveryChallan::all();
-         $allorders = DeliveryChallan::where('serial_number','=','DC/10/12/1603P')->get();
-         $allorders[0]->grand_price = 65788.02;
-         $allorders[0]->save();
-         echo "<pre>";
-         print_r($allorders[0]);
-         echo "</pre>";
-         exit;
+        $allorders = DeliveryChallan::all();
+        $allorders = DeliveryChallan::where('serial_number', '=', 'DC/10/12/1603P')->get();
+        $allorders[0]->grand_price = 65788.02;
+        $allorders[0]->save();
+        echo "<pre>";
+        print_r($allorders[0]);
+        echo "</pre>";
+        exit;
     }
 
 }

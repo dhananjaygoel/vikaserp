@@ -136,30 +136,70 @@
     text-align: center;
 }
 
- .custom-combobox {
+.custom-combobox {
     position: relative;
     display: inline-block;
-width:100%;
-  }
-  .custom-combobox-toggle {
+    width:100%;
+}
+.custom-combobox-toggle {
     position: absolute;
     top: 0;
     bottom: 0;
     margin-left: 0px;
     padding: 0;
-  }
-  .custom-combobox-input {
-         
+}
+.custom-combobox-input {
+
     margin: 0;
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 10px;
     padding-right:0px;
-     width:100%;
-  }.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-      background: none;
-     
-  }
-  
-  
-  
+    width:100%;
+}.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    background: none;
+
+}
+.search_form{
+    float: left !important;
+    width: 87%;
+}
+.export_form.export_dc_form{
+    float: left !important;
+    width: 75% !important;
+}
+.export_form.export_order_form{
+    float: right !important;
+    margin-bottom: 10px;
+    width: 34% !important;
+}
+.export_from_date,.export_to_date{
+    float: left !important;
+    width: 41% !important;
+}
+.export_from_date{
+    margin-right: 5px;
+}
+.export_btn{
+    float: left !important;
+    margin-left: 2% !important;
+}
+.search_form_wrapper{
+    float: left;
+    width: 81%;
+}
+.search_button{
+    margin-left: 7px !important;
+}
+.orders_search_wrapper{
+    float: right;
+    margin-bottom: 10px;
+    width: 43%;
+}
+.delivery_challan_search_form_wrapper{
+    float: right !important;
+    width: 43%;
+}
+.sales_book_search_form_wrapper{
+    width: 68% !important;   
+}

@@ -1,8 +1,6 @@
 $(document).ready(function () {
     $("#checkbox-inl-1").click(function () {
-
         $(".category_div").toggle("slow");
-
     });
 });
 
@@ -13,16 +11,18 @@ $('.deleteCustomer').click(function () {
 var nowDate = new Date();
 var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
 
-
 $('#bill_date').datepicker({
     format: 'mm-dd-yyyy',
     startDate: new Date(),
     autoclose: true
 });
+$('.export_to_date,.export_from_date').datepicker({
+    format: 'mm-dd-yyyy',
+    autoclose: true
+});
 
 $('#search').keypress(function (e) {
-    if (e.keyCode == 13)
-    {
+    if (e.keyCode == 13){
         $('#searchCustomerForm').submit();
     }
 });
@@ -84,13 +84,8 @@ $(document).ready(function () {
     $('#loc1').change(function () {
         if ($('#loc1').val() == 'other') {
             $('.locationtext').toggle();
-
         }
-
-
     });
-
-
 });
 
 $('#purchaseaAdviseFilter').on('change', function () {
@@ -309,7 +304,6 @@ $('body').delegate("#sendSMSPurchaseOrder", "click", function () {
             }
             status_form = 1;
         }
-//        alert(status_form);
         if (status_form == 1) {
             $('html, body').animate({
                 scrollTop: $('.breadcrumb').offset().top
@@ -340,12 +334,6 @@ $('body').delegate(".btn_add_purchase_advice", "click", function () {
             $('#name').addClass('error_validation');
             status_form = 1;
         }
-        /*
-         if ($('#supplier_select').val() == "0") {
-         $('#supplier_select').addClass('error_validation');
-         status_form = 1;
-         }
-         */
         if ($('#purchase_other_location').val() == "0") {
             $('#purchase_other_location').addClass('error_validation');
             status_form = 1;
@@ -383,8 +371,6 @@ $('body').delegate(".btn_add_purchase_advice", "click", function () {
             }
             status_form = 1;
         }
-
-//        alert(status_form);
         if (status_form == 1) {
             $('html, body').animate({
                 scrollTop: $('.breadcrumb').offset().top
@@ -395,9 +381,7 @@ $('body').delegate(".btn_add_purchase_advice", "click", function () {
             $(this).parents('form').attr('action', action + '?sendsms=true');
             $(this).parents('form').submit();
         }
-
     } else {
-
         if ($('#customer_default_location').val() == "") {
             $('#customer_default_location').addClass('error_validation');
             status_form = 1;
@@ -439,7 +423,6 @@ $('body').delegate(".btn_add_purchase_advice", "click", function () {
             }
             status_form = 1;
         }
-//        alert(status_form);
         if (status_form == 1) {
             $('html, body').animate({
                 scrollTop: $('.breadcrumb').offset().top
@@ -461,7 +444,6 @@ $('body').delegate(".btn_edit_purchase_advice", "click", function () {
         $('input:text[name=vehicle_number]').addClass('error_validation');
         status_form = 1;
     }
-
     var tot_products = $(".add_product_row").length;
     var j = 0;
     for (i = 1; i <= tot_products + 1; i++) {
@@ -483,7 +465,6 @@ $('body').delegate(".btn_edit_purchase_advice", "click", function () {
             }
         }
     }
-
     if (status_form == 1) {
         $('html, body').animate({
             scrollTop: $('.breadcrumb').offset().top

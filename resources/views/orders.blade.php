@@ -14,25 +14,58 @@
                     $qstring_sort_type_order = $session_sort_type_order;
                 }
                 ?>
-                <ol class="breadcrumb">
+                <ol class="breadcrumb pull-left">
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Orders</span></li>
-                    @if(sizeof($allorders)!=0 && ($qstring_sort_type_order=='pending' || $qstring_sort_type_order=='' ))
-                    <a href="{{URL::action('OrderController@exportOrderBasedOnStatus',['order_status'=>'pending'])}}" class="btn btn-primary pull-right" style="margin-bottom:6px;">
-                        Export
-                    </a>
-                    @endif
-                    @if(sizeof($allorders)!=0 && $qstring_sort_type_order=='completed')
-                    <a href="{{URL::action('OrderController@exportOrderBasedOnStatus',['order_status'=>'completed'])}}" class="btn btn-primary pull-right" style="margin-bottom:6px;">
-                        Export
-                    </a>
-                    @endif
-                    @if(sizeof($allorders)!=0 && $qstring_sort_type_order=='cancelled')
-                    <a href="{{URL::action('OrderController@exportOrderBasedOnStatus',['order_status'=>'cancelled'])}}" class="btn btn-primary pull-right" style="margin-bottom:6px;">
-                        Export
-                    </a>
-                    @endif
                 </ol>
+                <div class="search_form_wrapper orders_search_wrapper">
+                    <form class="search_form" method="GET" action="{{URL::action('OrderController@index')}}">
+                        <input type="text" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
+                        if (Input::get('export_from_date') != "") {
+                            echo "value='" . Input::get('export_from_date') . "'";
+                        }
+                        ?>>
+                        <input type="text" name="export_to_date" class="form-control export_to_date" id="export_to_date" <?php
+                        if (Input::get('export_to_date') != "") {
+                            echo "value='" . Input::get('export_to_date') . "'";
+                        }
+                        ?>>
+                        @if(sizeof($allorders)!=0 && ($qstring_sort_type_order=='pending' || $qstring_sort_type_order=='' ))
+                        <input type="hidden" name="order_status" value="pending">
+                        @elseif(sizeof($allorders)!=0 && $qstring_sort_type_order=='completed')
+                        <input type="hidden" name="order_status" value="completed">
+                        @elseif(sizeof($allorders)!=0 && $qstring_sort_type_order=='cancelled')
+                        <input type="hidden" name="order_status" value="cancelled">
+                        @else
+                        <input type="hidden" name="order_status" value="pending">
+                        @endif
+                        <input type="submit" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                    </form>
+                    <form class="pull-left" method="POST" action="{{URL::action('OrderController@exportOrderBasedOnStatus')}}">
+                        <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                        <input type="hidden" name="export_from_date" id="export_from_date" <?php
+                        if (Input::get('export_to_date') != "") {
+                            echo "value='" . Input::get('export_from_date') . "'";
+                        }
+                        ?>>
+                        <input type="hidden" name="export_to_date" id="export_to_date" <?php
+                        if (Input::get('export_to_date') != "") {
+                            echo "value='" . Input::get('export_to_date') . "'";
+                        }
+                        ?>>
+                        @if(sizeof($allorders)!=0 && ($qstring_sort_type_order=='pending' || $qstring_sort_type_order=='' ))
+                        <input type="hidden" name="order_status" value="pending">
+                        @elseif(sizeof($allorders)!=0 && $qstring_sort_type_order=='completed')
+                        <input type="hidden" name="order_status" value="completed">
+                        @elseif(sizeof($allorders)!=0 && $qstring_sort_type_order=='cancelled')
+                        <input type="hidden" name="order_status" value="cancelled">
+                        @else
+                        <input type="hidden" name="order_status" value="pending">
+                        @endif
+                        <input type="submit" name="export_data" value="Export" class="btn btn-primary pull-right export_btn">
+                    </form>
+                </div>
+
 
                 <input type="hidden" id="module" value="order">
                 <div class="filter-block">
@@ -111,7 +144,7 @@
                             <strong> {{ Session::get('error') }} </strong>
                         </div>
                         @endif
-                       
+
                         @if (Session::has('success'))
                         <div class="alert alert-success alert-success1">{{Session::get('success')}}</div>
                         @endif
@@ -403,7 +436,7 @@
                                                 <div class="delete">
                                                     <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                     <input type="hidden" name="mobile" value="{{auth()->user()->mobile_number}}"/>
-                                                            <input type="hidden" name="user_id" id="user_id"/>
+                                                    <input type="hidden" name="user_id" id="user_id"/>
                                                     <div class="pwd">
                                                         <div class="pwdl"><b>Password:</b></div>
                                                         <div class="pwdr"><input class="form-control" placeholder="" name="password" type="password" id="pwdr"></div>

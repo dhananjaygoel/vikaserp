@@ -74,6 +74,20 @@ class OrderController extends Controller {
         if ((isset($data['location_filter'])) && $data['location_filter'] != '') {
             $q->where('delivery_location_id', '=', $data['location_filter']);
         }
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+            $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+            $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+            if ($date1 == $date2) {
+                $q->where('updated_at','like',$date1.'%');
+            } else {
+                $q->where('updated_at', '>=', $date1);
+                $q->where('updated_at', '<=', $date2);
+            }
+            $search_dates = [
+                'export_from_date' => $data["export_from_date"],
+                'export_to_date' => $data["export_to_date"]
+            ];
+        }
         $product_category_id = 0;
         if (isset($data['size_filter']) && $data['size_filter'] != '') {
             $size = $data['size_filter'];
@@ -103,7 +117,7 @@ class OrderController extends Controller {
         $users = User::all();
         $pending_orders = $this->checkpending_quantity($allorders);
         $allorders->setPath('orders');
-        return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id'));
+        return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id', 'search_dates'));
     }
 
     /**
@@ -648,13 +662,13 @@ class OrderController extends Controller {
 
         $inputData = Input::get('formData');
         $flag = 0;
-        if(empty($inputData)){
+        if (empty($inputData)) {
             $formFields = Input::all();
             $flag = 1;
-        }else{
+        } else {
             parse_str($inputData, $formFields);
         }
-        
+
         $password = $formFields['password'];
         $userinfo = auth()->user();
         $order_sort_type = $formFields['order_sort_type'];
@@ -667,14 +681,12 @@ class OrderController extends Controller {
             AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'order')->delete();
             Order::find($id)->delete();
             Session::put('order-sort-type', $order_sort_type);
-            if($flag == 1)
-            {
+            if ($flag == 1) {
                 return Redirect::to('orders')->with('success', 'Record deleted successfully.');
             }
             return array('message' => 'success');
         } else {
-            if($flag == 1)
-            {
+            if ($flag == 1) {
                 return Redirect::to('orders')->with('error', 'Please enter correct password.');
             }
             return array('message' => 'failed');
@@ -783,7 +795,7 @@ class OrderController extends Controller {
 
     public function create_delivery_order($id) {
 
-        $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);        
+        $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }
@@ -867,7 +879,7 @@ class OrderController extends Controller {
     public function store_delivery_order($id) {
 
         $input_data = Input::all();
-        
+
         $order_details = Order::find($input_data['order_id']);
         if (!empty($order_details)) {
             if ($order_details->order_status == 'completed') {
@@ -1035,26 +1047,40 @@ class OrderController extends Controller {
 
     /* Function used to export order details in excel */
 
-    public function exportOrderBasedOnStatus($order_status) {
-        if ($order_status == 'pending') {
+    public function exportOrderBasedOnStatus() {
+        $data = Input::all();
+        if ($data['order_status'] == 'pending') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $order_status = 'pending';
             $excel_sheet_name = 'Pending';
             $excel_name = 'Order-Pending-' . date('dmyhis');
-        } elseif ($order_status == 'completed') {
+        } elseif ($data['order_status'] == 'completed') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $order_status = 'completed';
             $excel_sheet_name = 'Completed';
             $excel_name = 'Order-Completed-' . date('dmyhis');
-        } elseif ($order_status == 'cancelled') {
+        } elseif ($data['order_status'] == 'cancelled') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $order_status = 'cancelled';
-             $excel_sheet_name = 'Cancelled';
+            $excel_sheet_name = 'Cancelled';
             $excel_name = 'Order-Cancelled-' . date('dmyhis');
         }
-
-        $order_objects = Order::where('order_status', $order_status)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->get();
-
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+            $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+            $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+            if ($date1 == $date2) {
+                $q->where('updated_at','like',$date1.'%');
+            } else {
+                $q->where('updated_at', '>=', $date1);
+                $q->where('updated_at', '<=', $date2);
+            }
+            $order_objects = Order::where('order_status', $order_status)
+                            ->where('updated_at', '>=', $date1)
+                            ->where('updated_at', '<=', $date2)
+                            ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->get();
+        } else {
+            $order_objects = Order::where('order_status', $order_status)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->get();
+        }
 
         if (count($order_objects) == 0) {
             return redirect::back()->with('flash_message', 'Order does not exist.');
@@ -1062,8 +1088,8 @@ class OrderController extends Controller {
             $units = Units::all();
             $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
             $customers = Customer::orderBy('tally_name', 'ASC')->get();
-            Excel::create($excel_name, function($excel) use($order_objects, $units, $delivery_location, $customers,$excel_sheet_name) {
-                $excel->sheet('Order-'.$excel_sheet_name, function($sheet) use($order_objects, $units, $delivery_location, $customers) {
+            Excel::create($excel_name, function($excel) use($order_objects, $units, $delivery_location, $customers, $excel_sheet_name) {
+                $excel->sheet('Order-' . $excel_sheet_name, function($sheet) use($order_objects, $units, $delivery_location, $customers) {
                     $sheet->loadView('excelView.order', array('order_objects' => $order_objects, 'units' => $units, 'delivery_location' => $delivery_location, 'customers' => $customers));
                 });
             })->export('xls');

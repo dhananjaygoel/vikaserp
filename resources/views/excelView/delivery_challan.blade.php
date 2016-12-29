@@ -56,7 +56,6 @@
             $total_amount = 0;
 
             $product = isset($allorder['all_order_products']) && isset($allorder['all_order_products'][0]) ? $allorder['all_order_products'][0] : '';
-           
             ?>
             @foreach ($allorder['all_order_products'] as $key => $product)
             @if ($product->order_type == 'delivery_challan')
@@ -77,9 +76,9 @@
             <td>{{isset($product->price) ? $product->price:''}}</td>
             <td>{{(isset($product->vat_percentage) && $product->vat_percentage!='')?$product->vat_percentage:''}}</td>
             <td><?php
-                $amount = $product->actual_quantity * $product->price;
-                $amount = $amount + (($amount * (($product->vat_percentage != '') ? $product->vat_percentage : 0)) / 100);
-                ?>
+            $amount = $product->actual_quantity * $product->price;
+            $amount = $amount + (($amount * (($product->vat_percentage != '') ? $product->vat_percentage : 0)) / 100);
+            ?>
                 {{round($amount, 2)}}</td>
             @endif
 
@@ -117,14 +116,15 @@
             <td>{{isset($allorder->order_details->updated_at) ? $allorder->order_details->updated_at:''}}</td>
             <td>{{isset($allorder->delivery_order->user->first_name) ? $allorder->delivery_order->user->first_name." ".$allorder->delivery_order->user->last_name:''}}</td>
             <td>{{isset($allorder->delivery_order->updated_at) ? $allorder->delivery_order->updated_at:''}}</td>
-            
+
             <td>{{isset($allorder->remarks) ? $allorder->remarks:''}}</td>
         </tr>
 
-        <?php $count = 0;?>
+        <?php $count = 0; ?>
         @foreach($allorder['all_order_products'] as $key => $product)
+        @if(isset($id_stored))
         @if($id_stored != $product->id  && $count!= 0 && ($product->order_type) &&  $product->order_type =='delivery_challan')
-       
+
         <tr>
             <td></td>
             <td></td>
@@ -137,9 +137,9 @@
             <td>{{isset($product->price) ? $product->price:''}}</td>
             <td>{{(isset($product->vat_percentage) && $product->vat_percentage!='')?$product->vat_percentage:''}}</td>
             <td><?php
-                $amount = $product->actual_quantity * $product->price;
-                $amount = $amount + (($amount * (($product->vat_percentage != '') ? $product->vat_percentage : 0)) / 100);
-                ?>
+        $amount = $product->actual_quantity * $product->price;
+        $amount = $amount + (($amount * (($product->vat_percentage != '') ? $product->vat_percentage : 0)) / 100);
+        ?>
                 {{round($amount, 2)}}
             </td>
             <td></td>
@@ -165,13 +165,14 @@
             <td></td>
             <td></td>
             <td></td>
-</tr>
-       
+        </tr>
+
         @endif
-         <?php $count++; ?>
+        @endif
+        <?php $count++; ?>
         @endforeach
         <?php $counter++; ?>
         @endforeach
     </table>
-    <?php //exit;  ?>
+    <?php //exit;   ?>
 </html>

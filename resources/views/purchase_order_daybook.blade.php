@@ -10,44 +10,43 @@
                     <li class="active"><span>Purchase Daybook</span></li>
                 </ol>
                 <div class="clearfix">
-                    <h1 class="pull-left col-md-6">Purchase Daybook</h1>
-                    <div class="pull-right top-page-ui col-md-6">
-                        <div class="col-md-8">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <form action="{{URL::action('PurchaseDaybookController@index')}}" method="GET" >
-                                        <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control delivery_challan_date" name="date" placeholder="Search by date" id="sales_daybook_date" <?php
-                                            if (Input::get('date') != "") {
-                                                echo "value='" . Input::get('date') . "'";
-                                            }
-                                            ?>>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <button type="submit" class="btn btn-primary form_button_footer"><i class="fa fa-search"></i></button>
-                                        </div>
-                                        <div class="clearfix"></div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                    <h1 class="pull-left col-md-4">Purchase Daybook</h1>
+                    <div class="pull-right col-md-8">
                         @if(sizeof($purchase_daybook) > 0)
-                        <div class="col-md-4">
+                        <div class="col-md-1 pull-right">
                             <a class="btn btn-primary form_button_footer print_purchase_daybook" > Print </a>
-                             <?php 
-                            $temp =Request::get('date');
-                           
-                            if(isset($temp) && $temp<>""){
-                             $urltemp = url('export_purchasedaybook/'.$temp);   
-                            }else{
-                            $urltemp = url('export_purchasedaybook/'.'all');
-                            }
-                            ?>
-                            <a href="{{$urltemp}}" class="btn btn-primary form_button_footer" > Export </a>
                         </div>
                         @endif
+                        <div class="search_form_wrapper sales_book_search_form_wrapper pull-right">
+                            <form class="search_form" method="GET" action="{{URL::action('PurchaseDaybookController@index')}}">
+                                <input type="text" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
+                                if (Input::get('export_from_date') != "") {
+                                    echo "value='" . Input::get('export_from_date') . "'";
+                                }
+                                ?>>
+                                <input type="text" name="export_to_date" class="form-control export_to_date" id="export_to_date" <?php
+                                if (Input::get('export_to_date') != "") {
+                                    echo "value='" . Input::get('export_to_date') . "'";
+                                }
+                                ?>>
+                                <input type="submit" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                            </form>
+                            <form class="pull-left" method="POST" action="{{URL::action('PurchaseDaybookController@expert_purchase_daybook')}}">
+                                <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                                <input type="hidden" name="export_from_date" id="export_from_date" <?php
+                                if (Input::get('export_to_date') != "") {
+                                    echo "value='" . Input::get('export_from_date') . "'";
+                                }
+                                ?>>
+                                <input type="hidden" name="export_to_date" id="export_to_date" <?php
+                                if (Input::get('export_to_date') != "") {
+                                    echo "value='" . Input::get('export_to_date') . "'";
+                                }
+                                ?>>
+                                <input type="submit" name="export_data" value="Export" class="btn btn-primary pull-right export_btn">
+                            </form>
+                        </div>
+                        
                         <div class="clearfix"></div>
                     </div>
                     <div class="clearfix"></div>

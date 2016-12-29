@@ -34,16 +34,49 @@
                             <br>
                         </div>
                     </form>
-                    @if(sizeof($allorders)!=0 && ($qstring_sort_type_order == 'pending' ||$qstring_sort_type_order==''))
-                    <a href="{{URL::action('DeliveryChallanController@exportDeliveryChallanBasedOnStatus',['delivery_challan_status'=>'pending'])}}" class="btn btn-primary pull-right">
-                        Export
-                    </a>
-                    @endif
-                    @if(sizeof($allorders)!=0 && $qstring_sort_type_order == 'completed')
-                    <a href="{{URL::action('DeliveryChallanController@exportDeliveryChallanBasedOnStatus',['delivery_challan_status'=>'completed'])}}" class="btn btn-primary pull-right">
-                        Export
-                    </a>
-                    @endif
+                    <div class="search_form_wrapper delivery_challan_search_form_wrapper">
+                        <form class="search_form" method="GET" action="{{URL::action('DeliveryChallanController@index')}}">
+                            <input type="text" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
+                            if (Input::get('export_from_date') != "") {
+                                echo "value='" . Input::get('export_from_date') . "'";
+                            }
+                            ?>>
+                            <input type="text" name="export_to_date" class="form-control export_to_date" id="export_to_date" <?php
+                            if (Input::get('export_to_date') != "") {
+                                echo "value='" . Input::get('export_to_date') . "'";
+                            }
+                            ?>>
+                            @if(sizeof($allorders)!=0 && ($qstring_sort_type_order == 'pending' ||$qstring_sort_type_order==''))
+                            <input type="hidden" name="delivery_order_status" value="pending">
+                            @elseif(sizeof($allorders)!=0 && $qstring_sort_type_order == 'completed')
+                            <input type="hidden" name="delivery_order_status" value="completed">
+                            @else
+                            <input type="hidden" name="delivery_order_status" value="pending">
+                            @endif
+                            <input type="submit" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                        </form>
+                        <form class="pull-left" method="POST" action="{{URL::action('DeliveryChallanController@exportDeliveryChallanBasedOnStatus')}}">
+                            <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                            <input type="hidden" name="export_from_date" id="export_from_date" <?php
+                            if (Input::get('export_to_date') != "") {
+                                echo "value='" . Input::get('export_from_date') . "'";
+                            }
+                            ?>>
+                            <input type="hidden" name="export_to_date" id="export_to_date" <?php
+                            if (Input::get('export_to_date') != "") {
+                                echo "value='" . Input::get('export_to_date') . "'";
+                            }
+                            ?>>
+                            @if(sizeof($allorders)!=0 && ($qstring_sort_type_order == 'pending' ||$qstring_sort_type_order==''))
+                            <input type="hidden" name="delivery_order_status" value="pending">
+                            <input type="submit" name="export_data" value="Export" class="btn btn-primary pull-right export_btn">
+                            @endif
+                            @if(sizeof($allorders)!=0 && $qstring_sort_type_order == 'completed')
+                            <input type="hidden" name="delivery_order_status" value="completed">
+                            <input type="submit" name="export_data" value="Export" class="btn btn-primary pull-right export_btn">
+                            @endif
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -147,13 +180,13 @@
                                             </a>
                                             @endif
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-<!--                                                                                    <a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
-                                                                                        <span class="fa-stack">
-                                                                                            <i class="fa fa-square fa-stack-2x"></i>
-                                                                                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                                                        </span>
-                                                                                    </a>-->
-                                            
+                                            <!--                                                                                    <a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
+                                                                                                                                    <span class="fa-stack">
+                                                                                                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                                                                                                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                                                                                                    </span>
+                                                                                                                                </a>-->
+
                                             <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_delivery_challan({{$challan->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -238,11 +271,11 @@
                             <span class="pull-right">
                                 <?php //echo $allorders->render(); ?>
                                 <?php
-                                    if (!isset($_GET)){
-                                        echo $allorders->render();
-                                    }else{
-                                        echo $allorders->appends($_GET)->render();
-                                    }
+                                if (!isset($_GET)) {
+                                    echo $allorders->render();
+                                } else {
+                                    echo $allorders->appends($_GET)->render();
+                                }
                                 ?>
                             </span>
                             <span class="clearfix"></span>

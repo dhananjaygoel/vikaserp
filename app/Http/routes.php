@@ -177,7 +177,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('purchase_order_daybook', 'PurchaseDaybookController');
     Route::post('purchase_order_daybook/{id}', 'PurchaseDaybookController@destroy');
     Route::post('delete_all_daybook', 'PurchaseDaybookController@delete_all_daybook');
-    Route::get('export_purchasedaybook/{id}', 'PurchaseDaybookController@expert_purchase_daybook');
+    Route::post('export_purchasedaybook', 'PurchaseDaybookController@expert_purchase_daybook');
     Route::get('print_purchase_daybook', 'PurchaseDaybookController@print_purchase_daybook');
     Route::get('change_password', 'PasswordController@getPassword');
     Route::post('change_password', 'PasswordController@postPassword');
@@ -225,7 +225,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('print_delivery_challan/{id}', 'DeliveryChallanController@print_delivery_challan');
     Route::get('place_order/{id}', 'InquiryController@place_order');
     Route::post('store_order/{id}', 'InquiryController@store_place_order');
-    Route::get('export_sales_daybook/{id}', 'SalesDaybookController@export_sales_daybook');
+    Route::post('export_sales_daybook', 'SalesDaybookController@export_sales_daybook');
     Route::get('export_product_size', 'ProductsubController@exportProductSize');
     Route::get('print_sales_order_daybook', 'SalesDaybookController@print_sales_order_daybook');
     Route::post('get_product_weight', 'ProductsubController@get_product_weight');
@@ -261,9 +261,9 @@ Route::post('update_all_sizes', 'ProductsubController@update_all_sizes_differenc
 Route::any('update_user_role', 'WelcomeController@update_user_role');
 Route::any('updatecity_delievrylocation', 'HomeController@updatecity_delievrylocation');
 
-Route::get('export-delivery-order/{delivery_order_status}', 'DeliveryOrderController@exportDeliveryOrderBasedOnStatus');
-Route::get('export-delivery-challan/{delivery_challan_status}', 'DeliveryChallanController@exportDeliveryChallanBasedOnStatus');
-Route::get('export-order/{order_status}', 'OrderController@exportOrderBasedOnStatus');
+Route::post('export-delivery-order', 'DeliveryOrderController@exportDeliveryOrderBasedOnStatus');
+Route::post('export-delivery-challan', 'DeliveryChallanController@exportDeliveryChallanBasedOnStatus');
+Route::post('export-order', 'OrderController@exportOrderBasedOnStatus');
 Route::get('export-inquiry/{inquiry_status}', 'InquiryController@exportinquiryBasedOnStatus');
 Route::get('get-data', 'DeliveryOrderController@get_data');
 

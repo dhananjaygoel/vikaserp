@@ -12,9 +12,9 @@
                 <input type="hidden" id="module" value="deliveryorder">
                 <h1 class="pull-left">Delivery Orders</h1>
                 <div class="pull-right top-page-ui">
-<!--                    <a href="{{URL::action('DeliveryOrderController@create')}}" class="btn btn-primary pull-right">
-                        <i class="fa fa-plus-circle fa-lg"></i> Create Delivery order Independently
-                    </a>-->
+                    <!--                    <a href="{{URL::action('DeliveryOrderController@create')}}" class="btn btn-primary pull-right">
+                                            <i class="fa fa-plus-circle fa-lg"></i> Create Delivery order Independently
+                                        </a>-->
                     <div class="form-group pull-right">
                         <div class="col-md-12">
                             <form method="GET" action="{{URL::action('DeliveryOrderController@index')}}" id="filter_form">
@@ -32,7 +32,7 @@
                                 <select class="form-control" id="order_status" name="order_status" onchange="this.form.submit()">
                                     <option <?php if ($qstring_sort_type_order == 'Inprocess') echo 'selected=""'; ?> value="Inprocess">Inprocess</option>
                                     <option <?php if ($qstring_sort_type_order == 'Delivered') echo 'selected=""'; ?> value="Delivered">Delivered</option>
-                                    
+
                                 </select>
                                 <?php
                                 if (isset($session_sort_type_order)) {
@@ -42,16 +42,49 @@
                             </form>
                         </div>
                     </div>
-                    @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Delivered' )
-                                <a href="{{URL::action('DeliveryOrderController@exportDeliveryOrderBasedOnStatus',['delivery_order_status'=>'Delivered'])}}" class="btn btn-primary pull-right">
-                                    Export
-                                </a>
-                                @endif 
-                                @if(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='Inprocess')
-                                <a href="{{URL::action('DeliveryOrderController@exportDeliveryOrderBasedOnStatus',['delivery_order_status'=>'Inprocess'])}}" class="btn btn-primary pull-right">
-                                    Export
-                                </a>
-                                @endif
+                    <div class="search_form_wrapper">
+                        <form class="search_form" method="GET" action="{{URL::action('DeliveryOrderController@index')}}">
+                            <input type="text" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
+                            if (Input::get('export_from_date') != "") {
+                                echo "value='" . Input::get('export_from_date') . "'";
+                            }
+                            ?>>
+                            <input type="text" name="export_to_date" class="form-control export_to_date" id="export_to_date" <?php
+                            if (Input::get('export_to_date') != "") {
+                                echo "value='" . Input::get('export_to_date') . "'";
+                            }
+                            ?>>
+                            @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Delivered' )
+                            <input type="hidden" name="delivery_order_status" value="Delivered">
+                            <input type="submit" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                            @endif
+                            @if(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='Inprocess')
+                            <input type="hidden" name="delivery_order_status" value="Inprocess">
+                            <input type="submit" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                            @endif
+                        </form>
+                        <form class="pull-left" method="POST" action="{{URL::action('DeliveryOrderController@exportDeliveryOrderBasedOnStatus')}}">
+                            <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                            <input type="hidden" name="export_from_date" id="export_from_date" <?php
+                            if (Input::get('export_to_date') != "") {
+                                echo "value='" . Input::get('export_from_date') . "'";
+                            }
+                            ?>>
+                            <input type="hidden" name="export_to_date" id="export_to_date" <?php
+                            if (Input::get('export_to_date') != "") {
+                                echo "value='" . Input::get('export_to_date') . "'";
+                            }
+                            ?>>
+                            @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Delivered' )
+                            <input type="hidden" name="delivery_order_status" value="Delivered">
+                            <input type="submit" name="export_data" value="Export" class="btn btn-primary pull-right export_btn">
+                            @endif
+                            @if(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='Inprocess')
+                            <input type="hidden" name="delivery_order_status" value="Inprocess">
+                            <input type="submit" name="export_data" value="Export" class="btn btn-primary pull-right export_btn">
+                            @endif
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -67,7 +100,7 @@
                             <strong> {{ Session::get('error') }} </strong>
                         </div>
                         @endif
-                       
+
                         @if (Session::has('success'))
                         <div class="alert alert-success alert-success1">{{Session::get('success')}}</div>
                         @endif
@@ -260,7 +293,7 @@
                                                 <div>
                                                     <button type="button" class="btn btn-primary form_button_footer print_delivery_order" id="print_delivery_order" >Print</button>
                                                     <button type="button" class="btn btn-default form_button_footer" data-dismiss="modal">Cancel</button>
-                                                   
+
                                                 </div>
                                                 <div class="clearfix"></div>
                                             </div>

@@ -11,36 +11,41 @@
                 </ol>
                 <div class="filter-block">
                     <h1 class="pull-left">Sales Daybook</h1>
-                    <div class="pull-right top-page-ui col-md-7">
-                        <div class="col-md-8 ">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <form action="" method="GET">
-                                        <div class="col-sm-6 ">
-                                            <input type="text" class="form-control delivery_challan_date" name="challan_date" id="sales_daybook_date" placeholder="Search by date" value="{{Request::get('challan_date')}}">
-                                        </div>
-                                        <div class="col-sm-6 ">
-                                            <input type="submit" class="btn btn-primary form_button_footer" value="Search">
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="pull-right top-page-ui col-md-8">
                         @if(sizeof($allorders) > 0)
-                        <div class="pull-right col-md-4">
+                        <div class="pull-right col-md-1">
                             <a class="btn btn-primary form_button_footer print_sales_order_daybook" >Print</a>
-                            <?php 
-                            $temp =Request::get('challan_date');
-                            if(isset($temp) && $temp<>""){
-                             $urltemp = url('export_sales_daybook/'.$temp);   
-                            }else{
-                            $urltemp = url('export_sales_daybook/'.'all');
-                            }
-                            ?>
-                            <a href="{{$urltemp}}" class="btn btn-primary form_button_footer" target="_blank" >Export</a>                            
                         </div>
                         @endif
+                        <div class="search_form_wrapper sales_book_search_form_wrapper pull-right">
+                            <form class="search_form" method="GET" action="{{URL::action('SalesDaybookController@index')}}">
+                                <input type="text" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
+                                if (Input::get('export_from_date') != "") {
+                                    echo "value='" . Input::get('export_from_date') . "'";
+                                }
+                                ?>>
+                                <input type="text" name="export_to_date" class="form-control export_to_date" id="export_to_date" <?php
+                                if (Input::get('export_to_date') != "") {
+                                    echo "value='" . Input::get('export_to_date') . "'";
+                                }
+                                ?>>
+                                <input type="submit" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                            </form>
+                            <form class="pull-left" method="POST" action="{{URL::action('SalesDaybookController@export_sales_daybook')}}">
+                                <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                                <input type="hidden" name="export_from_date" id="export_from_date" <?php
+                                if (Input::get('export_to_date') != "") {
+                                    echo "value='" . Input::get('export_from_date') . "'";
+                                }
+                                ?>>
+                                <input type="hidden" name="export_to_date" id="export_to_date" <?php
+                                if (Input::get('export_to_date') != "") {
+                                    echo "value='" . Input::get('export_to_date') . "'";
+                                }
+                                ?>>
+                                <input type="submit" name="export_data" value="Export" class="btn btn-primary pull-right export_btn">
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -170,8 +175,7 @@
 //                                                }else{
 //                                                    echo round(0,2);
 //                                                }
-                                                echo round($challan['delivery_challan_products']->sum('actual_quantity'), 2);  
-                                                
+                                                echo round($challan['delivery_challan_products']->sum('actual_quantity'), 2);
                                                 ?>
                                             </td>
                                             <td >{{round(isset($challan->grand_price)?$challan->grand_price:0, 2)}}</td>
@@ -195,9 +199,9 @@
                                             @endif
                                         </tr>
                                         @if( Auth::user()->role_id == 0  )
-                                    
-                                    @endif
-                                    @endforeach
+
+                                        @endif
+                                        @endforeach
                                     </tbody>
                                 </table>
                                 @if( Auth::user()->role_id == 0  )
@@ -260,33 +264,33 @@
                     </div>
                     @endif
                     <div class="modal fade" id="delete-sales-day-book" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                                    <h4 class="modal-title" id="myModalLabel"></h4>
-                                                </div>
-                                                {!! Form::open(array("method"=>"POST", "id"=>"delete-sales-day-book-form"))!!}
-                                                <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                                <div class="modal-body">
-                                                    <div class="delete">
-                                                        <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
-                                                        <div class="pwd">
-                                                            <div class="pwdl"><b>Password:</b></div>
-                                                            <div class="pwdr"><input class="form-control" placeholder="" name="password" type="password"></div>
-                                                        </div>
-                                                        <div class="clearfix"></div>
-                                                        <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                    <button type="button" class="btn btn-default" id="yes" onclick="this.form.submit();">Yes</button>
-                                                </div>
-                                                {!! Form::close() !!}
-                                            </div>
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                    <h4 class="modal-title" id="myModalLabel"></h4>
+                                </div>
+                                {!! Form::open(array("method"=>"POST", "id"=>"delete-sales-day-book-form"))!!}
+                                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                <div class="modal-body">
+                                    <div class="delete">
+                                        <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
+                                        <div class="pwd">
+                                            <div class="pwdl"><b>Password:</b></div>
+                                            <div class="pwdr"><input class="form-control" placeholder="" name="password" type="password"></div>
                                         </div>
+                                        <div class="clearfix"></div>
+                                        <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
                                     </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                    <button type="button" class="btn btn-default" id="yes" onclick="this.form.submit();">Yes</button>
+                                </div>
+                                {!! Form::close() !!}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -272,7 +272,7 @@
                 <td></td><td></td><td></td><td></td><td></td><td></td>
                 <td>   
                     <?php
-                    if ($type_of_bill == "P") {
+                    if (isset($type_of_bill) && $type_of_bill == "P") {
                         $discount = 0;
                         $loading_charge = 0;
                         $freight = 0;

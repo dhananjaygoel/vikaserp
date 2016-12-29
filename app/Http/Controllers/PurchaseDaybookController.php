@@ -31,25 +31,29 @@ class PurchaseDaybookController extends Controller {
      */
 
     public function index() {
+        $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('purchase_challan')->with('error', 'You do not have permission.');
         }
-        $purchase_daybook = 0;
-        if (Input::get('date') != "") {
-//            $purchase_daybook = PurchaseChallan::with('orderedby', 'supplier')
-//                    ->where('order_status', 'completed')
-//                    ->whereHas('purchase_advice', function($query) {
-//                        $query->where('purchase_advice_date', '=', date("Y-m-d", strtotime(Input::get('date'))));
-//                    })
-//                    ->with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
-//                    ->orderBy('created_at', 'desc')
-//                    ->Paginate(20);
-            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
-                    ->where('order_status', 'completed')
-                    ->where('created_at', 'like','%'.date("Y-m-d", strtotime(Input::get('date'))).'%')
-                    ->with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
-                    ->orderBy('created_at', 'desc')
-                    ->Paginate(20);
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+            $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+            $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+            if ($date1 == $date2) {
+                $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
+                        ->where('order_status', 'completed')
+                        ->where('updated_at', 'like', $date1 . '%')
+                        ->with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
+                        ->orderBy('created_at', 'desc')
+                        ->Paginate(20);
+            } else {
+                $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
+                        ->where('order_status', 'completed')
+                        ->where('updated_at', '>=', $date1)
+                        ->where('updated_at', '<=', $date2)
+                        ->with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
+                        ->orderBy('created_at', 'desc')
+                        ->Paginate(20);
+            }
         } else {
             $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
                     ->where('order_status', 'completed')
@@ -108,23 +112,33 @@ class PurchaseDaybookController extends Controller {
     /*
      * Export/download purchase day book data into excel file
      *
-     */ 
+     */
 
-    public function expert_purchase_daybook($id) {
-        if($id <> "all" && $id<>"")
-        $newDate = date("Y-m-d", strtotime($id));
-     else
-      $newDate=""; 
-
-        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
-                ->where('order_status', 'completed')
-                ->where('created_at','like',$newDate.'%')
-                ->orderBy('created_at', 'desc')
-                ->get();
-        
-//        return view('excelView.purchase',  array('purchase_orders' => $purchase_daybook));
-//        exit;
-
+    public function expert_purchase_daybook() {
+        $data = Input::all();
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+            $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+            $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+            if ($date1 == $date2) {
+                $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
+                        ->where('order_status', 'completed')
+                        ->where('updated_at', 'like', $date1 . '%')
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+            } else {
+                $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
+                        ->where('order_status', 'completed')
+                        ->where('updated_at', '>=', $date1)
+                        ->where('updated_at', '<=', $date2)
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+            }
+        } else {
+            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
+                    ->where('order_status', 'completed')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+        }
         Excel::create('Purchase Daybook', function($excel) use($purchase_daybook) {
             $excel->sheet('Purchase-Daybook', function($sheet) use($purchase_daybook) {
                 $sheet->loadView('excelView.purchase', array('purchase_orders' => $purchase_daybook));
