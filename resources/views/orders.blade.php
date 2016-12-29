@@ -39,7 +39,7 @@
                         @else
                         <input type="hidden" name="order_status" value="pending">
                         @endif
-                        <input type="submit" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                        <input type="submit" disabled="" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
                     </form>
                     <form class="pull-left" method="POST" action="{{URL::action('OrderController@exportOrderBasedOnStatus')}}">
                         <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
@@ -48,7 +48,7 @@
                             echo "value='" . Input::get('export_from_date') . "'";
                         }
                         ?>>
-                        <input type="hidden" name="export_to_date" id="export_to_date" <?php
+                        <input type="hidden"  name="export_to_date" id="export_to_date" <?php
                         if (Input::get('export_to_date') != "") {
                             echo "value='" . Input::get('export_to_date') . "'";
                         }
@@ -62,7 +62,7 @@
                         @else
                         <input type="hidden" name="order_status" value="pending">
                         @endif
-                        <input type="submit" name="export_data" value="Export" class="btn btn-primary pull-right export_btn">
+                        <input type="submit" disabled="" name="export_data" value="Export" class="btn btn-primary pull-right export_btn">
                     </form>
                 </div>
 

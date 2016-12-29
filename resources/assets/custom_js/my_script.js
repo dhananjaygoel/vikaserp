@@ -26,6 +26,18 @@ $('.export_to_date,.export_from_date').keypress(function (event) {
 $('.export_to_date,.export_from_date').bind('cut copy paste', function (e) {
     e.preventDefault();
 });
+if (($('.export_to_date').val() != "") && ($('.export_from_date').val() != "")) {
+    $(".export_btn").removeAttr("disabled");
+} else if (($('.export_to_date').val() == "") || ($('.export_from_date').val() == "")) {
+    $(".export_btn").attr("disabled", "disabled");
+}
+$('.export_to_date,.export_from_date').on("change", function () {
+    if (($('.export_to_date').val() != "") && ($('.export_from_date').val() != "")) {
+        $(".export_btn").removeAttr("disabled");
+    } else if (($('.export_to_date').val() == "") || ($('.export_from_date').val() == "")) {
+        $(".export_btn").attr("disabled", "disabled");
+    }
+});
 $('#search').keypress(function (e) {
     if (e.keyCode == 13) {
         $('#searchCustomerForm').submit();

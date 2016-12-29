@@ -53,7 +53,7 @@
                             @else
                             <input type="hidden" name="delivery_order_status" value="pending">
                             @endif
-                            <input type="submit" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                            <input type="submit" disabled="" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
                         </form>
                         <form class="pull-left" method="POST" action="{{URL::action('DeliveryChallanController@exportDeliveryChallanBasedOnStatus')}}">
                             <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
@@ -69,12 +69,12 @@
                             ?>>
                             @if(sizeof($allorders)!=0 && ($qstring_sort_type_order == 'pending' ||$qstring_sort_type_order==''))
                             <input type="hidden" name="delivery_order_status" value="pending">
-                            <input type="submit" name="export_data" value="Export" class="btn btn-primary pull-right export_btn">
-                            @endif
-                            @if(sizeof($allorders)!=0 && $qstring_sort_type_order == 'completed')
+                            @elseif(sizeof($allorders)!=0 && $qstring_sort_type_order == 'completed')
                             <input type="hidden" name="delivery_order_status" value="completed">
-                            <input type="submit" name="export_data" value="Export" class="btn btn-primary pull-right export_btn">
+                            @else
+                            <input type="hidden" name="delivery_order_status" value="pending">
                             @endif
+                            <input type="submit" disabled="" name="export_data" value="Export" class="btn btn-primary pull-right export_btn">
                         </form>
                     </div>
                 </div>

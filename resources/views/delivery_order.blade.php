@@ -56,12 +56,12 @@
                             ?>>
                             @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Delivered' )
                             <input type="hidden" name="delivery_order_status" value="Delivered">
-                            <input type="submit" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
-                            @endif
-                            @if(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='Inprocess')
+                            @elseif(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='Inprocess')
                             <input type="hidden" name="delivery_order_status" value="Inprocess">
-                            <input type="submit" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                            @else
+                            <input type="hidden" name="delivery_order_status" value="Inprocess">
                             @endif
+                            <input type="submit" disabled="" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
                         </form>
                         <form class="pull-left" method="POST" action="{{URL::action('DeliveryOrderController@exportDeliveryOrderBasedOnStatus')}}">
                             <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
@@ -77,12 +77,12 @@
                             ?>>
                             @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Delivered' )
                             <input type="hidden" name="delivery_order_status" value="Delivered">
-                            <input type="submit" name="export_data" value="Export" class="btn btn-primary pull-right export_btn">
-                            @endif
-                            @if(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='Inprocess')
+                            @elseif(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='Inprocess')
                             <input type="hidden" name="delivery_order_status" value="Inprocess">
-                            <input type="submit" name="export_data" value="Export" class="btn btn-primary pull-right export_btn">
+                            @else
+                            <input type="hidden" name="delivery_order_status" value="Inprocess">
                             @endif
+                            <input type="submit" disabled="" name="export_data" value="Export" class="btn btn-primary pull-right export_btn">
                         </form>
                     </div>
                 </div>
