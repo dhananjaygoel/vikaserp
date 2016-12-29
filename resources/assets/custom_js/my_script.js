@@ -20,9 +20,14 @@ $('.export_to_date,.export_from_date').datepicker({
     format: 'mm-dd-yyyy',
     autoclose: true
 });
-
+$('.export_to_date,.export_from_date').keypress(function (event) {
+    event.preventDefault();
+});
+$('.export_to_date,.export_from_date').bind('cut copy paste', function (e) {
+    e.preventDefault();
+});
 $('#search').keypress(function (e) {
-    if (e.keyCode == 13){
+    if (e.keyCode == 13) {
         $('#searchCustomerForm').submit();
     }
 });
@@ -94,8 +99,8 @@ $('#purchaseaAdviseFilter').on('change', function () {
 
 $('#sendSMS').click(function () {
     var data_next_button = $(this).attr('data-id');
-    if(data_next_button){
-        $("#"+data_next_button).attr('disabled',true).attr('readonly',true);
+    if (data_next_button) {
+        $("#" + data_next_button).attr('disabled', true).attr('readonly', true);
     }
     var action = $(this).parents('form').attr('action');
     $(this).parents('form').attr('action', action + '?sendsms=true');
@@ -103,10 +108,10 @@ $('#sendSMS').click(function () {
 });
 $('.form_button_footer').click(function () {
     var data_next_button = $(this).attr('data-id');
-    if(data_next_button){
-        $("#"+data_next_button).attr('disabled',true).attr('readonly',true);
+    if (data_next_button) {
+        $("#" + data_next_button).attr('disabled', true).attr('readonly', true);
     }
- });
+});
 
 $('body').delegate("#sendSMSEditPurchaseOrder", "click", function () {
 
