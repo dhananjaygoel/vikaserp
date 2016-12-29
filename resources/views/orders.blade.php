@@ -20,6 +20,7 @@
                     $qstring_sort_type_order = $session_sort_type_order;
                 }
                 ?>
+                
                 <ol class="breadcrumb pull-left">
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Orders</span></li>
@@ -36,11 +37,11 @@
                             echo "value='" . Input::get('export_to_date') . "'";
                         }
                 ?>>
-                        @if(sizeof($allorders)!=0 && ($qstring_sort_type_order=='pending' || $qstring_sort_type_order=='' ))
+                        @if($qstring_sort_type_order=='pending' || $qstring_sort_type_order=='' )
                         <input type="hidden" name="order_status" value="pending">
-                        @elseif(sizeof($allorders)!=0 && $qstring_sort_type_order=='completed')
+                        @elseif($qstring_sort_type_order == 'completed')
                         <input type="hidden" name="order_status" value="completed">
-                        @elseif(sizeof($allorders)!=0 && $qstring_sort_type_order=='cancelled')
+                        @elseif($qstring_sort_type_order == 'cancelled')
                         <input type="hidden" name="order_status" value="cancelled">
                         @else
                         <input type="hidden" name="order_status" value="pending">

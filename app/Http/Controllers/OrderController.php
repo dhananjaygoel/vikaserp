@@ -58,7 +58,7 @@ class OrderController extends Controller {
         if (isset($data['order_filter']) && $data['order_filter'] != '') {
             $q->where('order_status', '=', $data['order_filter']);
         } elseif (isset($data['order_status']) && $data['order_status'] != '') {
-            $q->where('order_status', '=', 'pending');
+            $q->where('order_status', '=', $data['order_status']);
         } else {
             $q->where('order_status', '=', 'pending');
         }
