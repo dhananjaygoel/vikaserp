@@ -50,7 +50,11 @@ class DeliveryOrderController extends Controller {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
         }
         $session_sort_type_order = Session::get('order-sort-type');
-        $qstring_sort_type_order = Input::get('order_status');
+        if (Input::get('order_status') != "") {
+            $qstring_sort_type_order = Input::get('order_status');
+        } elseif (Input::get('delivery_order_status') != "") {
+            $qstring_sort_type_order = Input::get('delivery_order_status');
+        }
         if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
             $qstring_sort_type_order = $qstring_sort_type_order;
         } else {
