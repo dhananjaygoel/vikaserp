@@ -21,8 +21,13 @@
                                 <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                                 <?php
                                 $session_sort_type_order = Session::get('order-sort-type');
-                                $qstring_sort_type_order = Input::get('order_status');
-
+                                if ((Input::get('order_status') != "") || (Input::get('delivery_order_status') != "")) {
+                                    if (Input::get('order_status') != "") {
+                                        $qstring_sort_type_order = Input::get('order_status');
+                                    } elseif (Input::get('delivery_order_status') != "") {
+                                        $qstring_sort_type_order = Input::get('delivery_order_status');
+                                    }
+                                }
                                 if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
                                     $qstring_sort_type_order = $qstring_sort_type_order;
                                 } else {
@@ -45,15 +50,15 @@
                     <div class="search_form_wrapper">
                         <form class="search_form" method="GET" action="{{URL::action('DeliveryOrderController@index')}}">
                             <input type="text" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
-                            if (Input::get('export_from_date') != "") {
-                                echo "value='" . Input::get('export_from_date') . "'";
-                            }
-                            ?>>
+                                if (Input::get('export_from_date') != "") {
+                                    echo "value='" . Input::get('export_from_date') . "'";
+                                }
+                                ?>>
                             <input type="text" name="export_to_date" class="form-control export_to_date" id="export_to_date" <?php
                             if (Input::get('export_to_date') != "") {
                                 echo "value='" . Input::get('export_to_date') . "'";
                             }
-                            ?>>
+                                ?>>
                             @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Delivered' )
                             <input type="hidden" name="delivery_order_status" value="Delivered">
                             @elseif(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='Inprocess')
@@ -69,12 +74,12 @@
                             if (Input::get('export_to_date') != "") {
                                 echo "value='" . Input::get('export_from_date') . "'";
                             }
-                            ?>>
+                                ?>>
                             <input type="hidden" name="export_to_date" id="export_to_date" <?php
                             if (Input::get('export_to_date') != "") {
                                 echo "value='" . Input::get('export_to_date') . "'";
                             }
-                            ?>>
+                                ?>>
                             @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Delivered' )
                             <input type="hidden" name="delivery_order_status" value="Delivered">
                             @elseif(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='Inprocess')

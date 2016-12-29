@@ -14,8 +14,13 @@
                         <div class=" pull-right col-md-3">
                             <?php
                             $session_sort_type_order = Session::get('order-sort-type');
-                            $qstring_sort_type_order = Input::get('status_filter');
-
+                            if ((Input::get('status_filter') != "") || (Input::get('delivery_order_status') != "")) {
+                                if (Input::get('status_filter') != "") {
+                                    $qstring_sort_type_order = Input::get('status_filter');
+                                } elseif (Input::get('delivery_order_status') != "") {
+                                    $qstring_sort_type_order = Input::get('delivery_order_status');
+                                }
+                            }
                             if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
                                 $qstring_sort_type_order = $qstring_sort_type_order;
                             } else {
@@ -269,7 +274,7 @@
                                 </tbody>
                             </table>
                             <span class="pull-right">
-                                <?php //echo $allorders->render(); ?>
+                                <?php //echo $allorders->render();  ?>
                                 <?php
                                 if (!isset($_GET)) {
                                     echo $allorders->render();
