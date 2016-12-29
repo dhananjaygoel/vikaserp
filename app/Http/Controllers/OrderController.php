@@ -78,7 +78,7 @@ class OrderController extends Controller {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
             if ($date1 == $date2) {
-                $q->where('updated_at','like',$date1.'%');
+                $q->where('updated_at', 'like', $date1 . '%');
             } else {
                 $q->where('updated_at', '>=', $date1);
                 $q->where('updated_at', '<=', $date2);
@@ -1069,15 +1069,15 @@ class OrderController extends Controller {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
             if ($date1 == $date2) {
-                $q->where('updated_at','like',$date1.'%');
+                $order_objects = Order::where('order_status', $order_status)
+                                ->where('updated_at', 'like', $date1 . '%')
+                                ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->get();
             } else {
-                $q->where('updated_at', '>=', $date1);
-                $q->where('updated_at', '<=', $date2);
+                $order_objects = Order::where('order_status', $order_status)
+                                ->where('updated_at', '>=', $date1)
+                                ->where('updated_at', '<=', $date2)
+                                ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->get();
             }
-            $order_objects = Order::where('order_status', $order_status)
-                            ->where('updated_at', '>=', $date1)
-                            ->where('updated_at', '<=', $date2)
-                            ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->get();
         } else {
             $order_objects = Order::where('order_status', $order_status)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->get();
         }
