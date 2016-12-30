@@ -46,7 +46,7 @@ class DeliveryChallanController extends Controller {
         $session_sort_type_order = Session::get('order-sort-type');
         if (isset($data['status_filter']))
             $qstring_sort_type_order = $data['status_filter'];
-        elseif ($data['delivery_order_status'] != "")
+        elseif (isset($data['delivery_order_status']))
             $qstring_sort_type_order = $data['delivery_order_status'];
 
         if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
