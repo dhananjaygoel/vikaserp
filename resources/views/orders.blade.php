@@ -27,12 +27,12 @@
                 </ol>
                 <div class="search_form_wrapper orders_search_wrapper">
                     <form class="search_form" method="GET" action="{{URL::action('OrderController@index')}}">
-                        <input type="text" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
+                        <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
                 if (Input::get('export_from_date') != "") {
                     echo "value='" . Input::get('export_from_date') . "'";
                 }
                 ?>>
-                        <input type="text" name="export_to_date" class="form-control export_to_date" id="export_to_date" <?php
+                        <input type="text" placeholder="To" name="export_to_date" class="form-control export_to_date" id="export_to_date" <?php
                         if (Input::get('export_to_date') != "") {
                             echo "value='" . Input::get('export_to_date') . "'";
                         }
