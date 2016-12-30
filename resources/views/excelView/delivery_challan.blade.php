@@ -46,7 +46,11 @@
         <tr>
             <td>{{$counter}}</td>
             <td>
-                {{(isset($allorder->customer->tally_name) && $allorder->customer->tally_name != "")? $allorder->customer->tally_name : isset($allorder->customer->owner_name) ? $allorder->customer->owner_name:''}}
+                @if($allorder->customer->tally_name != "" && $allorder->customer->owner_name != "")
+                {{ $allorder->customer->owner_name }}-{{$allorder->customer->tally_name}}
+                @else 
+                {{ $allorder->customer->owner_name }}
+                @endif
             </td>
             <td>
                 {{($allorder->serial_number != '') ? $allorder->serial_number :  $allorder->delivery_order->serial_no}}
@@ -76,9 +80,9 @@
             <td>{{isset($product->price) ? $product->price:''}}</td>
             <td>{{(isset($product->vat_percentage) && $product->vat_percentage!='')?$product->vat_percentage:''}}</td>
             <td><?php
-            $amount = $product->actual_quantity * $product->price;
-            $amount = $amount + (($amount * (($product->vat_percentage != '') ? $product->vat_percentage : 0)) / 100);
-            ?>
+                $amount = $product->actual_quantity * $product->price;
+                $amount = $amount + (($amount * (($product->vat_percentage != '') ? $product->vat_percentage : 0)) / 100);
+                ?>
                 {{round($amount, 2)}}</td>
             @endif
 
@@ -137,9 +141,9 @@
             <td>{{isset($product->price) ? $product->price:''}}</td>
             <td>{{(isset($product->vat_percentage) && $product->vat_percentage!='')?$product->vat_percentage:''}}</td>
             <td><?php
-        $amount = $product->actual_quantity * $product->price;
-        $amount = $amount + (($amount * (($product->vat_percentage != '') ? $product->vat_percentage : 0)) / 100);
-        ?>
+                $amount = $product->actual_quantity * $product->price;
+                $amount = $amount + (($amount * (($product->vat_percentage != '') ? $product->vat_percentage : 0)) / 100);
+                ?>
                 {{round($amount, 2)}}
             </td>
             <td></td>

@@ -882,17 +882,23 @@ class DeliveryOrderController extends Controller {
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
             if ($date1 == $date2) {
                 $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)
-                                ->where('updated_at', 'like', $date1 . '%')
-                                ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')->get();
+                        ->where('updated_at', 'like', $date1 . '%')
+                        ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')
+                        ->orderBy('created_at', 'desc')
+                        ->get();
             } else {
                 $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)
-                                ->where('updated_at', '>=', $date1)
-                                ->where('updated_at', '<=', $date2)
-                                ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')->get();
+                        ->where('updated_at', '>=', $date1)
+                        ->where('updated_at', '<=', $date2)
+                        ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')
+                        ->orderBy('created_at', 'desc')
+                        ->get();
             }
         } else {
             $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)
-                            ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')->get();
+                    ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
         }
         if (count($delivery_order_objects) == 0) {
             return redirect::back()->with('error', 'No data found');

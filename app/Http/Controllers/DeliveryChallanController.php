@@ -697,16 +697,18 @@ class DeliveryChallanController extends Controller {
                 $delivery_challan_objects = DeliveryChallan::where('challan_status', $delivery_order_status)
                         ->where('updated_at', 'like', $date1 . '%')
                         ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')
+                        ->orderBy('updated_at', 'desc')
                         ->get();
             } else {
                 $delivery_challan_objects = DeliveryChallan::where('challan_status', 'like', '%' . $delivery_order_status . '%')
                         ->where('updated_at', '>=', $date1)
                         ->where('updated_at', '<=', $date2)
                         ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')
+                        ->orderBy('updated_at', 'desc')
                         ->get();
             }
         } else {
-            $delivery_challan_objects = DeliveryChallan::where('challan_status', $delivery_order_status)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')->get();
+            $delivery_challan_objects = DeliveryChallan::where('challan_status', $delivery_order_status)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')->orderBy('updated_at', 'desc')->get();
         }
         if (count($delivery_challan_objects) == 0) {
             return redirect::back()->with('flash_message', 'No data found');

@@ -1072,16 +1072,23 @@ class OrderController extends Controller {
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
             if ($date1 == $date2) {
                 $order_objects = Order::where('order_status', $order_status)
-                                ->where('updated_at', 'like', $date1 . '%')
-                                ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->get();
+                        ->where('updated_at', 'like', $date1 . '%')
+                        ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                        ->orderBy('created_at', 'desc')
+                        ->get();
             } else {
                 $order_objects = Order::where('order_status', $order_status)
-                                ->where('updated_at', '>=', $date1)
-                                ->where('updated_at', '<=', $date2)
-                                ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->get();
+                        ->where('updated_at', '>=', $date1)
+                        ->where('updated_at', '<=', $date2)
+                        ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                        ->orderBy('created_at', 'desc')
+                        ->get();
             }
         } else {
-            $order_objects = Order::where('order_status', $order_status)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->get();
+            $order_objects = Order::where('order_status', $order_status)
+                    ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
         }
 
         if (count($order_objects) == 0) {
