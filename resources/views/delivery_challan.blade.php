@@ -72,9 +72,9 @@
                                 echo "value='" . Input::get('export_to_date') . "'";
                             }
                             ?>>
-                            @if(sizeof($allorders)!=0 && ($qstring_sort_type_order == 'pending' ||$qstring_sort_type_order==''))
+                            @if($qstring_sort_type_order == 'pending' || $qstring_sort_type_order == '')
                             <input type="hidden" name="delivery_order_status" value="pending">
-                            @elseif(sizeof($allorders)!=0 && $qstring_sort_type_order == 'completed')
+                            @elseif($qstring_sort_type_order == 'completed')
                             <input type="hidden" name="delivery_order_status" value="completed">
                             @else
                             <input type="hidden" name="delivery_order_status" value="pending">

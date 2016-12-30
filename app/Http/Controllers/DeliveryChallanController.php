@@ -46,6 +46,9 @@ class DeliveryChallanController extends Controller {
         $session_sort_type_order = Session::get('order-sort-type');
         if (isset($data['status_filter']))
             $qstring_sort_type_order = $data['status_filter'];
+        elseif ($data['delivery_order_status'] != "")
+            $qstring_sort_type_order = $data['delivery_order_status'];
+
         if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
             $qstring_sort_type_order = $qstring_sort_type_order;
         } else {
@@ -696,20 +699,15 @@ class DeliveryChallanController extends Controller {
                         ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')
                         ->get();
             } else {
-                $delivery_challan_objects = DeliveryChallan::where('challan_status', 'like','%'.$delivery_order_status.'%')
+                $delivery_challan_objects = DeliveryChallan::where('challan_status', 'like', '%' . $delivery_order_status . '%')
                         ->where('updated_at', '>=', $date1)
                         ->where('updated_at', '<=', $date2)
                         ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')
                         ->get();
             }
-
         } else {
             $delivery_challan_objects = DeliveryChallan::where('challan_status', $delivery_order_status)->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')->get();
         }
-        echo '<pre>';
-        print_r($delivery_challan_objects->toArray());
-        echo '<pre>';
-        exit();
         if (count($delivery_challan_objects) == 0) {
             return redirect::back()->with('flash_message', 'No data found');
         } else {
