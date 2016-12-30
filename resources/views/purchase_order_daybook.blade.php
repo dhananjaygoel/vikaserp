@@ -217,7 +217,7 @@
                                 <div class="clearfix"></div>
                                 <span class="pull-right">
                                     <ul class="pagination pull-right">
-                                        <?php echo $purchase_daybook->render(); ?>
+                                        <?php echo $purchase_daybook->appends(Input::except('page'))->render(); ?>
                                     </ul>
                                 </span>
                                 <div class="clearfix"></div>

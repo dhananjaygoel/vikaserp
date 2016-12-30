@@ -463,25 +463,26 @@
                             </div>
                             <span class="pull-right">
                                 <?php
-                                if (Input::get('order_filter') != '') {
-                                    $allorders->appends(array('order_filter' => Input::get('order_filter')))->render();
-                                }
-                                if (Input::get('location_filter') != '') {
-                                    $allorders->appends(array('location_filter' => Input::get('location_filter')))->render();
-                                }
-                                if (Input::get('party_filter') != '') {
-                                    $allorders->appends(array('party_filter' => Input::get('party_filter')))->render();
-                                }
-                                if (Input::get('fulfilled_filter') != '') {
-                                    $allorders->appends(array('fulfilled_filter' => Input::get('fulfilled_filter')))->render();
-                                }
-                                if (Input::get('size_filter') != '') {
-                                    $allorders->appends(array('size_filter' => Input::get('size_filter')))->render();
-                                }
-                                if (Input::has('flag') && Input::get('flag') == 'true') {
-                                    $allorders->appends(array('flag' => Input::get('flag')))->render();
-                                }
-                                echo $allorders->render();
+//                                if (Input::get('order_filter') != '') {
+//                                    $allorders->appends(array('order_filter' => Input::get('order_filter')))->render();
+//                                }
+//                                if (Input::get('location_filter') != '') {
+//                                    $allorders->appends(array('location_filter' => Input::get('location_filter')))->render();
+//                                }
+//                                if (Input::get('party_filter') != '') {
+//                                    $allorders->appends(array('party_filter' => Input::get('party_filter')))->render();
+//                                }
+//                                if (Input::get('fulfilled_filter') != '') {
+//                                    $allorders->appends(array('fulfilled_filter' => Input::get('fulfilled_filter')))->render();
+//                                }
+//                                if (Input::get('size_filter') != '') {
+//                                    $allorders->appends(array('size_filter' => Input::get('size_filter')))->render();
+//                                }
+//                                if (Input::has('flag') && Input::get('flag') == 'true') {
+//                                    $allorders->appends(array('flag' => Input::get('flag')))->render();
+//                                }
+                                echo $allorders->appends(Input::except('page'))->render();
+//                                echo $allorders->render();
                                 ?>
                             </span>
                             <div class="clearfix"></div>

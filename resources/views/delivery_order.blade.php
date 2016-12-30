@@ -310,11 +310,12 @@
                             <span class="pull-right">
                                 <ul class="pagination pull-right">
                                     <?php
-                                    if (!isset($_GET)) {
-                                        echo $delivery_data->render();
-                                    } else {
-                                        echo $delivery_data->appends($_GET)->render();
-                                    }
+//                                    if (!isset($_GET)) {
+//                                        echo $delivery_data->render();
+//                                    } else {
+//                                        echo $delivery_data->appends($_GET)->render();
+//                                    }
+                                    echo $delivery_data->appends(Input::except('page'))->render();
                                     ?>
                                 </ul>
                             </span>

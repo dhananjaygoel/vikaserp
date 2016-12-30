@@ -239,11 +239,9 @@
                             </form>
                             <div class="clearfix"></div>
                             <span class="pull-right">
-                                @if(isset($_GET['challan_date']) && Request::get('challan_date') != '')
-                                <?php echo $allorders->appends(array('challan_date' => Request::get('challan_date')))->render(); ?>
-                                @else
-                                <?php echo $allorders->render(); ?>
-                                @endif
+                                <?php
+                                echo $allorders->appends(Input::except('page'))->render();
+                                ?>
                             </span>
                             <div class="clearfix"></div>
                             @if($allorders->lastPage() > 1)

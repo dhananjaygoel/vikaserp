@@ -276,11 +276,12 @@
                             <span class="pull-right">
                                 <?php //echo $allorders->render();  ?>
                                 <?php
-                                if (!isset($_GET)) {
-                                    echo $allorders->render();
-                                } else {
-                                    echo $allorders->appends($_GET)->render();
-                                }
+//                                if (!isset($_GET)) {
+//                                    echo $allorders->render();
+//                                } else {
+//                                    echo $allorders->appends($_GET)->render();
+//                                }
+                                echo $allorders->appends(Input::except('page'))->render();
                                 ?>
                             </span>
                             <span class="clearfix"></span>
