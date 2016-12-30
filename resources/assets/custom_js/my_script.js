@@ -18,7 +18,8 @@ $('#bill_date').datepicker({
 });
 $('.export_to_date,.export_from_date').datepicker({
     format: 'mm-dd-yyyy',
-    autoclose: true
+    autoclose: true,
+    endDate: new Date()
 });
 $('.export_to_date,.export_from_date').keypress(function (event) {
     event.preventDefault();
