@@ -104,7 +104,11 @@ Route::get('update_delivery_location', 'HomeController@update_delivery_location'
 
 Route::get('doMigrate', function () {
     define('STDIN', fopen("php://stdin", "r"));
-    Artisan::call('migrate', ['--quiet' => true, '--force' => true]);
+    $migration_status = Artisan::call('migrate', ['--quiet' => true, '--force' => true]);
+    if ($migration_status)
+        echo "Migration executed successfully.";
+    else
+        echo "Migration execution failed.";
 });
 Route::get('dataSeeding', function () {
     define('STDIN', fopen("php://stdin", "r"));
@@ -245,13 +249,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('showtableinfo/{tablename}', 'WelcomeController@showtableinfo');
     Route::get('updatecolumndata/{tablename}/{column}/{value}', 'WelcomeController@updatecolumndata');
     Route::get('updatecolumndatavalue/{tablename}/{column}/{value}/{wherekey}/{wherevalue}', 'WelcomeController@updatecolumndatavalue');
-    Route::get('checkdatabaseinfo', 'WelcomeController@checkdatabaseinfo');
+    
     /* Helpful routes for developers ends here */
     Route::any('database_backup_test', 'HomeController@database_backup_test');
     Route::any('database_backup_live', 'HomeController@database_backup_live');
     Route::any('database_backup_local', 'HomeController@database_backup_local');
 });
 
+Route::get('checkdatabaseinfo', 'WelcomeController@checkdatabaseinfo');
 
 Route::get('export/{type}', 'WelcomeController@exportExcel');
 Route::get('get_server_data', 'WelcomeController@get_server_data');
@@ -271,8 +276,7 @@ Route::get('reponse/dropbox/callback',function(){
     echo "Comes";
 });
 
- Route::get('recover', 'SalesDaybookController@recover');
-
+Route::get('recover', 'SalesDaybookController@recover');
 Route::get('dropbax-demo-functionality', function() {
     $url = 'https://www.dropbox.com/oauth2/authorize';
     $url = '?response_type=';
