@@ -251,11 +251,11 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('updatecolumndatavalue/{tablename}/{column}/{value}/{wherekey}/{wherevalue}', 'WelcomeController@updatecolumndatavalue');
     
     /* Helpful routes for developers ends here */
-    Route::any('database_backup_test', 'HomeController@database_backup_test');
+    
     Route::any('database_backup_live', 'HomeController@database_backup_live');
     Route::any('database_backup_local', 'HomeController@database_backup_local');
 });
-
+Route::any('database_backup_test', 'HomeController@database_backup_test');
 Route::get('checkdatabaseinfo', 'WelcomeController@checkdatabaseinfo');
 
 Route::get('export/{type}', 'WelcomeController@exportExcel');

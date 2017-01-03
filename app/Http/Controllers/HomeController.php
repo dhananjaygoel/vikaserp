@@ -3285,9 +3285,9 @@ class HomeController extends Controller {
      * This function takes backup of whole datbase of test server machine
      */
     public function database_backup_test() {
-        $DBUSER = "agstechn_vauser";
-        $DBPASSWD = "vikasuser23210";
-        $DATABASE = "agstechn_vaoas";
+        $DBUSER = "vikasags_vikuser";
+        $DBPASSWD = "CFpNH.#JblZe";
+        $DATABASE = "vikasags_vikasdb";
         $filename = "backup-" . date("d-m-Y") . ".sql.gz";
         $mime = "application/x-gzip";
 
@@ -3306,9 +3306,9 @@ class HomeController extends Controller {
      * This function takes backup of whole datbase of production server machine
      */
     public function database_backup_live() {
-        $DBUSER = "agstechn_vauser";
-        $DBPASSWD = "vikasuser23210";
-        $DATABASE = "agstechn_vauser";
+        $DBUSER = "vikaserp_agsus";
+        $DBPASSWD = "passags756";
+        $DATABASE = "vikaserp_ags";
         $filename = "backup-" . date("d-m-Y") . ".sql.gz";
         $mime = "application/x-gzip";
         header("Content-Type: " . $mime);
