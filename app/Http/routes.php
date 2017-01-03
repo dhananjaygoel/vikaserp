@@ -249,14 +249,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('showtableinfo/{tablename}', 'WelcomeController@showtableinfo');
     Route::get('updatecolumndata/{tablename}/{column}/{value}', 'WelcomeController@updatecolumndata');
     Route::get('updatecolumndatavalue/{tablename}/{column}/{value}/{wherekey}/{wherevalue}', 'WelcomeController@updatecolumndatavalue');
+    Route::get('checkdatabaseinfo', 'WelcomeController@checkdatabaseinfo');
     
     /* Helpful routes for developers ends here */
-    
+    Route::any('database_backup_test', 'HomeController@database_backup_test');
     Route::any('database_backup_live', 'HomeController@database_backup_live');
     Route::any('database_backup_local', 'HomeController@database_backup_local');
 });
-Route::any('database_backup_test', 'HomeController@database_backup_test');
-Route::get('checkdatabaseinfo', 'WelcomeController@checkdatabaseinfo');
 
 Route::get('export/{type}', 'WelcomeController@exportExcel');
 Route::get('get_server_data', 'WelcomeController@get_server_data');
@@ -272,7 +271,7 @@ Route::post('export-order', 'OrderController@exportOrderBasedOnStatus');
 Route::get('export-inquiry/{inquiry_status}', 'InquiryController@exportinquiryBasedOnStatus');
 Route::get('get-data', 'DeliveryOrderController@get_data');
 
-Route::get('reponse/dropbox/callback',function(){
+Route::get('reponse/dropbox/callback', function() {
     echo "Comes";
 });
 
