@@ -46,16 +46,20 @@ class InventoryController extends Controller {
 
         $qty = Input::get('opening_stock');
         $minimal = Input::get('minimal');
-        $inventory_details = Inventory::find(Input::get('id'));
-        $inventory_details->opening_qty = $qty;
-        $inventory_details->minimal = $minimal;
-        $physical_qty = ($qty + $inventory_details->purchase_challan_qty) - $inventory_details->sales_challan_qty;
-        $inventory_details->physical_closing_qty = $physical_qty;
-        $virtual_qty = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_order_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
-        $inventory_details->virtual_qty = $virtual_qty;
-        $inventory_details->save();
-        $total = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
-        $inventory_details['class'] = ($total < $inventory_details->minimal) ? 'yes' : 'no';
+//        $inventory_details = Inventory::find(Input::get('id'));
+        $inventory_details = Inventory::where('product_sub_category_id','=',Input::get('id'))->first();
+        if (!empty($inventory_details)) {
+            $inventory_details->opening_qty = $qty;
+            $inventory_details->minimal = $minimal;
+            $physical_qty = ($qty + $inventory_details->purchase_challan_qty) - $inventory_details->sales_challan_qty;
+            $inventory_details->physical_closing_qty = $physical_qty;
+            $virtual_qty = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_order_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
+            $inventory_details->virtual_qty = $virtual_qty;
+            $inventory_details->save();
+            $total = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
+            $inventory_details['class'] = ($total < $inventory_details->minimal) ? 'yes' : 'no';
+        }
+
         return json_encode($inventory_details);
     }
 
@@ -306,8 +310,8 @@ class InventoryController extends Controller {
             $inventory_details->save();
         }
         $query = Inventory::query();
-        if (Input::has('inventory_filter') && Input::get('inventory_filter') =='minimal') {
-          
+        if (Input::has('inventory_filter') && Input::get('inventory_filter') == 'minimal') {
+
 //                $query->where('minimal','<','physical_closing_qty'-'pending_delivery_order_qty'-'pending_sales_order_qty'+'pending_purchase_advise_qty');
             $query->whereRaw('minimal < physical_closing_qty-pending_delivery_order_qty-pending_sales_order_qty+pending_purchase_advise_qty');
         }
@@ -322,11 +326,11 @@ class InventoryController extends Controller {
 //        $inventory_newlist = $query->with(array('product_sub_category' => function($query1) {
 //        $query1->orderBy('alias_name', 'ASC');
 //    }))->paginate(50);
-        
+
         $inventory_newlist = $query->with('product_sub_category')
-                            ->join('product_sub_category', 'inventory.product_sub_category_id', '=', 'product_sub_category.id')
-                            ->orderBy('product_sub_category.alias_name', 'ASC')
-                            ->paginate(50);
+                ->join('product_sub_category', 'inventory.product_sub_category_id', '=', 'product_sub_category.id')
+                ->orderBy('product_sub_category.alias_name', 'ASC')
+                ->paginate(50);
         $inventory_newlist->setPath('inventory');
         return view('add_inventory')->with(['inventory_list' => $inventory_newlist, 'product_category' => $product_category]);
     }
@@ -364,7 +368,8 @@ class InventoryController extends Controller {
                 $minimal_value = $value;
                 $myarray = explode("_", $key);
                 $opening_qty_value = $myarray[1];
-                $inventory_details = Inventory::find($myarray[1]);
+//                $inventory_details = Inventory::find($myarray[1]);
+                $inventory_details = Inventory::where('product_sub_category_id','=',$myarray[1])->first();
                 $inventory_details->minimal = $minimal_value;
                 $inventory_details->opening_qty = $data_dup[$opening_qty_value];
                 $physical_qty = ($data_dup[$opening_qty_value] + $inventory_details->purchase_challan_qty) - $inventory_details->sales_challan_qty;
