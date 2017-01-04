@@ -70,10 +70,6 @@ trait AuthenticatesAndRegistersUsers {
 	 */
 	public function postLogin(Request $request)
 	{
-            echo '<pre>';
-            print_r("test");
-            echo '<pre>';
-            exit();
             $this->validate($request, [
 			'email' => 'required|email', 'password' => 'required',
 		]);
