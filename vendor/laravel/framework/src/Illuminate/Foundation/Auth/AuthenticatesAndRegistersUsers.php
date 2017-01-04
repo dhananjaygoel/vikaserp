@@ -70,10 +70,14 @@ trait AuthenticatesAndRegistersUsers {
 	 */
 	public function postLogin(Request $request)
 	{
-		$this->validate($request, [
+            echo '<pre>';
+            print_r("test");
+            echo '<pre>';
+            exit();
+            $this->validate($request, [
 			'email' => 'required|email', 'password' => 'required',
 		]);
-
+                
 		$credentials = $request->only('email', 'password');
 
 		if ($this->auth->attempt($credentials, $request->has('remember')))
