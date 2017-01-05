@@ -314,12 +314,9 @@ class DeliveryChallanController extends Controller {
      */
 
     public function print_delivery_challan($id,DropboxStorageRepository $connection) {
-
         $serial_number_delivery_order = Input::get('serial_number');
-
         $current_date = date("m/d/");
         $update_delivery_challan = DeliveryChallan::with('delivery_challan_products')->find($id);
-
         if (isset($update_delivery_challan->serial_number) && $update_delivery_challan->challan_status == 'completed') {
             $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
                             ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
@@ -342,21 +339,12 @@ class DeliveryChallanController extends Controller {
                 $modified_id = $update_delivery_challan->ref_delivery_challan_id;
             }
             $date_letter = 'DC/' . $current_date . $modified_id . (($vat_applicable > 0) ? "P" : "A");
-
-
-//        if ($update_delivery_challan->ref_delivery_challan_id != 0) {
-//            $get_serial_number = DeliveryChallan::find($update_delivery_challan->ref_delivery_challan_id);
-//            $update_delivery_challan->serial_number = $get_serial_number->serial_number;
-//        } else {
             $update_delivery_challan->serial_number = $date_letter;
-//        }
             $update_delivery_challan->challan_status = 'completed';
             $update_delivery_challan->save();
             $this->checkpending_quantity();
             $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
                             ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
-//        $calculated_vat_value = $allorder->grand_price * ($allorder->vat_percentage / 100);
-//        $allorder['calculated_vat_price'] = $calculated_vat_value;
             $number = $allorder->grand_price;
             $exploded_value = explode(".", $number);
 
@@ -374,9 +362,8 @@ class DeliveryChallanController extends Controller {
                 $convert_value = $this->convert_number($allorder->grand_price);
             }
             $allorder['convert_value'] = $convert_value;
-            
             $pdf = app('dompdf.wrapper');
-            $pdf->loadView('print_delivery_challan', [
+            $pdf->loadView('delivery_challan_pdf', [
                 'allorder' => $allorder,
                 'total_vat_amount' => $total_vat_amount
             ]);
