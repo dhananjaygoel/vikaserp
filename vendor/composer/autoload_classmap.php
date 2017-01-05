@@ -24,6 +24,7 @@ return array(
     'AlterInquiryProductsTable02' => $baseDir . '/database/migrations/2016_09_09_072016_alter_inquiry_products_table_02.php',
     'AlterOrderTable01' => $baseDir . '/database/migrations/2016_07_28_092217_alter_order_table_01.php',
     'AlterPurchaseChallan01' => $baseDir . '/database/migrations/2016_10_18_160654_alter_purchase_challan_01.php',
+    'AlterPurchaseChallan02' => $baseDir . '/database/migrations/2017_01_04_121820_alter_purchase_challan_02.php',
     'Attribute_Translator' => $vendorDir . '/dompdf/dompdf/include/attribute_translator.cls.php',
     'Block_Frame_Decorator' => $vendorDir . '/dompdf/dompdf/include/block_frame_decorator.cls.php',
     'Block_Frame_Reflower' => $vendorDir . '/dompdf/dompdf/include/block_frame_reflower.cls.php',

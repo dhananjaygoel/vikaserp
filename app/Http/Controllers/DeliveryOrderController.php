@@ -25,6 +25,10 @@ use App\CustomerProductDifference;
 use App\ProductCategory;
 use Session;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\File;
+use App\Repositories\DropboxStorageRepository;
+use Barryvdh\DomPDF\PDF;
+use Illuminate\Support\Facades\Storage;
 
 class DeliveryOrderController extends Controller {
     /*
@@ -725,8 +729,7 @@ class DeliveryOrderController extends Controller {
      * as well as send the sms to the customer
      */
 
-    public function print_delivery_order($id) {
-
+    public function print_delivery_order($id,DropboxStorageRepository $connection) {
         $current_date = date("m/d/");
         $date_letter = 'DO/' . $current_date . "" . $id;
         DeliveryOrder:: where('id', $id)->update(array('serial_no' => $date_letter));
@@ -735,16 +738,17 @@ class DeliveryOrderController extends Controller {
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
 
-//        \PDF::set_base_path(asset('resources/assets/css/custom_style'));
-//        $pdf = \PDF::loadView('print_delivery_order', ['delivery_data' => $delivery_data,
-//                    'units' => $units,
-//                    'delivery_locations' => $delivery_locations,
-//                    'customers' => $customers
-//        ]);
-//        $filename = getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf';
-//        chmod($filename, 0777);
-//        $pdf->set_base_path(asset('resources/assets/css/custom_style'));
-//        $pdf->save($filename);
+        $pdf = app('dompdf.wrapper');
+        $pdf->loadView('print_delivery_order', [
+            'delivery_data' => $delivery_data,
+            'units' => $units,
+            'delivery_locations' => $delivery_locations,
+            'customers' => $customers
+        ]);
+        Storage::put(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+        $pdf->save(getcwd() . "/upload/invoices/do/". str_replace('/', '-', $date_letter) . '.pdf');
+        chmod(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
+        $connection->getConnection()->put('Delivery Order/'.date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
 
         /*
           |------------------- -----------------------
@@ -934,5 +938,4 @@ class DeliveryOrderController extends Controller {
                 //'customers' => $customers,
         ));
     }
-
 }

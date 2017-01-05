@@ -226,7 +226,6 @@
                 $loading_vat_amount = ($allorder->loading_charge * $allorder->loading_vat_percentage) / 100;
                 $freight_vat_amount = ($allorder->freight * $allorder->freight_vat_percentage) / 100;
                 $discount_vat_amount = ($allorder->discount * $allorder->discount_vat_percentage) / 100;
-               
                 ?>
                 @foreach($allorder['delivery_challan_products'] as $prod)
                 @if($prod->order_type == 'delivery_challan')
@@ -243,12 +242,11 @@
                     </div>
                 </div>
                 <?php
-                
-                 $total_vat_amount =  ($total_price * $allorder->vat_percentage) / 100;
-                 
-                  $final_vat_amount = ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
-                
-               
+                $total_vat_amount = ($total_price * $allorder->vat_percentage) / 100;
+
+                $final_vat_amount = ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
+
+
 //                if ($prod->unit_id == 1) {
 //                    $total_qty += $prod->actual_quantity;
 //                }
@@ -280,19 +278,19 @@
                         <tr class="secondrow">
                             <td> {{ round($total_price+$allorder->loading_charge+ $allorder->freight + $allorder->discount, 2) }}  </td>
                             <td> <?php
-                            $vat = $final_vat_amount;
-                            ?>
-                            {{ round($vat,2) }} </td>
+                $vat = $final_vat_amount;
+                ?>
+                                {{ round($vat,2) }} </td>
                             <td> {{ round($allorder->grand_price, 2) }} </td>
                         </tr>
                     </table>
                     <div>
                         &nbsp; Remarks : {{$allorder->remarks}}
                     </div>
-<!--                    <div class="ruppes grand_price">
-                        &nbsp; <?php $gt = round($allorder->grand_price, 2) ?>
-                        Rupees <?php //echo ucwords(str_replace(".", "", convert_number($allorder->grand_price))); ?> Only.
-                    </div>-->
+                    <!--                    <div class="ruppes grand_price">
+                                            &nbsp; <?php $gt = round($allorder->grand_price, 2) ?>
+                                            Rupees <?php //echo ucwords(str_replace(".", "", convert_number($allorder->grand_price)));  ?> Only.
+                                        </div>-->
                 </div>
                 <div class="total">
                     <div class="">
@@ -300,10 +298,10 @@
                         <div class="value bob"> {{ round($total_price, 2) }} &nbsp;</div>
                         <div class="label ">&nbsp; Loading</div>
                         <div class="value">
-                            <?php
-                            $loading_charge = $allorder->loading_charge;
-                            $loading_vat = $allorder->loading_vat_percentage;
-                            ?>
+<?php
+$loading_charge = $allorder->loading_charge;
+$loading_vat = $allorder->loading_vat_percentage;
+?>
                             {{($loading_charge != "")?round($loading_charge,2):0}} &nbsp;
                         </div>
                         <div class="label">&nbsp; Freight</div>
@@ -317,40 +315,40 @@
                         </div>
                         <div class="label">&nbsp; Total</div>
                         <div class="value">
-                            <?php $with_total = $total_price + $loading_charge + $allorder->freight + $allorder->discount; ?>
+<?php $with_total = $total_price + $loading_charge + $allorder->freight + $allorder->discount; ?>
                             {{ round($with_total, 2) }}
                             &nbsp;
                         </div>
                         <div class="label">&nbsp; Vat</div>
                         <div class="value">
-                            <?php
-                            $vat = $final_vat_amount;
+<?php
+$vat = $final_vat_amount;
 // $vat = (isset($allorder->vat_percentage) && ($with_total != "")) ? round(($with_total * $allorder->vat_percentage) / 100, 2) : 0; 
-                            ?>
+?>
                             {{ round($vat,2) }}
                             &nbsp;
                         </div>
                         <div class="label">&nbsp; Round Off</div>
                         <div class="value">
-                            <?php
-                            if (isset($allorder->round_off) && ($allorder->round_off != "")) {
-                                $roundoff = $allorder->round_off;
-                            } else {
-                                $roundoff = 0;
-                            }
-                            ?>
+<?php
+if (isset($allorder->round_off) && ($allorder->round_off != "")) {
+    $roundoff = $allorder->round_off;
+} else {
+    $roundoff = 0;
+}
+?>
                             {{ round($roundoff,2) }}
                             &nbsp;
                         </div>
                         <div class="label">&nbsp; GT</div>
                         <div class="value">
-                             <?php
-                            if (isset($allorder->grand_price) && ($allorder->grand_price != "")) {
-                                $grand_price = $allorder->grand_price;
-                            } else {
-                                $grand_price = 0;
-                            }
-                            ?>
+<?php
+if (isset($allorder->grand_price) && ($allorder->grand_price != "")) {
+    $grand_price = $allorder->grand_price;
+} else {
+    $grand_price = 0;
+}
+?>
                             {{ round($grand_price, 2) }}
                             &nbsp;
                         </div>
@@ -358,61 +356,64 @@
                 </div>
             </div>
         </div>
-        <?php
+<?php
+if (!function_exists('convert_number')) {
 
-        function convert_number($number) {
+    function convert_number($number) {
 
-            $number = $number;
-            $no = round($number);
-            $point = round($number - $no, 2) * 100;
-            $hundred = null;
-            $digits_1 = strlen($no);
-            $i = 0;
-            $str = array();
-            $words = array('0' => '', '1' => 'one', '2' => 'two',
-                '3' => 'three', '4' => 'four', '5' => 'five', '6' => 'six',
-                '7' => 'seven', '8' => 'eight', '9' => 'nine',
-                '10' => 'ten', '11' => 'eleven', '12' => 'twelve',
-                '13' => 'thirteen', '14' => 'fourteen',
-                '15' => 'fifteen', '16' => 'sixteen', '17' => 'seventeen',
-                '18' => 'eighteen', '19' => 'nineteen', '20' => 'twenty',
-                '30' => 'thirty', '40' => 'forty', '50' => 'fifty',
-                '60' => 'sixty', '70' => 'seventy',
-                '80' => 'eighty', '90' => 'ninety');
-            $digits = array('', 'hundred', 'thousand', 'lakh', 'crore');
-            while ($i < $digits_1) {
-                $divider = ($i == 2) ? 10 : 100;
-                $number = floor($no % $divider);
-                $no = floor($no / $divider);
-                $i += ($divider == 10) ? 1 : 2;
-                if ($number) {
-                    $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
-                    $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
-                    $str [] = ($number < 21) ? $words[$number] .
-                            " " . $digits[$counter] . $plural . " " . $hundred :
-                            $words[floor($number / 10) * 10]
-                            . " " . $words[$number % 10] . " "
-                            . $digits[$counter] . $plural . " " . $hundred;
-                } else
-                    $str[] = null;
-            }
-            $str = array_reverse($str);
-            $result = implode('', $str);
-            if (($point % 10) == 0) {
-                $points = $words[$point];
-            } else {
-                $points = ($point) ? "." . $words[$point / 10] . " " . $words[$point = $point % 10] : '';
-            }
-            echo "<pre>";
-            print_r($points);
-            echo "<pre>";
-            exit();
-            if (strlen($points) > 0) {
-                return $result . "Rupees  " . ucwords($points) . " Paise";
-            } else {
-                return $result . "Rupees  ";
-            }
+        $number = $number;
+        $no = round($number);
+        $point = round($number - $no, 2) * 100;
+        $hundred = null;
+        $digits_1 = strlen($no);
+        $i = 0;
+        $str = array();
+        $words = array('0' => '', '1' => 'one', '2' => 'two',
+            '3' => 'three', '4' => 'four', '5' => 'five', '6' => 'six',
+            '7' => 'seven', '8' => 'eight', '9' => 'nine',
+            '10' => 'ten', '11' => 'eleven', '12' => 'twelve',
+            '13' => 'thirteen', '14' => 'fourteen',
+            '15' => 'fifteen', '16' => 'sixteen', '17' => 'seventeen',
+            '18' => 'eighteen', '19' => 'nineteen', '20' => 'twenty',
+            '30' => 'thirty', '40' => 'forty', '50' => 'fifty',
+            '60' => 'sixty', '70' => 'seventy',
+            '80' => 'eighty', '90' => 'ninety');
+        $digits = array('', 'hundred', 'thousand', 'lakh', 'crore');
+        while ($i < $digits_1) {
+            $divider = ($i == 2) ? 10 : 100;
+            $number = floor($no % $divider);
+            $no = floor($no / $divider);
+            $i += ($divider == 10) ? 1 : 2;
+            if ($number) {
+                $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
+                $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
+                $str [] = ($number < 21) ? $words[$number] .
+                        " " . $digits[$counter] . $plural . " " . $hundred :
+                        $words[floor($number / 10) * 10]
+                        . " " . $words[$number % 10] . " "
+                        . $digits[$counter] . $plural . " " . $hundred;
+            } else
+                $str[] = null;
         }
-        ?>
+        $str = array_reverse($str);
+        $result = implode('', $str);
+        if (($point % 10) == 0) {
+            $points = $words[$point];
+        } else {
+            $points = ($point) ? "." . $words[$point / 10] . " " . $words[$point = $point % 10] : '';
+        }
+        echo "<pre>";
+        print_r($points);
+        echo "<pre>";
+        exit();
+        if (strlen($points) > 0) {
+            return $result . "Rupees  " . ucwords($points) . " Paise";
+        } else {
+            return $result . "Rupees  ";
+        }
+    }
+
+}
+?>
     </body>
 </html>

@@ -23,6 +23,10 @@ use App\Customer;
 use App\ProductSubCategory;
 use Session;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\File;
+use App\Repositories\DropboxStorageRepository;
+use Barryvdh\DomPDF\PDF;
+use Illuminate\Support\Facades\Storage;
 
 class DeliveryChallanController extends Controller {
 
@@ -309,7 +313,7 @@ class DeliveryChallanController extends Controller {
      * Generate Serial number and print Delivery Challan
      */
 
-    public function print_delivery_challan($id) {
+    public function print_delivery_challan($id,DropboxStorageRepository $connection) {
 
         $serial_number_delivery_order = Input::get('serial_number');
 
@@ -370,6 +374,17 @@ class DeliveryChallanController extends Controller {
                 $convert_value = $this->convert_number($allorder->grand_price);
             }
             $allorder['convert_value'] = $convert_value;
+            
+            $pdf = app('dompdf.wrapper');
+            $pdf->loadView('print_delivery_challan', [
+                'allorder' => $allorder,
+                'total_vat_amount' => $total_vat_amount
+            ]);
+            Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+            $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
+            chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
+            $connection->getConnection()->put('Delivery Challan/'.date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+
 
             /*
               | ------------------- -----------------------

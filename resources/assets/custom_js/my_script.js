@@ -505,10 +505,9 @@ function print_challan(delivery_order_id) {
  * print challan to new page on delivery order  
  */
 $('.print_delivery_order').click(function () {
-    $('#print_challan').modal('hide');
+    $('.print_delivery_order').text('Please wait..').prop('disabled', 'disabled');
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
-
     if ($("#checksms").is(':checked'))
         send_sms = true;  // checked
     else
@@ -518,12 +517,14 @@ $('.print_delivery_order').click(function () {
         type: "GET",
         url: base_url + '/print_delivery_order/' + $(this).val() + '?send_sms=' + send_sms,
         success: function (data) {
+            $('#print_challan').modal('hide');
             var printWindow = window.open('about:blank');
             printWindow.document.open();
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
             printWindow.onunload = function () {
+                $('.print_delivery_order').removeprop('disabled');
                 location.reload();
             };
         }
@@ -533,7 +534,7 @@ function print_delivery_challan(challan_id) {
     $('#print_delivery_challan').val(challan_id);
 }
 $('.print_delivery_challan').click(function () {
-    $('#print_challan').modal('hide');
+    $('.print_delivery_challan').html('Please wait..').prop('disabled', 'disabled');
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
     if ($("#checksms").is(':checked'))
@@ -544,11 +545,13 @@ $('.print_delivery_challan').click(function () {
         type: "GET",
         url: base_url + '/print_delivery_challan/' + $('#print_delivery_challan').val() + '?send_sms=' + send_sms,
         success: function (data) {
+            $('#print_challan').modal('hide');
             var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
             printWindow.onunload = function () {
+                $('.print_delivery_challan').html('Generate Challan').prop("disabled", false);
                 location.reload();
             };
         }
@@ -675,3 +678,6 @@ $(document).ready(function () {
 /*
  | RESTRICT REDIRECT ON HALF FILLED FORM ENDS
  */
+//function display_error_message() {
+//    $("#export_error_message").removeClass("hidden");
+//}
