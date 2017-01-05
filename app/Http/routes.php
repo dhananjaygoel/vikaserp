@@ -104,11 +104,7 @@ Route::get('update_delivery_location', 'HomeController@update_delivery_location'
 
 Route::get('doMigrate', function () {
     define('STDIN', fopen("php://stdin", "r"));
-    $migration_status = Artisan::call('migrate', ['--quiet' => true, '--force' => true]);
-    if ($migration_status)
-        echo "Migration executed successfully.";
-    else
-        echo "Migration execution failed.";
+    Artisan::call('migrate', ['--quiet' => true, '--force' => true]);
 });
 Route::get('dataSeeding', function () {
     define('STDIN', fopen("php://stdin", "r"));
@@ -230,6 +226,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('place_order/{id}', 'InquiryController@place_order');
     Route::post('store_order/{id}', 'InquiryController@store_place_order');
     Route::post('export_sales_daybook', 'SalesDaybookController@export_sales_daybook');
+//    Route::post('export_purchase_orders', 'PurchaseOrderController@export_purchase_orders');
     Route::get('export_product_size', 'ProductsubController@exportProductSize');
     Route::get('print_sales_order_daybook', 'SalesDaybookController@print_sales_order_daybook');
     Route::post('get_product_weight', 'ProductsubController@get_product_weight');
@@ -250,7 +247,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('updatecolumndata/{tablename}/{column}/{value}', 'WelcomeController@updatecolumndata');
     Route::get('updatecolumndatavalue/{tablename}/{column}/{value}/{wherekey}/{wherevalue}', 'WelcomeController@updatecolumndatavalue');
     Route::get('checkdatabaseinfo', 'WelcomeController@checkdatabaseinfo');
-    
+
     /* Helpful routes for developers ends here */
     Route::any('database_backup_test', 'HomeController@database_backup_test');
     Route::any('database_backup_live', 'HomeController@database_backup_live');
@@ -290,4 +287,3 @@ Route::get('dropbax-demo-functionality', function() {
     /* Close CRUL connection */
     curl_close($curl_object);
 });
-
