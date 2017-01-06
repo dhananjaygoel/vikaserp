@@ -81,12 +81,12 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input id="actual_pieces_{{$key}}" class="form-control " placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" >
+                                                    <input id="actual_pieces_{{$key}}" class="form-control " placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="" type="tel" onkeypress=" return numbersOnly(this,event,true,false);" maxlength="10">
                                                 </div>
                                             </td>
                                              <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input id="average_weight_{{$key}}" class="form-control" placeholder="Average Weight" name="product[{{$key}}][average_weight]" value="" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" onblur="fetch_average_quantity();">
+                                                    <input id="average_weight_{{$key}}" class="form-control" placeholder="Average Weight" name="product[{{$key}}][average_weight]" value="" type="tel" onkeypress=" return numbersOnly(this,event,true,false);" onblur="fetch_average_quantity();" maxlength="10">
                                                 </div>
                                             </td>
                                              <td class="col-md-1">

@@ -121,8 +121,9 @@
                                             <td><span><b>Remark</b></span></td>
                                         </tr>
                                         <?php $total = 0; ?>
+                                       
                                         @foreach($order['all_order_products'] as $key=>$product)
-                                        @if($product->order_type =='order')
+                                        @if($product->order_type =='order' && $product->quantity <> 0 && $product->pending_quantity <>0 )
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
