@@ -156,10 +156,34 @@ class OrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+        
+       
+        
+        
+        if ( Auth::user()->role_id == 5) {
+        $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)                    
+                    ->first();       
+            
+        $order = Customer::with('delivery_location')->find($cust->id);
+        
+//         $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);
+//        if (count($order) < 1) {
+//            return redirect('orders')->with('flash_message', 'Order does not exist.');
+//        }
+
+         if (count($order) < 1) {
+            return redirect('order')->with('flash_message', 'Order does not exist.');
+         }
+        }
+        
+        
+        
         $units = Units::all();
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
-        return View::make('add_orders', compact('customers', 'units', 'delivery_locations'));
+        return View::make('add_orders', compact('customers','order', 'units', 'delivery_locations'));
     }
 
     /**
@@ -1096,7 +1120,8 @@ class OrderController extends Controller {
             $excel_sheet_name = 'Cancelled';
             $excel_name = 'Order-Cancelled-' . date('dmyhis');
         }
-        if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+        
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
             if ($date1 == $date2) {

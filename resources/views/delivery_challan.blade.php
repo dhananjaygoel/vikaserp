@@ -79,7 +79,7 @@
                             @else
                             <input type="hidden" name="delivery_order_status" value="pending">
                             @endif
-                            <input type="submit" disabled="" name="export_data" value="Export" class="btn btn-primary pull-right export_btn">
+                            <input type="submit"  name="export_data" value="Export" class="btn btn-primary pull-right" style=" float: left !important; margin-left: 2% !important;">
                         </form>
                     </div>
                 </div>

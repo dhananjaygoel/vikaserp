@@ -881,7 +881,7 @@ class DeliveryOrderController extends Controller {
             $excel_sheet_name = 'Delivered';
             $excel_name = 'DeliveryOrder-Delivered-' . date('dmyhis');
         }
-        if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
             if ($date1 == $date2) {
