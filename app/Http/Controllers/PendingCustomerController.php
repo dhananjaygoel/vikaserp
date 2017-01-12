@@ -131,6 +131,10 @@ class PendingCustomerController extends Controller {
         if (Hash::check($password, $current_user->password)) {
             $customer = Customer::find($id);
             $customer->delete();
+             $user = User::where('email', '=',$customer->email )
+                   ->where('first_name', '=',$customer->owner_name)
+                   ->where('mobile_number', '=',$customer->phone_number1)                 
+                   ->delete(); 
             return Redirect::to('pending_customers')->with('success', 'Pending customer Successfully deleted');
         } else {
             return Redirect::to('pending_customers')->with('error', 'Invalid password');

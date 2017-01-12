@@ -106,7 +106,12 @@ class CustomerController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $customer = new Customer();
+        $users = new User();
         $customer->owner_name = Input::get('owner_name');
+        $users->first_name =  Input::get('owner_name');
+        
+        $users->role_id = '5';
+        
         if (Input::has('company_name')) {
             $customer->company_name = Input::get('company_name');
         }
@@ -126,11 +131,16 @@ class CustomerController extends Controller {
         }
         if (Input::has('email')) {
             $customer->email = Input::get('email');
+            $users->email = Input::get('email');
         }
         $customer->tally_name = Input::get('tally_name');
         $customer->phone_number1 = Input::get('phone_number1');
+        $users->mobile_number = Input::get('phone_number1');
+        
+        
         if (Input::has('phone_number2')) {
             $customer->phone_number2 = Input::get('phone_number2');
+            $users->phone_number = Input::get('phone_number2');
         }
         if (Input::has('username')) {
             $customer->username = Input::get('username');
@@ -148,9 +158,10 @@ class CustomerController extends Controller {
 
         if (Input::has('password') && Input::get('password') != '') {
             $customer->password = Hash::make(Input::get('password'));
+            $users->password = Hash::make(Input::get('password'));
         }
         $customer->customer_status = 'permanent';
-        if ($customer->save()) {
+        if ($customer->save() && $users->save()) {
             $product_category_id = Input::get('product_category_id');
             if (isset($product_category_id)) {
                 foreach ($product_category_id as $key => $value) {
@@ -200,7 +211,7 @@ class CustomerController extends Controller {
      */
     public function show($id) {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4 ) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $customer = Customer::with('deliverylocation', 'customerproduct', 'manager')->find($id);
@@ -338,6 +349,8 @@ class CustomerController extends Controller {
         $current_user = User::find(Auth::id());
         if (Hash::check($password, $current_user->password)) {
             $customer = Customer::find($id);
+            
+                    
             $customer_exist = array();
             $customer_exist['customer_inquiry'] = "";
             $customer_exist['customer_order'] = "";
@@ -459,12 +472,62 @@ class CustomerController extends Controller {
                 return Redirect::to('customers')->with('error', $cust_msg);
             } else {
                 $customer->delete();
+                 $user = User::where('email', '=',$customer->email )
+                   ->where('first_name', '=',$customer->owner_name)
+                   ->where('mobile_number', '=',$customer->phone_number1)                 
+                   ->delete(); 
                 return Redirect::to('customers')->with('success', 'Customer deleted successfully.');
             }
         } else {
             return Redirect::to('customers')->with('error', 'Invalid password');
         }
     }
+    
+    
+         /**
+     * App track order for customer
+     */
+    public function trackOrderStatus($order_id) {
+        $input_data = Input::all();
+        if(isset($input_data['order_id'])){
+            $order_info = (json_decode($input_data['order_id']));
+            if(isset($order_info[0])){
+              $order_id=$order_info[0]->order_id;  
+            }                
+            else
+                $order_id=0;
+        }
+        else{
+            return json_encode(array('result' => false, 'track_order_status' => false, 'message' => 'Order not found'));
+        }
+        
+        
+        if(isset($input_data['customer_id'])){
+            $customer_info = (json_decode($input_data['customer_id']));
+            if(isset($customer_info[0]))
+                $customer_id=$customer_info[0]->customer_id;
+            else
+                $customer_id =0;
+        }
+        $order_status_responase=array();
+        if(isset($order_id) && $order_id> 0 && isset($customer_id) && $customer_id >0){
+            
+            $order_status_responase['order_details'] = Order::with('all_order_products')->where('id','=',$order_id)->where('customer_id','=',$customer_id)->get();
+           
+            $order_status_responase['delivery_order_details'] = DeliveryOrder::with('delivery_product')->where('order_id','=',$order_id)->where('customer_id','=',$customer_id)->get();
+           
+            $order_status_responase['delivery_challan_details'] = DeliveryChallan::with('delivery_challan_products')->where('order_id','=',$order_id)->where('customer_id','=',$customer_id)->get();
+        }
+        else{
+            return json_encode(array('result' => false, 'track_order_status' => false, 'message' => 'Order not found'));
+        }
+        
+        return json_encode($order_status_responase);
+    }
+    
+    
+    
+    
 
     /*
       | Get city list per state for forms

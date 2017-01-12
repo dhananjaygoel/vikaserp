@@ -243,6 +243,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('removedata/{tablename}', 'WelcomeController@removedata');
     Route::get('emptydata/{tablename}', 'WelcomeController@emptydata');
     Route::get('showdata/{tablename}', 'WelcomeController@showdata');
+    
+    Route::get('copy_customers', 'WelcomeController@copy_customers');
+    Route::get('delete_cust_from_user', 'WelcomeController@delete_cust_from_user');
+    
     Route::get('showtableinfo/{tablename}', 'WelcomeController@showtableinfo');
     Route::get('updatecolumndata/{tablename}/{column}/{value}', 'WelcomeController@updatecolumndata');
     Route::get('updatecolumndatavalue/{tablename}/{column}/{value}/{wherekey}/{wherevalue}', 'WelcomeController@updatecolumndatavalue');

@@ -47,78 +47,104 @@ class OrderController extends Controller {
     public function index() {
 
         $data = Input::all();
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 5) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
         }
-        $order_sorttype = Session::get('order-sort-type');
-        if (isset($order_sorttype) && ($order_sorttype != "")) {
-            $data['order_filter'] = $order_sorttype;
+        
+        if(Auth::user()->role_id == 5)
+        {
+            $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)
+                    ->first();
         }
-        $q = Order::query();
-        if (isset($data['order_filter']) && $data['order_filter'] != '') {
-            $q->where('order_status', '=', $data['order_filter']);
-        } elseif (isset($data['order_status']) && $data['order_status'] != '') {
-            $q->where('order_status', '=', $data['order_status']);
-        } else {
-            $q->where('order_status', '=', 'pending');
-        }
-        if (isset($data['party_filter']) && $data['party_filter'] != '') {
-            $q->where('customer_id', '=', $data['party_filter']);
-        }
-        if (isset($data['fulfilled_filter']) && $data['fulfilled_filter'] != '') {
-            if ($data['fulfilled_filter'] == '0') {
-                $q->where('order_source', '=', 'warehouse');
+        
+            $order_sorttype = Session::get('order-sort-type');
+            if (isset($order_sorttype) && ($order_sorttype != "")) {
+                $data['order_filter'] = $order_sorttype;
             }
-            if ($data['fulfilled_filter'] == 'all') {
-                $q->where('order_source', '=', 'supplier');
-            }
-        }
-        if ((isset($data['location_filter'])) && $data['location_filter'] != '') {
-            $q->where('delivery_location_id', '=', $data['location_filter']);
-        }
-        if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
-            $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
-            $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
-            if ($date1 == $date2) {
-                $q->where('updated_at', 'like', $date1 . '%');
+            $q = Order::query();
+            if (isset($data['order_filter']) && $data['order_filter'] != '') {
+                $q->where('order_status', '=', $data['order_filter']);
+            } elseif (isset($data['order_status']) && $data['order_status'] != '') {
+                $q->where('order_status', '=', $data['order_status']);
             } else {
-                $q->where('updated_at', '>=', $date1);
-                $q->where('updated_at', '<=', $date2);
+                $q->where('order_status', '=', 'pending');
             }
-            $search_dates = [
-                'export_from_date' => $data["export_from_date"],
-                'export_to_date' => $data["export_to_date"]
-            ];
-        }
-        $product_category_id = 0;
-        if (isset($data['size_filter']) && $data['size_filter'] != '') {
-            $size = $data['size_filter'];
-            $subquerytest = ProductSubCategory::select('id')->where('size', '=', $size)->first();
-            if (isset($subquerytest)) {
-                $product_category_id = $subquerytest->id;
-                $q->whereHas('all_order_products.product_sub_category', function($query) use ($product_category_id) {
-                    $query->where('id', '=', $product_category_id);
-                });
+            if (isset($data['party_filter']) && $data['party_filter'] != '') {
+                $q->where('customer_id', '=', $data['party_filter']);
+            }
+            if (isset($data['fulfilled_filter']) && $data['fulfilled_filter'] != '') {
+                if ($data['fulfilled_filter'] == '0') {
+                    $q->where('order_source', '=', 'warehouse');
+                }
+                if ($data['fulfilled_filter'] == 'all') {
+                    $q->where('order_source', '=', 'supplier');
+                }
+            }
+            if ((isset($data['location_filter'])) && $data['location_filter'] != '') {
+                $q->where('delivery_location_id', '=', $data['location_filter']);
+            }
+            if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+                $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+                $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+                if ($date1 == $date2) {
+                    $q->where('updated_at', 'like', $date1 . '%');
+                } else {
+                    $q->where('updated_at', '>=', $date1);
+                    $q->where('updated_at', '<=', $date2);
+                }
+                $search_dates = [
+                    'export_from_date' => $data["export_from_date"],
+                    'export_to_date' => $data["export_to_date"]
+                ];
+            }
+            $product_category_id = 0;
+            if (isset($data['size_filter']) && $data['size_filter'] != '') {
+                $size = $data['size_filter'];
+                $subquerytest = ProductSubCategory::select('id')->where('size', '=', $size)->first();
+                if (isset($subquerytest)) {
+                    $product_category_id = $subquerytest->id;
+                    $q->whereHas('all_order_products.product_sub_category', function($query) use ($product_category_id) {
+                        $query->where('id', '=', $product_category_id);
+                    });
+                } else {
+                    return Redirect::back()->withInput()->with('flash_message', 'Please Enter Valid Size Name');
+                }
             } else {
-                return Redirect::back()->withInput()->with('flash_message', 'Please Enter Valid Size Name');
+                $q->with('all_order_products');
             }
-        } else {
-            $q->with('all_order_products');
-        }
-        if (Input::has('flag') && Input::get('flag') == 'true') {
-            $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('flaged', 'desc')->orderBy('created_at', 'desc')->paginate(20);
-        } else {
-            $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->paginate(20);
-        }
-        $users = User::all();
-        $customers = Customer::orderBy('tally_name', 'ASC')->get();
-        $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
-//        $delivery_order = DeliveryOrder::all();
-        $delivery_order = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('product_category_id', '=', $product_category_id)->get();
-        $product_size = ProductSubCategory::all();
-        $users = User::all();
-        $pending_orders = $this->checkpending_quantity($allorders);
-        $allorders->setPath('orders');
+            if (Input::has('flag') && Input::get('flag') == 'true') {
+                if(Auth::user()->role_id <> 5){
+                $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('flaged', 'desc')->orderBy('created_at', 'desc')->paginate(20);
+                }
+                if(Auth::user()->role_id == 5){
+                    $allorders = $q->where('customer_id','=',$cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('flaged', 'desc')->orderBy('created_at', 'desc')->paginate(20);
+                }
+                 
+            } else {
+                if(Auth::user()->role_id <> 5){
+                $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->paginate(20);
+                }
+                if(Auth::user()->role_id == 5){
+                $allorders = $q->where('customer_id','=',$cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->paginate(20);
+                }
+                
+            }
+            $users = User::all();
+            if(Auth::user()->role_id <> 5){
+            $customers = Customer::orderBy('tally_name', 'ASC')->get();
+            }
+            if(Auth::user()->role_id == 5){
+            $customers = Customer::where('id','=',$cust->id)->orderBy('tally_name', 'ASC')->get();
+            }
+            
+            $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();   
+            $delivery_order = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('product_category_id', '=', $product_category_id)->get();
+            $product_size = ProductSubCategory::all();
+           
+            $pending_orders = $this->checkpending_quantity($allorders);
+            $allorders->setPath('orders');
         return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id', 'search_dates'));
     }
 
@@ -127,7 +153,7 @@ class OrderController extends Controller {
      */
     public function create() {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $units = Units::all();
@@ -401,7 +427,7 @@ class OrderController extends Controller {
      */
     public function edit($id) {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);
@@ -701,7 +727,7 @@ class OrderController extends Controller {
 
     public function manual_complete_order() {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return redirect('orders')->with('error', 'You do not have permission.');
         }
         $formFields = Input::get('formData');
@@ -796,7 +822,10 @@ class OrderController extends Controller {
      */
 
     public function create_delivery_order($id) {
-
+        if (Auth::user()->role_id == 5) {
+            return redirect('orders')->with('error', 'You do not have permission.');
+        }
+  
         $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');

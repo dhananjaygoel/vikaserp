@@ -184,7 +184,9 @@
                                         <th>Delivery Location</th>
                                         <th>Total Quantity</th>
                                         <th>Pending Quantity</th>
+                                         @if( Auth::user()->role_id <> 5)
                                         <th class="text-center">Create Delivery Order</th>
+                                        @endif
                                         <th class="text-center" style="width: 15%">Actions</th>
                                     </tr>
                                 </thead>
@@ -216,6 +218,7 @@
                                         @endif
                                         <td>{{ round($order->total_quantity, 2) }}</td>
                                         <td>{{ round($order->pending_quantity, 2) }}</td>                                        
+                                         @if( Auth::user()->role_id <> 5)
                                         <td class="text-center">
                                             <a href="{{url('create_delivery_order/'.$order->id)}}" class="table-link" title="Create Delivery order">
                                                 <span class="fa-stack">
@@ -224,6 +227,7 @@
                                                 </span>
                                             </a>
                                         </td>
+                                        @endif
                                         <td class="text-center">
                                             <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -231,19 +235,22 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @if( Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 )
+                                            @if( Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 5 )
                                             <a href="{{url('orders/'.$order->id.'/edit')}}" class="table-link" title="Edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @if(Auth::user()->role_id <> 5)
+                                            
                                             <a href="#" class="table-link" title="manual complete" data-toggle="modal" data-target="#cancel_order_modal" onclick="cancel_order_row({{$order->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @endif
                                             @endif
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                             <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal" onclick="delete_order_row({{$order->id}})">
@@ -267,6 +274,9 @@
                                         <th>Delivery Location</th>
                                         <th>Order By</th>
                                         <th class="text-center">Actions</th>
+<!--                                       @if(Auth::user()->role_id == 5)
+                                       <th class="text-center">Track Order</th>
+                                       @endif-->
                                     </tr>
                                 </thead>
                                 @endif
@@ -312,6 +322,18 @@
                                         </a>
                                         @endif
                                     </td>
+<!--                                     <td class="text-center">
+                                        <?php $order_id = isset($order->id) ? $order->id : ''; ?>
+                                      
+                                        @if(Auth::user()->role_id == 5 )
+                                        <a href="#" class="table-link" title="track_order" data-toggle="modal" data-target="#track_orders_modal" onclick="track_order_row({{$order_id}})">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-truck fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </a>
+                                        @endif
+                                    </td>-->
                                 </tr>
                                 @endif
                                 @if(isset($order->order_status) && $order->order_status == 'cancelled')
@@ -375,7 +397,7 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
+                                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 5)
                                             <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal" onclick="delete_order_row({{$order->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>

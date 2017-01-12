@@ -395,6 +395,7 @@ class WelcomeController extends Controller {
                         $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
                         $result_save = $this->savecustomer($rowData);
                     }
+                    $this->copy_customers();
                     $msg = "success";
                     Session::set('resultmsg', $msg);
                 } else {
@@ -894,6 +895,58 @@ class WelcomeController extends Controller {
         DB::table('purchase_advice')->truncate();
         DB::table('purchase_challan')->truncate();
         echo 'truncate all data';
+    }
+    
+    
+    /*
+    function used to copy customer data inot users' table
+     *      */
+     public function copy_customers() {
+         $cust_count =  DB::table('customers')->where('customer_status', '=','permanent')->count();
+        $cust =  DB::table('customers')->select('id','owner_name','phone_number1','phone_number2','email','password','created_at')->where('customer_status', '=','permanent')->get();
+         $user_count =  DB::table('users')->count();
+        $user =  DB::table('users')->get();
+        
+        $flag =0;
+        
+        for($i=0; $i < $cust_count; $i ++)
+        {
+            
+           if( $user = DB::table('users')->where('email', '=',$cust[$i]->email )
+                   ->where('mobile_number', '=',$cust[$i]->phone_number1) 
+                   ->where('password', '=',$cust[$i]->password)                   
+                   ->get())
+           {
+             /* Do Nothing*/
+           }
+           else
+           {
+               DB::table('users')->insert( ['email' => $cust[$i]->email,
+                   'first_name' => $cust[$i]->owner_name,
+                   'mobile_number' => $cust[$i]->phone_number1,
+                   'phone_number' => $cust[$i]->phone_number2,
+                   'password' => $cust[$i]->password,
+                   'created_at' => $cust[$i]->created_at,
+                   'role_id' => '5',
+                   ] );         
+                  $flag ++;
+           } 
+        }
+        
+        echo $flag." Records copied to users' table.";
+    }
+    
+    
+    
+    
+     /*
+    function used to delete customer data from users' table
+     *      */
+     public function delete_cust_from_user() {
+        $user_count =  DB::table('users')->where('role_id','=','5')->count();
+        $user =  DB::table('users')->where('role_id','=','5')->delete();       
+        print_r( $user_count ." records deleted.");
+
     }
 
 }

@@ -50,17 +50,43 @@ class InquiryController extends Controller {
     public function index() {
 
         $data = Input::all();
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+        
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
-            $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])
+         if(Auth::user()->role_id <> 5)
+        {
+            if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
+                $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])                                ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')       ->orderBy('created_at', 'desc')->Paginate(20);
+            } else {
+                $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')
+                        ->where('inquiry_status', 'pending')
+                        ->orderBy('created_at', 'desc')
+                        ->Paginate(20);
+            }
+        }
+        if(Auth::user()->role_id == 5)
+        {
+            $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)
+                    ->first();
+            
+             if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
+             $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])
+                    ->where('customer_id','=',$cust->id)
                             ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')
                             ->orderBy('created_at', 'desc')->Paginate(20);
-        } else {
+            } else {
             $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')
-                            ->where('inquiry_status', 'pending')->orderBy('created_at', 'desc')->Paginate(20);
+                    ->where('inquiry_status', 'pending')
+                    ->where('customer_id','=',$cust->id)
+                    ->orderBy('created_at', 'desc')
+                    ->Paginate(20);
+                }
         }
+        
+        
         $inquiries->setPath('inquiry');
         return view('inquiry', compact('inquiries'));
     }
@@ -70,12 +96,27 @@ class InquiryController extends Controller {
      */
     public function create() {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $units = Units::all();
+        
+        $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)
+                    ->first();
+        
+//            echo "<pre>";
+//            print_r(Auth::user());
+//            echo "</pre>";
+//            exit;
+        
+        $inquiry = Customer::find($cust->id);
+        if (count($inquiry) < 1) {
+            return redirect('inquiry')->with('flash_message', 'Inquiry does not exist.');
+        }
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
-        return view('add_inquiry', compact('units', 'delivery_locations'));
+        return view('add_inquiry', compact('units','inquiry', 'delivery_locations'));
     }
 
     /**
@@ -247,7 +288,7 @@ class InquiryController extends Controller {
      */
     public function show($id) {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->find($id);
@@ -322,7 +363,7 @@ class InquiryController extends Controller {
      */
     public function edit($id) {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->find($id);
@@ -657,7 +698,7 @@ class InquiryController extends Controller {
 
     function place_order($id) {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->where('inquiry_status', '<>', 'Completed')->first();
@@ -676,7 +717,7 @@ class InquiryController extends Controller {
 
     function store_place_order($id, InquiryRequest $request) {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $input_data = Input::all();

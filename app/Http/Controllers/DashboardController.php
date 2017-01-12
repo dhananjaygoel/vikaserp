@@ -28,8 +28,12 @@ class DashboardController extends Controller {
       | Counts of total Inquiries
      */
 
-    public function index() {
-
+    public function index() {  
+      
+        if (Auth::user()->role_id == 5 ) {            
+           return Redirect::to('inquiry');           
+        }
+        
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 2) {
             return Redirect::to('customers');
         }
@@ -71,7 +75,7 @@ class DashboardController extends Controller {
         $deliver_pending_sum = $deliver_pending_sum / 1000;
         $delivery_challan = DeliveryChallan::with('delivery_challan_products')->get();
         $delivery_challan_sum = 0;
-
+       
 //        foreach ($pur_challan as $qty) {
 //            foreach ($qty['delivery_challan_products'] as $qty_val) {
 //                $challan_sum += $qty_val->quantity;
