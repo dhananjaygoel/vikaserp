@@ -100,21 +100,20 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $units = Units::all();
-        
+        if ( Auth::user()->role_id == 5) {
         $cust = Customer::where('owner_name','=', Auth::user()->first_name)
                     -> where('phone_number1','=', Auth::user()->mobile_number) 
                     -> where('email','=', Auth::user()->email)
                     ->first();
         
-//            echo "<pre>";
-//            print_r(Auth::user());
-//            echo "</pre>";
-//            exit;
         
         $inquiry = Customer::find($cust->id);
-        if (count($inquiry) < 1) {
+        
+         if (count($inquiry) < 1) {
             return redirect('inquiry')->with('flash_message', 'Inquiry does not exist.');
         }
+        }
+       
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         return view('add_inquiry', compact('units','inquiry', 'delivery_locations'));
     }
