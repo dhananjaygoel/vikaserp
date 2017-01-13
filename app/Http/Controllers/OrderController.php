@@ -24,6 +24,7 @@ use App\OrderCancelled;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use App\DeliveryOrder;
+use App\DeliveryChallan;
 use App\ProductSubCategory;
 use DateTime;
 use Session;
@@ -1157,6 +1158,41 @@ class OrderController extends Controller {
                 });
             })->export('xls');
         }
+    }
+    
+    
+    
+     public function track($id) {
+        if(isset($id)){
+           $order_id = $id;
+           $customer = Order::find($id);
+           $customer_id = $customer->customer_id;
+        }
+        else{
+            return Redirect::back()->withInput()->withErrors($validator);
+        }        
+
+        $order_status_responase=array();
+        if(isset($order_id) && $order_id> 0 && isset($customer_id) && $customer_id >0){
+            
+            $order_status_responase['order_details'] = Order::with('all_order_products')->where('id','=',$order_id)->where('customer_id','=',$customer_id)->get();
+           
+            $order_status_responase['delivery_order_details'] = DeliveryOrder::with('delivery_product')->where('order_id','=',$order_id)->where('customer_id','=',$customer_id)->get();
+           
+            $order_status_responase['delivery_challan_details'] = DeliveryChallan::with('delivery_challan_products')->where('order_id','=',$order_id)->where('customer_id','=',$customer_id)->get();
+        }
+        else{
+            return json_encode(array('result' => false, 'track_order_status' => false, 'message' => 'Order not found'));
+        }
+        
+       // return json_encode($order_status_responase);
+       echo "<pre>";
+       print_r($order_status_responase);
+       echo "</pre>";
+       exit;
+       
+       return View::make('track_order', compact('order_status_responase'));
+        
     }
 
 }

@@ -34,12 +34,18 @@
                             <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('flash_message') }}</div>
                             @endif
                             <div class="form-group">
+                               
                                 <div class="radio">
                                     <input checked="" value="warehouse" id="warehouse_radio" name="status" type="radio">
+                                    @if(Auth::user()->role_id <> 5)
                                     <label for="warehouse_radio">Warehouse</label>
+                                    @endif
                                     <input  value="supplier" id="supplier_radio" name="status" type="radio">
+                                    @if(Auth::user()->role_id <> 5)
                                     <label for="supplier_radio">Supplier</label>
+                                    @endif
                                 </div>
+                               
                                 <div class="supplier_order" style="display:none">
                                     <select class="form-control" name="supplier_id" id="add_status_type">
                                         <option value="" selected="">Select supplier</option>
@@ -54,22 +60,39 @@
                                 </div>
                                 <br/>
                                 <label>Customer<span class="mandatory">*</span></label>
+                               
                                 <div class="radio">
                                     <input checked value="existing_customer" id="existing_customer" name="customer_status" type="radio" class="existing_customer_order" {{(Input::old('customer_status') == "existing_customer")? 'checked' : ''}}>
                                     <label for="existing_customer" >Existing</label>
                                     <input value="new_customer" id="new_customer" class="new_customer_order" name="customer_status" type="radio" {{(Input::old('customer_status') == "new_customer")?'checked':''}}> 
+                                    
+                                     @if(Auth::user()->role_id <> 5)
                                     <label for="new_customer">New</label>
-                                </div>                                
+                                    @endif
+                                </div>  
+                                
                                 <style>
 .searchproduct .fa-sort-desc{position: absolute;right:6px;top:7px;cursor:pointer;}
                                 </style>
                                 <div class="customer_select_order" style="{{(Input::old('customer_status') == "new_customer")?'display:none':'display:block'}}">
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
+                                             @if(Auth::user()->role_id <> 5)
                                             <input class="form-control focus_on_enter tabindex1" placeholder="Enter Tally Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name" tabindex="1" >
                                             <input type="hidden" id="existing_customer_id" name="existing_customer_name">
                                             <input type="hidden" id="customer_default_location">
                                                 <!--<i class="fa fa-sort-desc " id='existing_customer_id_focus'></i>-->
+                                         @endif   
+                                            
+                                            
+                                         @if(Auth::user()->role_id == 5)
+                                            <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$order->tally_name}}" id="existing_customer_name1" tabindex="1" disabled="yes">
+                                              <input type="hidden" id="existing_customer_id" name="existing_customer_name" value="{{$order->id}}">
+                                            <input type="hidden" id="customer_default_location" value="{{$order->delivery_location_id}}">
+                                            
+                                         
+                                         @endif   
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -97,6 +120,7 @@
                                 <div class="form-group">
                                     <div class="col-md-4">
                                         <label for="location">Delivery Location:<span class="mandatory">*</span></label>
+                                         @if(Auth::user()->role_id <> 5)
                                         <select class="form-control focus_on_enter tabindex2" name="add_order_location" id="add_order_location" tabindex="2" >
                                             <option value="0" selected="">Delivery Location</option>
                                             @foreach($delivery_locations as $delivery_location)
@@ -106,10 +130,40 @@
                                             @endforeach
                                             <option id="other_location" value="other">Other</option>
                                         </select>
+                                         @endif  
+                                          
+                                        @if(Auth::user()->role_id == 5) 
+                                           <select class="form-control focus_on_enter" name="add_order_location" id="add_order_location" tabindex="2" >
+                                        <option value="0">Delivery Location</option>
+                                        @foreach($delivery_locations as $location)
+                                        @if($location->status=='permanent' && $location->id!=0)
+                                        @if($order->delivery_location_id == $location->id)
+                                        <option value="{{$location->id}}" selected="" data-location-difference="{{$location->difference}}">{{$location->area_name}}</option>
+                                        @else
+                                        <option value="{{$location->id}}" data-location-difference="{{$location->difference}}">{{$location->area_name}}</option>
+                                        @endif
+                                        @endif
+                                        @endforeach
+                                        @if($order->delivery_location_id == 0)
+                                        <option id="other_location" value="other" selected="">Other</option>
+                                        @else
+                                        <option id="other_location" value="other">Other</option>
+                                        @endif
+                                    </select>                                       
+                                        @endif   
+                                         
                                     </div>
                                     <div class="col-md-4">
                                         <label for="location">Freight</label>
+                                          @if(Auth::user()->role_id <> 5)
                                         <input id="location_difference" class="form-control focus_on_enter tabindex3" placeholder="Freight " name="location_difference" value="" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" tabindex="3" >
+                                        
+                                        @endif
+                                        
+                                        @if(Auth::user()->role_id == 5)
+                                        <input id="location_difference" class="form-control focus_on_enter tabindex3" placeholder="Freight " name="location_difference" value="{{$order->delivery_location['difference']}}" type="tel" tabindex="3" onkeypress=" return numbersOnly(this,event,true,true);" >
+                                        @endif
+                                        
                                     </div>
                                 </div>
                             </div>
