@@ -666,12 +666,36 @@
                                                 </span>
                                             </a>
                                             @if( Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 5 )
+                                            
+                                           
+                                            @if($order->order_status == 'pending')
                                             <a href="{{url('orders/'.$order->id.'/edit')}}" class="table-link" title="Edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @endif
+                                            @if($order->order_status == 'cancelled')
+                                                 <a href="javascript:void(0)" class="table-link" title="Non Editible">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                    <i class="fa fa-ban fa-stack-2x fa-rotate-90 text-danger"></i>
+                                                </span>
+                                            @endif
+                                            
+                                            @if($order->order_status == 'completed')
+                                                  <a href="javascript:void(0)" class="table-link" title="Non Editible">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                    <i class="fa fa-ban fa-stack-2x fa-rotate-90 text-danger"></i>
+                                                </span>
+                                            </a>
+                                            @endif
+                                            
+                                            
                                             @if(Auth::user()->role_id <> 5)
                                             
                                             <a href="#" class="table-link" title="manual complete" data-toggle="modal" data-target="#cancel_order_modal" onclick="cancel_order_row({{$order->id}})">

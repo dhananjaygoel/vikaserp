@@ -4,8 +4,8 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
-            
-            <?php 
+
+            <?php
 //                echo "<pre>";
 //                print_r($order_status_responase);
 //                echo "</pre>";
@@ -35,252 +35,210 @@
                         </div>
                         @else                        
                         <div class="table-responsive tablepending">
-                            
+
                             <div>Order -{{$order_status_responase['order_details'][0]->id}} </div>
                             <table id="table-example" class="table table-hover">
-                            <?php 
-                            $status = 'pending';
-                            ?> 
-                               
-                             @foreach($order_status_responase['delivery_challan_details'] as $delivery_order_details) 
-                            
-                                 <?php 
-                                
-                                 if($delivery_order_details->challan_status == 'completed')
-                                 { 
-                                   $status = 'pending';
-                                 }
+                                <?php
+                                $status = 'pending';
+                                ?> 
+
+                                @foreach($order_status_responase['delivery_challan_details'] as $delivery_order_details) 
+
+                                <?php
+                                if ($delivery_order_details->challan_status == 'completed') {
+                                    $status = 'pending';
+                                }
 //                                 echo  $delivery_order_details->order_status 
-                                         ?>
-                            
-                            @endforeach  
-                                           
-                            <?php 
-                            
-                            $k=1; 
-                            $qty = 0;
-                            $qty_do = 0;
-                            $qty_co = 0;
-                            
-                            ?>   
+                                ?>
+
+                                @endforeach  
+
+<?php
+$k = 1;
+$qty = 0;
+$qty_do = 0;
+$qty_co = 0;
+?>   
                                 <thead>
                                     <tr>
                                         <!--<th class='col-md-1'>#</th>-->
-                                        <th class='col-md-1'>QTY</th>
                                         <th class='col-md-1'>SERIAL NUMBER</th>
+                                        <th class='col-md-1'>QTY</th>
                                         <th class='col-md-1'>STATUS</th>
                                         <th class='col-md-1'>Date</th>
-                                      
-                                        
+
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($order_status_responase['order_details'] as $order_details) 
                                     @foreach($order_details->all_order_products as $all_order_products) 
-                                    <?php 
-                                   
-                                    $qty = $qty +  $all_order_products->quantity?>
-                                    
-                                     @endforeach
-                                    
+<?php $qty = $qty + $all_order_products->quantity ?>
+
+                                    @endforeach
+
                                     <tr >
                                         <!--<td>{{$k++}}</td>-->
-                                        <td>{{$qty}}</td>
                                         <td>N/A</td>
+                                        <td>{{$qty}}</td>
                                         <td>
-                                        @if($status == 'completed') 
-                                           {{'Completed'}}
-</span>
-                                        @endif
-                                        @if($status == 'pending') 
-                                           {{'In Process'}}
-</span>
-                                        @endif
-                                           
-                                        
+                                            @if($order_details->order_status == 'cancelled')
+                                            {{'Cancelled'}}
+                                            @else
+                                            @if($status == 'completed') 
+                                            {{'Completed'}}
+                                            </span>
+                                            @endif
+                                            @if($status == 'pending') 
+                                            {{'In Process'}}
+                                            </span>
+                                            @endif
+                                            @endif  
                                         </td> 
                                         <td>{{$order_details->created_at->format('d/m/Y')}}</td>
-                                        
                                     </tr>
                                     @endforeach
-                                     
-                                     
-                   
-                               </tbody>
-                                
-
+                                </tbody>
                             </table>
-                            
+
                             <br>
                             <br>
                             <br>
-                            
-             @if(isset($order_status_responase['delivery_challan_details'][0]))                
-                <div>Delivery  Order </div>
-                            
-                             <table id="table-example" class="table table-hover">
-                            <?php 
-                            $status = 'pending';
-                            ?> 
-                               
-                             @foreach($order_status_responase['delivery_challan_details'] as $delivery_order_details) 
-                            
-                                 <?php 
-                                
-                                 if($delivery_order_details->challan_status == 'completed')
-                                 { 
-                                   $status = 'completed';
-                                 }
-//                                 echo  $delivery_order_details->order_status 
-                                         ?>
-                            
-                            @endforeach  
-                                           
-                            <?php 
-                            
-                            $k=1; 
-                            $qty = 0;
-                            $qty_do = 0;
-                            $qty_co = 0;
-                            
-                            
-                            
-                            
-                            ?>   
+
+                            @if(isset($order_status_responase['delivery_challan_details'][0]))                
+                            <div>Delivery  Order </div>
+
+                            <table id="table-example" class="table table-hover">
+
+
+                                <?php
+                                $k = 1;
+                                $qty = 0;
+                                $qty_do = 0;
+                                $qty_co = 0;
+                                ?>   
                                 <thead>
                                     <tr>
                                         <!--<th class='col-md-1'>#</th>-->
+                                        <th class='col-md-1'>SERIAL NUMBER</th>
                                         <th class='col-md-1'>QTY</th>
-                                         <th class='col-md-1'>SERIAL NUMBER</th>
                                         <th class='col-md-1'>STATUS</th>
-                                         <th class='col-md-1'>Date</th>
-                                        
+                                        <th class='col-md-1'>Date</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
-
-                                    
                                     @foreach($order_status_responase['delivery_order_details'] as $delivery_order_details) 
-                                     <?php $qty_do =0; ?>
-                                     @foreach($delivery_order_details->delivery_product as $all_order_products) 
-                                     <?php $qty_do = $qty_do +  $all_order_products->quantity ?>
-                                     @endforeach
-                                     
-                                     <tr >
-                                        <!--<td>{{$k++}}</td>--> 
+<?php $qty_do = 0; ?>
+                                    @foreach($delivery_order_details->delivery_product as $all_order_products) 
+<?php $qty_do = $qty_do + $all_order_products->quantity ?>
+                                    @endforeach
+
+                                    <tr >
+                                       <!--<td>{{$k++}}</td>--> 
+                                        <td>
+                                            @if(!empty($delivery_order_details->serial_no))
+                                            {{$delivery_order_details->serial_no}}
+                                            @else
+                                                {{'N/A'}}
+                                            @endif
+                                            
+                                        </td>
                                         <td>{{$qty_do}}</td>
-                                        <td>{{$delivery_order_details->serial_no}}</td>
                                         <td>
                                             @if($delivery_order_details->order_status == 'completed')                                 {{'Completed'}}
-</span>
-                                        @endif
-                                        @if($delivery_order_details->order_status == 'pending') 
-                                           {{'In Process'}}
-</span>
-                                        @endif
-                                           
-                                           </td>
+                                            </span>
+                                            @endif
+                                            @if($delivery_order_details->order_status == 'pending') 
+                                            {{'In Process'}}
+                                            </span>
+                                            @endif
+
+                                        </td>
                                         <td>{{$delivery_order_details->created_at->format('d/m/Y')}}</td>
                                     </tr>
-                                     @endforeach
-                               </tbody>
-                                
+                                    @endforeach
+                                </tbody>
+
 
                             </table>
                             @endif 
-                             <br>
                             <br>
                             <br>
-            @if(isset($order_status_responase['delivery_challan_details'][0]))              
-            <div>Delivery  Challan </div>
-                             <table id="table-example" class="table table-hover">
-                            <?php 
-                            $status = 'pending';
-                            ?> 
-                               
-                             @foreach($order_status_responase['delivery_challan_details'] as $delivery_order_details) 
-                            
-                                 <?php 
-                                
-                                 if($delivery_order_details->challan_status == 'completed')
-                                 { 
-                                   $status = 'completed';
-                                 }
-//                                 echo  $delivery_order_details->order_status 
-                                         ?>
-                            
-                            @endforeach  
-                                           
-                            <?php 
-                            
-                            $k=1; 
-                            $qty = 0;
-                            $qty_do = 0;
-                            $qty_co = 0;
-                            
-                            
-                            
-                            
-                            ?>   
+                            <br>
+                            @if(isset($order_status_responase['delivery_challan_details'][0]))              
+                            <div>Delivery  Challan </div>
+                            <table id="table-example" class="table table-hover"> 
+
+                                <?php
+                                $k = 1;
+                                $qty = 0;
+                                $qty_do = 0;
+                                $qty_co = 0;
+                                ?>   
                                 <thead>
                                     <tr>
                                         <!--<th class='col-md-1'>#</th>-->
-                                        <th class='col-md-1'>QTY</th>
                                         <th class='col-md-1'>SERIAL NUMBER</th>
+                                        <th class='col-md-1'>QTY</th>
+
                                         <th class='col-md-1'>DO SERIAL NO</th>
                                         <th class='col-md-1'>STATUS</th>
                                         <th class='col-md-1'>Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                
-                                    
-                                     
-                                     @foreach($order_status_responase['delivery_challan_details'] as $delivery_challan_details) 
-                                     
-                                     
-                                     <?php $qty_co =0; ?>
-                                     @foreach($delivery_challan_details->delivery_challan_products as $all_order_products) 
-                                     <?php $qty_co = $qty_co +  $all_order_products->present_shipping ?>
-                                     @endforeach
-                                     
-                                     
-                                     <tr >
-                                        <!--<td>{{$k++}}</td>-->
+                                    @foreach($order_status_responase['delivery_challan_details'] as $delivery_challan_details) 
+
+
+                                <?php $qty_co = 0; ?>
+                                    @foreach($delivery_challan_details->delivery_challan_products as $all_order_products) 
+                                <?php $qty_co = $qty_co + $all_order_products->present_shipping ?>
+                                    @endforeach
+
+
+                                    <tr >
+                                       <!--<td>{{$k++}}</td>-->
+                                        <td>
+                                            @if(!empty($delivery_challan_details->serial_number))
+                                            {{$delivery_challan_details->serial_number}}</td>
+                                        @else
+                                        {{'N/A'}}
+                                        @endif
                                         <td>{{$qty_co}}</td>
-                                        <td>{{$delivery_challan_details->serial_number}}</td>
+
                                         <td>
                                             @foreach($order_status_responase['delivery_order_details'] as $delivery_order_details)  
-                                            <?php 
-                                        if($delivery_order_details->id == $delivery_challan_details->delivery_order_id){
-                                        print_r($delivery_order_details->serial_no);
-                                    }
-                                            ?>
-                                             
-                                             
-                                            
+<?php
+if ($delivery_order_details->id == $delivery_challan_details->delivery_order_id) {
+    print_r($delivery_order_details->serial_no);
+}
+?>
+
+
+
                                             @endforeach
-                                            </td>
+                                        </td>
                                         <td>
-                                             @if($delivery_challan_details->challan_status == 'completed') 
-                                           {{'Completed'}}
-</span>
-                                        @endif
-                                        @if($delivery_challan_details->challan_status == 'pending') 
-                                           {{'In Process'}}
-                                           
-</span>
-                                        @endif
-                                            </td>
+                                            @if($delivery_challan_details->challan_status == 'completed') 
+                                            {{'Completed'}}
+                                            </span>
+                                            @endif
+                                            @if($delivery_challan_details->challan_status == 'pending') 
+                                            {{'In Process'}}
+
+                                            </span>
+                                            @endif
+                                        </td>
                                         <td>{{$delivery_challan_details->created_at->format('d/m/Y')}}</td>                                    
-                                        
+
                                     </tr>
                                     @endforeach
-                               </tbody>
-                                
+                                </tbody>
+
 
                             </table>
-                          @endif 
+                            @endif 
                         </div>
                         @endif
                     </div>
