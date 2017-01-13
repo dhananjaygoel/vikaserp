@@ -33,16 +33,18 @@
                             @endif
                             <div class="form-group">
                                 <label>Customer<span class="mandatory">*</span></label>
-                                @if(Auth::user()->role_id <> 5)
+                               
                                 <div class="radio">
                                     <input checked="" value="existing_customer" id="existing_customer" name="customer_status" type="radio" {{(Input::old('customer_status') == "existing_customer")? 'checked' : ''}}>
-                                    
+                                     @if(Auth::user()->role_id <> 5)
                                     <label for="existing_customer">Existing</label>
+                                    @endif
                                     <input value="new_customer" id="new_customer" name="customer_status" type="radio" {{(Input::old('customer_status') == "new_customer")?'checked':''}}>
-                                    
+                                     @if(Auth::user()->role_id <> 5)
                                     <label for="new_customer">New</label>
+                                    @endif
                                 </div>
-                                @endif
+                                
                                 <div class="customer_select" style="{{(Input::old('customer_status') == "new_customer")?'display:none':'display:block'}}" >
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
