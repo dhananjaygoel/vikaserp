@@ -36,9 +36,13 @@
                             @if($order->order_source == 'warehouse')
                             <div class="radio">
                                 <input checked="" value="warehouse" id="warehouse_radio" name="status" type="radio" onchange="show_hide_supplier($order - > order_source)">
+                                @if(Auth::user()->role_id <> 5)
                                 <label for="warehouse_radio">Warehouse</label>
+                                @endif
                                 <input  value="supplier" id="supplier_radio" name="status" type="radio">
+                                @if(Auth::user()->role_id <> 5)
                                 <label for="supplier_radio">Supplier</label>
+                                @endif
                             </div>
                             <div class="supplier_order" style="display:none">
                                 <select class="form-control" name="supplier_id" id="add_status_type">
@@ -123,14 +127,23 @@
                             <label>Customer<span class="mandatory">*</span></label>
                             <div class="radio">
                                 <input checked="" value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
+                                @if(Auth::user()->role_id <> 5)
                                 <label for="optionsRadios1">Existing</label>
+                                @endif
                                 <input  value="new_customer" id="optionsRadios2" name="customer_status" type="radio" onchange="show_hide_customer('Pending');">
+                                @if(Auth::user()->role_id <> 5)
                                 <label for="optionsRadios2">New</label>
+                                 @endif
                             </div>
                             <div class="customer_select" >
                                 <div class="col-md-4">
                                     <div class="form-group searchproduct">
+                                        @if(Auth::user()->role_id <> 5)
                                         <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$order['customer']->tally_name}}" id="existing_customer_name" tabindex="1" >
+                                        @endif
+                                        @if(Auth::user()->role_id == 5)
+                                        <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$order['customer']->tally_name}}" id="existing_customer_name1" disabled="" tabindex="1" >
+                                        @endif
                                         <input id="existing_customer_id" class="form-control" name="existing_customer_name" value="{{$order['customer']->id}}" type="hidden">
                                         <!--<i class="fa fa-search search-icon"></i>-->
                                     </div>
