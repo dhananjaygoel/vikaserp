@@ -65,27 +65,50 @@ class OrderController extends Controller {
                 $data['order_filter'] = $order_sorttype;
             }
             $q = Order::query();
-            if (isset($data['order_filter']) && $data['order_filter'] != '') {
-                $q->where('order_status', '=', $data['order_filter']);
-            } elseif (isset($data['order_status']) && $data['order_status'] != '') {
-                $q->where('order_status', '=', $data['order_status']);
-            } else {
-                $q->where('order_status', '=', 'pending');
-            }
-            if (isset($data['party_filter']) && $data['party_filter'] != '') {
-                $q->where('customer_id', '=', $data['party_filter']);
-            }
-            if (isset($data['fulfilled_filter']) && $data['fulfilled_filter'] != '') {
-                if ($data['fulfilled_filter'] == '0') {
-                    $q->where('order_source', '=', 'warehouse');
+           if(Auth::user()->role_id == 5){
+               
+//                if (isset($data['order_filter']) && $data['order_filter'] != '') {
+//                    if($data['order_filter'] != 'Completed')
+//                    {
+//                       $dc = DeliveryChallan::with('delivery_challan_products')->where('customer_id','=',$cust->id)->where('challan_status','=','completed')->get();
+//                        
+//                       foreach ($dc as $delivery_challan)
+//                       {
+//                           echo "<pre>";
+//                           print_r($delivery_challan->order_id);
+//                           echo "</pre>";
+//                       }
+//                       
+//                       
+//                        
+//                    }
+////                    $q->where('order_status', '=', $data['order_filter']);
+//                }
+               
+           }else{                       
+                if (isset($data['order_filter']) && $data['order_filter'] != '') {
+                    $q->where('order_status', '=', $data['order_filter']);
+                } elseif (isset($data['order_status']) && $data['order_status'] != '') {
+                    $q->where('order_status', '=', $data['order_status']);
+                } else {
+                    $q->where('order_status', '=', 'pending');
                 }
-                if ($data['fulfilled_filter'] == 'all') {
-                    $q->where('order_source', '=', 'supplier');
+                if (isset($data['party_filter']) && $data['party_filter'] != '') {
+                    $q->where('customer_id', '=', $data['party_filter']);
                 }
-            }
-            if ((isset($data['location_filter'])) && $data['location_filter'] != '') {
-                $q->where('delivery_location_id', '=', $data['location_filter']);
-            }
+                if (isset($data['fulfilled_filter']) && $data['fulfilled_filter'] != '') {
+                    if ($data['fulfilled_filter'] == '0') {
+                        $q->where('order_source', '=', 'warehouse');
+                    }
+                    if ($data['fulfilled_filter'] == 'all') {
+                        $q->where('order_source', '=', 'supplier');
+                    }
+                }
+                if ((isset($data['location_filter'])) && $data['location_filter'] != '')                 {
+                    $q->where('delivery_location_id', '=', $data['location_filter']);
+                }
+            
+           }
             if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
                 $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
                 $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
@@ -1186,10 +1209,10 @@ class OrderController extends Controller {
         }
         
        // return json_encode($order_status_responase);
-       echo "<pre>";
-       print_r($order_status_responase);
-       echo "</pre>";
-       exit;
+//       echo "<pre>";
+//       print_r($order_status_responase);
+//       echo "</pre>";
+//       exit;
        
        return View::make('track_order', compact('order_status_responase'));
         

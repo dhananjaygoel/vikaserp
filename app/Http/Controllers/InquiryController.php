@@ -121,7 +121,7 @@ class InquiryController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(InquiryRequest $request) {
-
+        
         $input_data = Input::all();
         if (Session::has('forms_inquiry')) {
             $session_array = Session::get('forms_inquiry');
