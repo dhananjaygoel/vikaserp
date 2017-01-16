@@ -1148,25 +1148,73 @@ class OrderController extends Controller {
         if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
-            if ($date1 == $date2) {
-                $order_objects = Order::where('order_status', $order_status)
-                        ->where('updated_at', 'like', $date1 . '%')
-                        ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
-                        ->orderBy('created_at', 'desc')
-                        ->get();
-            } else {
-                $order_objects = Order::where('order_status', $order_status)
-                        ->where('updated_at', '>=', $date1)
-                        ->where('updated_at', '<=', $date2)
-                        ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
-                        ->orderBy('created_at', 'desc')
-                        ->get();
+            if(Auth::user()->role_id <> 5)
+            {
+                if ($date1 == $date2) {
+                    $order_objects = Order::where('order_status', $order_status)
+                            ->where('updated_at', 'like', $date1 . '%')
+                            ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+                } else {
+                    $order_objects = Order::where('order_status', $order_status)
+                            ->where('updated_at', '>=', $date1)
+                            ->where('updated_at', '<=', $date2)
+                            ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+                }
             }
+            if(Auth::user()->role_id == 5)
+            {
+                $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)
+                    ->first();  
+                
+                if ($date1 == $date2) {
+                    $order_objects = Order::where('updated_at', 'like', $date1 . '%')
+                            -> where('customer_id','=',$cust->id)
+                            ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+                } else {
+                    $order_objects = Order::where('updated_at', '>=', $date1)
+                            ->where('updated_at', '<=', $date2)
+                            ->where('customer_id','=',$cust->id)
+                            ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+                }
+            }
+            
+            
         } else {
-            $order_objects = Order::where('order_status', $order_status)
+            
+            if(Auth::user()->role_id <> 5)
+            {
+        
+                $order_objects = Order::where('order_status', $order_status)
                     ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
                     ->orderBy('created_at', 'desc')
                     ->get();
+            }
+           
+            if(Auth::user()->role_id == 5){
+               $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)
+                    ->first();  
+                     
+                
+               $order_objects = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                    -> where('customer_id','=',$cust->id)   
+                    ->orderBy('created_at', 'desc')
+                    ->get(); 
+               
+               $excel_sheet_name = 'Order';
+               $excel_name = 'Order-' . date('dmyhis');
+            }
         }
 
         if (count($order_objects) == 0) {

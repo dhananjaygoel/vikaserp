@@ -101,6 +101,7 @@
                             ?>
                         </div>
                         <div class="col-md-2 pull-right">
+                            @if(Auth::user()->role_id <> 5)
                             <select class="form-control" id="user_filter3" name="party_filter" onchange="this.form.submit();">
                                 <option value="" selected="">--Select Party--</option>
                                 @foreach($customers as $customer)
@@ -109,15 +110,19 @@
                                 @endif
                                 @endforeach
                             </select>
+                            @endif 
                         </div>
-                        <div class="col-md-2 pull-right">                            
+                        <div class="col-md-2 pull-right">  
+                            @if(Auth::user()->role_id <> 5)
                             <select class="form-control" id="user_filter3" name="fulfilled_filter" onchange="this.form.submit();">
                                 <option value="" selected="">--Fulfilled by--</option>
                                 <option {{(Input::get('fulfilled_filter') == '0') ? 'selected' :'' }} value="0" >Warehouse</option>
                                 <option {{(Input::get('fulfilled_filter') == 'all') ? 'selected' :'' }} value="all" >Direct</option>
                             </select>
+                            @endif
                         </div>
                         <div class="col-md-2 pull-right">
+                            @if(Auth::user()->role_id <> 5)
                             <select class="form-control" id="user_filter3" name="location_filter" onchange="this.form.submit();">
                                 <option value="" selected="">--Select Location--</option>
                                 @foreach($delivery_location as $location)
@@ -126,8 +131,10 @@
                                 @endif
                                 @endforeach
                             </select>
+                            @endif
                         </div>
                         <div class="input-group col-md-2 pull-right" style="width: 11%">
+                            @if(Auth::user()->role_id <> 5)
                             <input class="form-control order_filter ui-autocomplete-input" placeholder="Size" value="{{Input::get('size_filter')}}" id="order_size" autocomplete="off"  type="text">
                             <input type='hidden' placeholder="Size" value="{{Input::get('size_filter')}}" id="order_size_temp" autocomplete="off" name="size_filter" type="text">
                             <span class="input-group-btn">
@@ -135,6 +142,7 @@
                                     <i class="fa fa-search" id="search_icon"></i>
                                 </button>
                             </span>
+                            @endif
                         </div>
                     </form>
                 </div>
@@ -609,6 +617,7 @@
                                         <th><a href="{{url('orders?flag=true')}}">Flag</a></th>
                                         @endif
                                         <th>#</th>
+                                        <th>Date</th>
                                         <th>Tally Name</th>
                                         <th>Mobile </th>
                                         <th>Delivery Location</th>
@@ -627,6 +636,7 @@
                                             <span class="{{($order->flaged==true)?'filled_star flags':'empty_star flags'}}" data-orderid="{{$order->id}}" ></span>
                                         </td>
                                         <td>{{$k++}}</td>
+                                        <td>{{date("F jS, Y", strtotime($order->updated_at)) }}</td>
                                         <td>
                                             @if(isset($order["customer"]))
                                             {{($order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}

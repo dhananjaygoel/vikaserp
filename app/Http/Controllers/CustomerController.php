@@ -250,10 +250,33 @@ class CustomerController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $customer = Customer::find($id);
-        if (count($customer) < 1) {
+        
+        $already_exists_mobile_number = Customer::where('phone_number1', '=', Input::get('phone_number1'))
+                ->where('id','<>', $id)
+                ->get();
+        
+        if(count($already_exists_mobile_number) > 0)
+        {
+              return Redirect::back()->with('error', 'Mobile number is already associated with another account.');
+        }
+       
+           
+//               
+        $users = User::where('role_id', '=', '5')
+                ->where('email','=',$customer->email)
+                ->where('mobile_number','=',$customer->phone_number1)
+                ->where('phone_number','=',$customer->phone_number2)                
+                ->where('created_at','=',$customer->created_at)
+                ->first();
+       
+        
+        if (count($customer) < 1 && count($users) < 1) {
             return redirect('customers/')->with('error', 'Trying to access an invalid customer');
         }
         $customer->owner_name = Input::get('owner_name');
+        $users->first_name =  Input::get('owner_name'); 
+        $users->role_id = '5';
+        
         if (Input::has('company_name')) {
             $customer->company_name = Input::get('company_name');
         }
@@ -273,14 +296,17 @@ class CustomerController extends Controller {
         }
         if (Input::has('email')) {
             $customer->email = Input::get('email');
+            $users->email = Input::get('email');
         }
 
         $customer->tally_name = Input::get('tally_name');
         $customer->tally_category = Input::get('tally_category');
         $customer->tally_sub_category = Input::get('tally_sub_category');
         $customer->phone_number1 = Input::get('phone_number1');
+        $users->mobile_number = Input::get('phone_number1');
         if (Input::has('phone_number2')) {
             $customer->phone_number2 = Input::get('phone_number2');
+            $users->phone_number = Input::get('phone_number2');
         }
         if (Input::has('vat_tin_number')) {
             $customer->vat_tin_number = Input::get('vat_tin_number');
@@ -302,9 +328,10 @@ class CustomerController extends Controller {
 
         if (Input::has('password') && Input::get('password') != '') {
             $customer->password = Hash::make(Input::get('password'));
+            $users->password = Hash::make(Input::get('password'));
         }
 
-        if ($customer->save()) {
+        if ($customer->save() && $users->save()) {
             $product_category_id = Input::get('product_category_id');
             if (isset($product_category_id)) {
                 foreach ($product_category_id as $key => $value) {
@@ -474,7 +501,8 @@ class CustomerController extends Controller {
                 $customer->delete();
                  $user = User::where('email', '=',$customer->email )
                    ->where('first_name', '=',$customer->owner_name)
-                   ->where('mobile_number', '=',$customer->phone_number1)                 
+                   ->where('mobile_number', '=',$customer->phone_number1)  
+                   ->where('created_at','=',$customer->created_at)
                    ->delete(); 
                 return Redirect::to('customers')->with('success', 'Customer deleted successfully.');
             }

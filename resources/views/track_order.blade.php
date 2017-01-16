@@ -180,9 +180,8 @@ $qty_co = 0;
                                     <tr>
                                         <!--<th class='col-md-1'>#</th>-->
                                         <th class='col-md-1'>SERIAL NUMBER</th>
-                                        <th class='col-md-1'>QTY</th>
-
                                         <th class='col-md-1'>DO SERIAL NO</th>
+                                        <th class='col-md-1'>QTY</th>
                                         <th class='col-md-1'>STATUS</th>
                                         <th class='col-md-1'>Date</th>
                                     </tr>
@@ -205,7 +204,7 @@ $qty_co = 0;
                                         @else
                                         {{'N/A'}}
                                         @endif
-                                        <td>{{$qty_co}}</td>
+                                       
 
                                         <td>
                                             @foreach($order_status_responase['delivery_order_details'] as $delivery_order_details)  
@@ -214,11 +213,10 @@ if ($delivery_order_details->id == $delivery_challan_details->delivery_order_id)
     print_r($delivery_order_details->serial_no);
 }
 ?>
-
-
-
                                             @endforeach
                                         </td>
+                                        
+                                        <td>{{$qty_co}}</td>
                                         <td>
                                             @if($delivery_challan_details->challan_status == 'completed') 
                                             {{'Completed'}}
