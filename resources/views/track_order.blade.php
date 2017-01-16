@@ -38,27 +38,48 @@
 
                             <div>Order -{{$order_status_responase['order_details'][0]->id}} </div>
                             <table id="table-example" class="table table-hover">
-                                <?php
-                                $status = 'pending';
-                                ?> 
-
-                                @foreach($order_status_responase['delivery_challan_details'] as $delivery_order_details) 
 
                                 <?php
-                                if ($delivery_order_details->challan_status == 'completed') {
-                                    $status = 'pending';
+                                $flag =0;
+                                
+                                foreach ($order_status_responase['order_details'] as $delivery_order) {
+                                    if ($delivery_order->order_status == 'pending') {
+                                        $status = 'pending';
+                                    } elseif ($delivery_order->order_status == 'completed') {
+                                        foreach ($order_status_responase['delivery_order_details'] as $delivery_order_details) {
+                                            if ($delivery_order_details->order_status == 'pending') {
+                                                $status = 'pending';
+                                            } elseif ($delivery_order->order_status == 'completed') {
+                                                foreach($order_status_responase['delivery_challan_details'] as $delivery_challan_details) {
+                                                   
+                                                    if($delivery_challan_details->challan_status == 'pending'){
+                                                        $flag = $flag +1;
+                                                    }
+                                                }
+                                                
+                                                if($flag == 0)
+                                                {
+                                                   $status = 'completed'; 
+                                                }
+                                                else
+                                                {
+                                                    $status = 'pending'; 
+                                                }
+                                                
+                                            }
+                                        }
+                                    }
                                 }
-//                                 echo  $delivery_order_details->order_status 
                                 ?>
 
-                                @endforeach  
 
-<?php
-$k = 1;
-$qty = 0;
-$qty_do = 0;
-$qty_co = 0;
-?>   
+                   
+                                <?php
+                                $k = 1;
+                                $qty = 0;
+                                $qty_do = 0;
+                                $qty_co = 0;
+                                ?>   
                                 <thead>
                                     <tr>
                                         <!--<th class='col-md-1'>#</th>-->
@@ -73,7 +94,7 @@ $qty_co = 0;
                                 <tbody>
                                     @foreach($order_status_responase['order_details'] as $order_details) 
                                     @foreach($order_details->all_order_products as $all_order_products) 
-<?php $qty = $qty + $all_order_products->quantity ?>
+                                    <?php $qty = $qty + $all_order_products->quantity ?>
 
                                     @endforeach
 
@@ -105,7 +126,7 @@ $qty_co = 0;
                             <br>
                             <br>
 
-                        
+
                             @if(!empty($order_status_responase['delivery_order_details'][0]))                
                             <div>Delivery  Order </div>
 
@@ -129,22 +150,22 @@ $qty_co = 0;
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
+
                                     @foreach($order_status_responase['delivery_order_details'] as $delivery_order_details) 
-<?php $qty_do = 0; ?>
+                                    <?php $qty_do = 0; ?>
                                     @foreach($delivery_order_details->delivery_product as $all_order_products) 
-<?php $qty_do = $qty_do + $all_order_products->quantity ?>
+                                    <?php $qty_do = $qty_do + $all_order_products->quantity ?>
                                     @endforeach
-                                    
+
                                     <tr >
                                        <!--<td>{{$k++}}</td>--> 
                                         <td>
                                             @if(!empty($delivery_order_details->serial_no))
                                             {{$delivery_order_details->serial_no}}
                                             @else
-                                                {{'N/A'}}
+                                            {{'N/A'}}
                                             @endif
-                                            
+
                                         </td>
                                         <td>{{$qty_do}}</td>
                                         <td>
@@ -192,9 +213,9 @@ $qty_co = 0;
                                     @foreach($order_status_responase['delivery_challan_details'] as $delivery_challan_details) 
 
 
-                                <?php $qty_co = 0; ?>
+                                    <?php $qty_co = 0; ?>
                                     @foreach($delivery_challan_details->delivery_challan_products as $all_order_products) 
-                                <?php $qty_co = $qty_co + $all_order_products->present_shipping ?>
+                                    <?php $qty_co = $qty_co + $all_order_products->present_shipping ?>
                                     @endforeach
 
 
@@ -206,18 +227,18 @@ $qty_co = 0;
                                         @else
                                         {{'N/A'}}
                                         @endif
-                                       
+
 
                                         <td>
                                             @foreach($order_status_responase['delivery_order_details'] as $delivery_order_details)  
-<?php
-if ($delivery_order_details->id == $delivery_challan_details->delivery_order_id) {
-    print_r($delivery_order_details->serial_no);
-}
-?>
+                                            <?php
+                                            if ($delivery_order_details->id == $delivery_challan_details->delivery_order_id) {
+                                                print_r($delivery_order_details->serial_no);
+                                            }
+                                            ?>
                                             @endforeach
                                         </td>
-                                        
+
                                         <td>{{$qty_co}}</td>
                                         <td>
                                             @if($delivery_challan_details->challan_status == 'completed') 
