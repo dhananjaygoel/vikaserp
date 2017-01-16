@@ -36,11 +36,11 @@
                             @if($order->order_source == 'warehouse')
                             <div class="radio">
                                 <input checked="" value="warehouse" id="warehouse_radio" name="status" type="radio" onchange="show_hide_supplier($order - > order_source)">
-                                @if(Auth::user()->role_id <> 5)
+                                @if(Auth::user()->role_id <> 5 & $order['createdby']->role_id <> 5)
                                 <label for="warehouse_radio">Warehouse</label>
                                 @endif
                                 <input  value="supplier" id="supplier_radio" name="status" type="radio">
-                                @if(Auth::user()->role_id <> 5)
+                                @if(Auth::user()->role_id <> 5 & $order['createdby']->role_id <> 5)
                                 <label for="supplier_radio">Supplier</label>
                                 @endif
                             </div>
@@ -127,11 +127,11 @@
                             <label>Customer<span class="mandatory">*</span></label>
                             <div class="radio">
                                 <input checked="" value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
-                                @if(Auth::user()->role_id <> 5)
+                                @if(Auth::user()->role_id <> 5 & $order['createdby']->role_id <> 5)
                                 <label for="optionsRadios1">Existing</label>
                                 @endif
                                 <input  value="new_customer" id="optionsRadios2" name="customer_status" type="radio" onchange="show_hide_customer('Pending');">
-                                @if(Auth::user()->role_id <> 5)
+                                @if(Auth::user()->role_id <> 5 & $order['createdby']->role_id <> 5)
                                 <label for="optionsRadios2">New</label>
                                  @endif
                             </div>

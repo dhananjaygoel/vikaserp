@@ -478,7 +478,7 @@ class OrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);
+        $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer','createdby')->find($id);
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }

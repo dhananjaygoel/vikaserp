@@ -37,11 +37,11 @@
                         <input type="hidden" name="customer_id" value="{{$inquiry['customer']->id}}" id="hidden_cutomer_id">
                         <div class="radio">
                             <input checked="" value="warehouse" id="warehouse_radio" name="status" type="radio">
-                            @if(Auth::user()->role_id <> 5)
+                            @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
                             <label for="warehouse_radio">Warehouse</label>
                             @endif
                             <input  value="supplier" id="supplier_radio" name="status" type="radio">
-                            @if(Auth::user()->role_id <> 5)
+                            @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
                             <label for="supplier_radio">Supplier</label>
                             @endif
                         </div>
@@ -58,16 +58,21 @@
                             </select>
                         </div>
                         <br/>
+                        <?php 
+                     
+                        
+                        ?>
+                        
                         @if($inquiry['customer']->customer_status =="pending")
                         <div class="form-group">
                             <label>Customer<span class="mandatory">*</span></label>
                             <div class="radio">
                                 <input value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
-                                 @if(Auth::user()->role_id <> 5)
+                                 @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
                                 <label for ="optionsRadios1">Existing</label>
                                 @endif
                                 <input checked="" value="new_customer" id="optionsRadios2" name="customer_status" type="radio" onchange="show_hide_customer('Pending');">
-                                 @if(Auth::user()->role_id <> 5)
+                                 @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
                                 <label for="optionsRadios2">New</label>
                                 @endif
                             </div>
@@ -78,7 +83,7 @@
                                         <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" name="existing_customer_name" id="existing_customer_name" tabindex="1" >
                                         @endif
                                         
-                                        @if(Auth::user()->role_id == 5)
+                                        @if(Auth::user()->role_id == 5 )
                                         <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" name="existing_customer_name" id="existing_customer_name1" disabled="" tabindex="1" >
                                         @endif
                                         
@@ -115,11 +120,11 @@
                             <label>Customer<span class="mandatory">*</span></label>
                             <div class="radio">
                                 <input checked="" value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
-                                @if(Auth::user()->role_id <> 5)
-                                <label for="optionsRadios1">Existing</label>
+                                @if(Auth::user()->role_id <> 5  & $inquiry['createdby']->role_id <> 5)
+                                <label for="optionsRadios1">Existing1</label>
                                 @endif
                                 <input  value="new_customer" id="optionsRadios2" name="customer_status" type="radio" onchange="show_hide_customer('Pending');">
-                                @if(Auth::user()->role_id <> 5)
+                                @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
                                 <label for="optionsRadios2">New</label>
                                 @endif
                             </div>
