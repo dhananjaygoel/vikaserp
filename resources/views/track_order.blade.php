@@ -105,7 +105,8 @@ $qty_co = 0;
                             <br>
                             <br>
 
-                            @if(isset($order_status_responase['delivery_challan_details'][0]))                
+                        
+                            @if(!empty($order_status_responase['delivery_order_details'][0]))                
                             <div>Delivery  Order </div>
 
                             <table id="table-example" class="table table-hover">
@@ -128,12 +129,13 @@ $qty_co = 0;
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    
                                     @foreach($order_status_responase['delivery_order_details'] as $delivery_order_details) 
 <?php $qty_do = 0; ?>
                                     @foreach($delivery_order_details->delivery_product as $all_order_products) 
 <?php $qty_do = $qty_do + $all_order_products->quantity ?>
                                     @endforeach
-
+                                    
                                     <tr >
                                        <!--<td>{{$k++}}</td>--> 
                                         <td>
