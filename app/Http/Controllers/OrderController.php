@@ -1234,15 +1234,42 @@ class OrderController extends Controller {
     
     
      public function track($id) {
+         
+        if (Auth::user()->role_id != 5) {
+         
+             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+        
+        
+        
+         
         if(isset($id)){
            $order_id = $id;
            $customer = Order::find($id);
+           if(count($customer)==0)
+            {
+             return Redirect::back()->withInput()->with('error', 'Invalid Order.');
+            }
+          
            $customer_id = $customer->customer_id;
+           
+            $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)                    
+                    ->first(); 
         }
         else{
-            return Redirect::back()->withInput()->withErrors($validator);
-        }        
-
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }  
+        
+        
+        if($customer_id <> $cust->id)
+        {
+             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+           
+           
+        
         $order_status_responase=array();
         if(isset($order_id) && $order_id> 0 && isset($customer_id) && $customer_id >0){
             

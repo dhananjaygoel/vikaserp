@@ -112,6 +112,14 @@ class CustomerController extends Controller {
         
         $users->role_id = '5';
         
+         $already_exists_mobile_number = Customer::where('phone_number1', '=', Input::get('phone_number1'))
+                ->get();
+         
+        if(count($already_exists_mobile_number) > 0)
+        {
+              return Redirect::back()->with('error', 'Mobile number is already associated with another account.');
+        }
+        
         if (Input::has('company_name')) {
             $customer->company_name = Input::get('company_name');
         }
