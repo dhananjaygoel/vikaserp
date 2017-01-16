@@ -45,7 +45,11 @@ class DeliveryChallanController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-
+        
+         if (Auth::user()->role_id == 5) {
+            return Redirect::to('inquiry')->with('error', 'You do not have permission.');
+        }
+        
         $data = Input::all();
         $session_sort_type_order = Session::get('order-sort-type');
         if (isset($data['status_filter']))
@@ -129,7 +133,7 @@ class DeliveryChallanController extends Controller {
      * Display the specified Delivery Challan Details.
      */
     public function show($id) {
-
+        
         $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')->find($id);
         if (count($allorder) < 1) {
             return redirect('delivery_challan')->with('success', 'Invalid challan or challan not found');
