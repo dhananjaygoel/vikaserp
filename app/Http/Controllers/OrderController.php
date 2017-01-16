@@ -460,7 +460,23 @@ class OrderController extends Controller {
      */
     public function show($id) {
 
-        $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->find($id);
+        
+        
+         if(Auth::user()->role_id == 5)
+        {
+            $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)                    
+                    ->first();
+            
+             $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->where('customer_id','=',$cust->id)->find($id);
+        }
+        
+        if(Auth::user()->role_id <> 5)
+        {
+            $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->find($id);
+        }
+        
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }
@@ -474,11 +490,27 @@ class OrderController extends Controller {
      * Functioanlity: Show edit order details page
      */
     public function edit($id) {
-
+        
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer','createdby')->find($id);
+       
+        
+        if(Auth::user()->role_id == 5)
+        {
+            $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)                    
+                    ->first();
+            
+             $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer','createdby')->where('customer_id','=',$cust->id)->find($id);
+        }
+        
+        if(Auth::user()->role_id <> 5)
+        {
+             $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer','createdby')->find($id);
+        }
+        
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }
@@ -1283,9 +1315,9 @@ class OrderController extends Controller {
             return json_encode(array('result' => false, 'track_order_status' => false, 'message' => 'Order not found'));
         }
         
-       // return json_encode($order_status_responase);
+      //  return json_encode($order_status_responase);
 //       echo "<pre>";
-//       print_r($order_status_responase);
+//       print_r( $order_status_responase['delivery_order_details']->toArray());
 //       echo "</pre>";
 //       exit;
        

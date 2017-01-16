@@ -285,11 +285,26 @@ class InquiryController extends Controller {
      * Display the specified resource.
      */
     public function show($id) {
-
+               
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->find($id);
+        
+        if(Auth::user()->role_id == 5){
+        $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)                    
+                    ->first();
+                    
+            $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->Where('customer_id','=', $cust->id)->find($id);       
+        }
+        
+        if(Auth::user()->role_id <> 5){
+            $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->find($id);
+        }
+        
+        
+      
         if (count($inquiry) < 1) {
             return redirect('inquiry')->with('flash_message', 'Inquiry does not exist.');
         }
@@ -364,7 +379,23 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+       
+        
+         if(Auth::user()->role_id == 5){
+        $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)                    
+                    ->first();
+        
+            $inquiry = $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer' ,'createdby')->Where('customer_id','=', $cust->id) ->find($id);           
+        }
+        
+        
+        if(Auth::user()->role_id <> 5){
         $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer' ,'createdby')->find($id);
+        }
+        
+        
         if (count($inquiry) < 1) {
             return redirect('inquiry')->with('flash_message', 'Inquiry does not exist.');
         }
@@ -699,7 +730,21 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer','createdby')->where('inquiry_status', '<>', 'Completed')->first();
+       
+        if(Auth::user()->role_id == 5){
+        $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)                    
+                    ->first(); 
+        
+            $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer','createdby')->where('inquiry_status', '<>', 'Completed')->Where('customer_id','=', $cust->id) ->first();
+        }
+        
+        if(Auth::user()->role_id <> 5){
+            $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer','createdby')->where('inquiry_status', '<>', 'Completed')->first();
+        }
+        
+        
         if (count($inquiry) < 1) {
             return redirect('inquiry')->with('flash_message', 'Please select other inquiry, order is generated for this inquiry.');
         }
