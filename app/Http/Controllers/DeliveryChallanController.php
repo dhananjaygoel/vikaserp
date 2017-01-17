@@ -197,15 +197,17 @@ class DeliveryChallanController extends Controller {
                        }
                    }
                     
-                    $order_quantity_pending = $product_for_order->sum('quantity');
+                   foreach($product_for_order as $ordr){
+                       $order_quantity_pending = $order_quantity_pending + $ordr->quantity;                     
+                   }
+                }  
+                
+                 if($order_quantity_pending > $order_quantity){
                    
-                    if($order_quantity_pending > $order_quantity){
-                    $allorders[$key]['total_quantity_pending'] = $order_quantity_pending -$order_quantity;
                     $allorders[$key]['total_quantity_pending'] = $order_quantity_pending -$order_quantity;
                 }else {
                          $allorders[$key]['total_quantity_pending'] = '0';
                     }
-                }
             }
         }        
         $allorders->setPath('delivery_challan');
