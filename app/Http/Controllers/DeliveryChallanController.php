@@ -116,15 +116,98 @@ class DeliveryChallanController extends Controller {
                                 ->orderBy('updated_at', 'desc')->Paginate(20);
             }
         }
+//        
+//        if (count($allorders) > 0) {
+//            foreach ($allorders as $key => $order) {
+//                $order_quantity = 0;
+//                $order_quantity_pending =0;
+//                
+//                
+//                $all_dc_details = DeliveryChallan::with('delivery_order','order_details','delivery_challan_products')->find($order->id);
+//                
+////                $all_do_details = DeliveryOrder::with('delivery_product')->find($all_dc_details[0]['delivery_order']->id);
+//                
+//                
+//            foreach($all_dc_details['delivery_challan_products'] as $delivery_challan_products){
+//                 
+//                  $order_quantity = $order_quantity + $delivery_challan_products->present_shipping;
+//                  $all_do_details = DeliveryOrder::with('delivery_product')->find($all_dc_details['delivery_order']->id);
+//                  
+//                  foreach($all_do_details['delivery_product'] as $delivery_product) 
+//                  {
+//                      $delivery_product->product_category_id;
+//                      $delivery_challan_products->product_category_id;
+//                      
+//                      if($delivery_product->product_category_id == $delivery_challan_products->product_category_id)
+//                      { 
+//                          echo "<pre>";
+//                          print_r($delivery_product->quantity);
+//                          echo "</pre>";
+//                           
+//                         
+//                          
+//                      }
+//                    
+//                      
+//                  }
+//                 
+//            }
+//                
+//                
+//                echo "<pre>";
+//                print_r($delivery_challan_products->product_category_id);
+//                echo "</pre>";
+//                exit;
+//                
+//                
+//            }
+//        }
+//        
+        
+        
+        
+        
         if (count($allorders) > 0) {
             foreach ($allorders as $key => $order) {
                 $order_quantity = 0;
-                if (count($order['delivery_challan_products']) > 0) {
-                    $order_quantity = $order['delivery_challan_products']->sum('actual_quantity');
+                $order_quantity_pending =0;
+                $product_for_order_do_pending=0;
+                if (count($order['delivery_challan_products']) > 0) {                   
+                    $order_quantity = $order['delivery_challan_products']->sum('present_shipping');
                 }
-                $allorders[$key]['total_quantity'] = $order_quantity;
+               $allorders[$key]['total_quantity'] = $order_quantity;
+                foreach($order['delivery_challan_products'] as $delivery_challan_products )
+                {                    
+                    $product_for_order = AllOrderProducts::where('order_type','=','order')
+                         ->where('order_id','=',$order->order_id)
+                         ->where('product_category_id','=',$delivery_challan_products->product_category_id)
+                         ->get(); 
+                    
+                    $product_for_deliveryorder = DeliveryOrder::where('order_id','=',$order->order_id) ->get(); 
+                    
+                   if(count($product_for_deliveryorder)>0)
+                   {
+                       foreach($product_for_deliveryorder as $deliveryorder){
+                       $product_for_order_do = AllOrderProducts::where('order_type','=','delivery_order')
+                         ->where('order_id','=',$deliveryorder->id)
+                         ->where('product_category_id','=',$delivery_challan_products->product_category_id)
+                         ->get(); 
+                       
+                       $product_for_order_do_pending = $product_for_order_do->sum('quantity');
+                       }
+                   }
+                    
+                    $order_quantity_pending = $product_for_order->sum('quantity');
+                   
+                    if($order_quantity_pending > $order_quantity){
+                    $allorders[$key]['total_quantity_pending'] = $order_quantity_pending -$order_quantity;
+                    $allorders[$key]['total_quantity_pending'] = $order_quantity_pending -$order_quantity;
+                }else {
+                         $allorders[$key]['total_quantity_pending'] = '0';
+                    }
+                }
             }
-        }
+        }        
         $allorders->setPath('delivery_challan');
         return view('delivery_challan', compact('allorders', 'search_dates'));
     }
@@ -658,7 +741,10 @@ class DeliveryChallanController extends Controller {
      */
 
     function checkpending_quantity() {
-        $allorders = Order::all();
+        $allorders = Order::get();
+        
+        
+        
         $allorder_new = [];
         foreach ($allorders as $order) {
             $delivery_orders = DeliveryOrder::where('order_id', $order->id)->get();
@@ -727,4 +813,104 @@ class DeliveryChallanController extends Controller {
         }
     }
 
+    
+        function checkpending_quantity1($delivery_orders) {
+
+        if (count($delivery_orders) > 0) {
+            foreach ($delivery_orders as $key => $del_order) {
+                $delivery_order_quantity = 0;
+                $delivery_order_present_shipping = 0;
+                $pending_order_temp = 0;
+                $pending_order = 0;
+                if (count($del_order['delivery_product']) > 0) {
+                    foreach ($del_order['delivery_product'] as $popk => $popv) {
+                        $product_size = ProductSubCategory::find($popv->product_category_id);
+                        if ($popv->unit_id == 1) {
+                            $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
+                            $delivery_order_present_shipping = $delivery_order_present_shipping + $popv->present_shipping;
+                            
+                            $do = DeliveryOrder::find($popv->order_id);
+                            $prd_details = AllOrderProducts::where('order_id','=',$do->order_id)->where('order_type','=','order')->where('product_category_id','=',$popv->product_category_id)->get();
+                            
+                            $pending_order_temp = $prd_details[0]->quantity - $popv->quantity;
+                            if($pending_order ==0){
+                                $pending_order = $pending_order_temp;
+                            }
+                            else{
+                                $pending_order = $pending_order + $pending_order_temp;
+                            }                            
+                           
+                            
+                        } 
+                        
+                        
+                        elseif ($popv->unit_id == 2) {
+                            $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight);
+                            $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight);
+                            
+                            $do = DeliveryOrder::find($popv->order_id);
+                            $prd_details = AllOrderProducts::where('order_id','=',$do->order_id)->where('order_type','=','order')->where('product_category_id','=',$popv->product_category_id)->get();
+                            
+                            if($prd_details[0]->quantity > $popv->quantity)
+                                $remaining = $prd_details[0]->quantity - $popv->quantity;
+                            else
+                                 $remaining =0 ;                            
+                            
+                            $pending_order_temp =  ($remaining * $product_size->weight);                         
+                            
+                            if($pending_order ==0){
+                                $pending_order = $pending_order_temp ;
+                            }
+                            else{
+                                $pending_order = $pending_order + $pending_order_temp;
+                            }    
+                            
+                            
+                        } 
+                        
+                        
+                        elseif ($popv->unit_id == 3) {
+                            
+                            $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+                            $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);                            
+                            
+                            $do = DeliveryOrder::find($popv->order_id);
+                            
+                            $prd_details = AllOrderProducts::where('order_id','=',$do->order_id)->where('order_type','=','order')->where('product_category_id','=',$popv->product_category_id)->get();
+                            
+                            if($prd_details[0]->quantity > $popv->quantity)
+                                $remaining = $prd_details[0]->quantity - $popv->quantity;
+                            else
+                                 $remaining =0 ;                            
+                            $pending_order_temp =  (($remaining / $product_size->standard_length ) * $product_size->weight);                         
+                            
+                            if($pending_order ==0){
+                                $pending_order = $pending_order_temp ;
+                            }
+                            else{
+                                $pending_order = $pending_order + $pending_order_temp;
+                            }    
+                        }
+                    }
+                }
+                $delivery_orders[$key]['total_quantity'] = $delivery_order_quantity;
+                $delivery_orders[$key]['present_shipping'] = $delivery_order_present_shipping;
+                $delivery_orders[$key]['pending_order'] = $pending_order;
+                
+            }
+        }
+        
+//        echo "<pre>";
+//        print_r($delivery_orders->toArray());
+//        echo "</pre>";
+//        exit;
+//        
+//        exit;
+        return $delivery_orders;
+    }
+
+    
+    
+    
+    
 }

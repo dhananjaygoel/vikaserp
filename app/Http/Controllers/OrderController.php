@@ -46,7 +46,7 @@ class OrderController extends Controller {
      * Functioanlity: Display order details
      */
     public function index() {
-
+        
         $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 5) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
@@ -169,6 +169,12 @@ class OrderController extends Controller {
            
             $pending_orders = $this->checkpending_quantity($allorders);
             $allorders->setPath('orders');
+            
+//            echo "<pre>";
+//            print_r($allorders->toArray());
+//            echo "</pre>";
+//            exit;
+            
         return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id', 'search_dates'));
     }
 
@@ -1111,25 +1117,29 @@ class OrderController extends Controller {
             if (count($delivery_order_products) > 0) {
                 foreach ($delivery_order_products as $dopk => $dopv) {
                     $product_size = ProductSubCategory::find($dopv->product_category_id);
-                    if ($dopv->unit_id == 1) {
-                        $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity;
-                    } elseif ($dopv->unit_id == 2) {
-                        $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight;
-                    } elseif ($dopv->unit_id == 3) {
-                        $delivery_order_quantity = $delivery_order_quantity + ($dopv->quantity / $product_size->standard_length ) * $product_size->weight;
-                    }
+                   $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity;
+                    
+//                      if ($dopv->unit_id == 1) {
+//                        $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity;
+//                    } elseif ($dopv->unit_id == 2) {
+//                        $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight;
+//                    } elseif ($dopv->unit_id == 3) {
+//                        $delivery_order_quantity = $delivery_order_quantity + ($dopv->quantity / $product_size->standard_length ) * $product_size->weight;
+//                    }
                 }
             }
             if (count($order['all_order_products']) > 0) {
                 foreach ($order['all_order_products'] as $opk => $opv) {
                     $product_size = ProductSubCategory::find($opv->product_category_id);
-                    if ($opv->unit_id == 1) {
-                        $order_quantity = $order_quantity + $opv->quantity;
-                    } elseif ($opv->unit_id == 2) {
-                        $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
-                    } elseif ($opv->unit_id == 3) {
-                        $order_quantity = $order_quantity + (($opv->quantity / $product_size->standard_length ) * $product_size->weight);
-                    }
+                    $order_quantity = $order_quantity + $opv->quantity;
+                    
+//                    if ($opv->unit_id == 1) {
+//                        $order_quantity = $order_quantity + $opv->quantity;
+//                    } elseif ($opv->unit_id == 2) {
+//                        $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
+//                    } elseif ($opv->unit_id == 3) {
+//                        $order_quantity = $order_quantity + (($opv->quantity / $product_size->standard_length ) * $product_size->weight);
+//                    }
                 }
             }
             $allorders[$key]['pending_quantity'] = ($delivery_order_quantity >= $order_quantity) ? 0 : ($order_quantity - $delivery_order_quantity);

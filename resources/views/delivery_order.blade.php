@@ -132,8 +132,9 @@
                                         <th>Date</th>
                                         <th>Tally Name</th>
                                         <th>Delivery Location</th>
-                                        <th>Quantity</th>
+<!--                                        <th>Quantity</th>-->
                                         <th>Present Shipping</th>
+                                        <th>Pending Order</th>
                                         <th>Vehicle Number</th>
                                         @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
                                         <th class="text-center">Create Delivery Challan</th>
@@ -164,11 +165,14 @@
                                             {{$delivery->other_location}}
                                             @endif
                                         </td>
-                                        <td>
+<!--                                        <td>
                                             {{ round($delivery->total_quantity, 2) }}
-                                        </td>
+                                        </td>-->
                                         <td>
                                             {{ round($delivery->present_shipping, 2) }}
+                                        </td>
+                                        <td>
+                                            {{ round($delivery->pending_order, 2) }}
                                         </td>
                                         <td>
                                             {{$delivery->vehicle_number}}

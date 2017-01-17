@@ -48,7 +48,7 @@ class DeliveryOrderController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index() {
+    public function index() { 
         $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
@@ -106,7 +106,7 @@ class DeliveryOrderController extends Controller {
         $delivery_data->setPath('delivery_order');
         return view('delivery_order', compact('delivery_data', 'delivery_locations', 'search_dates'));
     }
-
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -846,25 +846,111 @@ class DeliveryOrderController extends Controller {
             foreach ($delivery_orders as $key => $del_order) {
                 $delivery_order_quantity = 0;
                 $delivery_order_present_shipping = 0;
+                $pending_order_temp = 0;
+                $pending_order = 0;
                 if (count($del_order['delivery_product']) > 0) {
                     foreach ($del_order['delivery_product'] as $popk => $popv) {
                         $product_size = ProductSubCategory::find($popv->product_category_id);
-                        if ($popv->unit_id == 1) {
-                            $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
+                        
+                        $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
                             $delivery_order_present_shipping = $delivery_order_present_shipping + $popv->present_shipping;
-                        } elseif ($popv->unit_id == 2) {
-                            $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight);
-                            $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight);
-                        } elseif ($popv->unit_id == 3) {
-                            $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
-                            $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
-                        }
+                            
+                            $do = DeliveryOrder::find($popv->order_id);
+                            $prd_details = AllOrderProducts::where('order_id','=',$do->order_id)->where('order_type','=','order')->where('product_category_id','=',$popv->product_category_id)->get();
+                            
+                            $pending_order_temp = $prd_details[0]->quantity - $popv->quantity;
+                            if($pending_order ==0){
+                                $pending_order = $pending_order_temp;
+                            }
+                            else{
+                                $pending_order = $pending_order + $pending_order_temp;
+                            }    
+                        
+                        
+//                        if ($popv->unit_id == 1) {
+//                            $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
+//                            $delivery_order_present_shipping = $delivery_order_present_shipping + $popv->present_shipping;
+//                            
+//                            $do = DeliveryOrder::find($popv->order_id);
+//                            $prd_details = AllOrderProducts::where('order_id','=',$do->order_id)->where('order_type','=','order')->where('product_category_id','=',$popv->product_category_id)->get();
+//                            
+//                            $pending_order_temp = $prd_details[0]->quantity - $popv->quantity;
+//                            if($pending_order ==0){
+//                                $pending_order = $pending_order_temp;
+//                            }
+//                            else{
+//                                $pending_order = $pending_order + $pending_order_temp;
+//                            }                            
+//                           
+//                            
+//                        } 
+//                        
+//                        
+//                        elseif ($popv->unit_id == 2) {
+//                            $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight);
+//                            $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight);
+//                            
+//                            $do = DeliveryOrder::find($popv->order_id);
+//                            $prd_details = AllOrderProducts::where('order_id','=',$do->order_id)->where('order_type','=','order')->where('product_category_id','=',$popv->product_category_id)->get();
+//                            
+//                            if($prd_details[0]->quantity > $popv->quantity)
+//                                $remaining = $prd_details[0]->quantity - $popv->quantity;
+//                            else
+//                                 $remaining =0 ;                            
+//                            
+//                            $pending_order_temp =  ($remaining * $product_size->weight);                         
+//                            
+//                            if($pending_order ==0){
+//                                $pending_order = $pending_order_temp ;
+//                            }
+//                            else{
+//                                $pending_order = $pending_order + $pending_order_temp;
+//                            }    
+//                            
+//                            
+//                        } 
+//                        
+//                        
+//                        elseif ($popv->unit_id == 3) {
+//                            
+//                            $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+//                            $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);                            
+//                            
+//                            $do = DeliveryOrder::find($popv->order_id);
+//                            
+//                            $prd_details = AllOrderProducts::where('order_id','=',$do->order_id)->where('order_type','=','order')->where('product_category_id','=',$popv->product_category_id)->get();
+//                            
+//                            if($prd_details[0]->quantity > $popv->quantity)
+//                                $remaining = $prd_details[0]->quantity - $popv->quantity;
+//                            else
+//                                 $remaining =0 ;                            
+//                            $pending_order_temp =  (($remaining / $product_size->standard_length ) * $product_size->weight);                         
+//                            
+//                            if($pending_order ==0){
+//                                $pending_order = $pending_order_temp ;
+//                            }
+//                            else{
+//                                $pending_order = $pending_order + $pending_order_temp;
+//                            }    
+//                        }
                     }
                 }
+                
+                
+                
                 $delivery_orders[$key]['total_quantity'] = $delivery_order_quantity;
                 $delivery_orders[$key]['present_shipping'] = $delivery_order_present_shipping;
+                $delivery_orders[$key]['pending_order'] = $pending_order;
+                
             }
         }
+        
+//        echo "<pre>";
+//        print_r($delivery_orders->toArray());
+//        echo "</pre>";
+//        exit;
+//        
+//        exit;
         return $delivery_orders;
     }
 

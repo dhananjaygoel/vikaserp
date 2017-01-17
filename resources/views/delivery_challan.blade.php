@@ -107,12 +107,20 @@
                                         <th class="text-center">Tally Name</th>
                                         <th class="text-center">Serial Number</th>
                                         <th class="text-center">Present Shipping</th>
+                                        <th class="text-center">Pending Order</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1; ?>
                                     @foreach($allorders as $challan)
+                                    <?php
+//                            echo "<pre>";
+//print_r($challan['customer']);
+//echo "</pre>";
+//exit;
+                                    ?>
+                                    
                                     @if($challan->challan_status == 'pending')
                                     <tr id="challan_order_row_{{$challan->id}}">
                                         <td class="text-center">{{$k++}}</td>
@@ -123,6 +131,7 @@
                                             {{ ($challan->serial_number != '') ? $challan->serial_number : '' }}
                                         </td>
                                         <td class="text-center">{{ round($challan->total_quantity, 2) }}</td>
+                                        <td class="text-center">{{ round($challan->total_quantity_pending, 2) }}</td>
                                         <td class="text-center">
                                             <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
