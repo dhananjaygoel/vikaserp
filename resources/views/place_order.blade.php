@@ -121,7 +121,7 @@
                             <div class="radio">
                                 <input checked="" value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
                                 @if(Auth::user()->role_id <> 5  & $inquiry['createdby']->role_id <> 5)
-                                <label for="optionsRadios1">Existing1</label>
+                                <label for="optionsRadios1">Existing</label>
                                 @endif
                                 <input  value="new_customer" id="optionsRadios2" name="customer_status" type="radio" onchange="show_hide_customer('Pending');">
                                 @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
