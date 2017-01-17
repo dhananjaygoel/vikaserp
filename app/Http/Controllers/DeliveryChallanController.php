@@ -172,12 +172,19 @@ class DeliveryChallanController extends Controller {
                 $order_quantity = 0;
                 $order_quantity_pending =0;
                 $product_for_order_do_pending=0;
+                 $previous_dc_quantity =0;
+                 $previous_dc_quantity_parent=0;
+                 
+                
                 if (count($order['delivery_challan_products']) > 0) {                   
                     $order_quantity = $order['delivery_challan_products']->sum('present_shipping');
                 }
                $allorders[$key]['total_quantity'] = $order_quantity;
                 foreach($order['delivery_challan_products'] as $delivery_challan_products )
                 {                    
+                   
+                   
+                 
                     $product_for_order = AllOrderProducts::where('order_type','=','order')
                          ->where('order_id','=',$order->order_id)
                          ->where('product_category_id','=',$delivery_challan_products->product_category_id)
@@ -192,22 +199,63 @@ class DeliveryChallanController extends Controller {
                          ->where('order_id','=',$deliveryorder->id)
                          ->where('product_category_id','=',$delivery_challan_products->product_category_id)
                          ->get(); 
+                     
+                   
+                    $dc_temp = DeliveryChallan::find($delivery_challan_products->order_id);
+                    $dc = DeliveryChallan::where('order_id','=',$dc_temp->order_id)
+                            ->get();
+                    foreach($dc as $dc1)
+                    {
+                         $prod = AllOrderProducts::where('order_id','=',$dc1->id)
+                                 ->where('product_category_id','=',$delivery_challan_products->product_category_id)
+                                 ->where('order_id','<>',$order->id)
+                                 ->get();
+                         
+                         foreach($prod as $t){
+                             
+                              $previous_dc_quantity =  $t->present_shipping;
+                              $previous_dc_quantity_parent = $t->parent;
+                         }
+                       
+                    }
                        
                        $product_for_order_do_pending = $product_for_order_do->sum('quantity');
+                       
                        }
                    }
-                    
-                   foreach($product_for_order as $ordr){
-                       $order_quantity_pending = $order_quantity_pending + $ordr->quantity;                     
+                   
+//                   echo "<pre>";
+//                       print_r($product_for_order_do_pending ."--" .$previous_dc_quantity."--".$product_for_order[0]->quantity."--".$previous_dc_quantity_parent."--".$product_for_order_do[0]->id);
+//                       echo "</pre>";
+//                 
+                  
+                   foreach($product_for_order as $product_order_pending){
+                       
+                       if($previous_dc_quantity > 0)
+                       {
+                          if($previous_dc_quantity_parent == $product_for_order_do[0]->id){
+                               $order_quantity_pending = $order_quantity_pending + $product_order_pending->quantity ;   
+                          }
+                          else{
+                              $order_quantity_pending = $product_order_pending->quantity - $previous_dc_quantity +  $order_quantity -$product_for_order_do_pending;
+                          }
+                                 
+                       }
+                       else{
+                           $order_quantity_pending = $order_quantity_pending + $product_order_pending->quantity ;    
+                       }
+                                        
                    }
                 }  
                 
-                 if($order_quantity_pending > $order_quantity){
-                   
-                    $allorders[$key]['total_quantity_pending'] = $order_quantity_pending -$order_quantity;
-                }else {
-                         $allorders[$key]['total_quantity_pending'] = '0';
-                    }
+                 $allorders[$key]['total_quantity_pending'] = $order_quantity_pending -$order_quantity;
+                
+//                 if($order_quantity_pending > $order_quantity){
+//                   
+//                    $allorders[$key]['total_quantity_pending'] = $order_quantity_pending -$order_quantity;
+//                }else {
+//                         $allorders[$key]['total_quantity_pending'] = '0';
+//                    }
             }
         }        
         $allorders->setPath('delivery_challan');
