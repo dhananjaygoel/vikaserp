@@ -496,7 +496,7 @@ class InquiryController extends Controller {
         $inquiry = Inquiry::find($id);
         $update_inquiry = $inquiry->update([
             'customer_id' => $customer_id,
-            'created_by' => Auth::id(),
+//            'created_by' => Auth::id(),
             'vat_percentage' => $vat_price,
             'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['inquiry_remark']
@@ -759,11 +759,16 @@ class InquiryController extends Controller {
      */
 
     function store_place_order($id, InquiryRequest $request) {
-
+        
+        
+        
+       
+        
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $input_data = Input::all();
+        $inquiry = Inquiry::find($id);
         if (Session::has('forms_order')) {
             $session_array = Session::get('forms_order');
             if (count($session_array) > 0) {
@@ -854,7 +859,8 @@ class InquiryController extends Controller {
         $order->order_source = $order_status;
         $order->supplier_id = $supplier_id;
         $order->customer_id = $customer_id;
-        $order->created_by = Auth::id();
+//        $order->created_by = Auth::id();
+        $order->created_by = $inquiry->created_by;
         $order->vat_percentage = $vat_price;
         $order->expected_delivery_date = $datetime->format('Y-m-d');
         $order->remarks = $input_data['inquiry_remark'];

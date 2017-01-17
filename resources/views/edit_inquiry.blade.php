@@ -99,13 +99,19 @@
                                 <div class="col-md-4">
                                     <div class="form-group searchproduct">
                                         
-                                         @if(Auth::user()->role_id <> 5)
+                                         @if(Auth::user()->role_id <> 5  & $inquiry['createdby']->role_id <> 5)
                                          <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name"  tabindex="1" >
                                          @endif
                                          
-                                          @if(Auth::user()->role_id == 5)
+                                          @if(Auth::user()->role_id == 5 & $inquiry['createdby']->role_id == 5)
                                         <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name1"  disabled="" tabindex="1" >
                                         @endif
+                                        
+                                          @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id == 5)
+                                        <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name1"  disabled="" tabindex="1" >
+                                        @endif
+                                        
+                                          
                                         
                                         <input id="existing_customer_id" class="form-control" name="existing_customer_name" value="{{$inquiry['customer']->id}}" type="hidden">
                                         <!--<i class="fa fa-search search-icon"></i>-->

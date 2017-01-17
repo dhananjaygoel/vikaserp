@@ -622,7 +622,7 @@ class OrderController extends Controller {
             'order_source' => $order_status,
             'supplier_id' => $supplier_id,
             'customer_id' => $customer_id,
-            'created_by' => Auth::id(),
+//            'created_by' => Auth::id(),
             'delivery_location_id' => $input_data['add_inquiry_location'],
             'vat_percentage' => $input_data['vat_percentage'],
             'expected_delivery_date' => $datetime->format('Y-m-d'),
