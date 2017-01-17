@@ -172,7 +172,7 @@
                                             {{ round($delivery->present_shipping, 2) }}
                                         </td>
                                         <td>
-                                            {{ round($delivery->pending_order, 2) }}
+                                            {{ round($delivery->present_shipping, 2) }}
                                         </td>
                                         <td>
                                             {{$delivery->vehicle_number}}
