@@ -853,6 +853,8 @@ class DeliveryOrderController extends Controller {
                 $pending_order = 0;
                 if (count($del_order['delivery_product']) > 0) {
                     foreach ($del_order['delivery_product'] as $popk => $popv) {
+                       
+                        if(isset($popv)){
                         $product_size = ProductSubCategory::find($popv->product_category_id);
                         
                         $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
@@ -860,8 +862,11 @@ class DeliveryOrderController extends Controller {
                             
                             $do = DeliveryOrder::find($popv->order_id);
                             $prd_details = AllOrderProducts::where('order_id','=',$do->order_id)->where('order_type','=','order')->where('product_category_id','=',$popv->product_category_id)->get();
-                            
+                            if(isset($prd_details[0]))
                             $pending_order_temp = $prd_details[0]->quantity - $popv->quantity;
+                            else
+                              $pending_order_temp =0;  
+                                
                             if($pending_order ==0){
                                 $pending_order = $pending_order_temp;
                             }
@@ -936,24 +941,31 @@ class DeliveryOrderController extends Controller {
 //                                $pending_order = $pending_order + $pending_order_temp;
 //                            }    
 //                        }
+                        }
+                        else
+                        {
+                            $delivery_order_quantity=0;
+                            $delivery_order_present_shipping=0;
+                            $pending_order=0;
+                        }
                     }
                 }
                 
-                
+              
                 
                 $delivery_orders[$key]['total_quantity'] = $delivery_order_quantity;
                 $delivery_orders[$key]['present_shipping'] = $delivery_order_present_shipping;
-                $delivery_orders[$key]['pending_order'] = $pending_order;
-                
+                $delivery_orders[$key]['pending_order'] = ($pending_order<0 ? 0:$pending_order);
+               
             }
         }
-        
-//        echo "<pre>";
-//        print_r($delivery_orders->toArray());
-//        echo "</pre>";
-//        exit;
-//        
-//        exit;
+         else
+                {
+                    $delivery_orders[$key]['total_quantity'] = 0;
+                $delivery_orders[$key]['present_shipping'] = 0;
+                $delivery_orders[$key]['pending_order'] = 0;
+                }
+
         return $delivery_orders;
     }
 
