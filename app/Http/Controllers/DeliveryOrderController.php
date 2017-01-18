@@ -238,10 +238,13 @@ class DeliveryOrderController extends Controller {
         if (count($delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
         }
+        
+        $order_data = Order::with('all_order_products')->find($delivery_data->order_id);
+               
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
-        return view('view_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
+        return view('view_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers','order_data'));
     }
 
     /**

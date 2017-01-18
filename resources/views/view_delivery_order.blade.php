@@ -12,7 +12,7 @@
                 <div class="filter-block">
                     <h1 class="pull-left">View Delivery Order</h1>
                     <div class="pull-right top-page-ui">
-                        
+
                         @if($delivery_data->order_status == 'pending')
                         @if(($delivery_data->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1))
                         <a href="{{URL::action('DeliveryOrderController@edit',['id'=>$delivery_data->id])}}" class="btn btn-primary pull-right">
@@ -81,6 +81,9 @@
                                     <tr class="headingunderline">
                                         <td><span>Product(Alias)</span></td>
                                         <td><span>Present shipping</span></td>
+                                        @if(Auth::user()->role_id == 5)
+                                        <td><span>Total Order</span></td>
+                                        @endif
                                         <td><span>Unit</span></td>
                                         <td><span>Price</span></td>
                                         <td><span>Vat</span></td>
@@ -92,6 +95,18 @@
                                     <tr>
                                         <td> {{ $product['order_product_details']->alias_name}}</td>
                                         <td>{{$product->present_shipping}}</td>
+                                        @if(Auth::user()->role_id == 5)
+                                        <td>
+                                            @foreach($order_data['all_order_products'] as $all_order_products)
+
+                                            @if($all_order_products->product_category_id == $product->product_category_id)
+                                            {{$all_order_products->quantity}}                                            
+                                            @endif
+                                            @endforeach
+
+
+                                        </td>
+                                        @endif
                                         <td>
                                             @foreach($units as $unit)
                                             {{($unit->id == $product->unit_id)? $unit->unit_name:''}}

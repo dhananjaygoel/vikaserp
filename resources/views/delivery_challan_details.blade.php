@@ -34,13 +34,16 @@
                                 <tbody>
                                     <tr class="headingunderline">
                                         <td class="col-md-2"><span>Product Name(Alias)</span></td>
-                                        <td class="col-md-2"><span>Actual Quantity</span></td>
+                                        <td class="col-md-1"><span>Actual Quantity</span></td>
                                         <td class="col-md-1"><span>Actual Pieces</span></td>
                                         <td class="col-md-1"><span>Unit</span></td>
                                         <td class="col-md-2"><span>Present Shipping</span></td>
+                                        @if(Auth::user()->role_id == 5)
+                                        <td class="col-md-2"><span>Total Order</span></td>
+                                        @endif
                                         <td class="col-md-1"><span>Rate</span></td>
                                         <td class="col-md-1"><span>Vat</span></td>
-                                        <td class="col-md-2"><span>Amount</span></td>
+                                        <td class="col-md-1"><span>Amount</span></td>
                                     </tr>
                                     <?php $total_amount = 0; ?>
                                     @foreach($allorder['all_order_products'] as $key=>$product)
@@ -61,6 +64,21 @@
                                         <td class="col-md-2">
                                             <div class="form-group">{{$product->present_shipping}}</div>
                                         </td>
+                                        
+                                         @if(Auth::user()->role_id == 5)
+                                        <td>
+                                            @foreach($order_product['all_order_products'] as $all_order_products)
+
+                                            @if($all_order_products->product_category_id == $product->product_category_id)
+                                            {{$all_order_products->quantity}}                                            
+                                            @endif
+                                            @endforeach
+
+
+                                        </td>
+                                        @endif
+                                        
+                                        
                                         <td class="col-md-1">
                                             <div class="form-group">{{$product->price}}</div>
                                         </td>

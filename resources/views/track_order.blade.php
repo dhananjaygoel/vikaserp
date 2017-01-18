@@ -87,8 +87,7 @@
                                         <th class='col-md-1'>QTY</th>
                                         <th class='col-md-1'>STATUS</th>
                                         <th class='col-md-1'>Date</th>
-
-
+                                        <th class="text-center col-md-1">View Detail</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -117,6 +116,15 @@
                                             @endif  
                                         </td> 
                                         <td>{{$order_details->created_at->format('d/m/Y')}}</td>
+                                        <td class="text-center col-md-1">
+                                         <a href="{{url('orders/'.$order_details->id)}}" class="table-link" title="view">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-search fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                             
+                                        </a>
+                                            </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -146,7 +154,7 @@
                                         <th class='col-md-1'>QTY</th>
                                         <th class='col-md-1'>STATUS</th>
                                         <th class='col-md-1'>Date</th>
-
+                                        <th class="text-center col-md-1">View Detail</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -179,6 +187,14 @@
 
                                         </td>
                                         <td>{{$delivery_order_details->created_at->format('d/m/Y')}}</td>
+                                        <td class="text-center">
+                                            <a href="{{URL::action('DeliveryOrderController@show',['id'=> $delivery_order_details->id])}}" class="table-link" title="view">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                         </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -207,6 +223,7 @@
                                         <th class='col-md-1'>QTY</th>
                                         <th class='col-md-1'>STATUS</th>
                                         <th class='col-md-1'>Date</th>
+                                        <th class="text-center col-md-1">View Detail</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -251,7 +268,16 @@
                                             </span>
                                             @endif
                                         </td>
-                                        <td>{{$delivery_challan_details->created_at->format('d/m/Y')}}</td>                                    
+                                        <td>{{$delivery_challan_details->created_at->format('d/m/Y')}}</td>                  
+                                        
+                                        <td class="text-center col-md-1">
+                                           <a href="{{url('delivery_challan/'.$delivery_challan_details->id)}}" class="table-link" title="view">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a> 
+                                        </td>
 
                                     </tr>
                                     @endforeach

@@ -268,10 +268,20 @@ class DeliveryChallanController extends Controller {
     public function show($id) {
         
         $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')->find($id);
+        
+        
+        
+              
         if (count($allorder) < 1) {
             return redirect('delivery_challan')->with('success', 'Invalid challan or challan not found');
         }
-        return view('delivery_challan_details', compact('allorder'));
+        
+         $order_product = Order::with('all_order_products')->find($allorder->order_id);
+        if (count($order_product) < 1) {
+            $order_product = 0;
+        }
+        
+        return view('delivery_challan_details', compact('allorder','order_product'));
     }
 
     /**
