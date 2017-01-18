@@ -959,12 +959,7 @@ class DeliveryOrderController extends Controller {
                
             }
         }
-         else
-                {
-                    $delivery_orders[$key]['total_quantity'] = 0;
-                $delivery_orders[$key]['present_shipping'] = 0;
-                $delivery_orders[$key]['pending_order'] = 0;
-                }
+        
 
         return $delivery_orders;
     }
