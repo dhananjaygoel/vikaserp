@@ -16,11 +16,34 @@ $('#bill_date').datepicker({
     startDate: new Date(),
     autoclose: true
 });
-$('.export_to_date,.export_from_date').datepicker({
+
+
+$('.export_from_date').datepicker({
     format: 'mm-dd-yyyy',
     autoclose: true,
     endDate: new Date()
+}).on('changeDate', function(){
+    // set the "toDate" start to not be later than "fromDate" ends:
+    $('.export_to_date').datepicker('setStartDate', new Date($(this).val()));
+}); 
+
+$('.export_to_date').datepicker({
+    format: 'mm-dd-yyyy',
+    autoclose: true,
+    endDate: new Date()
+}).on('changeDate', function(){
+    // set the "fromDate" end to not be later than "toDate" starts:
+    $('.export_from_date').datepicker('setEndDate', new Date($(this).val()));
 });
+
+
+
+
+//$('.export_to_date,.export_from_date').datepicker({
+//    format: 'mm-dd-yyyy',
+//    autoclose: true,
+//    endDate: new Date()
+//});
 $('.export_to_date,.export_from_date').keypress(function (event) {
     event.preventDefault();
 });
