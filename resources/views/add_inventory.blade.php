@@ -17,9 +17,9 @@
                                 <div class="col-md-12">
                                     <div class="form-group col-md-2">
                                         <input class="form-control" placeholder="Product Alias Name" autocomplete="off" type="text" name="search_inventory" id="search_inventory" type="text" value="{{(Input::get('search_inventory') != '' )? Input::get('search_inventory'): ''}}" onblur="this.form.submit();">
-                                        <a onclick="this.form.submit();" style="cursor: pointer;">
+<!--                                        <a onclick="this.form.submit();" style="cursor: pointer;">
                                             <i class="fa fa-search search-icon"></i>
-                                        </a>
+                                        </a>-->
                                     </div>
                                     <div class="form-group col-md-2">
                                         <select class="form-control" name="inventory_filter" onchange="this.form.submit();">
