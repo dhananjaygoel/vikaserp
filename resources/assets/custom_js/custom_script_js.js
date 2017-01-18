@@ -502,13 +502,23 @@ function default_delivery_location() {
 }
 
 
+/**
+ * Comment
+ */
+function clear_actual_qty() {
+//    alert();
+    
+    $("#total_actual_qty").val("");
+}
+
+
 /*
  * 
  * @returns {undefined}\
  * 
  */
 
-function fetch_average_quantity() { 
+function fetch_average_quantity() {  
    
     var total_avg_qty = 0;
     var current_row_count = $(".add_product_row").length;
