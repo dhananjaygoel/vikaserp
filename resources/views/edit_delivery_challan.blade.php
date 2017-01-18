@@ -48,8 +48,9 @@
                                         <tr class="headingunderline">
                                             
                                             <td><span>Select Product</span></td>
-                                            <td><span>Actual Quantity</span></td>
                                             <td><span>Actual Pieces</span></td>
+                                            <td><span>Actual Quantity</span></td>
+                                            
                                             <td><span>Present Shipping</span></td>
                                             <td><span>Rate</span></td>
                                             <td class="inquiry_vat_chkbox"><span>Vat</span></td>
@@ -68,6 +69,11 @@
                                                     <i class="fa fa-search search-icon"></i>
                                                 </div>
                                             </td>
+                                             <td class="col-md-1">
+                                                <div class="form-group">
+                                                    <input id="actual_pieces_{{$key}}" class="form-control" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{$product->actual_pieces}}" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" onblur="fetch_price();">
+                                                </div>
+                                            </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
                                                     <input id="quantity_{{$key}}" type="hidden" value="{{ $product->quantity}}" name="product[{{$key}}][quantity]">
@@ -78,11 +84,7 @@
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="col-md-1">
-                                                <div class="form-group">
-                                                    <input id="actual_pieces_{{$key}}" class="form-control" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{$product->actual_pieces}}" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" onblur="fetch_price();">
-                                                </div>
-                                            </td>
+                                           
                                             <td class="col-md-2">
                                                 <div class="form-group">{{ $product->present_shipping}}
                                                     <input id="present_shipping_{{$key}}" class="form-control text-center" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{ $product->present_shipping}}" type="hidden" >
@@ -116,14 +118,20 @@
                                                 <div class="form-group"><div id="amount_{{$key}}"></div></div>
                                             </td>
                                             <td class="col-md-1">
-                                                <button id="delete_{{$key}}" type="button" onclick="clear_data(this); fetch_price();" class="btn btn-default"><i class="fa  fa-times fa-lg red"></i></button>
+<!--                                                <button id="delete_{{$key}}" type="button" onclick="clear_data(this); fetch_price();" style="background-color: transparent; border: 1px" >  </button>-->
+                                                <a href="javascript:void(0)" class="table-link danger" id="delete_{{$key}}"  title="delete" onclick="clear_data(this); fetch_price();">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
                                               
                                             </td>
                                         </tr>
                                         <?php $key++ ?>
                                         @endif
                                         @endforeach
-                                        <tr id="add_row_{{$key}}" class="add_product_row">
+<!--                                        <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-2">
                                                 <div class="form-group searchproduct">
                                                     <input type="text" class="form-control each_product_detail ui-autocomplete-input" placeholder="Enter Product name" autocomplete="off" name="product[{{$key}}][name]" id="delivery_challan_product_name_{{$key}}" data-productid="{{$key}}" onfocus="delivery_challan_product_autocomplete({{$key}});">
@@ -154,7 +162,7 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group inquiry_vat_chkbox">
-                                                    <!--<input type="tel" class="form-control" id="product_vatpercentage_{{$key}}" value="" name="product[{{$key}}][vat_percentage]" placeholder="Vat Percentage" onblur="fetch_price({{$key}})">-->
+                                                    <input type="tel" class="form-control" id="product_vatpercentage_{{$key}}" value="" name="product[{{$key}}][vat_percentage]" placeholder="Vat Percentage" onblur="fetch_price({{$key}})">
                                                     <input class="vat_chkbox" type="checkbox" id = "product[{{$key}}][vat_percentage]" name="product[{{$key}}][vat_percentage]" {{($product->vat_percentage>0)?'checked':''}} disabled="" value="yes" >
                                                     
                                                     <input class="vat_chkbox" type="hidden" value="{{($product->vat_percentage>0)?'1':'0'}}" id ="product_vat_percentage_value_{{$key}}" name="product[{{$key}}][vat_percentage_value]" value="yes">
@@ -178,7 +186,7 @@
                                             </td>
                                             
                                             
-                                        </tr>
+                                        </tr>-->
                                     </tbody>
                                 </table>
                                 <table>

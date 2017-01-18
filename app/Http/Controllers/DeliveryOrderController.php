@@ -605,8 +605,11 @@ class DeliveryOrderController extends Controller {
         }
 
         $delivery_order_details->save();
-
-        $total_product_count = count($input_data['product']);
+        if(isset($input_data['product']))
+            $total_product_count = count($input_data['product']);
+        else
+            $total_product_count = 0;
+            
         $total_vat_items = 0;
         $total_vat_price = 0;
         $total_without_vat_items = 0;

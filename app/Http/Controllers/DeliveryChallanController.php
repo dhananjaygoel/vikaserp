@@ -282,6 +282,11 @@ class DeliveryChallanController extends Controller {
         $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order')
 //                ->where('challan_status', '=', 'pending')
                 ->find($id);
+        
+        if (count($allorder) < 1) {
+            return redirect('delivery_challan')->with('validation_message', 'Inavalid delivery challan.');
+        }
+        
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         return view('edit_delivery_challan', compact('allorder', 'price_delivery_order', 'units', 'delivery_locations'));
