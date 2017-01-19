@@ -28,6 +28,7 @@ use DateTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App;
 
 class HomeController extends Controller {
     /*
@@ -46,6 +47,13 @@ class HomeController extends Controller {
      */
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
+        define('PROFILE_ID', \Config::get('smsdata.profile_id'));
+        define('PASS', \Config::get('smsdata.password'));
+        define('SENDER_ID', \Config::get('smsdata.sender_id'));
+        define('SMS_URL', \Config::get('smsdata.url'));
+        define('SEND_SMS', \Config::get('smsdata.send'));
+        $this->middleware('validIP');
+   
     }
 
     /**
@@ -3318,5 +3326,152 @@ class HomeController extends Controller {
         passthru($cmd);
         exit(0);
     }
+    
+    
+    
+    /**
+     * This function send a sms
+     */
+    public function test_sms() {
+     
+        $customer_id = 1648;
+      
+            $customer = Customer::with('manager')->find($customer_id);
+           
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nyour inq. has been logged for foll. ";
+               
+
+                $str .= " prices and avlblty will be qtd shortly \nVIKAS ASSOCIATES";
+                if (App::environment('development')) {
+                    $phone_number = \Config::get('smsdata.send_sms_to');
+//                    $phone_number = '89883370270';
+                } else {
+                    $phone_number = '02069701155';
+                }
+                
+               
+                
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+//                 echo "<pre>";
+//                print_r( $url);
+//                echo "</pre>";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+
+            $message = "Text messgae has been send";
+       
+         return json_encode($message);  
+    }
+    
+    
+    
+    
+    function appsyncinquiry_sms(){
+         $data = Input::all();
+        
+         $inq = Inquiry::with('customer','inquiry_products')->find(129);
+//         
+        
+        if (Input::has('inquiry') && Input::has('customer') && Input::has('inquiry_product') && Input::has('sendsms') ) {
+            $inquiries = (json_decode($data['inquiry']));
+            $customers = (json_decode($data['customer']));
+            $inquiryproduct = (json_decode($data['inquiry_product']));
+       
+//   
+         
+         //$server_id = json_decode($input['sendsms']);
+        
+         
+          $customer_id = $customers[0]->id; 
+              
+        if (Input::has('sendsms')) {
+          
+         
+            $customer = Customer::with('manager')->find($customer_id);
+            
+            
+            if (count($customer) > 0) {
+       
+                
+                $total_quantity = '';
+                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nyour inq. has been logged for foll. ";
+                foreach ($inquiryproduct as $product_data) {
+                     $product_details = InquiryProducts::with('inquiry_product_details')->find($product_data->id);
+                   
+                     
+                    if (isset($product_details['inquiry_product_details']->alias_name) ) {
+                        $product_size = ProductSubCategory::find($product_data->id);
+                      
+                       
+                        $str .= $product_details['inquiry_product_details']->alias_name.'- ' . $product_data->quantity . ', ';
+                        if ($product_data->unit_id == 1) {
+                            $total_quantity = $total_quantity + $product_data->quantity;
+                        }
+                        if ($product_data->unit_id == 2) {
+                            $total_quantity = $total_quantity + $product_data->quantity * $product_size->weight;
+                        }
+                        if ($product_data->unit_id == 3) {
+                            $total_quantity = $total_quantity + ($product_data->quantity / $product_size->standard_length ) * $product_size->weight;
+                        }
+                    }
+                }
+
+                $str .= " prices and avlblty will be qtd shortly \nVIKAS ASSOCIATES";
+                if (App::environment('development')) {
+                    $phone_number = \Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
+
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+           
+            if (count($customer->manager) > 0) {
+                $str = "Dear '" . $customer->manager->first_name . "'\n has logged an enquiry for '" . $customer->owner_name . "', '" . round($total_quantity, 2) . "'. Kindly chk and qt. Vikas Associates";
+                if (App::environment('development')) {
+                    $phone_number = \Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer['manager']->mobile_number;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+        }
+        
+        return json_encode($str); 
+        
+        
+         }
+        
+        else
+        {
+           return json_encode("No msg send");  
+        }
+        
+    }
+    
+    
+    
 
 }

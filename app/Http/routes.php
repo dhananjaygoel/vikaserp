@@ -84,6 +84,8 @@ Route::get('app_customer_inquiry/{id}', 'HomeController@customerInquiry');
 Route::get('app_customer_orders/{id}', 'HomeController@customerOrders');
 Route::get('appprintdeliveryorder', 'HomeController@appprintdeliveryorder');
 Route::get('appprintdeliverychallan', 'HomeController@appprintdeliverychallan');
+Route::post('test_sms', 'HomeController@test_sms');
+Route::post('appsyncinquiry_sms', 'HomeController@appsyncinquiry_sms');
 Route::get('getinfo', 'PasswordController@getinfo');
 /* All customer app routes ends here */
 /*
