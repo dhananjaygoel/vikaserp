@@ -22,7 +22,7 @@ return [
     
       'send_sms_to' => '9975003940', //testing api on 19-01-17
       'send_sms_to' => '9429786848', //testing api on 19-01-17
-      'send_sms_to' => '912069701155', //testing api on 19-01-17
+      'send_sms_to' => '+912069701155', //testing api on 19-01-17
     'emailData' => array(
 //        'email' => 'deepakw@agstechnologies.com', 'abhimanipal@gmail.com',
         'email' => 'abhimanipal@gmail.com',
