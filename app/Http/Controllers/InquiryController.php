@@ -249,7 +249,11 @@ class InquiryController extends Controller {
                 } else {
                     $phone_number = $customer->phone_number1;
                 }
-
+                
+                echo "<pre>";
+                print_r($phone_number);
+                echo "</pre>";
+                exit;
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
                 if (SEND_SMS === true) {

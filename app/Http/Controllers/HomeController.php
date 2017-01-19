@@ -53,7 +53,6 @@ class HomeController extends Controller {
         define('SMS_URL', \Config::get('smsdata.url'));
         define('SEND_SMS', \Config::get('smsdata.send'));
         $this->middleware('validIP');
-   
     }
 
     /**
@@ -265,45 +264,43 @@ class HomeController extends Controller {
         $order_details = Order::find($id);
         return json_encode($order_details->order_status);
     }
-    
-     /**
+
+    /**
      * App track order for customer app
      */
     public function trackOrderStatus() {
         $input_data = Input::all();
-        if(isset($input_data['order_id'])){
+        if (isset($input_data['order_id'])) {
             $order_info = (json_decode($input_data['order_id']));
-            if(isset($order_info[0])){
-              $order_id=$order_info[0]->order_id;  
-            }                
-            else
-                $order_id=0;
+            if (isset($order_info[0])) {
+                $order_id = $order_info[0]->order_id;
+            } else
+                $order_id = 0;
         }
-        else{
+        else {
             return json_encode(array('result' => false, 'track_order_status' => false, 'message' => 'Order not found'));
         }
-        
-        
-        if(isset($input_data['customer_id'])){
+
+
+        if (isset($input_data['customer_id'])) {
             $customer_info = (json_decode($input_data['customer_id']));
-            if(isset($customer_info[0]))
-                $customer_id=$customer_info[0]->customer_id;
+            if (isset($customer_info[0]))
+                $customer_id = $customer_info[0]->customer_id;
             else
-                $customer_id =0;
+                $customer_id = 0;
         }
-        $order_status_responase=array();
-        if(isset($order_id) && $order_id> 0 && isset($customer_id) && $customer_id >0){
-            
-            $order_status_responase['order_details'] = Order::with('all_order_products')->where('id','=',$order_id)->where('customer_id','=',$customer_id)->get();
-           
-            $order_status_responase['delivery_order_details'] = DeliveryOrder::with('delivery_product')->where('order_id','=',$order_id)->where('customer_id','=',$customer_id)->get();
-           
-            $order_status_responase['delivery_challan_details'] = DeliveryChallan::with('delivery_challan_products')->where('order_id','=',$order_id)->where('customer_id','=',$customer_id)->get();
-        }
-        else{
+        $order_status_responase = array();
+        if (isset($order_id) && $order_id > 0 && isset($customer_id) && $customer_id > 0) {
+
+            $order_status_responase['order_details'] = Order::with('all_order_products')->where('id', '=', $order_id)->where('customer_id', '=', $customer_id)->get();
+
+            $order_status_responase['delivery_order_details'] = DeliveryOrder::with('delivery_product')->where('order_id', '=', $order_id)->where('customer_id', '=', $customer_id)->get();
+
+            $order_status_responase['delivery_challan_details'] = DeliveryChallan::with('delivery_challan_products')->where('order_id', '=', $order_id)->where('customer_id', '=', $customer_id)->get();
+        } else {
             return json_encode(array('result' => false, 'track_order_status' => false, 'message' => 'Order not found'));
         }
-        
+
         return json_encode($order_status_responase);
     }
 
@@ -342,26 +339,25 @@ class HomeController extends Controller {
         $customer_details = Customer::with('deliverylocation', 'customerproduct', 'manager')->find($id);
         return json_encode($customer_details);
     }
-    
-     /**
+
+    /**
      * App customer status
      */
     public function customerStatus() {
 
-         $input_data = Input::all();
-         $customer_id = (json_decode($input_data['customer_id']));
-         if(isset($customer_id[0])){
-             $id = $customer_id[0]->customer_id;
-             $customer_details = Customer::with('deliverylocation', 'customerproduct', 'manager')->find($id);
-             if(!isset($customer_details))             {
-                  return json_encode(array('result' => false, 'mobile_status' => false, 'message' => 'User not found'));
-             }
-         }
-         else{
-              return json_encode(array('result' => false, 'mobile_status' => false, 'message' => 'User not found'));
-         }
-         return json_encode($customer_details);
-       // $customer_details = Customer::with('deliverylocation', 'customerproduct', 'manager')->find($id);
+        $input_data = Input::all();
+        $customer_id = (json_decode($input_data['customer_id']));
+        if (isset($customer_id[0])) {
+            $id = $customer_id[0]->customer_id;
+            $customer_details = Customer::with('deliverylocation', 'customerproduct', 'manager')->find($id);
+            if (!isset($customer_details)) {
+                return json_encode(array('result' => false, 'mobile_status' => false, 'message' => 'User not found'));
+            }
+        } else {
+            return json_encode(array('result' => false, 'mobile_status' => false, 'message' => 'User not found'));
+        }
+        return json_encode($customer_details);
+        // $customer_details = Customer::with('deliverylocation', 'customerproduct', 'manager')->find($id);
         //$input_data = Input::all(); return json_encode($customer_details);
     }
 
@@ -611,35 +607,35 @@ class HomeController extends Controller {
         if (!isset($customer->id)) {
             return json_encode(array('result' => false, 'message' => 'Customer not found'));
         }
-        if (Input::has('mobile') ) {
+        if (Input::has('mobile')) {
             $mobile = Input::get('mobile');
-            if(!empty( $mobile)){
-                 if ($customer->phone_number1 != Input::get('mobile'))
-                return json_encode(array('result' => false, 'message' => 'Username does not match'));
-            }           
+            if (!empty($mobile)) {
+                if ($customer->phone_number1 != Input::get('mobile'))
+                    return json_encode(array('result' => false, 'message' => 'Username does not match'));
+            }
         }
-        if (Input::has('customer_name') && Input::get('customer_name')!="")
+        if (Input::has('customer_name') && Input::get('customer_name') != "")
             $customer->owner_name = Input::get('customer_name');
-        if (Input::has('contact_person') && Input::get('contact_person')!="")
+        if (Input::has('contact_person') && Input::get('contact_person') != "")
             $customer->contact_person = Input::get('contact_person');
         $customer->address1 = (Input::has('address1') && Input::get('address1')) ? Input::get('address1') : '';
-        if (Input::has('mobile') && Input::get('mobile')!="")
+        if (Input::has('mobile') && Input::get('mobile') != "")
             $customer->phone_number1 = Input::get('mobile');
-        if (Input::has('password') && Input::get('password')!="")
+        if (Input::has('password') && Input::get('password') != "")
             $customer->password = Hash::make(Input::get('password'));
         $customer->customer_status = 'pending';
-        $customer->company_name = (Input::has('company_name') && Input::get('company_name')!="") ? Input::get('company_name') : '';
-        $customer->address2 = (Input::has('address2') && Input::get('address2')!="") ? Input::get('address2') : '';
-        $customer->city = (Input::has('city') && Input::get('city')!="") ? Input::get('city') : '';
-        $customer->state = (Input::has('state') && Input::get('state')!="") ? Input::get('state') : '';
-        $customer->zip = (Input::has('zip') && Input::get('zip')!="") ? Input::get('zip') : '';
-        $customer->email = (Input::has('email') && Input::get('email')!="") ? Input::get('email') : '';
-        $customer->tally_name = (Input::has('tally_name') && Input::get('tally_name')!="") ? Input::get('tally_name') : '';
-        $customer->phone_number2 = (Input::has('phone_number2') && Input::get('phone_number2')!="") ? Input::get('phone_number2') : '';
-        $customer->username = (Input::has('username') && Input::get('username')!="") ? Input::get('username') : '';
-        $customer->credit_period = (Input::has('credit_period') && Input::get('credit_period')!="") ? Input::get('credit_period') : 0;
-        $customer->relationship_manager = (Input::has('relationship_manager') && Input::get('delivery_location_id')!="") ? Input::get('relationship_manager') : '';
-        $customer->delivery_location_id = (Input::has('delivery_location_id') && Input::get('delivery_location_id')!="") ? Input::get('delivery_location_id') : '';
+        $customer->company_name = (Input::has('company_name') && Input::get('company_name') != "") ? Input::get('company_name') : '';
+        $customer->address2 = (Input::has('address2') && Input::get('address2') != "") ? Input::get('address2') : '';
+        $customer->city = (Input::has('city') && Input::get('city') != "") ? Input::get('city') : '';
+        $customer->state = (Input::has('state') && Input::get('state') != "") ? Input::get('state') : '';
+        $customer->zip = (Input::has('zip') && Input::get('zip') != "") ? Input::get('zip') : '';
+        $customer->email = (Input::has('email') && Input::get('email') != "") ? Input::get('email') : '';
+        $customer->tally_name = (Input::has('tally_name') && Input::get('tally_name') != "") ? Input::get('tally_name') : '';
+        $customer->phone_number2 = (Input::has('phone_number2') && Input::get('phone_number2') != "") ? Input::get('phone_number2') : '';
+        $customer->username = (Input::has('username') && Input::get('username') != "") ? Input::get('username') : '';
+        $customer->credit_period = (Input::has('credit_period') && Input::get('credit_period') != "") ? Input::get('credit_period') : 0;
+        $customer->relationship_manager = (Input::has('relationship_manager') && Input::get('delivery_location_id') != "") ? Input::get('relationship_manager') : '';
+        $customer->delivery_location_id = (Input::has('delivery_location_id') && Input::get('delivery_location_id') != "") ? Input::get('delivery_location_id') : '';
         if ($customer->save())
             return json_encode(array('result' => true, 'customer_id' => $customer->id, 'message' => 'Customer details updated successfully'));
         else
@@ -1094,7 +1090,7 @@ class HomeController extends Controller {
             foreach ($deliverychallanproducts as $product_data) {
                 if ($product_data->delivery_challan_id == $value->id) {
                     $delivery_challan_products = [
-                        'app_product_id'=>$product_data->id,
+                        'app_product_id' => $product_data->id,
                         'order_id' => $delivery_challan_id,
                         'order_type' => 'delivery_challan',
                         'product_category_id' => $product_data->product_category_id,
@@ -1154,7 +1150,7 @@ class HomeController extends Controller {
         if (Input::has('delivery_order_product')) {
             $deliveryorderproducts = (json_decode($data['delivery_order_product']));
         }
-        
+
         if (Input::has('delivery_order_sync_date') && Input::get('delivery_order_sync_date') != '') {
             $last_sync_date = Input::get('delivery_order_sync_date');
             $delivery_order_server = DeliveryOrder::where('created_at', '>', $last_sync_date)->with('delivery_product')->get();
@@ -1188,7 +1184,7 @@ class HomeController extends Controller {
                 $delivery_order->created_by = 1;
 //                $delivery_order->vat_percentage = ($value->vatPercentage > 0 ) ? $value->vatPercentage : '';
                 $delivery_order->estimate_price = 0;
-                $delivery_order->vat_percentage =$value->vat_percentage;
+                $delivery_order->vat_percentage = $value->vat_percentage;
                 $delivery_order->expected_delivery_date = date_format(date_create(date("Y-m-d")), 'Y-m-d');
                 $delivery_order->remarks = $value->remarks;
                 $delivery_order->vehicle_number = ($value->vehicle_number != '') ? $value->vehicle_number : '';
@@ -1205,29 +1201,28 @@ class HomeController extends Controller {
                 $delivery_order_id = $delivery_order->id;
                 $delivery_order_products = array();
                 foreach ($deliveryorderproducts as $product_data) {
-                    $product = AllOrderProducts::where('order_id','=',$value->server_order_id)
-                            ->where('order_type','=','order')
-                            ->where('product_category_id','=',$product_data->product_category_id)
+                    $product = AllOrderProducts::where('order_id', '=', $value->server_order_id)
+                            ->where('order_type', '=', 'order')
+                            ->where('product_category_id', '=', $product_data->product_category_id)
                             ->select('id')
                             ->get();
-                    
-                   
-                    if(isset($product[0])){
+
+
+                    if (isset($product[0])) {
                         $product_id = $product[0]->id;
+                    } else {
+                        $product_id = 0;
                     }
-                    else{
-                         $product_id =0;
-                    }
-                    
+
                     if ($product_data->delivery_order_id == $value->id) {
                         $delivery_order_products = [
-                            'app_product_id'=>$product_data->id,
+                            'app_product_id' => $product_data->id,
                             'order_id' => $delivery_order_id,
                             'order_type' => 'delivery_order',
                             'product_category_id' => $product_data->product_category_id,
                             'unit_id' => $product_data->unit_id,
                             'from' => $value->server_order_id,
-                            'parent'=>$product_id,
+                            'parent' => $product_id,
                             'quantity' => $product_data->present_shipping,
                             'present_shipping' => $product_data->present_shipping,
                             'price' => $product_data->actualPrice,
@@ -1269,27 +1264,26 @@ class HomeController extends Controller {
                 $delivery_order_products = array();
                 AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $delivery_order->id)->delete();
                 foreach ($deliveryorderproducts as $product_data) {
-                     $product = AllOrderProducts::where('order_id','=',$value->server_order_id)
-                            ->where('order_type','=','order')
-                            ->where('product_category_id','=',$product_data->product_category_id)
+                    $product = AllOrderProducts::where('order_id', '=', $value->server_order_id)
+                            ->where('order_type', '=', 'order')
+                            ->where('product_category_id', '=', $product_data->product_category_id)
                             ->select('id')
                             ->get();
-                    if(isset($product[0])){
+                    if (isset($product[0])) {
                         $product_id = $product[0]->id;
+                    } else {
+                        $product_id = 0;
                     }
-                    else{
-                         $product_id =0;
-                    }
-                    
+
                     if ($product_data->delivery_order_id == $value->id) {
                         $delivery_order_products = [
-                            'app_product_id'=>$product_data->id,
+                            'app_product_id' => $product_data->id,
                             'order_id' => $delivery_order_id,
                             'order_type' => 'delivery_order',
                             'product_category_id' => $product_data->product_category_id,
                             'unit_id' => $product_data->unit_id,
                             'from' => $value->server_order_id,
-                            'parent'=>$product_id,
+                            'parent' => $product_id,
                             'quantity' => $product_data->quantity,
                             'present_shipping' => $product_data->present_shipping,
                             'price' => $product_data->actualPrice,
@@ -1375,7 +1369,7 @@ class HomeController extends Controller {
                 $order = new Order();
                 $order->order_source = $order_status;
                 $order->supplier_id = $supplier_id;
-                if(isset($value->vat_percentage)){
+                if (isset($value->vat_percentage)) {
                     $order->vat_percentage = $value->vat_percentage;
                 }
                 $order->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
@@ -1402,7 +1396,7 @@ class HomeController extends Controller {
                 foreach ($orderproduct as $product_data) {
                     if ($product_data->order_id == $value->id) {
                         $order_products = [
-                            'app_product_id'=>$product_data->id,
+                            'app_product_id' => $product_data->id,
                             'order_id' => $order_id,
                             'order_type' => 'order',
                             'product_category_id' => $product_data->product_category_id,
@@ -1438,7 +1432,7 @@ class HomeController extends Controller {
                 $order->supplier_id = $supplier_id;
                 $order->remarks = ($value->remarks != '') ? $value->remarks : '';
                 $order->order_status = $value->order_status;
-                if(isset($value->vat_percentage)){
+                if (isset($value->vat_percentage)) {
                     $order->vat_percentage = $value->vat_percentage;
                 }
                 $order->flaged = ($value->flaged != '') ? $value->flaged : 0;
@@ -1457,7 +1451,7 @@ class HomeController extends Controller {
                     $order_products = array();
                     if ($product_data->order_id == $value->id) {
                         $order_products = [
-                            'app_product_id'=>$product_data->id,
+                            'app_product_id' => $product_data->id,
                             'order_id' => $value->server_id,
                             'product_category_id' => $product_data->product_category_id,
                             'unit_id' => $product_data->unit_id,
@@ -1490,185 +1484,184 @@ class HomeController extends Controller {
 
         return json_encode($order_response);
     }
-        
+
     /**
      * App sync order for customer app
      */
     public function appSyncOrder_customer() {
-         $data = Input::all();
-        $flag=0 ;
+        $data = Input::all();
+        $flag = 0;
         $order_response = [];
         $customer_list = [];
         if (Input::has('flag')) {
             $flag = (json_decode($data['flag']));
-            if($flag == 1){
+            if ($flag == 1) {
                 if (Input::has('customer_id')) {
                     $customer_id = (json_decode($data['customer_id']));
-        
-        if (Input::has('order')) {
-            $orders = (json_decode($data['order']));
-        }
-        if (Input::has('customer')) {
-            $customers = (json_decode($data['customer']));
-        }
-        if (Input::has('order_product')) {
-            $orderproduct = (json_decode($data['order_product']));
-        }
-        if (Input::has('order_sync_date') && Input::get('order_sync_date') != '') {
-            $last_sync_date = Input::get('order_sync_date');
-            $order_added_server = Order::where('created_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->with('all_order_products')->get();
-            $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
 
-            $order_updated_server = Order::where('updated_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->whereRaw('updated_at > created_at')->with('all_order_products')->get();
-            $order_response['order_server_updated'] = ($order_updated_server && count($order_updated_server) > 0) ? $order_updated_server : '';
-
-            /* Send Updated customers */
-            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->where('id', '=', $customer_id)->whereRaw('updated_at > created_at')->get();
-            $order_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
-            /* Send New customers */
-            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->where('id', '=', $customer_id)->get();
-            $order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
-        } else {
-            $order_added_server = Order::where('customer_id', '=', $customer_id)->with('all_order_products')->get();
-            $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
-        }
-
-        foreach ($orders as $key => $value) {
-            if ($value->server_id == 0) {
-                if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
-                    $add_customers = new Customer();
-                    $add_customers->addNewCustomer($value->customer_name, $value->customer_contact_person, $value->customer_mobile, $value->customer_credit_period);
-                    $customer_list[$value->id] = $add_customers->id;
-                }
-                if ($value->supplier_server_id == 0) {
-                    $order_status = 'warehouse';
-                    $supplier_id = 0;
-                } else {
-                    $other_location_difference;
-                    $order_status = 'supplier';
-                    $supplier_id = $value->supplier_server_id;
-                }
-                $order = new Order();
-                $order->order_source = $order_status;
-                $order->supplier_id = $supplier_id;
-                if(isset($value->vat_percentage)){
-                    $order->vat_percentage = $value->vat_percentage;
-                }
-                $order->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
-                $order->created_by = 1;
-//                $order->vat_percentage = ($value->vat_percentage == '') ? '' : $value->vat_percentage;
-                $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
-                $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
-                $datetime = new DateTime($date);
-                $order->expected_delivery_date = $datetime->format('Y-m-d');
-                $order->remarks = $value->remarks;
-                $order->flaged = ($value->flaged != '') ? $value->flaged : 0;
-                $order->order_status = $value->order_status;
-                if ($value->delivery_location_id > 0) {
-                    $order->delivery_location_id = $value->delivery_location_id;
-                    $order->location_difference = $value->location_difference;
-                } else {
-                    $order->delivery_location_id = 0;
-                    $order->other_location = $value->other_location;
-                    $order->location_difference = $value->other_location_difference;
-                }
-                $order->save();
-                $order_id = $order->id;
-                $order_products = array();
-                foreach ($orderproduct as $product_data) {
-                    if ($product_data->order_id == $value->id) {
-                        $order_products = [
-                            'app_product_id'=>$product_data->id,
-                            'order_id' => $order_id,
-                            'order_type' => 'order',
-                            'product_category_id' => $product_data->product_category_id,
-                            'unit_id' => $product_data->unit_id,
-                            'quantity' => $product_data->quantity,
-                            'price' => $product_data->price,
-                            'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
-                            'remarks' => '',
-                        ];
-                        AllOrderProducts::create($order_products);
+                    if (Input::has('order')) {
+                        $orders = (json_decode($data['order']));
                     }
-                }
-                $order_response[$value->id] = $order_id;
-            } else {
-                $order = Order::find($value->server_id);
-                if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
-                    $add_customers = new Customer();
-                    $add_customers->addNewCustomer($value->customer_name, $value->customer_contact_person, $value->customer_mobile, $value->customer_credit_period);
-                    $customer_list[$value->id] = $add_customers->id;
-                }
-                $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
-                $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
-                $datetime = new DateTime($date);
-//                $order->vat_percentage = ($value->vat_percentage == '') ? '' : $value->vat_percentage;
-                if ($value->supplier_server_id == 0) {
-                    $order_status = 'warehouse';
-                    $supplier_id = 0;
-                } else {
-                    $other_location_difference;
-                    $order_status = 'supplier';
-                    $supplier_id = $value->supplier_server_id;
-                }
-                $order->supplier_id = $supplier_id;
-                $order->remarks = ($value->remarks != '') ? $value->remarks : '';
-                $order->order_status = $value->order_status;
-                if(isset($value->vat_percentage)){
-                    $order->vat_percentage = $value->vat_percentage;
-                }
-                $order->flaged = ($value->flaged != '') ? $value->flaged : 0;
-                if ($value->delivery_location_id > 0) {
-                    $order->delivery_location_id = $value->delivery_location_id;
-                    $order->location_difference = $value->location_difference;
-                } else {
-                    $order->delivery_location_id = 0;
-                    $order->other_location = $value->other_location;
-                    $order->location_difference = $value->other_location_difference;
-                }
-                $order->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
-                $order->expected_delivery_date = $datetime->format('Y-m-d');
-                AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->delete();
-                foreach ($orderproduct as $product_data) {
-                    $order_products = array();
-                    if ($product_data->order_id == $value->id) {
-                        $order_products = [
-                            'app_product_id'=>$product_data->id,
-                            'order_id' => $value->server_id,
-                            'product_category_id' => $product_data->product_category_id,
-                            'unit_id' => $product_data->unit_id,
-                            'quantity' => $product_data->quantity,
-                            'price' => $product_data->price,
-                            'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
-                            'remarks' => '',
-                        ];
-                        AllOrderProducts::create($order_products);
+                    if (Input::has('customer')) {
+                        $customers = (json_decode($data['customer']));
                     }
+                    if (Input::has('order_product')) {
+                        $orderproduct = (json_decode($data['order_product']));
+                    }
+                    if (Input::has('order_sync_date') && Input::get('order_sync_date') != '') {
+                        $last_sync_date = Input::get('order_sync_date');
+                        $order_added_server = Order::where('created_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->with('all_order_products')->get();
+                        $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
+
+                        $order_updated_server = Order::where('updated_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->whereRaw('updated_at > created_at')->with('all_order_products')->get();
+                        $order_response['order_server_updated'] = ($order_updated_server && count($order_updated_server) > 0) ? $order_updated_server : '';
+
+                        /* Send Updated customers */
+                        $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->where('id', '=', $customer_id)->whereRaw('updated_at > created_at')->get();
+                        $order_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
+                        /* Send New customers */
+                        $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->where('id', '=', $customer_id)->get();
+                        $order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
+                    } else {
+                        $order_added_server = Order::where('customer_id', '=', $customer_id)->with('all_order_products')->get();
+                        $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
+                    }
+
+                    foreach ($orders as $key => $value) {
+                        if ($value->server_id == 0) {
+                            if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
+                                $add_customers = new Customer();
+                                $add_customers->addNewCustomer($value->customer_name, $value->customer_contact_person, $value->customer_mobile, $value->customer_credit_period);
+                                $customer_list[$value->id] = $add_customers->id;
+                            }
+                            if ($value->supplier_server_id == 0) {
+                                $order_status = 'warehouse';
+                                $supplier_id = 0;
+                            } else {
+                                $other_location_difference;
+                                $order_status = 'supplier';
+                                $supplier_id = $value->supplier_server_id;
+                            }
+                            $order = new Order();
+                            $order->order_source = $order_status;
+                            $order->supplier_id = $supplier_id;
+                            if (isset($value->vat_percentage)) {
+                                $order->vat_percentage = $value->vat_percentage;
+                            }
+                            $order->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
+                            $order->created_by = 1;
+//                $order->vat_percentage = ($value->vat_percentage == '') ? '' : $value->vat_percentage;
+                            $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
+                            $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+                            $datetime = new DateTime($date);
+                            $order->expected_delivery_date = $datetime->format('Y-m-d');
+                            $order->remarks = $value->remarks;
+                            $order->flaged = ($value->flaged != '') ? $value->flaged : 0;
+                            $order->order_status = $value->order_status;
+                            if ($value->delivery_location_id > 0) {
+                                $order->delivery_location_id = $value->delivery_location_id;
+                                $order->location_difference = $value->location_difference;
+                            } else {
+                                $order->delivery_location_id = 0;
+                                $order->other_location = $value->other_location;
+                                $order->location_difference = $value->other_location_difference;
+                            }
+                            $order->save();
+                            $order_id = $order->id;
+                            $order_products = array();
+                            foreach ($orderproduct as $product_data) {
+                                if ($product_data->order_id == $value->id) {
+                                    $order_products = [
+                                        'app_product_id' => $product_data->id,
+                                        'order_id' => $order_id,
+                                        'order_type' => 'order',
+                                        'product_category_id' => $product_data->product_category_id,
+                                        'unit_id' => $product_data->unit_id,
+                                        'quantity' => $product_data->quantity,
+                                        'price' => $product_data->price,
+                                        'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
+                                        'remarks' => '',
+                                    ];
+                                    AllOrderProducts::create($order_products);
+                                }
+                            }
+                            $order_response[$value->id] = $order_id;
+                        } else {
+                            $order = Order::find($value->server_id);
+                            if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
+                                $add_customers = new Customer();
+                                $add_customers->addNewCustomer($value->customer_name, $value->customer_contact_person, $value->customer_mobile, $value->customer_credit_period);
+                                $customer_list[$value->id] = $add_customers->id;
+                            }
+                            $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
+                            $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+                            $datetime = new DateTime($date);
+//                $order->vat_percentage = ($value->vat_percentage == '') ? '' : $value->vat_percentage;
+                            if ($value->supplier_server_id == 0) {
+                                $order_status = 'warehouse';
+                                $supplier_id = 0;
+                            } else {
+                                $other_location_difference;
+                                $order_status = 'supplier';
+                                $supplier_id = $value->supplier_server_id;
+                            }
+                            $order->supplier_id = $supplier_id;
+                            $order->remarks = ($value->remarks != '') ? $value->remarks : '';
+                            $order->order_status = $value->order_status;
+                            if (isset($value->vat_percentage)) {
+                                $order->vat_percentage = $value->vat_percentage;
+                            }
+                            $order->flaged = ($value->flaged != '') ? $value->flaged : 0;
+                            if ($value->delivery_location_id > 0) {
+                                $order->delivery_location_id = $value->delivery_location_id;
+                                $order->location_difference = $value->location_difference;
+                            } else {
+                                $order->delivery_location_id = 0;
+                                $order->other_location = $value->other_location;
+                                $order->location_difference = $value->other_location_difference;
+                            }
+                            $order->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
+                            $order->expected_delivery_date = $datetime->format('Y-m-d');
+                            AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->delete();
+                            foreach ($orderproduct as $product_data) {
+                                $order_products = array();
+                                if ($product_data->order_id == $value->id) {
+                                    $order_products = [
+                                        'app_product_id' => $product_data->id,
+                                        'order_id' => $value->server_id,
+                                        'product_category_id' => $product_data->product_category_id,
+                                        'unit_id' => $product_data->unit_id,
+                                        'quantity' => $product_data->quantity,
+                                        'price' => $product_data->price,
+                                        'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
+                                        'remarks' => '',
+                                    ];
+                                    AllOrderProducts::create($order_products);
+                                }
+                            }
+                            $order_prod = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $value->server_id)->first();
+                            $order->updated_at = $order_prod->updated_at;
+                            $order->save();
+                            $order_response[$value->server_id] = Order::find($value->server_id);
+                            $order_response[$value->server_id]['all_order_products'] = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->get();
+                        }
+                    }
+                    if (count($customer_list) > 0) {
+                        $order_response['customer_new'] = $customer_list;
+                    }
+                    if (Input::has('order_sync_date') && Input::get('order_sync_date') != '' && Input::get('order_sync_date') != NULL) {
+                        $order_response['order_deleted'] = Order::withTrashed()->where('deleted_at', '>=', Input::get('order_sync_date'))->select('id')->get();
+                    }
+                    $order_date = Order::select('updated_at')->where('customer_id', '=', $customer_id)->orderby('updated_at', 'DESC')->first();
+                    if (!empty($order_date))
+                        $order_response['latest_date'] = $order_date->updated_at->toDateTimeString();
+                    else
+                        $order_response['latest_date'] = "";
+
+                    return json_encode($order_response);
                 }
-                $order_prod = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $value->server_id)->first();
-                $order->updated_at = $order_prod->updated_at;
-                $order->save();
-                $order_response[$value->server_id] = Order::find($value->server_id);
-                $order_response[$value->server_id]['all_order_products'] = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->get();
             }
         }
-        if (count($customer_list) > 0) {
-            $order_response['customer_new'] = $customer_list;
-        }
-        if (Input::has('order_sync_date') && Input::get('order_sync_date') != '' && Input::get('order_sync_date') != NULL) {
-            $order_response['order_deleted'] = Order::withTrashed()->where('deleted_at', '>=', Input::get('order_sync_date'))->select('id')->get();
-        }
-        $order_date = Order::select('updated_at')->where('customer_id','=',$customer_id)->orderby('updated_at', 'DESC')->first();
-        if (!empty($order_date))
-            $order_response['latest_date'] = $order_date->updated_at->toDateTimeString();
-        else
-            $order_response['latest_date'] = "";
-
-        return json_encode($order_response);
-        
-         }                
-        }                
-      }
     }
 
     /**
@@ -1765,9 +1758,10 @@ class HomeController extends Controller {
                         $add_inquiry->customer_id = $customer_list[$value->id];
                     } else {
                         $add_inquiry->customer_id = $value->customer_server_id;
-                        if($value->customer_name=="" && $value->customer_contact_peron=="" && $value->customer_mobile="" && $value->customer_credit_period=""){
-                        $update_customers = Customer::find($value->customer_server_id);
-                        $update_customers->addNewCustomer($value->customer_name, $value->customer_contact_peron, $value->customer_mobile, $value->customer_credit_period);}
+                        if ($value->customer_name == "" && $value->customer_contact_peron == "" && $value->customer_mobile = "" && $value->customer_credit_period = "") {
+                            $update_customers = Customer::find($value->customer_server_id);
+                            $update_customers->addNewCustomer($value->customer_name, $value->customer_contact_peron, $value->customer_mobile, $value->customer_credit_period);
+                        }
                     }
                     $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
                     $add_inquiry->remarks = ($value->remarks != '') ? $value->remarks : '';
@@ -1777,7 +1771,7 @@ class HomeController extends Controller {
                         $inquiry_products = array();
                         if ($product_data->inquiry_id == $value->id) {
                             $inquiry_products = [
-                                'app_product_id'=> $product_data->id,
+                                'app_product_id' => $product_data->id,
                                 'inquiry_id' => $value->server_id,
                                 'product_category_id' => $product_data->inquiry_product_id,
                                 'unit_id' => $product_data->unit_id,
@@ -1832,7 +1826,7 @@ class HomeController extends Controller {
                         $inquiry_products = array();
                         if ($product_data->inquiry_id == $value->id) {
                             $inquiry_products = [
-                                'app_product_id'=>$product_data->id,
+                                'app_product_id' => $product_data->id,
                                 'inquiry_id' => $inquiry_id,
                                 'product_category_id' => $product_data->inquiry_product_id,
                                 'unit_id' => $product_data->unit_id,
@@ -1849,7 +1843,7 @@ class HomeController extends Controller {
             }
         }
 
-       
+
 
         if (count($customer_list) > 0) {
             $inquiry_response['customer_new'] = $customer_list;
@@ -1872,201 +1866,193 @@ class HomeController extends Controller {
 
 //        }
     }
-    
-    
-        /**
+
+    /**
      * customer App sync inquiries
      */
-
 //    public function appsyncinquiry($inquiryies = NULL, $inquiry_customers = NULL, $inquiryiesproduct = NULL) {
     public function appsyncinquiry_customer() {
 
         $data = Input::all();
-        
+
         if (Input::has('flag')) {
             $flag = (json_decode($data['flag']));
-            if($flag == 1){
+            if ($flag == 1) {
                 if (Input::has('customer_id')) {
                     $customer_id = (json_decode($data['customer_id']));
-                    
-        
-        
-        if (Input::has('inquiry')) {
-            $inquiries = (json_decode($data['inquiry']));
-        }
 
-        if (Input::has('customer')) {
-            $customers = (json_decode($data['customer']));
-        }
-    
-        if (Input::has('inquiry_product')) {
-            $inquiryproduct = (json_decode($data['inquiry_product']));
-        }
 
-        $inquiry_response = [];
-        $customer_list = [];
-        if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '' && Input::get('inquiry_sync_date') != NULL) {
-            $last_sync_date = Input::get('inquiry_sync_date');
-            $inquiry_added_server = Inquiry::where('created_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->with('inquiry_products')->get();
-            $inquiry_response['inquiry_server_added'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : array();
 
-            $inquiry_updated_server = Inquiry::where('updated_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->whereRaw('updated_at > created_at')->with('inquiry_products')->get();
-            $inquiry_response['inquiry_server_updated'] = ($inquiry_updated_server && count($inquiry_updated_server) > 0) ? $inquiry_updated_server : array();
-
-            /* Send Updated customers */
-            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->where('id', '=', $customer_id)->whereRaw('updated_at > created_at')->get();
-            $inquiry_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
-            /* Send New customers */
-            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->where('id', '=', $customer_id)->get();
-            $inquiry_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
-        } else {
-            $inquiry_added_server = Inquiry::where('customer_id', '=', $customer_id)->with('inquiry_products')->get();
-            $inquiry_response['inquiry_server_added'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : array();
-        }
-        if (isset($inquiries)) {
-            foreach ($inquiries as $key => $value) {
-                if ($value->server_id > 0) {
-                    $add_inquiry = Inquiry::find($value->server_id);
-                    if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
-                        $add_customers = new Customer();
-                        $add_customers->owner_name = $value->customer_name;
-                        $add_customers->contact_person = $value->customer_contact_peron;
-                        $add_customers->phone_number1 = $value->customer_mobile;
-                        $add_customers->credit_period = $value->customer_credit_period;
-                        $add_customers->customer_status = $value->customer_status;
-                        $add_customers->save();
-                        $customer_list[$value->id] = $add_customers->id;
+                    if (Input::has('inquiry')) {
+                        $inquiries = (json_decode($data['inquiry']));
                     }
-                   
-                    $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
-                    $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
-                    $datetime = new DateTime($date);
-                    $add_inquiry->vat_percentage = ($value->vat_percentage == "" || empty($value->vat_percentage)) ? 0 : $value->vat_percentage;
-                    if (($value->other_location == "") || empty($value->other_location)) {
-                        $add_inquiry->delivery_location_id = $value->delivery_location_id;
-                        $add_inquiry->location_difference = $value->location_difference;
+
+                    if (Input::has('customer')) {
+                        $customers = (json_decode($data['customer']));
+                    }
+
+                    if (Input::has('inquiry_product')) {
+                        $inquiryproduct = (json_decode($data['inquiry_product']));
+                    }
+
+                    $inquiry_response = [];
+                    $customer_list = [];
+                    if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '' && Input::get('inquiry_sync_date') != NULL) {
+                        $last_sync_date = Input::get('inquiry_sync_date');
+                        $inquiry_added_server = Inquiry::where('created_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->with('inquiry_products')->get();
+                        $inquiry_response['inquiry_server_added'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : array();
+
+                        $inquiry_updated_server = Inquiry::where('updated_at', '>', $last_sync_date)->where('customer_id', '=', $customer_id)->whereRaw('updated_at > created_at')->with('inquiry_products')->get();
+                        $inquiry_response['inquiry_server_updated'] = ($inquiry_updated_server && count($inquiry_updated_server) > 0) ? $inquiry_updated_server : array();
+
+                        /* Send Updated customers */
+                        $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->where('id', '=', $customer_id)->whereRaw('updated_at > created_at')->get();
+                        $inquiry_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
+                        /* Send New customers */
+                        $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->where('id', '=', $customer_id)->get();
+                        $inquiry_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
                     } else {
-                        $add_inquiry->delivery_location_id = 0;
-                        $add_inquiry->other_location = $value->other_location;
-                        $add_inquiry->location_difference = $value->location_difference;
+                        $inquiry_added_server = Inquiry::where('customer_id', '=', $customer_id)->with('inquiry_products')->get();
+                        $inquiry_response['inquiry_server_added'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : array();
                     }
-                    if (isset($customer_list[$value->id]) && $customer_list[$value->id] > 0) {
-                        $add_inquiry->customer_id = $customer_list[$value->id];
-                    } else {
-                        $add_inquiry->customer_id = $value->customer_server_id;
-                        if($value->customer_name=="" && $value->customer_contact_peron=="" && $value->customer_mobile="" && $value->customer_credit_period=""){
-                        $update_customers = Customer::find($value->customer_server_id);
-                        $update_customers->addNewCustomer($value->customer_name, $value->customer_contact_peron, $value->customer_mobile, $value->customer_credit_period);}
-                    }
-                    $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
-                    $add_inquiry->remarks = ($value->remarks != '') ? $value->remarks : '';
-                    $add_inquiry->inquiry_status = $value->inquiry_status;
-                    $delete_old_inquiry_products = InquiryProducts::where('inquiry_id', '=', $value->server_id)->delete();
-                    foreach ($inquiryproduct as $product_data) {
-                        $inquiry_products = array();
-                        if ($product_data->inquiry_id == $value->id) {
-                            $inquiry_products = [
-                                'app_product_id'=> $product_data->id,
-                                'inquiry_id' => $value->server_id,
-                                'product_category_id' => $product_data->inquiry_product_id,
-                                'unit_id' => $product_data->unit_id,
-                                'quantity' => $product_data->quantity,
-                                'price' => $product_data->price,
-                                'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
-                                'remarks' => '',
-                            ];
-                            $add_inquiry_products = InquiryProducts::create($inquiry_products);
+                    if (isset($inquiries)) {
+                        foreach ($inquiries as $key => $value) {
+                            if ($value->server_id > 0) {
+                                $add_inquiry = Inquiry::find($value->server_id);
+                                if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
+                                    $add_customers = new Customer();
+                                    $add_customers->owner_name = $value->customer_name;
+                                    $add_customers->contact_person = $value->customer_contact_peron;
+                                    $add_customers->phone_number1 = $value->customer_mobile;
+                                    $add_customers->credit_period = $value->customer_credit_period;
+                                    $add_customers->customer_status = $value->customer_status;
+                                    $add_customers->save();
+                                    $customer_list[$value->id] = $add_customers->id;
+                                }
+
+                                $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
+                                $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+                                $datetime = new DateTime($date);
+                                $add_inquiry->vat_percentage = ($value->vat_percentage == "" || empty($value->vat_percentage)) ? 0 : $value->vat_percentage;
+                                if (($value->other_location == "") || empty($value->other_location)) {
+                                    $add_inquiry->delivery_location_id = $value->delivery_location_id;
+                                    $add_inquiry->location_difference = $value->location_difference;
+                                } else {
+                                    $add_inquiry->delivery_location_id = 0;
+                                    $add_inquiry->other_location = $value->other_location;
+                                    $add_inquiry->location_difference = $value->location_difference;
+                                }
+                                if (isset($customer_list[$value->id]) && $customer_list[$value->id] > 0) {
+                                    $add_inquiry->customer_id = $customer_list[$value->id];
+                                } else {
+                                    $add_inquiry->customer_id = $value->customer_server_id;
+                                    if ($value->customer_name == "" && $value->customer_contact_peron == "" && $value->customer_mobile = "" && $value->customer_credit_period = "") {
+                                        $update_customers = Customer::find($value->customer_server_id);
+                                        $update_customers->addNewCustomer($value->customer_name, $value->customer_contact_peron, $value->customer_mobile, $value->customer_credit_period);
+                                    }
+                                }
+                                $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
+                                $add_inquiry->remarks = ($value->remarks != '') ? $value->remarks : '';
+                                $add_inquiry->inquiry_status = $value->inquiry_status;
+                                $delete_old_inquiry_products = InquiryProducts::where('inquiry_id', '=', $value->server_id)->delete();
+                                foreach ($inquiryproduct as $product_data) {
+                                    $inquiry_products = array();
+                                    if ($product_data->inquiry_id == $value->id) {
+                                        $inquiry_products = [
+                                            'app_product_id' => $product_data->id,
+                                            'inquiry_id' => $value->server_id,
+                                            'product_category_id' => $product_data->inquiry_product_id,
+                                            'unit_id' => $product_data->unit_id,
+                                            'quantity' => $product_data->quantity,
+                                            'price' => $product_data->price,
+                                            'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
+                                            'remarks' => '',
+                                        ];
+                                        $add_inquiry_products = InquiryProducts::create($inquiry_products);
+                                    }
+                                }
+                                $inquiry_products = InquiryProducts::where('inquiry_id', '=', $value->server_id)->first();
+                                $add_inquiry->updated_at = $inquiry_products->updated_at;
+                                $add_inquiry->save();
+                                $inquiry_response[$value->server_id] = Inquiry::find($value->server_id);
+                                $inquiry_response[$value->server_id]['inquiry_products'] = InquiryProducts::where('inquiry_id', '=', $value->server_id)->get();
+                            } else {
+
+                                if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
+                                    $add_customers = new Customer();
+                                    $add_customers->owner_name = $value->customer_name;
+                                    $add_customers->contact_person = $value->customer_contact_peron;
+                                    $add_customers->phone_number1 = $value->customer_mobile;
+                                    $add_customers->credit_period = $value->customer_credit_period;
+                                    $add_customers->customer_status = $value->customer_status;
+                                    $add_customers->save();
+                                    $customer_list[$value->id] = $add_customers->id;
+                                }
+                                $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
+                                $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+                                $datetime = new DateTime($date);
+                                $add_inquiry = new Inquiry();
+                                $add_inquiry->customer_id = (!empty($value->customer_server_id) && $value->customer_server_id > 0) ? $value->customer_server_id : $customer_list[$value->id];
+                                $add_inquiry->created_by = 1;
+                                if (($value->other_location == "") || empty($value->other_location)) {
+                                    $add_inquiry->delivery_location_id = $value->delivery_location_id;
+                                    $add_inquiry->location_difference = $value->location_difference;
+                                } else {
+                                    $add_inquiry->delivery_location_id = 0;
+                                    $add_inquiry->other_location = $value->other_location;
+                                    $add_inquiry->location_difference = $value->location_difference;
+                                }
+
+                                $add_inquiry->vat_percentage = ($value->vat_percentage != "") ? $value->vat_percentage : 0;
+                                $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
+                                $add_inquiry->remarks = ($value->remarks != '') ? $value->remarks : '';
+                                $add_inquiry->inquiry_status = $value->inquiry_status;
+                                $add_inquiry->save();
+                                $inquiry_id = $add_inquiry->id;
+                                $inquiry_products_track = 0;
+                                foreach ($inquiryproduct as $product_data) {
+                                    $inquiry_products = array();
+                                    if ($product_data->inquiry_id == $value->id) {
+                                        $inquiry_products = [
+                                            'app_product_id' => $product_data->id,
+                                            'inquiry_id' => $inquiry_id,
+                                            'product_category_id' => $product_data->inquiry_product_id,
+                                            'unit_id' => $product_data->unit_id,
+                                            'quantity' => $product_data->quantity,
+                                            'price' => $product_data->price,
+                                            'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
+                                            'remarks' => '',
+                                        ];
+                                        $add_inquiry_products = InquiryProducts::create($inquiry_products);
+                                    }
+                                }
+                                $inquiry_response[$value->id] = $inquiry_id;
+                            }
                         }
                     }
-                    $inquiry_products = InquiryProducts::where('inquiry_id', '=', $value->server_id)->first();
-                    $add_inquiry->updated_at = $inquiry_products->updated_at;
-                    $add_inquiry->save();
-                    $inquiry_response[$value->server_id] = Inquiry::find($value->server_id);
-                    $inquiry_response[$value->server_id]['inquiry_products'] = InquiryProducts::where('inquiry_id', '=', $value->server_id)->get();
-                } else {
 
-                    if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
-                        $add_customers = new Customer();
-                        $add_customers->owner_name = $value->customer_name;
-                        $add_customers->contact_person = $value->customer_contact_peron;
-                        $add_customers->phone_number1 = $value->customer_mobile;
-                        $add_customers->credit_period = $value->customer_credit_period;
-                        $add_customers->customer_status = $value->customer_status;
-                        $add_customers->save();
-                        $customer_list[$value->id] = $add_customers->id;
-                    }
-                    $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
-                    $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
-                    $datetime = new DateTime($date);
-                    $add_inquiry = new Inquiry();
-                    $add_inquiry->customer_id = (!empty($value->customer_server_id) && $value->customer_server_id > 0) ? $value->customer_server_id : $customer_list[$value->id];
-                    $add_inquiry->created_by = 1;
-                    if (($value->other_location == "") || empty($value->other_location)) {
-                        $add_inquiry->delivery_location_id = $value->delivery_location_id;
-                        $add_inquiry->location_difference = $value->location_difference;
-                    } else {
-                        $add_inquiry->delivery_location_id = 0;
-                        $add_inquiry->other_location = $value->other_location;
-                        $add_inquiry->location_difference = $value->location_difference;
-                    }
 
-                    $add_inquiry->vat_percentage = ($value->vat_percentage != "") ? $value->vat_percentage : 0;
-                    $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
-                    $add_inquiry->remarks = ($value->remarks != '') ? $value->remarks : '';
-                    $add_inquiry->inquiry_status = $value->inquiry_status;
-                    $add_inquiry->save();
-                    $inquiry_id = $add_inquiry->id;
-                    $inquiry_products_track = 0;
-                    foreach ($inquiryproduct as $product_data) {
-                        $inquiry_products = array();
-                        if ($product_data->inquiry_id == $value->id) {
-                            $inquiry_products = [
-                                'app_product_id'=>$product_data->id,
-                                'inquiry_id' => $inquiry_id,
-                                'product_category_id' => $product_data->inquiry_product_id,
-                                'unit_id' => $product_data->unit_id,
-                                'quantity' => $product_data->quantity,
-                                'price' => $product_data->price,
-                                'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
-                                'remarks' => '',
-                            ];
-                            $add_inquiry_products = InquiryProducts::create($inquiry_products);
-                        }
+
+                    if (count($customer_list) > 0) {
+                        $inquiry_response['customer_new'] = $customer_list;
                     }
-                    $inquiry_response[$value->id] = $inquiry_id;
+                    if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '' && Input::get('inquiry_sync_date') != NULL) {
+                        $inquiry_response['inquiry_deleted'] = Inquiry::withTrashed()->where('deleted_at', '>=', Input::get('inquiry_sync_date'))->select('id')->get();
+                    }
+                    $inquiry_date = Inquiry::select('updated_at')
+                                    ->where('customer_id', '=', $customer_id)
+                                    ->orderby('updated_at', 'DESC')->first();
+                    if (!empty($inquiry_date))
+                        $inquiry_response[
+                                'latest_date'] = $inquiry_date->updated_at->toDateTimeString();
+                    else
+                        $inquiry_response['latest_date'] = "";
+
+                    return json_encode($inquiry_response);
                 }
             }
         }
-
-       
-
-        if (count($customer_list) > 0) {
-            $inquiry_response['customer_new'] = $customer_list;
-        }
-        if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '' && Input::get('inquiry_sync_date') != NULL) {
-            $inquiry_response['inquiry_deleted'] = Inquiry::withTrashed()->where('deleted_at', '>=', Input::get('inquiry_sync_date'))->select('id')->get();
-        }
-        $inquiry_date = Inquiry::select('updated_at')
-                                ->where('customer_id','=',$customer_id)
-                                ->orderby('updated_at', 'DESC')->first();
-        if (!empty($inquiry_date))
-            $inquiry_response[
-                    'latest_date'] = $inquiry_date->updated_at->toDateTimeString();
-        else
-            $inquiry_response['latest_date'] = "";
-
-        return json_encode($inquiry_response);
-                      
-                }
-            }
-            
-        }
-        
-       
     }
-    
-    
-    
 
     /**
      * App sync and comare last sync dated and send updated date
@@ -2979,85 +2965,78 @@ class HomeController extends Controller {
 
         return json_encode($order_response);
     }
-    
+
     /**
      * App sync Generate Serial Number DO
      */
     public function appprintdeliveryorder() {
         $data = Input::all();
         $server_id = json_decode($data['delivery_order']);
-         
-        if(isset($server_id)){
-             $id = $server_id[0]->server_id;
+
+        if (isset($server_id)) {
+            $id = $server_id[0]->server_id;
             $DO = DeliveryOrder::select('serial_no')->find($id);
-            
-            if( $DO['serial_no']!=""){
+
+            if ($DO['serial_no'] != "") {
                 $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'unit', 'location')->find($id);
-            }else{
+            } else {
                 $current_date = date("m/d/");
-            $date_letter = 'DO/' . $current_date . "" . $id;
-            DeliveryOrder:: where('id', $id)->update(array('serial_no' => $date_letter));
-            $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'unit', 'location')->find($id);
+                $date_letter = 'DO/' . $current_date . "" . $id;
+                DeliveryOrder:: where('id', $id)->update(array('serial_no' => $date_letter));
+                $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'unit', 'location')->find($id);
             }
-            
-        }
-        else{
-             $delivery_data ="";
+        } else {
+            $delivery_data = "";
         }
         return json_encode($delivery_data);
     }
-    
-    
-     public function appprintdeliverychallan() {
-         $data = Input::all();
+
+    public function appprintdeliverychallan() {
+        $data = Input::all();
         $server_id = json_decode($data['delivery_challan']);
-        
-        
-        if($server_id[0]->server_id!=""){
+
+
+        if ($server_id[0]->server_id != "") {
             $id = $server_id[0]->server_id;
             $DC = DeliveryChallan::with('delivery_challan_products')->find($id);
             $update_delivery_challan = $DC;
             $vat_applicable = 0;
             $total_vat_amount = 0;
-           
-            if( $DC->serial_number!=""){
-                 $delivery_data = DeliveryChallan::where('id', '=', $id)
-                        ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
-            }
-            else
-            {
-                if(isset($DC->delivery_order_id)){
-                $delivery_order_id = $DC->delivery_order_id;
-                }
-                else{
-                    $delivery_order_id =0;
+
+            if ($DC->serial_number != "") {
+                $delivery_data = DeliveryChallan::where('id', '=', $id)
+                                ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
+            } else {
+                if (isset($DC->delivery_order_id)) {
+                    $delivery_order_id = $DC->delivery_order_id;
+                } else {
+                    $delivery_order_id = 0;
                 }
 
-                if($delivery_order_id !=0){
-                    $DO = DeliveryOrder::where('id','=',$delivery_order_id)->get();
+                if ($delivery_order_id != 0) {
+                    $DO = DeliveryOrder::where('id', '=', $delivery_order_id)->get();
                     $serial_number_delivery_order = $DO[0]['serial_no'];
-                }
-                else{
-                    $serial_number_delivery_order =0;
+                } else {
+                    $serial_number_delivery_order = 0;
                 }
                 $current_date = date("m/d/");
 
                 if (isset($update_delivery_challan->delivery_challan_products) && count($update_delivery_challan->delivery_challan_products) > 0) {
                     foreach ($update_delivery_challan->delivery_challan_products as $key => $delivery_challan_products) {
-                    if ($delivery_challan_products->vat_percentage > 0) {
-                        $vat_applicable = 1;
-                        if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
-                            $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
+                        if ($delivery_challan_products->vat_percentage > 0) {
+                            $vat_applicable = 1;
+                            if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
+                                $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
+                            }
                         }
                     }
-                    }
                 }
-                if($update_delivery_challan->ref_delivery_challan_id  ==0){
+                if ($update_delivery_challan->ref_delivery_challan_id == 0) {
                     $modified_id = $id;
-                }else{
+                } else {
                     $modified_id = $update_delivery_challan->ref_delivery_challan_id;
                 }
-                $date_letter = 'DC/' . $current_date . $modified_id . (($vat_applicable > 0) ? "P" : "A");   
+                $date_letter = 'DC/' . $current_date . $modified_id . (($vat_applicable > 0) ? "P" : "A");
 
 
                 $update_delivery_challan->serial_number = $date_letter;
@@ -3067,41 +3046,35 @@ class HomeController extends Controller {
                 $delivery_challan_obj->checkpending_quantity();
                 $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
                                 ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
-        //        $calculated_vat_value = $allorder->grand_price * ($allorder->vat_percentage / 100);
-        //        $allorder['calculated_vat_price'] = $calculated_vat_value;
+                //        $calculated_vat_value = $allorder->grand_price * ($allorder->vat_percentage / 100);
+                //        $allorder['calculated_vat_price'] = $calculated_vat_value;
                 $number = $allorder->grand_price;
                 $exploded_value = explode(".", $number);
 
-                if(!isset($exploded_value[1]))
-                {
+                if (!isset($exploded_value[1])) {
                     $number = number_format($number, 2, '.', '');
                     $allorder->grand_price = $number;
                     $allorder->save();
                     $exploded_value = explode(".", $number);
-                }        
+                }
 
                 $result_paisa = $exploded_value[1] % 10;
                 if (isset($exploded_value[1]) && strlen($exploded_value[1]) > 1 && $result_paisa != 0) {
                     $convert_value = $delivery_challan_obj->convert_number_to_words($allorder->grand_price);
-            } else {
-                $convert_value = $delivery_challan_obj->convert_number($allorder->grand_price);
-            }
-            $allorder['convert_value'] = $convert_value;
-
-               $delivery_data = DeliveryChallan::where('id', '=', $id)
-                            ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
+                } else {
+                    $convert_value = $delivery_challan_obj->convert_number($allorder->grand_price);
                 }
-            
-            
+                $allorder['convert_value'] = $convert_value;
+
+                $delivery_data = DeliveryChallan::where('id', '=', $id)
+                                ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
+            }
+        } else {
+            $delivery_data = "";
         }
-        else{
-             $delivery_data ="";
-        }
-        
-       return json_encode($delivery_data);  
-        
-     
-     }
+
+        return json_encode($delivery_data);
+    }
 
 // All Functions added by user 157 for app ends here //
 
@@ -3326,151 +3299,130 @@ class HomeController extends Controller {
         passthru($cmd);
         exit(0);
     }
-    
-    
-    
+
     /**
      * This function send a sms
      */
     public function test_sms() {
-     
+
         $customer_id = 1648;
-      
-            $customer = Customer::with('manager')->find($customer_id);
-           
-            if (count($customer) > 0) {
-                $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nyour inq. has been logged for foll. ";
-               
 
-                $str .= " prices and avlblty will be qtd shortly \nVIKAS ASSOCIATES";
-                if (App::environment('development')) {
-                    $phone_number = \Config::get('smsdata.send_sms_to');
+        $customer = Customer::with('manager')->find($customer_id);
 
-                } else {
-                    $phone_number = '9102069701155';
-                }
-                
-               
-                
-                $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+        if (count($customer) > 0) {
+            $total_quantity = '';
+            $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nyour inq. has been logged for foll. ";
+
+
+            $str .= " prices and avlblty will be qtd shortly \nVIKAS ASSOCIATES";
+            if (App::environment('development')) {
+                $phone_number = \Config::get('smsdata.send_sms_to');
+            } else {
+                $phone_number = '9102069701155';
+            }
+
+
+
+            $msg = urlencode($str);
+            $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
 //                 echo "<pre>";
 //                print_r( $url);
 //                echo "</pre>";
-                if (SEND_SMS === true) {                   
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
-                }
+            if (SEND_SMS === true) {
+                $ch = curl_init($url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $curl_scraped_page = curl_exec($ch);
+                curl_close($ch);
             }
+        }
 
-            $result = "Text messgae  send to $phone_number - $curl_scraped_page";
-         return json_encode($result);  
-    } 
-    
-    
-    
-    
-    function appsyncinquiry_sms(){
-         $data = Input::all();
-        
-         $inq = Inquiry::with('customer','inquiry_products')->find(129);
-//         
-        
-        if (Input::has('inquiry') && Input::has('customer') && Input::has('inquiry_product') && Input::has('sendsms') ) {
+        $result = "Text messgae  send to $phone_number - $curl_scraped_page";
+        return json_encode($result);
+    }
+
+    function appsyncinquiry_sms() {
+        $data = Input::all();
+
+
+        if (Input::has('inquiry') && Input::has('customer') && Input::has('inquiry_product') && Input::has('sendsms') && Input::has('user')) {
             $inquiries = (json_decode($data['inquiry']));
             $customers = (json_decode($data['customer']));
             $inquiryproduct = (json_decode($data['inquiry_product']));
-       
-//   
-         
-         //$server_id = json_decode($input['sendsms']);
-        
-         
-          $customer_id = $customers[0]->id; 
-              
-        if (Input::has('sendsms')) {
-          
-         
-            $customer = Customer::with('manager')->find($customer_id);
-            
-            
-            if (count($customer) > 0) {
-       
-                
-                $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nyour inq. has been logged for foll. ";
-                foreach ($inquiryproduct as $product_data) {
-                     $product_details = InquiryProducts::with('inquiry_product_details')->find($product_data->id);
-                   
-                     
-                    if (isset($product_details['inquiry_product_details']->alias_name) ) {
-                        $product_size = ProductSubCategory::find($product_data->id);
-                      
-                       
-                        $str .= $product_details['inquiry_product_details']->alias_name.'- ' . $product_data->quantity . ', ';
-                        if ($product_data->unit_id == 1) {
-                            $total_quantity = $total_quantity + $product_data->quantity;
+            $user = (json_decode($data['user']));
+
+
+            $customer_id = $customers[0]->id;
+
+            if (Input::has('sendsms')) {
+
+
+                $customer = Customer::with('manager')->find($customer_id);
+
+
+                if (count($customer) > 0) {
+
+
+                    $total_quantity = '';
+                    $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nyour inq. has been logged for foll. ";
+                    foreach ($inquiryproduct as $product_data) {
+                        $product_details = InquiryProducts::with('inquiry_product_details')->find($product_data->id);
+
+
+                        if (isset($product_details['inquiry_product_details']->alias_name)) {
+                            $product_size = ProductSubCategory::find($product_data->id);
+
+
+                            $str .= $product_details['inquiry_product_details']->alias_name . '- ' . $product_data->quantity . ', ';
+                            if ($product_data->unit_id == 1) {
+                                $total_quantity = $total_quantity + $product_data->quantity;
+                            }
+                            if ($product_data->unit_id == 2) {
+                                $total_quantity = $total_quantity + $product_data->quantity * $product_size->weight;
+                            }
+                            if ($product_data->unit_id == 3) {
+                                $total_quantity = $total_quantity + ($product_data->quantity / $product_size->standard_length ) * $product_size->weight;
+                            }
                         }
-                        if ($product_data->unit_id == 2) {
-                            $total_quantity = $total_quantity + $product_data->quantity * $product_size->weight;
-                        }
-                        if ($product_data->unit_id == 3) {
-                            $total_quantity = $total_quantity + ($product_data->quantity / $product_size->standard_length ) * $product_size->weight;
-                        }
+                    }
+
+                    $str .= " prices and avlblty will be qtd shortly \nVIKAS ASSOCIATES";
+                    if (App::environment('development')) {
+                        $phone_number = \Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer->phone_number1;
+                    }
+
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
                     }
                 }
 
-                $str .= " prices and avlblty will be qtd shortly \nVIKAS ASSOCIATES";
-                if (App::environment('development')) {
-                    $phone_number = \Config::get('smsdata.send_sms_to');
-                } else {
-                    $phone_number = $customer->phone_number1;
-                }
-
-                $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
-                }
-            }
-           
-            if (count($customer->manager) > 0) {
-                $str = "Dear '" . $customer->manager->first_name . "'\n has logged an enquiry for '" . $customer->owner_name . "', '" . round($total_quantity, 2) . "'. Kindly chk and qt. Vikas Associates";
-                if (App::environment('development')) {
-                    $phone_number = \Config::get('smsdata.send_sms_to');
-                } else {
-                    $phone_number = $customer['manager']->mobile_number;
-                }
-                $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
+                if (count($customer->manager) > 0) {
+                    $str = "Dear '" . $customer->manager->first_name . "'\n'" . $user[0]->first_name . "' has logged an enquiry for '" . $customer->owner_name . "', '" . round($total_quantity, 2) . "'. Kindly chk and qt. Vikas Associates";
+                    if (App::environment('development')) {
+                        $phone_number = \Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer['manager']->mobile_number;
+                    }
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
                 }
             }
+            return json_encode($str);
+        } else {
+            return json_encode("No msg send");
         }
-        
-        return json_encode($str); 
-        
-        
-         }
-        
-        else
-        {
-           return json_encode("No msg send");  
-        }
-        
     }
-    
-    
-    
 
 }
