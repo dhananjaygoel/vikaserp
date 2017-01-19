@@ -3366,8 +3366,7 @@ class HomeController extends Controller {
 //                }
             }
 
-            $phone_number = "$phone_number Text messgae has been send";
-       
+            $phone_number = "Text messgae  send to $phone_number - $curl_scraped_page";
          return json_encode($phone_number);  
     }
     
