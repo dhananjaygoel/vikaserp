@@ -3348,7 +3348,7 @@ class HomeController extends Controller {
                     $phone_number = \Config::get('smsdata.send_sms_to');
 
                 } else {
-                    $phone_number = '+912069701155';
+                    $phone_number = '9102069701155';
                 }
                 
                
