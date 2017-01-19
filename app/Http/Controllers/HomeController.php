@@ -3346,7 +3346,7 @@ class HomeController extends Controller {
                 $str .= " prices and avlblty will be qtd shortly \nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = \Config::get('smsdata.send_sms_to');
-//                    $phone_number = '89883370270';
+
                 } else {
                     $phone_number = '02069701155';
                 }
