@@ -465,8 +465,8 @@ class OrderController extends Controller {
      * Functioanlity: Display order details of particulat order
      */
     public function show($id) {
-
         
+       
         
          if(Auth::user()->role_id == 5)
         {
@@ -482,7 +482,7 @@ class OrderController extends Controller {
         {
             $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->find($id);
         }
-        
+       
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }

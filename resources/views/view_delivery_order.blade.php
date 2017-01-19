@@ -136,10 +136,10 @@
                                     @else
                                     <!--<tr><td><span>Plus VAT: </span> No</td></tr>-->
                                     @endif
-                                    <tr><td><b>Vehicle Name:</b> {{ $delivery_data->vehicle_number }} </td> </tr>
+                                    <tr><td><b>Vehicle Number:</b> {{ $delivery_data->vehicle_number }} </td> </tr>
                                     <tr><td><b>Driver Contact:</b> {{ $delivery_data->driver_contact_no }} </td> </tr>
                                     <tr><td><span>Remark: </span>{{ $delivery_data->remarks }}</td></tr>
-                                    @if($delivery_data->order_id > 0)
+                                    @if($delivery_data->order_id > 0 && Auth::user()->role_id <> 5	)
                                     <tr>
                                         <td><span>Order By : </span>{{isset($delivery_data->order_details->createdby->first_name)?$delivery_data->order_details->createdby->first_name:''." ".isset($delivery_data->order_details->createdby->last_name)?$delivery_data->order_details->createdby->last_name:''}}</td>
                                     </tr>

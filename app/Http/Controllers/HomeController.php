@@ -3358,16 +3358,16 @@ class HomeController extends Controller {
 //                 echo "<pre>";
 //                print_r( $url);
 //                echo "</pre>";
-//                if (SEND_SMS === true) {
+                if (SEND_SMS === true) {                   
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
                     curl_close($ch);
-//                }
+                }
             }
 
-            $phone_number = "Text messgae  send to $phone_number - $curl_scraped_page";
-         return json_encode($phone_number);  
+            $result = "Text messgae  send to $phone_number - $curl_scraped_page";
+         return json_encode($result);  
     }
     
     
