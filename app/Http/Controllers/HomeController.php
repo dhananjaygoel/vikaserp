@@ -3709,7 +3709,9 @@ class HomeController extends Controller {
                         $product_details = AllOrderProducts::with('order_product_details')->find($product_data->id);
 
 
+                        if (isset($product_details['order_product_details']->alias_name) && $product_details['order_product_details']->alias_name != "") {
                         $str .= $product_details['order_product_details']->alias_name . ' - ' . $product_data->quantity . ',';
+                        }
                         $total_quantity = $total_quantity + $product_data->quantity;
                     }
                     $str .= " Trk No. " . $delivery_orders[0]->vehicle_number . ", Drv No. " . $delivery_orders[0]->driver_contact_no . ". \nVIKAS ASSOCIATES";
