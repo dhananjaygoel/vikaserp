@@ -3956,7 +3956,7 @@ class HomeController extends Controller {
             $user = (json_decode($input_data['user']));
             $customer_id = $customers[0]->id;
 
-
+          
             $send_sms = Input::get('sendsms');
             if ($send_sms == 'true') {
 //                $customer_id = $purchase_challan->supplier_id;

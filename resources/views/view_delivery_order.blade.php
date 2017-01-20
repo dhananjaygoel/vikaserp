@@ -155,7 +155,12 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            @if( Auth::user()->role_id  <> 5)
                             <a href="{{url('delivery_order')}}" class="btn btn-default form_button_footer">Back</a>
+                            @endif
+                             @if( Auth::user()->role_id  == 5)
+                            <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>
+                            @endif
                         </div>
                     </div>
                 </div>
