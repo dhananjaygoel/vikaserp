@@ -3511,7 +3511,7 @@ class HomeController extends Controller {
      */
 
     function appsyncorder_sms() {
-//        $input = Input::all();
+        $input = Input::all();
 //
 //        $order = Order::with('customer','all_order_products')->find(1);
 //        echo "<pre>";
@@ -3699,7 +3699,10 @@ class HomeController extends Controller {
 //        print_r(json_encode($deliveryorder));
 //        echo "</pre>";
 //        exit;
-//        $data = Input::all();
+ 
+        
+        
+        $data = Input::all();
 
         if (Input::has('delivery_order') && Input::has('customer') && Input::has('delivery_order_product') && Input::has('user') && Input::has('sendsms')) {
 
