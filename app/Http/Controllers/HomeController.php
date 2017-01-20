@@ -3413,10 +3413,14 @@ class HomeController extends Controller {
                     }
                 }
             }
-            return json_encode($str);
+            $result['send_message'] = "Success";
+            $result['message_body'] = $str;
+            
         } else {
-            return json_encode("No msg send");
+            $result['send_message'] = "Error";
         }
+
+        return json_encode($result);
     }
 
     /*
@@ -3482,11 +3486,16 @@ class HomeController extends Controller {
                     }
                 }
             }
-            return json_encode($str);
+            $result['send_message'] = "Success";
+            $result['message_body'] = $str;
+            
         } else {
-            return json_encode("No msg send");
+            $result['send_message'] = "Error";
         }
+
+        return json_encode($result);
     }
+
 
     /*
      * ------------------- --------------
@@ -3572,11 +3581,16 @@ class HomeController extends Controller {
                     }
                 }
             }
-            return json_encode($str);
+            $result['send_message'] = "Success";
+            $result['message_body'] = $str;
+            
         } else {
-            return json_encode("No msg send");
+            $result['send_message'] = "Error";
         }
+
+        return json_encode($result);
     }
+
 
     /*
      * ------------------- --------------
@@ -3651,9 +3665,12 @@ class HomeController extends Controller {
                 }
             }
             $result['send_message'] = "Success";
+            $result['message_body'] = $str;
+            
         } else {
             $result['send_message'] = "Error";
         }
+
         return json_encode($result);
     }
 
