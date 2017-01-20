@@ -3379,6 +3379,11 @@ class HomeController extends Controller {
                                 $total_quantity = $total_quantity + ($product_data->quantity / $product_size->standard_length ) * $product_size->weight;
                             }
                         }
+                        else {
+                            $result['send_message'] = "Error";
+                            $result['reasons'] = "Inquiry not found.";
+                            return json_encode($result);
+                        }
                     }
                     $str .= " prices and avlblty will be qtd shortly \nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
@@ -3450,6 +3455,11 @@ class HomeController extends Controller {
                         if ($product_details['inquiry_product_details']->alias_name != "") {
                             $str .= $product_details['inquiry_product_details']->alias_name . ' - ' . $product_data->quantity . ', ';
                             $total_quantity = $total_quantity + $product_data->quantity;
+                        }
+                        else {
+                            $result['send_message'] = "Error";
+                            $result['reasons'] = "Inquiry not found.";
+                            return json_encode($result);
                         }
                     }
                     $str .= " prices and avlblty will be qtd shortly. \nVIKAS ASSOCIATES";
@@ -3540,6 +3550,11 @@ class HomeController extends Controller {
                                     $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
                                 }
                             }
+                            else {
+                            $result['send_message'] = "Error";
+                            $result['reasons'] = "Order not found.";
+                            return json_encode($result);
+                        }
                         }
 
 
@@ -3625,6 +3640,10 @@ class HomeController extends Controller {
                             if ($product_data->unit_id == 3) {
                                 $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
                             }
+                        } else {
+                            $result['send_message'] = "Error";
+                            $result['reasons'] = "Order not found.";
+                            return json_encode($result);
                         }
                     }
                     $str .= " meterial will be desp by " . date("jS F, Y", strtotime($orders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
@@ -3705,7 +3724,12 @@ class HomeController extends Controller {
 
                         if (isset($product_details['order_product_details']->alias_name) && $product_details['order_product_details']->alias_name != "") {
                             $str .= $product_details['order_product_details']->alias_name . ' - ' . $product_data->quantity . ',';
+                        } else {
+                            $result['send_message'] = "Error";
+                            $result['reasons'] = "Delivery Order not found.";
+                            return json_encode($result);
                         }
+
                         $total_quantity = $total_quantity + $product_data->quantity;
                     }
                     $str .= " Trk No. " . $delivery_orders[0]->vehicle_number . ", Drv No. " . $delivery_orders[0]->driver_contact_no . ". \nVIKAS ASSOCIATES";
@@ -3742,13 +3766,13 @@ class HomeController extends Controller {
     function appsyncdeliverychallan_sms() {
         $data = Input::all();
 
-        
+
 //         $deliveryorder = DeliveryChallan::with('customer','all_order_products')->find(1);
 //        echo "<pre>";
 //        print_r(json_encode($deliveryorder));
 //        echo "</pre>";
 //        exit;
-        
+
 
         if (Input::has('delivery_challan') && Input::has('customer') && Input::has('delivery_challan_product') && Input::has('user') && Input::has('sendsms')) {
             $delivery_challans = (json_decode($data['delivery_challan']));
@@ -3777,22 +3801,20 @@ class HomeController extends Controller {
 
                     $delivery_order = DeliveryOrder::find($delivery_challans[0]->delivery_order_id);
 
-                    if(isset($delivery_order)){
-                    $str .= " Trk No. " . $delivery_order->vehicle_number .
-                            ", Drv No. " . $delivery_order->driver_contact_no .
+                    if (isset($delivery_order)) {
+                        $str .= " Trk No. " . $delivery_order->vehicle_number .
+                                ", Drv No. " . $delivery_order->driver_contact_no .
 //                            ", Qty " . $product_data->sum('actual_quantity') .
-                            ", Qty " . $total_actual_quantity .
-                            ", Amt " . $delivery_challans[0]->grand_price .
-                            ", Due by: " . date("jS F, Y", strtotime($delivery_order->expected_delivery_date)) .
-                            "\nVIKAS ASSOCIATES";
-                    }
-                    else
-                    {
+                                ", Qty " . $total_actual_quantity .
+                                ", Amt " . $delivery_challans[0]->grand_price .
+                                ", Due by: " . date("jS F, Y", strtotime($delivery_order->expected_delivery_date)) .
+                                "\nVIKAS ASSOCIATES";
+                    } else {
                         $result['send_message'] = "Error";
                         $result['reasons'] = "Delivery Challan not found.";
                         return json_encode($result);
                     }
-                    
+
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
