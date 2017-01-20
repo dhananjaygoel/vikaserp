@@ -3513,11 +3513,11 @@ class HomeController extends Controller {
     function appsyncorder_sms() {
         $input = Input::all();
 
-//        $order = Order::with('customer','all_order_products')->find(4010);
-//        echo "<pre>";
-//        print_r(json_encode($order));
-//        echo "</pre>";
-//        exit;
+        $order = Order::with('customer','all_order_products')->find(1);
+        echo "<pre>";
+        print_r(json_encode($order));
+        echo "</pre>";
+        exit;
 
         if (Input::has('order') && Input::has('customer') && Input::has('order_product') && Input::has('sendsms') && Input::has('user')) {
             $orders = (json_decode($input['order']));
@@ -3694,11 +3694,11 @@ class HomeController extends Controller {
      */
 
     function appsyncdeliveryorder_sms() {
-//        $deliveryorder = DeliveryOrder::with('customer','delivery_product')->find(6184);
-//        echo "<pre>";
-//        print_r(json_encode($deliveryorder));
-//        echo "</pre>";
-//        exit;
+        $deliveryorder = DeliveryOrder::with('customer','delivery_product')->find(1);
+        echo "<pre>";
+        print_r(json_encode($deliveryorder));
+        echo "</pre>";
+        exit;
         $data = Input::all();
 
         if (Input::has('delivery_order') && Input::has('customer') && Input::has('delivery_order_product') && Input::has('user') && Input::has('sendsms')) {
