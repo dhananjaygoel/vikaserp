@@ -93,7 +93,11 @@ Route::post('appsyncorder_sms', 'HomeController@appsyncorder_sms');
 Route::post('appsyncorderedit_sms', 'HomeController@appsyncorderedit_sms');
 Route::post('appsyncdeliveryorder_sms', 'HomeController@appsyncdeliveryorder_sms');
 Route::post('appsyncdeliverychallan_sms', 'HomeController@appsyncdeliverychallan_sms');
+Route::post('appsyncpurchaseorder_sms', 'HomeController@appsyncpurchaseorder_sms');
+Route::post('appsyncpurchaseorderedit_sms', 'HomeController@appsyncpurchaseorderedit_sms');
+Route::post('appsyncpurchasechallan_sms', 'HomeController@appsyncpurchasechallan_sms');
 Route::post('appsyncpurchaseadvise_sms', 'HomeController@appsyncpurchaseadvise_sms');
+Route::post('userotp_sms', 'HomeController@userotp_sms');
 
 
 

@@ -67,6 +67,39 @@ class HomeController extends Controller {
         else
             return json_encode(array('result' => false, 'message' => 'User not found'));
     }
+    
+    
+    /**
+     * send user OTP
+     */
+     public function userotp_sms() {
+
+        $input = Input::all();
+
+        if (Input::has('mobile_number') && Input::has('otp')) {
+            $mobile_number = (json_decode($input['mobile_number']));
+            $otp = (json_decode($input['otp']));
+            $str = " Dear user, \n Your verification code is " . $otp . ".\nVIKAS ASSOCIATES";
+
+            $msg = urlencode($str);
+            $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $mobile_number . "&msgtext=" . $msg . "&smstype=0";
+            if (SEND_SMS === true) {
+                $ch = curl_init($url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $curl_scraped_page = curl_exec($ch);
+                curl_close($ch);
+            }
+
+            $result['send_message'] = "Success";
+            $result['message_body'] = $str;
+        } else {
+            $result['send_message'] = "Error";
+        }
+
+        return json_encode($result);
+    }
+
+    
 
     /**
      * App user reset password
@@ -3378,8 +3411,7 @@ class HomeController extends Controller {
                             if ($product_data->unit_id == 3) {
                                 $total_quantity = $total_quantity + ($product_data->quantity / $product_size->standard_length ) * $product_size->weight;
                             }
-                        }
-                        else {
+                        } else {
                             $result['send_message'] = "Error";
                             $result['reasons'] = "Inquiry not found.";
                             return json_encode($result);
@@ -3455,8 +3487,7 @@ class HomeController extends Controller {
                         if ($product_details['inquiry_product_details']->alias_name != "") {
                             $str .= $product_details['inquiry_product_details']->alias_name . ' - ' . $product_data->quantity . ', ';
                             $total_quantity = $total_quantity + $product_data->quantity;
-                        }
-                        else {
+                        } else {
                             $result['send_message'] = "Error";
                             $result['reasons'] = "Inquiry not found.";
                             return json_encode($result);
@@ -3549,12 +3580,11 @@ class HomeController extends Controller {
                                 if ($product_data->unit_id == 3) {
                                     $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
                                 }
+                            } else {
+                                $result['send_message'] = "Error";
+                                $result['reasons'] = "Order not found.";
+                                return json_encode($result);
                             }
-                            else {
-                            $result['send_message'] = "Error";
-                            $result['reasons'] = "Order not found.";
-                            return json_encode($result);
-                        }
                         }
 
 
@@ -3847,8 +3877,6 @@ class HomeController extends Controller {
 
     function appsyncpurchaseadvise_sms() {
         $input_data = Input::all();
-
-
 //         $purchaseadvise = PurchaseAdvise::with('supplier','purchase_products')->find(1233);
 //        echo "<pre>";
 //        print_r(json_encode($purchaseadvise));
@@ -3864,8 +3892,6 @@ class HomeController extends Controller {
             $user = (json_decode($input_data['user']));
             $customer_id = $customers[0]->id;
 
-
-
             $send_sms = Input::get('sendsms');
             if ($send_sms == 'true') {
 //                $customer_id = $purchase_advise->supplier_id;
@@ -3875,9 +3901,6 @@ class HomeController extends Controller {
                     $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour purchase Advise has been created as follows ";
                     foreach ($purchaseadviceproducts as $product_data) {
                         $product_details = AllOrderProducts::with('order_product_details')->find($product_data->id);
-
-
-//                      
 
                         $str .= $product_details['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                         $total_quantity = $total_quantity + $product_data->quantity;
@@ -3909,4 +3932,196 @@ class HomeController extends Controller {
         return json_encode($result);
     }
 
+    /*
+     * ------------------- -----------------------
+     * SEND SMS TO CUSTOMER FOR NEW PURCHASE CHALLAN
+     * -------------------------------------------
+     */
+
+    function appsyncpurchasechallan_sms() {
+        $input_data = Input::all();
+//         $purchasechallan = PurchaseChallan::with('supplier','purchase_product')->find(2);
+//        echo "<pre>";
+//        print_r(json_encode($purchasechallan));
+//        echo "</pre>";
+//        exit;
+
+        if (Input::has('purchase_challan') && Input::has('customer') && Input::has('purchase_challan_product') && Input::has('user') && Input::has('sendsms')) {
+            $purchasechallan = (json_decode($input_data['purchase_challan']));
+            $customers = (json_decode($input_data['customer']));
+            $purchasechallanproducts = (json_decode($input_data['purchase_challan_product']));
+            $user = (json_decode($input_data['user']));
+            $customer_id = $customers[0]->id;
+
+
+            $send_sms = Input::get('sendsms');
+            if ($send_sms == 'true') {
+//                $customer_id = $purchase_challan->supplier_id;
+                $customer = Customer::with('manager')->find($customer_id);
+                if (count($customer) > 0) {
+                    $total_quantity = '';
+                    $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour meterial has been desp as follows ";
+                    foreach ($purchasechallanproducts as $product_data) {
+                        $product = ProductSubCategory::find($product_data->product_category_id);
+
+                        if ($product_data->unit_id == 1) {
+                            $total_quantity = $total_quantity + $product_data->quantity;
+                        }
+                        if ($product_data->unit_id == 2) {
+                            $total_quantity = $total_quantity + $product_data->quantity * $product->weight;
+                        }
+                        if ($product_data->unit_id == 3) {
+                            $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
+                        }
+                    }
+                    $str .= " Trk No. " . $purchasechallan[0]->vehicle_number
+//                            . ", Qty. " . round($input_data->sum('quantity'), 2)
+                            . ", Qty. " . $total_quantity
+                            . ", Amt. " . $purchasechallan[0]->grand_total
+                            . ", Due by " . date("jS F, Y", strtotime($purchasechallan[0]->expected_delivery_date))
+                            . ".\nVIKAS ASSOCIATES";
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+//                    $phone_number = $customer->phone_number1;
+                        $phone_number = $customer['manager']->mobile_number;
+                    }
+
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+            }
+            $result['send_message'] = "Success";
+            $result['message_body'] = $str;
+        } else {
+            $result['send_message'] = "Error";
+        }
+
+        return json_encode($result);
+    }
+
+    /*
+      | ------------------------------------------------------
+      | SEND SMS TO SUPPLIER ON CREATE OF NEW PURCHASE ORDER
+      | ------------------------------------------------------
+     */
+
+    function appsyncpurchaseorder_sms() {
+        $input = Input::all();
+
+//         $purchaseorder = PurchaseOrder::with('customer','purchase_products')->find(2);
+//        echo "<pre>";
+//        print_r(json_encode($purchaseorder));
+//        echo "</pre>";
+//        exit;
+
+
+        if (Input::has('purchase_order') && Input::has('customer') && Input::has('purchase_order_product') && Input::has('user') && Input::has('sendsms')) {
+            $purchaseorders = (json_decode($input['purchase_order']));
+            $customers = (json_decode($input['customer']));
+            $purchaseorderproducts = (json_decode($input['purchase_order_product']));
+            $user = (json_decode($input['user']));
+            $customer_id = $customers[0]->id;
+
+            if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+                $customer = Customer::with('manager')->find($customer_id);
+                if (count($customer) > 0) {
+                    $total_quantity = '';
+                    $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour purchase order has been logged for following \n";
+                    foreach ($purchaseorderproducts as $product_data) {
+                        $product_details = PurchaseProducts::with('purchase_product_details')->find($product_data->id);
+
+                        if ($product_details['purchase_product_details']->alias_name != "") {
+                            $str .= $product_details['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                            $total_quantity = $total_quantity + $product_data->quantity;
+                        }
+                    }
+
+                    $str .= " meterial will be desp by " . date("jS F, Y", strtotime($purchaseorders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer->phone_number1;
+                    }
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+            }
+            $result['send_message'] = "Success";
+            $result['message_body'] = $str;
+        } else {
+            $result['send_message'] = "Error";
+        }
+
+        return json_encode($result);
+    }
+
+    /*
+     * ------------------- ------------------------------------
+     * SEND SMS TO SUPPLIER ON EDIT OF NEW PURCHASE ORDER
+     * --------------------------------------------------------
+     */
+
+    function appsyncpurchaseorderedit_sms() {
+        $input = Input::all();
+
+        if (Input::has('purchase_order') && Input::has('customer') && Input::has('purchase_order_product') && Input::has('user') && Input::has('sendsms')) {
+            $purchaseorders = (json_decode($input['purchase_order']));
+            $customers = (json_decode($input['customer']));
+            $purchaseorderproducts = (json_decode($input['purchase_order_product']));
+            $user = (json_decode($input['user']));
+            $customer_id = $customers[0]->id;
+
+            if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+                $customer = Customer::with('manager')->find($customer_id);
+                if (count($customer) > 0) {
+                    $total_quantity = '';
+                    $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour purchase order has been edited and changed as follows \n";
+                    foreach ($purchaseorderproducts as $product_data) {
+                        $product_details = PurchaseProducts::with('purchase_product_details')->find($product_data->id);
+
+                        if ($product_details['purchase_product_details']->alias_name != "") {
+                            $str .= $product_details['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                            $total_quantity = $total_quantity + $product_data->quantity;
+                        }
+                    }
+                    $str .= " meterial will be desp by " . date("jS F, Y", strtotime($purchaseorders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
+
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer->phone_number1;
+                    }
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+            }
+            $result['send_message'] = "Success";
+            $result['message_body'] = $str;
+        } else {
+            $result['send_message'] = "Error";
+        }
+
+        return json_encode($result);
+    }
+
+   
 }

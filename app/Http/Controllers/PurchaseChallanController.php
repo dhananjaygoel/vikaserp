@@ -247,7 +247,7 @@ class PurchaseChallanController extends Controller {
 
         /*
          * ------------------- -----------------------
-         * SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
+         * SEND SMS TO CUSTOMER FOR NEW PURCHASE CHALLAN
          * -------------------------------------------
          */
         $input_data = $purchase_challan['all_purchase_products'];
