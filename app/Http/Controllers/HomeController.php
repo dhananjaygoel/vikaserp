@@ -3743,11 +3743,11 @@ class HomeController extends Controller {
         $data = Input::all();
 
         
-         $deliveryorder = DeliveryChallan::with('customer','all_order_products')->find(1);
-        echo "<pre>";
-        print_r(json_encode($deliveryorder));
-        echo "</pre>";
-        exit;
+//         $deliveryorder = DeliveryChallan::with('customer','all_order_products')->find(1);
+//        echo "<pre>";
+//        print_r(json_encode($deliveryorder));
+//        echo "</pre>";
+//        exit;
         
 
         if (Input::has('delivery_challan') && Input::has('customer') && Input::has('delivery_challan_product') && Input::has('user') && Input::has('sendsms')) {
