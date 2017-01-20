@@ -3415,7 +3415,6 @@ class HomeController extends Controller {
             }
             $result['send_message'] = "Success";
             $result['message_body'] = $str;
-            
         } else {
             $result['send_message'] = "Error";
         }
@@ -3488,14 +3487,12 @@ class HomeController extends Controller {
             }
             $result['send_message'] = "Success";
             $result['message_body'] = $str;
-            
         } else {
             $result['send_message'] = "Error";
         }
 
         return json_encode($result);
     }
-
 
     /*
      * ------------------- --------------
@@ -3583,14 +3580,12 @@ class HomeController extends Controller {
             }
             $result['send_message'] = "Success";
             $result['message_body'] = $str;
-            
         } else {
             $result['send_message'] = "Error";
         }
 
         return json_encode($result);
     }
-
 
     /*
      * ------------------- --------------
@@ -3666,7 +3661,6 @@ class HomeController extends Controller {
             }
             $result['send_message'] = "Success";
             $result['message_body'] = $str;
-            
         } else {
             $result['send_message'] = "Error";
         }
@@ -3710,7 +3704,7 @@ class HomeController extends Controller {
 
 
                         if (isset($product_details['order_product_details']->alias_name) && $product_details['order_product_details']->alias_name != "") {
-                        $str .= $product_details['order_product_details']->alias_name . ' - ' . $product_data->quantity . ',';
+                            $str .= $product_details['order_product_details']->alias_name . ' - ' . $product_data->quantity . ',';
                         }
                         $total_quantity = $total_quantity + $product_data->quantity;
                     }
@@ -3731,6 +3725,7 @@ class HomeController extends Controller {
                 }
             }
             $result['send_message'] = "Success";
+            $result['message_body'] = $str;
         } else {
             $result['send_message'] = "Error";
         }
@@ -3807,6 +3802,7 @@ class HomeController extends Controller {
                 }
             }
             $result['send_message'] = "Success";
+            $result['message_body'] = $str;
         } else {
             $result['send_message'] = "Error";
         }
@@ -3877,7 +3873,6 @@ class HomeController extends Controller {
             }
             $result['send_message'] = "Success";
             $result['message_body'] = $str;
-            
         } else {
             $result['send_message'] = "Error";
         }
