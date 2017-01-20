@@ -3742,13 +3742,13 @@ class HomeController extends Controller {
     function appsyncdeliverychallan_sms() {
         $data = Input::all();
 
-//        
-//         $deliveryorder = DeliveryChallan::with('customer','all_order_products')->find(5669);
-//        echo "<pre>";
-//        print_r(json_encode($deliveryorder));
-//        echo "</pre>";
-//        exit;
-//        
+        
+         $deliveryorder = DeliveryChallan::with('customer','all_order_products')->find(1);
+        echo "<pre>";
+        print_r(json_encode($deliveryorder));
+        echo "</pre>";
+        exit;
+        
 
         if (Input::has('delivery_challan') && Input::has('customer') && Input::has('delivery_challan_product') && Input::has('user') && Input::has('sendsms')) {
             $delivery_challans = (json_decode($data['delivery_challan']));
@@ -3789,6 +3789,8 @@ class HomeController extends Controller {
                     else
                     {
                         $result['send_message'] = "Error";
+                        $result['reasons'] = "Delivery Challan not found.";
+                        return json_encode($result);
                     }
                     
                     if (App::environment('development')) {
