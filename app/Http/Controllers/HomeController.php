@@ -3777,7 +3777,7 @@ class HomeController extends Controller {
 
                     $delivery_order = DeliveryOrder::find($delivery_challans[0]->delivery_order_id);
 
-
+                    if(isset($delivery_order)){
                     $str .= " Trk No. " . $delivery_order->vehicle_number .
                             ", Drv No. " . $delivery_order->driver_contact_no .
 //                            ", Qty " . $product_data->sum('actual_quantity') .
@@ -3785,7 +3785,12 @@ class HomeController extends Controller {
                             ", Amt " . $delivery_challans[0]->grand_price .
                             ", Due by: " . date("jS F, Y", strtotime($delivery_order->expected_delivery_date)) .
                             "\nVIKAS ASSOCIATES";
-
+                    }
+                    else
+                    {
+                        $result['send_message'] = "Error";
+                    }
+                    
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
