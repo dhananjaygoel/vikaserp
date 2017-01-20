@@ -3699,9 +3699,6 @@ class HomeController extends Controller {
 //        print_r(json_encode($deliveryorder));
 //        echo "</pre>";
 //        exit;
- 
-        
-        
         $data = Input::all();
 
         if (Input::has('delivery_order') && Input::has('customer') && Input::has('delivery_order_product') && Input::has('user') && Input::has('sendsms')) {
