@@ -3902,13 +3902,9 @@ class HomeController extends Controller {
                             $str .= $product_details['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                         } else {
                             $result['send_message'] = "Error";
-                            $result['reasons'] = "Purchase Order not found.";
+                            $result['reasons'] = "Purchase Advise not found.";
                             return json_encode($result);
                         }
-                        
-                       
-                       
-                        
                         
                         $total_quantity = $total_quantity + $product_data->quantity;
                     }
@@ -3983,7 +3979,7 @@ class HomeController extends Controller {
                             }
                         } else {
                             $result['send_message'] = "Error";
-                            $result['reasons'] = "Purchase Order not found.";
+                            $result['reasons'] = "Purchase Challan not found.";
                             return json_encode($result);
                         }
                     }
