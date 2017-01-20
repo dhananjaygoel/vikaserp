@@ -67,12 +67,11 @@ class HomeController extends Controller {
         else
             return json_encode(array('result' => false, 'message' => 'User not found'));
     }
-    
-    
+
     /**
      * send user OTP
      */
-     public function userotp_sms() {
+    public function userotp_sms() {
 
         $input = Input::all();
 
@@ -98,8 +97,6 @@ class HomeController extends Controller {
 
         return json_encode($result);
     }
-
-    
 
     /**
      * App user reset password
@@ -3883,8 +3880,6 @@ class HomeController extends Controller {
 //        echo "</pre>";
 //        exit;
 
-
-
         if (Input::has('purchase_advice') && Input::has('customer') && Input::has('purchase_advice_product') && Input::has('user') && Input::has('sendsms')) {
             $purchaseadvices = (json_decode($input_data['purchase_advice']));
             $customers = (json_decode($input_data['customer']));
@@ -3900,9 +3895,21 @@ class HomeController extends Controller {
                     $total_quantity = '';
                     $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour purchase Advise has been created as follows ";
                     foreach ($purchaseadviceproducts as $product_data) {
-                        $product_details = AllOrderProducts::with('order_product_details')->find($product_data->id);
+                        $product_details = PurchaseProducts::with('purchase_product_details')->find($product_data->id);
 
-                        $str .= $product_details['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                        
+                        if (isset($product_details['purchase_product_details']->alias_name) && $product_details['purchase_product_details']->alias_name != "") {
+                            $str .= $product_details['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                        } else {
+                            $result['send_message'] = "Error";
+                            $result['reasons'] = "Purchase Order not found.";
+                            return json_encode($result);
+                        }
+                        
+                       
+                       
+                        
+                        
                         $total_quantity = $total_quantity + $product_data->quantity;
                     }
                     $str .= " Trk No. " . $purchaseadvices[0]->vehicle_number . ".\nVIKAS ASSOCIATES";
@@ -3964,14 +3971,20 @@ class HomeController extends Controller {
                     foreach ($purchasechallanproducts as $product_data) {
                         $product = ProductSubCategory::find($product_data->product_category_id);
 
-                        if ($product_data->unit_id == 1) {
-                            $total_quantity = $total_quantity + $product_data->quantity;
-                        }
-                        if ($product_data->unit_id == 2) {
-                            $total_quantity = $total_quantity + $product_data->quantity * $product->weight;
-                        }
-                        if ($product_data->unit_id == 3) {
-                            $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
+                        if (isset($product)) {
+                            if ($product_data->unit_id == 1) {
+                                $total_quantity = $total_quantity + $product_data->quantity;
+                            }
+                            if ($product_data->unit_id == 2) {
+                                $total_quantity = $total_quantity + $product_data->quantity * $product->weight;
+                            }
+                            if ($product_data->unit_id == 3) {
+                                $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
+                            }
+                        } else {
+                            $result['send_message'] = "Error";
+                            $result['reasons'] = "Purchase Order not found.";
+                            return json_encode($result);
                         }
                     }
                     $str .= " Trk No. " . $purchasechallan[0]->vehicle_number
@@ -4037,9 +4050,13 @@ class HomeController extends Controller {
                     foreach ($purchaseorderproducts as $product_data) {
                         $product_details = PurchaseProducts::with('purchase_product_details')->find($product_data->id);
 
-                        if ($product_details['purchase_product_details']->alias_name != "") {
+                        if (isset($product_details['purchase_product_details']->alias_name) && $product_details['purchase_product_details']->alias_name != "") {
                             $str .= $product_details['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
                             $total_quantity = $total_quantity + $product_data->quantity;
+                        } else {
+                            $result['send_message'] = "Error";
+                            $result['reasons'] = "Purchase Order not found.";
+                            return json_encode($result);
                         }
                     }
 
@@ -4092,9 +4109,13 @@ class HomeController extends Controller {
                     foreach ($purchaseorderproducts as $product_data) {
                         $product_details = PurchaseProducts::with('purchase_product_details')->find($product_data->id);
 
-                        if ($product_details['purchase_product_details']->alias_name != "") {
+                        if (isset($product_details['purchase_product_details']->alias_name) && $product_details['purchase_product_details']->alias_name != "") {
                             $str .= $product_details['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
                             $total_quantity = $total_quantity + $product_data->quantity;
+                        } else {
+                            $result['send_message'] = "Error";
+                            $result['reasons'] = "Purchase Order not found.";
+                            return json_encode($result);
                         }
                     }
                     $str .= " meterial will be desp by " . date("jS F, Y", strtotime($purchaseorders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
@@ -4123,5 +4144,4 @@ class HomeController extends Controller {
         return json_encode($result);
     }
 
-   
 }
