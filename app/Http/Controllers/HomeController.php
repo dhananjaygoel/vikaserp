@@ -3618,7 +3618,7 @@ class HomeController extends Controller {
 
                         $product_details = AllOrderProducts::with('order_product_details')->find($product_data->id);
 
-                        if ($product_details['order_product_details']->alias_name != "") {
+                        if (isset($product_details['order_product_details']) && $product_details['order_product_details']->alias_name != "") {
                             $product = ProductSubCategory::find($product_data->id);
                             $str .= $product_details['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
                             if ($product_data->unit_id == 1) {
