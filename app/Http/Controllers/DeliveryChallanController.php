@@ -527,7 +527,7 @@ class DeliveryChallanController extends Controller {
 
             /*
               | ------------------- -----------------------
-              | SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
+              | SEND SMS TO CUSTOMER FOR NEW DELIVERY CHALLAN
               | -------------------------------------------
              */
             $input_data = $allorder['delivery_challan_products'];

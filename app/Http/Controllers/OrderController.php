@@ -672,7 +672,7 @@ class OrderController extends Controller {
 
         /*
          * ------------------- --------------
-         * SEND SMS TO CUSTOMER FOR NEW ORDER
+         * SEND SMS TO CUSTOMER FOR UPDATE ORDER
          * ----------------------------------
          */
         $input = Input::all();
