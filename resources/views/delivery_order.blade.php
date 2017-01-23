@@ -6,18 +6,19 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
+                    <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Delivery Orders</span></li>
                 </ol>
                 <input type="hidden" id="module" value="deliveryorder">
                 <!--<h1 class="pull-left">Delivery Orders</h1>-->
-                <div class="pull-right top-page-ui">
+                <div class="filter-block">
                     <!--                    <a href="{{URL::action('DeliveryOrderController@create')}}" class="btn btn-primary pull-right">
                                             <i class="fa fa-plus-circle fa-lg"></i> Create Delivery order Independently
                                         </a>-->
-                    <div class="form-group pull-right">
-                        <div class="col-md-12">
+                    <!--<div class="form-group pull-right">-->
+                       
                             <form method="GET" action="{{URL::action('DeliveryOrderController@index')}}" id="filter_form">
+                                 <div class=" pull-right col-md-3">
                                 <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                                 <?php
                                 $session_sort_type_order = Session::get('order-sort-type');
@@ -44,10 +45,11 @@
                                     Session::put('order-sort-type', "");
                                 }
                                 ?>
+                                 </div>
                             </form>
-                        </div>
-                    </div>
-                    <div class="search_form_wrapper">
+                       
+                    <!--</div>-->
+                     <div class="search_form_wrapper delivery_challan_search_form_wrapper">
                         <form class="search_form" method="GET" action="{{URL::action('DeliveryOrderController@index')}}">
                             <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
                                 if (Input::get('export_from_date') != "") {
@@ -93,6 +95,7 @@
                 </div>
             </div>
         </div>
+        <br>
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
