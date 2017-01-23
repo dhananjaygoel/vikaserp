@@ -472,6 +472,32 @@ class DeliveryChallanController extends Controller {
         if (isset($update_delivery_challan->serial_number) && $update_delivery_challan->challan_status == 'completed') {
             $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
                             ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
+        
+        $total_vat_amount = 0;    
+            
+             foreach ($update_delivery_challan->delivery_challan_products as $key => $delivery_challan_products) {
+                    if ($delivery_challan_products->vat_percentage > 0) {
+                        $vat_applicable = 1;
+                        if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
+                            $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
+                        }
+                    }
+                }
+            
+            
+            $date_letter = $update_delivery_challan->serial_number;
+            
+            $pdf = app('dompdf.wrapper');
+            $pdf->loadView('delivery_challan_pdf', [
+                'allorder' => $allorder,
+                'total_vat_amount' => $total_vat_amount
+            ]);
+            
+             Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+            $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
+            chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
+            $connection->getConnection()->put('Delivery Challan/'.date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+            
         } else {
             $vat_applicable = 0;
             $total_vat_amount = 0;
