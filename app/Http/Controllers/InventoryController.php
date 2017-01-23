@@ -19,6 +19,7 @@ use Input;
 use App\Vendor\Phpoffice\Phpexcel\Classes;
 use Maatwebsite\Excel\Facades\Excel;
 use App\ProductCategory;
+use Auth;
 
 class InventoryController extends Controller {
 
@@ -67,7 +68,12 @@ class InventoryController extends Controller {
      * Display a all product inventory with stock details
      */
     public function index() {
-
+        
+        
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+ 
         $this->updateOpeningStock();
         $q = Inventory::query();
         $inventory_list = $q->with('product_sub_category')->paginate(50);

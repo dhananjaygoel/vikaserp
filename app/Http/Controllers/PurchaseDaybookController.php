@@ -32,9 +32,9 @@ class PurchaseDaybookController extends Controller {
 
     public function index() {
         $data = Input::all();
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
-            return Redirect::to('purchase_challan')->with('error', 'You do not have permission.');
-        }
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4 ) {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+           }
         if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');

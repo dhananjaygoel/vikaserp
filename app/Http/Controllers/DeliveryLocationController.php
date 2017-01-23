@@ -33,6 +33,11 @@ class DeliveryLocationController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
+        
+          if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+        
         $delivery_location = DeliveryLocation::where('status', '=', 'permanent')->with('city.states')->orderBy('created_at', 'desc')->Paginate(20);
 
         $delivery_location->setPath('location');

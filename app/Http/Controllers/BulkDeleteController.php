@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Http\Controllers\Redirect;
+//use App\Http\Controllers\Redirect;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Input;
@@ -19,7 +19,9 @@ use App\PurchaseProducts;
 use App\PurchaseChallan;
 use App\PurchaseAdvise;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
+//use Illuminate\Support\Facades\Auth;
+use Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class BulkDeleteController extends Controller {
 
@@ -37,7 +39,9 @@ class BulkDeleteController extends Controller {
     }
 
     public function show_result() {
-
+ if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         $module = Input::get('select_module');
         $password = Input::get('password_delete');
         $expected_date = Input::get('expected_date');
@@ -361,7 +365,9 @@ class BulkDeleteController extends Controller {
                  */
                 $newdate = ((strlen(Input::get('expected_date')) > 1) ? Input::get('expected_date') : date('Y-m-d')) . ' 23:59:59';
                 $result_temp = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'delivery_challan_products', 'delivery_order')
-                                ->where('created_at', '<=', $newdate)->orderBy('created_at', 'desc')->Paginate(20);
+                                ->where('created_at', '<=', $newdate)->orderBy('updated_at', 'desc')->Paginate(20);
+                
+                $present_shipping =0 ;
                 foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;
                     if ($temp['customer']->tally_name != '')
@@ -369,8 +375,17 @@ class BulkDeleteController extends Controller {
                     else
                         $result_data[$key][0] = $temp['customer']->owner_name;
                     $result_data[$key][1] = $temp->serial_number;
-                    $result_data[$key][2] = round($temp->total_quantity, 2);
+                    
+                    foreach($temp['delivery_challan_products'] as $delivery_challan_products)
+                    {
+                        $present_shipping = $present_shipping + round($delivery_challan_products->present_shipping, 2);
+                    }
+                    
+                    $result_data[$key][2] = $present_shipping;
+                    $present_shipping=0;
                 }
+                
+                
                 break;
                 
             case 'delivery_challan_pending':
@@ -390,7 +405,8 @@ class BulkDeleteController extends Controller {
                  */
                 $newdate = ((strlen(Input::get('expected_date')) > 1) ? Input::get('expected_date') : date('Y-m-d')) . ' 23:59:59';
                 $result_temp = DeliveryChallan::where('challan_status', '=', 'pending')->with('customer', 'delivery_challan_products', 'delivery_order')
-                                ->where('created_at', '<=', $newdate)->orderBy('created_at', 'desc')->Paginate(20);
+                                ->where('created_at', '<=', $newdate)->orderBy('updated_at', 'desc')->Paginate(20);
+                  $present_shipping =0 ;
                 foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;
                     if ($temp['customer']->tally_name != '')
@@ -398,7 +414,14 @@ class BulkDeleteController extends Controller {
                     else
                         $result_data[$key][0] = $temp['customer']->owner_name;
                     $result_data[$key][1] = $temp->serial_number;
-                    $result_data[$key][2] = round($temp->total_quantity, 2);
+                    
+                    foreach($temp['delivery_challan_products'] as $delivery_challan_products)
+                    {
+                        $present_shipping = $present_shipping + round($delivery_challan_products->present_shipping, 2);
+                    }
+                    
+                    $result_data[$key][2] = $present_shipping;
+                      $present_shipping =0 ;
                 }
                 break;
 //----------------------------------------------------            

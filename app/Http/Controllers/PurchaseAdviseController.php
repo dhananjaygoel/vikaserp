@@ -42,6 +42,11 @@ class PurchaseAdviseController extends Controller {
      * Display a listing of the Purchase Advices.
      */
     public function index() {
+        
+             
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
 
         $q = PurchaseAdvise::query()->with('supplier', 'purchase_products');
         $session_sort_type_order = Session::get('order-sort-type');
@@ -448,6 +453,9 @@ class PurchaseAdviseController extends Controller {
 
     public function pending_purchase_advice() {
 
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+           }
         $filteron = "";
         $filterby = "";
         $filteron = Input::get('filteron');

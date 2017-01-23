@@ -39,6 +39,11 @@ class PurchaseChallanController extends Controller {
     public function index() {
 
         $data = Input::all();
+        
+         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+        
         if (isset($data['order_filter']) && $data['order_filter'] != '') {
             $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
                             ->where('order_status', $data['order_filter'])->orderBy('created_at', 'desc')->Paginate(20);
