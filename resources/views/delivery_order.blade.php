@@ -10,7 +10,7 @@
                     <li class="active"><span>Delivery Orders</span></li>
                 </ol>
                 <input type="hidden" id="module" value="deliveryorder">
-                <h1 class="pull-left">Delivery Orders</h1>
+                <!--<h1 class="pull-left">Delivery Orders</h1>-->
                 <div class="pull-right top-page-ui">
                     <!--                    <a href="{{URL::action('DeliveryOrderController@create')}}" class="btn btn-primary pull-right">
                                             <i class="fa fa-plus-circle fa-lg"></i> Create Delivery order Independently
