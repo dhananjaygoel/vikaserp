@@ -137,7 +137,14 @@
                                         <tr><td><span>Order Time/Date : </span>{{$order->updated_at}}</td></tr>
                                     </tbody>
                                 </table>
+                                <!--                                <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>-->
+
+                                @if( Auth::user()->role_id  <> 5)
                                 <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>
+                                @endif
+                                @if( Auth::user()->role_id  == 5)
+                                <a href="{{url('order/'.$order->id.'-track')}}" class="btn btn-default form_button_footer">Back</a>
+                                @endif
                             </div>
                         </div>
                         <div class="clearfix"></div>

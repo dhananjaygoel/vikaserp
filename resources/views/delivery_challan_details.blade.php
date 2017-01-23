@@ -64,8 +64,8 @@
                                         <td class="col-md-2">
                                             <div class="form-group">{{$product->present_shipping}}</div>
                                         </td>
-                                        
-                                         @if(Auth::user()->role_id == 5)
+
+                                        @if(Auth::user()->role_id == 5)
                                         <td>
                                             @foreach($order_product['all_order_products'] as $all_order_products)
 
@@ -77,8 +77,8 @@
 
                                         </td>
                                         @endif
-                                        
-                                        
+
+
                                         <td class="col-md-1">
                                             <div class="form-group">{{$product->price}}</div>
                                         </td>
@@ -130,7 +130,7 @@
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label for="total"><b class="challan">Total: </b></label> <?php print_r($total_amount + $allorder->freight + $allorder->loading_charge + $allorder->discount);?>
+                            <label for="total"><b class="challan">Total: </b></label> <?php print_r($total_amount + $allorder->freight + $allorder->loading_charge + $allorder->discount); ?>
                         </div>
                         <hr>
                         <div class="form-group">
@@ -141,13 +141,13 @@
                             <label for="labour"><b class="challan">Labour: </b></label> {{$allorder->labours}}
                         </div>
                         <hr>
-                                         
+
                         @if($allorder->vat_percentage != "" || $allorder->vat_percentage != 0)
-                                                
-                                                <div class="form-group">
-                                                    <label for="driver_contact"><b class="challan">VAT Percentage: </b> {{$allorder->vat_percentage}} %</label>
-                                                </div>
-                                                <hr>
+
+                        <div class="form-group">
+                            <label for="driver_contact"><b class="challan">VAT Percentage: </b> {{$allorder->vat_percentage}} %</label>
+                        </div>
+                        <hr>
                         @else
                         <!--                        <div class="form-group">
                                                     <label for="Plusvat"><b class="challan">VAT: </b> No</label>
@@ -206,7 +206,14 @@
                             <label for="challan_remark"><b class="challan">Remark: </b></label>
                             <textarea class="form-control" id="challan_remark" name="challan_remark" rows="3" readonly="readonly">{{$allorder->remarks}}</textarea>
                         </div>
+                        <!--                        <a href="{{url('delivery_challan')}}" class="btn btn-default form_button_footer">Back</a>-->
+
+                        @if( Auth::user()->role_id  <> 5)
                         <a href="{{url('delivery_challan')}}" class="btn btn-default form_button_footer">Back</a>
+                        @endif
+                        @if( Auth::user()->role_id  == 5)
+                        <a href="{{url('order/'.$allorder->order_id.'-track')}}" class="btn btn-default form_button_footer">Back</a>
+                        @endif
                     </div>
                 </div>
             </div>
