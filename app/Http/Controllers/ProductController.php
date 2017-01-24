@@ -39,6 +39,10 @@ class ProductController extends Controller {
      */
 
     public function index() {
+        
+        if (Auth::user()->role_id == 5 ) {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+           }    
         /*client want to delete 2 record so just elimated from query */
        // $product_cat = ProductCategory::orderBy('created_at', 'desc')->whereNotIn('product_category_name',['Local Coil- Light','Local Coil'])->Paginate(20);
         $product_cat = ProductCategory::orderBy('created_at', 'desc')->Paginate(20);

@@ -250,8 +250,12 @@ class DeliveryOrderController extends Controller {
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id) {
-
+    public function edit($id="") {
+        
+        if (Auth::user()->role_id == 5 | $id=="") {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+           }
+        
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
@@ -475,8 +479,11 @@ class DeliveryOrderController extends Controller {
      * displey the create delivery challan form
      */
 
-    public function create_delivery_challan($id) {
+    public function create_delivery_challan($id="") {
 
+        if (Auth::user()->role_id == 5 | $id="") {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+           } 
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
         if (count($delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');

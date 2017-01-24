@@ -590,8 +590,11 @@ class CustomerController extends Controller {
       | Used to set price per customer
      */
 
-    public function set_price($id) {
-
+    public function set_price($id="") {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+           }
+        
         $customer_id = array('id' => $id);
         $cutomer_difference = CustomerProductDifference::where('customer_id', $id)->get();
         $product_category = ProductCategory::all();
@@ -633,7 +636,11 @@ class CustomerController extends Controller {
      */
 
     public function bulk_set_price() {
-
+        
+        
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4) {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+           }
         $product_type = 1;
         if (Input::get('product_filter') != "") {
             $product_type = Input::get('product_filter');

@@ -14,6 +14,7 @@ use Input;
 use Illuminate\Support\Facades\DB;
 use Hash;
 use Auth;
+use Redirect;
 
 class CityController extends Controller {
 
@@ -26,6 +27,10 @@ class CityController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
+        if (Auth::user()->role_id == 5 ) {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+           }     
+        
         $cities = City::with('states')->orderBy('created_at', 'desc')->Paginate(20);
         $cities->setPath('city');
         return view('cities', compact('cities'));

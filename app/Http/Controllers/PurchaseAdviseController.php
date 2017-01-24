@@ -223,6 +223,11 @@ class PurchaseAdviseController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create() {
+        
+        if (Auth::user()->role_id == 5 ) {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+           } 
+        
         $customers = Customer::where('customer_status', '=', 'permanent')->orderBy('tally_name', 'ASC')->get();
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $units = Units::all();
@@ -361,6 +366,11 @@ class PurchaseAdviseController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit($id) {
+        
+         if (Auth::user()->role_id == 5 ) {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+           } 
+        
         $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details')->find($id);
         if (count($purchase_advise) < 1) {
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advise not found');
@@ -616,6 +626,10 @@ class PurchaseAdviseController extends Controller {
     }
 
     public function purchaseorder_advise_challan($id) {
+        
+        if (Auth::user()->role_id == 5 ) {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+           } 
 
         $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details')->find($id);
         if (count($purchase_advise) < 1) {

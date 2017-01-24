@@ -28,6 +28,9 @@ class StatesController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
+        if (Auth::user()->role_id == 5 ) {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+           }           
         $states = States::orderBy('created_at', 'desc')->Paginate(20);
         $states->setPath('states');
         return view('states', compact('states'));

@@ -23,6 +23,7 @@ use Dropbox\Client;
 use Dropbox\WriteMode;
 use Illuminate\Filesystem\Filesystem;
 use Dropbox;
+use Auth;
 
 class WelcomeController extends Controller {
     /*
@@ -362,6 +363,10 @@ class WelcomeController extends Controller {
      */
 
     public function excel_import_customer() {
+        
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 ) {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+           }
         return view('excel_import_customer');
     }
 

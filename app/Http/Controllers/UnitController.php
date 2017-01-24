@@ -24,7 +24,11 @@ class UnitController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-
+        
+        if (Auth::user()->role_id == 5 ) {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+           }     
+        
         $units = Units::orderBy('created_at', 'desc')->Paginate(20);
         $units->setPath('unit');
         return view('units', compact('units'));
