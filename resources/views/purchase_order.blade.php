@@ -5,10 +5,75 @@
     <div class="col-lg-12">
         <div class="row">
             <div class="col-lg-12">
+                <?php
+                $session_sort_type_order = Session::get('order-sort-type');
+                if ((Input::get('order_filter') != "") || (Input::get('order_status') != "")) {
+                    if (Input::get('order_filter') != "") {
+                        $qstring_sort_type_order = Input::get('order_filter');
+                    } elseif (Input::get('order_status') != "") {
+                        $qstring_sort_type_order = Input::get('order_status');
+                    }
+                }
+                if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
+                    $qstring_sort_type_order = $qstring_sort_type_order;
+                } else {
+                    $qstring_sort_type_order = $session_sort_type_order;
+                }
+                ?>
+
                 <ol class="breadcrumb">
                     <li><a href="#">Home</a></li>
                     <li class="active"><span>Purchase Orders</span></li>
                 </ol>
+
+                <div class="search_form_wrapper orders_search_wrapper">
+                    <form class="search_form" method="GET" action="{{URL::action('PurchaseOrderController@index')}}">
+                        <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
+                        if (Input::get('export_from_date') != "") {
+                            echo "value='" . Input::get('export_from_date') . "'";
+                        }
+                        ?>>
+                        <input type="text" placeholder="To" name="export_to_date" class="form-control export_to_date" id="export_to_date" <?php
+                        if (Input::get('export_to_date') != "") {
+                            echo "value='" . Input::get('export_to_date') . "'";
+                        }
+                        ?>>
+                        @if($qstring_sort_type_order=='pending' || $qstring_sort_type_order=='' )
+                        <input type="hidden" name="order_status" value="pending">
+                        @elseif($qstring_sort_type_order == 'completed')
+                        <input type="hidden" name="order_status" value="completed">
+                        @elseif($qstring_sort_type_order == 'cancelled')
+                        <input type="hidden" name="order_status" value="cancelled">
+                        @else
+                        <input type="hidden" name="order_status" value="pending">
+                        @endif
+                        <input type="submit" disabled="" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                    </form>
+                    <form class="pull-left" method="POST" action="{{URL::action('PurchaseOrderController@exportPurchaseOrderBasedOnStatus')}}">
+                        <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                        <input type="hidden" name="export_from_date" id="export_from_date" <?php
+                        if (Input::get('export_to_date') != "") {
+                            echo "value='" . Input::get('export_from_date') . "'";
+                        }
+                        ?>>
+                        <input type="hidden"  name="export_to_date" id="export_to_date" <?php
+                        if (Input::get('export_to_date') != "") {
+                            echo "value='" . Input::get('export_to_date') . "'";
+                        }
+                        ?>>
+                        @if(sizeof($purchase_orders)!=0 && ($qstring_sort_type_order=='pending' || $qstring_sort_type_order=='' ))
+                        <input type="hidden" name="order_status" value="pending">
+                        @elseif(sizeof($purchase_orders)!=0 && $qstring_sort_type_order=='completed')
+                        <input type="hidden" name="order_status" value="completed">
+                        @elseif(sizeof($purchase_orders)!=0 && $qstring_sort_type_order=='cancelled')
+                        <input type="hidden" name="order_status" value="cancelled">
+                        @else
+                        <input type="hidden" name="order_status" value="pending">
+                        @endif
+                        <input type="submit"  name="export_data" value="Export" class="btn btn-primary pull-right">
+                    </form>
+                </div>
+
                 <div class="filter-block">
                     <h1 class="pull-left">Purchase Orders</h1>
                     <div class="pull-right top-page-ui">
@@ -51,17 +116,23 @@
                                         $qstring_sort_type_order = Input::get('purchase_order_filter');
 
                                         if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
-                                            $qstring_sort_type_order = $qstring_sort_type_order;
+                                        $qstring_sort_type_order = $qstring_sort_type_order;
                                         } else {
-                                            $qstring_sort_type_order = $session_sort_type_order;
+                                        $qstring_sort_type_order = $session_sort_type_order;
                                         }
                                         ?>
                                         <select class="form-control" id="purchase_order_filter" name="purchase_order_filter" onchange="this.form.submit();">
-                                            <option value="">Status</option>
+                                           
                                             <option value="pending" <?php if ($qstring_sort_type_order == "pending") echo "selected=''"; ?>>Pending</option>
                                             <option value="completed" <?php if ($qstring_sort_type_order == "completed") echo "selected=''"; ?>>Completed</option>
                                             <option value="canceled" <?php if ($qstring_sort_type_order == "canceled") echo "selected=''"; ?>>Canceled</option>
                                         </select>
+
+                                        <?php
+                                        if (isset($session_sort_type_order)) {
+                                            Session::put('order-sort-type', "");
+                                        }
+                                        ?>
                                     </div>
                                 </div>
                             </div>
@@ -162,7 +233,7 @@
                                             @endif
                                         </td>
                                     </tr>
-                                @endforeach
+                                    @endforeach
                                 <div class="modal fade" id="delete_purchase_order" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -171,24 +242,24 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
-<!--                                                {!! Form::open(array('method'=>'DELETE','url'=>url('purchase_orders',$purchase_order->id), 'id'=>'delete_purchase_order_form'))!!}-->
+                                                <!--                                                {!! Form::open(array('method'=>'DELETE','url'=>url('purchase_orders',$purchase_order->id), 'id'=>'delete_purchase_order_form'))!!}-->
                                                 <form method="post" class="delete_purchase_order" >
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <div class="delete">
-                                                    <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
-                                                    <div class="pwd">
-                                                        <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" placeholder="" type="password" name="password" id="pwdr" required=""></div>
+                                                    <div class="delete">
+                                                        <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
+                                                        <div class="pwd">
+                                                            <div class="pwdl"><b>Password:</b></div>
+                                                            <div class="pwdr"><input class="form-control" placeholder="" type="password" name="password" id="pwdr" required=""></div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                        <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
                                                     </div>
-                                                    <div class="clearfix"></div>
-                                                    <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
-                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <input type="hidden" name="order_sort_type" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="button" class="btn btn-default delete_purchase_order_submit" id="delete_purchase_order_submit">Yes</button>
-                                            </form>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>

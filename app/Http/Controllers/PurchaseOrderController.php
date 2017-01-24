@@ -25,6 +25,7 @@ use DateTime;
 use App\ProductSubCategory;
 use Session;
 use App\PurchaseAdvise;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PurchaseOrderController extends Controller {
 
@@ -38,6 +39,122 @@ class PurchaseOrderController extends Controller {
         $this->middleware('validIP');
     }
 
+    
+    
+        /* Function used to export order details in excel */
+
+    public function exportPurchaseOrderBasedOnStatus() {
+        $data = Input::all();
+        if ($data['order_status'] == 'pending') {
+//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+            $order_status = 'pending';
+            $excel_sheet_name = 'Pending';
+            $excel_name = 'Purchase-Order-Pending-' . date('dmyhis');
+        } elseif ($data['order_status'] == 'completed') {
+//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+            $order_status = 'completed';
+            $excel_sheet_name = 'Completed';
+            $excel_name = 'Purchase-Order-Completed-' . date('dmyhis');
+        } elseif ($data['order_status'] == 'cancelled') {
+//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+            $order_status = 'cancelled';
+            $excel_sheet_name = 'Cancelled';
+            $excel_name = 'Purchase-Order-Cancelled-' . date('dmyhis');
+        }
+        
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
+            $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+            $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+            if(Auth::user()->role_id <> 5)
+            {
+                if ($date1 == $date2) {
+                    $order_objects = PurchaseOrder::where('order_status', $order_status)
+                            ->where('updated_at', 'like', $date1 . '%')
+                            ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+                } else {
+                    $order_objects = PurchaseOrder::where('order_status', $order_status)
+                            ->where('updated_at', '>=', $date1)
+                            ->where('updated_at', '<=', $date2)
+                            ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+                }
+            }
+            if(Auth::user()->role_id == 5)
+            {
+                $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)
+                    ->first();  
+                
+                if ($date1 == $date2) {
+                    $order_objects = PurchaseOrder::where('updated_at', 'like', $date1 . '%')
+                            -> where('customer_id','=',$cust->id)
+                            ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+                } else {
+                    $order_objects = PurchaseOrder::where('updated_at', '>=', $date1)
+                            ->where('updated_at', '<=', $date2)
+                            ->where('customer_id','=',$cust->id)
+                            ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+                }
+            }
+            
+            
+        } else {
+            
+            if(Auth::user()->role_id <> 5)
+            {
+        
+                $order_objects = PurchaseOrder::where('order_status', $order_status)
+                    ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+            }
+           
+            if(Auth::user()->role_id == 5){
+               $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)
+                    ->first();  
+                     
+                
+               $order_objects = PurchaseOrder::with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
+                    -> where('customer_id','=',$cust->id)   
+                    ->orderBy('created_at', 'desc')
+                    ->get(); 
+               
+               $excel_sheet_name = 'Purchase-Order';
+               $excel_name = 'Purchase-Order-' . date('dmyhis');
+            }
+        }
+
+        if (count($order_objects) == 0) {
+            return redirect::back()->with('flash_message', 'Purchase Order does not exist.');
+        } else {
+            $units = Units::all();
+            $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
+            $customers = Customer::orderBy('tally_name', 'ASC')->get();
+            
+//            echo "<pre>";
+//            print_r($order_objects[0]['purchase_products'][0]->toArray());
+//            echo "</pre>";
+//            exit;
+//            
+            
+            Excel::create($excel_name, function($excel) use($order_objects, $units, $delivery_location, $customers, $excel_sheet_name) {
+                $excel->sheet('Purchase-Order-' . $excel_sheet_name, function($sheet) use($order_objects, $units, $delivery_location, $customers) {
+                    $sheet->loadView('excelView.purchase_order', array('order_objects' => $order_objects, 'units' => $units, 'delivery_location' => $delivery_location, 'customers' => $customers));
+                });
+            })->export('xls');
+        }
+    }
+    
     /*
      * Show purchase order list
      */
@@ -67,7 +184,7 @@ class PurchaseOrderController extends Controller {
         }
 //        $session_sort_type_order = Session::get('order-sort-type');
 //        $qstring_sort_type_order = $data['purchase_order_filter'];
-        $session_sort_type_order = Session::get('order-sort-type');
+        $session_sort_type_order = Session::get('purchase-order-sort-type');
         if (isset($data['purchase_order_filter']))
             $qstring_sort_type_order = $data['purchase_order_filter'];
         if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
@@ -86,6 +203,22 @@ class PurchaseOrderController extends Controller {
                 $q = $q->where('order_status', '=', 'pending');
             }
         }
+        
+          if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+                $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+                $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+                if ($date1 == $date2) {
+                    $q->where('updated_at', 'like', $date1 . '%');
+                } else {
+                    $q->where('updated_at', '>=', $date1);
+                    $q->where('updated_at', '<=', $date2);
+                }
+                $search_dates = [
+                    'export_from_date' => $data["export_from_date"],
+                    'export_to_date' => $data["export_to_date"]
+                ];
+            }
+        
         $purchase_orders = $q->orderBy('created_at', 'desc')
                 ->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')
                 ->Paginate(20);

@@ -11,14 +11,76 @@
                 </ol>
                 <div class="clearfix">
                     <h1 class="pull-left">Purchase Challan</h1>
+                    <?php
+                    $session_sort_type_order = Session::get('order-sort-type');
+                    $qstring_sort_type_order = Input::get('order_filter');
+                    if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
+                        $qstring_sort_type_order = $qstring_sort_type_order;
+                    } else {
+                        $qstring_sort_type_order = $session_sort_type_order;
+                    }
+                    ?>
                     <div class="pull-right top-page-ui">
-                        <form action="{{url('purchase_challan')}}" method="GET">
-                            <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
-                                <option value="" selected="">--Status-- </option>
-                                <option <?php if (Input::get('order_filter') == 'pending') echo 'selected=""'; ?> value="pending">Pending</option>
-                                <option <?php if (Input::get('order_filter') == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
-                            </select>
-                        </form>
+                        <div class="form-group pull-right">
+                            <form action="{{url('purchase_challan')}}" method="GET">
+                                <div class="col-md-12">
+                                    <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
+                                        <!--<option value="" selected="">--Status-- </option>-->
+                                        <option <?php if (Input::get('order_filter') == 'pending') echo 'selected=""'; ?> value="pending">Pending</option>
+                                        <option <?php if (Input::get('order_filter') == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+
+
+                        <div>
+
+                            <form class="search_form" method="GET" action="{{URL::action('PurchaseChallanController@index')}}">
+                                <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
+                                if (Input::get('export_from_date') != "") {
+                                    echo "value='" . Input::get('export_from_date') . "'";
+                                }
+                                ?>>
+                                <input type="text" placeholder="To" name="export_to_date" class="form-control export_to_date" id="export_to_date" <?php
+                                if (Input::get('export_to_date') != "") {
+                                    echo "value='" . Input::get('export_to_date') . "'";
+                                }
+                                ?>>
+                                @if(Input::get('order_filter') == 'completed')
+                                <input type="hidden" name="order_filter" value="completed">
+                               
+                                @elseif(Input::get('order_filter') == 'pending')
+                                <input type="hidden" name="order_filter" value="pending">
+                                @else
+                                <input type="hidden" name="order_filter" value="pending">
+                                @endif
+                                <input type="submit" disabled="" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                            </form>
+                            <form class="pull-left" method="POST" action="{{URL::action('PurchaseChallanController@exportPurchaseChallanBasedOnStatus')}}">
+                                <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                                <input type="hidden" name="export_from_date" id="export_from_date" <?php
+                                if (Input::get('export_to_date') != "") {
+                                    echo "value='" . Input::get('export_from_date') . "'";
+                                }
+                                ?>>
+                                <input type="hidden" name="export_to_date" id="export_to_date" <?php
+                                if (Input::get('export_to_date') != "") {
+                                    echo "value='" . Input::get('export_to_date') . "'";
+                                }
+                                ?>>
+                                @if(Input::get('order_filter') == 'completed' )
+                                <input type="hidden" name="order_filter" value="completed">
+                                @elseif(Input::get('order_filter') == 'delivered' )
+                                <input type="hidden" name="order_filter" value="completed">
+                                @elseif(Input::get('order_filter') == 'pending')
+                                <input type="hidden" name="order_filter" value="pending">
+                                @else
+                                <input type="hidden" name="order_filter" value="pending">
+                                @endif
+                                <input type="submit"  name="export_data" value="Export" class="btn btn-primary pull-right " style=" float: left !important; margin-left: 2% !important;">
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -107,8 +169,8 @@
 
                                     </tr>
 
-                                
-                                @endforeach
+
+                                    @endforeach
                                 <div class="modal fade" id="delete_purchase_challan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -119,15 +181,15 @@
                                             <div class="modal-body">
                                                 <form method="POST" id="delete_purchase_challan_form">
                                                     <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                                <div class="delete">
-                                                    <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
-                                                    <div class="pwd">
-                                                        <div class="pwdl"><b>Password:</b></div>
-                                                        <div class="pwdr"><input class="form-control" required="" placeholder="" type="password" name="password"></div>
+                                                    <div class="delete">
+                                                        <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
+                                                        <div class="pwd">
+                                                            <div class="pwdl"><b>Password:</b></div>
+                                                            <div class="pwdr"><input class="form-control" required="" placeholder="" type="password" name="password"></div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                        <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
                                                     </div>
-                                                    <div class="clearfix"></div>
-                                                    <div class="delp">Are you sure you want to <b>cancel </b> order?</div>
-                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
@@ -170,7 +232,8 @@
                                 </tbody>
                             </table>
                             <span class="pull-right">
-                                <?php echo $purchase_challan->render(); ?>
+                                <?php 
+                                 echo $purchase_challan->appends(Input::except('page'))->render();?>
                             </span>
                             @if($purchase_challan->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">

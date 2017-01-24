@@ -28,17 +28,18 @@
                                     }
                                     ?>
                                     <select class="form-control" id="purchaseaAdviseFilter" name="purchaseaAdviseFilter">
-                                        <option value="" selected="">Status</option>
-                                        <option value="delivered" <?php
-                                        if ($qstring_sort_type_order == "delivered") {
-                                            echo "selected=selected";
-                                        }
-                                        ?>>Delivered</option>
+                                        <!--<option value="" selected="">Status</option>-->
                                         <option value="in_process" <?php
-                                        if ($qstring_sort_type_order == "in_process") {
+                                        if ($qstring_sort_type_order == "in_process" | $qstring_sort_type_order == "Inprocess") {
                                             echo "selected=selected";
                                         }
                                         ?>>Inprocess</option>
+                                        <option value="delivered" <?php
+                                        if ($qstring_sort_type_order == "delivered" | $qstring_sort_type_order == "Delivered") {
+                                            echo "selected=selected";
+                                        }
+                                        ?>>Delivered</option>
+
                                     </select>
                                     <?php
                                     if (isset($session_sort_type_order)) {
@@ -48,6 +49,56 @@
                                 </div>
                             </form>
                         </div>
+
+                        <div>
+
+                            <form class="search_form" method="GET" action="{{URL::action('PurchaseAdviseController@index')}}">
+                                <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
+                                if (Input::get('export_from_date') != "") {
+                                    echo "value='" . Input::get('export_from_date') . "'";
+                                }
+                                ?>>
+                                <input type="text" placeholder="To" name="export_to_date" class="form-control export_to_date" id="export_to_date" <?php
+                                if (Input::get('export_to_date') != "") {
+                                    echo "value='" . Input::get('export_to_date') . "'";
+                                }
+                                ?>>
+                                @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='delivered' )
+                                <input type="hidden" name="purchaseaAdviseFilter" value="Delivered">
+                                 @elseif(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Delivered' )
+                                <input type="hidden" name="purchaseaAdviseFilter" value="Delivered">
+                                @elseif(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='in_process')
+                                <input type="hidden" name="purchaseaAdviseFilter" value="Inprocess">
+                                @else
+                                <input type="hidden" name="purchaseaAdviseFilter" value="Inprocess">
+                                @endif
+                                <input type="submit" disabled="" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                            </form>
+                            <form class="pull-left" method="POST" action="{{URL::action('PurchaseAdviseController@exportPurchaseAdviseBasedOnStatus')}}">
+                                <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                                <input type="hidden" name="export_from_date" id="export_from_date" <?php
+                                if (Input::get('export_to_date') != "") {
+                                    echo "value='" . Input::get('export_from_date') . "'";
+                                }
+                                ?>>
+                                <input type="hidden" name="export_to_date" id="export_to_date" <?php
+                                if (Input::get('export_to_date') != "") {
+                                    echo "value='" . Input::get('export_to_date') . "'";
+                                }
+                                ?>>
+                                @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Delivered' )
+                                <input type="hidden" name="purchaseaAdviseFilter" value="Delivered">
+                                @elseif(isset($qstring_sort_type_order) && $qstring_sort_type_order =='delivered' )
+                                <input type="hidden" name="purchaseaAdviseFilter" value="Delivered">
+                                @elseif(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='in_process')
+                                <input type="hidden" name="purchaseaAdviseFilter" value="Inprocess">
+                                @else
+                                <input type="hidden" name="purchaseaAdviseFilter" value="Inprocess">
+                                @endif
+                                <input type="submit"  name="export_data" value="Export" class="btn btn-primary pull-right " style=" float: left !important; margin-left: 2% !important;">
+                            </form>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -100,7 +151,7 @@
                                     @endforeach
                                     <tr id="purchase_advice_row_{{$pa->id}}">
                                         <td>{{ $i }}</td>
-                                        <td>{{ date("F jS, Y", strtotime($pa->purchase_advice_date)) }}</td>
+                                        <td>{{ date("F jS, Y", strtotime($pa->updated_at)) }}</td>
                                         <td>{{($pa['supplier']->tally_name != "" ) ? $pa['supplier']->tally_name:$pa['supplier']->owner_name}}</td>
                                         <td>{{ $pa->vehicle_number}}</td>
                                         <td>{{ round($pa->total_quantity, 2) }}</td>
@@ -244,7 +295,7 @@
                                 </tbody>
                             </table>
                             <span class="pull-right">
-                                <?php echo $purchase_advise->render() ?>
+                                <?php echo $purchase_advise->appends(Input::except('page'))->render(); ?>
                             </span>
                             @if($purchase_advise->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
