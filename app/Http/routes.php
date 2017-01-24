@@ -287,6 +287,9 @@ Route::any('updatecity_delievrylocation', 'HomeController@updatecity_delievryloc
 Route::post('export-delivery-order', 'DeliveryOrderController@exportDeliveryOrderBasedOnStatus');
 Route::post('export-delivery-challan', 'DeliveryChallanController@exportDeliveryChallanBasedOnStatus');
 Route::post('export-order', 'OrderController@exportOrderBasedOnStatus');
+Route::post('export-purchase-order', 'PurchaseOrderController@exportPurchaseOrderBasedOnStatus');
+Route::post('export-purchase-advise', 'PurchaseAdviseController@exportPurchaseAdviseBasedOnStatus');
+Route::post('export-purchase-challan', 'PurchaseChallanController@exportPurchaseChallanBasedOnStatus');
 Route::get('export-inquiry/{inquiry_status}', 'InquiryController@exportinquiryBasedOnStatus');
 Route::get('get-data', 'DeliveryOrderController@get_data');
 
