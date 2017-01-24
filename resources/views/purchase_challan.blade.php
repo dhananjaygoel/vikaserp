@@ -34,7 +34,7 @@
                         </div>
 
 
-                        <div>
+                        <div class="search_form_wrapper pull-right" style="width:100% ">
 
                             <form class="search_form" method="GET" action="{{URL::action('PurchaseChallanController@index')}}">
                                 <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
@@ -85,6 +85,7 @@
                 </div>
             </div>
         </div>
+        <br>
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
