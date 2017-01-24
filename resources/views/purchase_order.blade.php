@@ -21,8 +21,7 @@
                 }
                 ?>
                 
-                <?php echo $qstring_sort_type_order ;?>
-
+                
                 <ol class="breadcrumb">
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Purchase Orders</span></li>
