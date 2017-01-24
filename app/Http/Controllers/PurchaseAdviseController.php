@@ -161,7 +161,7 @@ class PurchaseAdviseController extends Controller {
                             ->get();
                 } else {
                     $order_objects = PurchaseAdvise::where('updated_at', '>=', $date1)
-                            ->where('updated_at', '<=', $date2)
+                            ->where('updated_at', '<=', $date2.' 23:59:59')
                             ->where('customer_id','=',$cust->id)
                             ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'supplier')
                             ->orderBy('created_at', 'desc')

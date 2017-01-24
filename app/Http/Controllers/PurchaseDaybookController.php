@@ -49,7 +49,7 @@ class PurchaseDaybookController extends Controller {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
                         ->where('order_status', 'completed')
                         ->where('updated_at', '>=', $date1)
-                        ->where('updated_at', '<=', $date2)
+                        ->where('updated_at', '<=', $date2.' 23:59:59')
                         ->with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
                         ->orderBy('created_at', 'desc')
                         ->Paginate(20);
@@ -129,7 +129,7 @@ class PurchaseDaybookController extends Controller {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
                         ->where('order_status', 'completed')
                         ->where('updated_at', '>=', $date1)
-                        ->where('updated_at', '<=', $date2)
+                        ->where('updated_at', '<=', $date2.' 23:59:59')
                         ->orderBy('created_at', 'desc')
                         ->get();
             }

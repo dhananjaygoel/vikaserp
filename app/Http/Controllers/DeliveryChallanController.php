@@ -79,7 +79,7 @@ class DeliveryChallanController extends Controller {
                 } else {
                     $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
                                     ->where('updated_at', '>=', $date1)
-                                    ->where('updated_at', '<=', $date2)
+                                    ->where('updated_at', '<=', $date2 .' 23:59:59')
                                     ->with('customer', 'delivery_challan_products', 'delivery_order')
                                     ->orderBy('updated_at', 'desc')->Paginate(20);
                 }
@@ -885,7 +885,7 @@ class DeliveryChallanController extends Controller {
             } else {
                 $delivery_challan_objects = DeliveryChallan::where('challan_status', 'like', '%' . $delivery_order_status . '%')
                         ->where('updated_at', '>=', $date1)
-                        ->where('updated_at', '<=', $date2)
+                        ->where('updated_at', '<=', $date2.' 23:59:59')
                         ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')
                         ->orderBy('updated_at', 'desc')
                         ->get();

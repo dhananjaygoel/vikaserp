@@ -87,7 +87,7 @@ class DeliveryOrderController extends Controller {
                 $q->where('updated_at', 'like', $date1 . '%');
             } else {
                 $q->where('updated_at', '>=', $date1);
-                $q->where('updated_at', '<=', $date2);
+                $q->where('updated_at', '<=', $date2.' 23:59:59');
             }
             $search_dates = [
                 'export_from_date' => $data["export_from_date"],
@@ -995,7 +995,7 @@ class DeliveryOrderController extends Controller {
             } else {
                 $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)
                         ->where('updated_at', '>=', $date1)
-                        ->where('updated_at', '<=', $date2)
+                        ->where('updated_at', '<=', $date2.' 23:59:59')
                         ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')
                         ->orderBy('created_at', 'desc')
                         ->get();

@@ -116,7 +116,7 @@ class OrderController extends Controller {
                     $q->where('updated_at', 'like', $date1 . '%');
                 } else {
                     $q->where('updated_at', '>=', $date1);
-                    $q->where('updated_at', '<=', $date2);
+                    $q->where('updated_at', '<=', $date2.' 23:59:59');
                 }
                 $search_dates = [
                     'export_from_date' => $data["export_from_date"],
@@ -1201,7 +1201,7 @@ class OrderController extends Controller {
                 } else {
                     $order_objects = Order::where('order_status', $order_status)
                             ->where('updated_at', '>=', $date1)
-                            ->where('updated_at', '<=', $date2)
+                            ->where('updated_at', '<=', $date2.' 23:59:59')
                             ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
                             ->orderBy('created_at', 'desc')
                             ->get();
@@ -1222,7 +1222,7 @@ class OrderController extends Controller {
                             ->get();
                 } else {
                     $order_objects = Order::where('updated_at', '>=', $date1)
-                            ->where('updated_at', '<=', $date2)
+                            ->where('updated_at', '<=', $date2.' 23:59:59')
                             ->where('customer_id','=',$cust->id)
                             ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
                             ->orderBy('created_at', 'desc')
