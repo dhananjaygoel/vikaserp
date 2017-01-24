@@ -20,12 +20,14 @@
                     $qstring_sort_type_order = $session_sort_type_order;
                 }
                 ?>
+                
+                <?php echo $qstring_sort_type_order ;?>
 
                 <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
+                    <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Purchase Orders</span></li>
                 </ol>
-
+                <h1 class="pull-left">Purchase Orders</h1>
                 <div class="search_form_wrapper orders_search_wrapper">
                     <form class="search_form" method="GET" action="{{URL::action('PurchaseOrderController@index')}}">
                         <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
@@ -74,8 +76,7 @@
                     </form>
                 </div>
 
-                <div class="filter-block">
-                    <h1 class="pull-left">Purchase Orders</h1>
+                <div class="filter-block">                   
                     <div class="pull-right top-page-ui">
                         <form method="GET" action="{{url('purchase_orders')}}">
                             <div class="filter-block pull-right">
@@ -111,18 +112,10 @@
                                 </div>
                                 <div class="form-group pull-left">
                                     <div class="col-md-12">
-                                        <?php
-                                        $session_sort_type_order = Session::get('order-sort-type');
-                                        $qstring_sort_type_order = Input::get('purchase_order_filter');
+                                       
+                                        
+                                        <select class="form-control" id="purchase_order_filter" name="order_filter" onchange="this.form.submit();">
 
-                                        if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
-                                        $qstring_sort_type_order = $qstring_sort_type_order;
-                                        } else {
-                                        $qstring_sort_type_order = $session_sort_type_order;
-                                        }
-                                        ?>
-                                        <select class="form-control" id="purchase_order_filter" name="purchase_order_filter" onchange="this.form.submit();">
-                                           
                                             <option value="pending" <?php if ($qstring_sort_type_order == "pending") echo "selected=''"; ?>>Pending</option>
                                             <option value="completed" <?php if ($qstring_sort_type_order == "completed") echo "selected=''"; ?>>Completed</option>
                                             <option value="canceled" <?php if ($qstring_sort_type_order == "canceled") echo "selected=''"; ?>>Canceled</option>
@@ -168,7 +161,7 @@
                                         <th>Order By</th>
                                         <th>Total Quantity</th>
                                         <th>Pending Quantity</th>
-                                        @if(Input::get('purchase_order_filter') == 'pending'  || Input::get('purchase_order_filter') == '')
+                                        @if(Input::get('order_filter') == 'pending'  || Input::get('order_filter') == '')
                                         <th class="text-center">Create Purchase Advice</th>
                                         @endif
                                         <th class="text-center">Actions</th>
@@ -190,7 +183,7 @@
                                             {{round($purchase_order->pending_quantity, 2)}}
                                         </td>
 
-                                        @if(Input::get('purchase_order_filter') == 'pending'  || Input::get('purchase_order_filter') == '')
+                                        @if(Input::get('order_filter') == 'pending'  || Input::get('order_filter') == '')
                                         <td class="text-center">
                                             <a href="{{ url('create_purchase_advice'.'/'.$purchase_order->id)}}" class="table-link" title="Create Purchase Advice">
                                                 <span class="fa-stack">

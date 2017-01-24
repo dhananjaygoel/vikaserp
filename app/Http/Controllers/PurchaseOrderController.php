@@ -174,19 +174,21 @@ class PurchaseOrderController extends Controller {
         } elseif ((isset($data['order_for_filter'])) && $data['order_for_filter'] == 'direct') {
             $q->where('order_for', '!=', 0)->get();
         }
+        
+               
         if (Auth::user()->role_id > 2) {
-            if ((isset($data['purchase_order_filter'])) && $data['purchase_order_filter'] != '') {
-                $q = $q->where('order_status', '=', $data['purchase_order_filter'])
+            if ((isset($data['order_filter'])) && $data['order_filter'] != '') {
+                $q = $q->where('order_status', '=', $data['order_filter'])
                         ->where('is_view_all', '=', 0);
             } else {
                 $q = $q->where('order_status', '=', 'pending')->where('is_view_all', '=', 0);
             }
         }
 //        $session_sort_type_order = Session::get('order-sort-type');
-//        $qstring_sort_type_order = $data['purchase_order_filter'];
+//        $qstring_sort_type_order = $data['order_filter'];
         $session_sort_type_order = Session::get('purchase-order-sort-type');
-        if (isset($data['purchase_order_filter']))
-            $qstring_sort_type_order = $data['purchase_order_filter'];
+        if (isset($data['order_filter']))
+            $qstring_sort_type_order = $data['order_filter'];
         if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
             $qstring_sort_type_order = $qstring_sort_type_order;
         } else {
@@ -197,12 +199,17 @@ class PurchaseOrderController extends Controller {
             }
         }
         if (Auth::user()->role_id < 2) {
-            if ((isset($qstring_sort_type_order)) && $qstring_sort_type_order != '') {
-                $q = $q->where('order_status', '=', $qstring_sort_type_order);
+            if ((isset($data['order_status'])) && $data['order_status'] != '') {
+                $q = $q->where('order_status', '=', $data['order_status']);
             } else {
                 $q = $q->where('order_status', '=', 'pending');
             }
         }
+        
+//        echo "<pre>";
+//        print_r($data);
+//        echo "</pre>";
+//        exit;
         
           if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
                 $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
