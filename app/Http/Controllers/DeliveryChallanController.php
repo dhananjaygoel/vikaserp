@@ -287,7 +287,11 @@ class DeliveryChallanController extends Controller {
     /**
      * Show Edit Delivery Challan Details
      */
-    public function edit($id) {
+    public function edit($id="") {
+        
+        if (Auth::user()->role_id == 5 | $id=="") {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+           }        
 
         $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order')
 //                ->where('challan_status', '=', 'pending')

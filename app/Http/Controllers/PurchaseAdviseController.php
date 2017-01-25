@@ -354,7 +354,11 @@ class PurchaseAdviseController extends Controller {
     /**
      * Display the specified resource.
      */
-    public function show($id) {
+    public function show($id ="") {
+        if (Auth::user()->role_id == 5 | $id =="" ) {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+           } 
+        
         $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details')->find($id);
         if (count($purchase_advise) < 1) {
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advise not found');

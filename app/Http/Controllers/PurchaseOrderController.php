@@ -720,8 +720,12 @@ class PurchaseOrderController extends Controller {
         }
     }
 
-    public function create_purchase_advice($order_id) {
+    public function create_purchase_advice($order_id="") {
 
+        if (Auth::user()->role_id == 5 | $order_id=="") {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+           }     
+        
         $purchase_orders = PurchaseOrder::with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer', 'purchase_advice.purchase_products')->find($order_id);
         foreach ($purchase_orders['purchase_products'] as $key => $value) {
             $purchase_advise_products = PurchaseProducts::where('parent', '=', $value->id)->get();

@@ -326,8 +326,12 @@ class PurchaseChallanController extends Controller {
     /**
      * Display the specified resource.
      */
-    public function show($id) {
-
+    public function show($id="") {
+        
+        if (Auth::user()->role_id == 5 | $id=="") {
+           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+           }           
+        
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'purchase_product.purchase_product_details', 'purchase_product.unit')->find($id);
         if (count($purchase_challan) < 1) {
             return redirect('purchase_challan')->with('flash_message', 'Challan not found');
