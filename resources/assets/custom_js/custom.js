@@ -2044,8 +2044,8 @@ $("#product_size").autocomplete({
     dataType: 'json',
     type: 'GET',
     position: {
-        my: "left bottom",
-        at: "left top"
+//        my: "left bottom",
+//        at: "left top"
     },
     source: function (request, response) {
         $("#product_size").addClass('loadinggif');
@@ -2097,8 +2097,8 @@ $("#search_text").autocomplete({
     dataType: 'json',
     type: 'GET',
     position: {
-        my: "left bottom",
-        at: "left top"
+//        my: "left bottom",
+//        at: "left top"
     },
     source: function (request, response) {
         $("#search_text").addClass('loadinggif');
@@ -2149,6 +2149,7 @@ $("#search_inventory").autocomplete({
         });
     },
     select: function (event, ui) {
+//        console.log(ui.item.label);
         $("#search_inventory").val(ui.item.label);
     },
     close: function (event, ui) {
