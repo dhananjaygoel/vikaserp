@@ -73,7 +73,8 @@ class InventoryController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
- 
+       
+        
         $this->updateOpeningStock();
         $q = Inventory::query();
         $inventory_list = $q->with('product_sub_category')->paginate(50);
@@ -327,6 +328,14 @@ class InventoryController extends Controller {
                 $q->where('product_category_id', '=', $categoryid);
             });
         }
+        
+        if (Input::has('search_inventory') && Input::get('search_inventory') != '') {
+            $alias_name = '%' .Input::get('search_inventory'). '%';
+            $product_sub_id = ProductSubCategory::where('alias_name', 'LIKE',  $alias_name)->first();
+            $query->where('product_sub_category_id','=',$product_sub_id->id);
+           
+        }
+        
         $product_category = ProductCategory::orderBy('created_at', 'desc')->get();
         //$inventory_newlist = $query->with('product_sub_category')->paginate(50);
 //        $inventory_newlist = $query->with(array('product_sub_category' => function($query1) {
