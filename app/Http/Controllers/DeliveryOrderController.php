@@ -481,7 +481,7 @@ class DeliveryOrderController extends Controller {
 
     public function create_delivery_challan($id="") {
 
-        if (Auth::user()->role_id == 5 | $id="") {
+        if (Auth::user()->role_id == 5 | $id=="") {
            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
            } 
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
