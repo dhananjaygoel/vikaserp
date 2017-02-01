@@ -320,6 +320,62 @@ class PurchaseChallanController extends Controller {
                 $add_order_products = PurchaseProducts::create($order_products);
             }
         }
+        
+        
+                $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'all_purchase_products.purchase_product_details', 'all_purchase_products.unit')->find($id);
+
+        /*
+         * ------------------- -----------------------
+         * SEND SMS TO CUSTOMER FOR NEW PURCHASE CHALLAN
+         * -------------------------------------------
+         */
+        $input_data = $purchase_challan['all_purchase_products'];
+        $send_sms = Input::get('send_sms');
+        if ($send_sms == 'true') {
+            $customer_id = $purchase_challan->supplier_id;
+            $customer = Customer::with('manager')->find($customer_id);
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour meterial has been edited as follows ";
+                foreach ($input_data as $product_data) {
+                    $product = ProductSubCategory::find($product_data->product_category_id);
+                    if ($product_data['unit']->id == 1) {
+                        $total_quantity = $total_quantity + $product_data->quantity;
+                    }
+                    if ($product_data['unit']->id == 2) {
+                        $total_quantity = $total_quantity + $product_data->quantity * $product->weight;
+                    }
+                    if ($product_data['unit']->id == 3) {
+                        $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
+                    }
+                }
+                $str .= " Trk No. " . $purchase_challan['purchase_advice']->vehicle_number
+                        . ", Qty. " . round($input_data->sum('quantity'), 2)
+                        . ", Amt. " . $purchase_challan->grand_total
+                        . ", Due by " . date("jS F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
+                        . ".\nVIKAS ASSOCIATES";
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+//                    $phone_number = $customer->phone_number1;
+                    $phone_number = $customer['manager']->mobile_number;
+                }
+
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+        }
+        
+        
+        
+        
+        
         return redirect('purchase_challan')->with('success', 'Challan details successfully added.');
     }
 
