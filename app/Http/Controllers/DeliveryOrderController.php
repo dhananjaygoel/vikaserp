@@ -445,10 +445,7 @@ class DeliveryOrderController extends Controller {
             }
       
         
-        echo "<pre>";
-        print_r($str);
-        echo "</pre>";
-        exit;
+      
         
         
         
