@@ -183,6 +183,10 @@ class CustomerController extends Controller {
                     }
                 }
             }
+            
+           $customer_id = $customer->id ;
+           
+           
             /*
               | ----------------------
               | SEND SMS TO ALL ADMINS
@@ -190,10 +194,12 @@ class CustomerController extends Controller {
              */
             $input = Input::all();
             $admins = User::where('role_id', '=', 4)->get();
+            $customer = Customer::with('manager')->find($customer_id);
+            
             if (count($admins) > 0) {
                 foreach ($admins as $key => $admin) {
                     $product_type = ProductType::find($request->input('product_type'));
-                    $str = "Dear '" . $admin->first_name . "'\n" . "DT " . date("j M, Y") . "\n'" . Auth::user()->first_name . "' has created a new customer as '" . Input::get('owner_name') . "' kindly chk. \nVIKAS ASSOCIATES";
+                    $str = "Dear '" . $admin->first_name . "'\n" . "DT " . date("j M, Y") . "\n'" . Auth::user()->first_name . "' has created a new customer as '" . Input::get('owner_name') . "' kindly check. \nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -207,6 +213,44 @@ class CustomerController extends Controller {
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
+                }
+            }
+            
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                 $str = "Dear '" . $customer->owner_name  . "'\n" . "DT " . date("j M, Y") . "\n'" . Auth::user()->first_name . "' has created a new customer as '" . Input::get('owner_name') . "' kindly check. \nVIKAS ASSOCIATES";
+               
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
+
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+
+            if (count($customer['manager']) > 0) {
+                $str = "Dear '" . $customer['manager']->first_name  . "'\n" . "DT " . date("j M, Y") . "\n'" . Auth::user()->first_name . "' has created a new customer as '" . Input::get('owner_name') . "' kindly check. \nVIKAS ASSOCIATES";                
+               
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer['manager']->mobile_number;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
                 }
             }
             return redirect('customers')->with('success', 'Customer Succesfully added');
@@ -363,6 +407,58 @@ class CustomerController extends Controller {
                     }
                 }
             }
+            
+            
+             /*
+              | ----------------------
+              | SEND SMS TO  ADMIN AND CUSTOMER
+              | ----------------------
+             */
+          
+            $customer = Customer::with('manager')->find($id);
+            
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                 $str = "Dear '" . $customer->owner_name  . "'\n" . "DT " . date("j M, Y") . "\n'" . Auth::user()->first_name . "' has edited your profile - '" . Input::get('owner_name') . "' kindly check. \nVIKAS ASSOCIATES";
+               
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
+
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+
+            if (count($customer['manager']) > 0) {
+                $str = "Dear '" . $customer['manager']->first_name  . "'\n" . "DT " . date("j M, Y") . "\n'" . Auth::user()->first_name . "' has edited a customer - '" . Input::get('owner_name') . "' kindly check. \nVIKAS ASSOCIATES";                
+               
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer['manager']->mobile_number;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+            
+           
+            
+            
+            
             return redirect('customers')->with('success', 'Customer details updated successfully');
         } else {
             return Redirect::back()->with('error', 'Some error occoured while saving customer');
