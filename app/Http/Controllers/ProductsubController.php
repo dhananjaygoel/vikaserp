@@ -319,7 +319,54 @@ class ProductsubController extends Controller {
 
     public function update_difference() {
         ProductSubCategory::where('id', Input::get('id'))->update(array('difference' => Input::get('difference')));
-        return redirect('product_sub_category')->with('success', 'Product sub category difference successfully updated.');
+        
+  /*
+         * ------------------- -----------------------
+         * SEND SMS TO ALL ADMINS FOR NEW PRODUCT SIZE
+         * -------------------------------------------
+         */
+        $input = Input::all();
+      
+            $admins = User::where('role_id', '=', 1)->get();
+            if (count($admins) > 0) {
+                foreach ($admins as $key => $admin) {
+                    $productsubcategory=ProductSubCategory::find(Input::get('id'));
+                    $product_category = ProductCategory::with('product_type')->find($productsubcategory->product_category_id);
+                    
+                    
+                    $str = "Dear " . $admin->first_name . " \n" .
+                            "DT " . date("j M, Y") . "\n" .
+                            Auth::user()->first_name . " has edited a new size as "
+                            . "'" . $productsubcategory->size . "', "
+                            . "'" . $productsubcategory->thickness . "', "
+                            . "'" . $productsubcategory->weight . "', "
+                            . "'" . $productsubcategory->alias_name . "', "
+                            . "'" . $productsubcategory->difference . "' "
+                            . "under "
+                            . "'" . $product_category->product_category_name . "' "
+                            . "& "
+                            . "'" . $product_category['product_type']->name . "' "
+                            . "kindly chk. \nVIKAS ASSOCIATES";
+
+
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $admin->mobile_number;
+                    }
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+            }
+       
+        
+//        return redirect('product_sub_category')->with('success', 'Product sub category difference successfully updated.');
     }
 
     public function get_product_weight() {
