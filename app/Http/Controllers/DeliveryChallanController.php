@@ -436,6 +436,60 @@ class DeliveryChallanController extends Controller {
             $delivery_challan_prod = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->first();
             $delivery_challan->updated_at = $delivery_challan_prod->updated_at;
             $delivery_challan->save();
+            
+            
+            
+                        /*
+              | ------------------- -----------------------
+              | SEND SMS TO CUSTOMER FOR EDIT DELIVERY CHALLAN
+              | -------------------------------------------
+             */
+            $allorder = DeliveryChallan::where('id', '=', $id)
+                            ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
+            
+            
+            
+            
+            $input_data = $allorder['delivery_challan_products'];
+            $send_sms = Input::get('send_sms');
+  
+                $customer_id = $allorder->customer_id;
+                $customer = Customer::with('manager')->find($customer_id);
+                if (count($customer) > 0) {
+                    $total_quantity = '';
+                    $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour meterial has been edited as follows ";
+                    foreach ($input_data as $product_data) {
+                        $product = ProductSubCategory::find($product_data->product_category_id);
+//                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                        $total_quantity = $total_quantity + $product_data->quantity;
+                    }
+                    $str .= " Trk No. " . $allorder['delivery_order']->vehicle_number .
+                            ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
+                            ", Qty " . $allorder['delivery_challan_products']->sum('actual_quantity') .
+                            ", Amt " . $allorder->grand_price .
+                            ", Due by: " . date("jS F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
+                            "\nVIKAS ASSOCIATES";
+
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer->phone_number1;
+                    }
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+         
+            
+                
+            
+            
+            
         }
         return redirect('delivery_challan')->with('flash_message', 'Delivery Challan details updated successfuly .');
     }
