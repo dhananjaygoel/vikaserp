@@ -401,6 +401,57 @@ class DeliveryOrderController extends Controller {
         $delivery_order_prod = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $id)->first();
         $delivery_order->updated_at = $delivery_order_prod->updated_at;
         $delivery_order->save();
+        
+        
+                /*
+          |------------------- -----------------------
+          | SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
+          | -------------------------------------------
+         */
+//        $input_data = $delivery_order;
+        
+        $delivery_order = DeliveryOrder::with('delivery_product')->find($delivery_order->id);
+        
+        $total_quantity=0;
+            $customer_id = $delivery_order->customer_id;
+            $customer = Customer::with('manager')->find($customer_id);
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear '" . $customer->owner_name . "'\nDT" . date("j M, Y") . "\nYour DO has been edited as follows ";
+                foreach ($delivery_order['delivery_product'] as $product_data) {
+                    $prod = AllOrderProducts::with('product_sub_category')->find($product_data->id);
+                    
+                    
+                    $str .= $prod['product_sub_category']->alias_name . ' - ' . $prod->quantity . ',';
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
+                
+                $str .= " Trk No. " . (!empty($delivery_order->vehicle_number)?$delivery_order->vehicle_number:'N/A') . ", Drv No. " . (!empty($delivery_order->driver_contact_no)? $delivery_order->driver_contact_no:'N/A'). ". \nVIKAS ASSOCIATES";
+                
+               
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+      
+        
+        echo "<pre>";
+        print_r($str);
+        echo "</pre>";
+        exit;
+        
+        
+        
         return redirect('delivery_order')->with('success', 'Delivery order details successfully updated.');
     }
 
