@@ -388,7 +388,7 @@ class PurchaseChallanController extends Controller {
                 $str .= " Vehicle No. " . $purchase_challan['purchase_advice']->vehicle_number
                         . ", Quantity. " . round($input_data->sum('quantity'), 2)
                         . ", Amount. " . $purchase_challan->grand_total
-                        . ", Due by " . date("j F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
+                        . ", Due by " . date("j M, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
                         . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -553,7 +553,7 @@ class PurchaseChallanController extends Controller {
                 $str .= " Vehicle No. " . $purchase_challan['purchase_advice']->vehicle_number
                         . ", Quantity. " . round($input_data->sum('quantity'), 2)
                         . ", Amount " . $purchase_challan->grand_total
-                        . ", Due by " . date("j F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
+                        . ", Due by " . date("j M, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
                         . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -590,7 +590,7 @@ class PurchaseChallanController extends Controller {
                 $str .= " Vehicle No. " . $purchase_challan['purchase_advice']->vehicle_number
                         . ", Quantity. " . round($input_data->sum('quantity'), 2)
                         . ", Amount " . $purchase_challan->grand_total
-                        . ", Due by " . date("j F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
+                        . ", Due by " . date("j M, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
                         . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
