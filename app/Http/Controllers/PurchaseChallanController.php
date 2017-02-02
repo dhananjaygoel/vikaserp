@@ -322,7 +322,7 @@ class PurchaseChallanController extends Controller {
         }
         
         
-                $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'all_purchase_products.purchase_product_details', 'all_purchase_products.unit')->find($id);
+                $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'all_purchase_products.purchase_product_details', 'all_purchase_products.unit')->find($challan_id);
 
         /*
          * ------------------- -----------------------
