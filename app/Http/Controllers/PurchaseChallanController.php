@@ -357,6 +357,42 @@ class PurchaseChallanController extends Controller {
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
+                    $phone_number = $customer->phone_number1;                   
+                }
+
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+            
+            if (count($customer['manager']) > 0) {
+                $total_quantity = '';
+                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\n".Auth::user()->first_name." has edited meterial for".$customer->owner_name." as follows ";
+                foreach ($input_data as $product_data) {
+                    $product = ProductSubCategory::find($product_data->product_category_id);
+                    if ($product_data['unit']->id == 1) {
+                        $total_quantity = $total_quantity + $product_data->quantity;
+                    }
+                    if ($product_data['unit']->id == 2) {
+                        $total_quantity = $total_quantity + $product_data->quantity * $product->weight;
+                    }
+                    if ($product_data['unit']->id == 3) {
+                        $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
+                    }
+                }
+                $str .= " Trk No. " . $purchase_challan['purchase_advice']->vehicle_number
+                        . ", Qty. " . round($input_data->sum('quantity'), 2)
+                        . ", Amt. " . $purchase_challan->grand_total
+                        . ", Due by " . date("jS F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
+                        . ".\nVIKAS ASSOCIATES";
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
 //                    $phone_number = $customer->phone_number1;
                     $phone_number = $customer['manager']->mobile_number;
                 }
@@ -370,6 +406,9 @@ class PurchaseChallanController extends Controller {
                     curl_close($ch);
                 }
             }
+            
+            
+            
         }
         
         
@@ -519,8 +558,8 @@ class PurchaseChallanController extends Controller {
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
-//                    $phone_number = $customer->phone_number1;
-                    $phone_number = $customer['manager']->mobile_number;
+                    $phone_number = $customer->phone_number1;
+//                    $phone_number = $customer['manager']->mobile_number;
                 }
 
                 $msg = urlencode($str);
@@ -532,7 +571,48 @@ class PurchaseChallanController extends Controller {
                     curl_close($ch);
                 }
             }
+            
+            if (count($customer['manager']) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n".Auth::user()->first_name." has desp for ".$customer->owner_name." as follows ";
+                foreach ($input_data as $product_data) {
+                    $product = ProductSubCategory::find($product_data->product_category_id);
+                    if ($product_data['unit']->id == 1) {
+                        $total_quantity = $total_quantity + $product_data->quantity;
+                    }
+                    if ($product_data['unit']->id == 2) {
+                        $total_quantity = $total_quantity + $product_data->quantity * $product->weight;
+                    }
+                    if ($product_data['unit']->id == 3) {
+                        $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
+                    }
+                }
+                $str .= " Trk No. " . $purchase_challan['purchase_advice']->vehicle_number
+                        . ", Qty. " . round($input_data->sum('quantity'), 2)
+                        . ", Amt. " . $purchase_challan->grand_total
+                        . ", Due by " . date("jS F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
+                        . ".\nVIKAS ASSOCIATES";
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+//                    $phone_number = $customer['manager']->mobile_number;
+                }
+
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+            
+            
         }
+        
+        
         return view('print_purchase_challan', compact('purchase_challan'));
     }
 

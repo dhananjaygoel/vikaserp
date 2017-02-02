@@ -381,8 +381,35 @@ class PurchaseOrderController extends Controller {
                     curl_close($ch);
                 }
             }
-        }
+            
+            if (count($customer['manager']) > 0) {              
+                $total_quantity = '';
+                $str = "Dear '" . $customer['manager']->first_name . "'\nDT " . date("j M, Y") . "\n".Auth::user()->first_name."  has logged purchase order for " . $customer->owner_name . " \n";
+                foreach ($input_data['product'] as $product_data) {
+                    if ($product_data['name'] != "") {
+                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
+                        $total_quantity = $total_quantity + $product_data['quantity'];
+                    }
+                }
 
+                $str .= " meterial will be desp by " . date("j F, Y", strtotime($expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                     $phone_number = $customer['manager']->mobile_number;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+        }
+        
+               
         $add_purchase_order = PurchaseOrder::create($add_purchase_order_array);
         $purchase_order_id = DB::getPdo()->lastInsertId();
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
@@ -591,7 +618,7 @@ class PurchaseOrderController extends Controller {
         ];
         /*
          * ------------------- --------------
-         * SEND SMS TO CUSTOMER FOR NEW ORDER
+         * SEND SMS TO CUSTOMER FOR update ORDER
          * ----------------------------------
          */
         $input = Input::all();
@@ -622,7 +649,36 @@ class PurchaseOrderController extends Controller {
                     curl_close($ch);
                 }
             }
+            
+            if (count($customer['manager']) > 0) {
+                $total_quantity = '';
+                $str = "Dear '" . $customer['manager']->first_name . "'\nDT " . date("j M, Y") . "\n".Auth::user()->first_name."  has edited a purchase order for " . $customer->owner_name . " \n";
+                foreach ($input_data['product'] as $product_data) {
+                    if ($product_data['name'] != "") {
+                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
+                        $total_quantity = $total_quantity + $product_data['quantity'];
+                    }
+                }
+                $str .= " meterial will be desp by " . date("j F, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
+
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                   $phone_number = $customer['manager']->mobile_number;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
         }
+        
+        
+        
         $update_purchase_order = $purchase_order->update($add_purchase_order_array);
         if (isset($input_data['purchase_order_location']) && ($input_data['purchase_order_location'] == -1)) {
 

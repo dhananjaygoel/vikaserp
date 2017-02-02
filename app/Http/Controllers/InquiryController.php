@@ -226,7 +226,7 @@ class InquiryController extends Controller {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nyour inq. has been logged for foll. ";
+                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour inquiry has been logged for following\n ";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $product_size = ProductSubCategory::find($product_data['id']);
@@ -261,7 +261,7 @@ class InquiryController extends Controller {
             }
 
             if (count($customer['manager']) > 0) {
-                $str = "Dear '" . $customer['manager']->first_name . "'\n'" . Auth::user()->first_name . "' has logged an enquiry for '" . $customer->owner_name . "', '" . round($total_quantity, 2) . "'. Kindly chk and qt. Vikas Associates";
+                $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has logged an enquiry for '" . $customer->owner_name . "', '" . round($total_quantity, 2) . "'. Kindly check and contact. Vikas Associates";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -277,7 +277,7 @@ class InquiryController extends Controller {
                 }
             }
         }
-
+        
         return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully added.');
     }
 
@@ -567,7 +567,7 @@ class InquiryController extends Controller {
                 }
 
                 if (count($customer['manager']) > 0) {
-                    $str = "Dear '" . $customer['manager']->first_name . "'\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited an enquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly chk and qt.\nVIKAS ASSOCIATES";
+                    $str = "Dear '" . $customer['manager']->first_name . "'\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited an enquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and qt.\nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -913,7 +913,7 @@ class InquiryController extends Controller {
                     curl_close($ch);
                 }
                 if (count($customer['manager']) > 0) {
-                    $str = "Dear '" . $customer['manager']->first_name . "'\n'" . Auth::user()->first_name . "' has created an order for '" . $customer->owner_name . "' '" . round($total_quantity, 2) . "'. Kindly chk. Vikas Associates";
+                    $str = "Dear '" . $customer['manager']->first_name . "'\n'" . Auth::user()->first_name . "' has created an order for '" . $customer->owner_name . "' '" . round($total_quantity, 2) . "'. Kindly check. Vikas Associates";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -948,7 +948,7 @@ class InquiryController extends Controller {
                 AllOrderProducts::create($order_products);
             }
         }
-
+        
         /*
          * send mail
          */
@@ -1011,5 +1011,12 @@ if (count($inquiry_objects) == 0) {
             })->export('xls');
         }
     }
+    
+    
+    function getenviroment()
+    {
+        print_r(App::environment());
+    }
+    
 
 }

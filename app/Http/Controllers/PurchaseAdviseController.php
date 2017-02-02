@@ -469,7 +469,7 @@ class PurchaseAdviseController extends Controller {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour purchase Advise has been edited as follows ";
+                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour Purchase Advise has been edited as follows ";
                 foreach ($input_data as $product_data) {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     $total_quantity = $total_quantity + $product_data->quantity;
@@ -491,8 +491,31 @@ class PurchaseAdviseController extends Controller {
                     curl_close($ch);
                 }
             }
+             if (count($customer['manager']) > 0) {
+                $total_quantity = '';
+                $str = "Dear '" . $customer['manager']->first_name . "'\nDT " . date("j M, Y") . "\n".Auth::user()->first_name." has logged Purchase Advise for " . $customer->owner_name . " \n";
+                foreach ($input_data as $product_data) {
+                    $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
+                $str .= " Trk No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+//                    $phone_number = $customer->phone_number1;
+                    $phone_number = $customer['manager']->mobile_number;
+                }
+
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
      
-        
         
         return redirect('purchaseorder_advise')->with('success', 'Purchase advise updated successfully');
     }
@@ -716,7 +739,31 @@ class PurchaseAdviseController extends Controller {
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
-//                    $phone_number = $customer->phone_number1;
+                    $phone_number = $customer->phone_number1;
+                }
+
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+            
+            if (count($customer['manager']) > 0) {
+                $total_quantity = '';
+                $str = "Dear '" . $customer['manager']->first_name . "'\nDT " . date("j M, Y") . "\n".Auth::user()->first_name." has created Purchase Advise for " . $customer->owner_name . " \n";
+                foreach ($input_data as $product_data) {
+                    $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
+                $str .= " Trk No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+
                     $phone_number = $customer['manager']->mobile_number;
                 }
 
