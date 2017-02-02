@@ -173,7 +173,7 @@ class ProductsubController extends Controller {
                             . "'" . $product_category->product_category_name . "' "
                             . "& "
                             . "'" . $product_category['product_type']->name . "' "
-                            . "kindly chk. \nVIKAS ASSOCIATES";
+                            . "kindly check. \nVIKAS ASSOCIATES";
 
 
                     if (App::environment('development')) {
@@ -292,7 +292,7 @@ class ProductsubController extends Controller {
                                 . "'" . $product_category->product_category_name . "' "
                                 . "& "
                                 . "'" . $product_category['product_type']->name . "' "
-                                . "kindly chk.\nVIKAS ASSOCIATES";
+                                . "kindly check.\nVIKAS ASSOCIATES";
 
                         if (App::environment('development')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
@@ -346,7 +346,7 @@ class ProductsubController extends Controller {
                             . "'" . $product_category->product_category_name . "' "
                             . "& "
                             . "'" . $product_category['product_type']->name . "' "
-                            . "kindly chk. \nVIKAS ASSOCIATES";
+                            . "kindly check. \nVIKAS ASSOCIATES";
 
 
                     if (App::environment('development')) {

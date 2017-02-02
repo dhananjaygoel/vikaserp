@@ -103,7 +103,7 @@ class ProductController extends Controller {
             if (count($admins) > 0) {
                 foreach ($admins as $key => $admin) {
                     $product_type = ProductType::find($request->input('product_type'));
-                    $str = "Dear '" . $admin->first_name . "'\n" . "DT " . date("j M, Y") . "\n'" . Auth::user()->first_name . "' has created a new product catagory as " . $request->input('product_category_name') . " under " . $product_type->name . " kindly chk.\nVIKAS ASSOCIATES";
+                    $str = "Dear '" . $admin->first_name . "'\n" . "DT " . date("j M, Y") . "\n'" . Auth::user()->first_name . "' has created a new product catagory as " . $request->input('product_category_name') . " under " . $product_type->name . " kindly check.\nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -198,7 +198,7 @@ class ProductController extends Controller {
                 foreach ($admins as $key => $admin) {
                     $product_type = ProductType::find($request->input('product_type'));
                     
-                    $str = "Dear '" . $admin->first_name . "'\n" . "DT " . date("j M, Y") . "\n'" . Auth::user()->first_name . "' has edited a product catagory as " . $request->input('product_category_name') . " under " . $product_type->name . " kindly chk.\nVIKAS ASSOCIATES";
+                    $str = "Dear '" . $admin->first_name . "'\n" . "DT " . date("j M, Y") . "\n'" . Auth::user()->first_name . "' has edited a product catagory as " . $request->input('product_category_name') . " under " . $product_type->name . " kindly check.\nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -238,7 +238,7 @@ class ProductController extends Controller {
             if (count($admins) > 0) {
                 foreach ($admins as $key => $admin) {
                     $productcategory=ProductCategory::find($id);
-                    $str = "Dear '" . $admin->first_name . "'\n" . "DT " . date("j M, Y") . "\n'" . Auth::user()->first_name . "' has edited a product category price as " . $productcategory->product_category_name . "-" . $val . " kindly chk.\nVIKAS ASSOCIATES";
+                    $str = "Dear '" . $admin->first_name . "'\n" . "DT " . date("j M, Y") . "\n'" . Auth::user()->first_name . "' has edited a product category price as " . $productcategory->product_category_name . "-" . $val . " kindly check.\nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {

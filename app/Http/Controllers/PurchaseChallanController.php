@@ -336,7 +336,7 @@ class PurchaseChallanController extends Controller {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour meterial has been edited as follows ";
+                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour material has been edited as follows ";
                 foreach ($input_data as $product_data) {
                     $product = ProductSubCategory::find($product_data->product_category_id);
                     if ($product_data['unit']->id == 1) {
@@ -349,10 +349,10 @@ class PurchaseChallanController extends Controller {
                         $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
                     }
                 }
-                $str .= " Trk No. " . $purchase_challan['purchase_advice']->vehicle_number
-                        . ", Qty. " . round($input_data->sum('quantity'), 2)
-                        . ", Amt. " . $purchase_challan->grand_total
-                        . ", Due by " . date("jS F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
+                $str .= " Vehicle No. " . $purchase_challan['purchase_advice']->vehicle_number
+                        . ", Quantity. " . round($input_data->sum('quantity'), 2)
+                        . ", Amount. " . $purchase_challan->grand_total
+                        . ", Due by " . date("j M, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
                         . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -372,7 +372,7 @@ class PurchaseChallanController extends Controller {
             
             if (count($customer['manager']) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\n".Auth::user()->first_name." has edited meterial for".$customer->owner_name." as follows ";
+                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\n".Auth::user()->first_name." has edited material for".$customer->owner_name." as follows ";
                 foreach ($input_data as $product_data) {
                     $product = ProductSubCategory::find($product_data->product_category_id);
                     if ($product_data['unit']->id == 1) {
@@ -385,10 +385,10 @@ class PurchaseChallanController extends Controller {
                         $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
                     }
                 }
-                $str .= " Trk No. " . $purchase_challan['purchase_advice']->vehicle_number
-                        . ", Qty. " . round($input_data->sum('quantity'), 2)
-                        . ", Amt. " . $purchase_challan->grand_total
-                        . ", Due by " . date("jS F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
+                $str .= " Vehicle No. " . $purchase_challan['purchase_advice']->vehicle_number
+                        . ", Quantity. " . round($input_data->sum('quantity'), 2)
+                        . ", Amount. " . $purchase_challan->grand_total
+                        . ", Due by " . date("j F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
                         . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -537,7 +537,7 @@ class PurchaseChallanController extends Controller {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour meterial has been desp as follows ";
+                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour material has been dispatched as follows ";
                 foreach ($input_data as $product_data) {
                     $product = ProductSubCategory::find($product_data->product_category_id);
                     if ($product_data['unit']->id == 1) {
@@ -550,10 +550,10 @@ class PurchaseChallanController extends Controller {
                         $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
                     }
                 }
-                $str .= " Trk No. " . $purchase_challan['purchase_advice']->vehicle_number
-                        . ", Qty. " . round($input_data->sum('quantity'), 2)
-                        . ", Amt. " . $purchase_challan->grand_total
-                        . ", Due by " . date("jS F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
+                $str .= " Vehicle No. " . $purchase_challan['purchase_advice']->vehicle_number
+                        . ", Quantity. " . round($input_data->sum('quantity'), 2)
+                        . ", Amount " . $purchase_challan->grand_total
+                        . ", Due by " . date("j F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
                         . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -574,7 +574,7 @@ class PurchaseChallanController extends Controller {
             
             if (count($customer['manager']) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n".Auth::user()->first_name." has desp for ".$customer->owner_name." as follows ";
+                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n".Auth::user()->first_name." has dispatched for ".$customer->owner_name." as follows ";
                 foreach ($input_data as $product_data) {
                     $product = ProductSubCategory::find($product_data->product_category_id);
                     if ($product_data['unit']->id == 1) {
@@ -587,10 +587,10 @@ class PurchaseChallanController extends Controller {
                         $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
                     }
                 }
-                $str .= " Trk No. " . $purchase_challan['purchase_advice']->vehicle_number
-                        . ", Qty. " . round($input_data->sum('quantity'), 2)
-                        . ", Amt. " . $purchase_challan->grand_total
-                        . ", Due by " . date("jS F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
+                $str .= " Vehicle No. " . $purchase_challan['purchase_advice']->vehicle_number
+                        . ", Quantity. " . round($input_data->sum('quantity'), 2)
+                        . ", Amount " . $purchase_challan->grand_total
+                        . ", Due by " . date("j F, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
                         . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');

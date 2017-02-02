@@ -463,11 +463,11 @@ class DeliveryChallanController extends Controller {
 //                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                         $total_quantity = $total_quantity + $product_data->quantity;
                     }
-                    $str .= " Trk No. " . $allorder['delivery_order']->vehicle_number .
+                    $str .= " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
                             ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
-                            ", Qty " . $allorder['delivery_challan_products']->sum('actual_quantity') .
-                            ", Amt " . $allorder->grand_price .
-                            ", Due by: " . date("jS F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
+                            ", Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
+                            ", Amount " . $allorder->grand_price .
+                            ", Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
                             "\nVIKAS ASSOCIATES";
 
                     if (App::environment('development')) {
@@ -621,17 +621,17 @@ class DeliveryChallanController extends Controller {
                 $customer = Customer::with('manager')->find($customer_id);
                 if (count($customer) > 0) {
                     $total_quantity = '';
-                    $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour meterial has been desp as follows ";
+                    $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour material has been dispatched as follows ";
                     foreach ($input_data as $product_data) {
                         $product = ProductSubCategory::find($product_data->product_category_id);
 //                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                         $total_quantity = $total_quantity + $product_data->quantity;
                     }
-                    $str .= " Trk No. " . $allorder['delivery_order']->vehicle_number .
+                    $str .= " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
                             ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
-                            ", Qty " . $allorder['delivery_challan_products']->sum('actual_quantity') .
-                            ", Amt " . $allorder->grand_price .
-                            ", Due by: " . date("jS F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
+                            ", Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
+                            ", Amount " . $allorder->grand_price .
+                            ", Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
                             "\nVIKAS ASSOCIATES";
 
                     if (App::environment('development')) {

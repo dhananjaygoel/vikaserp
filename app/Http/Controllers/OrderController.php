@@ -352,7 +352,7 @@ class OrderController extends Controller {
             if ($customer->phone_number1 != "") {
                 if (count($customer) > 0) {
                     $total_quantity = '';
-                    $str = "Dear '" . $customer->owner_name . "'\n your order has been logged as following \n";
+                    $str = "Dear '" . $customer->owner_name . "'\n Your order has been logged as following \n";
                     foreach ($input_data['product'] as $product_data) {
                         if ($product_data['name'] != "") {
                             $product = ProductSubCategory::find($product_data['id']);
@@ -368,7 +368,7 @@ class OrderController extends Controller {
                             }
                         }
                     }
-                    $str .= " meterial will be desp by " . date("jS F, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
+                    $str .= " material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -696,7 +696,7 @@ class OrderController extends Controller {
                         }
                     }
                 }
-                $str .= " meterial will be desp by " . date("jS F, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
+                $str .= " material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -833,7 +833,7 @@ class OrderController extends Controller {
             $customer = Customer::with('manager')->find($order['customer']->id);
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\n your order has been completed for following \n";
+                $str = "Dear '" . $customer->owner_name . "'\n Your order has been completed for following \n";
                 foreach ($order['all_order_products'] as $product_data) {
                     $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                 }

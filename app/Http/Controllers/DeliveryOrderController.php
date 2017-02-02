@@ -426,7 +426,7 @@ class DeliveryOrderController extends Controller {
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
                 
-                $str .= " Trk No. " . (!empty($delivery_order->vehicle_number)?$delivery_order->vehicle_number:'N/A') . ", Drv No. " . (!empty($delivery_order->driver_contact_no)? $delivery_order->driver_contact_no:'N/A'). ". \nVIKAS ASSOCIATES";
+                $str .= " Vehicle No. " . (!empty($delivery_order->vehicle_number)?$delivery_order->vehicle_number:'N/A') . ", Drv No. " . (!empty($delivery_order->driver_contact_no)? $delivery_order->driver_contact_no:'N/A'). ". \nVIKAS ASSOCIATES";
                 
                
                 if (App::environment('development')) {
@@ -831,7 +831,7 @@ class DeliveryOrderController extends Controller {
                     $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ',';
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
-                $str .= " Trk No. " . $delivery_data->vehicle_number . ", Drv No. " . $delivery_data->driver_contact_no . ". \nVIKAS ASSOCIATES";
+                $str .= " Vehicle No. " . $delivery_data->vehicle_number . ", Drv No. " . $delivery_data->driver_contact_no . ". \nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {

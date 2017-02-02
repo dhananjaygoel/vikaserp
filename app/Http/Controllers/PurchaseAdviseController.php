@@ -474,7 +474,7 @@ class PurchaseAdviseController extends Controller {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
-                $str .= " Trk No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
+                $str .= " Vehicle No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -498,7 +498,7 @@ class PurchaseAdviseController extends Controller {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
-                $str .= " Trk No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
+                $str .= " Vehicle No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -735,7 +735,7 @@ class PurchaseAdviseController extends Controller {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
-                $str .= " Trk No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
+                $str .= " Vehicle No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -759,7 +759,7 @@ class PurchaseAdviseController extends Controller {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
-                $str .= " Trk No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
+                $str .= " Vehicle No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {

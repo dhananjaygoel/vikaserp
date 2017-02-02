@@ -366,7 +366,7 @@ class PurchaseOrderController extends Controller {
                     }
                 }
 
-                $str .= " meterial will be desp by " . date("jS F, Y", strtotime($expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
+                $str .= " material will be dispatched by " . date("j M, Y", strtotime($expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -392,7 +392,7 @@ class PurchaseOrderController extends Controller {
                     }
                 }
 
-                $str .= " meterial will be desp by " . date("j F, Y", strtotime($expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
+                $str .= " material will be dispatched by " . date("j F, Y", strtotime($expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -633,7 +633,7 @@ class PurchaseOrderController extends Controller {
                         $total_quantity = $total_quantity + $product_data['quantity'];
                     }
                 }
-                $str .= " meterial will be desp by " . date("jS F, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
+                $str .= " material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
 
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -659,7 +659,7 @@ class PurchaseOrderController extends Controller {
                         $total_quantity = $total_quantity + $product_data['quantity'];
                     }
                 }
-                $str .= " meterial will be desp by " . date("j F, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
+                $str .= " material will be dispatched by " . date("j F, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
 
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -816,7 +816,7 @@ class PurchaseOrderController extends Controller {
             $customer = Customer::with('manager')->find($purchase_order['customer']->id);
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\n your purchase order has been completed for following \n";
+                $str = "Dear '" . $customer->owner_name . "'\n Your purchase order has been completed for following \n";
                 foreach ($purchase_order['purchase_products'] as $product_data) {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", \n";
                 }

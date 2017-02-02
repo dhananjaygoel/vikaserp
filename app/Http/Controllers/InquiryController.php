@@ -243,7 +243,7 @@ class InquiryController extends Controller {
                     }
                 }
 
-                $str .= " prices and avlblty will be qtd shortly \nVIKAS ASSOCIATES";
+                $str .= " prices and availability will be contacted shortly \nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -324,12 +324,12 @@ class InquiryController extends Controller {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nPrices for your inq. are as follows\n";
+                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nPrices for your inquiry are as follows\n";
                 foreach ($input_data as $product_data) {
                     $str .= $product_data['inquiry_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                     $total_quantity = $total_quantity + $product_data['quantity'];
                 }
-                $str .= " meterials will be desp by " . date('jS F, Y', strtotime($inquiry['expected_delivery_date'])) . ".\nVIKAS ASSOCIATES";
+                $str .= " materials will be dispatched by " . date('j M, Y', strtotime($inquiry['expected_delivery_date'])) . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -345,7 +345,7 @@ class InquiryController extends Controller {
                 }
             }
             if (count($customer['manager']) > 0) {
-//                $str = "Dear '" . $customer['manager']->first_name . "'\n'" . Auth::user()->first_name . "' has logged an enquiry for '" . $customer->owner_name . "', '" . round($total_quantity, 2) . "'. Kindly chk and qt. Vikas Associates";
+//                $str = "Dear '" . $customer['manager']->first_name . "'\n'" . Auth::user()->first_name . "' has logged an enquiry for '" . $customer->owner_name . "', '" . round($total_quantity, 2) . "'. Kindly check and contact. Vikas Associates";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -544,14 +544,14 @@ class InquiryController extends Controller {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour inq. has been edited for foll. ";
+                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour inquiry has been edited for foll. ";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
                         $total_quantity = $total_quantity + $product_data['quantity'];
                     }
                 }
-                $str .= " prices and avlblty will be qtd shortly. \nVIKAS ASSOCIATES";
+                $str .= " prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -567,7 +567,7 @@ class InquiryController extends Controller {
                 }
 
                 if (count($customer['manager']) > 0) {
-                    $str = "Dear '" . $customer['manager']->first_name . "'\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited an enquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and qt.\nVIKAS ASSOCIATES";
+                    $str = "Dear '" . $customer['manager']->first_name . "'\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited an enquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and contact.\nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -898,7 +898,7 @@ class InquiryController extends Controller {
                         }
                     }
                 }
-                $str .= " meterial will be desp by " . date("jS F, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
+                $str .= " material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
