@@ -157,7 +157,7 @@ class ProductsubController extends Controller {
          */
         $input = Input::all();
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-            $admins = User::where('role_id', '=', 1)->get();
+            $admins = User::where('role_id', '=', 0)->get();
             if (count($admins) > 0) {
                 foreach ($admins as $key => $admin) {
                     $product_category = ProductCategory::with('product_type')->find($request->input('select_product_categroy'));
@@ -275,7 +275,7 @@ class ProductsubController extends Controller {
              */
             $input = Input::all();
             if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-                $admins = User::where('role_id', '=', 1)->get();
+                $admins = User::where('role_id', '=', 0)->get();
                 if (count($admins) > 0) {
                     foreach ($admins as $key => $admin) {
                         $product_category = ProductCategory::with('product_type')->find($data['select_product_categroy']);
@@ -327,7 +327,7 @@ class ProductsubController extends Controller {
          */
         $input = Input::all();
       
-            $admins = User::where('role_id', '=', 1)->get();
+            $admins = User::where('role_id', '=', 0)->get();
             if (count($admins) > 0) {
                 foreach ($admins as $key => $admin) {
                     $productsubcategory=ProductSubCategory::find(Input::get('id'));

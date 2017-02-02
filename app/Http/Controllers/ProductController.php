@@ -99,7 +99,7 @@ class ProductController extends Controller {
          */
         $input = Input::all();
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-            $admins = User::where('role_id', '=', 1)->get();
+            $admins = User::where('role_id', '=', 0)->get();
             if (count($admins) > 0) {
                 foreach ($admins as $key => $admin) {
                     $product_type = ProductType::find($request->input('product_type'));
@@ -192,7 +192,7 @@ class ProductController extends Controller {
         );
         
         
-            $admins = User::where('role_id', '=', 1)->get();
+            $admins = User::where('role_id', '=', 0)->get();
           
             if (count($admins) > 0) {
                 foreach ($admins as $key => $admin) {
@@ -233,7 +233,7 @@ class ProductController extends Controller {
         
                
         $id = $key;
-            $admins = User::where('role_id', '=', 1)->get();
+            $admins = User::where('role_id', '=', 0)->get();
           
             if (count($admins) > 0) {
                 foreach ($admins as $key => $admin) {
