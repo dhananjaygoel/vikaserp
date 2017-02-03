@@ -219,7 +219,10 @@ class ProductController extends Controller {
             }
         }
 
-
+        echo "<pre>";
+        print_r($curl_scraped_page);
+        echo "</pre>";
+        
 
         ProductCategory::where('id', $id)->update($product_data);
         return redirect('product_category')->with('success', 'Product category successfully updated.');
@@ -235,8 +238,14 @@ class ProductController extends Controller {
         $key = Input::get('product_id');
         ProductCategory::where('id', $key)->update(array('price' => $val));
 
-
+        
         $id = $key;
+        /*
+         * ------------------- ---------------------------
+         * SEND SMS TO ALL ADMINS FOR UPDATE PRODUCT PRICE CATEGORY
+         * -----------------------------------------------
+         */
+        
         $admins = User::where('role_id', '=', 0)->get();
 
         if (count($admins) > 0) {
