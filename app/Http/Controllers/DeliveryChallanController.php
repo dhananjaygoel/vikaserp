@@ -641,7 +641,7 @@ class DeliveryChallanController extends Controller {
 //                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
-                $s = $str .= " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
+                 $str .=  $s = " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
                         ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
                         ", Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
                         ", Amount " . $allorder->grand_price .
@@ -683,7 +683,7 @@ class DeliveryChallanController extends Controller {
             }
         }
                
-        
+              
         return view('print_delivery_challan', compact('allorder', 'total_vat_amount'));
     }
 
