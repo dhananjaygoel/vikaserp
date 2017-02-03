@@ -22,6 +22,7 @@ use Input;
 use App;
 use Config;
 use Session;
+
 class ProductController extends Controller {
 
     public function __construct() {
@@ -39,12 +40,12 @@ class ProductController extends Controller {
      */
 
     public function index() {
-        
+
         if (Auth::user()->role_id == 5 ) {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-           }    
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         /*client want to delete 2 record so just elimated from query */
-       // $product_cat = ProductCategory::orderBy('created_at', 'desc')->whereNotIn('product_category_name',['Local Coil- Light','Local Coil'])->Paginate(20);
+        // $product_cat = ProductCategory::orderBy('created_at', 'desc')->whereNotIn('product_category_name',['Local Coil- Light','Local Coil'])->Paginate(20);
         $product_cat = ProductCategory::orderBy('created_at', 'desc')->Paginate(20);
         $product_cat->setPath('product_category');
         return view('product_category', compact('product_cat'));
@@ -71,7 +72,7 @@ class ProductController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-         if (Session::has('forms_product_category')) {
+        if (Session::has('forms_product_category')) {
             $session_array = Session::get('forms_product_category');
             if (count($session_array) > 0) {
                 if (in_array($request->form_key, $session_array)) {
@@ -83,7 +84,7 @@ class ProductController extends Controller {
             }
         } else {
             $forms_array = [];
-            array_push($forms_array,$request->form_key);
+            array_push($forms_array, $request->form_key);
             Session::put('forms_product_category', $forms_array);
         }
         $product_category = new ProductCategory();
@@ -190,33 +191,36 @@ class ProductController extends Controller {
             'product_category_name' => $request->input('product_category_name'),
             'price' => $request->input('price'),
         );
-        
-        
-            $admins = User::where('role_id', '=', 0)->get();
-          
-            if (count($admins) > 0) {
-                foreach ($admins as $key => $admin) {
-                    $product_type = ProductType::find($request->input('product_type'));
-                    
-                    $str = "Dear " . $admin->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited a product category as " . $request->input('product_category_name') . " under " . $product_type->name . " kindly check.\nVIKAS ASSOCIATES";
-                    if (App::environment('development')) {
-                        $phone_number = Config::get('smsdata.send_sms_to');
-                    } else {
-                        $phone_number = $admin->mobile_number;
-                    }
-                    $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
-                        $ch = curl_init($url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $curl_scraped_page = curl_exec($ch);
-                        curl_close($ch);
-                    }
+
+        /*
+         * ------------------- ---------------------------
+         * SEND SMS TO ALL ADMINS FOR UPDATE PRODUCT CATEGORY
+         * -----------------------------------------------
+         */
+
+        $admins = User::where('role_id', '=', 0)->get();
+        if (count($admins) > 0) {
+            foreach ($admins as $key => $admin) {
+                $product_type = ProductType::find($request->input('product_type'));
+                $str = "Dear " . $admin->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited a product category as " . $request->input('product_category_name') . " under " . $product_type->name . " kindly check.\nVIKAS ASSOCIATES";
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $admin->mobile_number;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
                 }
             }
-        
-          
-        
+        }
+
+
+
         ProductCategory::where('id', $id)->update($product_data);
         return redirect('product_category')->with('success', 'Product category successfully updated.');
     }
@@ -226,36 +230,34 @@ class ProductController extends Controller {
      */
 
     public function update_price() {
-      
+
         $val = Input::get('price');
         $key = Input::get('product_id');
         ProductCategory::where('id', $key)->update(array('price' => $val));
-        
-               
+
+
         $id = $key;
-            $admins = User::where('role_id', '=', 0)->get();
-          
-            if (count($admins) > 0) {
-                foreach ($admins as $key => $admin) {
-                    $productcategory=ProductCategory::find($id);
-                    $str = "Dear " . $admin->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited a product category price as " . $productcategory->product_category_name . "-" . $val . " kindly check.\nVIKAS ASSOCIATES";
-                    if (App::environment('development')) {
-                        $phone_number = Config::get('smsdata.send_sms_to');
-                    } else {
-                        $phone_number = $admin->mobile_number;
-                    }
-                    $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
-                        $ch = curl_init($url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $curl_scraped_page = curl_exec($ch);
-                        curl_close($ch);
-                    }
+        $admins = User::where('role_id', '=', 0)->get();
+
+        if (count($admins) > 0) {
+            foreach ($admins as $key => $admin) {
+                $productcategory = ProductCategory::find($id);
+                $str = "Dear " . $admin->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited a product category price as " . $productcategory->product_category_name . "-" . $val . " kindly check.\nVIKAS ASSOCIATES";
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $admin->mobile_number;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
                 }
             }
-            
-        
+        }
     }
 
     /*
