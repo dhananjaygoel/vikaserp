@@ -692,8 +692,11 @@ class DeliveryChallanController extends Controller {
                 }
             }
         }
+        echo "<pre>";
+        print_r($url);
+        echo "</pre>";
+       
         
-
         return view('print_delivery_challan', compact('allorder', 'total_vat_amount'));
     }
 
