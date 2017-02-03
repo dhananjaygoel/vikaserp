@@ -931,10 +931,6 @@ class InquiryController extends Controller {
         }
 
 
-        echo "<pre>";
-        print_r($curl_scraped_page);
-        echo "</pre>";
-        exit;
         $order->save();
         $order_id = $order->id;
         $order_products = array();
