@@ -282,7 +282,7 @@ class ProductsubController extends Controller {
                         $str = "Dear "
                                 . "'" . $admin->first_name . "'\nDT " . date("j M, Y") . "\n"
                                 . "'" . Auth::user()->first_name . "'"
-                                . " has updated a size catagory as "
+                                . " has updated a size category as "
                                 . "'" . $data['size'] . "' "
                                 . "'" . $data['thickness'] . "' "
                                 . "'" . $data['weight'] . "' "
