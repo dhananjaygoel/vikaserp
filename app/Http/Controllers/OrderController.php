@@ -346,33 +346,46 @@ class OrderController extends Controller {
          * SEND SMS TO CUSTOMER FOR NEW ORDER
          * ----------------------------------
          */
-        $input = Input::all();
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             $customer = Customer::with('manager')->find($customer_id);
-            if ($customer->phone_number1 != "") {
-                if (count($customer) > 0) {
-                    $total_quantity = '';
-                    $str = "Dear " . $customer->owner_name . "\n Your order has been logged as following \n";
-//                    foreach ($input_data['product'] as $product_data) {
-//                        if ($product_data['name'] != "") {
-//                            $product = ProductSubCategory::find($product_data['id']);
-//                            $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", \n";
-//                            if ($product_data['units'] == 1) {
-//                                $total_quantity = $total_quantity + $product_data['quantity'];
-//                            }
-//                            if ($product_data['units'] == 2) {
-//                                $total_quantity = $total_quantity + $product_data['quantity'] * $product->weight;
-//                            }
-//                            if ($product_data['units'] == 3) {
-//                                $total_quantity = $total_quantity + ($product_data['quantity'] / $product->standard_length ) * $product->weight;
-//                            }
-//                        }
-//                    }
-                    $str .= " material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . strtoupper($customer->owner_name) . "\nDT " . date("j M, Y") . "\nYour order has been created as following \n";
+                foreach ($input_data['product'] as $product_data) {
+                    if ($product_data['name'] != "") {
+                        $product = ProductSubCategory::find($product_data['id']);
+                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
+                        if ($product_data['units'] == 1) {
+                            $total_quantity = $total_quantity + $product_data['quantity'];
+                        }
+                        if ($product_data['units'] == 2) {
+                            $total_quantity = $total_quantity + $product_data['quantity'] * $product->weight;
+                        }
+                        if ($product_data['units'] == 3) {
+                            $total_quantity = $total_quantity + ($product_data['quantity'] / $product->standard_length ) * $product->weight;
+                        }
+                    }
+                }
+                $str .= " material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+                if (count($customer['manager']) > 0) {
+//                    $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has edited and changed an order for " . $customer->owner_name . ", " . round($total_quantity, 2) . "'. Kindly check. \nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
-                        $phone_number = $customer->phone_number1;
+                        $phone_number = $customer['manager']->mobile_number;
                     }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
@@ -382,23 +395,6 @@ class OrderController extends Controller {
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
-//                    if (count($customer['manager']) > 0) {
-////                        $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has logged an order for " . $customer->owner_name . ", " . round($total_quantity, 2) . "'. Kindly check.\nVIKAS ASSOCIATES";
-//                        $str = urlencode($str);
-//                        if (App::environment('development')) {
-//                            $phone_number = Config::get('smsdata.send_sms_to');
-//                        } else {
-//                            $phone_number = $customer['manager']->mobile_number;
-//                        }
-//                        $msg = urlencode($str);
-//                        $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-//                        if (SEND_SMS === true) {
-//                            $ch = curl_init($url);
-//                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//                            $curl_scraped_page = curl_exec($ch);
-//                            curl_close($ch);
-//                        }
-//                    }
                 }
             }
         }
