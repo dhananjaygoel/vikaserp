@@ -343,7 +343,7 @@
                                             </span>
                                         </a>-->
 
-                                         <a href="{{url('order/'.$order->id.'-track')}}" class="table-link" title="Edit">
+                                         <a href="{{url('order/'.$order->id.'-track')}}" class="table-link" title="Track Order">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-truck fa-stack-1x fa-inverse"></i>
@@ -724,7 +724,7 @@
                                                 </span>
                                             </a>
                                             @endif
-                                            <a href="{{url('order/'.$order->id.'-track')}}" class="table-link" title="Edit">
+                                            <a href="{{url('order/'.$order->id.'-track')}}" class="table-link" title="Track Order">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-truck fa-stack-1x fa-inverse"></i>
