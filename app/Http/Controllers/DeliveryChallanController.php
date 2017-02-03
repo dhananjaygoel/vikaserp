@@ -45,11 +45,11 @@ class DeliveryChallanController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-        
-         if (Auth::user()->role_id == 5) {
+
+        if (Auth::user()->role_id == 5) {
             return Redirect::to('inquiry')->with('error', 'You do not have permission.');
         }
-        
+
         $data = Input::all();
         $session_sort_type_order = Session::get('order-sort-type');
         if (isset($data['status_filter']))
@@ -79,7 +79,7 @@ class DeliveryChallanController extends Controller {
                 } else {
                     $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
                                     ->where('updated_at', '>=', $date1)
-                                    ->where('updated_at', '<=', $date2 .' 23:59:59')
+                                    ->where('updated_at', '<=', $date2 . ' 23:59:59')
                                     ->with('customer', 'delivery_challan_products', 'delivery_order')
                                     ->orderBy('updated_at', 'desc')->Paginate(20);
                 }
@@ -163,93 +163,83 @@ class DeliveryChallanController extends Controller {
 //            }
 //        }
 //        
-        
-        
-        
-        
+
+
+
+
         if (count($allorders) > 0) {
             foreach ($allorders as $key => $order) {
                 $order_quantity = 0;
-                $order_quantity_pending =0;
-                $product_for_order_do_pending=0;
-                 $previous_dc_quantity =0;
-                 $previous_dc_quantity_parent=0;
-                 
-                
-                if (count($order['delivery_challan_products']) > 0) {                   
+                $order_quantity_pending = 0;
+                $product_for_order_do_pending = 0;
+                $previous_dc_quantity = 0;
+                $previous_dc_quantity_parent = 0;
+
+
+                if (count($order['delivery_challan_products']) > 0) {
                     $order_quantity = $order['delivery_challan_products']->sum('present_shipping');
                 }
-               $allorders[$key]['total_quantity'] = $order_quantity;
-                foreach($order['delivery_challan_products'] as $delivery_challan_products )
-                {                    
-                   
-                   
-                 
-                    $product_for_order = AllOrderProducts::where('order_type','=','order')
-                         ->where('order_id','=',$order->order_id)
-                         ->where('product_category_id','=',$delivery_challan_products->product_category_id)
-                         ->get(); 
-                    
-                    $product_for_deliveryorder = DeliveryOrder::where('order_id','=',$order->order_id) ->get(); 
-                    
-                   if(count($product_for_deliveryorder)>0)
-                   {
-                       foreach($product_for_deliveryorder as $deliveryorder){
-                       $product_for_order_do = AllOrderProducts::where('order_type','=','delivery_order')
-                         ->where('order_id','=',$deliveryorder->id)
-                         ->where('product_category_id','=',$delivery_challan_products->product_category_id)
-                         ->get(); 
-                     
-                   
-                    $dc_temp = DeliveryChallan::find($delivery_challan_products->order_id);
-                    $dc = DeliveryChallan::where('order_id','=',$dc_temp->order_id)
+                $allorders[$key]['total_quantity'] = $order_quantity;
+                foreach ($order['delivery_challan_products'] as $delivery_challan_products) {
+
+
+
+                    $product_for_order = AllOrderProducts::where('order_type', '=', 'order')
+                            ->where('order_id', '=', $order->order_id)
+                            ->where('product_category_id', '=', $delivery_challan_products->product_category_id)
                             ->get();
-                    foreach($dc as $dc1)
-                    {
-                         $prod = AllOrderProducts::where('order_id','=',$dc1->id)
-                                 ->where('product_category_id','=',$delivery_challan_products->product_category_id)
-                                 ->where('order_id','<>',$order->id)
-                                 ->get();
-                         
-                         foreach($prod as $t){
-                             
-                              $previous_dc_quantity =  $t->present_shipping;
-                              $previous_dc_quantity_parent = $t->parent;
-                         }
-                       
+
+                    $product_for_deliveryorder = DeliveryOrder::where('order_id', '=', $order->order_id)->get();
+
+                    if (count($product_for_deliveryorder) > 0) {
+                        foreach ($product_for_deliveryorder as $deliveryorder) {
+                            $product_for_order_do = AllOrderProducts::where('order_type', '=', 'delivery_order')
+                                    ->where('order_id', '=', $deliveryorder->id)
+                                    ->where('product_category_id', '=', $delivery_challan_products->product_category_id)
+                                    ->get();
+
+
+                            $dc_temp = DeliveryChallan::find($delivery_challan_products->order_id);
+                            $dc = DeliveryChallan::where('order_id', '=', $dc_temp->order_id)
+                                    ->get();
+                            foreach ($dc as $dc1) {
+                                $prod = AllOrderProducts::where('order_id', '=', $dc1->id)
+                                        ->where('product_category_id', '=', $delivery_challan_products->product_category_id)
+                                        ->where('order_id', '<>', $order->id)
+                                        ->get();
+
+                                foreach ($prod as $t) {
+
+                                    $previous_dc_quantity = $t->present_shipping;
+                                    $previous_dc_quantity_parent = $t->parent;
+                                }
+                            }
+
+                            $product_for_order_do_pending = $product_for_order_do->sum('quantity');
+                        }
                     }
-                       
-                       $product_for_order_do_pending = $product_for_order_do->sum('quantity');
-                       
-                       }
-                   }
-                   
+
 //                   echo "<pre>";
 //                       print_r($product_for_order_do_pending ."--" .$previous_dc_quantity."--".$product_for_order[0]->quantity."--".$previous_dc_quantity_parent."--".$product_for_order_do[0]->id);
 //                       echo "</pre>";
 //                 
-                  
-                   foreach($product_for_order as $product_order_pending){
-                       
-                       if($previous_dc_quantity > 0)
-                       {
-                          if($previous_dc_quantity_parent == $product_for_order_do[0]->id){
-                               $order_quantity_pending = $order_quantity_pending + $product_order_pending->quantity ;   
-                          }
-                          else{
-                              $order_quantity_pending = $product_order_pending->quantity - $previous_dc_quantity +  $order_quantity -$product_for_order_do_pending;
-                          }
-                                 
-                       }
-                       else{
-                           $order_quantity_pending = $order_quantity_pending + $product_order_pending->quantity ;    
-                       }
-                                        
-                   }
-                }  
-                
-                 $allorders[$key]['total_quantity_pending'] = $order_quantity_pending -$order_quantity;
-                
+
+                    foreach ($product_for_order as $product_order_pending) {
+
+                        if ($previous_dc_quantity > 0) {
+                            if ($previous_dc_quantity_parent == $product_for_order_do[0]->id) {
+                                $order_quantity_pending = $order_quantity_pending + $product_order_pending->quantity;
+                            } else {
+                                $order_quantity_pending = $product_order_pending->quantity - $previous_dc_quantity + $order_quantity - $product_for_order_do_pending;
+                            }
+                        } else {
+                            $order_quantity_pending = $order_quantity_pending + $product_order_pending->quantity;
+                        }
+                    }
+                }
+
+                $allorders[$key]['total_quantity_pending'] = $order_quantity_pending - $order_quantity;
+
 //                 if($order_quantity_pending > $order_quantity){
 //                   
 //                    $allorders[$key]['total_quantity_pending'] = $order_quantity_pending -$order_quantity;
@@ -257,7 +247,7 @@ class DeliveryChallanController extends Controller {
 //                         $allorders[$key]['total_quantity_pending'] = '0';
 //                    }
             }
-        }        
+        }
         $allorders->setPath('delivery_challan');
         return view('delivery_challan', compact('allorders', 'search_dates'));
     }
@@ -266,41 +256,41 @@ class DeliveryChallanController extends Controller {
      * Display the specified Delivery Challan Details.
      */
     public function show($id) {
-        
+
         $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')->find($id);
-        
-        
-        
-              
+
+
+
+
         if (count($allorder) < 1) {
             return redirect('delivery_challan')->with('success', 'Invalid challan or challan not found');
         }
-        
-         $order_product = Order::with('all_order_products')->find($allorder->order_id);
+
+        $order_product = Order::with('all_order_products')->find($allorder->order_id);
         if (count($order_product) < 1) {
             $order_product = 0;
         }
-        
-        return view('delivery_challan_details', compact('allorder','order_product'));
+
+        return view('delivery_challan_details', compact('allorder', 'order_product'));
     }
 
     /**
      * Show Edit Delivery Challan Details
      */
-    public function edit($id="") {
-        
-        if (Auth::user()->role_id == 5 | $id=="") {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-           }        
+    public function edit($id = "") {
+
+        if (Auth::user()->role_id == 5 | $id == "") {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
 
         $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order')
 //                ->where('challan_status', '=', 'pending')
                 ->find($id);
-        
+
         if (count($allorder) < 1) {
             return redirect('delivery_challan')->with('validation_message', 'Inavalid delivery challan.');
         }
-        
+
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         return view('edit_delivery_challan', compact('allorder', 'price_delivery_order', 'units', 'delivery_locations'));
@@ -436,88 +426,83 @@ class DeliveryChallanController extends Controller {
             $delivery_challan_prod = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->first();
             $delivery_challan->updated_at = $delivery_challan_prod->updated_at;
             $delivery_challan->save();
-            
-            
-            
-                        /*
+
+
+
+            /*
               | ------------------- -----------------------
               | SEND SMS TO CUSTOMER FOR EDIT DELIVERY CHALLAN
               | -------------------------------------------
              */
             $allorder = DeliveryChallan::where('id', '=', $id)
                             ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
-            
-            
-            
-            
+
+
+
+
             $input_data = $allorder['delivery_challan_products'];
             $send_sms = Input::get('send_sms');
-  
-                $customer_id = $allorder->customer_id;
-                $customer = Customer::with('manager')->find($customer_id);
-                if (count($customer) > 0) {
-                    $total_quantity = '';
-                    $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour meterial has been edited as follows ";
-                    foreach ($input_data as $product_data) {
-                        $product = ProductSubCategory::find($product_data->product_category_id);
-//                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                        $total_quantity = $total_quantity + $product_data->quantity;
-                    }
-                    $str .= " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
-                            ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
-                            ", Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
-                            ", Amount " . $allorder->grand_price .
-                            ", Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
-                            "\nVIKAS ASSOCIATES";
 
-                    if (App::environment('development')) {
-                        $phone_number = Config::get('smsdata.send_sms_to');
-                    } else {
-                        $phone_number = $customer->phone_number1;
-                    }
-                    $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
-                        $ch = curl_init($url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $curl_scraped_page = curl_exec($ch);
-                        curl_close($ch);
-                    }
+            $customer_id = $allorder->customer_id;
+            $customer = Customer::with('manager')->find($customer_id);
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour meterial has been edited as follows ";
+                foreach ($input_data as $product_data) {
+                    $product = ProductSubCategory::find($product_data->product_category_id);
+//                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                    $total_quantity = $total_quantity + $product_data->quantity;
                 }
-                if (count($customer['manager']) > 0) {
-                    $total_quantity = '';
-                    $str = "Dear " .  $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n".Auth::user()->first_name." has edited meterial for " . $customer->owner_name . " as follows ";
-                    foreach ($input_data as $product_data) {
-                        $product = ProductSubCategory::find($product_data->product_category_id);
-//                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                        $total_quantity = $total_quantity + $product_data->quantity;
-                    }
-                    $str .= " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
-                            ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
-                            ", Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
-                            ", Amount " . $allorder->grand_price .
-                            ", Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
-                            "\nVIKAS ASSOCIATES";
+                $str .= " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
+                        ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
+                        ", Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
+                        ", Amount " . $allorder->grand_price .
+                        ", Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
+                        "\nVIKAS ASSOCIATES";
 
-                    if (App::environment('development')) {
-                        $phone_number = Config::get('smsdata.send_sms_to');
-                    } else {
-                       $phone_number = $customer['manager']->mobile_number;
-                    }
-                    $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
-                        $ch = curl_init($url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $curl_scraped_page = curl_exec($ch);
-                        curl_close($ch);
-                    }
-                }         
-            
-                
-            
-            
-            
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+            if (count($customer['manager']) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited meterial for " . $customer->owner_name . " as follows ";
+                foreach ($input_data as $product_data) {
+                    $product = ProductSubCategory::find($product_data->product_category_id);
+//                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
+                $str .= " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
+                        ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
+                        ", Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
+                        ", Amount " . $allorder->grand_price .
+                        ", Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
+                        "\nVIKAS ASSOCIATES";
+
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer['manager']->mobile_number;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
         }
         return redirect('delivery_challan')->with('flash_message', 'Delivery Challan details updated successfuly .');
     }
@@ -551,39 +536,38 @@ class DeliveryChallanController extends Controller {
      * Generate Serial number and print Delivery Challan
      */
 
-    public function print_delivery_challan($id,DropboxStorageRepository $connection) {
+    public function print_delivery_challan($id, DropboxStorageRepository $connection) {
         $serial_number_delivery_order = Input::get('serial_number');
         $current_date = date("m/d/");
         $update_delivery_challan = DeliveryChallan::with('delivery_challan_products')->find($id);
         if (isset($update_delivery_challan->serial_number) && $update_delivery_challan->challan_status == 'completed') {
             $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
                             ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
-        
-        $total_vat_amount = 0;    
-            
-             foreach ($update_delivery_challan->delivery_challan_products as $key => $delivery_challan_products) {
-                    if ($delivery_challan_products->vat_percentage > 0) {
-                        $vat_applicable = 1;
-                        if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
-                            $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
-                        }
+
+            $total_vat_amount = 0;
+
+            foreach ($update_delivery_challan->delivery_challan_products as $key => $delivery_challan_products) {
+                if ($delivery_challan_products->vat_percentage > 0) {
+                    $vat_applicable = 1;
+                    if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
+                        $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
                     }
                 }
-            
-            
+            }
+
+
             $date_letter = $update_delivery_challan->serial_number;
-            
+
             $pdf = app('dompdf.wrapper');
             $pdf->loadView('delivery_challan_pdf', [
                 'allorder' => $allorder,
                 'total_vat_amount' => $total_vat_amount
             ]);
-            
-             Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+
+            Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
             $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
             chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
-            $connection->getConnection()->put('Delivery Challan/'.date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
-            
+            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
         } else {
             $vat_applicable = 0;
             $total_vat_amount = 0;
@@ -634,87 +618,82 @@ class DeliveryChallanController extends Controller {
             Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
             $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
             chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
-            $connection->getConnection()->put('Delivery Challan/'.date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+        }
 
 
+
+        /*
+          | ------------------- -----------------------
+          | SEND SMS TO CUSTOMER FOR NEW DELIVERY CHALLAN
+          | -------------------------------------------
+         */
+        $input_data = $allorder['delivery_challan_products'];
+        $send_sms = Input::get('send_sms');
+        if ($send_sms == 'true') {
+            $customer_id = $allorder->customer_id;
+            $customer = Customer::with('manager')->find($customer_id);
+//            if (count($customer) > 0) {
+//                $total_quantity = '';
+//                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour material has been dispatched as follows ";
+//                foreach ($input_data as $product_data) {
+//                    $product = ProductSubCategory::find($product_data->product_category_id);
+////                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+//                    $total_quantity = $total_quantity + $product_data->quantity;
+//                }
+//                $str .= " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
+//                        ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
+//                        ", Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
+//                        ", Amount " . $allorder->grand_price .
+//                        ", Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
+//                        "\nVIKAS ASSOCIATES";
+//
+//                if (App::environment('development')) {
+//                    $phone_number = Config::get('smsdata.send_sms_to');
+//                } else {
+//                    $phone_number = $customer->phone_number1;
+//                }
+//                $msg = urlencode($str);
+//                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+//                if (SEND_SMS === true) {
+//                    $ch = curl_init($url);
+//                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//                    $curl_scraped_page = curl_exec($ch);
+//                    curl_close($ch);
+//                }
+//            }
+            if (count($customer['manager']) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . "  has dispatched material for  " . $customer->owner_name . " as follows\n";
+                foreach ($input_data as $product_data) {
+                    $product = ProductSubCategory::find($product_data->product_category_id);
+//                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
+                $str .= " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
+                        ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
+                        ", Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
+                        ", Amount " . $allorder->grand_price .
+                        ", Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
+                        "\nVIKAS ASSOCIATES";
+
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer['manager']->mobile_number;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
         }
         
-        
-        
-            /*
-              | ------------------- -----------------------
-              | SEND SMS TO CUSTOMER FOR NEW DELIVERY CHALLAN
-              | -------------------------------------------
-             */
-            $input_data = $allorder['delivery_challan_products'];
-            $send_sms = Input::get('send_sms');
-            if ($send_sms == 'true') {
-                $customer_id = $allorder->customer_id;
-                $customer = Customer::with('manager')->find($customer_id);
-                if (count($customer) > 0) {
-                    $total_quantity = '';
-                    $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour material has been dispatched as follows ";
-                    foreach ($input_data as $product_data) {
-                        $product = ProductSubCategory::find($product_data->product_category_id);
-//                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                        $total_quantity = $total_quantity + $product_data->quantity;
-                    }
-                    $str .= " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
-                            ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
-                            ", Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
-                            ", Amount " . $allorder->grand_price .
-                            ", Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
-                            "\nVIKAS ASSOCIATES";
 
-                    if (App::environment('development')) {
-                        $phone_number = Config::get('smsdata.send_sms_to');
-                    } else {
-                        $phone_number = $customer->phone_number1;
-                    }
-                    $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
-                        $ch = curl_init($url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $curl_scraped_page = curl_exec($ch);
-                        curl_close($ch);
-                    }
-                }
-                if (count($customer['manager']) > 0) {
-                    $total_quantity = '';
-                    $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n".Auth::user()->first_name."  has dispatched material for  " . $customer->owner_name . " as follows\n";
-                    foreach ($input_data as $product_data) {
-                        $product = ProductSubCategory::find($product_data->product_category_id);
-//                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                        $total_quantity = $total_quantity + $product_data->quantity;
-                    }
-                    $str .= " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
-                            ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
-                            ", Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
-                            ", Amount " . $allorder->grand_price .
-                            ", Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
-                            "\nVIKAS ASSOCIATES";
-
-                    if (App::environment('development')) {
-                        $phone_number = Config::get('smsdata.send_sms_to');
-                    } else {
-                         $phone_number = $customer['manager']->mobile_number;
-                    }
-                    $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
-                        $ch = curl_init($url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $curl_scraped_page = curl_exec($ch);
-                        curl_close($ch);
-                    }
-                }
-                
-                
-                
-            }
-           
-        
         return view('print_delivery_challan', compact('allorder', 'total_vat_amount'));
     }
 
@@ -956,9 +935,9 @@ class DeliveryChallanController extends Controller {
 
     function checkpending_quantity() {
         $allorders = Order::get();
-        
-        
-        
+
+
+
         $allorder_new = [];
         foreach ($allorders as $order) {
             $delivery_orders = DeliveryOrder::where('order_id', $order->id)->get();
@@ -996,7 +975,7 @@ class DeliveryChallanController extends Controller {
             $excel_sheet_name = 'Completed';
             $excel_name = 'DeliveryOrder-Completed-' . date('dmyhis');
         }
-        if (isset($data["export_from_date"]) && isset($data["export_to_date"])&& !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
             if ($date1 == $date2) {
@@ -1008,7 +987,7 @@ class DeliveryChallanController extends Controller {
             } else {
                 $delivery_challan_objects = DeliveryChallan::where('challan_status', 'like', '%' . $delivery_order_status . '%')
                         ->where('updated_at', '>=', $date1)
-                        ->where('updated_at', '<=', $date2.' 23:59:59')
+                        ->where('updated_at', '<=', $date2 . ' 23:59:59')
                         ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')
                         ->orderBy('updated_at', 'desc')
                         ->get();
@@ -1027,8 +1006,7 @@ class DeliveryChallanController extends Controller {
         }
     }
 
-    
-        function checkpending_quantity1($delivery_orders) {
+    function checkpending_quantity1($delivery_orders) {
 
         if (count($delivery_orders) > 0) {
             foreach ($delivery_orders as $key => $del_order) {
@@ -1042,78 +1020,64 @@ class DeliveryChallanController extends Controller {
                         if ($popv->unit_id == 1) {
                             $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
                             $delivery_order_present_shipping = $delivery_order_present_shipping + $popv->present_shipping;
-                            
+
                             $do = DeliveryOrder::find($popv->order_id);
-                            $prd_details = AllOrderProducts::where('order_id','=',$do->order_id)->where('order_type','=','order')->where('product_category_id','=',$popv->product_category_id)->get();
-                            
+                            $prd_details = AllOrderProducts::where('order_id', '=', $do->order_id)->where('order_type', '=', 'order')->where('product_category_id', '=', $popv->product_category_id)->get();
+
                             $pending_order_temp = $prd_details[0]->quantity - $popv->quantity;
-                            if($pending_order ==0){
+                            if ($pending_order == 0) {
                                 $pending_order = $pending_order_temp;
-                            }
-                            else{
+                            } else {
                                 $pending_order = $pending_order + $pending_order_temp;
-                            }                            
-                           
-                            
-                        } 
-                        
-                        
-                        elseif ($popv->unit_id == 2) {
+                            }
+                        } elseif ($popv->unit_id == 2) {
                             $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight);
                             $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight);
-                            
+
                             $do = DeliveryOrder::find($popv->order_id);
-                            $prd_details = AllOrderProducts::where('order_id','=',$do->order_id)->where('order_type','=','order')->where('product_category_id','=',$popv->product_category_id)->get();
-                            
-                            if($prd_details[0]->quantity > $popv->quantity)
+                            $prd_details = AllOrderProducts::where('order_id', '=', $do->order_id)->where('order_type', '=', 'order')->where('product_category_id', '=', $popv->product_category_id)->get();
+
+                            if ($prd_details[0]->quantity > $popv->quantity)
                                 $remaining = $prd_details[0]->quantity - $popv->quantity;
                             else
-                                 $remaining =0 ;                            
-                            
-                            $pending_order_temp =  ($remaining * $product_size->weight);                         
-                            
-                            if($pending_order ==0){
-                                $pending_order = $pending_order_temp ;
-                            }
-                            else{
+                                $remaining = 0;
+
+                            $pending_order_temp = ($remaining * $product_size->weight);
+
+                            if ($pending_order == 0) {
+                                $pending_order = $pending_order_temp;
+                            } else {
                                 $pending_order = $pending_order + $pending_order_temp;
-                            }    
-                            
-                            
-                        } 
-                        
-                        
-                        elseif ($popv->unit_id == 3) {
-                            
+                            }
+                        } elseif ($popv->unit_id == 3) {
+
                             $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
-                            $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);                            
-                            
+                            $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
+
                             $do = DeliveryOrder::find($popv->order_id);
-                            
-                            $prd_details = AllOrderProducts::where('order_id','=',$do->order_id)->where('order_type','=','order')->where('product_category_id','=',$popv->product_category_id)->get();
-                            
-                            if($prd_details[0]->quantity > $popv->quantity)
+
+                            $prd_details = AllOrderProducts::where('order_id', '=', $do->order_id)->where('order_type', '=', 'order')->where('product_category_id', '=', $popv->product_category_id)->get();
+
+                            if ($prd_details[0]->quantity > $popv->quantity)
                                 $remaining = $prd_details[0]->quantity - $popv->quantity;
                             else
-                                 $remaining =0 ;                            
-                            $pending_order_temp =  (($remaining / $product_size->standard_length ) * $product_size->weight);                         
-                            
-                            if($pending_order ==0){
-                                $pending_order = $pending_order_temp ;
-                            }
-                            else{
+                                $remaining = 0;
+                            $pending_order_temp = (($remaining / $product_size->standard_length ) * $product_size->weight);
+
+                            if ($pending_order == 0) {
+                                $pending_order = $pending_order_temp;
+                            } else {
                                 $pending_order = $pending_order + $pending_order_temp;
-                            }    
+                            }
                         }
                     }
                 }
                 $delivery_orders[$key]['total_quantity'] = $delivery_order_quantity;
                 $delivery_orders[$key]['present_shipping'] = $delivery_order_present_shipping;
                 $delivery_orders[$key]['pending_order'] = $pending_order;
-                
             }
         }
-        
+
 //        echo "<pre>";
 //        print_r($delivery_orders->toArray());
 //        echo "</pre>";
@@ -1123,8 +1087,4 @@ class DeliveryChallanController extends Controller {
         return $delivery_orders;
     }
 
-    
-    
-    
-    
 }
