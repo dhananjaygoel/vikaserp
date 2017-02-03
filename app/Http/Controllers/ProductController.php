@@ -41,10 +41,10 @@ class ProductController extends Controller {
 
     public function index() {
 
-        if (Auth::user()->role_id == 5 ) {
+        if (Auth::user()->role_id == 5) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
-        /*client want to delete 2 record so just elimated from query */
+        /* client want to delete 2 record so just elimated from query */
         // $product_cat = ProductCategory::orderBy('created_at', 'desc')->whereNotIn('product_category_name',['Local Coil- Light','Local Coil'])->Paginate(20);
         $product_cat = ProductCategory::orderBy('created_at', 'desc')->Paginate(20);
         $product_cat->setPath('product_category');
@@ -191,6 +191,7 @@ class ProductController extends Controller {
             'product_category_name' => $request->input('product_category_name'),
             'price' => $request->input('price'),
         );
+        ProductCategory::where('id', $id)->update($product_data);
 
         /*
          * ------------------- ---------------------------
@@ -219,8 +220,6 @@ class ProductController extends Controller {
             }
         }
 
-       
-        ProductCategory::where('id', $id)->update($product_data);
         return redirect('product_category')->with('success', 'Product category successfully updated.');
     }
 
@@ -234,35 +233,35 @@ class ProductController extends Controller {
         $key = Input::get('product_id');
         ProductCategory::where('id', $key)->update(array('price' => $val));
 
-        
+
         $id = $key;
         /*
          * ------------------- ---------------------------
          * SEND SMS TO ALL ADMINS FOR UPDATE PRODUCT PRICE CATEGORY
          * -----------------------------------------------
          */
-        
-        $admins = User::where('role_id', '=', 0)->get();
 
-        if (count($admins) > 0) {
-            foreach ($admins as $key => $admin) {
-                $productcategory = ProductCategory::find($id);
-                $str = "Dear " . $admin->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited a product category price as " . $productcategory->product_category_name . "-" . $val . " kindly check.\nVIKAS ASSOCIATES";
-                if (App::environment('development')) {
-                    $phone_number = Config::get('smsdata.send_sms_to');
-                } else {
-                    $phone_number = $admin->mobile_number;
-                }
-                $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
-                }
-            }
-        }
+//        $admins = User::where('role_id', '=', 0)->get();
+//
+//        if (count($admins) > 0) {
+//            foreach ($admins as $key => $admin) {
+//                $productcategory = ProductCategory::find($id);
+//                $str = "Dear " . $admin->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited a product category price as " . $productcategory->product_category_name . "-" . $val . " kindly check.\nVIKAS ASSOCIATES";
+//                if (App::environment('development')) {
+//                    $phone_number = Config::get('smsdata.send_sms_to');
+//                } else {
+//                    $phone_number = $admin->mobile_number;
+//                }
+//                $msg = urlencode($str);
+//                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+//                if (SEND_SMS === true) {
+//                    $ch = curl_init($url);
+//                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//                    $curl_scraped_page = curl_exec($ch);
+//                    curl_close($ch);
+//                }
+//            }
+//        }
     }
 
     /*
