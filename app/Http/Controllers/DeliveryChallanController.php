@@ -664,13 +664,13 @@ class DeliveryChallanController extends Controller {
             }
             if (count($customer['manager']) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . "  has dispatched material for  " . $customer->owner_name . " as follows\n";
-//                foreach ($input_data as $product_data) {
-//                    $product = ProductSubCategory::find($product_data->product_category_id);
-////                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-//                    $total_quantity = $total_quantity + $product_data->quantity;
-//                }
-                $str .= " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
+                $str1 = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . "  has dispatched material for  " . $customer->owner_name . " as follows\n";
+                foreach ($input_data as $product_data) {
+                    $product = ProductSubCategory::find($product_data->product_category_id);
+//                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
+                $str1 .= " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
                         ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
                         ", Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
                         ", Amount " . $allorder->grand_price .
@@ -682,7 +682,7 @@ class DeliveryChallanController extends Controller {
                 } else {
                     $phone_number = $customer['manager']->mobile_number;
                 }
-                $msg = urlencode($str);
+                $msg = urlencode($str1);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
                 if (SEND_SMS === true) {
                     $ch = curl_init($url);
