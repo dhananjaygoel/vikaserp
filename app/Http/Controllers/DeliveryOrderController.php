@@ -417,7 +417,7 @@ class DeliveryOrderController extends Controller {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\nDT" . date("j M, Y") . "\nYour DO has been edited as follows ";
+                $str = "Dear " . $customer->owner_name . "\nDT" . date("j M, Y") . "\nYour DO has been edited as follows ";
                 foreach ($delivery_order['delivery_product'] as $product_data) {
                     $prod = AllOrderProducts::with('product_sub_category')->find($product_data->id);
                     
@@ -826,7 +826,7 @@ class DeliveryOrderController extends Controller {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\nDT" . date("j M, Y") . "\nYour DO has been created as follows ";
+                $str = "Dear " . $customer->owner_name . "\nDT" . date("j M, Y") . "\nYour DO has been created as follows ";
                 foreach ($input_data as $product_data) {
                     $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ',';
                     $total_quantity = $total_quantity + $product_data->quantity;

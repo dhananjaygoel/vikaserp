@@ -199,7 +199,7 @@ class CustomerController extends Controller {
             if (count($admins) > 0) {
                 foreach ($admins as $key => $admin) {
                     $product_type = ProductType::find($request->input('product_type'));
-                    $str = "Dear '" . $admin->first_name . "'\n" . "DT " . date("j M, Y") . "\n'" . Auth::user()->first_name . "' has created a new customer as '" . Input::get('owner_name') . "' kindly check. \nVIKAS ASSOCIATES";
+                    $str = "Dear " . $admin->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created a new customer as " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -218,7 +218,7 @@ class CustomerController extends Controller {
             
             if (count($customer) > 0) {
                 $total_quantity = '';
-                 $str = "Dear '" . $customer->owner_name  . "'\n" . "DT " . date("j M, Y") . "\n'" . Auth::user()->first_name . "' has created a new customer as '" . Input::get('owner_name') . "' kindly check. \nVIKAS ASSOCIATES";
+                 $str = "Dear " . $customer->owner_name  . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created a new customer as " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
                
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -237,7 +237,7 @@ class CustomerController extends Controller {
             }
 
             if (count($customer['manager']) > 0) {
-                $str = "Dear '" . $customer['manager']->first_name  . "'\n" . "DT " . date("j M, Y") . "\n'" . Auth::user()->first_name . "' has created a new customer as '" . Input::get('owner_name') . "' kindly check. \nVIKAS ASSOCIATES";                
+                $str = "Dear " . $customer['manager']->first_name  . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created a new customer as " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";                
                
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -425,7 +425,7 @@ class CustomerController extends Controller {
             
             if (count($customer) > 0) {
                 $total_quantity = '';
-                 $str = "Dear '" . $customer->owner_name  . "'\n" . "DT " . date("j M, Y") . "\n'" . Auth::user()->first_name . "' has edited your profile - '" . Input::get('owner_name') . "' kindly check. \nVIKAS ASSOCIATES";
+                 $str = "Dear " . $customer->owner_name  . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited your profile - " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
                
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -444,7 +444,7 @@ class CustomerController extends Controller {
             }
 
             if (count($customer['manager']) > 0) {
-                $str = "Dear '" . $customer['manager']->first_name  . "'\n" . "DT " . date("j M, Y") . "\n'" . Auth::user()->first_name . "' has edited a customer - '" . Input::get('owner_name') . "' kindly check. \nVIKAS ASSOCIATES";                
+                $str = "Dear " . $customer['manager']->first_name  . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited a customer - " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";                
                
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');

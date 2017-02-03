@@ -469,7 +469,7 @@ class PurchaseAdviseController extends Controller {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour Purchase Advise has been edited as follows ";
+                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour Purchase Advise has been edited as follows ";
                 foreach ($input_data as $product_data) {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     $total_quantity = $total_quantity + $product_data->quantity;
@@ -493,7 +493,7 @@ class PurchaseAdviseController extends Controller {
             }
              if (count($customer['manager']) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer['manager']->first_name . "'\nDT " . date("j M, Y") . "\n".Auth::user()->first_name." has logged Purchase Advise for " . $customer->owner_name . " \n";
+                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n".Auth::user()->first_name." has logged Purchase Advise for " . $customer->owner_name . " \n";
                 foreach ($input_data as $product_data) {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
                     $total_quantity = $total_quantity + $product_data->quantity;
@@ -730,7 +730,7 @@ class PurchaseAdviseController extends Controller {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour purchase Advise has been created as follows ";
+                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour purchase Advise has been created as follows ";
                 foreach ($input_data as $product_data) {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     $total_quantity = $total_quantity + $product_data->quantity;
@@ -754,7 +754,7 @@ class PurchaseAdviseController extends Controller {
             
             if (count($customer['manager']) > 0) {
                 $total_quantity = '';
-                $str = "Dear '" . $customer['manager']->first_name . "'\nDT " . date("j M, Y") . "\n".Auth::user()->first_name." has created Purchase Advise for " . $customer->owner_name . " \n";
+                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n".Auth::user()->first_name." has created Purchase Advise for " . $customer->owner_name . " \n";
                 foreach ($input_data as $product_data) {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     $total_quantity = $total_quantity + $product_data->quantity;
