@@ -261,7 +261,7 @@ class InquiryController extends Controller {
 
             if (count($customer['manager']) > 0) {
 //                $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has logged an enquiry for '" . $customer->owner_name . "', '" . round($total_quantity, 2) . "'. Kindly check and contact. Vikas Associates";
-                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour inquiry has been logged for following\n ";
+                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\nYour inquiry has been logged for following\n ";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -277,7 +277,9 @@ class InquiryController extends Controller {
                 }
             }
         }
-
+        
+       
+        
         return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully added.');
     }
 
