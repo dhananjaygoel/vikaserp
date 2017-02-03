@@ -258,7 +258,7 @@ class InquiryController extends Controller {
                     curl_close($ch);
                 }
             }
-
+$str ="";
             if (count($customer['manager']) > 0) {
 //                $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has logged an enquiry for '" . $customer->owner_name . "', '" . round($total_quantity, 2) . "'. Kindly check and contact. Vikas Associates";
                 $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\nYour inquiry has been logged for following\n ";
