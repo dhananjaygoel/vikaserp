@@ -570,6 +570,9 @@ class PurchaseAdviseController extends Controller {
             Session::put('forms_purchase_advise', $forms_array);
         }
         $validator = Validator::make($input_data, PurchaseAdvise::$store_purchase_validation);
+        
+       
+        
         if ($validator->passes()) {
             $date_string = preg_replace('~\x{00a0}~u', '', $input_data['bill_date']);
             $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
@@ -659,7 +662,7 @@ class PurchaseAdviseController extends Controller {
             }
             if ($total_present_shipping == $total_quantity || $total_present_shipping > $total_quantity) {
                 PurchaseOrder::where('id', '=', $input_data['id'])->update(array(
-                    'advice_status' => 'completed'
+                    'order_status' => 'completed'
                 ));
             }
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advice details successfully added.');

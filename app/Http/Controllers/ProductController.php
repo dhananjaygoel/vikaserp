@@ -200,16 +200,16 @@ class ProductController extends Controller {
          */
 
         $admins = User::where('role_id', '=', 0)->get();
-        $mobile_list="";
+      
         if (count($admins) > 0) {
             foreach ($admins as $key => $admin) {
                 $product_type = ProductType::find($request->input('product_type'));
-                $str = "Dear " . $admin->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited a product category as " . $request->input('product_category_name') . " under " . $product_type->name . " kindly check.\nVIKAS ASSOCIATES";
+//                $str = "Dear " . $admin->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited a product category as " . $request->input('product_category_name') . " under " . $product_type->name . " kindly check.\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
-                    $mobile_list .=  $phone_number = $admin->mobile_number;
-                    $mobile_list .=",";
+                    $phone_number = $admin->mobile_number;
+                    
                 }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
@@ -222,17 +222,7 @@ class ProductController extends Controller {
             }
         }
         
-        echo "<pre>";
-        print_r($str);
-        echo "<br>";
-        print_r($curl_scraped_page);
-        echo "<br>";
-        print_r($url);
-        echo "<br>";
-        print_r($mobile_list);
-        
-        echo "</pre>";
-       exit;
+     
 
         return redirect('product_category')->with('success', 'Product category successfully updated.');
     }
