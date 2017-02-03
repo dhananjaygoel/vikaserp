@@ -382,26 +382,29 @@ class OrderController extends Controller {
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
-                    if (count($customer['manager']) > 0) {
-//                        $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has logged an order for " . $customer->owner_name . ", " . round($total_quantity, 2) . "'. Kindly check.\nVIKAS ASSOCIATES";
-                        $str = urlencode($str);
-                        if (App::environment('development')) {
-                            $phone_number = Config::get('smsdata.send_sms_to');
-                        } else {
-                            $phone_number = $customer['manager']->mobile_number;
-                        }
-                        $msg = urlencode($str);
-                        $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                        if (SEND_SMS === true) {
-                            $ch = curl_init($url);
-                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                            $curl_scraped_page = curl_exec($ch);
-                            curl_close($ch);
-                        }
-                    }
+//                    if (count($customer['manager']) > 0) {
+////                        $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has logged an order for " . $customer->owner_name . ", " . round($total_quantity, 2) . "'. Kindly check.\nVIKAS ASSOCIATES";
+//                        $str = urlencode($str);
+//                        if (App::environment('development')) {
+//                            $phone_number = Config::get('smsdata.send_sms_to');
+//                        } else {
+//                            $phone_number = $customer['manager']->mobile_number;
+//                        }
+//                        $msg = urlencode($str);
+//                        $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+//                        if (SEND_SMS === true) {
+//                            $ch = curl_init($url);
+//                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//                            $curl_scraped_page = curl_exec($ch);
+//                            curl_close($ch);
+//                        }
+//                    }
                 }
             }
         }
+        
+        
+        
         $order->save();
         $order_id = $order->id;
         $order_products = array();
