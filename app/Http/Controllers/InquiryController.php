@@ -260,7 +260,7 @@ class InquiryController extends Controller {
             }
 
             if (count($customer['manager']) > 0) {
-                $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has logged an enquiry for '" . $customer->owner_name . "', '" . round($total_quantity, 2) . "'. Kindly check and contact. Vikas Associates";
+//                $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has logged an enquiry for '" . $customer->owner_name . "', '" . round($total_quantity, 2) . "'. Kindly check and contact. Vikas Associates";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -344,7 +344,7 @@ class InquiryController extends Controller {
                 }
             }
             if (count($customer['manager']) > 0) {
-//                $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has logged an enquiry for " . $customer->owner_name . ", '" . round($total_quantity, 2) . "'. Kindly check and contact. Vikas Associates";
+                $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has logged an enquiry for " . $customer->owner_name . ", '" . round($total_quantity, 2) . "'. Kindly check and contact. Vikas Associates";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
