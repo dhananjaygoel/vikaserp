@@ -443,7 +443,34 @@ class DeliveryOrderController extends Controller {
                     curl_close($ch);
                 }
             }
-      
+            if (count($customer['manager']) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer['manager']->first_name . "\nDT" . date("j M, Y") . "\n".Auth::user()->first_name." has edited DO for " . $customer->owner_name . " as follows ";
+                foreach ($delivery_order['delivery_product'] as $product_data) {
+                    $prod = AllOrderProducts::with('product_sub_category')->find($product_data->id);
+                    
+                    
+                    $str .= $prod['product_sub_category']->alias_name . ' - ' . $prod->quantity . ',';
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
+                
+                $str .= " Vehicle No. " . (!empty($delivery_order->vehicle_number)?$delivery_order->vehicle_number:'N/A') . ", Drv No. " . (!empty($delivery_order->driver_contact_no)? $delivery_order->driver_contact_no:'N/A'). ". \nVIKAS ASSOCIATES";
+                
+               
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer['manager']->mobile_number;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
         
       
         
@@ -846,6 +873,29 @@ class DeliveryOrderController extends Controller {
                     curl_close($ch);
                 }
             }
+            if (count($customer['manager']) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer['manager']->first_name . "\nDT" . date("j M, Y") . "\n".Auth::user()->first_name." has created DO for " . $customer->owner_name . " as follows ";
+                foreach ($input_data as $product_data) {
+                    $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ',';
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
+                $str .= " Vehicle No. " . $delivery_data->vehicle_number . ", Drv No. " . $delivery_data->driver_contact_no . ". \nVIKAS ASSOCIATES";
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer['manager']->mobile_number;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+            
         }
         return view('print_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
     }
