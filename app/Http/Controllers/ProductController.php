@@ -219,11 +219,7 @@ class ProductController extends Controller {
             }
         }
 
-        echo "<pre>";
-        print_r($curl_scraped_page);
-        echo "</pre>";
-        exit;
-
+       
         ProductCategory::where('id', $id)->update($product_data);
         return redirect('product_category')->with('success', 'Product category successfully updated.');
     }
