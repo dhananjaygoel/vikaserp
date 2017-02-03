@@ -31,6 +31,7 @@ use Session;
 use Illuminate\Support\Facades\Event;
 use Memcached;
 use Maatwebsite\Excel\Facades\Excel;
+
 class InquiryController extends Controller {
 
     public function __construct() {
@@ -50,14 +51,13 @@ class InquiryController extends Controller {
     public function index() {
 
         $data = Input::all();
-        
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-         if(Auth::user()->role_id <> 5)
-        {
+        if (Auth::user()->role_id <> 5) {
             if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
-                $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])                                ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')       ->orderBy('created_at', 'desc')->Paginate(20);
+                $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')->orderBy('created_at', 'desc')->Paginate(20);
             } else {
                 $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')
                         ->where('inquiry_status', 'pending')
@@ -65,28 +65,27 @@ class InquiryController extends Controller {
                         ->Paginate(20);
             }
         }
-        if(Auth::user()->role_id == 5)
-        {
-            $cust = Customer::where('owner_name','=', Auth::user()->first_name)
-                    -> where('phone_number1','=', Auth::user()->mobile_number) 
-                    -> where('email','=', Auth::user()->email)
+        if (Auth::user()->role_id == 5) {
+            $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
+                    ->where('phone_number1', '=', Auth::user()->mobile_number)
+                    ->where('email', '=', Auth::user()->email)
                     ->first();
-            
-             if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
-             $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])
-                    ->where('customer_id','=',$cust->id)
-                            ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')
-                            ->orderBy('created_at', 'desc')->Paginate(20);
+
+            if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
+                $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])
+                                ->where('customer_id', '=', $cust->id)
+                                ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')
+                                ->orderBy('created_at', 'desc')->Paginate(20);
             } else {
-            $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')
-                    ->where('inquiry_status', 'pending')
-                    ->where('customer_id','=',$cust->id)
-                    ->orderBy('created_at', 'desc')
-                    ->Paginate(20);
-                }
+                $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')
+                        ->where('inquiry_status', 'pending')
+                        ->where('customer_id', '=', $cust->id)
+                        ->orderBy('created_at', 'desc')
+                        ->Paginate(20);
+            }
         }
-        
-        
+
+
         $inquiries->setPath('inquiry');
         return view('inquiry', compact('inquiries'));
     }
@@ -100,28 +99,28 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $units = Units::all();
-        if ( Auth::user()->role_id == 5) {
-        $cust = Customer::where('owner_name','=', Auth::user()->first_name)
-                    -> where('phone_number1','=', Auth::user()->mobile_number) 
-                    -> where('email','=', Auth::user()->email)                    
-                    ->first();       
-            
-        $inquiry = Customer::with('delivery_location')->find($cust->id);
+        if (Auth::user()->role_id == 5) {
+            $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
+                    ->where('phone_number1', '=', Auth::user()->mobile_number)
+                    ->where('email', '=', Auth::user()->email)
+                    ->first();
 
-         if (count($inquiry) < 1) {
-            return redirect('inquiry')->with('flash_message', 'Inquiry does not exist.');
-         }
+            $inquiry = Customer::with('delivery_location')->find($cust->id);
+
+            if (count($inquiry) < 1) {
+                return redirect('inquiry')->with('flash_message', 'Inquiry does not exist.');
+            }
         }
-       
+
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
-        return view('add_inquiry', compact('units','inquiry', 'delivery_locations'));
+        return view('add_inquiry', compact('units', 'inquiry', 'delivery_locations'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(InquiryRequest $request) {
-        
+
         $input_data = Input::all();
         if (Session::has('forms_inquiry')) {
             $session_array = Session::get('forms_inquiry');
@@ -277,7 +276,7 @@ class InquiryController extends Controller {
                 }
             }
         }
-        
+
         return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully added.');
     }
 
@@ -285,26 +284,26 @@ class InquiryController extends Controller {
      * Display the specified resource.
      */
     public function show($id) {
-               
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        
-        if(Auth::user()->role_id == 5){
-        $cust = Customer::where('owner_name','=', Auth::user()->first_name)
-                    -> where('phone_number1','=', Auth::user()->mobile_number) 
-                    -> where('email','=', Auth::user()->email)                    
+
+        if (Auth::user()->role_id == 5) {
+            $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
+                    ->where('phone_number1', '=', Auth::user()->mobile_number)
+                    ->where('email', '=', Auth::user()->email)
                     ->first();
-                    
-            $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->Where('customer_id','=', $cust->id)->find($id);       
+
+            $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->Where('customer_id', '=', $cust->id)->find($id);
         }
-        
-        if(Auth::user()->role_id <> 5){
+
+        if (Auth::user()->role_id <> 5) {
             $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->find($id);
         }
-        
-        
-      
+
+
+
         if (count($inquiry) < 1) {
             return redirect('inquiry')->with('flash_message', 'Inquiry does not exist.');
         }
@@ -379,23 +378,23 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-       
-        
-         if(Auth::user()->role_id == 5){
-        $cust = Customer::where('owner_name','=', Auth::user()->first_name)
-                    -> where('phone_number1','=', Auth::user()->mobile_number) 
-                    -> where('email','=', Auth::user()->email)                    
+
+
+        if (Auth::user()->role_id == 5) {
+            $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
+                    ->where('phone_number1', '=', Auth::user()->mobile_number)
+                    ->where('email', '=', Auth::user()->email)
                     ->first();
-        
-            $inquiry = $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer' ,'createdby')->Where('customer_id','=', $cust->id) ->find($id);           
+
+            $inquiry = $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->Where('customer_id', '=', $cust->id)->find($id);
         }
-        
-        
-        if(Auth::user()->role_id <> 5){
-        $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer' ,'createdby')->find($id);
+
+
+        if (Auth::user()->role_id <> 5) {
+            $inquiry = Inquiry::with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->find($id);
         }
-        
-        
+
+
         if (count($inquiry) < 1) {
             return redirect('inquiry')->with('flash_message', 'Inquiry does not exist.');
         }
@@ -450,12 +449,11 @@ class InquiryController extends Controller {
 //        } elseif ($input_data['vat_status'] == 'exclude_vat') {
 //            $vat_price = $input_data['vat_percentage'];
 //        }
-        
+
         if (isset($input_data['vat_percentage'])) {
             $vat_price = $input_data['vat_percentage'];
-        }
-        else {
-            $vat_price =0;
+        } else {
+            $vat_price = 0;
         }
         $customers = Customer::find($input_data['customer_id']);
         if ($input_data['customer_status'] == "new_customer") {
@@ -611,31 +609,31 @@ class InquiryController extends Controller {
     public function fetch_existing_customer() {
 
         $term = Input::get('term');
-        if($term!=''){
-          
-            $tally_name_search = substr($term, strpos($term," - ")+strlen(" - "));
+        if ($term != '') {
+
+            $tally_name_search = substr($term, strpos($term, " - ") + strlen(" - "));
             $term = '%' . $term . '%';
 //            $tally_name_search = '%' . $tally_name_search . '%';           
-           
-             
+
+
             $customers = Customer::where(function($query) use($term) {
-                            $query->whereHas('only_city', function($q) use ($term) {
-                                $q->where('city_name', 'like', $term);
-                            });
-                        })
-                        ->where('tally_name', '<>', '')
-                        ->where('customer_status', '=', 'permanent')
-                        ->orWhere('company_name', $term)
-                        ->orWhere('tally_name', 'like', $tally_name_search)
-                        ->orWhere('tally_name', 'like', $term)
-                        ->orWhere('id', 'like', $term)        
-                        ->with('delivery_location')
-                        ->orderBy('tally_name', 'ASC')
-                        ->select('id AS id',DB::raw('CONCAT(id," - ",tally_name) AS value'),/*('tally_name AS value'),*/ 'delivery_location_id AS delivery_location_id')->get(array('delivery_location.difference.id as difference'));
-        }else{
-            $customers = Customer::with('delivery_location')->where('tally_name', '<>', '')->orderBy('tally_name', 'ASC')->select(DB::raw('CONCAT(id," - ",tally_name) AS value'),'id AS id', 'delivery_location_id AS delivery_location_id')->get();
+                                $query->whereHas('only_city', function($q) use ($term) {
+                                    $q->where('city_name', 'like', $term);
+                                });
+                            })
+                            ->where('tally_name', '<>', '')
+                            ->where('customer_status', '=', 'permanent')
+                            ->orWhere('company_name', $term)
+                            ->orWhere('tally_name', 'like', $tally_name_search)
+                            ->orWhere('tally_name', 'like', $term)
+                            ->orWhere('id', 'like', $term)
+                            ->with('delivery_location')
+                            ->orderBy('tally_name', 'ASC')
+                            ->select('id AS id', DB::raw('CONCAT(id," - ",tally_name) AS value'), /* ('tally_name AS value'), */ 'delivery_location_id AS delivery_location_id')->get(array('delivery_location.difference.id as difference'));
+        } else {
+            $customers = Customer::with('delivery_location')->where('tally_name', '<>', '')->orderBy('tally_name', 'ASC')->select(DB::raw('CONCAT(id," - ",tally_name) AS value'), 'id AS id', 'delivery_location_id AS delivery_location_id')->get();
         }
-        
+
 //        if (count($customers) > 0) {
 //            foreach ($customers as $customer) {
 //                $data_array[] = [
@@ -730,21 +728,21 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-       
-        if(Auth::user()->role_id == 5){
-        $cust = Customer::where('owner_name','=', Auth::user()->first_name)
-                    -> where('phone_number1','=', Auth::user()->mobile_number) 
-                    -> where('email','=', Auth::user()->email)                    
-                    ->first(); 
-        
-            $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer','createdby')->where('inquiry_status', '<>', 'Completed')->Where('customer_id','=', $cust->id) ->first();
+
+        if (Auth::user()->role_id == 5) {
+            $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
+                    ->where('phone_number1', '=', Auth::user()->mobile_number)
+                    ->where('email', '=', Auth::user()->email)
+                    ->first();
+
+            $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->where('inquiry_status', '<>', 'Completed')->Where('customer_id', '=', $cust->id)->first();
         }
-        
-        if(Auth::user()->role_id <> 5){
-            $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer','createdby')->where('inquiry_status', '<>', 'Completed')->first();
+
+        if (Auth::user()->role_id <> 5) {
+            $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->where('inquiry_status', '<>', 'Completed')->first();
         }
-        
-        
+
+
         if (count($inquiry) < 1) {
             return redirect('inquiry')->with('flash_message', 'Please select other inquiry, order is generated for this inquiry.');
         }
@@ -759,11 +757,11 @@ class InquiryController extends Controller {
      */
 
     function store_place_order($id, InquiryRequest $request) {
-        
-        
-        
-       
-        
+
+
+
+
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -849,12 +847,10 @@ class InquiryController extends Controller {
 //        }
         if (isset($input_data['vat_percentage'])) {
             $vat_price = $input_data['vat_percentage'];
+        } else {
+            $vat_price = 0;
         }
-        else
-        {
-            $vat_price =0;
-        }
-        
+
         $order = new Order();
         $order->order_source = $order_status;
         $order->supplier_id = $supplier_id;
@@ -905,31 +901,40 @@ class InquiryController extends Controller {
                     $phone_number = $customer->phone_number1;
                 }
                 $msg = urlencode($str);
-                $url = SMS_URL . "?user = " . PROFILE_ID . "&pwd = " . PASS . "&senderid = " . SENDER_ID . "&mobileno = " . $phone_number . "&msgtext = " . $msg . "&smstype = 0";
+//                $url = SMS_URL . "?user = " . PROFILE_ID . "&pwd = " . PASS . "&senderid = " . SENDER_ID . "&mobileno = " . $phone_number . "&msgtext = " . $msg . "&smstype = 0";
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
                 if (SEND_SMS === true) {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
                     curl_close($ch);
                 }
-                if (count($customer['manager']) > 0) {
-                    $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has created an order for " . $customer->owner_name . " '" . round($total_quantity, 2) . "'. Kindly check. Vikas Associates";
-                    if (App::environment('development')) {
-                        $phone_number = Config::get('smsdata.send_sms_to');
-                    } else {
-                        $phone_number = $customer['manager']->mobile_number;
-                    }
-                    $msg = urlencode($str);
-                    $url = SMS_URL . "?user = " . PROFILE_ID . "&pwd = " . PASS . "&senderid = " . SENDER_ID . "&mobileno = " . $phone_number . "&msgtext = " . $msg . "&smstype = 0";
-                    if (SEND_SMS === true) {
-                        $ch = curl_init($url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $curl_scraped_page = curl_exec($ch);
-                        curl_close($ch);
-                    }
+            }
+            if (count($customer['manager']) > 0) {
+                $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has created an order for " . $customer->owner_name . " '" . round($total_quantity, 2) . "'. Kindly check. Vikas Associates";
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer['manager']->mobile_number;
+                }
+                $msg = urlencode($str);
+//                $url = SMS_URL . "?user = " . PROFILE_ID . "&pwd = " . PASS . "&senderid = " . SENDER_ID . "&mobileno = " . $phone_number . "&msgtext = " . $msg . "&smstype = 0";
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
                 }
             }
         }
+
+
+        echo "<pre>";
+        print_r($curl_scraped_page);
+        echo "</pre>";
+        exit;
         $order->save();
         $order_id = $order->id;
         $order_products = array();
@@ -948,7 +953,7 @@ class InquiryController extends Controller {
                 AllOrderProducts::create($order_products);
             }
         }
-        
+
         /*
          * send mail
          */
@@ -983,40 +988,38 @@ class InquiryController extends Controller {
         Inquiry::where('id', '=', $id)->update(['inquiry_status' => 'Completed']);
         return redirect('inquiry')->with('flash_success_message', 'One Order successfully generated for Inquiry.');
     }
-    
-    /* Function used to export inquiry records*/
-    public function exportinquiryBasedOnStatus($inquiry_status){
-        
+
+    /* Function used to export inquiry records */
+
+    public function exportinquiryBasedOnStatus($inquiry_status) {
+
         if ($inquiry_status == 'Pending') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $inquiry_status = 'pending';
             $excel_sheet_name = 'Pending';
-            $excel_name = 'Inquiry-Pending-'.date('dmyhis');
+            $excel_name = 'Inquiry-Pending-' . date('dmyhis');
         } elseif ($inquiry_status == 'Completed') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $inquiry_status = 'completed';
             $excel_sheet_name = 'Completed';
-             $excel_name = 'Inquiry-Completed-'.date('dmyhis');
+            $excel_name = 'Inquiry-Completed-' . date('dmyhis');
         }
-        
-$inquiry_objects = Inquiry::where('inquiry_status',$inquiry_status)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->get();
-if (count($inquiry_objects) == 0) {
+
+        $inquiry_objects = Inquiry::where('inquiry_status', $inquiry_status)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->get();
+        if (count($inquiry_objects) == 0) {
             return redirect::back()->with('flash_message', 'No data found');
         } else {
             $delivery_location = DeliveryLocation::all();
-            Excel::create($excel_name, function($excel) use($inquiry_objects,$excel_sheet_name,$delivery_location) {
-                $excel->sheet('Inquiry-'.$excel_sheet_name, function($sheet) use($inquiry_objects,$delivery_location) {
-                    $sheet->loadView('excelView.inquiry', array('inquiry_objects' => $inquiry_objects,'delivery_location'=>$delivery_location));
+            Excel::create($excel_name, function($excel) use($inquiry_objects, $excel_sheet_name, $delivery_location) {
+                $excel->sheet('Inquiry-' . $excel_sheet_name, function($sheet) use($inquiry_objects, $delivery_location) {
+                    $sheet->loadView('excelView.inquiry', array('inquiry_objects' => $inquiry_objects, 'delivery_location' => $delivery_location));
                 });
             })->export('xls');
         }
     }
-    
-    
-    function getenviroment()
-    {
+
+    function getenviroment() {
         print_r(App::environment());
     }
-    
 
 }
