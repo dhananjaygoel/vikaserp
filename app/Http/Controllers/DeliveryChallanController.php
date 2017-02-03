@@ -447,7 +447,7 @@ class DeliveryChallanController extends Controller {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour meterial has been edited as follows ";
+                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour material has been edited as follows ";
                 foreach ($input_data as $product_data) {
                     $product = ProductSubCategory::find($product_data->product_category_id);
 //                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
@@ -476,7 +476,7 @@ class DeliveryChallanController extends Controller {
             }
             if (count($customer['manager']) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited meterial for " . $customer->owner_name . " as follows ";
+                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited material for " . $customer->owner_name . " as follows ";
                 foreach ($input_data as $product_data) {
                     $product = ProductSubCategory::find($product_data->product_category_id);
 //                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
