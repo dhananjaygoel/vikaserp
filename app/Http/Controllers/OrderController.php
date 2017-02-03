@@ -346,6 +346,8 @@ class OrderController extends Controller {
          * SEND SMS TO CUSTOMER FOR NEW ORDER
          * ----------------------------------
          */
+        
+        $input = Input::all();
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
@@ -400,7 +402,10 @@ class OrderController extends Controller {
         }
         
         
-        
+        echo "<pre>";
+        print_r($curl_scraped_page);
+        echo "</pre>";
+        exit;
         $order->save();
         $order_id = $order->id;
         $order_products = array();
