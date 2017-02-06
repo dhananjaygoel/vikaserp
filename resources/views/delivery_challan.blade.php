@@ -132,7 +132,7 @@
                                             {{ ($challan->serial_number != '') ? $challan->serial_number : '' }}
                                         </td>
                                         <td class="text-center">{{ round($challan->total_quantity, 2) }}</td>
-                                        <td class="text-center">{{ round($challan->total_quantity_pending, 2) }}</td>
+                                        <td class="text-center">{{ (round($challan->total_quantity_pending, 2)>0)? round($challan->total_quantity_pending, 2)  :0 }}</td>
                                         <td class="text-center">{{ (round($challan->vat_percentage, 2)==0? 'No':'Yes') }}</td>
                                         <td class="text-center">
                                             <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
