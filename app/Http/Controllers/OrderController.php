@@ -1118,29 +1118,29 @@ class OrderController extends Controller {
             if (count($delivery_order_products) > 0) {
                 foreach ($delivery_order_products as $dopk => $dopv) {
                     $product_size = ProductSubCategory::find($dopv->product_category_id);
-                   $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity;
+//                   $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity;
                     
-//                      if ($dopv->unit_id == 1) {
-//                        $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity;
-//                    } elseif ($dopv->unit_id == 2) {
-//                        $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight;
-//                    } elseif ($dopv->unit_id == 3) {
-//                        $delivery_order_quantity = $delivery_order_quantity + ($dopv->quantity / $product_size->standard_length ) * $product_size->weight;
-//                    }
+                      if ($dopv->unit_id == 1) {
+                        $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity;
+                    } elseif ($dopv->unit_id == 2) {
+                        $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight;
+                    } elseif ($dopv->unit_id == 3) {
+                        $delivery_order_quantity = $delivery_order_quantity + ($dopv->quantity / $product_size->standard_length ) * $product_size->weight;
+                    }
                 }
             }
             if (count($order['all_order_products']) > 0) {
                 foreach ($order['all_order_products'] as $opk => $opv) {
                     $product_size = ProductSubCategory::find($opv->product_category_id);
-                    $order_quantity = $order_quantity + $opv->quantity;
+//                    $order_quantity = $order_quantity + $opv->quantity;
                     
-//                    if ($opv->unit_id == 1) {
-//                        $order_quantity = $order_quantity + $opv->quantity;
-//                    } elseif ($opv->unit_id == 2) {
-//                        $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
-//                    } elseif ($opv->unit_id == 3) {
-//                        $order_quantity = $order_quantity + (($opv->quantity / $product_size->standard_length ) * $product_size->weight);
-//                    }
+                    if ($opv->unit_id == 1) {
+                        $order_quantity = $order_quantity + $opv->quantity;
+                    } elseif ($opv->unit_id == 2) {
+                        $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
+                    } elseif ($opv->unit_id == 3) {
+                        $order_quantity = $order_quantity + (($opv->quantity / $product_size->standard_length ) * $product_size->weight);
+                    }
                 }
             }
             $allorders[$key]['pending_quantity'] = ($delivery_order_quantity >= $order_quantity) ? 0 : ($order_quantity - $delivery_order_quantity);
