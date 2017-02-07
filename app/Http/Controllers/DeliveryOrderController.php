@@ -993,6 +993,7 @@ class DeliveryOrderController extends Controller {
                             $do = DeliveryOrder::find($popv->order_id);
                             $prd_details = AllOrderProducts::where('order_id','=',$do->order_id)->where('order_type','=','order')->where('product_category_id','=',$popv->product_category_id)->get();
                             
+                             if(isset($prd_details[0])){
                             $pending_order_temp = $prd_details[0]->quantity - $popv->quantity;
                             if($pending_order ==0){
                                 $pending_order = $pending_order_temp;
@@ -1000,7 +1001,7 @@ class DeliveryOrderController extends Controller {
                             else{
                                 $pending_order = $pending_order + $pending_order_temp;
                             }                            
-                           
+                             }
                             
                         } 
                         
