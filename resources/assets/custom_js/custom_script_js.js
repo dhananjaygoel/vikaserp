@@ -864,7 +864,8 @@ function product_autocomplete_purchase(id) {
             at: "left top"
         },
         select: function (event, ui) {
-            var term = $("#add_purchase_product_name_" + id).val();
+             var term = ui.item.value;
+//            var term = $("#add_purchase_product_name_" + id).val();
             $.ajax({
                 url: baseurl + '/fetch_products',
                 data: {"term": term},
