@@ -45,223 +45,231 @@ class DeliveryChallanController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-        
-          echo "<pre>";
-        print_r("hi");
+        echo "<pre>";
+        print_r("hii");
         echo "</pre>";
         exit;
-        
-        if (Auth::user()->role_id == 5) {
-            return Redirect::to('inquiry')->with('error', 'You do not have permission.');
-        }
-        
-      
-        
-        $data = Input::all();
-        $search_dates = [];
-        $allorders =0;
-        $session_sort_type_order = Session::get('order-sort-type');
-        if (isset($data['status_filter']))
-            $qstring_sort_type_order = $data['status_filter'];
-        elseif (isset($data['delivery_order_status']))
-            $qstring_sort_type_order = $data['delivery_order_status'];
-
-        if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
-            $qstring_sort_type_order = $qstring_sort_type_order;
-        } else {
-            if (isset($session_sort_type_order) && ($session_sort_type_order != "")) {
-                $qstring_sort_type_order = $session_sort_type_order;
-            } else {
-                $qstring_sort_type_order = "";
-            }
-        }
-        
-        if ((isset($qstring_sort_type_order)) && ($qstring_sort_type_order != '')) {
-            if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
-                $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
-                $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
-                if ($date1 == $date2) {
-                    $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
-                                    ->where('updated_at', 'like', $date1 . '%')
-                                    ->with('customer', 'delivery_challan_products', 'delivery_order')
-                                    ->orderBy('updated_at', 'desc')->Paginate(20);
-                } else {
-                    $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
-                                    ->where('updated_at', '>=', $date1)
-                                    ->where('updated_at', '<=', $date2 . ' 23:59:59')
-                                    ->with('customer', 'delivery_challan_products', 'delivery_order')
-                                    ->orderBy('updated_at', 'desc')->Paginate(20);
-                }
-                $search_dates = [
-                    'export_from_date' => $data["export_from_date"],
-                    'export_to_date' => $data["export_to_date"]
-                ];
-            } else {
-                $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)->with('customer', 'delivery_challan_products', 'delivery_order')
-                                ->orderBy('updated_at', 'desc')->Paginate(20);
-            }
-        } else {
-            if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
-                $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
-                $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
-                if ($date1 == $date2) {
-                    $allorders = DeliveryChallan::where('challan_status', '=', 'pending')
-                                    ->where('updated_at', 'like', $date1 . '%')
-                                    ->with('customer', 'delivery_challan_products', 'delivery_order')
-                                    ->orderBy('updated_at', 'desc')->Paginate(20);
-                } else {
-                    $allorders = DeliveryChallan::where('challan_status', '=', 'pending')
-                                    ->where('updated_at', '>=', $date1)
-                                    ->where('updated_at', '<=', $date2)
-                                    ->with('customer', 'delivery_challan_products', 'delivery_order')
-                                    ->orderBy('updated_at', 'desc')->Paginate(20);
-                }
-                $search_dates = [
-                    'export_from_date' => $data["export_from_date"],
-                    'export_to_date' => $data["export_to_date"]
-                ];
-            } else {
-                $allorders = DeliveryChallan::where('challan_status', '=', 'pending')->with('customer', 'delivery_challan_products', 'delivery_order')
-                                ->orderBy('updated_at', 'desc')->Paginate(20);
-            }
-        }
+    }
+    
+    
+//    public function index() {
 //        
-//        if (count($allorders) > 0) {
-//            foreach ($allorders as $key => $order) {
-//                $order_quantity = 0;
-//                $order_quantity_pending =0;
-//                
-//                
-//                $all_dc_details = DeliveryChallan::with('delivery_order','order_details','delivery_challan_products')->find($order->id);
-//                
-////                $all_do_details = DeliveryOrder::with('delivery_product')->find($all_dc_details[0]['delivery_order']->id);
-//                
-//                
-//            foreach($all_dc_details['delivery_challan_products'] as $delivery_challan_products){
-//                 
-//                  $order_quantity = $order_quantity + $delivery_challan_products->present_shipping;
-//                  $all_do_details = DeliveryOrder::with('delivery_product')->find($all_dc_details['delivery_order']->id);
-//                  
-//                  foreach($all_do_details['delivery_product'] as $delivery_product) 
-//                  {
-//                      $delivery_product->product_category_id;
-//                      $delivery_challan_products->product_category_id;
-//                      
-//                      if($delivery_product->product_category_id == $delivery_challan_products->product_category_id)
-//                      { 
-//                          echo "<pre>";
-//                          print_r($delivery_product->quantity);
-//                          echo "</pre>";
-//                           
-//                         
-//                          
-//                      }
-//                    
-//                      
-//                  }
-//                 
-//            }
-//                
-//                
-//                echo "<pre>";
-//                print_r($delivery_challan_products->product_category_id);
-//                echo "</pre>";
-//                exit;
-//                
-//                
+//          echo "<pre>";
+//        print_r("hi");
+//        echo "</pre>";
+//        exit;
+//        
+//        if (Auth::user()->role_id == 5) {
+//            return Redirect::to('inquiry')->with('error', 'You do not have permission.');
+//        }
+//        
+//      
+//        
+//        $data = Input::all();
+//        $search_dates = [];
+//        $allorders =0;
+//        $session_sort_type_order = Session::get('order-sort-type');
+//        if (isset($data['status_filter']))
+//            $qstring_sort_type_order = $data['status_filter'];
+//        elseif (isset($data['delivery_order_status']))
+//            $qstring_sort_type_order = $data['delivery_order_status'];
+//
+//        if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
+//            $qstring_sort_type_order = $qstring_sort_type_order;
+//        } else {
+//            if (isset($session_sort_type_order) && ($session_sort_type_order != "")) {
+//                $qstring_sort_type_order = $session_sort_type_order;
+//            } else {
+//                $qstring_sort_type_order = "";
 //            }
 //        }
 //        
-
-        
-
-
-        if (count($allorders) > 0) {
-            foreach ($allorders as $key => $order) {
-                $order_quantity = 0;
-                $order_quantity_pending = 0;
-                $product_for_order_do_pending = 0;
-                $previous_dc_quantity = 0;
-                $previous_dc_quantity_parent = 0;
-
-
-                if (count($order['delivery_challan_products']) > 0) {
-                    $order_quantity = $order['delivery_challan_products']->sum('present_shipping');
-                }
-                $allorders[$key]['total_quantity'] = $order_quantity;
-                foreach ($order['delivery_challan_products'] as $delivery_challan_products) {
-
-
-
-                    $product_for_order = AllOrderProducts::where('order_type', '=', 'order')
-                            ->where('order_id', '=', $order->order_id)
-                            ->where('product_category_id', '=', $delivery_challan_products->product_category_id)
-                            ->get();
-
-                    $product_for_deliveryorder = DeliveryOrder::where('order_id', '=', $order->order_id)->get();
-
-                    if (count($product_for_deliveryorder) > 0) {
-                        foreach ($product_for_deliveryorder as $deliveryorder) {
-                            $product_for_order_do = AllOrderProducts::where('order_type', '=', 'delivery_order')
-                                    ->where('order_id', '=', $deliveryorder->id)
-                                    ->where('product_category_id', '=', $delivery_challan_products->product_category_id)
-                                    ->get();
-
-
-                            $dc_temp = DeliveryChallan::find($delivery_challan_products->order_id);
-                            $dc = DeliveryChallan::where('order_id', '=', $dc_temp->order_id)
-                                    ->get();
-                            foreach ($dc as $dc1) {
-                                $prod = AllOrderProducts::where('order_id', '=', $dc1->id)
-                                        ->where('product_category_id', '=', $delivery_challan_products->product_category_id)
-                                        ->where('order_id', '<>', $order->id)
-                                        ->get();
-
-                                foreach ($prod as $t) {
-
-                                    $previous_dc_quantity = $t->present_shipping;
-                                    $previous_dc_quantity_parent = $t->parent;
-                                }
-                            }
-
-                            $product_for_order_do_pending = $product_for_order_do->sum('quantity');
-                        }
-                    }
-
-//                   echo "<pre>";
-//                       print_r($product_for_order_do_pending ."--" .$previous_dc_quantity."--".$product_for_order[0]->quantity."--".$previous_dc_quantity_parent."--".$product_for_order_do[0]->id);
-//                       echo "</pre>";
-//                 
-
-                    foreach ($product_for_order as $product_order_pending) {
-
-                        if ($previous_dc_quantity > 0) {
-                            if ($previous_dc_quantity_parent == $product_for_order_do[0]->id) {
-                                $order_quantity_pending = $order_quantity_pending + $product_order_pending->quantity;
-                            } else {
-                                $order_quantity_pending = $product_order_pending->quantity - $previous_dc_quantity + $order_quantity - $product_for_order_do_pending;
-                            }
-                        } else {
-                            $order_quantity_pending = $order_quantity_pending + $product_order_pending->quantity;
-                        }
-                    }
-                }
-
-                $allorders[$key]['total_quantity_pending'] = $order_quantity_pending - $order_quantity;
-
-//                 if($order_quantity_pending > $order_quantity){
-//                   
-//                    $allorders[$key]['total_quantity_pending'] = $order_quantity_pending -$order_quantity;
-//                }else {
-//                         $allorders[$key]['total_quantity_pending'] = '0';
+//        if ((isset($qstring_sort_type_order)) && ($qstring_sort_type_order != '')) {
+//            if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+//                $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+//                $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+//                if ($date1 == $date2) {
+//                    $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
+//                                    ->where('updated_at', 'like', $date1 . '%')
+//                                    ->with('customer', 'delivery_challan_products', 'delivery_order')
+//                                    ->orderBy('updated_at', 'desc')->Paginate(20);
+//                } else {
+//                    $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
+//                                    ->where('updated_at', '>=', $date1)
+//                                    ->where('updated_at', '<=', $date2 . ' 23:59:59')
+//                                    ->with('customer', 'delivery_challan_products', 'delivery_order')
+//                                    ->orderBy('updated_at', 'desc')->Paginate(20);
+//                }
+//                $search_dates = [
+//                    'export_from_date' => $data["export_from_date"],
+//                    'export_to_date' => $data["export_to_date"]
+//                ];
+//            } else {
+//                $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)->with('customer', 'delivery_challan_products', 'delivery_order')
+//                                ->orderBy('updated_at', 'desc')->Paginate(20);
+//            }
+//        } else {
+//            if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+//                $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+//                $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+//                if ($date1 == $date2) {
+//                    $allorders = DeliveryChallan::where('challan_status', '=', 'pending')
+//                                    ->where('updated_at', 'like', $date1 . '%')
+//                                    ->with('customer', 'delivery_challan_products', 'delivery_order')
+//                                    ->orderBy('updated_at', 'desc')->Paginate(20);
+//                } else {
+//                    $allorders = DeliveryChallan::where('challan_status', '=', 'pending')
+//                                    ->where('updated_at', '>=', $date1)
+//                                    ->where('updated_at', '<=', $date2)
+//                                    ->with('customer', 'delivery_challan_products', 'delivery_order')
+//                                    ->orderBy('updated_at', 'desc')->Paginate(20);
+//                }
+//                $search_dates = [
+//                    'export_from_date' => $data["export_from_date"],
+//                    'export_to_date' => $data["export_to_date"]
+//                ];
+//            } else {
+//                $allorders = DeliveryChallan::where('challan_status', '=', 'pending')->with('customer', 'delivery_challan_products', 'delivery_order')
+//                                ->orderBy('updated_at', 'desc')->Paginate(20);
+//            }
+//        }
+////        
+////        if (count($allorders) > 0) {
+////            foreach ($allorders as $key => $order) {
+////                $order_quantity = 0;
+////                $order_quantity_pending =0;
+////                
+////                
+////                $all_dc_details = DeliveryChallan::with('delivery_order','order_details','delivery_challan_products')->find($order->id);
+////                
+//////                $all_do_details = DeliveryOrder::with('delivery_product')->find($all_dc_details[0]['delivery_order']->id);
+////                
+////                
+////            foreach($all_dc_details['delivery_challan_products'] as $delivery_challan_products){
+////                 
+////                  $order_quantity = $order_quantity + $delivery_challan_products->present_shipping;
+////                  $all_do_details = DeliveryOrder::with('delivery_product')->find($all_dc_details['delivery_order']->id);
+////                  
+////                  foreach($all_do_details['delivery_product'] as $delivery_product) 
+////                  {
+////                      $delivery_product->product_category_id;
+////                      $delivery_challan_products->product_category_id;
+////                      
+////                      if($delivery_product->product_category_id == $delivery_challan_products->product_category_id)
+////                      { 
+////                          echo "<pre>";
+////                          print_r($delivery_product->quantity);
+////                          echo "</pre>";
+////                           
+////                         
+////                          
+////                      }
+////                    
+////                      
+////                  }
+////                 
+////            }
+////                
+////                
+////                echo "<pre>";
+////                print_r($delivery_challan_products->product_category_id);
+////                echo "</pre>";
+////                exit;
+////                
+////                
+////            }
+////        }
+////        
+//
+//        
+//
+//
+//        if (count($allorders) > 0) {
+//            foreach ($allorders as $key => $order) {
+//                $order_quantity = 0;
+//                $order_quantity_pending = 0;
+//                $product_for_order_do_pending = 0;
+//                $previous_dc_quantity = 0;
+//                $previous_dc_quantity_parent = 0;
+//
+//
+//                if (count($order['delivery_challan_products']) > 0) {
+//                    $order_quantity = $order['delivery_challan_products']->sum('present_shipping');
+//                }
+//                $allorders[$key]['total_quantity'] = $order_quantity;
+//                foreach ($order['delivery_challan_products'] as $delivery_challan_products) {
+//
+//
+//
+//                    $product_for_order = AllOrderProducts::where('order_type', '=', 'order')
+//                            ->where('order_id', '=', $order->order_id)
+//                            ->where('product_category_id', '=', $delivery_challan_products->product_category_id)
+//                            ->get();
+//
+//                    $product_for_deliveryorder = DeliveryOrder::where('order_id', '=', $order->order_id)->get();
+//
+//                    if (count($product_for_deliveryorder) > 0) {
+//                        foreach ($product_for_deliveryorder as $deliveryorder) {
+//                            $product_for_order_do = AllOrderProducts::where('order_type', '=', 'delivery_order')
+//                                    ->where('order_id', '=', $deliveryorder->id)
+//                                    ->where('product_category_id', '=', $delivery_challan_products->product_category_id)
+//                                    ->get();
+//
+//
+//                            $dc_temp = DeliveryChallan::find($delivery_challan_products->order_id);
+//                            $dc = DeliveryChallan::where('order_id', '=', $dc_temp->order_id)
+//                                    ->get();
+//                            foreach ($dc as $dc1) {
+//                                $prod = AllOrderProducts::where('order_id', '=', $dc1->id)
+//                                        ->where('product_category_id', '=', $delivery_challan_products->product_category_id)
+//                                        ->where('order_id', '<>', $order->id)
+//                                        ->get();
+//
+//                                foreach ($prod as $t) {
+//
+//                                    $previous_dc_quantity = $t->present_shipping;
+//                                    $previous_dc_quantity_parent = $t->parent;
+//                                }
+//                            }
+//
+//                            $product_for_order_do_pending = $product_for_order_do->sum('quantity');
+//                        }
 //                    }
-            }
-        }
-        
-        $allorders->setPath('delivery_challan');
-        
-        return view('delivery_challan', compact('allorders', 'search_dates'));
-    }
+//
+////                   echo "<pre>";
+////                       print_r($product_for_order_do_pending ."--" .$previous_dc_quantity."--".$product_for_order[0]->quantity."--".$previous_dc_quantity_parent."--".$product_for_order_do[0]->id);
+////                       echo "</pre>";
+////                 
+//
+//                    foreach ($product_for_order as $product_order_pending) {
+//
+//                        if ($previous_dc_quantity > 0) {
+//                            if ($previous_dc_quantity_parent == $product_for_order_do[0]->id) {
+//                                $order_quantity_pending = $order_quantity_pending + $product_order_pending->quantity;
+//                            } else {
+//                                $order_quantity_pending = $product_order_pending->quantity - $previous_dc_quantity + $order_quantity - $product_for_order_do_pending;
+//                            }
+//                        } else {
+//                            $order_quantity_pending = $order_quantity_pending + $product_order_pending->quantity;
+//                        }
+//                    }
+//                }
+//
+//                $allorders[$key]['total_quantity_pending'] = $order_quantity_pending - $order_quantity;
+//
+////                 if($order_quantity_pending > $order_quantity){
+////                   
+////                    $allorders[$key]['total_quantity_pending'] = $order_quantity_pending -$order_quantity;
+////                }else {
+////                         $allorders[$key]['total_quantity_pending'] = '0';
+////                    }
+//            }
+//        }
+//        
+//        $allorders->setPath('delivery_challan');
+//        
+//        return view('delivery_challan', compact('allorders', 'search_dates'));
+//    }
 
     /**
      * Display the specified Delivery Challan Details.
