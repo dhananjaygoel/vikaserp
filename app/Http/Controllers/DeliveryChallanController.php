@@ -46,14 +46,12 @@ class DeliveryChallanController extends Controller {
      */
     public function index() {
         
-        echo "<pre>";
-        print_r("hi");
-        echo "</pre>";
-        exit;
-
+        
         if (Auth::user()->role_id == 5) {
             return Redirect::to('inquiry')->with('error', 'You do not have permission.');
         }
+        
+       
 
         $data = Input::all();
         $session_sort_type_order = Session::get('order-sort-type');
@@ -253,6 +251,11 @@ class DeliveryChallanController extends Controller {
 //                    }
             }
         }
+        
+         echo "<pre>";
+        print_r("hi");
+        echo "</pre>";
+        exit;
         $allorders->setPath('delivery_challan');
         return view('delivery_challan', compact('allorders', 'search_dates'));
     }
