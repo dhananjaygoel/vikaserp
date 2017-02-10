@@ -10,8 +10,78 @@
                     <li class="active"><span>Delivery Challan</span></li>
                 </ol>
                 <div class="filter-block">
-                  
-                  
+                    <form action="{{url('delivery_challan')}}" method="GET">
+                        <div class=" pull-right col-md-3">
+                            <?php
+                            $session_sort_type_order = Session::get('order-sort-type');
+                            if ((Input::get('status_filter') != "") || (Input::get('delivery_order_status') != "")) {
+                                if (Input::get('status_filter') != "") {
+                                    $qstring_sort_type_order = Input::get('status_filter');
+                                } elseif (Input::get('delivery_order_status') != "") {
+                                    $qstring_sort_type_order = Input::get('delivery_order_status');
+                                }
+                            }
+                            if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
+                                $qstring_sort_type_order = $qstring_sort_type_order;
+                            } else {
+                                $qstring_sort_type_order = $session_sort_type_order;
+                            }
+                            ?>
+                            <select class="form-control" id="user_filter3" name="status_filter" onchange="this.form.submit();">
+                                <option <?php if ($qstring_sort_type_order == 'pending') echo 'selected=""'; ?> value="pending">Inprogress</option>
+                                <option <?php if ($qstring_sort_type_order == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
+                            </select>
+                            <?php
+                            if (isset($session_sort_type_order)) {
+                                Session::put('order-sort-type', "");
+                            }
+                            ?>
+                            <br>
+                        </div>
+                    </form>
+                    <div class="search_form_wrapper delivery_challan_search_form_wrapper">
+                        <form class="search_form" method="GET" action="{{URL::action('DeliveryChallanController@index')}}">
+                            <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
+                            if (Input::get('export_from_date') != "") {
+                                echo "value='" . Input::get('export_from_date') . "'";
+                            }
+                            ?>>
+                            <input type="text" placeholder="To" name="export_to_date" class="form-control export_to_date" id="export_to_date" <?php
+                            if (Input::get('export_to_date') != "") {
+                                echo "value='" . Input::get('export_to_date') . "'";
+                            }
+                            ?>>
+                            @if(sizeof($allorders)!=0 && ($qstring_sort_type_order == 'pending' ||$qstring_sort_type_order==''))
+                            <input type="hidden" name="delivery_order_status" value="pending">
+                            @elseif(sizeof($allorders)!=0 && $qstring_sort_type_order == 'completed')
+                            <input type="hidden" name="delivery_order_status" value="completed">
+                            @else
+                            <input type="hidden" name="delivery_order_status" value="pending">
+                            @endif
+                            <input type="submit" disabled="" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                        </form>
+                        <form class="pull-left" method="POST" action="{{URL::action('DeliveryChallanController@exportDeliveryChallanBasedOnStatus')}}">
+                            <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                            <input type="hidden" name="export_from_date" id="export_from_date" <?php
+                            if (Input::get('export_to_date') != "") {
+                                echo "value='" . Input::get('export_from_date') . "'";
+                            }
+                            ?>>
+                            <input type="hidden" name="export_to_date" id="export_to_date" <?php
+                            if (Input::get('export_to_date') != "") {
+                                echo "value='" . Input::get('export_to_date') . "'";
+                            }
+                            ?>>
+                            @if($qstring_sort_type_order == 'pending' || $qstring_sort_type_order == '')
+                            <input type="hidden" name="delivery_order_status" value="pending">
+                            @elseif($qstring_sort_type_order == 'completed')
+                            <input type="hidden" name="delivery_order_status" value="completed">
+                            @else
+                            <input type="hidden" name="delivery_order_status" value="pending">
+                            @endif
+                            <input type="submit"  name="export_data" value="Export" class="btn btn-primary pull-right" style=" float: left !important; margin-left: 2% !important;">
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -63,7 +133,7 @@
                                         </td>
                                         <td class="text-center">{{ round($challan->total_quantity, 2) }}</td>
                                         <td class="text-center">{{ (round($challan->total_quantity_pending, 2)>0)? round($challan->total_quantity_pending, 2)  :0 }}</td>
-                                        <td class="text-center"></td>
+                                        
                                         <td class="text-center">
                                             <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -111,7 +181,7 @@
                                         </td>
                                         <td class="text-center">{{round($challan->total_quantity, 2)}}</td>
                                          <td class="text-center">{{ (round($challan->total_quantity_pending, 2)>0)? round($challan->total_quantity_pending, 2)  :0 }}</td>
-                                       
+                                         
                                          
                                          <td class="text-center">
                                             <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
