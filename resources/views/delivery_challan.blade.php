@@ -22,7 +22,7 @@
                                     $qstring_sort_type_order = Input::get('delivery_order_status');
                                 }
                             }
-                            if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
+                            if ( isset($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
                                 $qstring_sort_type_order = $qstring_sort_type_order;
                             } else {
                                 $qstring_sort_type_order = $session_sort_type_order;
