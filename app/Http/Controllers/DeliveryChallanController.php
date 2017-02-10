@@ -69,7 +69,7 @@ class DeliveryChallanController extends Controller {
                 $qstring_sort_type_order = "";
             }
         }
-
+        $search_dates = [];
         if ((isset($qstring_sort_type_order)) && ($qstring_sort_type_order != '')) {
             if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
                 $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
@@ -95,6 +95,7 @@ class DeliveryChallanController extends Controller {
                                 ->orderBy('updated_at', 'desc')->Paginate(20);
             }
         } else {
+             
             if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
                 $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
                 $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
@@ -255,6 +256,7 @@ class DeliveryChallanController extends Controller {
         $allorders->setPath('delivery_challan');
         
         return view('delivery_challan', compact('allorders', 'search_dates'));
+//        return view('delivery_challan', compact('allorders'));
     }
 
     /**
