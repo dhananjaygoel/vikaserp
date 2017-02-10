@@ -108,7 +108,7 @@
                                         <th class="text-center">Serial Number</th>
                                         <th class="text-center">Present Shipping</th>
                                         <th class="text-center">Pending Order</th>
-                                        <th class="text-center">VAT</th>
+                                        <th class="text-center">VAT PERCENTAGE</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
