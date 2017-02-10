@@ -46,13 +46,10 @@ class DeliveryChallanController extends Controller {
      */
     public function index() {
         
-        
         if (Auth::user()->role_id == 5) {
             return Redirect::to('inquiry')->with('error', 'You do not have permission.');
         }
         
-       
-
         $data = Input::all();
         $search_dates = [];
         $allorders =0;
@@ -97,7 +94,6 @@ class DeliveryChallanController extends Controller {
                                 ->orderBy('updated_at', 'desc')->Paginate(20);
             }
         } else {
-             
             if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
                 $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
                 $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
@@ -257,8 +253,14 @@ class DeliveryChallanController extends Controller {
         
         $allorders->setPath('delivery_challan');
         
+        echo "<pre>";
+        print_r($allorders->toArray());
+        
+        echo"<br>";
+          print_r($search_dates);
+        echo "</pre>";
+        exit;
         return view('delivery_challan', compact('allorders', 'search_dates'));
-//        return view('delivery_challan', compact('allorders'));
     }
 
     /**
@@ -513,9 +515,6 @@ class DeliveryChallanController extends Controller {
                 }
             }
         }
-        
-        
-       
         return redirect('delivery_challan')->with('flash_message', 'Delivery Challan details updated successfuly .');
     }
 
