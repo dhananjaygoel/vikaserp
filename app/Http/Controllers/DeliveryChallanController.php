@@ -252,10 +252,6 @@ class DeliveryChallanController extends Controller {
             }
         }
         
-         echo "<pre>";
-        print_r("hi");
-        echo "</pre>";
-        exit;
         $allorders->setPath('delivery_challan');
         return view('delivery_challan', compact('allorders', 'search_dates'));
     }
