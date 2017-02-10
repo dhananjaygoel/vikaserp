@@ -46,14 +46,16 @@ class DeliveryChallanController extends Controller {
      */
     public function index() {
         
+          echo "<pre>";
+        print_r("hi");
+        echo "</pre>";
+        exit;
+        
         if (Auth::user()->role_id == 5) {
             return Redirect::to('inquiry')->with('error', 'You do not have permission.');
         }
         
-        echo "<pre>";
-        print_r("hi");
-        echo "</pre>";
-        exit;
+      
         
         $data = Input::all();
         $search_dates = [];
