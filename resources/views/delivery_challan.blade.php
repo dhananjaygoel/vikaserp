@@ -9,7 +9,6 @@
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Delivery Challan</span></li>
                 </ol>
-                
                 <div class="filter-block">
                     <form action="{{url('delivery_challan')}}" method="GET">
                         <div class=" pull-right col-md-3">
@@ -22,7 +21,7 @@
                                     $qstring_sort_type_order = Input::get('delivery_order_status');
                                 }
                             }
-                            if ( isset($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
+                            if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
                                 $qstring_sort_type_order = $qstring_sort_type_order;
                             } else {
                                 $qstring_sort_type_order = $session_sort_type_order;
@@ -40,8 +39,6 @@
                             <br>
                         </div>
                     </form>
-                   
-                    
                     <div class="search_form_wrapper delivery_challan_search_form_wrapper">
                         <form class="search_form" method="GET" action="{{URL::action('DeliveryChallanController@index')}}">
                             <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
@@ -111,7 +108,7 @@
                                         <th class="text-center">Serial Number</th>
                                         <th class="text-center">Present Shipping</th>
                                         <th class="text-center">Pending Order</th>
-                                        <th class="text-center">VAT PERCENTAGE</th>
+                                        <th class="text-center">VAT</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -136,7 +133,7 @@
                                         </td>
                                         <td class="text-center">{{ round($challan->total_quantity, 2) }}</td>
                                         <td class="text-center">{{ (round($challan->total_quantity_pending, 2)>0)? round($challan->total_quantity_pending, 2)  :0 }}</td>
-<!--                                        <td class="text-center">{{ !empty(round($challan->vat_percentage, 2))? round($challan->vat_percentage, 2):0}}</td>-->
+                                        <td class="text-center">{{ !empty(round($challan->vat_percentage, 2))? round($challan->vat_percentage, 2):0}}</td>
                                         <td class="text-center">
                                             <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -184,7 +181,7 @@
                                         </td>
                                         <td class="text-center">{{round($challan->total_quantity, 2)}}</td>
                                          <td class="text-center">{{ (round($challan->total_quantity_pending, 2)>0)? round($challan->total_quantity_pending, 2)  :0 }}</td>
-                                         <!--<td class="text-center">{{ !empty(round($challan->vat_percentage, 2))? round($challan->vat_percentage, 2):0}}</td>-->
+                                         <td class="text-center">{{ !empty(round($challan->vat_percentage, 2))? round($challan->vat_percentage, 2):0}}</td>
                                          
                                          <td class="text-center">
                                             <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
