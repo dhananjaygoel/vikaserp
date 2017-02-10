@@ -54,6 +54,8 @@ class DeliveryChallanController extends Controller {
        
 
         $data = Input::all();
+        $search_dates = [];
+        $allorders =0;
         $session_sort_type_order = Session::get('order-sort-type');
         if (isset($data['status_filter']))
             $qstring_sort_type_order = $data['status_filter'];
@@ -69,8 +71,7 @@ class DeliveryChallanController extends Controller {
                 $qstring_sort_type_order = "";
             }
         }
-        $search_dates = [];
-        $allorders =0;
+        
         if ((isset($qstring_sort_type_order)) && ($qstring_sort_type_order != '')) {
             if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
                 $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
@@ -256,7 +257,7 @@ class DeliveryChallanController extends Controller {
         
         $allorders->setPath('delivery_challan');
         
-        return view('delivery_challan', compact('allorders', 'search_dates'));
+    //    return view('delivery_challan', compact('allorders', 'search_dates'));
 //        return view('delivery_challan', compact('allorders'));
     }
 
