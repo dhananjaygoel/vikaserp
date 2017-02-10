@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
-            <div class="col-lg-12">
+<!--            <div class="col-lg-12">
                 <ol class="breadcrumb">
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Delivery Challan</span></li>
@@ -83,11 +83,11 @@
                         </form>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </div>
 
         <div class="row">
-            <div class="col-lg-12">
+<!--            <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
                         <div id="flash_message" class="alert no_data_msg_container"></div>
@@ -199,12 +199,12 @@
                                             </a>
                                             @endif
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                            <!--                                                                                    <a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
+                                                                                                                                <a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
                                                                                                                                     <span class="fa-stack">
                                                                                                                                         <i class="fa fa-square fa-stack-2x"></i>
                                                                                                                                         <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                                                                                                     </span>
-                                                                                                                                </a>-->
+                                                                                                                                </a>
 
                                             <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_delivery_challan({{$challan->id}})">
                                                 <span class="fa-stack">
@@ -319,7 +319,7 @@
                     </div>
                     @endif
                 </div>
-            </div>
+            </div>-->
         </div>
     </div>
 </div>
