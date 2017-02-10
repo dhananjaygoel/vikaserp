@@ -9,12 +9,7 @@
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Delivery Challan</span></li>
                 </ol>
-                 <?php
-                            echo "<pre>";
-                            print_r("hi");
-                            echo "</pre>";
-                            exit;
-                    ?>
+                
                 <div class="filter-block">
                     <form action="{{url('delivery_challan')}}" method="GET">
                         <div class=" pull-right col-md-3">
@@ -141,7 +136,7 @@
                                         </td>
                                         <td class="text-center">{{ round($challan->total_quantity, 2) }}</td>
                                         <td class="text-center">{{ (round($challan->total_quantity_pending, 2)>0)? round($challan->total_quantity_pending, 2)  :0 }}</td>
-                                        <td class="text-center">{{ !empty(round($challan->vat_percentage, 2))? round($challan->vat_percentage, 2):0}}</td>
+<!--                                        <td class="text-center">{{ !empty(round($challan->vat_percentage, 2))? round($challan->vat_percentage, 2):0}}</td>-->
                                         <td class="text-center">
                                             <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -189,7 +184,7 @@
                                         </td>
                                         <td class="text-center">{{round($challan->total_quantity, 2)}}</td>
                                          <td class="text-center">{{ (round($challan->total_quantity_pending, 2)>0)? round($challan->total_quantity_pending, 2)  :0 }}</td>
-                                         <td class="text-center">{{ !empty(round($challan->vat_percentage, 2))? round($challan->vat_percentage, 2):0}}</td>
+                                         <!--<td class="text-center">{{ !empty(round($challan->vat_percentage, 2))? round($challan->vat_percentage, 2):0}}</td>-->
                                          
                                          <td class="text-center">
                                             <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
