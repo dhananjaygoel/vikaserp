@@ -50,6 +50,11 @@ class DeliveryChallanController extends Controller {
             return Redirect::to('inquiry')->with('error', 'You do not have permission.');
         }
         
+        echo "<pre>";
+        print_r("hi");
+        echo "</pre>";
+        exit;
+        
         $data = Input::all();
         $search_dates = [];
         $allorders =0;
@@ -166,10 +171,7 @@ class DeliveryChallanController extends Controller {
 //        }
 //        
 
-        echo "<pre>";
-        print_r("hi");
-        echo "</pre>";
-        exit;
+        
 
 
         if (count($allorders) > 0) {
