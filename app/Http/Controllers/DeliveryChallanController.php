@@ -166,7 +166,10 @@ class DeliveryChallanController extends Controller {
 //        }
 //        
 
-
+        echo "<pre>";
+        print_r("hi");
+        echo "</pre>";
+        exit;
 
 
         if (count($allorders) > 0) {
@@ -253,13 +256,6 @@ class DeliveryChallanController extends Controller {
         
         $allorders->setPath('delivery_challan');
         
-        echo "<pre>";
-        print_r($allorders->toArray());
-        
-        echo"<br>";
-          print_r($search_dates);
-        echo "</pre>";
-        exit;
         return view('delivery_challan', compact('allorders', 'search_dates'));
     }
 
