@@ -9,6 +9,9 @@
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Delivery Challan</span></li>
                 </ol>
+                
+              
+                
                 <div class="filter-block">
                     <form action="{{url('delivery_challan')}}" method="GET">
                         <div class=" pull-right col-md-3">
@@ -85,7 +88,12 @@
                 </div>
             </div>
         </div>
-
+ <?php 
+               echo "<pre>";
+print_r("hi");
+echo "</pre>";
+exit;
+               ?> 
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
