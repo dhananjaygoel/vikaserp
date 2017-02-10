@@ -9,6 +9,12 @@
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Delivery Challan</span></li>
                 </ol>
+                 <?php
+                            echo "<pre>";
+                            print_r("hi");
+                            echo "</pre>";
+                            exit;
+                    ?>
                 <div class="filter-block">
                     <form action="{{url('delivery_challan')}}" method="GET">
                         <div class=" pull-right col-md-3">
@@ -39,12 +45,7 @@
                             <br>
                         </div>
                     </form>
-                    <?php
-                            echo "<pre>";
-                            print_r("hi");
-                            echo "</pre>";
-                            exit;
-                    ?>
+                   
                     
                     <div class="search_form_wrapper delivery_challan_search_form_wrapper">
                         <form class="search_form" method="GET" action="{{URL::action('DeliveryChallanController@index')}}">
