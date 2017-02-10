@@ -1,15 +1,5 @@
 @extends('layouts.master')
 @section('title','Delivery Challan')
-@section('content') 
-
-<?php
-echo "<pre>";
-print_r("hi");
-echo "</pre>";
-exit;
-
-?>
-
 
 <div class="row">
     <div class="col-lg-12">
