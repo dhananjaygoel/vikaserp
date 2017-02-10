@@ -9,8 +9,11 @@
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Delivery Challan</span></li>
                 </ol>
+                <?php
+                $qstring_sort_type_order = 'pending';
+                ?>
                 <div class="filter-block">
-                    
+                   
                     <div class="search_form_wrapper delivery_challan_search_form_wrapper">
                         <form class="search_form" method="GET" action="{{URL::action('DeliveryChallanController@index')}}">
                             <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
