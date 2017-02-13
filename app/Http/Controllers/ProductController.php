@@ -204,7 +204,7 @@ class ProductController extends Controller {
         if (count($admins) > 0) {
             foreach ($admins as $key => $admin) {
                 $product_type = ProductType::find($request->input('product_type'));
-                $str = "Dear " . $admin->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited a product category as " . $request->input('product_category_name') . " under " . $product_type->name . " kindly check.\nVIKAS ASSOCIATES";
+                $str = "Dear " . $admin->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited a product category as " . $request->input('product_category_name') . " under " . $product_type->name . " kindly check.\nVIKAS ASSOCIATES";
 //                $str = "Dear " ;
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -223,8 +223,8 @@ class ProductController extends Controller {
             }
         }
         
-     
-
+       
+        
         return redirect('product_category')->with('success', 'Product category successfully updated.');
     }
 
