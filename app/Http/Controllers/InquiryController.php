@@ -553,6 +553,8 @@ class InquiryController extends Controller {
                     }
                 }
                 $str1 .= " prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
+                
+                
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -566,6 +568,14 @@ class InquiryController extends Controller {
                     $curl_scraped_page = curl_exec($ch);
                     curl_close($ch);
                 }
+                echo "<pre>";
+                print_r($str1);
+                echo "<br>";
+                 print_r($customer->phone_number1);
+                echo "<br>";
+                 print_r($curl_scraped_page);
+                echo "</pre>";
+                exit;
 
                 if (count($customer['manager']) > 0) {
                     $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited an enquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and contact.\nVIKAS ASSOCIATES";
