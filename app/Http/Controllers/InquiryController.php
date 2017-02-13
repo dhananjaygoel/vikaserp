@@ -545,14 +545,14 @@ class InquiryController extends Controller {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str1 = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour inquiry has been edited for following. ";
+                $str1 = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour inquiry has been edited for following.\n";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
-                        $str1 .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
+                        $str1 .= $product_data['name'] . " - " . $product_data['quantity'] . ",\n";
                         $total_quantity = $total_quantity + $product_data['quantity'];
                     }
                 }
-                $str1 .= " prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
+                $str1 .= "prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
                 
                 
                 if (App::environment('development')) {
