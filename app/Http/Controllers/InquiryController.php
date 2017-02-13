@@ -576,6 +576,13 @@ class InquiryController extends Controller {
                         $phone_number = $customer['manager']->mobile_number;
                     }
                     $msg = urlencode($str);
+                    echo "<pre>";
+                    print_r($str);
+                    echo "<br>";
+                     print_r($phone_number);
+                    echo "</pre>";
+                    exit;
+                    
                     $url = SMS_URL . "?user = " . PROFILE_ID . "&pwd = " . PASS . "&senderid = " . SENDER_ID . "&mobileno = " . $phone_number . "&msgtext = " . $msg . "&smstype = 0";
                     if (SEND_SMS === true) {
                         $ch = curl_init($url);
