@@ -545,24 +545,20 @@ class InquiryController extends Controller {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
-//                $str1 = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour inquiry has been edited for following.\n";
-//                foreach ($input_data['product'] as $product_data) {
-//                    if ($product_data['name'] != "") {
-//                        $str1 .= $product_data['name'] . " - " . $product_data['quantity'] . ",\n";
-//                        $total_quantity = $total_quantity + $product_data['quantity'];
-//                    }
-//                }
-//                $str1 .= "prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
-                
-                $str1="hi";
-                
-                
+                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour inquiry has been edited for following. ";
+                foreach ($input_data['product'] as $product_data) {
+                    if ($product_data['name'] != "") {
+                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
+                        $total_quantity = $total_quantity + $product_data['quantity'];
+                    }
+                }
+                $str .= " prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
                     $phone_number = $customer->phone_number1;
                 }
-                $msg = urlencode($str1);
+                $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
                 if (SEND_SMS === true) {
                     $ch = curl_init($url);
@@ -570,26 +566,16 @@ class InquiryController extends Controller {
                     $curl_scraped_page = curl_exec($ch);
                     curl_close($ch);
                 }
-                echo "<pre>";
-                print_r($str1);
-                echo "<br>";
-                 print_r($customer->phone_number1);
-                echo "<br>";
-                 print_r($curl_scraped_page);
-                echo "</pre>";
-                exit;
 
                 if (count($customer['manager']) > 0) {
                     $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited an enquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and contact.\nVIKAS ASSOCIATES";
-//                    $str ="hello inq edit for admin";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
                         $phone_number = $customer['manager']->mobile_number;
                     }
                     $msg = urlencode($str);
-                                      
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    $url = SMS_URL . "?user = " . PROFILE_ID . "&pwd = " . PASS . "&senderid = " . SENDER_ID . "&mobileno = " . $phone_number . "&msgtext = " . $msg . "&smstype = 0";
                     if (SEND_SMS === true) {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -599,8 +585,6 @@ class InquiryController extends Controller {
                 }
             }
         }
-        
-      
         return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully modified.');
     }
 
