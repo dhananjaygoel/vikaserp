@@ -120,7 +120,7 @@ use Illuminate\Support\Facades\Session;
                             </div>
                             <div class="inquiry_table col-md-12">
                                 <div class="table-responsive">
-                                    <table id="add_product_table_purchase" class="table table-hover  ">
+<!--                                    <table id="add_product_table_purchase" class="table table-hover  ">
                                         <tbody>
                                             <tr class="headingunderline">
                                                 <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
@@ -181,7 +181,67 @@ use Illuminate\Support\Facades\Session;
                                             <?php } ?>
                                             <?php Session::put('input_data', ''); ?>
                                         </tbody>
+                                    </table>-->
+                                    
+                                    
+                                    <table id="add_product_table" class="table table-hover  ">
+                                        <tbody>
+                                           <tr class="headingunderline">
+                                                <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
+                                                <td><span>Quantity</span></td>
+                                                <td><span>Unit</span><span class="mandatory">*</span></td>
+                                                <td><span>Price</span></td>
+                                                <td><span>Remark</span></td>
+                                            </tr>
+                                            <?php
+                                            $session_data = Session::get('input_data');
+                                            if (isset($session_data['product'])) {
+                                                $total_products_added = sizeof($session_data['product']);
+                                            }
+                                            $j = (isset($total_products_added) && ($total_products_added > 10)) ? $total_products_added : 1;
+                                            for ($i = 1; $i <= $j; $i++) {
+                                                ?>
+                                                <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
+                                                    <td class="col-md-3">
+                                                        <div class="form-group searchproduct">
+                                                            <input class="form-control each_product_detail focus_on_enter tabindex4" data-productid="{{$i}}" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>" tabindex="4" />
+                                                            <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
+                                                            <i class="fa fa-search search-icon"></i>
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-md-1">
+                                                        <div class="form-group">
+                                                            <input id="quantity_{{$i}}" class="form-control each_product_qty" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" onkeypress=" return numbersOnly(this,event,true,false);" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                        <div class="form-group ">
+                                                            <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
+                                                                @foreach($units as $unit)
+                                                                <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                        <div class="form-group">
+                                                            <input type="tel" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" onkeypress=" return numbersOnly(this,event,true,true);"  value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
+                                                        </div>
+                                                    </td>
+                                                   
+                                                    <td class="col-md-3">
+                                                        <div class="form-group">
+                                                            <input id="remark" class="form-control" placeholder="Remark" name="product[{{$i}}][remark]" type="text" value="{{(isset($session_data['product'][$i]['remark']))?$session_data['product'][$i]['remark']:''}}">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <?php
+                                            }
+                                            Session::forget('input_data');
+                                            ?>
+                                        </tbody>
                                     </table>
+                                    
                                     <table>
                                         <tbody>
                                             <tr class="row5">
