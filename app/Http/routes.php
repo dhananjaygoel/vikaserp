@@ -267,6 +267,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('delete_cust_from_user', 'WelcomeController@delete_cust_from_user');
     
     Route::get('showtableinfo/{tablename}', 'WelcomeController@showtableinfo');
+    Route::get('showtableinformation/{tablename}', 'WelcomeController@showtableinformation');
     Route::get('updatecolumndata/{tablename}/{column}/{value}', 'WelcomeController@updatecolumndata');
     Route::get('updatecolumndatavalue/{tablename}/{column}/{value}/{wherekey}/{wherevalue}', 'WelcomeController@updatecolumndatavalue');
     Route::get('checkdatabaseinfo', 'WelcomeController@checkdatabaseinfo');

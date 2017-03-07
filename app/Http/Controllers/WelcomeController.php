@@ -363,10 +363,10 @@ class WelcomeController extends Controller {
      */
 
     public function excel_import_customer() {
-        
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 ) {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-           }
+
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         return view('excel_import_customer');
     }
 
@@ -381,46 +381,44 @@ class WelcomeController extends Controller {
             $filename = $input->getRealPath();
             $extension = $input->getClientOriginalExtension();
             $msg = "";
-            if(in_array($extension,array('xlsx','xls'))){
-                
-            
-            Excel::load($filename, function($reader) {
-                ini_set('max_execution_time', 720);
-                $sheet = $reader->getSheet(0);
-                $highestColumn = $sheet->getHighestColumn();
-                $highestRow = $sheet->getHighestRow();
+            if (in_array($extension, array('xlsx', 'xls'))) {
 
-                for ($row = 1; $row <= 1; $row++) {
-                    $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
-                    $result_validation = $this->checkvalidation($rowData[0]);
-                }
-                if ($result_validation == "success") {
-                    for ($row = 2; $row <= $highestRow; $row++) {
-                        ini_set('max_execution_time', 720);
+
+                Excel::load($filename, function($reader) {
+                    ini_set('max_execution_time', 720);
+                    $sheet = $reader->getSheet(0);
+                    $highestColumn = $sheet->getHighestColumn();
+                    $highestRow = $sheet->getHighestRow();
+
+                    for ($row = 1; $row <= 1; $row++) {
                         $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
-                        $result_save = $this->savecustomer($rowData);
+                        $result_validation = $this->checkvalidation($rowData[0]);
                     }
-                    $this->copy_customers();
-                    $msg = "success";
-                    Session::set('resultmsg', $msg);
+                    if ($result_validation == "success") {
+                        for ($row = 2; $row <= $highestRow; $row++) {
+                            ini_set('max_execution_time', 720);
+                            $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
+                            $result_save = $this->savecustomer($rowData);
+                        }
+                        $this->copy_customers();
+                        $msg = "success";
+                        Session::set('resultmsg', $msg);
+                    } else {
+                        $msg = $result_validation;
+                        Session::set('resultmsg', $msg);
+                    }
+                });
+                $msg = Session::get('resultmsg');
+                if ($msg == "success") {
+                    Session::forget('resultmsg');
+                    return redirect('excel_import_customer')->with('success', 'Customer details excel file successfully uploaded.');
                 } else {
-                    $msg = $result_validation;
-                    Session::set('resultmsg', $msg);
+                    Session::forget('resultmsg');
+                    return redirect('excel_import_customer')->with('wrong', $msg);
                 }
-            });
-            $msg = Session::get('resultmsg');
-            if ($msg == "success") {
-                Session::forget('resultmsg');
-                return redirect('excel_import_customer')->with('success', 'Customer details excel file successfully uploaded.');
             } else {
-                Session::forget('resultmsg');
-                return redirect('excel_import_customer')->with('wrong', $msg);
-            }
-            }else{
                 return redirect('excel_import_customer')->with('wrong', 'File format is invalid.');
             }
-                
-            
         } else {
             return redirect('excel_import_customer')->with('wrong', 'Please select file to upload');
         }
@@ -844,6 +842,29 @@ class WelcomeController extends Controller {
         echo '</pre>';
     }
 
+     /**
+     * This function takes tablename as argument and displays all the column along with data type of that column including enum
+     */
+    public function showtableinformation($tablename) {
+        $column_details = Schema::getColumnListing($tablename);
+        $total_info = array();
+        $total_info['tablename'] = $tablename;
+        $columns = DB::select('show columns from ' . $tablename);
+        echo '<br>======================<br>';
+        echo "Table name : <strong>";
+        print_r($total_info['tablename']);
+        echo "</strong>";
+        echo '<br>======================<br>';
+        foreach ($columns as $value) {
+           
+            echo '<pre>';
+            echo "'" . $value->Field . "' => '" . $value->Type . "|" . ( $value->Null == "NO" ? 'required' : '' ) . "', <br/>";
+            echo '</pre>';
+        }
+
+        
+    }
+
     /* Created by Amit Gupta to resolve the order error issue on 05-10-2015 */
 
     public function delete_order_data($tablename = NULL, $columnname = NULL, $value = NULL) {
@@ -901,57 +922,50 @@ class WelcomeController extends Controller {
         DB::table('purchase_challan')->truncate();
         echo 'truncate all data';
     }
-    
-    
-    /*
-    function used to copy customer data inot users' table
-     *      */
-     public function copy_customers() {
-         $cust_count =  DB::table('customers')->where('customer_status', '=','permanent')->count();
-        $cust =  DB::table('customers')->select('id','owner_name','phone_number1','phone_number2','email','password','created_at')->where('customer_status', '=','permanent')->get();
-         $user_count =  DB::table('users')->count();
-        $user =  DB::table('users')->get();
-        
-        $flag =0;
-        
-        for($i=0; $i < $cust_count; $i ++)
-        {
-            
-           if( $user = DB::table('users')->where('email', '=',$cust[$i]->email )
-                   ->where('mobile_number', '=',$cust[$i]->phone_number1) 
-                   ->where('password', '=',$cust[$i]->password)                   
-                   ->get())
-           {
-             /* Do Nothing*/
-           }
-           else
-           {
-               DB::table('users')->insert( ['email' => $cust[$i]->email,
-                   'first_name' => $cust[$i]->owner_name,
-                   'mobile_number' => $cust[$i]->phone_number1,
-                   'phone_number' => $cust[$i]->phone_number2,
-                   'password' => $cust[$i]->password,
-                   'created_at' => $cust[$i]->created_at,
-                   'role_id' => '5',
-                   ] );         
-                  $flag ++;
-           } 
-        }
-        
-        echo $flag." Records copied to users' table.";
-    }
-    
-    
-    
-    
-     /*
-    function used to delete customer data from users' table
-     *      */
-     public function delete_cust_from_user() {
-        $user_count =  DB::table('users')->where('role_id','=','5')->count();
-        $user =  DB::table('users')->where('role_id','=','5')->delete();       
-        print_r( $user_count ." records deleted.");
 
+    /*
+      function used to copy customer data inot users' table
+     *      */
+
+    public function copy_customers() {
+        $cust_count = DB::table('customers')->where('customer_status', '=', 'permanent')->count();
+        $cust = DB::table('customers')->select('id', 'owner_name', 'phone_number1', 'phone_number2', 'email', 'password', 'created_at')->where('customer_status', '=', 'permanent')->get();
+        $user_count = DB::table('users')->count();
+        $user = DB::table('users')->get();
+
+        $flag = 0;
+
+        for ($i = 0; $i < $cust_count; $i ++) {
+
+            if ($user = DB::table('users')->where('email', '=', $cust[$i]->email)
+                    ->where('mobile_number', '=', $cust[$i]->phone_number1)
+                    ->where('password', '=', $cust[$i]->password)
+                    ->get()) {
+                /* Do Nothing */
+            } else {
+                DB::table('users')->insert(['email' => $cust[$i]->email,
+                    'first_name' => $cust[$i]->owner_name,
+                    'mobile_number' => $cust[$i]->phone_number1,
+                    'phone_number' => $cust[$i]->phone_number2,
+                    'password' => $cust[$i]->password,
+                    'created_at' => $cust[$i]->created_at,
+                    'role_id' => '5',
+                ]);
+                $flag ++;
+            }
+        }
+
+        echo $flag . " Records copied to users' table.";
+    }
+
+    /*
+      function used to delete customer data from users' table
+     *      */
+
+    public function delete_cust_from_user() {
+        $user_count = DB::table('users')->where('role_id', '=', '5')->count();
+        $user = DB::table('users')->where('role_id', '=', '5')->delete();
+        print_r($user_count . " records deleted.");
     }
 
 }
