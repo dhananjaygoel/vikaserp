@@ -201,7 +201,7 @@ use Illuminate\Support\Facades\Session;
                                             $j = (isset($total_products_added) && ($total_products_added > 10)) ? $total_products_added : 1;
                                             for ($i = 1; $i <= $j; $i++) {
                                                 ?>
-                                                <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
+                                                <tr id="add_row_{{$i}}" class="add_purchase_product_row" data-row-id="{{$i}}">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
                                                             <input class="form-control each_product_detail focus_on_enter tabindex4" data-productid="{{$i}}" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>" tabindex="4" />
@@ -249,7 +249,7 @@ use Illuminate\Support\Facades\Session;
                                                     <div class="add_button1">
                                                         <div class="form-group pull-left">
                                                             <label for="addmore"></label>
-                                                            <a class="table-link" title="add more" id="add_product_row">
+                                                            <a class="table-link" title="add more" id="add_purchase_product_row">
                                                                 <span class="fa-stack more_button" >
                                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                                     <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
