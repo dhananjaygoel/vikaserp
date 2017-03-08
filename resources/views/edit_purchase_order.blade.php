@@ -120,7 +120,7 @@
                     @endif
                     <div class="inquiry_table col-md-12" >
                         <div class="table-responsive">
-                            <table id="add_product_table_purchase" class="table table-hover">
+                            <table id="add_product_table" class="table table-hover">
                                 <tbody>
                                     <tr class="headingunderline">
                                         <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
@@ -243,6 +243,30 @@
                                     </tr>
                                 </tbody>
                             </table>
+                             <table>
+                                        <tbody>
+                                            <tr class="row5">
+                                                <td>
+                                                    <div class="add_button1">
+                                                        <div class="form-group pull-left">
+                                                            <label for="addmore"></label>
+                                                            <a class="table-link" title="add more" id="add_purchase_product_row">
+                                                                <span class="fa-stack more_button" >
+                                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                                    <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                                                                </span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                         </div>
                     </div>
                     <div class="row col-md-4">
