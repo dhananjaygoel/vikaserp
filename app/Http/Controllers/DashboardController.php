@@ -38,9 +38,43 @@ class DashboardController extends Controller {
             return Redirect::to('customers');
         }
         $order = Order::all()->count();
+        $orders = Order::with('all_order_products')->get();
+        $order_pending_sum =0;
         $pending_order = Order::where('order_status', 'pending')->count();
+        
+        foreach ($orders as $order) {
+            if ($order->order_status == 'pending') {
+                foreach ($order->all_order_products as $all_order_products) {                    
+                    if ($all_order_products->unit_id == 1)
+                        $order_pending_sum += $all_order_products->quantity;
+                    elseif (($all_order_products->unit_id == 2) || ($all_order_products->unit_id == 3))
+                        $order_pending_sum += $this->checkpending_quantity($all_order_products->unit_id, $all_order_products->product_category_id, $all_order_products->quantity);
+                }
+            }
+            
+        }
+        
+        $order_pending_sum = $order_pending_sum / 1000;
+        
         $inquiry = Inquiry::all()->count();
         $pending_inquiry = Inquiry::where('inquiry_status', 'pending')->count();
+        $inquiry_pending_sum =0;
+        $inquiries = Inquiry::with('inquiry_products')->get();
+        foreach ($inquiries as $inquiry) {
+            foreach ($inquiry->inquiry_products as $all_inquiry_products) {                   
+            if ($inquiry->inquiry_status == 'pending') {
+                
+                    if ($all_inquiry_products->unit_id == 1)
+                        $inquiry_pending_sum += $all_inquiry_products->quantity;
+                    elseif (($all_inquiry_products->unit_id == 2) || ($all_inquiry_products->unit_id == 3))
+                        $inquiry_pending_sum += $this->checkpending_quantity($all_inquiry_products->unit_id, $all_inquiry_products->product_category_id, $all_inquiry_products->quantity);
+                }
+            }
+            
+        }
+        
+        $inquiry_pending_sum = $inquiry_pending_sum / 1000;
+        
         $delivery_order = DeliveryOrder::with('delivery_product')->get();
         $deliver_sum = 0;
         $deliver_pending_sum = 0;
@@ -111,7 +145,7 @@ class DashboardController extends Controller {
             }
         }
         $purc_order_sum = $purc_order_sum / 1000;
-        return view('dashboard', compact('order', 'pending_order', 'inquiry', 'pending_inquiry', 'deliver_sum', 'deliver_pending_sum', 'delivery_challan_sum', 'purc_order_sum'));
+        return view('dashboard', compact('order', 'pending_order','order_pending_sum', 'inquiry', 'pending_inquiry', 'inquiry_pending_sum', 'deliver_sum', 'deliver_pending_sum', 'delivery_challan_sum', 'purc_order_sum'));
     }
 
     function checkpending_quantity($unit_id, $product_category_id, $product_qty) {
