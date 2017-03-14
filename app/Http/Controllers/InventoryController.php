@@ -13,6 +13,7 @@ use App\DeliveryOrder;
 use App\PurchaseOrder;
 use App\DeliveryChallan;
 use App\Order;
+use App\AllOrderProducts;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use Input;
@@ -48,7 +49,7 @@ class InventoryController extends Controller {
         $qty = Input::get('opening_stock');
         $minimal = Input::get('minimal');
 //        $inventory_details = Inventory::find(Input::get('id'));
-        $inventory_details = Inventory::where('product_sub_category_id','=',Input::get('id'))->first();
+        $inventory_details = Inventory::where('product_sub_category_id', '=', Input::get('id'))->first();
         if (!empty($inventory_details)) {
             $inventory_details->opening_qty = $qty;
             $inventory_details->minimal = $minimal;
@@ -68,16 +69,39 @@ class InventoryController extends Controller {
      * Display a all product inventory with stock details
      */
     public function index() {
-        
-        
+
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
-       
+
         
         $this->updateOpeningStock();
+       
+        /*find latested updated records*/
+        $product_category_ids =[];
+        $dc_list = AllOrderProducts::select('product_category_id')->orderBy('updated_at','DESC')->paginate(50); 
+        foreach ($dc_list as $dc ){
+            $product_category_ids[] = $dc->product_category_id;
+        }
+        
+        $dc_list = \App\InquiryProducts::select('product_category_id')->orderBy('updated_at','DESC')->paginate(50); 
+        foreach ($dc_list as $dc ){
+            $product_category_ids[] = $dc->product_category_id;
+        }
+        
+        $dc_list = \App\PurchaseProducts::select('product_category_id')->orderBy('updated_at','DESC')->paginate(50); 
+        foreach ($dc_list as $dc ){
+            $product_category_ids[] = $dc->product_category_id;
+        }
+        $product_category_ids = array_unique($product_category_ids) ;
+        
         $q = Inventory::query();
-        $inventory_list = $q->with('product_sub_category')->paginate(50);
+//        $inventory_list = $q->with('product_sub_category')->paginate(50);
+        $inventory_list = $q
+                ->whereIn('product_sub_category_id' , $product_category_ids )
+                ->with('product_sub_category')->get();
+        
         foreach ($inventory_list as $inventory) {
             $order_qty = 0;
             $sales_challan_qty = 0;
@@ -303,9 +327,11 @@ class InventoryController extends Controller {
             /* ===================== Query ends here ===================== */
 
             $physical_closing = ($inventory->opening_qty + $purchase_challan_qty ) - $sales_challan_qty;
+//            $physical_closing = ($inventory->opening_qty + $purchase_challan_qty ) - $sales_challan_qty_completed;
             $inventory_details = Inventory::where('product_sub_category_id', '=', $product_sub_id)->first();
             $inventory_details->opening_qty = $inventory->opening_qty;
             $inventory_details->sales_challan_qty = $sales_challan_qty;
+//            $inventory_details->sales_challan_qty = $sales_challan_qty_completed;
             $inventory_details->purchase_challan_qty = $purchase_challan_qty;
             $inventory_details->physical_closing_qty = $physical_closing;
             $inventory_details->pending_sales_order_qty = $order_qty;
@@ -328,14 +354,14 @@ class InventoryController extends Controller {
                 $q->where('product_category_id', '=', $categoryid);
             });
         }
-        
+
         if (Input::has('search_inventory') && Input::get('search_inventory') != '') {
             $alias_name = '%' .Input::get('search_inventory'). '%';
             $product_sub_id = ProductSubCategory::where('alias_name', 'LIKE',  $alias_name)->first();
             $query->where('product_sub_category_id','=',$product_sub_id->id);
            
         }
-        
+
         $product_category = ProductCategory::orderBy('created_at', 'desc')->get();
         //$inventory_newlist = $query->with('product_sub_category')->paginate(50);
 //        $inventory_newlist = $query->with(array('product_sub_category' => function($query1) {
@@ -384,7 +410,7 @@ class InventoryController extends Controller {
                 $myarray = explode("_", $key);
                 $opening_qty_value = $myarray[1];
 //                $inventory_details = Inventory::find($myarray[1]);
-                $inventory_details = Inventory::where('product_sub_category_id','=',$myarray[1])->first();
+                $inventory_details = Inventory::where('product_sub_category_id', '=', $myarray[1])->first();
                 $inventory_details->minimal = $minimal_value;
                 $inventory_details->opening_qty = $data_dup[$opening_qty_value];
                 $physical_qty = ($data_dup[$opening_qty_value] + $inventory_details->purchase_challan_qty) - $inventory_details->sales_challan_qty;
@@ -494,9 +520,9 @@ class InventoryController extends Controller {
         $inventory_list = Inventory::all();
         if (count($subcategory_list) > 0 && count($inventory_list) == 0) {
             foreach ($subcategory_list as $subcategory) {
-                $newinventory = new Inventory();
-                $newinventory->product_sub_category_id = $subcategory->id;
-                $newinventory->save();
+                $product_category_idsinventory = new Inventory();
+                $product_category_idsinventory->product_sub_category_id = $subcategory->id;
+                $product_category_idsinventory->save();
             }
         }
         echo "Inventory product listing updated successfully";
