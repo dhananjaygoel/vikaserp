@@ -75,33 +75,33 @@ class InventoryController extends Controller {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
-        
+
         $this->updateOpeningStock();
-       
-        /*find latested updated records*/
-        $product_category_ids =[];
-        $dc_list = AllOrderProducts::select('product_category_id')->orderBy('updated_at','DESC')->paginate(50); 
-        foreach ($dc_list as $dc ){
+
+        /* find latested updated records */
+        $product_category_ids = [];
+        $dc_list = AllOrderProducts::select('product_category_id')->orderBy('updated_at', 'DESC')->paginate(50);
+        foreach ($dc_list as $dc) {
             $product_category_ids[] = $dc->product_category_id;
         }
-        
-        $dc_list = \App\InquiryProducts::select('product_category_id')->orderBy('updated_at','DESC')->paginate(50); 
-        foreach ($dc_list as $dc ){
+
+        $dc_list = \App\InquiryProducts::select('product_category_id')->orderBy('updated_at', 'DESC')->paginate(50);
+        foreach ($dc_list as $dc) {
             $product_category_ids[] = $dc->product_category_id;
         }
-        
-        $dc_list = \App\PurchaseProducts::select('product_category_id')->orderBy('updated_at','DESC')->paginate(50); 
-        foreach ($dc_list as $dc ){
+
+        $dc_list = \App\PurchaseProducts::select('product_category_id')->orderBy('updated_at', 'DESC')->paginate(50);
+        foreach ($dc_list as $dc) {
             $product_category_ids[] = $dc->product_category_id;
         }
-        $product_category_ids = array_unique($product_category_ids) ;
-        
+        $product_category_ids = array_unique($product_category_ids);
+
         $q = Inventory::query();
 //        $inventory_list = $q->with('product_sub_category')->paginate(50);
         $inventory_list = $q
-                ->whereIn('product_sub_category_id' , $product_category_ids )
-                ->with('product_sub_category')->get();
-        
+                        ->whereIn('product_sub_category_id', $product_category_ids)
+                        ->with('product_sub_category')->get();
+
         foreach ($inventory_list as $inventory) {
             $order_qty = 0;
             $sales_challan_qty = 0;
@@ -170,7 +170,7 @@ class InventoryController extends Controller {
                 $order_qty = $order_qty - $orders_pending_delivery_order_qty;
             }
             /* ===================== Pending delivery order details ===================== */
-
+           
             $delivery_orders = DeliveryOrder::where('order_status', '=', 'pending')
                             ->with(['delivery_product.product_sub_category', 'delivery_product' => function($q) use($product_sub_id) {
                                     $q->where('product_category_id', '=', $product_sub_id);
@@ -196,32 +196,64 @@ class InventoryController extends Controller {
                     }
                 }
             }
-            /* ===================== Pending Delievry Challan details ===================== */
+//            /* ===================== Pending Delievry Challan details =====================old code replace by new below */
+//
+//            $delivery_challan = DeliveryChallan::where('challan_status', '=', 'pending')
+//                            ->with(['delivery_challan_products.product_sub_category', 'delivery_challan_products' => function($q) use($product_sub_id) {
+//                                    $q->where('product_category_id', '=', $product_sub_id);
+//                                }])->get();
+//            if (isset($delivery_challan) && count($delivery_challan) > 0) {
+//                foreach ($delivery_challan as $delivery_challan_details) {
+//                    if (isset($delivery_challan_details->delivery_challan_products) && count($delivery_challan_details->delivery_challan_products) > 0) {
+//                        foreach ($delivery_challan_details->delivery_challan_products as $delivery_challan_product_details) {
+//                            if (isset($delivery_challan_product_details) && $delivery_challan_product_details->quantity != '') {
+////                                $sales_challan_qty = $sales_challan_qty + $delivery_challan_product_details->quantity;
+//                                if ($delivery_challan_product_details->unit_id == 1) {
+//                                    $sales_challan_qty = $sales_challan_qty + $delivery_challan_product_details->quantity;
+//                                }
+//                                if ($delivery_challan_product_details->unit_id == 2) {
+//                                    $sales_challan_qty = $sales_challan_qty + ($delivery_challan_product_details->quantity * $delivery_challan_product_details->product_sub_category->weight);
+//                                }
+//                                if ($delivery_challan_product_details->unit_id == 3) {
+//                                    $sales_challan_qty = $sales_challan_qty + (($delivery_challan_product_details->quantity / $delivery_challan_product_details->product_sub_category->standard_length ) * $delivery_challan_product_details->product_sub_category->weight);
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
 
-            $delivery_challan = DeliveryChallan::where('challan_status', '=', 'pending')
-                            ->with(['delivery_challan_products.product_sub_category', 'delivery_challan_products' => function($q) use($product_sub_id) {
+            /* ===================== competed Delievry Challan details ===================== new code replaced by old one*/
+            $delivery_orders = DeliveryOrder::where('order_status', '=', 'completed')
+                     ->where('updated_at', 'like', date('Y-m-d') . '%')
+                            ->with(['delivery_product.product_sub_category', 'delivery_product' => function($q) use($product_sub_id) {
                                     $q->where('product_category_id', '=', $product_sub_id);
                                 }])->get();
-            if (isset($delivery_challan) && count($delivery_challan) > 0) {
-                foreach ($delivery_challan as $delivery_challan_details) {
-                    if (isset($delivery_challan_details->delivery_challan_products) && count($delivery_challan_details->delivery_challan_products) > 0) {
-                        foreach ($delivery_challan_details->delivery_challan_products as $delivery_challan_product_details) {
-                            if (isset($delivery_challan_product_details) && $delivery_challan_product_details->quantity != '') {
-//                                $sales_challan_qty = $sales_challan_qty + $delivery_challan_product_details->quantity;
-                                if ($delivery_challan_product_details->unit_id == 1) {
-                                    $sales_challan_qty = $sales_challan_qty + $delivery_challan_product_details->quantity;
+           
+            if (isset($delivery_orders) && count($delivery_orders) > 0) {
+                foreach ($delivery_orders as $delivery_orders_details) {
+                    if (isset($delivery_orders_details->delivery_product) && count($delivery_orders_details->delivery_product) > 0) {
+                        foreach ($delivery_orders_details->delivery_product as $delivery_orders_product_details) {
+                            if (isset($delivery_orders_product_details) && $delivery_orders_product_details->quantity != '') {
+//                                $sales_challan_qty = $sales_challan_qty + $delivery_orders_product_details->quantity;
+                                if ($delivery_orders_product_details->unit_id == 1) {
+                                    $sales_challan_qty = $sales_challan_qty + $delivery_orders_product_details->quantity;
                                 }
-                                if ($delivery_challan_product_details->unit_id == 2) {
-                                    $sales_challan_qty = $sales_challan_qty + ($delivery_challan_product_details->quantity * $delivery_challan_product_details->product_sub_category->weight);
+                                if ($delivery_orders_product_details->unit_id == 2) {
+                                    $sales_challan_qty = $sales_challan_qty + ($delivery_orders_product_details->quantity * $delivery_orders_product_details->product_sub_category->weight);
                                 }
-                                if ($delivery_challan_product_details->unit_id == 3) {
-                                    $sales_challan_qty = $sales_challan_qty + (($delivery_challan_product_details->quantity / $delivery_challan_product_details->product_sub_category->standard_length ) * $delivery_challan_product_details->product_sub_category->weight);
+                                if ($delivery_orders_product_details->unit_id == 3) {
+                                    $sales_challan_qty = $sales_challan_qty + (($delivery_orders_product_details->quantity / $delivery_orders_product_details->product_sub_category->standard_length ) * $delivery_orders_product_details->product_sub_category->weight);
                                 }
                             }
                         }
                     }
                 }
             }
+
+
+
+
             /* ===================== Purchase order details ===================== */
             $purchase_orders = PurchaseOrder::where('order_status', '=', 'pending')
                             ->with(['purchase_products.product_sub_category', 'purchase_products' => function($q) use($product_sub_id) {
@@ -298,25 +330,53 @@ class InventoryController extends Controller {
                     }
                 }
             }
-            /* ===================== Purchase Challan details ===================== */
-            $purchase_challan = PurchaseChallan::where('order_status', '=', 'pending')
-                            ->with(['all_purchase_products.product_sub_category', 'all_purchase_products' => function($q) use($product_sub_id) {
+//            /* ===================== Purchase Challan details ===================== */
+//            $purchase_challan = PurchaseChallan::where('order_status', '=', 'pending')
+//                            ->with(['all_purchase_products.product_sub_category', 'all_purchase_products' => function($q) use($product_sub_id) {
+//                                    $q->where('product_category_id', '=', $product_sub_id);
+//                                }])->get();
+//            if (isset($purchase_challan) && count($purchase_challan) > 0) {
+//                foreach ($purchase_challan as $purchase_challan_details) {
+//                    if (isset($purchase_challan_details->all_purchase_products) && count($purchase_challan_details->all_purchase_products) > 0) {
+//                        foreach ($purchase_challan_details->all_purchase_products as $purchase_challan_product_details) {
+//                            if (isset($purchase_challan_product_details) && $purchase_challan_product_details->quantity != '') {
+////                                $purchase_challan_qty = $purchase_challan_qty + $purchase_challan_product_details->quantity;
+//                                if ($purchase_challan_product_details->unit_id == 1) {
+//                                    $purchase_challan_qty = $purchase_challan_qty + $purchase_challan_product_details->quantity;
+//                                }
+//                                if ($purchase_challan_product_details->unit_id == 2) {
+//                                    $purchase_challan_qty = $purchase_challan_qty + ($purchase_challan_product_details->quantity * $purchase_challan_product_details->product_sub_category->weight);
+//                                }
+//                                if ($purchase_challan_product_details->unit_id == 3) {
+//                                    $purchase_challan_qty = $purchase_challan_qty + (($purchase_challan_product_details->quantity / $purchase_challan_product_details->product_sub_category->standard_length ) * $purchase_challan_product_details->product_sub_category->weight);
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+            
+            
+                        /* ===================== Purchase advice details ===================== */
+            $purchase_advice = PurchaseAdvise::where('advice_status', '=', 'delivered')
+                    ->where('updated_at', 'like', date('Y-m-d') . '%')
+                            ->with(['purchase_products.product_sub_category', 'purchase_products' => function($q) use($product_sub_id) {
                                     $q->where('product_category_id', '=', $product_sub_id);
                                 }])->get();
-            if (isset($purchase_challan) && count($purchase_challan) > 0) {
-                foreach ($purchase_challan as $purchase_challan_details) {
-                    if (isset($purchase_challan_details->all_purchase_products) && count($purchase_challan_details->all_purchase_products) > 0) {
-                        foreach ($purchase_challan_details->all_purchase_products as $purchase_challan_product_details) {
-                            if (isset($purchase_challan_product_details) && $purchase_challan_product_details->quantity != '') {
-//                                $purchase_challan_qty = $purchase_challan_qty + $purchase_challan_product_details->quantity;
-                                if ($purchase_challan_product_details->unit_id == 1) {
-                                    $purchase_challan_qty = $purchase_challan_qty + $purchase_challan_product_details->quantity;
+            if (isset($purchase_advice) && count($purchase_advice) > 0) {
+                foreach ($purchase_advice as $purchase_advice_details) {
+                    if (isset($purchase_advice_details->purchase_products) && count($purchase_advice_details->purchase_products) > 0) {
+                        foreach ($purchase_advice_details->purchase_products as $purchase_advice_product_details) {
+                            if (isset($purchase_advice_product_details) && $purchase_advice_product_details->quantity != '') {
+//                                $purchase_challan_qty = $purchase_challan_qty + $purchase_advice_product_details->quantity;
+                                if ($purchase_advice_product_details->unit_id == 1) {
+                                    $purchase_challan_qty = $purchase_challan_qty + $purchase_advice_product_details->quantity;
                                 }
-                                if ($purchase_challan_product_details->unit_id == 2) {
-                                    $purchase_challan_qty = $purchase_challan_qty + ($purchase_challan_product_details->quantity * $purchase_challan_product_details->product_sub_category->weight);
+                                if ($purchase_advice_product_details->unit_id == 2) {
+                                    $purchase_challan_qty = $purchase_challan_qty + ($purchase_advice_product_details->quantity * $purchase_advice_product_details->product_sub_category->weight);
                                 }
-                                if ($purchase_challan_product_details->unit_id == 3) {
-                                    $purchase_challan_qty = $purchase_challan_qty + (($purchase_challan_product_details->quantity / $purchase_challan_product_details->product_sub_category->standard_length ) * $purchase_challan_product_details->product_sub_category->weight);
+                                if ($purchase_advice_product_details->unit_id == 3) {
+                                    $purchase_challan_qty = $purchase_challan_qty + (($purchase_advice_product_details->quantity / $purchase_advice_product_details->product_sub_category->standard_length ) * $purchase_advice_product_details->product_sub_category->weight);
                                 }
                             }
                         }
@@ -356,10 +416,9 @@ class InventoryController extends Controller {
         }
 
         if (Input::has('search_inventory') && Input::get('search_inventory') != '') {
-            $alias_name = '%' .Input::get('search_inventory'). '%';
-            $product_sub_id = ProductSubCategory::where('alias_name', 'LIKE',  $alias_name)->first();
-            $query->where('product_sub_category_id','=',$product_sub_id->id);
-           
+            $alias_name = '%' . Input::get('search_inventory') . '%';
+            $product_sub_id = ProductSubCategory::where('alias_name', 'LIKE', $alias_name)->first();
+            $query->where('product_sub_category_id', '=', $product_sub_id->id);
         }
 
         $product_category = ProductCategory::orderBy('created_at', 'desc')->get();
