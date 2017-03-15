@@ -118,7 +118,7 @@ class CustomerController extends Controller {
          
         if(count($already_exists_mobile_number) > 0)
         {
-              return Redirect::back()->with('error', 'Mobile number is already associated with another account.');
+              return Redirect::back()->with('error', 'Mobile number is already associated with another account.')->withInput();
         }
         
         if (Input::has('company_name')) {
