@@ -48,7 +48,7 @@ class DeliveryOrderController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index() { 
+    public function index() {
         $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
@@ -87,7 +87,7 @@ class DeliveryOrderController extends Controller {
                 $q->where('updated_at', 'like', $date1 . '%');
             } else {
                 $q->where('updated_at', '>=', $date1);
-                $q->where('updated_at', '<=', $date2.' 23:59:59');
+                $q->where('updated_at', '<=', $date2 . ' 23:59:59');
             }
             $search_dates = [
                 'export_from_date' => $data["export_from_date"],
@@ -106,7 +106,7 @@ class DeliveryOrderController extends Controller {
         $delivery_data->setPath('delivery_order');
         return view('delivery_order', compact('delivery_data', 'delivery_locations', 'search_dates'));
     }
-    
+
     /**
      * Show the form for creating a new resource.
      */
@@ -238,24 +238,24 @@ class DeliveryOrderController extends Controller {
         if (count($delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
         }
-        
+
         $order_data = Order::with('all_order_products')->find($delivery_data->order_id);
-               
+
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
-        return view('view_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers','order_data'));
+        return view('view_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'order_data'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id="") {
-        
-        if (Auth::user()->role_id == 5 | $id=="") {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-           }
-        
+    public function edit($id = "") {
+
+        if (Auth::user()->role_id == 5 | $id == "") {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
@@ -401,81 +401,81 @@ class DeliveryOrderController extends Controller {
         $delivery_order_prod = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $id)->first();
         $delivery_order->updated_at = $delivery_order_prod->updated_at;
         $delivery_order->save();
-        
-        
-                /*
+
+
+        /*
           |------------------- -----------------------
           | SEND SMS TO CUSTOMER FOR NEW DELIVERY ORDER
           | -------------------------------------------
          */
 //        $input_data = $delivery_order;
-        
+
         $delivery_order = DeliveryOrder::with('delivery_product')->find($delivery_order->id);
-        
-        $total_quantity=0;
-            $customer_id = $delivery_order->customer_id;
-            $customer = Customer::with('manager')->find($customer_id);
-            if (count($customer) > 0) {
-                $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour DO has been edited as follows\n";
-                foreach ($delivery_order['delivery_product'] as $product_data) {
-                    $prod = AllOrderProducts::with('product_sub_category')->find($product_data->id);
-                    
-                    
-                    $str .= $prod['product_sub_category']->alias_name . ' - ' . $prod->quantity . ' - ' . $prod['price'] . ",\n";
-                    $total_quantity = $total_quantity + $product_data->quantity;
-                }
-                
-                $str .= "Vehicle No. " . (!empty($delivery_order->vehicle_number)?$delivery_order->vehicle_number:'N/A') . ", Drv No. " . (!empty($delivery_order->driver_contact_no)? $delivery_order->driver_contact_no:'N/A'). ". \nVIKAS ASSOCIATES";
-                
-               
-                if (App::environment('development')) {
-                    $phone_number = Config::get('smsdata.send_sms_to');
-                } else {
-                    $phone_number = $customer->phone_number1;
-                }
-                $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
-                }
+
+        $total_quantity = 0;
+        $customer_id = $delivery_order->customer_id;
+        $customer = Customer::with('manager')->find($customer_id);
+        if (count($customer) > 0) {
+            $total_quantity = '';
+            $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour DO has been edited as follows\n";
+            foreach ($delivery_order['delivery_product'] as $product_data) {
+                $prod = AllOrderProducts::with('product_sub_category')->find($product_data->id);
+
+
+                $str .= $prod['product_sub_category']->alias_name . ' - ' . $prod->quantity . ' - ' . $prod['price'] . ",\n";
+                $total_quantity = $total_quantity + $product_data->quantity;
             }
-            if (count($customer['manager']) > 0) {
-                $total_quantity = '';
-                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n".Auth::user()->first_name." has edited DO for " . $customer->owner_name . " as follows\n";
-                foreach ($delivery_order['delivery_product'] as $product_data) {
-                    $prod = AllOrderProducts::with('product_sub_category')->find($product_data->id);
-                    
-                    
-                    $str .= $prod['product_sub_category']->alias_name . ' - ' . $prod->quantity . ' - ' . $prod['price'] . ",\n";
-                    $total_quantity = $total_quantity + $product_data->quantity;
-                }
-                
-                $str .= "Vehicle No. " . (!empty($delivery_order->vehicle_number)?$delivery_order->vehicle_number:'N/A') . ", Drv No. " . (!empty($delivery_order->driver_contact_no)? $delivery_order->driver_contact_no:'N/A'). ". \nVIKAS ASSOCIATES";
-                
-               
-                if (App::environment('development')) {
-                    $phone_number = Config::get('smsdata.send_sms_to');
-                } else {
-                    $phone_number = $customer['manager']->mobile_number;
-                }
-                $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
-                }
+
+            $str .= "Vehicle No. " . (!empty($delivery_order->vehicle_number) ? $delivery_order->vehicle_number : 'N/A') . ", Drv No. " . (!empty($delivery_order->driver_contact_no) ? $delivery_order->driver_contact_no : 'N/A') . ". \nVIKAS ASSOCIATES";
+
+
+            if (App::environment('development')) {
+                $phone_number = Config::get('smsdata.send_sms_to');
+            } else {
+                $phone_number = $customer->phone_number1;
             }
-        
-      
-        
-        
-        
+            $msg = urlencode($str);
+            $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+            if (SEND_SMS === true) {
+                $ch = curl_init($url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $curl_scraped_page = curl_exec($ch);
+                curl_close($ch);
+            }
+        }
+        if (count($customer['manager']) > 0) {
+            $total_quantity = '';
+            $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited DO for " . $customer->owner_name . " as follows\n";
+            foreach ($delivery_order['delivery_product'] as $product_data) {
+                $prod = AllOrderProducts::with('product_sub_category')->find($product_data->id);
+
+
+                $str .= $prod['product_sub_category']->alias_name . ' - ' . $prod->quantity . ' - ' . $prod['price'] . ",\n";
+                $total_quantity = $total_quantity + $product_data->quantity;
+            }
+
+            $str .= "Vehicle No. " . (!empty($delivery_order->vehicle_number) ? $delivery_order->vehicle_number : 'N/A') . ", Drv No. " . (!empty($delivery_order->driver_contact_no) ? $delivery_order->driver_contact_no : 'N/A') . ". \nVIKAS ASSOCIATES";
+
+
+            if (App::environment('development')) {
+                $phone_number = Config::get('smsdata.send_sms_to');
+            } else {
+                $phone_number = $customer['manager']->mobile_number;
+            }
+            $msg = urlencode($str);
+            $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+            if (SEND_SMS === true) {
+                $ch = curl_init($url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $curl_scraped_page = curl_exec($ch);
+                curl_close($ch);
+            }
+        }
+
+
+
+
+
         return redirect('delivery_order')->with('success', 'Delivery order details successfully updated.');
     }
 
@@ -518,8 +518,8 @@ class DeliveryOrderController extends Controller {
     public function pending_delivery_order() {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-           }
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         $filteron = "";
         $filterby = "";
         $filteron = Input::get('filteron');
@@ -554,11 +554,11 @@ class DeliveryOrderController extends Controller {
      * displey the create delivery challan form
      */
 
-    public function create_delivery_challan($id="") {
+    public function create_delivery_challan($id = "") {
 
-        if (Auth::user()->role_id == 5 | $id=="") {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-           } 
+        if (Auth::user()->role_id == 5 | $id == "") {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
         if (count($delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
@@ -693,11 +693,11 @@ class DeliveryOrderController extends Controller {
         }
 
         $delivery_order_details->save();
-        if(isset($input_data['product']))
+        if (isset($input_data['product']))
             $total_product_count = count($input_data['product']);
         else
             $total_product_count = 0;
-            
+
         $total_vat_items = 0;
         $total_vat_price = 0;
         $total_without_vat_items = 0;
@@ -820,10 +820,26 @@ class DeliveryOrderController extends Controller {
      * as well as send the sms to the customer
      */
 
-    public function print_delivery_order($id,DropboxStorageRepository $connection) {
+    public function print_delivery_order($id, DropboxStorageRepository $connection) {
         $current_date = date("m/d/");
         $date_letter = 'DO/' . $current_date . "" . $id;
-        DeliveryOrder:: where('id', $id)->update(array('serial_no' => $date_letter));
+        $do = DeliveryOrder::where('updated_at', 'like', date('Y-m-d') . '%')->withTrashed()->get();
+
+        if (count($do) <= 0) {
+            $number = '1';
+        } else {           
+                $serial_numbers = [];
+                foreach ($do as $temp) {
+                    $list = explode("/", $temp->serial_no);
+                    $serial_numbers[] = $list[count($list) - 1];
+                    $pri_id = max($serial_numbers);
+                    $number = $pri_id + 1;
+                }           
+        }
+
+        $date_letter = 'DO/' . $current_date . "" . $number;        
+        DeliveryOrder:: where('id', $id)->where('serial_no','=',"")->update(array('serial_no' => $date_letter));
+//        DeliveryOrder:: where('id', $id)->update(array('serial_no' => $date_letter));
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'unit', 'location')->find($id);
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
@@ -837,9 +853,9 @@ class DeliveryOrderController extends Controller {
             'customers' => $customers
         ]);
         Storage::put(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
-        $pdf->save(getcwd() . "/upload/invoices/do/". str_replace('/', '-', $date_letter) . '.pdf');
+        $pdf->save(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf');
         chmod(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
-        $connection->getConnection()->put('Delivery Order/'.date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+        $connection->getConnection()->put('Delivery Order/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
 
         /*
           |------------------- -----------------------
@@ -875,7 +891,7 @@ class DeliveryOrderController extends Controller {
             }
             if (count($customer['manager']) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n".Auth::user()->first_name." has created DO for " . $customer->owner_name . " as follows\n";
+                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created DO for " . $customer->owner_name . " as follows\n";
                 foreach ($input_data as $product_data) {
                     $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
                     $total_quantity = $total_quantity + $product_data->quantity;
@@ -886,7 +902,7 @@ class DeliveryOrderController extends Controller {
                 } else {
                     $phone_number = $customer['manager']->mobile_number;
                 }
-               
+
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
                 if (SEND_SMS === true) {
@@ -896,7 +912,6 @@ class DeliveryOrderController extends Controller {
                     curl_close($ch);
                 }
             }
-            
         }
         return view('print_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
     }
@@ -965,15 +980,15 @@ class DeliveryOrderController extends Controller {
                 $pending_order = 0;
                 if (count($del_order['delivery_product']) > 0) {
                     foreach ($del_order['delivery_product'] as $popk => $popv) {
-                       
-                        if(isset($popv)){
-                        $product_size = ProductSubCategory::find($popv->product_category_id);
-                        
+
+                        if (isset($popv)) {
+                            $product_size = ProductSubCategory::find($popv->product_category_id);
+
 //                        $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
 //                            $delivery_order_present_shipping = $delivery_order_present_shipping + $popv->present_shipping;
-                            
+
                             $do = DeliveryOrder::find($popv->order_id);
-                            $prd_details = AllOrderProducts::where('order_id','=',$do->order_id)->where('order_type','=','order')->where('product_category_id','=',$popv->product_category_id)->get();
+                            $prd_details = AllOrderProducts::where('order_id', '=', $do->order_id)->where('order_type', '=', 'order')->where('product_category_id', '=', $popv->product_category_id)->get();
 //                            if(isset($prd_details[0]))
 //                            $pending_order_temp = $prd_details[0]->quantity - $popv->quantity;
 //                            else
@@ -985,94 +1000,80 @@ class DeliveryOrderController extends Controller {
 //                            else{
 //                                $pending_order = $pending_order + $pending_order_temp;
 //                            }    
-                        
-                        
-                        if ($popv->unit_id == 1) {
-                            $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
-                            $delivery_order_present_shipping = $delivery_order_present_shipping + $popv->present_shipping;
-                            
-                            $do = DeliveryOrder::find($popv->order_id);
-                            $prd_details = AllOrderProducts::where('order_id','=',$do->order_id)->where('order_type','=','order')->where('product_category_id','=',$popv->product_category_id)->get();
-                            
-                             if(isset($prd_details[0])){
-                            $pending_order_temp = $prd_details[0]->quantity - $popv->quantity;
-                            if($pending_order ==0){
-                                $pending_order = $pending_order_temp;
+
+
+                            if ($popv->unit_id == 1) {
+                                $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
+                                $delivery_order_present_shipping = $delivery_order_present_shipping + $popv->present_shipping;
+
+                                $do = DeliveryOrder::find($popv->order_id);
+                                $prd_details = AllOrderProducts::where('order_id', '=', $do->order_id)->where('order_type', '=', 'order')->where('product_category_id', '=', $popv->product_category_id)->get();
+
+                                if (isset($prd_details[0])) {
+                                    $pending_order_temp = $prd_details[0]->quantity - $popv->quantity;
+                                    if ($pending_order == 0) {
+                                        $pending_order = $pending_order_temp;
+                                    } else {
+                                        $pending_order = $pending_order + $pending_order_temp;
+                                    }
+                                }
+                            } elseif ($popv->unit_id == 2) {
+                                $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight);
+                                $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight);
+
+                                $do = DeliveryOrder::find($popv->order_id);
+                                $prd_details = AllOrderProducts::where('order_id', '=', $do->order_id)->where('order_type', '=', 'order')->where('product_category_id', '=', $popv->product_category_id)->get();
+
+                                if (isset($prd_details[0])) {
+                                    if ($prd_details[0]->quantity > $popv->quantity)
+                                        $remaining = $prd_details[0]->quantity - $popv->quantity;
+                                    else
+                                        $remaining = 0;
+
+                                    $pending_order_temp = ($remaining * $product_size->weight);
+
+                                    if ($pending_order == 0) {
+                                        $pending_order = $pending_order_temp;
+                                    } else {
+                                        $pending_order = $pending_order + $pending_order_temp;
+                                    }
+                                }
+                            } elseif ($popv->unit_id == 3) {
+
+                                $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+                                $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
+
+                                $do = DeliveryOrder::find($popv->order_id);
+
+                                $prd_details = AllOrderProducts::where('order_id', '=', $do->order_id)->where('order_type', '=', 'order')->where('product_category_id', '=', $popv->product_category_id)->get();
+
+                                if (isset($prd_details[0])) {
+                                    if ($prd_details[0]->quantity > $popv->quantity)
+                                        $remaining = $prd_details[0]->quantity - $popv->quantity;
+                                    else
+                                        $remaining = 0;
+                                    $pending_order_temp = (($remaining / $product_size->standard_length ) * $product_size->weight);
+
+                                    if ($pending_order == 0) {
+                                        $pending_order = $pending_order_temp;
+                                    } else {
+                                        $pending_order = $pending_order + $pending_order_temp;
+                                    }
+                                }
                             }
-                            else{
-                                $pending_order = $pending_order + $pending_order_temp;
-                            }                            
-                             }
-                            
-                        } 
-                        
-                        
-                        elseif ($popv->unit_id == 2) {
-                            $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight);
-                            $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight);
-                            
-                            $do = DeliveryOrder::find($popv->order_id);
-                            $prd_details = AllOrderProducts::where('order_id','=',$do->order_id)->where('order_type','=','order')->where('product_category_id','=',$popv->product_category_id)->get();
-                            
-                            if(isset($prd_details[0])){
-                            if($prd_details[0]->quantity > $popv->quantity)
-                                $remaining = $prd_details[0]->quantity - $popv->quantity;
-                            else
-                                 $remaining =0 ;                            
-                            
-                            $pending_order_temp =  ($remaining * $product_size->weight);                         
-                            
-                            if($pending_order ==0){
-                                $pending_order = $pending_order_temp ;
-                            }
-                            else{
-                                $pending_order = $pending_order + $pending_order_temp;
-                            }    
-                            }
-                            
-                        } 
-                        
-                        
-                        elseif ($popv->unit_id == 3) {
-                            
-                            $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
-                            $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);                            
-                            
-                            $do = DeliveryOrder::find($popv->order_id);
-                            
-                            $prd_details = AllOrderProducts::where('order_id','=',$do->order_id)->where('order_type','=','order')->where('product_category_id','=',$popv->product_category_id)->get();
-                            
-                            if(isset($prd_details[0])){
-                            if($prd_details[0]->quantity > $popv->quantity)
-                                $remaining = $prd_details[0]->quantity - $popv->quantity;
-                            else
-                                 $remaining =0 ;                            
-                            $pending_order_temp =  (($remaining / $product_size->standard_length ) * $product_size->weight);                         
-                            
-                            if($pending_order ==0){
-                                $pending_order = $pending_order_temp ;
-                            }
-                            else{
-                                $pending_order = $pending_order + $pending_order_temp;
-                            } 
-                            }
-                        }
-                        }
-                        else
-                        {
-                            $delivery_order_quantity=0;
-                            $delivery_order_present_shipping=0;
-                            $pending_order=0;
+                        } else {
+                            $delivery_order_quantity = 0;
+                            $delivery_order_present_shipping = 0;
+                            $pending_order = 0;
                         }
                     }
                 }
-                
-              
-                
+
+
+
                 $delivery_orders[$key]['total_quantity'] = $delivery_order_quantity;
                 $delivery_orders[$key]['present_shipping'] = $delivery_order_present_shipping;
-                $delivery_orders[$key]['pending_order'] = ($pending_order<0 ? 0:$pending_order);
-               
+                $delivery_orders[$key]['pending_order'] = ($pending_order < 0 ? 0 : $pending_order);
             }
         }
         return $delivery_orders;
@@ -1103,7 +1104,7 @@ class DeliveryOrderController extends Controller {
             } else {
                 $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)
                         ->where('updated_at', '>=', $date1)
-                        ->where('updated_at', '<=', $date2.' 23:59:59')
+                        ->where('updated_at', '<=', $date2 . ' 23:59:59')
                         ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')
                         ->orderBy('created_at', 'desc')
                         ->get();
@@ -1148,4 +1149,5 @@ class DeliveryOrderController extends Controller {
                 //'customers' => $customers,
         ));
     }
+
 }

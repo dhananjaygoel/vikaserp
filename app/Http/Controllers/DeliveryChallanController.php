@@ -45,16 +45,16 @@ class DeliveryChallanController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-        
+
         if (Auth::user()->role_id == 5) {
             return Redirect::to('inquiry')->with('error', 'You do not have permission.');
         }
-        
-        
-        
+
+
+
         $data = Input::all();
         $search_dates = [];
-        $allorders =0;
+        $allorders = 0;
         $session_sort_type_order = Session::get('order-sort-type');
         if (isset($data['status_filter']))
             $qstring_sort_type_order = $data['status_filter'];
@@ -70,7 +70,7 @@ class DeliveryChallanController extends Controller {
                 $qstring_sort_type_order = "";
             }
         }
-        
+
         if ((isset($qstring_sort_type_order)) && ($qstring_sort_type_order != '')) {
             if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
                 $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
@@ -168,7 +168,7 @@ class DeliveryChallanController extends Controller {
 //        }
 //        
 
-       
+
 
 
         if (count($allorders) > 0) {
@@ -252,7 +252,7 @@ class DeliveryChallanController extends Controller {
 //                    }
             }
         }
-        
+
         $allorders->setPath('delivery_challan');
         return view('delivery_challan', compact('allorders', 'search_dates'));
     }
@@ -458,7 +458,7 @@ class DeliveryChallanController extends Controller {
 //                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
-                $str .= $s =" Vehicle No. " . $allorder['delivery_order']->vehicle_number .
+                $str .= $s = " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
                         ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
                         ", Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
                         ", Amount " . $allorder->grand_price .
@@ -481,7 +481,7 @@ class DeliveryChallanController extends Controller {
             }
             if (count($customer['manager']) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited material for " . $customer->owner_name . " as follows ".$s;
+                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited material for " . $customer->owner_name . " as follows " . $s;
 //                foreach ($input_data as $product_data) {
 //                    $product = ProductSubCategory::find($product_data->product_category_id);
 ////                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
@@ -586,12 +586,59 @@ class DeliveryChallanController extends Controller {
                     }
                 }
             }
-            if ($update_delivery_challan->ref_delivery_challan_id == 0) {
-                $modified_id = $id;
+
+            $dc = DeliveryChallan::where('created_at', 'like', date('Y-m-d') . '%')->withTrashed()->get();
+
+            if (count($dc) <= 0) {
+                $number = '1';
             } else {
-                $modified_id = $update_delivery_challan->ref_delivery_challan_id;
+                $serial_numbers = [];
+                foreach ($dc as $temp) {
+                    $list = explode("/", $temp->serial_number);
+                    $serial_numbers[] = $list[count($list) - 1];
+                    $pri_id = max($serial_numbers);
+                    $number = $pri_id + 1;
+                }
             }
+
+            if ($update_delivery_challan->serial_number == "") {
+                if ($update_delivery_challan->ref_delivery_challan_id == 0) {
+                    $connected_dc = DeliveryChallan::where('ref_delivery_challan_id', '=', $id)->first();
+                    if (isset($connected_dc->serial_number)) {
+                        if ($connected_dc->serial_number == "") {
+                            $modified_id = $number;
+                        } else {
+                            $list = explode("/", $connected_dc->serial_number);
+                            $modified_id = substr($list[count($list) - 1], 0, -1);
+                        }
+                    } else {
+                        $modified_id = $number;
+                    }
+                } else {
+
+                    $connected_dc = DeliveryChallan::where('id', '=', $update_delivery_challan->ref_delivery_challan_id)->first();
+                    if (isset($connected_dc->serial_number)) {
+                        if ($connected_dc->serial_number == "") {
+                            $modified_id = $number;
+                        } else {
+                            $list = explode("/", $connected_dc->serial_number);
+                            $modified_id = substr($list[count($list) - 1], 0, -1);
+                        }
+                    } else {
+                        $modified_id = $number;
+                    }
+                }
+            }
+
+//            if ($update_delivery_challan->ref_delivery_challan_id == 0) {
+//                $modified_id = $id;
+//            } else {
+//                $modified_id = $update_delivery_challan->ref_delivery_challan_id;
+//            }
             $date_letter = 'DC/' . $current_date . $modified_id . (($vat_applicable > 0) ? "P" : "A");
+
+          
+
             $update_delivery_challan->serial_number = $date_letter;
             $update_delivery_challan->challan_status = 'completed';
             $update_delivery_challan->save();
@@ -646,7 +693,7 @@ class DeliveryChallanController extends Controller {
 //                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
-                 $str .=  $s = " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
+                $str .= $s = " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
                         ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
                         ", Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
                         ", Amount " . $allorder->grand_price .
@@ -669,8 +716,8 @@ class DeliveryChallanController extends Controller {
             }
             if (count($customer['manager']) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . "  has dispatched material for  " . $customer->owner_name . " as follows\n ". $s;
-               
+                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . "  has dispatched material for  " . $customer->owner_name . " as follows\n " . $s;
+
 
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -687,8 +734,8 @@ class DeliveryChallanController extends Controller {
                 }
             }
         }
-               
-              
+
+
         return view('print_delivery_challan', compact('allorder', 'total_vat_amount'));
     }
 
