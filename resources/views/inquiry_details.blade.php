@@ -137,6 +137,10 @@
                                         <tr>
                                             <td><span>Remark: </span>{{$inquiry->remarks}}</td>
                                         </tr>
+                                        <tr>
+                                            
+                                            <td><span>Created By: </span>{{$inquiry['createdby']->first_name}} {{$inquiry['createdby']->last_name}}</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
