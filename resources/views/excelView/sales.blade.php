@@ -78,7 +78,7 @@
                     <td>Sales</td>
 
         <!--<td></td>-->
-                    <td>{{ ($value['customer']->tally_name != "") ? $value['customer']->tally_name : "Advance Sales" }}</td>
+                    <td>{{ isset($value['customer']->tally_name) ? (($value['customer']->tally_name != "") ? $value['customer']->tally_name : "Advance Sales"):'' }}</td>
                             <!--<td>{{ isset($value['customer']->address1) ? $value['customer']->address1 : '' }}</td>-->
         <!--                    <td>{{ isset($value['customer']->address2) ? $value['customer']->address2 : '' }}</td>-->
                             <!--<td>{{ isset($value['customer']->states) ? $value->customer->states->state_name : '' }}</td>-->
