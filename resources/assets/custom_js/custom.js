@@ -388,19 +388,41 @@ function create_purchase_challan_function() {
             '<input type="hidden" name="product[' + current_row_count + '][product_category_id]" id="add_product_id_' + current_row_count + '">' +
             '<i class="fa fa-search search-icon"></i>' +
             '</div>' +
-            '    </td>' +
+            '    </td>' +           
             '    <td>' +
             '        <div class="form-group">' +
-            '            <input id="actual_quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Actual Quantity" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="purchase_challan_calculation();">' +
-            '        </div>' +
-            '    </td>' +
-            '    <td>' +
-            '        <div class="form-group">' +
-            '           <select class="form-control" name="product[' + current_row_count + '][unit_id]" id="units_' + current_row_count + '">' +
+            '           <select class="form-control" name="product[' + current_row_count + '][unit_id]" id="units_' + current_row_count + '" onchange="unitType(this);">' +
             '               ' +
             '           </select>' +
             '        </div>' +
             '    </td>  ' +
+            '    <td>' +
+            '        <div class="form-group meter_list_' + current_row_count + '" style="display:none">' +
+            '            <input id="actual_quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Actual Quantity" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="purchase_challan_calculation();">' +
+            '        </div>' +
+            '       <div class = "form-group kg_list_' + current_row_count + '" >'+
+            '           <select class = "form-control kg_list" name = "kg_list" id = "kg_list_' + current_row_count + '" onchange="setQty(this);">'+
+                 
+            '               <option value = "50">50</option>'+           
+            '               <option value = "50">100</option>'+           
+            '               <option value = "50">150</option>'+           
+            '               <option value = "50">200</option>'+           
+            '               <option value = "50">250</option>'+           
+            '               <option value = "50">300</option>'+           
+            
+            '           </select>'+
+            '       </div>'+
+            '       <div class = "form-group pieces_list_' + current_row_count + '" style="display:none">'+
+            '           <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_' + current_row_count + '" onchange="setQty(this);">'+
+            '               <option value = "1">1</option>'+           
+            '               <option value = "5">5</option>'+           
+            '               <option value = "10">10</option>'+           
+            '               <option value = "15">15</option>'+           
+            '               <option value = "20">20</option>'+           
+            '               <option value = "25">25</option>'+  
+            '           </select>'+
+            '       </div>'+
+            '    </td>' +
             '    <td>  ' +
             '        <div class="form-group">' +
             '            <input id="shipping_' + current_row_count + '" class="form-control" placeholder="Present Shipping" name="product[' + current_row_count + '][present_shipping]" value="" type="text">' +

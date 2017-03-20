@@ -111,17 +111,31 @@
             '<i class="fa fa-search search-icon"></i>' +
             '</div>' +
             '</td>' +
-            '<td class="col-md-1">' +
-            '<div class="form-group">' +
-            '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
-            '</div>' +
-            '</td>' +
             '<td class="col-md-2">' +
             '<div class="form-group ">' +
-            '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
+            '<select class="form-control unit" onchange="unitType(this);" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
             '</select>' +
             '</div>' +
             '</td>' +
+            '<td class="col-md-1">' +
+            '<div class="form-group meter_list_' + current_row_count + '" style="display:none"> ' +
+            '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
+            '</div>' +
+            '<div class = "form-group kg_list_' + current_row_count + '" >'+
+            ' <select class = "form-control kg_list" name = "kg_list" id = "kg_list_' + current_row_count + '" onchange="setQty(this);">'+
+            <?php for ($n = 50; $n <= 15000; $n++) { ?>
+            '<option value = "'+{{$n}} +'">'+{{$n}} +'</option>'+
+            <?php $n = $n + 49; } ?>
+            ' </select>'+
+            '</div>'+
+            '<div class = "form-group pieces_list_' + current_row_count + '" style="display:none">'+
+            '<select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_' + current_row_count + '" onchange="setQty(this);">'+
+             <?php for ($z = 1; $z <= 1000; $z++) { ?>         
+            '<option value = "'+{{$z}} +'">'+{{$z}} +'</option>'+
+             <?php ($z == 1) ? $z = $z + 3 : $z = $z + 4; } ?>
+            '</select>'+
+            '</div>'+
+            '</td>' +            
             '<td class="col-md-2">' +
             '<div class="form-group">' +
             '<input type="tel" class="form-control" placeholder="price" onkeypress=" return numbersOnly(this,event,true,true);" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]">' +
@@ -267,16 +281,32 @@
             '<i class="fa fa-search search-icon"></i>' +
             '</div>' +
             '</td>' +
-            '<td class="col-md-1">' +
-            '<div class="form-group">' +
-            '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
-            '</div>' +
-            '</td>' +
+           
             '<td class="col-md-2">' +
             '<div class="form-group ">' +
-            '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
+            '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '" onchange="unitType(this);">' +
             '</select>' +
             '</div>' +
+            '</td>' +
+            
+            '<td class="col-md-1">' +
+            '<div class="form-group meter_list_' + current_row_count + '" style="display:none">' +
+            '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
+            '</div>' +
+             '<div class = "form-group kg_list_' + current_row_count + '" >'+
+            ' <select class = "form-control kg_list" name = "kg_list" id = "kg_list_' + current_row_count + '" onchange="setQty(this);">'+
+            <?php for ($n = 50; $n <= 15000; $n++) { ?>
+            '<option value = "'+{{$n}} +'">'+{{$n}} +'</option>'+
+            <?php $n = $n + 49; } ?>
+            ' </select>'+
+            '</div>'+
+            '<div class = "form-group pieces_list_' + current_row_count + '" style="display:none">'+
+            '<select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_' + current_row_count + '" onchange="setQty(this);">'+
+             <?php for ($z = 1; $z <= 1000; $z++) { ?>         
+            '<option value = "'+{{$z}} +'">'+{{$z}} +'</option>'+
+             <?php ($z == 1) ? $z = $z + 3 : $z = $z + 4; } ?>
+            '</select>'+
+            '</div>'+
             '</td>' +
             '<td class="col-md-2">' +
             '<div class="form-group">' +
@@ -474,17 +504,31 @@
             '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '" value="">' +
             '<i class="fa fa-search search-icon"></i>' +
             '</div>' +
-            '</td>' +
-            '<td class="col-md-1">' +
-            '<div class="form-group">' +
-            '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
-            '</div>' +
-            '</td>' +
+            '</td>' +            
             '<td class="col-md-2">' +
             '<div class="form-group ">' +
-            '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
+            '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '" onchange="unitType(this);">' +
             '</select>' +
             '</div>' +
+            '</td>' +
+            '<td class="col-md-1">' +
+            '<div class="form-group meter_list_' + current_row_count + '" style="display:none">' +
+            '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
+            '</div>' +
+            '<div class = "form-group kg_list_' + current_row_count + '" >'+
+            ' <select class = "form-control kg_list" name = "kg_list" id = "kg_list_' + current_row_count + '" onchange="setQty(this);">'+
+            <?php for ($n = 50; $n <= 15000; $n++) { ?>
+            '<option value = "'+{{$n}} +'">'+{{$n}} +'</option>'+
+            <?php $n = $n + 49; } ?>
+            ' </select>'+
+            '</div>'+
+            '<div class = "form-group pieces_list_' + current_row_count + '" style="display:none">'+
+            '<select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_' + current_row_count + '" onchange="setQty(this);">'+
+             <?php for ($z = 1; $z <= 1000; $z++) { ?>         
+            '<option value = "'+{{$z}} +'">'+{{$z}} +'</option>'+
+             <?php ($z == 1) ? $z = $z + 3 : $z = $z + 4; } ?>
+            '</select>'+
+            '</div>'+
             '</td>' +
             '<td class="col-md-2">' +
             '<div class="form-group">' +
