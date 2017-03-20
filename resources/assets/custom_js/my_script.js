@@ -582,7 +582,6 @@ $('.print_delivery_challan').click(function () {
 });
 $('.print_sales_order_daybook').click(function () {
     var base_url = $('#baseurl').attr('name');
-    console.log(base_url);
     $.ajax({
         type: "GET",
         url: base_url + '/print_sales_order_daybook',
