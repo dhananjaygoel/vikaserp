@@ -124,11 +124,11 @@
 //                    $total_qty = $products->price;
                 }
                 ?>
-
+               
                 <div class="divRow">
                     <div class="divCell2 center">{{$i++ }}</div>
                     <div class="divCell">{{ isset($obj->serial_number) ? $obj->serial_number : '' }}</div>
-                    <div class="divCell3">{{ ($obj['customer']->tally_name != '') ? $obj['customer']->tally_name : 'Advance Sales' }}</div>
+                    <div class="divCell3">{{ isset($obj['customer']->tally_name)?(($obj['customer']->tally_name != '') ? $obj['customer']->tally_name : 'Advance Sales'):'' }}</div>
                     <div class="divCell">{{ isset($obj['delivery_order']['location']) ? $obj['delivery_order']['location']->area_name : '' }}</div>
                     <div class="divCell">{{ round($obj["delivery_challan_products"]->sum('actual_quantity'), 2) }}</div>
                     <div class="divCell">{{ isset($obj->grand_price) ? round($obj->grand_price, 2) : '' }}</div>
