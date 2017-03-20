@@ -587,7 +587,7 @@ class DeliveryChallanController extends Controller {
                 }
             }
 
-            $dc = DeliveryChallan::where('created_at', 'like', date('Y-m-d') . '%')->withTrashed()->get();
+            $dc = DeliveryChallan::where('updated_at', 'like', date('Y-m-d') . '%')->withTrashed()->get();
 
             if (count($dc) <= 0) {
                 $number = '1';
@@ -595,12 +595,11 @@ class DeliveryChallanController extends Controller {
                 $serial_numbers = [];
                 foreach ($dc as $temp) {
                     $list = explode("/", $temp->serial_number);
-                    $serial_numbers[] = $list[count($list) - 1];
+                    $serial_numbers[] = chop(chop($list[count($list) - 1],"P"),"A");
                     $pri_id = max($serial_numbers);
                     $number = $pri_id + 1;
                 }
             }
-
             if ($update_delivery_challan->serial_number == "") {
                 if ($update_delivery_challan->ref_delivery_challan_id == 0) {
                     $connected_dc = DeliveryChallan::where('ref_delivery_challan_id', '=', $id)->first();
@@ -629,7 +628,7 @@ class DeliveryChallanController extends Controller {
                     }
                 }
             }
-
+            
 //            if ($update_delivery_challan->ref_delivery_challan_id == 0) {
 //                $modified_id = $id;
 //            } else {
