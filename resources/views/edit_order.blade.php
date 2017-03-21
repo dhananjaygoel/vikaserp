@@ -322,7 +322,7 @@
                                                         <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$key}}" onchange="setQty(this);">
                                                             <?php for ($z = 1; $z <= 1000; $z++) { ?>
                                                                 <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
-                                                                <?php ($z == 1) ? $z = $z + 3 : $z = $z + 4;
+                                                                <?php // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
                                                             }
                                                             ?>                                                 
                                                         </select>

@@ -299,7 +299,7 @@
                                                             <?php for ($z = 1; $z <= 1000; $z++) { ?>
                                                                 <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
                                                                 <?php
-                                                                ($z == 1) ? $z = $z + 3 : $z = $z + 4;
+//                                                                ($z == 1) ? $z = $z + 3 : $z = $z + 4;
                                                             }
                                                             ?>                                                 
                                                         </select>
