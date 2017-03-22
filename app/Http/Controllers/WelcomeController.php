@@ -967,5 +967,61 @@ class WelcomeController extends Controller {
         $user = DB::table('users')->where('role_id', '=', '5')->delete();
         print_r($user_count . " records deleted.");
     }
+    
+    
+     public function database_backup_local() {
+        
+        $db_username = "root";
+        $db_password = "root123";
+        $database = "erp";
+        $filename = "backup-" . date("d-m-Y") . ".sql.gz";
+        $mime = "application/x-gzip";
+
+        header("Content-Type: " . $mime);
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+        $cmd = "mysqldump -u $db_username --password=$db_password $database | gzip --best";
+
+        passthru($cmd);
+
+        exit(0);
+    }
+    
+     public function database_backup_test() {
+        
+        $db_username = "vikasags_vikuser";
+        $db_password = "CFpNH.#JblZe";
+        $database = "vikasags_vikasdb";
+        $filename = "backup-" . date("d-m-Y") . ".sql.gz";
+        $mime = "application/x-gzip";
+
+        header("Content-Type: " . $mime);
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+        $cmd = "mysqldump -u $db_username --password=$db_password $database | gzip --best";
+
+        passthru($cmd);
+
+        exit(0);
+    }
+    
+    
+     public function database_backup_live() {
+        
+        $db_username = "vikaserp_agsus";
+        $db_password = "passags756";
+        $database = "vikaserp_ags";
+        $filename = "backup-" . date("d-m-Y") . ".sql.gz";
+        $mime = "application/x-gzip";
+
+        header("Content-Type: " . $mime);
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+        $cmd = "mysqldump -u $db_username --password=$db_password $database | gzip --best";
+
+        passthru($cmd);
+
+        exit(0);
+    }
 
 }
