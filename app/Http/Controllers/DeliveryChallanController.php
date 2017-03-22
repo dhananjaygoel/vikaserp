@@ -231,8 +231,10 @@ class DeliveryChallanController extends Controller {
                     foreach ($product_for_order as $product_order_pending) {
 
                         if ($previous_dc_quantity > 0) {
-                            if ($previous_dc_quantity_parent == $product_for_order_do[0]->id) {
-                                $order_quantity_pending = $order_quantity_pending + $product_order_pending->quantity;
+                            if (isset($product_for_order_do[0])) {
+                                if ($previous_dc_quantity_parent == $product_for_order_do[0]->id) {
+                                    $order_quantity_pending = $order_quantity_pending + $product_order_pending->quantity;
+                                }
                             } else {
                                 $order_quantity_pending = $product_order_pending->quantity - $previous_dc_quantity + $order_quantity - $product_for_order_do_pending;
                             }
@@ -595,7 +597,7 @@ class DeliveryChallanController extends Controller {
                 $serial_numbers = [];
                 foreach ($dc as $temp) {
                     $list = explode("/", $temp->serial_number);
-                    $serial_numbers[] = chop(chop($list[count($list) - 1],"P"),"A");
+                    $serial_numbers[] = chop(chop($list[count($list) - 1], "P"), "A");
                     $pri_id = max($serial_numbers);
                     $number = $pri_id + 1;
                 }
@@ -628,7 +630,7 @@ class DeliveryChallanController extends Controller {
                     }
                 }
             }
-            
+
 //            if ($update_delivery_challan->ref_delivery_challan_id == 0) {
 //                $modified_id = $id;
 //            } else {
@@ -636,7 +638,7 @@ class DeliveryChallanController extends Controller {
 //            }
             $date_letter = 'DC/' . $current_date . $modified_id . (($vat_applicable > 0) ? "P" : "A");
 
-          
+
 
             $update_delivery_challan->serial_number = $date_letter;
             $update_delivery_challan->challan_status = 'completed';
