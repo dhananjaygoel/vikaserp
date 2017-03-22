@@ -79,11 +79,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
-                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{$purchase_order['customer']->phone_number1 }}" type="tel" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10">
+                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{$purchase_order['customer']->phone_number1 }}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10">
                             </div>
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
-                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$purchase_order['customer']->credit_period}}" type="tel" onkeypress=" return numbersOnly(this, event, false, false);">
+                                <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$purchase_order['customer']->credit_period}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);">
                             </div>
                         </div>
                         @elseif($purchase_order['customer']->customer_status =="permanent")
@@ -124,9 +124,8 @@
                                 <tbody>
                                     <tr class="headingunderline">
                                         <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
-                                        <td><span>Unit</span><span class="mandatory">*</span></td>
                                         <td><span>Quantity</span></td>
-
+                                        <td><span>Unit</span><span class="mandatory">*</span></td>
                                         <td><span>Price</span></td>
                                         <td><span>Remark</span></td>
                                     </tr>
@@ -145,7 +144,11 @@
                                                             <i class="fa fa-search search-icon"></i>
                                                         </div>
                                                     </td>
-
+                                                    <td class="col-md-1">
+                                                        <div class="form-group">
+                                                            <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>" onkeypress=" return numbersOnly(this,event,true,false);">
+                                                        </div>
+                                                    </td>
                                                     <td class="col-md-2">
                                                         <div class="form-group ">
                                                             <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
@@ -155,14 +158,9 @@
                                                             </select>
                                                         </div>
                                                     </td>
-                                                    <td class="col-md-1">
-                                                        <div class="form-group">
-                                                            <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>" onkeypress=" return numbersOnly(this, event, true, false);">
-                                                        </div>
-                                                    </td>
                                                     <td class="col-md-2">
                                                         <div class="form-group">
-                                                            <input type="text" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>" onkeypress=" return numbersOnly(this, event, true, false);">
+                                                            <input type="text" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>" onkeypress=" return numbersOnly(this,event,true,false);">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-4">
@@ -187,10 +185,14 @@
                                                     <i class="fa fa-search search-icon"></i>
                                                 </div>
                                             </td>
-
+                                            <td class="col-md-1">
+                                                <div class="form-group">
+                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
+                                                </div>
+                                            </td>
                                             <td class="col-md-2">
                                                 <div class="form-group ">
-                                                    <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" onchange="unitType(this);">
+                                                    <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}">
                                                         @foreach($units as $unit)
                                                         @if($product->unit_id == $unit->id)
                                                         <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
@@ -201,34 +203,9 @@
                                                     </select>
                                                 </div>
                                             </td>
-                                            <td class="col-md-1">
-                                                <div class="form-group meter_list_{{$key}}" {{($product->unit_id==3)?'':'style=display:none'}}>
-                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel" onkeypress=" return numbersOnly(this, event, true, false);">
-                                                </div>
-                                                <div class = "form-group kg_list_{{$key}}" {{($product->unit_id==1)?'':'style=display:none'}}>
-                                                    <select class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$key}}" onchange="setQty(this);">
-                                                        <?php for ($n = 50; $n <= 15000; $n++) { ?>
-                                                            <option {{($product->quantity == $n)?'selected':''}} value = "{{$n}}">{{$n}}</option>
-                                                            <?php
-                                                            $n = $n + 49;
-                                                        }
-                                                        ?>
-                                                    </select>
-                                                </div>
-                                                <div class = "form-group pieces_list_{{$key}}" {{($product->unit_id=='2')?'':'style=display:none'}}>
-                                                    <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$key}}" onchange="setQty(this);">
-                                                        <?php for ($z = 1; $z <= 1000; $z++) { ?>
-                                                            <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
-                                                            <?php
-//                                                            ($z == 1) ? $z = $z + 3 : $z = $z + 4;
-                                                        }
-                                                        ?>                                                 
-                                                    </select>
-                                                </div>
-                                            </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input type="tel" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]" onkeypress=" return numbersOnly(this, event, true, false);">
+                                                    <input type="tel" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]" onkeypress=" return numbersOnly(this,event,true,false);">
                                                 </div>
                                             </td>
                                             <td class="col-md-4">
@@ -243,30 +220,30 @@
                                 </tbody>
                             </table>
 
-                            <table>
-                                <tbody>
-                                    <tr class="row5">
-                                        <td>
-                                            <div class="add_button1">
-                                                <div class="form-group pull-left">
-                                                    <label for="addmore"></label>
-                                                    <a class="table-link" title="add more" id="add_purchase_product_row">
-                                                        <span class="fa-stack more_button" >
-                                                            <i class="fa fa-square fa-stack-2x"></i>
-                                                            <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
-                                                        </span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                             <table>
+                                        <tbody>
+                                            <tr class="row5">
+                                                <td>
+                                                    <div class="add_button1">
+                                                        <div class="form-group pull-left">
+                                                            <label for="addmore"></label>
+                                                            <a class="table-link" title="add more" id="add_purchase_product_row">
+                                                                <span class="fa-stack more_button" >
+                                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                                    <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                                                                </span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                         </div>
                     </div>
                     <div class="row col-md-4">
