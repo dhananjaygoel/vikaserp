@@ -177,7 +177,7 @@ class DashboardController extends Controller {
 
             $inquiries_stats_all[$i]['pipe'] = round($inquiries_stats_all[$i]['pipe'] / 1000, 2);
             $inquiries_stats_all[$i]['structure'] = round($inquiries_stats_all[$i]['structure'] / 1000, 2);
-        }
+        } 
         
         
         
