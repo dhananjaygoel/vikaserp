@@ -49,7 +49,7 @@
                   $order_quantity = 0;
             ?>
         <tr>
-            <td>{{ date("d/m/Y", strtotime($value->created_at)) }}</td>
+            <td>{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
             <td>{{$VchNo}}</td>
             <td>Purchase</td>
             <td>{{ ($value['supplier']->tally_name != "") ? $value['supplier']->tally_name : 'Advance Sales' }}</td>
