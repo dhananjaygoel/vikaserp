@@ -184,7 +184,9 @@ class SalesDaybookController extends Controller {
             $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
                     ->with('delivery_challan_products.order_product_details')
                     ->orderBy('updated_at', 'desc')
-                    ->Paginate(20);        
+//                    ->Paginate(200);   
+                    ->take(200)
+                    ->get();
         }
         Excel::create('Sales Daybook', function($excel) use($allorders) {
             $excel->sheet('Sales-Daybook', function($sheet) use($allorders) {
