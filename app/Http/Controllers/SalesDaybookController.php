@@ -160,7 +160,7 @@ class SalesDaybookController extends Controller {
     }
 
     public function export_sales_daybook() {
-        set_time_limit(0);
+        set_time_limit(0);        
         $data = Input::all();
         if (isset($data["export_from_date"]) && isset($data["export_to_date"])  && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
@@ -181,7 +181,7 @@ class SalesDaybookController extends Controller {
             }
         } else {
             $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
-                    ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location')
+                    ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details')
                     ->orderBy('updated_at', 'desc')
                     ->get();
         }

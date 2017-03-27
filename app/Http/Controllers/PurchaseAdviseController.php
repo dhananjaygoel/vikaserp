@@ -343,7 +343,7 @@ class PurchaseAdviseController extends Controller {
                     'price' => $product_data['price'],
                     'remarks' => $product_data['remark'],
                     'present_shipping' => $product_data['quantity'],
-                    'from' => $product_data['purchase']
+                    'from' => isset($product_data['purchase'])?$product_data['purchase']:''
                 ];
                 PurchaseProducts::create($purchase_advise_products);
             }
