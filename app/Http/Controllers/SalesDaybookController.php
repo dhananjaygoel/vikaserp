@@ -183,6 +183,7 @@ class SalesDaybookController extends Controller {
             $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
                     ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location')
                     ->orderBy('updated_at', 'desc')
+                    ->take(100)
                     ->get();
         }
         Excel::create('Sales Daybook', function($excel) use($allorders) {
