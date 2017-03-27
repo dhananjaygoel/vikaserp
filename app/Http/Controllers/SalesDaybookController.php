@@ -160,7 +160,7 @@ class SalesDaybookController extends Controller {
     }
 
     public function export_sales_daybook() {
-        ini_set('allow_url_fopen',1);
+//        ini_set('allow_url_fopen',1);
         set_time_limit(0);
         $data = Input::all();
         if (isset($data["export_from_date"]) && isset($data["export_to_date"])  && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
