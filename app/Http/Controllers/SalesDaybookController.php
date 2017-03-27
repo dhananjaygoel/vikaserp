@@ -160,6 +160,7 @@ class SalesDaybookController extends Controller {
     }
 
     public function export_sales_daybook() {
+        ini_set('allow_url_fopen',1);
         set_time_limit(0);
         $data = Input::all();
         if (isset($data["export_from_date"]) && isset($data["export_to_date"])  && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
@@ -181,10 +182,9 @@ class SalesDaybookController extends Controller {
             }
         } else {
             $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
-                    ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location')
+                    ->with('delivery_challan_products.order_product_details')
                     ->orderBy('updated_at', 'desc')
-                    ->take(100)
-                    ->get();
+                    ->Paginate(20);        
         }
         Excel::create('Sales Daybook', function($excel) use($allorders) {
             $excel->sheet('Sales-Daybook', function($sheet) use($allorders) {
