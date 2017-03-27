@@ -162,6 +162,11 @@ class SalesDaybookController extends Controller {
     public function export_sales_daybook() {
         set_time_limit(0);
         ini_set("allow_url_fopen", 1);
+        if( ini_get('allow_url_fopen') ) {
+    echo 'allow_url_fopen is enabled. file_get_contents should work well';
+} else {
+    die('allow_url_fopen is disabled. file_get_contents would not work');
+}
         $data = Input::all();
         if (isset($data["export_from_date"]) && isset($data["export_to_date"])  && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
