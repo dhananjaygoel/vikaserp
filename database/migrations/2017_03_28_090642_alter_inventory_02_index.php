@@ -35,11 +35,10 @@ class AlterInventory02Index extends Migration {
 
 
             if ($schema_builder->hasIndex('product_sub_category_id'))
-                $table->dropIndex('product_sub_category_id');
-          
+                $table->dropIndex('product_sub_category_id');   
 
 
-            if ($schema_builder->hasIndex('inventory_order_status_index'))
+            if ($schema_builder->hasIndex('inventory_product_sub_category_id_index'))
                 $table->dropIndex('inventory_product_sub_category_id_index');
 
            
