@@ -88,7 +88,7 @@ class Connection implements ConnectionInterface {
 	 *
 	 * @var bool
 	 */
-	protected $loggingQueries = false;
+	protected $loggingQueries = true;
 
 	/**
 	 * Indicates if the connection is in a "dry run".
@@ -789,7 +789,11 @@ class Connection implements ConnectionInterface {
 	 */
 	public function getDoctrineSchemaManager()
 	{
-		return $this->getDoctrineDriver()->getSchemaManager($this->getDoctrineConnection());
+//		return $this->getDoctrineDriver()->getSchemaManager($this->getDoctrineConnection());
+                
+                $schema = $this->getDoctrineDriver()->getSchemaManager($this->getDoctrineConnection());
+    $schema->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+    return $schema;
 	}
 
 	/**
