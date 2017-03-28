@@ -23,7 +23,7 @@
                         <span class="headline">Total Order </span>
                         <span class="value">
                             <span class="timer" data-from="120" data-to="2562" data-speed="1000" data-refresh-interval="50">
-                                {{$order}}
+                                {{--$order--}}
                             </span>
                         </span>
                     </div>
@@ -36,7 +36,7 @@
                         <span class="headline">Pending Order</span>
                         <span class="value">
                             <span class="timer" data-from="30" data-to="658" data-speed="800" data-refresh-interval="30">
-                                <!--{{$pending_order}}-->
+                                
                                  {{round($order_pending_sum,2)}}Ton
                             </span>
                         </span>
@@ -50,7 +50,7 @@
                         <span class="headline">Pending Inquiries</span>
                         <span class="value">
                             <span class="timer" data-from="30" data-to="658" data-speed="800" data-refresh-interval="30">
-                                <!--{{$pending_inquiry}}-->
+                                <!--{{--$pending_inquiry--}}-->
                                  {{round($inquiry_pending_sum,2)}}Ton
                             </span>
                         </span>
@@ -64,7 +64,7 @@
                         <span class="headline">Total Inquiries </span>
                         <span class="value">
                             <span class="timer" data-from="539" data-to="12526" data-speed="1100">
-                                {{$inquiry}}
+                                {{--$inquiry--}}
                             </span>
                         </span>
                     </div>
@@ -77,7 +77,7 @@
                         <span class="headline">Total Delivery Order</span>
                         <span class="value">
                             <span class="timer" data-from="120" data-to="2562" data-speed="1000" data-refresh-interval="50">
-                                {{round($deliver_sum, 2)}}Ton
+                                {{--round($deliver_sum, 2)--}}Ton
                             </span>
                         </span>
                     </div>
@@ -103,7 +103,7 @@
                         <span class="headline">Total Challan</span>
                         <span class="value">
                             <span class="timer" data-from="120" data-to="2562" data-speed="1000" data-refresh-interval="50">
-                                {{round($delivery_challan_sum,2)}}Ton
+                                {{--round($delivery_challan_sum,2)--}}Ton
                             </span>
                         </span>
                     </div>
@@ -116,7 +116,7 @@
                             <span class="headline">Total Purchase Order</span>
                             <span class="value">
                                 <span class="timer" data-from="120" data-to="2562" data-speed="1000" data-refresh-interval="50">
-                                    {{round($purc_order_sum,2)}}Ton
+                                    {{--round($purc_order_sum,2)--}}Ton
                                 </span>
                             </span>
                         </div>
