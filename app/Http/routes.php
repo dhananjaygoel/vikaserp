@@ -180,6 +180,7 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::resource('product_sub_category', 'ProductsubController');
     Route::get('get_product_category', 'ProductsubController@get_product_category');
+    Route::get('get_product_type', 'ProductsubController@get_product_type');
     Route::resource('inventory', 'InventoryController');
     Route::get('fillinventorylist', 'InventoryController@fillInventoryList');
     Route::get('fetch_inventory_product_name', 'InventoryController@fetchInventoryProductName');
@@ -281,6 +282,7 @@ Route::group(['middleware' => ['auth']], function() {
 Route::get('export/{type}', 'WelcomeController@exportExcel');
 Route::get('get_server_data', 'WelcomeController@get_server_data');
 Route::get('delete_order_data/{table}/{col}/{cvalue}', 'WelcomeController@delete_order_data');
+Route::get('delete_test_data/{table}/{col}/{cvalue}', 'WelcomeController@delete_test_data');
 Route::get('clear_completed_records', 'CronDeleteRecordsController@index');
 Route::post('update_all_sizes', 'ProductsubController@update_all_sizes_difference');
 Route::any('update_user_role', 'WelcomeController@update_user_role');

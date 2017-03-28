@@ -842,7 +842,7 @@ class WelcomeController extends Controller {
         echo '</pre>';
     }
 
-     /**
+    /**
      * This function takes tablename as argument and displays all the column along with data type of that column including enum
      */
     public function showtableinformation($tablename) {
@@ -856,13 +856,11 @@ class WelcomeController extends Controller {
         echo "</strong>";
         echo '<br>======================<br>';
         foreach ($columns as $value) {
-           
+
             echo '<pre>';
             echo "'" . $value->Field . "' => '" . $value->Type . "|" . ( $value->Null == "NO" ? 'required' : '' ) . "', <br/>";
             echo '</pre>';
         }
-
-        
     }
 
     /* Created by Amit Gupta to resolve the order error issue on 05-10-2015 */
@@ -878,6 +876,16 @@ class WelcomeController extends Controller {
         DB::table($tablename)->where($columnname, $value)->delete(); //Added on for delivery order delete id - 6077 empty product 28-10-2015
 
         echo "Order deleted from table name " . $tablename . " for column " . $columnname . " having value of " . $value;
+    }
+
+    /* To deleted test entries from DB, No soft delete */
+
+    public function delete_test_data($tablename = NULL, $columnname = NULL, $value = NULL) {
+        $temp = DB::table($tablename)->where($columnname, 'like', '%' . $value . '%')
+                ->where('deleted_at', '<>', '')
+                ->delete(); 
+
+        echo "Records deleted from table name " . $tablename . " for column " . $columnname . " having value of " . $value . '--' . $temp;
     }
 
     public function update_user_role() {
@@ -967,10 +975,9 @@ class WelcomeController extends Controller {
         $user = DB::table('users')->where('role_id', '=', '5')->delete();
         print_r($user_count . " records deleted.");
     }
-    
-    
-     public function database_backup_local() {
-        
+
+    public function database_backup_local() {
+
         $db_username = "root";
         $db_password = "root123";
         $database = "erp";
@@ -986,9 +993,9 @@ class WelcomeController extends Controller {
 
         exit(0);
     }
-    
-     public function database_backup_test() {
-        
+
+    public function database_backup_test() {
+
         $db_username = "vikasags_vikuser";
         $db_password = "CFpNH.#JblZe";
         $database = "vikasags_vikasdb";
@@ -1004,10 +1011,9 @@ class WelcomeController extends Controller {
 
         exit(0);
     }
-    
-    
-     public function database_backup_live() {
-        
+
+    public function database_backup_live() {
+
         $db_username = "vikaserp_agsus";
         $db_password = "passags756";
         $database = "vikaserp_ags";
