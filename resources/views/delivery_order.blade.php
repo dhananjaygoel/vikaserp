@@ -155,10 +155,11 @@
                                         <td>{{ $i++ }}</td>
                                         <td>{{date("F jS, Y", strtotime($delivery->created_at)) }}</td>
                                         <td>
-                                            @if($delivery['customer']->tally_name != "")
+                                            @if(isset($delivery['customer']->tally_name) && $delivery['customer']->tally_name != "")
                                             {{$delivery['customer']->tally_name}}
                                             @else
-                                            {{$delivery['customer']->owner_name}}
+                                            {{isset($delivery['customer']->owner_name)?$delivery['customer']->owner_name:'N/A'}}
+                                           
                                             @endif
                                         </td>
                                         <td>

@@ -1083,6 +1083,7 @@ class DeliveryOrderController extends Controller {
 
     public function exportDeliveryOrderBasedOnStatus() {
         $data = Input::all();
+        set_time_limit(0);
         if ($data['delivery_order_status'] == 'Inprocess') {
             $delivery_order_status = 'pending';
             $excel_sheet_name = 'Inprocess';
@@ -1122,7 +1123,7 @@ class DeliveryOrderController extends Controller {
             $delivery_locations = DeliveryLocation::all();
             $customers = Customer::all();
 
-
+           
             Excel::create($excel_name, function($excel) use($delivery_order_objects, $units, $delivery_locations, $customers, $excel_sheet_name) {
                 $excel->sheet('DeliveryOrder-' . $excel_sheet_name, function($sheet) use($delivery_order_objects, $units, $delivery_locations, $customers) {
                     $sheet->loadView('excelView.delivery_order', array('delivery_order_objects' => $delivery_order_objects, 'units' => $units, 'delivery_locations' => $delivery_locations, 'customers' => $customers));

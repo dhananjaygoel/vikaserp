@@ -30,14 +30,14 @@
         <tr>
             <td>{{$counter}}</td>
             <td>
-                @if($delivery_data['customer']->owner_name != "" && $delivery_data['customer']->tally_name != "")
+                @if(isset($delivery_data['customer']->owner_name) && isset($delivery_data['customer']->tally_name) &&  $delivery_data['customer']->owner_name != "" && $delivery_data['customer']->tally_name != "")
                 {{ $delivery_data['customer']->owner_name }}-{{$delivery_data['customer']->tally_name}}
                 @else 
-                {{ $delivery_data['customer']->owner_name }}
+                {{ isset ($delivery_data['customer']->owner_name)?$delivery_data['customer']->owner_name:'N/A' }}
                 @endif
             </td>
             <td>
-                @if($delivery_data['customer']->contact_person != "")
+                @if(isset($delivery_data['customer']->contact_person) && $delivery_data['customer']->contact_person != "")
                 {{ $delivery_data['customer']->contact_person}}
                 @endif
             </td>
