@@ -827,18 +827,18 @@ class DeliveryOrderController extends Controller {
 
         if (count($do) <= 0) {
             $number = '1';
-        } else {           
-                $serial_numbers = [];
-                foreach ($do as $temp) {
-                    $list = explode("/", $temp->serial_no);
-                    $serial_numbers[] = $list[count($list) - 1];
-                    $pri_id = max($serial_numbers);
-                    $number = $pri_id + 1;
-                }           
+        } else {
+            $serial_numbers = [];
+            foreach ($do as $temp) {
+                $list = explode("/", $temp->serial_no);
+                $serial_numbers[] = $list[count($list) - 1];
+                $pri_id = max($serial_numbers);
+                $number = $pri_id + 1;
+            }
         }
 
-        $date_letter = 'DO/' . $current_date . "" . $number;        
-        DeliveryOrder:: where('id', $id)->where('serial_no','=',"")->update(array('serial_no' => $date_letter));
+        $date_letter = 'DO/' . $current_date . "" . $number;
+        DeliveryOrder:: where('id', $id)->where('serial_no', '=', "")->update(array('serial_no' => $date_letter));
 //        DeliveryOrder:: where('id', $id)->update(array('serial_no' => $date_letter));
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'unit', 'location')->find($id);
         $units = Units::all();
@@ -1084,6 +1084,7 @@ class DeliveryOrderController extends Controller {
     public function exportDeliveryOrderBasedOnStatus() {
         $data = Input::all();
         set_time_limit(0);
+        ini_set('max_execution_time', 300);
         if ($data['delivery_order_status'] == 'Inprocess') {
             $delivery_order_status = 'pending';
             $excel_sheet_name = 'Inprocess';
@@ -1123,7 +1124,7 @@ class DeliveryOrderController extends Controller {
             $delivery_locations = DeliveryLocation::all();
             $customers = Customer::all();
 
-           
+
             Excel::create($excel_name, function($excel) use($delivery_order_objects, $units, $delivery_locations, $customers, $excel_sheet_name) {
                 $excel->sheet('DeliveryOrder-' . $excel_sheet_name, function($sheet) use($delivery_order_objects, $units, $delivery_locations, $customers) {
                     $sheet->loadView('excelView.delivery_order', array('delivery_order_objects' => $delivery_order_objects, 'units' => $units, 'delivery_locations' => $delivery_locations, 'customers' => $customers));
