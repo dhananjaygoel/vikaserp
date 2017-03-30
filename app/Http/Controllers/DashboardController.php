@@ -233,7 +233,10 @@ class DashboardController extends Controller {
         
          /* To get Delivery Challan stats for graph*/
         
-        
+         echo "<pre>";
+         echo date_default_timezone_get();
+         echo "</pre>";
+         exit;
 
         for ($i = 1; $i <= 7; $i++) {            
             $delivery_challan_stats_all[$i]['pipe'] = 0;
@@ -244,7 +247,6 @@ class DashboardController extends Controller {
                     ->where('challan_status', '=', 'completed')
                     ->where('updated_at', 'like', $date_search . '%')
                     ->get();
-           
   
             foreach ($delivery_challan_stats as $delivery_challan) {
                 foreach ($delivery_challan['delivery_challan_products'] as $delivery_challan_products) {
