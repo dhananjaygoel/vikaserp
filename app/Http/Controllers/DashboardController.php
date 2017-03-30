@@ -231,12 +231,8 @@ class DashboardController extends Controller {
             $orders_stats_all[$i]['structure'] = round($orders_stats_all[$i]['structure'] / 1000, 2);
         }       
         
-         /* To get Delivery Challan stats for graph*/
-        
-         echo "<pre>";
-         echo date_default_timezone_get();
-         echo "</pre>";
-         exit;
+         /* To get Delivery Challan stats for graph*/        
+         
 
         for ($i = 1; $i <= 7; $i++) {            
             $delivery_challan_stats_all[$i]['pipe'] = 0;
