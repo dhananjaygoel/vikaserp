@@ -24,6 +24,7 @@ use Dropbox\WriteMode;
 use Illuminate\Filesystem\Filesystem;
 use Dropbox;
 use Auth;
+use Carbon\Carbon;
 
 class WelcomeController extends Controller {
     /*
@@ -911,6 +912,9 @@ class WelcomeController extends Controller {
         echo '</pre>';
         echo '<pre>';
         print_r("Database Name : " . $database);
+        echo '</pre>';
+        echo '<pre>';
+        var_dump(\Carbon\Carbon::now());
         echo '</pre>';
         exit();
     }
