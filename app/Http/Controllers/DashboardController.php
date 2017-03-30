@@ -210,6 +210,7 @@ class DashboardController extends Controller {
                 
                 foreach ($order['all_order_products'] as $order_products) {
                     
+                    
                     if (isset($order_products['order_product_details']['product_category']['product_type_id'])) {
                         if ($order_products['order_product_details']['product_category']['product_type_id'] == 1) {
                             if ($order_products['unit_id'] == 1)
@@ -239,21 +240,22 @@ class DashboardController extends Controller {
             $delivery_challan_stats_all[$i]['structure'] = 0;
             $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
             $delivery_challan_stats_all[$i]['day'] = $date_search;
-            $delivery_challan_stats = DeliveryChallan::with('all_order_products.order_product_details')
+            $delivery_challan_stats = DeliveryChallan::with('delivery_challan_products')
                     ->where('challan_status', '=', 'completed')
                     ->where('updated_at', 'like', $date_search . '%')
                     ->get();
-
            
+  
             foreach ($delivery_challan_stats as $delivery_challan) {
-                foreach ($delivery_challan['all_order_products'] as $delivery_challan_products) {
-                    
+                foreach ($delivery_challan['delivery_challan_products'] as $delivery_challan_products) {
+                   
                     if (isset($delivery_challan_products['order_product_details']['product_category']['product_type_id'])) {
                         if ($delivery_challan_products['order_product_details']['product_category']['product_type_id'] == 1) {
                             if ($delivery_challan_products['unit_id'] == 1)
                                 $delivery_challan_stats_all[$i]['pipe'] += $delivery_challan_products['quantity'];
                             elseif (($delivery_challan_products['unit_id'] == 2) || ($delivery_challan_products['unit_id'] == 3))
                                 $delivery_challan_stats_all[$i]['pipe'] += $this->checkpending_quantity($delivery_challan_products['unit_id'], $delivery_challan_products['product_category_id'], $delivery_challan_products['quantity']);
+                                                     
                         }else {
                             if ($delivery_challan_products['unit_id'] == 1)
                                 $delivery_challan_stats_all[$i]['structure'] += $delivery_challan_products['quantity'];
@@ -263,7 +265,7 @@ class DashboardController extends Controller {
                     }
                 }
             }
-
+          
             $delivery_challan_stats_all[$i]['pipe'] = round($delivery_challan_stats_all[$i]['pipe'] / 1000, 2);
             $delivery_challan_stats_all[$i]['structure'] = round($delivery_challan_stats_all[$i]['structure'] / 1000, 2);
         }        
