@@ -899,6 +899,7 @@ class WelcomeController extends Controller {
         $db_username = Config::get("database.connections.mysql.username");
         $db_password = Config::get("database.connections.mysql.password");
         $database = Config::get("database.connections.mysql.database");
+        $timezone = Config::get("app.timezone");
 
 
         echo '<pre>';
@@ -914,7 +915,7 @@ class WelcomeController extends Controller {
         print_r("Database Name : " . $database);
         echo '</pre>';
         echo '<pre>';
-        var_dump(\Carbon\Carbon::now());
+        var_dump($timezone);
         echo '</pre>';
         exit();
     }
