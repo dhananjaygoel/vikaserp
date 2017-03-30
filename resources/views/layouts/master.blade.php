@@ -128,7 +128,7 @@
 
         <!-- theme scripts -->
         {!! HTML::script('/resources/assets/js/scripts.js') !!}
-        <!--        {!! HTML::script('/resources/assets/js/pace.min.js') !!}-->
+<!--        {!! HTML::script('/resources/assets/js/pace.min.js') !!}-->
         <!-- this page specific inline scripts -->
 
         <!-- RTL support - for demo only -->
@@ -149,14 +149,14 @@
         <?php } ?>
 
         <script>
-$(function ($) {
+$(function($) {
     $('#datepickerDate').datepicker({
         format: 'dd-mm-yyyy'
     });
 
     $('#datepickerDateComponent').datepicker();
 });
-$(function ($) {
+$(function($) {
     $('#datepickerDate1').datepicker({
         format: 'dd-mm-yyyy'
     });
@@ -167,12 +167,12 @@ $(function ($) {
         </script>
         <!-- this page specific inline scripts -->
         <script>
-            $(document).ready(function () {
+            $(document).ready(function() {
 
                 /* initialize the external events
                  -----------------------------------------------------------------*/
 
-                $('#external-events div.external-event').each(function () {
+                $('#external-events div.external-event').each(function() {
 
                     // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
                     // it doesn't need to have a start or end
@@ -210,7 +210,7 @@ $(function ($) {
                     isRTL: $('body').hasClass('rtl'), //rtl support for calendar
                     selectable: true,
                     selectHelper: true,
-                    select: function (start, end, allDay) {
+                    select: function(start, end, allDay) {
                         var title = prompt('Event Title:');
                         if (title) {
                             calendar.fullCalendar('renderEvent',
@@ -227,7 +227,7 @@ $(function ($) {
                     },
                     editable: true,
                     droppable: true, // this allows things to be dropped onto the calendar !!!
-                    drop: function (date, allDay) { // this function is called when something is dropped
+                    drop: function(date, allDay) { // this function is called when something is dropped
 
                         // retrieve the dropped element's stored Event Object
                         var originalEventObject = $(this).data('eventObject');
@@ -324,30 +324,30 @@ $(function ($) {
                 });
 
                 //CHARTS
-//                new Morris.Line({
-//                    element: 'graph-line',
-//                    data: [
-//                        {period: '2014-01-01', iphone: 2666, ipad: null, itouch: 2647},
-//                        {period: '2014-01-02', iphone: 9778, ipad: 2294, itouch: 2441},
-//                        {period: '2014-01-03', iphone: 4912, ipad: 1969, itouch: 2501},
-//                        {period: '2014-01-04', iphone: 3767, ipad: 3597, itouch: 5689},
-//                        {period: '2014-01-05', iphone: 6810, ipad: 1914, itouch: 2293},
-//                        {period: '2014-01-06', iphone: 5670, ipad: 4293, itouch: 1881},
-//                        {period: '2014-01-07', iphone: 4820, ipad: 3795, itouch: 1588},
-//                        {period: '2014-01-08', iphone: 15073, ipad: 5967, itouch: 5175},
-//                        {period: '2014-01-09', iphone: 10687, ipad: 4460, itouch: 2028},
-//                        {period: '2014-01-10', iphone: 8432, ipad: 5713, itouch: 1791}
-//                    ],
-//                    lineColors: ['#ffffff'],
-//                    xkey: 'period',
-//                    ykeys: ['iphone'],
-//                    labels: ['iPhone'],
-//                    pointSize: 3,
-//                    hideHover: 'auto',
-//                    gridTextColor: '#ffffff',
-//                    gridLineColor: 'rgba(255, 255, 255, 0.3)',
-//                    resize: true
-//                });
+                graphLine = Morris.Line({
+                    element: 'graph-line',
+                    data: [
+                        {period: '2014-01-01', iphone: 2666, ipad: null, itouch: 2647},
+                        {period: '2014-01-02', iphone: 9778, ipad: 2294, itouch: 2441},
+                        {period: '2014-01-03', iphone: 4912, ipad: 1969, itouch: 2501},
+                        {period: '2014-01-04', iphone: 3767, ipad: 3597, itouch: 5689},
+                        {period: '2014-01-05', iphone: 6810, ipad: 1914, itouch: 2293},
+                        {period: '2014-01-06', iphone: 5670, ipad: 4293, itouch: 1881},
+                        {period: '2014-01-07', iphone: 4820, ipad: 3795, itouch: 1588},
+                        {period: '2014-01-08', iphone: 15073, ipad: 5967, itouch: 5175},
+                        {period: '2014-01-09', iphone: 10687, ipad: 4460, itouch: 2028},
+                        {period: '2014-01-10', iphone: 8432, ipad: 5713, itouch: 1791}
+                    ],
+                    lineColors: ['#ffffff'],
+                    xkey: 'period',
+                    ykeys: ['iphone'],
+                    labels: ['iPhone'],
+                    pointSize: 3,
+                    hideHover: 'auto',
+                    gridTextColor: '#ffffff',
+                    gridLineColor: 'rgba(255, 255, 255, 0.3)',
+                    resize: true
+                });
 
                 //WORLD MAP
                 $('#world-map').vectorMap({
@@ -377,7 +377,7 @@ $(function ($) {
                                 normalizeFunction: 'polynomial'
                             }]
                     },
-                    onRegionLabelShow: function (e, el, code) {
+                    onRegionLabelShow: function(e, el, code) {
                         el.php(el.php() + ' (' + gdpData[code] + ')');
                     }
                 });
