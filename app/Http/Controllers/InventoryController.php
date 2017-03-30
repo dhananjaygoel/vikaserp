@@ -80,7 +80,7 @@ class InventoryController extends Controller {
 
         /* find latested updated records */
         $product_category_ids = [];
-        $dc_list = AllOrderProducts::select('product_category_id')->orderBy('updated_at', 'DESC')->paginate(50);
+        $dc_list = AllOrderProducts::select('product_category_id')->orderBy('updated_at', 'DESC')->withTrashed()->paginate(50);
         foreach ($dc_list as $dc) {
             $product_category_ids[] = $dc->product_category_id;
         }
