@@ -1,7 +1,6 @@
 @extends('layouts.master')
 @section('title','Orders')
 @section('content')
-
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
@@ -77,6 +76,7 @@
 
                 <input type="hidden" id="module" value="order">
                 <div class="filter-block">
+
                     <form action="{{url('orders')}}" method="GET" id="orderForm">
                         <h1 class="pull-left">Orders</h1>
                         <div class="pull-right">
@@ -148,120 +148,6 @@
                 </div>
             </div>
         </div>
-        <hr style="border-color: #ddd -moz-use-text-color -moz-use-text-color;">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="pull-left">Order Pending Approval</h1>        
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="main-box clearfix">
-                    <div class="main-box-body main_contents clearfix">
-                        <div class="table-responsive">
-                            <table id="table-example" class="table table-hover data-table-center">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Tally Name</th>
-                                        <th>Mobile</th>
-                                        <th>Delivery Location</th>
-                                        <th>Total Quantity</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Rakshit</td>
-                                        <td>8866130903</td>
-                                        <td>Aundh</td>
-                                        <td>50</td>
-                                        <td>
-                                            <a class="btn btn-primary btn-sm" href="javascript:;">Approve</a>
-                                            <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" data-target="#reject-order-popup">Reject</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Aarya</td>
-                                        <td>7845985658</td>
-                                        <td>Akurdi</td>
-                                        <td>18</td>
-                                        <td>
-                                            <a class="btn btn-primary btn-sm" href="javascript:;">Approve</a>
-                                            <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" data-target="#reject-order-popup">Reject</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Lalit</td>
-                                        <td>8956754856</td>
-                                        <td>Nagpur</td>
-                                        <td>50</td>
-                                        <td>
-                                            <a class="btn btn-primary btn-sm" href="javascript:;">Approve</a>
-                                            <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" data-target="#reject-order-popup">Reject</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Rakshit</td>
-                                        <td>8866130903</td>
-                                        <td>Aundh</td>
-                                        <td>50</td>
-                                        <td>
-                                            <a class="btn btn-primary btn-sm" href="javascript:;">Approve</a>
-                                            <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" data-target="#reject-order-popup">Reject</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Rakshit</td>
-                                        <td>8866130903</td>
-                                        <td>Aundh</td>
-                                        <td>50</td>
-                                        <td>
-                                            <a class="btn btn-primary btn-sm" href="javascript:;">Approve</a>
-                                            <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" data-target="#reject-order-popup">Reject</a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Reject Order Modal Start -->
-        <div class="modal fade" id="reject-order-popup" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Reject Order</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="alert alert-info mb0">
-                        <p>Are you sure you want to reject the Order?</p>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Approve Inquiry Modal End -->
-
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="pull-left">Orders</h1>        
-            </div>
-        </div>
-
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
@@ -288,7 +174,7 @@
                         @else  
                         @if( Auth::user()->role_id <> 5)
                         <div class="table-responsive tablepending">
-                            <table id="table-example" class="table table-hover order-data-table">
+                            <table id="table-example" class="table table-hover">
                                 <?php
                                 $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
                                 ?>
