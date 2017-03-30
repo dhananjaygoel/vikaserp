@@ -201,3 +201,12 @@
 .sales_book_search_form_wrapper{
     width: 68% !important;   
 }
+
+.mb0 {margin-bottom: 0px;}
+.data-table-center thead tr th, .data-table-center tbody tr td {text-align: center;}
+.data-table-center tbody tr td .btn:focus, .data-table-center tbody tr td .btn:hover {text-decoration: none; color: #fff;}
+
+.order-data-table .text-center a.table-link {margin: 0 3px;}
+.complex-data-table .text-bold td {font-weight: bold;}
+
+.complex-data-table .text-bold  {font-weight: bold;}

@@ -1,9 +1,150 @@
 @extends('layouts.master')
 @section('title','Inquiry')
 @section('content')
+
 <div class="row">
     <div class="col-lg-12">
-        <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="{{url('dashboard')}}">Home</a></li>
+            <li class="active"><span>Inquiry</span></li>
+        </ol>
+        <div class="clearfix">
+            <h1 class="pull-left">Inquiry Pending Approval</h1>
+            <div class="pull-right top-page-ui">                        
+                <a href="{{URL::action('InquiryController@create')}}" class="btn btn-primary pull-right">
+                    <i class="fa fa-plus-circle fa-lg"></i> Add New Inquiry
+                </a> 
+                <div class="form-group pull-right">
+                    <div class="col-md-12">
+                        <form method="GET" action="{{url('inquiry')}}">
+                            <select class="form-control" id="inquiry_filter" name="inquiry_filter" onchange="this.form.submit();">
+                                <option <?php if (Input::get('inquiry_filter') == 'Pending') echo 'selected=""'; ?> value="Pending">Pending</option>
+                                <option <?php if (Input::get('inquiry_filter') == 'Completed') echo 'selected=""'; ?> value="Completed">Completed</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+                @if(sizeof($inquiries)!=0 && (Input::get('inquiry_filter') == 'Pending' ||Input::get('inquiry_filter')==''))
+            <a href="{{URL::action('InquiryController@exportinquiryBasedOnStatus',['inquiry_status'=>'Pending'])}}" class="btn btn-primary pull-right">
+                Export
+            </a>
+            @endif
+            @if(sizeof($inquiries)!=0 && Input::get('inquiry_filter') == 'Completed')
+            <a href="{{URL::action('InquiryController@exportinquiryBasedOnStatus',['inquiry_status'=>'Completed'])}}" class="btn btn-primary pull-right">
+                Export
+            </a>
+            @endif
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="main-box clearfix">
+            <div class="main-box-body main_contents clearfix">
+                <div class="table-responsive">
+                    <table id="table-example" class="table table-hover data-table-center">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Tally Name</th>
+                                <th>Total Quantity</th>
+                                <th>Phone Number</th>
+                                <th>Delivery Location</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Rakshit</td>
+                                <td>15</td>
+                                <td>8866130903</td>
+                                <td>32 Shirala</td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm" href="javascript:;">Approve</a>
+                                    <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" data-target="#reject-inquiry-popup">Reject</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Bhushan</td>
+                                <td>8</td>
+                                <td>8985745658</td>
+                                <td>Mumbai</td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm" href="javascript:;">Approve</a>
+                                    <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" data-target="#reject-inquiry-popup">Reject</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Nikhil</td>
+                                <td>18</td>
+                                <td>9235854578</td>
+                                <td>Nasik</td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm" href="javascript:;">Approve</a>
+                                    <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" data-target="#reject-inquiry-popup">Reject</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Abhinav</td>
+                                <td>12</td>
+                                <td>7236985415</td>
+                                <td>Thane</td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm" href="javascript:;">Approve</a>
+                                    <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" data-target="#reject-inquiry-popup">Reject</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Akhilesh</td>
+                                <td>76</td>
+                                <td>9595756545</td>
+                                <td>Pune</td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm" href="javascript:;">Approve</a>
+                                    <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" data-target="#reject-inquiry-popup">Reject</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reject Inquiry Modal Start -->
+<div class="modal fade" id="reject-inquiry-popup" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Reject Inquiry</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info mb0">
+                <p>Are you sure you want to reject the Inquiry?</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Approve Inquiry Modal End -->
+
+<div class="row">
+    <div class="col-lg-12">
+    <h1 class="pull-left">Inquiry</h1>
+        <!-- <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
                     <li><a href="{{url('dashboard')}}">Home</a></li>
@@ -38,7 +179,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
