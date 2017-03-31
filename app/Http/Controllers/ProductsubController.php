@@ -129,6 +129,20 @@ class ProductsubController extends Controller {
         echo json_encode(array('prod' => $prod));
         exit;
     }
+    
+    public function get_product_type() {
+
+        $product_cat = ProductType::get();
+        $prod = array();
+        $i = 0;
+        foreach ($product_cat as $key => $val) {
+            $prod[$i]['id'] = $product_cat[$key]->id;
+            $prod[$i]['name'] = $product_cat[$key]->name;
+            $i++;
+        }
+        echo json_encode(array('prod' => $prod));
+        exit;
+    }
 
     /*
      * Add new product sub category data in to database

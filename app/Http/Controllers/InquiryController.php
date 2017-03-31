@@ -277,9 +277,9 @@ class InquiryController extends Controller {
                 }
             }
         }
-        
-       
-        
+
+
+
         return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully added.');
     }
 
@@ -661,27 +661,129 @@ class InquiryController extends Controller {
     public function fetch_products() {
 
 //        $delivery_location = Input::get('delivery_location');
+        $term = Input::get();
+        $term = Input::get('term');
         $customer_id = Input::get('customer_id');
+        if ($term != '' && strpos($term, '#') === false) {
+
 //        $location_diff = 0;
-        $products = ProductSubCategory::where('alias_name', 'like', '%' . Input::get('term') . '%')->with('product_category')->get();
-        if (count($products) > 0) {
-            foreach ($products as $product) {
-                $cust = 0;
-                if ($customer_id > 0) {
-                    $customer = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $product['product_category']->id)->first();
-                    if (count($customer) > 0) {
-                        $cust = $customer->difference_amount;
+            $products = ProductSubCategory::with('product_category.product_type')
+                            ->where('alias_name', 'like', '%' . Input::get('term') . '%')
+                            ->orWhereHas('product_category', function($query) {
+                                $query->where('product_category_name', 'like', '%' . Input::get('term') . '%');
+                            })
+                            ->orWhereHas('product_category.product_type', function($query) {
+                                $query->where('name', 'like', '%' . Input::get('term') . '%');
+                            })
+                            ->orderBy('alias_name')->get();
+
+            if (count($products) > 0) {
+                foreach ($products as $product) {
+                    $cust = 0;
+                    if ($customer_id > 0) {
+                        $customer = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $product['product_category']->id)->first();
+                        if (count($customer) > 0) {
+                            $cust = $customer->difference_amount;
+                        }
                     }
+                    $data_array[] = [
+                        'value' => $product->alias_name . " (" . $product['product_category']['product_type']->name . ") " . $product['product_category']->product_category_name,
+                        'id' => $product->id,
+                        'product_price' => $product['product_category']->price + $cust + Input::get('location_difference') + $product->difference
+                    ];
                 }
-                $data_array[] = [
-                    'value' => $product->alias_name,
-                    'id' => $product->id,
-                    'product_price' => $product['product_category']->price + $cust + Input::get('location_difference') + $product->difference
-                ];
+            } else {
+                $data_array[] = [ 'value' => 'No Products'];
             }
-        } else {
-            $data_array[] = [ 'value' => 'No Products'];
+        } elseif ($term == '') {
+            $products = \App\ProductType::get();
+            if (count($products) > 0) {
+               
+                foreach ($products as $product) {
+                    $data_array[] = [
+                        'value' => $product['name'],
+                        'id' => $product['id'],
+                        'level' => '1',
+                        'product_price' => ''
+                    ];
+                }
+            } else {
+                $data_array[] = [ 'value' => 'No Products'];
+            }
+        } elseif (strpos($term, '#') !== false) {
+            $data = explode("#", $term);
+            $level = $data[1];
+            $id = $data[2];
+            if (Input::hasFile('level')) {
+                $level = Input::get('level');
+            }
+            if (Input::hasFile('id')) {
+                $id = Input::get('id');
+            }
+
+            if ($level == 1) {
+                $products = \App\ProductCategory::where('product_type_id', '=', $id)->get();
+                if (count($products) > 0) {
+                     $data_array[] = [
+                        'value' => '<-- Back',
+                        'id' => '0',
+                        'level' => '0',
+                        'product_price' => ''
+                    ];
+                    foreach ($products as $product) {
+                        $data_array[] = [
+                            'value' => $product['product_category_name'],
+                            'id' => $product['id'],
+                            'level' => '2',
+                            'product_price' => ''
+                        ];
+                    }
+                } else {
+                    $data_array[] = [ 'value' => 'No Products'];
+                }
+            }
+            if ($level == 2) {
+                $products = \App\ProductSubCategory::where('product_category_id','=', $id)->get();
+                if (count($products) > 0) {
+                     $data_array[] = [
+                        'value' => '<-- Back',
+                        'id' => '0',
+                        'level' => '0',
+                        'product_price' => ''
+                    ];
+                    foreach ($products as $product) {
+                        $data_array[] = [
+                            'value' => $product['alias_name'],
+                            'id' => $product['id'],
+                            'level' => '3',
+                            'product_price' => ''
+                        ];
+                    }
+                } else {
+                    $data_array[] = [ 'value' => 'No Products'];
+                }
+            }
+            if ($level == 3) {
+                $products = \App\ProductSubCategory::where('id','=', $id)->get();
+                foreach ($products as $product) {
+                    $cust = 0;
+                    if ($customer_id > 0) {
+                        $customer = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $product['product_category']->id)->first();
+                        if (count($customer) > 0) {
+                            $cust = $customer->difference_amount;
+                        }
+                    }
+                    $data_array[] = [
+                        'value' => $product->alias_name,
+                        'id' => $product->id,
+                        'product_price' => $product['product_category']->price + $cust + Input::get('location_difference') + $product->difference
+                    ];
+                }
+            }
+            
+            
         }
+
         echo json_encode(array('data_array' => $data_array));
     }
 
@@ -923,7 +1025,7 @@ class InquiryController extends Controller {
                 $msg = urlencode($str);
 //                $url = SMS_URL . "?user = " . PROFILE_ID . "&pwd = " . PASS . "&senderid = " . SENDER_ID . "&mobileno = " . $phone_number . "&msgtext = " . $msg . "&smstype = 0";
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                
+
                 if (SEND_SMS === true) {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

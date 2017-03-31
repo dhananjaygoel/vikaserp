@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\File;
 use App\Repositories\DropboxStorageRepository;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Facades\Storage;
+use DB;
 
 class DeliveryChallanController extends Controller {
 
