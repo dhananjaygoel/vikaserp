@@ -527,7 +527,7 @@ $('body').delegate("#add_order_location", "blur", function () {
 $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function () {
 
     var status_form = 0;
-    if ($('input[name=customer_status]:checked').val() == "new_customer") {
+        if ($('input[name=customer_status]:checked').val() == "new_customer") {
         if ($('#customer_name').val() == "") {
             $('#customer_name').addClass('error_validation');
             status_form = 1;
@@ -622,7 +622,7 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
             status_form = 1;
         }
 
-
+       
         CheckBoxArray = [];
         $("input:checkbox[class='vat_chkbox']:checked").each(function () {
             CheckBoxArray.push($(this).val());
@@ -2653,179 +2653,8 @@ $(window).load(function () {
 });
 
 
-/**
- * Comment
- */
-function name1(parameters) {
-    alert("hi");
-}
-
-/**
- * Comment
- */
-function getProductDetails() {
 
 
-    $(function () {
-        $.widget("custom.combobox1", {
-            _create: function () {
-                this.wrapper = $("<span>")
-                        .addClass("custom-combobox")
-                        .insertAfter(this.element);
-                console.log(this.element.attr("data-productid"));
-                this.element.hide();
-                this._createAutocomplete();
-                this._createShowAllButton();
-            },
-            _createAutocomplete: function () {
-                var selected = this.element.children(":selected");
-//               alert(this.element.val());
-                value = this.element.val();
-                var id = this.element.attr("data-productid");
-
-//         this.element.val() value = selected.val() ? selected.text() : "";
-
-                this.input = $("<input>")
-                        .appendTo(this.wrapper)
-                        .val(value)
-                        .attr("title", "")
-                        .attr("tabindex", "1")
-                        .attr("placeholder", "")
-                        .attr("data-productid", id)
-                        .attr("id", "product_all_" + id)
-                        .attr("style", "width: 90%;")
-                        .addClass(" custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left focus_on_enter")
-                        .autocomplete({
-                            delay: 0,
-                            minLength: 0,
-                            source: $.proxy(this, "_source")
-                        })
-                        .tooltip({
-                            classes: {
-                                "ui-tooltip": "ui-state-highlight"
-                            }
-                        });
-
-                this._on(this.input, {
-                    autocompleteselect: function (event, ui) {
-
-                        var term = ui.item.value;
-                        term = term.split(" (")[0];
-
-                        $.ajax({
-//                beforeSend: function() {
-//                    $.blockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
-//                },
-                            url: baseurl + '/fetch_products',
-                            data: {"term": term},
-                            cache: true,
-                            success: function (data) {
-
-                                var obj = jQuery.parseJSON(data);
-                                $("#add_product_id_" + id).val(obj.data_array[0].id);
-                                $("#product_all_" + id).val(term);
-                                $("#product_price_" + id).val(obj.data_array[0].product_price);
-                                $("#add_product_name_" + id).val(term);
-//                                $("#add_product_id_" + id).attr('data-curname', term);
-                                $('#add_product_row').trigger('click');
-//                    $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
-                            },
-                        });
-                    },
-                    autocompletechange: "_removeIfInvalid"
-                });
-            },
-            _createShowAllButton: function () {
-                var input = this.input,
-                        wasOpen = false;
-
-                $("<a>")
-                        .attr("tabIndex", -1)
-                        //.attr( "title", "Show All Items" )
-                        //.tooltip()
-                        .appendTo(this.wrapper)
-                        .button({
-                            icons: {
-                                primary: "ui-icon-triangle-1-s"
-                            },
-                            text: false
-                        })
-                        .removeClass("ui-corner-all")
-                        .addClass("custom-combobox-toggle ui-corner-right")
-                        .on("mousedown", function () {
-                            wasOpen = input.autocomplete("widget").is(":visible");
-                        })
-                        .on("click", function () {
-                            input.trigger("focus");
-
-                            // Close if already visible
-                            if (wasOpen) {
-                                return;
-                            }
-
-                            // Pass empty string as value to search for, displaying all results
-                            input.autocomplete("search", "");
-                        });
-            },
-            _source: function (request, response) {
-                //$("#existing_customer_name").addClass('loadinggif');
-
-                var customer = request.term;
-                $.ajax({
-                    url: baseurl + '/fetch_products',
-                    data: {term: request.term},
-                    cache: true,
-                    success: function (data) {
-                        var main_array = JSON.parse(data);
-
-                        response(main_array['data_array']);
-                        //  $("#existing_customer_name").removeClass('loadinggif');
-//                             var data_cache=JSON.parse(cache);
-//                            setCookie('cache',data_cache,1);
-                    },
-                });
-
-            },
-            _removeIfInvalid: function (event, ui) {
-
-                // Selected an item, nothing to do
-                if (ui.item) {
-                    return;
-                }
-
-                // Search for a match (case-insensitive)
-                var value = this.input.val(),
-                        valueLowerCase = value.toLowerCase(),
-                        valid = false;
-                this.element.children("option").each(function () {
-                    if ($(this).text().toLowerCase() === valueLowerCase) {
-                        this.selected = valid = true;
-                        return false;
-                    }
-                });
-
-                // Found a match, nothing to do
-                if (valid) {
-                    return;
-                }
-
-
-                this.input.autocomplete("instance").term = "";
-            },
-            _destroy: function () {
-                this.wrapper.remove();
-                this.element.show();
-            }
-        });
-
-        $(".each_product_detail").combobox1();
-        $("#toggle").on("click", function () {
-            $("#combobox1").toggle();
-        });
-
-    });
-
-}
 /**
  * Comment
  */
@@ -2861,8 +2690,47 @@ function showProductCategory(el) {
 
 
 
+function unitType(parameters) {
+    
+    var id = parameters.id.split("_");
+    id = id[id.length - 1];
+   
+    var i = $('#units_'+id).val();   
+ 
+    if (i == "1")
+    {
+        $('.kg_list_' + id).show();
+        $('.pieces_list_' + id).hide();
+        $('.meter_list_' + id).hide();
+        $('#quantity_' + id).val($('#kg_list_' + id).val());
+    }
+    if (i == "2") {
 
+        $('.kg_list_' + id).hide();
+        $('.pieces_list_' + id).show();
+        $('.meter_list_' + id).hide();
+        $('#quantity_' + id).val($('#pieces_list_' + id).val());
 
+    }
+    if (i == "3")
+    {
+        $('.kg_list_' + id).hide();
+        $('.pieces_list_' + id).hide();
+        $('.meter_list_' + id).show();
+        $('#quantity_' + id).val("");
+
+    }
+
+}
+
+function setQty(parameters) {
+   
+    var id = parameters.id.split("_");
+    id = id[id.length - 1];
+    $('#quantity_' + id).val(parameters.value);
+    $('#actual_quantity_' + id).val(parameters.value);
+
+}
 
 
 //
