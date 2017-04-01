@@ -203,7 +203,7 @@
                                                         <div class = "form-group searchproduct">
                                                             <input class = "form-control focus_on_enter each_product_detail tabindex4" placeholder = "Enter Product name" data-productid="{{$i}}" type = "text" name = "product[{{$i}}][name]" id = "add_product_name_{{$i}}" onfocus = "product_autocomplete({{$i}});" value = "<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>" tabindex="4" >
                                                             <input type = "hidden" name = "product[{{$i}}][id]" id = "add_product_id_{{$i}}" value = "">
-                                                            <i class = "fa fa-search search-icon"></i>
+                                                            <!--<i class = "fa fa-search search-icon"></i>-->
                                                         </div>
                                                     </td>
 

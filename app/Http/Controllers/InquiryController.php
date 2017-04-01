@@ -743,12 +743,20 @@ class InquiryController extends Controller {
                 }
             }
             if ($level == 2) {
-                $products = \App\ProductSubCategory::where('product_category_id','=', $id)->get();
+                $products = \App\ProductSubCategory::with('product_category')
+                        ->where('product_category_id','=', $id)
+                        ->get();
+                $type_id= 1;
+                
+                if(isset($products[0]['product_category']['product_type_id'])){
+                    $type_id = $products[0]['product_category']['product_type_id'];
+                }
+                
                 if (count($products) > 0) {
                      $data_array[] = [
                         'value' => '<-- Back',
-                        'id' => '0',
-                        'level' => '0',
+                        'id' => $type_id,
+                        'level' => '1',
                         'product_price' => ''
                     ];
                     foreach ($products as $product) {
