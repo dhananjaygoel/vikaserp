@@ -332,7 +332,7 @@ Route::get('whats', function() {
 ////$r->codeRequest('voice');
 //    $response = WhatsapiTool::requestCode($number, $type);
     
-    $number = '917276393635'; # Number with country code
+    $number = '918983370270'; # Number with country code
     $type = 'sms'; # This can be either sms or voice
 
     $response = WhatsapiTool::requestCode($number, $type);
