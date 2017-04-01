@@ -322,10 +322,10 @@ Route::get('whats', function() {
 //    $number = '918983370270'; # Number with country code
 //    $type = 'sms'; # This can be either sms or voice
 //
-//    $username = "918983370270";
-//    $debug = true;
-//    
-//    $w = new Registration($username, $debug);
+    $username = "918983370270";
+    $debug = true;
+    
+    $w = new Registration($username, $debug);
 ////
 ////// Create a instance of Registration class.
 ////    $r = new Registration($username, $debug);
@@ -333,19 +333,40 @@ Route::get('whats', function() {
 ////    $r->codeRequest('sms'); // could be 'voice' too
 ////$r->codeRequest('voice');
 //    $response = WhatsapiTool::requestCode($number, $type);
+    
 //    $number = '918983370270'; # Number with country code
 //    $type = 'sms'; # This can be either sms or voice
 //
 //    $response = WhatsapiTool::requestCode($number, $type);
-
-
-    $username = "918983370270";
-    $identity = "my_identity.txt";
-    $nickname = "test1";
-    $debug = true;
-
-// Create a instance of WhastPort.
-    $w = new WhatsProt($username, $identity, $nickname, $debug);
-
-    $w->codeRequest('sms');
+    
+    if (!$identityExists) {
+    echo "\n\nType sms or voice: ";
+    $option = fgets(STDIN);
+    try {
+        $w->codeRequest(trim($option));
+    } catch (Exception $e) {
+        echo $e->getMessage()."\n";
+        exit(0);
+    }
+    echo "\n\nEnter the received code: ";
+    $code = str_replace('-', '', fgets(STDIN));
+    try {
+        $result = $w->codeRegister(trim($code));
+        echo "\nYour username is: ".$result->login."\n";
+        echo 'Your password is: '.$result->pw."\n";
+    } catch (Exception $e) {
+        echo $e->getMessage()."\n";
+        exit(0);
+    }
+} else {
+    try {
+        $result = $w->checkCredentials();
+    } catch (Exception $e) {
+        echo $e->getMessage()."\n";
+        exit(0);
+    }
+}
+    
+    
+    
 });
