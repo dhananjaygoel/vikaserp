@@ -322,8 +322,10 @@ Route::get('whats', function() {
 //    $number = '918983370270'; # Number with country code
 //    $type = 'sms'; # This can be either sms or voice
 //
-////    $username = "918983370270";
-////    $debug = true;
+//    $username = "918983370270";
+//    $debug = true;
+//    
+//    $w = new Registration($username, $debug);
 ////
 ////// Create a instance of Registration class.
 ////    $r = new Registration($username, $debug);
@@ -331,9 +333,19 @@ Route::get('whats', function() {
 ////    $r->codeRequest('sms'); // could be 'voice' too
 ////$r->codeRequest('voice');
 //    $response = WhatsapiTool::requestCode($number, $type);
-    
-    $number = '918983370270'; # Number with country code
-    $type = 'sms'; # This can be either sms or voice
+//    $number = '918983370270'; # Number with country code
+//    $type = 'sms'; # This can be either sms or voice
+//
+//    $response = WhatsapiTool::requestCode($number, $type);
 
-    $response = WhatsapiTool::requestCode($number, $type);
+
+    $username = "918983370270";
+    $identity = "my_identity.txt";
+    $nickname = "test1";
+    $debug = true;
+
+// Create a instance of WhastPort.
+    $w = new WhatsProt($username, $identity, $nickname, $debug);
+
+    $w->codeRequest('sms');
 });
