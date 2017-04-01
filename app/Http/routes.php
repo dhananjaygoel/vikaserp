@@ -318,30 +318,9 @@ Route::get('dropbax-demo-functionality', function() {
 });
 
 
-Route::get('whats', function() {
-//    $number = '918983370270'; # Number with country code
-//    $type = 'sms'; # This can be either sms or voice
-//
-    $username = "918983370270";
+Route::get('whatsappRegistration', function() {
+    $username = "919429786848";
     $debug = true;
-    
-//    $w = new Registration($username, $debug);
-////
-////// Create a instance of Registration class.
     $r = new Registration($username, $debug);
-////
     $r->codeRequest('sms'); // could be 'voice' too
-////$r->codeRequest('voice');
-//    $response = WhatsapiTool::requestCode($number, $type);
-    
-//    $number = '918983370270'; # Number with country code
-//    $type = 'sms'; # This can be either sms or voice
-//
-//    $response = WhatsapiTool::requestCode($number, $type);
-    
-  
-    
-    
-    
-    
 });
