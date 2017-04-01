@@ -134,6 +134,7 @@ return [
         'App\Providers\EventServiceProvider',
         'App\Providers\RouteServiceProvider',
         'Sukohi\FormAutocomplete\FormAutocompleteServiceProvider',
+        'Xaamin\Whatsapi\WhatsapiServiceProvider',
     ],
     /*
       |--------------------------------------------------------------------------
@@ -185,5 +186,7 @@ return [
         'Agent' => 'Jenssegers\Agent\Facades\Agent',
         'FormAutocomplete' => 'Sukohi\FormAutocomplete\Facades\FormAutocomplete',
         'PDF' => 'Barryvdh\DomPDF\Facade',
+        'Whatsapi' => 'Xaamin\Whatsapi\Facades\Laravel\Whatsapi',
+        'WhatsapiTool' => 'Xaamin\Whatsapi\Facades\Laravel\Registration',
     ],
 ];

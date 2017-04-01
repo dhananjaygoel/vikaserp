@@ -263,10 +263,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('removedata/{tablename}', 'WelcomeController@removedata');
     Route::get('emptydata/{tablename}', 'WelcomeController@emptydata');
     Route::get('showdata/{tablename}', 'WelcomeController@showdata');
-    
+
     Route::get('copy_customers', 'WelcomeController@copy_customers');
     Route::get('delete_cust_from_user', 'WelcomeController@delete_cust_from_user');
-    
+
     Route::get('showtableinfo/{tablename}', 'WelcomeController@showtableinfo');
     Route::get('showtableinformation/{tablename}', 'WelcomeController@showtableinformation');
     Route::get('updatecolumndata/{tablename}/{column}/{value}', 'WelcomeController@updatecolumndata');
@@ -315,4 +315,15 @@ Route::get('dropbax-demo-functionality', function() {
     $response_output = curl_exec($curl_object);
     /* Close CRUL connection */
     curl_close($curl_object);
+});
+
+
+Route::get('whats', function() {
+    $number = '919429786848'; # Number with country code
+    $type = 'sms'; # This can be either sms or voice
+
+    $response = WhatsapiTool::requestCode($number, $type);
+    
+   
+    
 });
