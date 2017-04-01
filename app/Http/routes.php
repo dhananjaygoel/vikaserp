@@ -325,12 +325,12 @@ Route::get('whats', function() {
     $username = "918983370270";
     $debug = true;
     
-    $w = new Registration($username, $debug);
+//    $w = new Registration($username, $debug);
 ////
 ////// Create a instance of Registration class.
-////    $r = new Registration($username, $debug);
+    $r = new Registration($username, $debug);
 ////
-////    $r->codeRequest('sms'); // could be 'voice' too
+    $r->codeRequest('sms'); // could be 'voice' too
 ////$r->codeRequest('voice');
 //    $response = WhatsapiTool::requestCode($number, $type);
     
