@@ -339,33 +339,8 @@ Route::get('whats', function() {
 //
 //    $response = WhatsapiTool::requestCode($number, $type);
     
-    if (!$identityExists) {
-    echo "\n\nType sms or voice: ";
-    $option = fgets(STDIN);
-    try {
-        $w->codeRequest(trim($option));
-    } catch (Exception $e) {
-        echo $e->getMessage()."\n";
-        exit(0);
-    }
-    echo "\n\nEnter the received code: ";
-    $code = str_replace('-', '', fgets(STDIN));
-    try {
-        $result = $w->codeRegister(trim($code));
-        echo "\nYour username is: ".$result->login."\n";
-        echo 'Your password is: '.$result->pw."\n";
-    } catch (Exception $e) {
-        echo $e->getMessage()."\n";
-        exit(0);
-    }
-} else {
-    try {
-        $result = $w->checkCredentials();
-    } catch (Exception $e) {
-        echo $e->getMessage()."\n";
-        exit(0);
-    }
-}
+  
+    
     
     
     
