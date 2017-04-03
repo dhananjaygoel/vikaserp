@@ -324,7 +324,10 @@ Route::get('whatsappRegistration', function() {
     $debug = true;
     $r = new Registration($username, $debug);
 //    $r->codeRequest('sms'); // could be 'voice' too
-    $r->codeRegister('123456'); 
+//    $r->codeRequest('123456'); 
+    $code = '123456';
+
+$r->codeRegister($code);
 });
 
 
