@@ -116,6 +116,7 @@ Route::get('getinfo', 'PasswordController@getinfo');
  */
 Route::get('updatedata', 'HomeController@updatedata');
 Route::get('phpversion', 'WelcomeController@phpversion');
+Route::get('whatsapp', 'WelcomeController@whatsapp');
 Route::get('showupdatedata', 'HomeController@showupdatedata');
 Route::get('update_delivery_location', 'HomeController@update_delivery_location');
 
@@ -324,3 +325,6 @@ Route::get('whatsappRegistration', function() {
     $r = new Registration($username, $debug);
     $r->codeRequest('sms'); // could be 'voice' too
 });
+
+
+
