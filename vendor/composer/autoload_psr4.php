@@ -22,6 +22,7 @@ return array(
     'Stringy\\' => array($vendorDir . '/danielstjules/stringy/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
+    'League\\Flysystem\\Dropbox\\' => array($vendorDir . '/league/flysystem-dropbox/src'),
     'League\\Flysystem\\' => array($vendorDir . '/league/flysystem/src'),
     'Illuminate\\Html\\' => array($vendorDir . '/illuminate/html'),
     'Illuminate\\' => array($vendorDir . '/laravel/framework/src/Illuminate'),
