@@ -326,7 +326,7 @@ class Registration {
     protected function getResponse($host, $query) {
         // Build the url.
         $url = $host . '?' . http_build_query($query);
-
+        
         // Open connection.
         $ch = curl_init();
 
@@ -341,7 +341,10 @@ class Registration {
 
         // Get the response.
         $response = curl_exec($ch);
-
+        echo "<pre>";
+        print_r($response);
+        echo "</pre>";
+        exit;
         // Close the connection.
         curl_close($ch);
 
