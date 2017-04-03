@@ -1021,6 +1021,8 @@
 //  --------------------------------------Dynamic delivery order product name---------------------------------------------           
     $("#add_product_row_delivery_order").on("click", function () {
     var current_row_count = $(".add_product_row").length + 2;
+    
+    console.log(current_row_count);
             $.ajax({
             type: "GET",
                     url: baseurl + '/get_units'
@@ -1033,31 +1035,53 @@
     }
     $("#units_" + current_row_count).html(html);
     });
+    
             var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
             '<td class="col-md-2">' +
             '<div class="form-group searchproduct">' +
-            '<input class="form-control each_product_detail" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +
+            '<input class="form-control each_product_detail" placeholder="Enter product name " type="text" data-productid="' + current_row_count + '" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="getProductDetails(' + current_row_count + ');">' +
             '<input type="hidden" name="product[' + current_row_count + '][product_category_id]" id="add_product_id_' + current_row_count + '">' +
             '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
-            '<i class="fa fa-search search-icon"></i>' +
+//            '<i class="fa fa-search search-icon"></i>' +
             '</div>' +
-            '</td>' +
-            '<td class="col-md-1">' +
-            '<div class="form-group">' +
-            '<input id="quantity_' + current_row_count + '" class="form-control dileep" placeholder="Qnty" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="create_delivery_order_PS(' + current_row_count + ');">' +
-            '</div>' +
-            '</td>' +
+            '</td>' +           
             '<td class="col-md-2">' +
             '<div class="form-group ">' +
-            '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
+            '<select class="form-control unit" onchange="unitType(this);" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
             '</select>' +
             '</div>' +
+            '</td>' +            
+            
+            
+            
+            '<td class="col-md-1">' +
+            '<div class="form-group meter_list_' + current_row_count + '" style="display:none"> ' +
+            '<input id="quantity_' + current_row_count + '" class="form-control dileep" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="create_delivery_order_PS(' + current_row_count + ');">' +
+            '</div>' +
+            '<div class = "form-group kg_list_' + current_row_count + '" >'+
+            ' <select class = "form-control kg_list" name = "kg_list" id = "kg_list_' + current_row_count + '" onchange="setQty(this);">'+
+            <?php for ($n = 50; $n <= 15000; $n++) { ?>
+            '<option value = "'+{{$n}} +'">'+{{$n}} +'</option>'+
+            <?php $n = $n + 49; } ?>
+            ' </select>'+
+            '</div>'+
+            '<div class = "form-group pieces_list_' + current_row_count + '" style="display:none">'+
+            '<select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_' + current_row_count + '" onchange="setQty(this);">'+           
+            qtyPieces + 
+            '</select>'+
+            '</div>'+
             '</td>' +
+            
+            
             '<td class="col-md-1">' +
             '<div class="form-group">' +
             '<input id="present_shipping_' + current_row_count + '" class="form-control" placeholder="Present Shipping" name="product[' + current_row_count + '][present_shipping]" value="" type="text" onblur="change_quantity(' + current_row_count + ');">' +
             '</div>' +
             '</td>' +
+            
+            
+            
+            
             '<td class="col-md-2">' +
             '<div class="form-group">' +
             '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]" onblur="grand_total_delivery_order();">' +
@@ -1082,6 +1106,7 @@
             '<input type="hidden" name="product[' + current_row_count + '][order]" value="">' +
             '</tr>';
             $("#add_product_table_delivery_order").children("tbody").append(html);
+            $('#add_product_name_'+current_row_count).focus();            
 //  --------------------------------------Enter product name---------------------------------------------              
                 {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
                     return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
@@ -1121,6 +1146,7 @@
             '</select>' +
             '</div>' +
             '</td>' +
+            
             '<td class="col-md-1">' +
             '<div class="form-group meter_list_' + current_row_count + '" style="display:none"> ' +
             '<input id="quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][quantity]" value="" type="tel" onfocus="grand_total_delivery_order();">' +
@@ -1862,6 +1888,7 @@ function getProductDetails() {
                                 $("#add_product_name_"+id).val(obj.data_array[0].id);
                                 $("#add_product_id_"+id).attr('data-curname',term);
                                 $("#quantity_"+id).val('50');
+                                $("#present_shipping_"+id).val('50');
                                 $('#add_product_row').trigger('click');
                             },
                         });
