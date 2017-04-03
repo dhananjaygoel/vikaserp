@@ -340,11 +340,7 @@ class Registration {
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         // Get the response.
-        $response = curl_exec($ch);
-        echo "<pre>";
-        print_r($response);
-        echo "</pre>";
-        exit;
+        $response = curl_exec($ch);       
         // Close the connection.
         curl_close($ch);
 

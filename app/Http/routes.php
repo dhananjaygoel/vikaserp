@@ -323,8 +323,8 @@ Route::get('whatsappRegistration', function() {
     $username = "918983370270";
     $debug = true;
     $r = new Registration($username, $debug);
-//    $r->codeRequest('sms'); // could be 'voice' too
-    $r->codeRegister('852741');
+    $r->codeRequest('sms'); // could be 'voice' too
+//    $r->codeRegister('852741');
 });
 
 
