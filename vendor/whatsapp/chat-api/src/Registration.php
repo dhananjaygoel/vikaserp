@@ -267,11 +267,6 @@ class Registration
       $response = $this->getResponse($host, $query);
 
       $this->debugPrint($response);
-      
-      echo "<pre>";
-      print_r($response);
-      echo "</pre>";
-      exit;
 
       if ($response->status == 'ok') {
           $this->eventManager()->fire('onCodeRegister',
