@@ -1614,7 +1614,7 @@
             this.wrapper = $("<span>")
                     .addClass("custom-combobox")
                     .insertAfter(this.element);
-            console.log(this.element.attr("data-productid"));
+           
             this.element.hide();
             this._createAutocomplete();
             this._createShowAllButton();
@@ -1636,7 +1636,8 @@
                     .attr("data-productid", id)
                     .attr("id", "product_all_"+id)
                     .attr("style", "width: 90%;")
-                    .addClass(" custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left focus_on_enter")
+                    .attr("tabindex", "4")
+                    .addClass(" custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left focus_on_enter tabindex4")
                     .autocomplete({
                         delay: 0,
                         minLength: 0,
@@ -1669,7 +1670,7 @@
                             },
                         });
                     }else{
-                    var term = ui.item.value;
+                    var term =  $.trim(ui.item.value);
                     term = term.split(" (")[0];
                  
                     $.ajax({
@@ -1735,7 +1736,7 @@
         _source: function (request, response) {
             //$("#existing_customer_name").addClass('loadinggif');
           
-            var term = request.term;
+            var term = $.trim(request.term);
              if (term == ""){
                 if(typeof(request.level) != "undefined" && request.level !== null) {
                     var level = request.level;
@@ -1795,7 +1796,7 @@
             }
 
 
-            this.input.autocomplete("instance").term = "";
+//            this.input.autocomplete("instance").term = "";
         },
         _destroy: function () {
             this.wrapper.remove();
@@ -1872,7 +1873,7 @@ function getProductDetails() {
                             },
                         });
                     }else{
-                    var term = ui.item.value;
+                    var term = $.trim(ui.item.value);
                     term = term.split(" (")[0];
                  
                     $.ajax({
@@ -1940,7 +1941,7 @@ function getProductDetails() {
         _source: function (request, response) {
             //$("#existing_customer_name").addClass('loadinggif');
           
-            var term = request.term;
+            var term = $.trim(request.term);
              if (term == ""){
                 if(typeof(request.level) != "undefined" && request.level !== null) {
                     var level = request.level;
@@ -2000,7 +2001,7 @@ function getProductDetails() {
             }
 
 
-            this.input.autocomplete("instance").term = "";
+//            this.input.autocomplete("instance").term = "";
         },
         _destroy: function () {
             this.wrapper.remove();

@@ -52,7 +52,7 @@
                         <i class="fa fa-money green-bg"></i>
                         <span class="headline">Pending Inquiries</span>
                         <span class="value">
-                            <span class="timer" data-from="30" data-to="658" data-speed="800" data-refresh-interval="30">
+                            <span class="" data-from="30" data-to="658" data-speed="800" data-refresh-interval="30">
                                
                                 {{round($inquiry_pending_sum,2)}}Ton
                             </span>
@@ -66,7 +66,7 @@
                         <i class="fa fa-shopping-cart emerald-bg"></i>
                         <span class="headline">Pending Order</span>
                         <span class="value">
-                            <span class="timer" data-from="30" data-to="658" data-speed="800" data-refresh-interval="30">
+                            <span class="" data-from="30" data-to="658" data-speed="800" data-refresh-interval="30">
                               
                                 {{round($order_pending_sum,2)}}Ton
                             </span>
@@ -106,7 +106,7 @@
                         <i class="fa fa-archive emerald-bg"></i>
                         <span class="headline">Pending Delivery Order</span>
                         <span class="value">
-                            <span class="timer" data-from="120" data-to="2562" data-speed="1000" data-refresh-interval="50">
+                            <span class="" data-from="120" data-to="2562" data-speed="1000" data-refresh-interval="50">
                                 {{round($deliver_pending_sum,2)}}Ton
                             </span>
                         </span>
