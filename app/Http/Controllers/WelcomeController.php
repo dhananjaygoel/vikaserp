@@ -25,6 +25,7 @@ use Illuminate\Filesystem\Filesystem;
 use Dropbox;
 use Auth;
 use Carbon\Carbon;
+use SmsBump;
 
 class WelcomeController extends Controller {
     /*
@@ -84,6 +85,89 @@ class WelcomeController extends Controller {
      */
     public function index() {
         return view('welcome');
+    }
+
+    public function test() {
+
+//        $post_data = array(
+//            // 'From' doesn't matter; For transactional, this will be replaced with your SenderId;
+//            // For promotional, this will be ignored by the SMS gateway
+//            'From' => '<your virtual number goes here>',
+//            'To' => array('8983370270'),
+//            'Body' => 'Test'
+//        );
+//
+//        $exotel_sid = "agstech"; // Your Exotel SID - Get it from here: http://my.exotel.in/Exotel/settings/site#api-settings
+//        $exotel_token = "fba7e689fb8742f8e398f1ee1e58ebaf3c0c47ed"; // Your exotel token - Get it from here: http://my.exotel.in/Exotel/settings/site#api-settings
+//
+////        $url = "https://" . $exotel_sid . ":" . $exotel_token . "@twilix.exotel.in/v1/Accounts/" . $exotel_sid . "/Sms/send";
+//        $url = "'https://api.smsbump.com/send/1B9mOYKhejDQ.json?type=whatsapp&to=918983370270&message=Happy birthday!'";
+//
+//        $ch = curl_init();
+//        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+//        curl_setopt($ch, CURLOPT_URL, $url);
+//        curl_setopt($ch, CURLOPT_POST, 1);
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+//        curl_setopt($ch, CURLOPT_FAILONERROR, 0);
+//        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+//        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_data));
+//
+//        $http_result = curl_exec($ch);
+//        $error = curl_error($ch);
+//        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+//
+//        curl_close($ch);
+//
+//        print "Response = " . print_r($http_result);
+
+//        $callback = NULL;
+//        $postData = array(
+////            'from' => '917276393635',
+//            'to' => '918983370270',
+//            'message' => 'test',
+//            'type' => 'whatsapp'
+//        );
+//        $APIKey ='1B9mOYKhejDQ';
+//        $postString = http_build_query($postData);
+//
+//        $ch = curl_init('https://api.smsbump.com/send/1B9mOYKhejDQ.json?');
+//        curl_setopt($ch, CURLOPT_HEADER, false);
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//        curl_setopt($ch, CURLOPT_POST, count($postData));
+//        curl_setopt($ch, CURLOPT_POSTFIELDS, $postString);
+//        
+//        $result = curl_exec($ch);
+//        var_dump($postString);
+//        curl_close($ch);
+//
+//        if (is_callable($callback)) {
+//            call_user_func($callback, json_decode($result, true));
+//        }
+//        var_dump($result);
+        
+        
+        $postData = array(
+//            'from' => '917276393635',
+            'to' => '917276393635',
+            'message' => 'test',
+//            'type' => ''
+        );
+        
+         $headers = array(
+            'Content-Type: application/json',
+           
+        );
+        $url = 'https://api.smsbump.com/send/1B9mOYKhejDQ.json?type=whatsapp&to=918983370270&message=Happy birthday!';
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));
+        $response = curl_exec($ch);
+        echo "Response: " . $response;
+        curl_close($ch);
+        
+        
     }
 
     public function whatsapp() {
@@ -1094,6 +1178,43 @@ class WelcomeController extends Controller {
         passthru($cmd);
 
         exit(0);
+    }
+    
+    
+    public function make_approved() {
+        
+        $order = \App\Order::
+          where('order_status', 'completed')
+          ->update(['is_approved' => 'yes']);
+        
+        $order = \App\Order::with(['createdby'])
+            ->where('order_status', 'pending')
+            ->whereHas('createdby', function($query)
+            {
+                $query->where('role_id','=','0');
+            })
+                
+           ->update(['is_approved' => 'yes']);
+            
+            
+        $inquiry = \App\Inquiry::
+          where('inquiry_status', 'completed')
+          ->update(['is_approved' => 'yes']);
+        
+        $inquiry = \App\Inquiry::with(['createdby'])
+            ->where('inquiry_status', 'pending')
+            ->whereHas('createdby', function($query)
+            {
+                $query->where('role_id','=','0');
+            })
+                
+           ->update(['is_approved' => 'yes']);
+       
+        echo "<pre>";
+        print_r($order);
+        echo "</pre>";
+        exit;
+        
     }
 
 }

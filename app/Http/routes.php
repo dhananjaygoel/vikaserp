@@ -117,6 +117,7 @@ Route::get('getinfo', 'PasswordController@getinfo');
 Route::get('updatedata', 'HomeController@updatedata');
 Route::get('phpversion', 'WelcomeController@phpversion');
 Route::get('whatsapp', 'WelcomeController@whatsapp');
+Route::get('test', 'WelcomeController@test');
 Route::get('showupdatedata', 'HomeController@showupdatedata');
 Route::get('update_delivery_location', 'HomeController@update_delivery_location');
 
@@ -278,6 +279,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::any('database_backup_test', 'WelcomeController@database_backup_test');
     Route::any('database_backup_live', 'WelcomeController@database_backup_live');
     Route::any('database_backup_local', 'WelcomeController@database_backup_local');
+    
+    /*Use ones approved orders and inquiry module*/
+    Route::get('make_approved', 'WelcomeController@make_approved');
+    
 });
 
 Route::get('export/{type}', 'WelcomeController@exportExcel');
@@ -322,14 +327,8 @@ Route::get('dropbax-demo-functionality', function() {
 Route::get('whatsappRegistration', function() {
     $username = "919429786848";
     $debug = true;
-    $w = new Registration($username, $debug);
-    try {
-        $w->codeRequest("sms");
-        echo "Verification Code Sent via SMS";
-    } catch (Exception $e) {
-        echo $e->getMessage();
-        exit(0);
-    }
+    $r = new Registration($username, $debug);
+    $r->codeRequest('sms'); // could be 'voice' too
 });
 
 
