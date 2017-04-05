@@ -148,7 +148,7 @@ class OrderController extends Controller {
                  
             } else {
                 if(Auth::user()->role_id <> 5){
-                $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->paginate(20);
+                $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled','createdby')->orderBy('created_at', 'desc')->where('is_approved','=','yes')->paginate(20);
                 }
                 if(Auth::user()->role_id == 5){
                 $allorders = $q->where('customer_id','=',$cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->paginate(20);
@@ -170,12 +170,15 @@ class OrderController extends Controller {
             $pending_orders = $this->checkpending_quantity($allorders);
             $allorders->setPath('orders');
             
-//            echo "<pre>";
-//            print_r($allorders->toArray());
-//            echo "</pre>";
-//            exit;
+            $non_approved_orders = Order::with('all_order_products', 'customer', 'delivery_location','createdby')
+                    ->where('is_approved','=','no')
+                    ->where('order_status','=','pending')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(15);
+                   
+            $this->checkpending_quantity($non_approved_orders);
             
-        return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id', 'search_dates'));
+        return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id', 'search_dates','non_approved_orders'));
     }
 
     /**
@@ -186,10 +189,6 @@ class OrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        
-       
-        
-        
         if ( Auth::user()->role_id == 5) {
         $cust = Customer::where('owner_name','=', Auth::user()->first_name)
                     -> where('phone_number1','=', Auth::user()->mobile_number) 
@@ -332,6 +331,7 @@ class OrderController extends Controller {
         $order->expected_delivery_date = $datetime->format('Y-m-d');
         $order->remarks = $input_data['order_remark'];
         $order->order_status = "Pending";
+        $order->is_approved =(Auth::user()->role_id==0?'yes':'no') ; 
         if (isset($input_data['location']) && ($input_data['location'] != "")) {
             $order->delivery_location_id = 0;
             $order->other_location = $input_data['location'];
@@ -669,6 +669,7 @@ class OrderController extends Controller {
         }
         $order_prod = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $id)->first();
         $order->updated_at = $order_prod->updated_at;
+        $order->is_approved =(Auth::user()->role_id==0?'yes':'no') ;        
         $order->save();
 
         /*
