@@ -57,11 +57,12 @@ class InquiryController extends Controller {
         }
         if (Auth::user()->role_id <> 5) {
             if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
-                $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')->orderBy('created_at', 'desc')->Paginate(20);
+                $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details','createdby')->orderBy('created_at', 'desc')->where('is_approved','=','yes')->Paginate(20);
             } else {
-                $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')
+                $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit','createdby')
                         ->where('inquiry_status', 'pending')
                         ->orderBy('created_at', 'desc')
+                        ->where('is_approved','=','yes')
                         ->Paginate(20);
             }
         }
@@ -84,10 +85,15 @@ class InquiryController extends Controller {
                         ->Paginate(20);
             }
         }
-
+        
+        $non_approved_inquiry = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details','createdby')
+                    ->where('is_approved','=','no')
+                    ->where('inquiry_status','=','pending')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(15);
 
         $inquiries->setPath('inquiry');
-        return view('inquiry', compact('inquiries'));
+        return view('inquiry', compact('inquiries','non_approved_inquiry'));
     }
 
     /**
@@ -197,6 +203,7 @@ class InquiryController extends Controller {
         $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
         $add_inquiry->remarks = $input_data['inquiry_remark'];
         $add_inquiry->inquiry_status = "Pending";
+        $add_inquiry->is_approved =(Auth::user()->role_id==0?'yes':'no') ;
         $add_inquiry->save();
         $inquiry_id = $add_inquiry->id;
         $inquiry_products = array();
@@ -534,6 +541,7 @@ class InquiryController extends Controller {
         }
         $inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->first();
         $inquiry->updated_at = $inquiry_products->updated_at;
+        $inquiry->is_approved =(Auth::user()->role_id==0?'yes':'no') ;
         $inquiry->save();
         /*
           |------------------------------------------------
