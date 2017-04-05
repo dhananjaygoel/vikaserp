@@ -208,7 +208,7 @@ use Illuminate\Support\Facades\Session;
                                                         <div class="form-group searchproduct">
                                                             <input class="form-control each_product_detail focus_on_enter tabindex{{$i}}" data-productid="{{$i}}" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_purchase_product_name_{{$i}}" onfocus="product_autocomplete_purchase({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>" tabindex="{{$z}}">
                                                             <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
-                                                            <i class="fa fa-search search-icon"></i>
+                                                            <!--<i class="fa fa-search search-icon"></i>-->
                                                         </div>
                                                     </td>
                                                     <td class="col-md-2">

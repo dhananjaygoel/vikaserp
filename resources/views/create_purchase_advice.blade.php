@@ -130,7 +130,7 @@
                                                     <div class="add_button1">
                                                         <div class="form-group pull-left">
                                                             <label for="addmore"></label>
-                                                            <a href="#" class="table-link" title="add more" id="add_purchase_advice_product_row">
+                                                            <a class="table-link" title="add more" id="add_purchase_advice_product_row">
                                                                 <span class="fa-stack more_button" >
                                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                                     <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
@@ -215,4 +215,5 @@
         </div>
     </div>
 </div>
+@include('autocomplete_tally_product_name')
 @stop

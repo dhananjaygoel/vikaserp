@@ -66,7 +66,7 @@
                                     <div class="form-group searchproduct">
                                         <input class="form-control" placeholder="Enter Supplier Name " type="text" name="existing_supplier_name" id="existing_supplier_name">
                                         <input type="hidden" id="existing_supplier_id" name="autocomplete_supplier_id" value="{{$purchase_order['customer']->id}}">
-                                        <i class="fa fa-search search-icon"></i>
+                                        <!--<i class="fa fa-search search-icon"></i>-->
                                     </div>
                                 </div>
                             </div>
@@ -98,7 +98,7 @@
                                 <div class="form-group searchproduct">
                                     <input class="form-control" placeholder="Enter Supplier Name " type="text" name="existing_supplier_name" id="existing_supplier_name" value="{{$purchase_order['customer']->owner_name}}{{'-'.$purchase_order['customer']->tally_name}}">
                                     <input type="hidden" id="existing_supplier_id" name="autocomplete_supplier_id" value="{{$purchase_order['customer']->id}}">
-                                    <i class="fa fa-search search-icon"></i>
+                                    <!--<i class="fa fa-search search-icon"></i>-->
                                 </div>
                             </div>
                         </div>
@@ -142,7 +142,7 @@
                                                         <div class="form-group searchproduct">
                                                             <input class="form-control each_product_detail" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>">
                                                             <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="<?php if (isset($session_data['product'][$i]['id'])) { ?>{{$session_data['product'][$i]['id']}}<?php } ?>">
-                                                            <i class="fa fa-search search-icon"></i>
+                                                            <!--<i class="fa fa-search search-icon"></i>-->
                                                         </div>
                                                     </td>
 
@@ -182,9 +182,9 @@
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
-                                                    <input class="form-control each_product_detail" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_purchase_product_name_{{$key}}" value="{{$product['purchase_product_details']->alias_name}}" onfocus="product_autocomplete_purchase({{$key}});">
+                                                    <input class="form-control each_product_detail" placeholder="Enter Product name " data-productid="{{$key}}" type="text" name="product[{{$key}}][name]" id="add_purchase_product_name_{{$key}}" value="{{$product['purchase_product_details']->alias_name}}" onfocus="product_autocomplete_purchase({{$key}});">
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product->product_category_id}}">
-                                                    <i class="fa fa-search search-icon"></i>
+                                                    <!--<i class="fa fa-search search-icon"></i>-->
                                                 </div>
                                             </td>
 
