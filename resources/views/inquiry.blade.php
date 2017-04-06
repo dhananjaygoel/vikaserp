@@ -12,7 +12,8 @@
             <div class="pull-right top-page-ui">                        
                 <a href="{{URL::action('InquiryController@create')}}" class="btn btn-primary pull-right">
                     <i class="fa fa-plus-circle fa-lg"></i> Add New Inquiry
-                </a> 
+                </a>
+                 @if( Auth::user()->role_id <> 5)
                 <div class="form-group pull-right">
                     <div class="col-md-12">
                         <form method="GET" action="{{url('inquiry')}}">
@@ -24,6 +25,7 @@
                         </form>
                     </div>
                 </div>
+                
                 @if(sizeof($inquiries)!=0 && (Input::get('inquiry_filter') == 'Pending' ||Input::get('inquiry_filter')==''))
                 <a href="{{URL::action('InquiryController@exportinquiryBasedOnStatus',['inquiry_status'=>'Pending'])}}" class="btn btn-primary pull-right">
                     Export
@@ -33,6 +35,7 @@
                 <a href="{{URL::action('InquiryController@exportinquiryBasedOnStatus',['inquiry_status'=>'Completed'])}}" class="btn btn-primary pull-right">
                     Export
                 </a>
+                @endif
                 @endif
             </div>
         </div>
