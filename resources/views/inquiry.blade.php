@@ -18,6 +18,7 @@
                         <form method="GET" action="{{url('inquiry')}}">
                             <select class="form-control" id="inquiry_filter" name="inquiry_filter" onchange="this.form.submit();">
                                 <option <?php if (Input::get('inquiry_filter') == 'Pending') echo 'selected=""'; ?> value="Pending">Pending</option>
+                                <option <?php if (Input::get('inquiry_filter') == 'Approval') echo 'selected=""'; ?> value="Approval">Pending Approval</option>
                                 <option <?php if (Input::get('inquiry_filter') == 'Completed') echo 'selected=""'; ?> value="Completed">Completed</option>
                             </select>
                         </form>
@@ -37,109 +38,8 @@
         </div>
     </div>
 </div>
-@if( Auth::user()->role_id == 0)
-<div class="row">
-    <div class="col-lg-12">
-        <h1 class="pull-left">Inquiry Pending Approval</h1>        
-    </div>
-</div>
-@if(sizeof($non_approved_inquiry)==0)
-<div class="alert alert-info no_data_msg_container">
-    Currently no inquiries for approval have been added.
-</div>
-@else 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="main-box clearfix">
-            <div class="main-box-body main_contents clearfix">
-                <div class="table-responsive">
-                    <table id="table-example" class="table table-hover data-table-center">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Tally Name</th>
-                                <th>Total Quantity</th>
-                                <th>Phone Number</th>
-                                <th>Delivery Location</th>
-                                <th>Created By</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $k = 1; ?>   
-                            @foreach($non_approved_inquiry as $inquiry)
-                            <tr>
-                                <td>{{$k++}}</td>
-                                <td class="text-center">
-                                    {{(isset($inquiry["customer"]->tally_name) && $inquiry["customer"]->tally_name != "")? $inquiry["customer"]->tally_name :(isset($inquiry["customer"]->owner_name) ? $inquiry["customer"]->owner_name:'')}}
-                                </td>
 
-                                <?php $qty = 0; ?>
-                                @foreach($inquiry['inquiry_products'] as $prod)
-                                @if($prod['unit']->unit_name == 'KG')
-                                <?php
-                                $qty += $prod->quantity;
-                                ?>
-                                @endif
 
-                                @if($prod['unit']->unit_name == 'Pieces')
-                                <?php
-                                $qty += $prod->quantity * $prod['inquiry_product_details']->weight;
-                                ?>
-                                @endif
-
-                                @if($prod['unit']->unit_name == 'Meter')
-                                <?php
-                                $qty += ($prod->quantity / $prod['inquiry_product_details']->standard_length) * $prod['inquiry_product_details']->weight;
-                                ?>
-                                @endif                                      
-                                @endforeach
-
-                                <td class="text-center">{{ round($qty, 2) }}</td>
-                                <td class="text-center">{{$inquiry['customer']['phone_number1']}} </td>
-                                @if($inquiry['delivery_location']['area_name'] !="")
-                                <td class="text-center">{{$inquiry['delivery_location']['area_name']}}</td>
-                                @elseif($inquiry['delivery_location']['area_name'] =="")
-                                <td class="text-center">{{$inquiry['other_location']}}</td>
-                                @endif
-                                <td>{{ ($inquiry['createdby']->id  !== null? $inquiry['createdby']->first_name." ".$inquiry['createdby']->last_name:'' ) }}</td>
-                                <td>
-                                    <a title="Approve" class="btn btn-primary btn-sm"  href="{{ Url::action('InquiryController@edit', ['id' => $inquiry['id']]) }}">Approve</a>                                   
-                                    <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" title="Reject" data-target="#delete_inquiry" onclick="delete_inquiry_row({{$inquiry['id']}})">Reject</a>                                    
-
-                                </td>
-                            </tr>                            
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endif
-@endif 
-<!-- Reject Inquiry Modal Start -->
-<div class="modal fade" id="reject-inquiry-popup" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Reject Inquiry</h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-info mb0">
-                    <p>Are you sure you want to reject the Inquiry?</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Approve Inquiry Modal End -->
 
 <div class="row">
     <div class="col-lg-12">
@@ -205,8 +105,9 @@
                                         <th class="text-center">Total Quantity</th>
                                         <th class="text-center">Phone Number</th>
                                         <th class="text-center">Delivery Location</th>
-                                        @if(Input::get('inquiry_filter') == 'Pending' || Input::get('inquiry_filter') == '')
+                                        @if((Input::get('inquiry_filter') == 'Pending' || Input::get('inquiry_filter') == ''))
                                         <th class="text-center">Place Order</th>
+
                                         @endif
                                         <th class="text-center">Action</th>
                                     </tr>
@@ -249,7 +150,9 @@
                                         <td class="text-center">{{$inquiry['other_location']}}</td>
                                         @endif
                                         @if($inquiry->inquiry_status != 'completed')
+                                         @if(Input::get('inquiry_filter') == 'Pending' || Input::get('inquiry_filter') == '')
                                         <td class="text-center">
+                                           
                                             @if($inquiry->is_approved=='no')
                                             <a href="javascript:void(0)" class="table-link" title="Need Admin Approval">
                                                 <span class="fa-stack">
@@ -265,9 +168,14 @@
                                                 </span>
                                             </a> 
                                             @endif
+                                           
                                         </td>
+                                         @endif
                                         @endif
-                                        <td class="text-center">                                            
+                                        <td class="text-center">                                                                    @if($inquiry->is_approved=='no' &&   Auth::user()->role_id == 0 )
+                                            <a title="Approve" class="btn btn-primary btn-sm"  href="{{ Url::action('InquiryController@edit', ['id' => $inquiry['id']]) }}">Approve</a>                                   
+                                            <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" title="Reject" data-target="#delete_inquiry" onclick="delete_inquiry_row({{$inquiry['id']}})">Reject</a>  
+                                            @else
                                             <a title="View" href="{{ Url::action('InquiryController@show', ['id' => $inquiry['id']]) }}" class="table-link">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -291,7 +199,7 @@
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @endif                                       
+                                            @endif                                                                                   @endif 
                                         </td>
                                     </tr>
 

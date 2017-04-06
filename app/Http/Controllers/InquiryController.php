@@ -57,12 +57,20 @@ class InquiryController extends Controller {
         }
         if (Auth::user()->role_id <> 5) {
             if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
-                $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details','createdby')->orderBy('created_at', 'desc')->where('is_approved','=','yes')->Paginate(20);
+                if ($data['inquiry_filter'] == 'Approval') {
+                    $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')
+                            ->where('is_approved', '=', 'no')
+                            ->where('inquiry_status', '=', 'pending')
+                            ->orderBy('created_at', 'desc')
+                            ->paginate(20);
+                } else {
+                    $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')->orderBy('created_at', 'desc')->where('is_approved', '=', 'yes')->Paginate(20);
+                }
             } else {
-                $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit','createdby')
+                $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit', 'createdby')
                         ->where('inquiry_status', 'pending')
                         ->orderBy('created_at', 'desc')
-                        ->where('is_approved','=','yes')
+                        ->where('is_approved', '=', 'yes')
                         ->Paginate(20);
             }
         }
@@ -85,15 +93,15 @@ class InquiryController extends Controller {
                         ->Paginate(20);
             }
         }
-        
-        $non_approved_inquiry = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details','createdby')
-                    ->where('is_approved','=','no')
-                    ->where('inquiry_status','=','pending')
-                    ->orderBy('created_at', 'desc')
-                    ->paginate(15);
+
+//        $non_approved_inquiry = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')
+//                ->where('is_approved', '=', 'no')
+//                ->where('inquiry_status', '=', 'pending')
+//                ->orderBy('created_at', 'desc')
+//                ->paginate(15);
 
         $inquiries->setPath('inquiry');
-        return view('inquiry', compact('inquiries','non_approved_inquiry'));
+        return view('inquiry', compact('inquiries'));
     }
 
     /**
@@ -203,8 +211,8 @@ class InquiryController extends Controller {
         $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
         $add_inquiry->remarks = $input_data['inquiry_remark'];
         $add_inquiry->inquiry_status = "Pending";
-        if($add_inquiry->is_approved=='no')
-        $add_inquiry->is_approved =(Auth::user()->role_id==0?'yes':'no') ;
+        if ($add_inquiry->is_approved == 'no')
+            $add_inquiry->is_approved = (Auth::user()->role_id == 0 ? 'yes' : 'no');
         $add_inquiry->save();
         $inquiry_id = $add_inquiry->id;
         $inquiry_products = array();
@@ -380,7 +388,7 @@ class InquiryController extends Controller {
         return View::make('inquiry_details', array('inquiry' => $inquiry, 'delivery_location' => $delivery_location, 'message' => $flash_message));
 //        return redirect('inquiry')->with('flash_success_message', 'Message sent successfully');
     }
-    
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -503,10 +511,10 @@ class InquiryController extends Controller {
             $location_difference = $input_data['location_difference'];
         }
         $inquiry = Inquiry::find($id);
-        if(count($inquiry) == 0){
+        if (count($inquiry) == 0) {
             return redirect('inquiry')->with('flash_message', 'Inquiry details Rejected.');
         }
-       
+
         $update_inquiry = $inquiry->update([
             'customer_id' => $customer_id,
 //            'created_by' => Auth::id(),
@@ -546,8 +554,8 @@ class InquiryController extends Controller {
         }
         $inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->first();
         $inquiry->updated_at = $inquiry_products->updated_at;
-        if($inquiry->is_approved=='no')
-        $inquiry->is_approved =(Auth::user()->role_id==0?'yes':'no') ;
+        if ($inquiry->is_approved == 'no')
+            $inquiry->is_approved = (Auth::user()->role_id == 0 ? 'yes' : 'no');
         $inquiry->save();
         /*
           |------------------------------------------------
@@ -712,7 +720,7 @@ class InquiryController extends Controller {
         } elseif ($term == '') {
             $products = \App\ProductType::get();
             if (count($products) > 0) {
-               
+
                 foreach ($products as $product) {
                     $data_array[] = [
                         'value' => $product['name'],
@@ -738,7 +746,7 @@ class InquiryController extends Controller {
             if ($level == 1) {
                 $products = \App\ProductCategory::where('product_type_id', '=', $id)->get();
                 if (count($products) > 0) {
-                     $data_array[] = [
+                    $data_array[] = [
                         'value' => '<-- Back',
                         'id' => '0',
                         'level' => '0',
@@ -758,16 +766,16 @@ class InquiryController extends Controller {
             }
             if ($level == 2) {
                 $products = \App\ProductSubCategory::with('product_category')
-                        ->where('product_category_id','=', $id)
+                        ->where('product_category_id', '=', $id)
                         ->get();
-                $type_id= 1;
-                
-                if(isset($products[0]['product_category']['product_type_id'])){
+                $type_id = 1;
+
+                if (isset($products[0]['product_category']['product_type_id'])) {
                     $type_id = $products[0]['product_category']['product_type_id'];
                 }
-                
+
                 if (count($products) > 0) {
-                     $data_array[] = [
+                    $data_array[] = [
                         'value' => '<-- Back',
                         'id' => $type_id,
                         'level' => '1',
@@ -786,7 +794,7 @@ class InquiryController extends Controller {
                 }
             }
             if ($level == 3) {
-                $products = \App\ProductSubCategory::where('id','=', $id)->get();
+                $products = \App\ProductSubCategory::where('id', '=', $id)->get();
                 foreach ($products as $product) {
                     $cust = 0;
                     if ($customer_id > 0) {
@@ -802,8 +810,6 @@ class InquiryController extends Controller {
                     ];
                 }
             }
-            
-            
         }
 
         echo json_encode(array('data_array' => $data_array));
