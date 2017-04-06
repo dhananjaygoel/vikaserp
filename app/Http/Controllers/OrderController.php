@@ -1285,8 +1285,15 @@ class OrderController extends Controller {
              return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         
+        $is_approve = Order::where('id','=',$order_id)
+                ->where('is_approved','no')
+                ->get();   
         
-        
+        if(count($is_approve))
+        {
+             return Redirect::back()->withInput()->with('error', 'You need approval.'); 
+        }
+         
          
         if(isset($id)){
            $order_id = $id;
@@ -1311,9 +1318,9 @@ class OrderController extends Controller {
         if($customer_id <> $cust->id)
         {
              return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-        }
+        }        
            
-           
+        
         
         $order_status_responase=array();
         if(isset($order_id) && $order_id> 0 && isset($customer_id) && $customer_id >0){

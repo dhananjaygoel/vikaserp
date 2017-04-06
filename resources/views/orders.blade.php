@@ -206,8 +206,7 @@
                                         <td> 
 
                                             <a href="{{url('orders/'.$order->id.'/edit')}}" class="btn btn-primary btn-sm" href="" title="Approve"> Approve </a>
-                                            <!--                                            <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" data-target="#reject-order-popup">Reject</a>-->
-<!--                                            <a href="#" class="btn btn-danger btn-sm" title="Reject" data-toggle="modal" data-target="#cancel_order_modal" onclick="cancel_order_row({{$order->id}})"> Reject</a>-->
+
                                             <a href="#" class="btn btn-danger btn-sm" title="Reject" data-toggle="modal" data-target="#delete_orders_modal" onclick="delete_order_row({{$order->id}})">
                                                 Reject</a>
                                         </td>
@@ -775,22 +774,13 @@
                                         </td>
                                         @endif
                                         <td class="text-center">
-                                            @if($order->is_approved=='no')
-                                            <a href="javascript:void(0)" class="table-link" title="Need Admin Approval">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            @else
+                                           
                                             <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @if( Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 5 )
-
 
                                             @if($order->order_status == 'pending')
                                             <a href="{{url('orders/'.$order->id.'/edit')}}" class="table-link" title="Edit">
@@ -807,44 +797,30 @@
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                     <i class="fa fa-ban fa-stack-2x fa-rotate-90 text-danger"></i>
                                                 </span>
-                                                @endif
+                                            </a>
+                                            @endif
 
-                                                @if($order->order_status == 'completed')
-                                                <a href="javascript:void(0)" class="table-link" title="Non Editible">
-                                                    <span class="fa-stack">
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-                                                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                        <i class="fa fa-ban fa-stack-2x fa-rotate-90 text-danger"></i>
-                                                    </span>
-                                                </a>
-                                                @endif
-
-
-                                                @if(Auth::user()->role_id <> 5)
-
-                                                <a href="#" class="table-link" title="manual complete" data-toggle="modal" data-target="#cancel_order_modal" onclick="cancel_order_row({{$order->id}})">
-                                                    <span class="fa-stack">
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-                                                        <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
-                                                    </span>
-                                                </a>
-                                                @endif
-                                                @endif
-                                                @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                                <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal" onclick="delete_order_row({{$order->id}})">
-                                                    <span class="fa-stack">
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-                                                        <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                    </span>
-                                                </a>
-                                                @endif
-                                                <a href="{{url('order/'.$order->id.'-track')}}" class="table-link" title="Track Order">
-                                                    <span class="fa-stack">
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-                                                        <i class="fa fa-truck fa-stack-1x fa-inverse"></i>
-                                                    </span>
-                                                </a>
-                                                @endif
+                                            @if($order->order_status == 'completed')
+                                            <a href="javascript:void(0)" class="table-link" title="Non Editible">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                    <i class="fa fa-ban fa-stack-2x fa-rotate-90 text-danger"></i>
+                                                </span>
+                                            </a>
+                                            @endif
+                                          
+                                            <a href="{{url('order/'.$order->id.'-track')}}" class="table-link" title="Track Order">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                      @if($order->is_approved=='no')
+                                                      <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
+                                                        @else
+                                                    <i class="fa fa-truck fa-stack-1x fa-inverse"></i>
+                                                      @endif
+                                                </span>
+                                            </a>
+                                          
                                         </td>
                                     </tr>
                                     @endif
