@@ -1285,13 +1285,13 @@ class OrderController extends Controller {
              return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         
-        $is_approve = Order::where('id','=',$order_id)
+        $is_approve = Order::where('id','=',$id)
                 ->where('is_approved','no')
                 ->get();   
         
         if(count($is_approve))
         {
-             return Redirect::back()->withInput()->with('error', 'You need approval.'); 
+             return Redirect::back()->withInput()->with('error', 'Order need to Approved.'); 
         }
          
          
