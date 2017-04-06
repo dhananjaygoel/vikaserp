@@ -203,6 +203,7 @@ class InquiryController extends Controller {
         $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
         $add_inquiry->remarks = $input_data['inquiry_remark'];
         $add_inquiry->inquiry_status = "Pending";
+        if($add_inquiry->is_approved=='no')
         $add_inquiry->is_approved =(Auth::user()->role_id==0?'yes':'no') ;
         $add_inquiry->save();
         $inquiry_id = $add_inquiry->id;
@@ -545,6 +546,7 @@ class InquiryController extends Controller {
         }
         $inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->first();
         $inquiry->updated_at = $inquiry_products->updated_at;
+        if($inquiry->is_approved=='no')
         $inquiry->is_approved =(Auth::user()->role_id==0?'yes':'no') ;
         $inquiry->save();
         /*
