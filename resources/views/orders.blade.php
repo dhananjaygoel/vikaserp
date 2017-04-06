@@ -207,7 +207,9 @@
 
                                             <a href="{{url('orders/'.$order->id.'/edit')}}" class="btn btn-primary btn-sm" href="" title="Approve"> Approve </a>
                                             <!--                                            <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" data-target="#reject-order-popup">Reject</a>-->
-                                            <a href="#" class="btn btn-danger btn-sm" title="Reject" data-toggle="modal" data-target="#cancel_order_modal" onclick="cancel_order_row({{$order->id}})"> Reject</a>
+<!--                                            <a href="#" class="btn btn-danger btn-sm" title="Reject" data-toggle="modal" data-target="#cancel_order_modal" onclick="cancel_order_row({{$order->id}})"> Reject</a>-->
+                                            <a href="#" class="btn btn-danger btn-sm" title="Reject" data-toggle="modal" data-target="#delete_orders_modal" onclick="delete_order_row({{$order->id}})">
+                                                Reject</a>
                                         </td>
                                     </tr>
 

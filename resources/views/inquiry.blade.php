@@ -40,12 +40,12 @@
 @if( Auth::user()->role_id == 0)
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="pull-left">Order Pending Approval</h1>        
+        <h1 class="pull-left">Inquiry Pending Approval</h1>        
     </div>
 </div>
 @if(sizeof($non_approved_inquiry)==0)
 <div class="alert alert-info no_data_msg_container">
-    Currently no orders for approval have been added.
+    Currently no inquiries for approval have been added.
 </div>
 @else 
 <div class="row">

@@ -379,7 +379,7 @@ class InquiryController extends Controller {
         return View::make('inquiry_details', array('inquiry' => $inquiry, 'delivery_location' => $delivery_location, 'message' => $flash_message));
 //        return redirect('inquiry')->with('flash_success_message', 'Message sent successfully');
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      */
@@ -502,6 +502,10 @@ class InquiryController extends Controller {
             $location_difference = $input_data['location_difference'];
         }
         $inquiry = Inquiry::find($id);
+        if(count($inquiry) == 0){
+            return redirect('inquiry')->with('flash_message', 'Inquiry details Rejected.');
+        }
+       
         $update_inquiry = $inquiry->update([
             'customer_id' => $customer_id,
 //            'created_by' => Auth::id(),
