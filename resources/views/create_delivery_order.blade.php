@@ -112,8 +112,8 @@
                                     <tbody>
                                         <tr class="headingunderline">
                                             <td><span><b>Select Product(Alias)</b></span></td>
-                                            <td><span><b>Unit</b></span></td>
                                             <td><span><b>Quantity</b></span></td>
+                                            <td><span><b>Unit</b></span></td>
                                             <td><span><b>Present Shipping</b></span></td>
                                             <td><span><b>Price</b></span></td>
                                             <td class="inquiry_vat_chkbox"><span><b>Vat</b></span></td>
@@ -128,12 +128,18 @@
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
                                                     {{isset($product['order_product_details']->alias_name)?$product['order_product_details']->alias_name:'' }}
-                                                    <input class="form-control " placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{isset($product['order_product_details']['product_category']->product_category_name)?$product['order_product_details']['product_category']->product_category_name:''}}" readonly="readonly" >
+                                                    <input class="form-control each_product_detail" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{isset($product['order_product_details']['product_category']->product_category_name)?$product['order_product_details']['product_category']->product_category_name:''}}" readonly="readonly" >
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}"  value="{{$product->product_category_id}}" readonly="readonly">
                                                     <input type="hidden" name="product[{{$key}}][order]" value="{{$product->id}}">
                                                 </div>
                                             </td>
-                                            
+                                            <td class="col-md-1">
+                                                <div class="form-group">
+                                                    <!--{{$product->pending_quantity}}-->
+                                                    {{$product->quantity}}
+                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->pending_quantity}}" type="hidden" >
+                                                </div>
+                                            </td>
                                             <td class="col-md-2">
                                                 <div class="form-group ">
                                                     @foreach($units as $unit)
@@ -142,13 +148,6 @@
                                                     <input type="hidden" value="{{$unit->id}}" name="product[{{$key}}][units]">
                                                     @endif
                                                     @endforeach
-                                                </div>
-                                            </td>
-                                            <td class="col-md-1">
-                                                <div class="form-group">
-                                                    <!--{{$product->pending_quantity}}-->
-                                                    {{$product->quantity}}
-                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->pending_quantity}}" type="hidden" >
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
