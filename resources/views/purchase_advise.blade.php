@@ -12,9 +12,9 @@
                 <div class="clearfix">
                     <h1 class="pull-left">Purchase Advice</h1>
                     <div class="pull-right top-page-ui">
-                        <a href="{{url('purchaseorder_advise/create')}}" class="btn btn-primary pull-right">
+<!--                        <a href="{{url('purchaseorder_advise/create')}}" class="btn btn-primary pull-right">
                             <i class="fa fa-plus-circle fa-lg"></i> Create Purchase Advice Independently
-                        </a>
+                        </a>-->
                         <div class="form-group pull-right">
                             <form method="GET" id="purchaseaAdviseFilterForm">
                                 <div class="col-md-12">
