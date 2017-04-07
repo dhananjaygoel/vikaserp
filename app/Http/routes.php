@@ -260,6 +260,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('upload_customer_excel', 'WelcomeController@upload_customer_excel');
     Route::resource('import_delivery_location', 'WelcomeController@import_delivery_location');
     Route::post('process_import_delivery_location', 'WelcomeController@process_import_delivery_location');
+    
+    /*Labour*/
+    Route::get('labour-performance', 'LabourController@labourPerformance');   
+    Route::resource('labours', 'LabourController');
+    
+    
+    
     /* Helpful routes for developers */
     Route::get('delete_reports', 'WelcomeController@delete_reports');
     Route::get('removedata/{tablename}', 'WelcomeController@removedata');
@@ -282,6 +289,7 @@ Route::group(['middleware' => ['auth']], function() {
     
     /*Use ones approved orders and inquiry module*/
     Route::get('make_approved', 'WelcomeController@make_approved');
+    Route::get('get_set_labours', 'WelcomeController@get_set_labours');
     
 });
 
