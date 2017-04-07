@@ -210,3 +210,12 @@
 .complex-data-table .text-bold td {font-weight: bold;}
 
 .complex-data-table .text-bold  {font-weight: bold;}
+
+
+.loading {    
+    background-color: #ffffff;
+    background-image: url("http://loadinggif.com/images/image-selection/3.gif");
+    background-size: 25px 25px;
+    background-position:right center;
+    background-repeat: no-repeat;
+}   
