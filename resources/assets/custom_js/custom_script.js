@@ -396,7 +396,7 @@ $(document).ready(function () {
 //        $("#add_product_table_purchase").children("tbody").append(purchase_html);
 //    });
 
-    $("#add_purchase_advice_product_row1").on("click", function () {
+    $("#add_purchase_advice_product_row").on("click", function () {
 
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
@@ -428,7 +428,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-1">' +
                 '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="actual pieces" id="actual_pieces' + current_row_count + '" name="product[' + current_row_count + '][actual_pieces]">' +
+                '<input type="text" class="form-control" placeholder="actual_pieces" id="actual_pieces' + current_row_count + '" name="product[' + current_row_count + '][actual_pieces]">' +
                 '</div>' +
                 '</td>' +
                 '<td>' +

@@ -46,26 +46,27 @@ class OrderController extends Controller {
      * Functioanlity: Display order details
      */
     public function index() {
-
+        
         $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 5) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
         }
-
-        if (Auth::user()->role_id == 5) {
-            $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
-                    ->where('phone_number1', '=', Auth::user()->mobile_number)
-                    ->where('email', '=', Auth::user()->email)
+        
+        if(Auth::user()->role_id == 5)
+        {
+            $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)
                     ->first();
         }
-
-        $order_sorttype = Session::get('order-sort-type');
-        if (isset($order_sorttype) && ($order_sorttype != "")) {
-            $data['order_filter'] = $order_sorttype;
-        }
-        $q = Order::query();
-        if (Auth::user()->role_id == 5) {
-
+        
+            $order_sorttype = Session::get('order-sort-type');
+            if (isset($order_sorttype) && ($order_sorttype != "")) {
+                $data['order_filter'] = $order_sorttype;
+            }
+            $q = Order::query();
+           if(Auth::user()->role_id == 5){
+               
 //                if (isset($data['order_filter']) && $data['order_filter'] != '') {
 //                    if($data['order_filter'] != 'Completed')
 //                    {
@@ -83,110 +84,97 @@ class OrderController extends Controller {
 //                    }
 ////                    $q->where('order_status', '=', $data['order_filter']);
 //                }
-        } else {
-            if (isset($data['order_filter']) && $data['order_filter'] != '') {
-                if ($data['order_filter'] == 'approval') {
-                    $q->where('is_approved', '=', 'no')
-                        ->where('order_status', '=', 'pending');
-                } elseif ($data['order_filter'] == 'pending') {
-                    $q->where('is_approved', '=', 'yes')
-                        ->where('order_status', '=', 'pending');
-                }                
-                else {
+               
+           }else{                       
+                if (isset($data['order_filter']) && $data['order_filter'] != '') {
                     $q->where('order_status', '=', $data['order_filter']);
+                } elseif (isset($data['order_status']) && $data['order_status'] != '') {
+                    $q->where('order_status', '=', $data['order_status']);
+                } else {
+                    $q->where('order_status', '=', 'pending');
                 }
-            } elseif (isset($data['order_status']) && $data['order_status'] != '') {
-                $q->where('order_status', '=', $data['order_status']);
-            } else {
-                $q->where('order_status', '=', 'pending')
-                    ->where('is_approved', '=', 'yes');
-            }
-            if (isset($data['party_filter']) && $data['party_filter'] != '') {
-                $q->where('customer_id', '=', $data['party_filter']);
-            }
-            if (isset($data['fulfilled_filter']) && $data['fulfilled_filter'] != '') {
-                if ($data['fulfilled_filter'] == '0') {
-                    $q->where('order_source', '=', 'warehouse');
+                if (isset($data['party_filter']) && $data['party_filter'] != '') {
+                    $q->where('customer_id', '=', $data['party_filter']);
                 }
-                if ($data['fulfilled_filter'] == 'all') {
-                    $q->where('order_source', '=', 'supplier');
+                if (isset($data['fulfilled_filter']) && $data['fulfilled_filter'] != '') {
+                    if ($data['fulfilled_filter'] == '0') {
+                        $q->where('order_source', '=', 'warehouse');
+                    }
+                    if ($data['fulfilled_filter'] == 'all') {
+                        $q->where('order_source', '=', 'supplier');
+                    }
                 }
+                if ((isset($data['location_filter'])) && $data['location_filter'] != '')                 {
+                    $q->where('delivery_location_id', '=', $data['location_filter']);
+                }
+            
+           }
+            if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+                $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+                $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+                if ($date1 == $date2) {
+                    $q->where('updated_at', 'like', $date1 . '%');
+                } else {
+                    $q->where('updated_at', '>=', $date1);
+                    $q->where('updated_at', '<=', $date2.' 23:59:59');
+                }
+                $search_dates = [
+                    'export_from_date' => $data["export_from_date"],
+                    'export_to_date' => $data["export_to_date"]
+                ];
             }
-            if ((isset($data['location_filter'])) && $data['location_filter'] != '') {
-                $q->where('delivery_location_id', '=', $data['location_filter']);
-            }
-        }
-        if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
-            $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
-            $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
-            if ($date1 == $date2) {
-                $q->where('updated_at', 'like', $date1 . '%');
+            $product_category_id = 0;
+            if (isset($data['size_filter']) && $data['size_filter'] != '') {
+                $size = $data['size_filter'];
+                $subquerytest = ProductSubCategory::select('id')->where('size', '=', $size)->first();
+                if (isset($subquerytest)) {
+                    $product_category_id = $subquerytest->id;
+                    $q->whereHas('all_order_products.product_sub_category', function($query) use ($product_category_id) {
+                        $query->where('id', '=', $product_category_id);
+                    });
+                } else {
+                    return Redirect::back()->withInput()->with('flash_message', 'Please Enter Valid Size Name');
+                }
             } else {
-                $q->where('updated_at', '>=', $date1);
-                $q->where('updated_at', '<=', $date2 . ' 23:59:59');
+                $q->with('all_order_products');
             }
-            $search_dates = [
-                'export_from_date' => $data["export_from_date"],
-                'export_to_date' => $data["export_to_date"]
-            ];
-        }
-        $product_category_id = 0;
-        if (isset($data['size_filter']) && $data['size_filter'] != '') {
-            $size = $data['size_filter'];
-            $subquerytest = ProductSubCategory::select('id')->where('size', '=', $size)->first();
-            if (isset($subquerytest)) {
-                $product_category_id = $subquerytest->id;
-                $q->whereHas('all_order_products.product_sub_category', function($query) use ($product_category_id) {
-                    $query->where('id', '=', $product_category_id);
-                });
-            } else {
-                return Redirect::back()->withInput()->with('flash_message', 'Please Enter Valid Size Name');
-            }
-        } else {
-            $q->with('all_order_products');
-        }
-        if (Input::has('flag') && Input::get('flag') == 'true') {
-            if (Auth::user()->role_id <> 5) {               
+            if (Input::has('flag') && Input::get('flag') == 'true') {
+                if(Auth::user()->role_id <> 5){
                 $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('flaged', 'desc')->orderBy('created_at', 'desc')->paginate(20);
+                }
+                if(Auth::user()->role_id == 5){
+                    $allorders = $q->where('customer_id','=',$cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('flaged', 'desc')->orderBy('created_at', 'desc')->paginate(20);
+                }
+                 
+            } else {
+                if(Auth::user()->role_id <> 5){
+                $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->paginate(20);
+                }
+                if(Auth::user()->role_id == 5){
+                $allorders = $q->where('customer_id','=',$cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->paginate(20);
+                }
+                
             }
-            if (Auth::user()->role_id == 5) {
-                $allorders = $q->where('customer_id', '=', $cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('flaged', 'desc')->orderBy('updated_at', 'desc')->paginate(20);
-            }
-        } else {
-            if (Auth::user()->role_id <> 5) {
-                $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled', 'createdby')->orderBy('updated_at', 'desc')->paginate(20);
-            }
-            if (Auth::user()->role_id == 5) {
-                $allorders = $q->where('customer_id', '=', $cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->paginate(20);
-            }
-        }
-        $users = User::all();
-        if (Auth::user()->role_id <> 5) {
+            $users = User::all();
+            if(Auth::user()->role_id <> 5){
             $customers = Customer::orderBy('tally_name', 'ASC')->get();
-        }
-        if (Auth::user()->role_id == 5) {
-            $customers = Customer::where('id', '=', $cust->id)->orderBy('tally_name', 'ASC')->get();
-        }
-
-        $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
-        $delivery_order = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('product_category_id', '=', $product_category_id)->get();
-        $product_size = ProductSubCategory::all();
-
-        $pending_orders = $this->checkpending_quantity($allorders);
-        $allorders->setPath('orders');
-
-//        $non_approved_orders = Order::with('all_order_products', 'customer', 'delivery_location', 'createdby')
-//                ->where('is_approved', '=', 'no')
-//                ->where('order_status', '=', 'pending')
-//                ->orderBy('created_at', 'desc')
-//                ->paginate(20);
-//
-//        $this->checkpending_quantity($non_approved_orders);
-//
-//        if (isset($data['order_filter']) && $data['order_filter'] != '' && $data['order_filter'] == 'approval') {
-//            $allorders = $non_approved_orders;
-//        }
-
+            }
+            if(Auth::user()->role_id == 5){
+            $customers = Customer::where('id','=',$cust->id)->orderBy('tally_name', 'ASC')->get();
+            }
+            
+            $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();   
+            $delivery_order = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('product_category_id', '=', $product_category_id)->get();
+            $product_size = ProductSubCategory::all();
+           
+            $pending_orders = $this->checkpending_quantity($allorders);
+            $allorders->setPath('orders');
+            
+//            echo "<pre>";
+//            print_r($allorders->toArray());
+//            echo "</pre>";
+//            exit;
+            
         return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id', 'search_dates'));
     }
 
@@ -198,30 +186,34 @@ class OrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        if (Auth::user()->role_id == 5) {
-            $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
-                    ->where('phone_number1', '=', Auth::user()->mobile_number)
-                    ->where('email', '=', Auth::user()->email)
-                    ->first();
-
-            $order = Customer::with('delivery_location')->find($cust->id);
-
+        
+       
+        
+        
+        if ( Auth::user()->role_id == 5) {
+        $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)                    
+                    ->first();       
+            
+        $order = Customer::with('delivery_location')->find($cust->id);
+        
 //         $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);
 //        if (count($order) < 1) {
 //            return redirect('orders')->with('flash_message', 'Order does not exist.');
 //        }
 
-            if (count($order) < 1) {
-                return redirect('order')->with('flash_message', 'Order does not exist.');
-            }
+         if (count($order) < 1) {
+            return redirect('order')->with('flash_message', 'Order does not exist.');
+         }
         }
-
-
-
+        
+        
+        
         $units = Units::all();
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
-        return View::make('add_orders', compact('customers', 'order', 'units', 'delivery_locations'));
+        return View::make('add_orders', compact('customers','order', 'units', 'delivery_locations'));
     }
 
     /**
@@ -340,8 +332,6 @@ class OrderController extends Controller {
         $order->expected_delivery_date = $datetime->format('Y-m-d');
         $order->remarks = $input_data['order_remark'];
         $order->order_status = "Pending";
-        if ($order->is_approved == 'no')
-            $order->is_approved = (Auth::user()->role_id == 0 ? 'yes' : 'no');
         if (isset($input_data['location']) && ($input_data['location'] != "")) {
             $order->delivery_location_id = 0;
             $order->other_location = $input_data['location'];
@@ -356,7 +346,7 @@ class OrderController extends Controller {
          * SEND SMS TO CUSTOMER FOR NEW ORDER
          * ----------------------------------
          */
-
+        
         $input = Input::all();
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             $customer = Customer::with('manager')->find($customer_id);
@@ -410,9 +400,9 @@ class OrderController extends Controller {
                 }
             }
         }
-
-
-
+        
+        
+      
         $order->save();
         $order_id = $order->id;
         $order_products = array();
@@ -476,22 +466,24 @@ class OrderController extends Controller {
      * Functioanlity: Display order details of particulat order
      */
     public function show($id) {
-
-
-
-        if (Auth::user()->role_id == 5) {
-            $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
-                    ->where('phone_number1', '=', Auth::user()->mobile_number)
-                    ->where('email', '=', Auth::user()->email)
+        
+       
+        
+         if(Auth::user()->role_id == 5)
+        {
+            $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)                    
                     ->first();
-
-            $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->where('customer_id', '=', $cust->id)->find($id);
+            
+             $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->where('customer_id','=',$cust->id)->find($id);
         }
-
-        if (Auth::user()->role_id <> 5) {
+        
+        if(Auth::user()->role_id <> 5)
+        {
             $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->find($id);
         }
-
+       
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }
@@ -505,25 +497,27 @@ class OrderController extends Controller {
      * Functioanlity: Show edit order details page
      */
     public function edit($id) {
-
+        
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-
-
-        if (Auth::user()->role_id == 5) {
-            $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
-                    ->where('phone_number1', '=', Auth::user()->mobile_number)
-                    ->where('email', '=', Auth::user()->email)
+       
+        
+        if(Auth::user()->role_id == 5)
+        {
+            $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)                    
                     ->first();
-
-            $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->where('customer_id', '=', $cust->id)->find($id);
+            
+             $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer','createdby')->where('customer_id','=',$cust->id)->find($id);
         }
-
-        if (Auth::user()->role_id <> 5) {
-            $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->find($id);
+        
+        if(Auth::user()->role_id <> 5)
+        {
+             $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer','createdby')->find($id);
         }
-
+        
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }
@@ -675,8 +669,6 @@ class OrderController extends Controller {
         }
         $order_prod = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $id)->first();
         $order->updated_at = $order_prod->updated_at;
-        if ($order->is_approved == 'no')
-            $order->is_approved = (Auth::user()->role_id == 0 ? 'yes' : 'no');
         $order->save();
 
         /*
@@ -920,7 +912,7 @@ class OrderController extends Controller {
         if (Auth::user()->role_id == 5) {
             return redirect('orders')->with('error', 'You do not have permission.');
         }
-
+  
         $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
@@ -1128,8 +1120,8 @@ class OrderController extends Controller {
                 foreach ($delivery_order_products as $dopk => $dopv) {
                     $product_size = ProductSubCategory::find($dopv->product_category_id);
 //                   $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity;
-
-                    if ($dopv->unit_id == 1) {
+                    
+                      if ($dopv->unit_id == 1) {
                         $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity;
                     } elseif ($dopv->unit_id == 2) {
                         $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight;
@@ -1142,7 +1134,7 @@ class OrderController extends Controller {
                 foreach ($order['all_order_products'] as $opk => $opv) {
                     $product_size = ProductSubCategory::find($opv->product_category_id);
 //                    $order_quantity = $order_quantity + $opv->quantity;
-
+                    
                     if ($opv->unit_id == 1) {
                         $order_quantity = $order_quantity + $opv->quantity;
                     } elseif ($opv->unit_id == 2) {
@@ -1196,11 +1188,12 @@ class OrderController extends Controller {
             $excel_sheet_name = 'Cancelled';
             $excel_name = 'Order-Cancelled-' . date('dmyhis');
         }
-
+        
         if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
-            if (Auth::user()->role_id <> 5) {
+            if(Auth::user()->role_id <> 5)
+            {
                 if ($date1 == $date2) {
                     $order_objects = Order::where('order_status', $order_status)
                             ->where('updated_at', 'like', $date1 . '%')
@@ -1210,57 +1203,61 @@ class OrderController extends Controller {
                 } else {
                     $order_objects = Order::where('order_status', $order_status)
                             ->where('updated_at', '>=', $date1)
-                            ->where('updated_at', '<=', $date2 . ' 23:59:59')
+                            ->where('updated_at', '<=', $date2.' 23:59:59')
                             ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
                             ->orderBy('created_at', 'desc')
                             ->get();
                 }
             }
-            if (Auth::user()->role_id == 5) {
-                $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
-                        ->where('phone_number1', '=', Auth::user()->mobile_number)
-                        ->where('email', '=', Auth::user()->email)
-                        ->first();
-
+            if(Auth::user()->role_id == 5)
+            {
+                $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)
+                    ->first();  
+                
                 if ($date1 == $date2) {
                     $order_objects = Order::where('updated_at', 'like', $date1 . '%')
-                            ->where('customer_id', '=', $cust->id)
+                            -> where('customer_id','=',$cust->id)
                             ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
                             ->orderBy('created_at', 'desc')
                             ->get();
                 } else {
                     $order_objects = Order::where('updated_at', '>=', $date1)
-                            ->where('updated_at', '<=', $date2 . ' 23:59:59')
-                            ->where('customer_id', '=', $cust->id)
+                            ->where('updated_at', '<=', $date2.' 23:59:59')
+                            ->where('customer_id','=',$cust->id)
                             ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
                             ->orderBy('created_at', 'desc')
                             ->get();
                 }
             }
+            
+            
         } else {
-
-            if (Auth::user()->role_id <> 5) {
-
+            
+            if(Auth::user()->role_id <> 5)
+            {
+        
                 $order_objects = Order::where('order_status', $order_status)
-                        ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
-                        ->orderBy('created_at', 'desc')
-                        ->get();
+                    ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
             }
-
-            if (Auth::user()->role_id == 5) {
-                $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
-                        ->where('phone_number1', '=', Auth::user()->mobile_number)
-                        ->where('email', '=', Auth::user()->email)
-                        ->first();
-
-
-                $order_objects = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
-                        ->where('customer_id', '=', $cust->id)
-                        ->orderBy('created_at', 'desc')
-                        ->get();
-
-                $excel_sheet_name = 'Order';
-                $excel_name = 'Order-' . date('dmyhis');
+           
+            if(Auth::user()->role_id == 5){
+               $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)
+                    ->first();  
+                     
+                
+               $order_objects = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                    -> where('customer_id','=',$cust->id)   
+                    ->orderBy('created_at', 'desc')
+                    ->get(); 
+               
+               $excel_sheet_name = 'Order';
+               $excel_name = 'Order-' . date('dmyhis');
             }
         }
 
@@ -1277,66 +1274,67 @@ class OrderController extends Controller {
             })->export('xls');
         }
     }
-
-    public function track($id) {
-
+    
+    
+    
+     public function track($id) {
+         
         if (Auth::user()->role_id != 5) {
-
-            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+         
+             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
-
-        $is_approve = Order::where('id', '=', $id)
-                ->where('is_approved', 'no')
-                ->get();
-
-        if (count($is_approve)) {
-            return Redirect::to('orders')->withInput()->with('error', 'Order have to be approved by Admin.');
-        }
-
-
-        if (isset($id)) {
-            $order_id = $id;
-            $customer = Order::find($id);
-            if (count($customer) == 0) {
-                return Redirect::back()->withInput()->with('error', 'Invalid Order.');
+        
+        
+        
+         
+        if(isset($id)){
+           $order_id = $id;
+           $customer = Order::find($id);
+           if(count($customer)==0)
+            {
+             return Redirect::back()->withInput()->with('error', 'Invalid Order.');
             }
-
-            $customer_id = $customer->customer_id;
-
-            $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
-                    ->where('phone_number1', '=', Auth::user()->mobile_number)
-                    ->where('email', '=', Auth::user()->email)
-                    ->first();
-        } else {
-            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+          
+           $customer_id = $customer->customer_id;
+           
+            $cust = Customer::where('owner_name','=', Auth::user()->first_name)
+                    -> where('phone_number1','=', Auth::user()->mobile_number) 
+                    -> where('email','=', Auth::user()->email)                    
+                    ->first(); 
         }
-
-
-        if ($customer_id <> $cust->id) {
+        else{
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }  
+        
+        
+        if($customer_id <> $cust->id)
+        {
+             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
-
-
-
-        $order_status_responase = array();
-        if (isset($order_id) && $order_id > 0 && isset($customer_id) && $customer_id > 0) {
-
-            $order_status_responase['order_details'] = Order::with('all_order_products')->where('id', '=', $order_id)->where('customer_id', '=', $customer_id)->get();
-
-            $order_status_responase['delivery_order_details'] = DeliveryOrder::with('delivery_product')->where('order_id', '=', $order_id)->where('customer_id', '=', $customer_id)->get();
-
-            $order_status_responase['delivery_challan_details'] = DeliveryChallan::with('delivery_challan_products')->where('order_id', '=', $order_id)->where('customer_id', '=', $customer_id)->get();
-        } else {
+           
+           
+        
+        $order_status_responase=array();
+        if(isset($order_id) && $order_id> 0 && isset($customer_id) && $customer_id >0){
+            
+            $order_status_responase['order_details'] = Order::with('all_order_products')->where('id','=',$order_id)->where('customer_id','=',$customer_id)->get();
+           
+            $order_status_responase['delivery_order_details'] = DeliveryOrder::with('delivery_product')->where('order_id','=',$order_id)->where('customer_id','=',$customer_id)->get();
+           
+            $order_status_responase['delivery_challan_details'] = DeliveryChallan::with('delivery_challan_products')->where('order_id','=',$order_id)->where('customer_id','=',$customer_id)->get();
+        }
+        else{
             return json_encode(array('result' => false, 'track_order_status' => false, 'message' => 'Order not found'));
         }
-
-        //  return json_encode($order_status_responase);
+        
+      //  return json_encode($order_status_responase);
 //       echo "<pre>";
 //       print_r( $order_status_responase['delivery_order_details']->toArray());
 //       echo "</pre>";
 //       exit;
-
-        return View::make('track_order', compact('order_status_responase'));
+       
+       return View::make('track_order', compact('order_status_responase'));
+        
     }
 
 }

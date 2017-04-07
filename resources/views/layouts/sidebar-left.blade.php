@@ -79,63 +79,6 @@
                     </li>
                     @endif
                     @endif
-                    
-                    
-                    
-                     @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 )
-                    <li class="<?php
-                    if (Request::is('labour*') ) {
-                        echo 'active';
-                    }
-                    ?>">
-                        <a href="#" class="dropdown-toggle">
-                            <i class="fa fa-users"></i>
-                            <span>Labour and Loaded By</span>
-                            <i class="fa fa-chevron-circle-right drop-icon"></i>
-                        </a>
-                        <ul class="submenu">
-                           
-                            <li class="{{ (Request::is('*labours*') ? 'active' : '') }}">
-                                <a href="{{url('labours')}}" >
-                                    Labours
-                                </a>
-                            </li>
-                            
-                             <li class="{{ (Request::is('*performance*') ? 'active' : '') }}">
-                                <a href="{{url('labour-performance')}}" >
-                                    Labours Performance
-                                </a>
-                            </li>
-                            
-<!--                            <li class="{{ (Request::is('*labour-months*') ? 'active' : '') }}">
-                                <a href="{{url('labour-months')}}" >
-                                    Labours Month-Wise Performance
-                                </a>
-                            </li>-->
-                            
-<!--                            <li class="{{ (Request::is('*loaded*') ? 'active' : '') }}">
-                                <a href="{{url('loaded-by')}}" >
-                                    Loaded-by
-                                </a>
-                            </li>
-                            
-                             <li class="{{ (Request::is('*loaded-by*') ? 'active' : '') }}">
-                                <a href="{{url('loaded-by-days')}}" >
-                                    Loaded-by Day-Wise Performance
-                                </a>
-                            </li>
-                            
-                            <li class="{{ (Request::is('*loaded-by*') ? 'active' : '') }}">
-                                <a href="{{url('loaded-by-months')}}" >
-                                    Loaded-by Month-Wise Performance
-                                </a>
-                            </li>-->
-                                                   
-                        </ul>
-                    </li>
-                    @endif
-                    
-                    
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 5)
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     <li class="{{ (Request::is('*inquiry*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Inquiry">
