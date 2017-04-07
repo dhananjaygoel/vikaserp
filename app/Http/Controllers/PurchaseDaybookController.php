@@ -41,15 +41,15 @@ class PurchaseDaybookController extends Controller {
             if ($date1 == $date2) {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
                         ->where('order_status', 'completed')
-                        ->where('updated_at', 'like', $date1 . '%')
+                        ->where('created_at', 'like', $date1 . '%')
                         ->with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
                         ->orderBy('created_at', 'desc')
                         ->Paginate(20);
             } else {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
                         ->where('order_status', 'completed')
-                        ->where('updated_at', '>=', $date1)
-                        ->where('updated_at', '<=', $date2.' 23:59:59')
+                        ->where('created_at', '>=', $date1)
+                        ->where('created_at', '<=', $date2.' 23:59:59')
                         ->with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
                         ->orderBy('created_at', 'desc')
                         ->Paginate(20);
@@ -122,14 +122,14 @@ class PurchaseDaybookController extends Controller {
             if ($date1 == $date2) {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
                         ->where('order_status', 'completed')
-                        ->where('updated_at', 'like', $date1 . '%')
+                        ->where('created_at', 'like', $date1 . '%')
                         ->orderBy('created_at', 'desc')
                         ->get();
             } else {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
                         ->where('order_status', 'completed')
-                        ->where('updated_at', '>=', $date1)
-                        ->where('updated_at', '<=', $date2.' 23:59:59')
+                        ->where('created_at', '>=', $date1)
+                        ->where('created_at', '<=', $date2.' 23:59:59')
                         ->orderBy('created_at', 'desc')
                         ->get();
             }
