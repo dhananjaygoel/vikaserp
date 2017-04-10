@@ -148,7 +148,7 @@
                                 <tbody>
                                     <?php $i = ($delivery_data->currentPage() - 1 ) * $delivery_data->perPage() + 1; ?>
                                     @foreach($delivery_data as $delivery)
-                                    <tr id="delivery_order_row_{{$delivery->id}}">
+                                    <tr id="delivery_order_row_{{$delivery->id}}" {{($delivery->present_shipping==0)?'style = display:none':''}} >
                                         <td>
                                             <span class="{{($delivery->flaged==true)?'filled_star flags':'empty_star flags'}}" data-orderid="{{$delivery->id}}"></span>
                                         </td>

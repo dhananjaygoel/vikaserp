@@ -1805,11 +1805,11 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
 //    }
     var tot_products = $(".add_product_row").length;
     var j = 0;
-    var present_shiipein_zero_count = 0;
-    var total_shipping = 0;
+    var present_shippein_zero_count = 0;
+   
     for (var i = 0; i <= tot_products + 1; i++) {
         if ($("#present_shipping_" + i).val() == 0) {
-            present_shiipein_zero_count++;
+            present_shippein_zero_count++;
         }
         if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
             j++;
@@ -1838,10 +1838,8 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
             }
         }
     }   
-    if (tot_products == present_shiipein_zero_count) {
-
+    if (tot_products == present_shippein_zero_count) {
         for (var j = 0; j <= tot_products ; j++) {
-
             $('#present_shipping_' + j).addClass('error_validation');
         }
         status_form = 1;
