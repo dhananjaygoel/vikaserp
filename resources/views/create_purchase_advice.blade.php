@@ -92,7 +92,7 @@
                                                 </td>
 
                                                 <td class="col-md-1">
-                                                    <input type="tel" class="form-control" name="product[{{$key}}][actual_pieces]" value="" onkeypress=" return numbersOnly(this,event,true,false);">
+                                                    <input type="tel" class="form-control" name="product[{{$key}}][actual_pieces]" id="actual_pieces_{{$key}}" value="" onkeypress=" return numbersOnly(this,event,true,false);">
 
                                                 </td>
 

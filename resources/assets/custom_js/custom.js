@@ -1719,6 +1719,22 @@ $('body').delegate(".btn_purorder_to_puradvice", "click", function () {
     var status_form = 0;
     var tot_products = $(".add_product_row").length;
     var j = 0;
+    var present_shippein_zero_count = 0;
+        for (var i = 0; i <= tot_products + 1; i++) {
+        if ($("#actual_pieces_" + i).val() == 0) {
+            present_shippein_zero_count++;
+        }
+        
+     
+    }
+    if (tot_products == present_shippein_zero_count) {
+        for (var j = 0; j <= tot_products; j++) {
+            $('#actual_pieces_' + j).addClass('error_validation');
+        }
+        status_form = 1;
+    }
+    
+    
     if ($("#vehicle_number").val() == "") {
         $("#vehicle_number").addClass('error_validation');
         status_form = 1;
@@ -1728,7 +1744,7 @@ $('body').delegate(".btn_purorder_to_puradvice", "click", function () {
         status_form = 1;
     }
 
-    if (status_form == 1) {
+     if (status_form == 1) {
         $('html, body').animate({
             scrollTop: $('.breadcrumb').offset().top
         }, 1000);
