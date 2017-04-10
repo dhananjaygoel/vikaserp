@@ -65,7 +65,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group searchproduct">
 <!--                                        <input class="form-control" placeholder="Enter Supplier Name " type="text" name="existing_supplier_name" id="existing_supplier_name">-->
-                                        <input class="form-control focus_on_enter" placeholder="Enter Supplier Name " type="text" id="existing_customer_name" name="existing_supplier_name" value="{{$purchase_order['customer']->tally_name}}" tabindex="1" >
+                                        <input class="form-control focus_on_enter" placeholder="Enter Supplier Name " type="text" id="existing_customer_name" name="existing_supplier_name"  tabindex="1" >
                                         <input type="hidden" id="existing_customer_id" name="autocomplete_supplier_id" value="{{$purchase_order['customer']->id}}"> 
                                         <!--<i class="fa fa-search search-icon"></i>-->
                                     </div>
