@@ -1806,7 +1806,7 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
     var tot_products = $(".add_product_row").length;
     var j = 0;
     var present_shiipein_zero_count = 0;
-    for (i = 0; i <= tot_products + 1; i++) {
+    for (var i = 0; i <= tot_products + 1; i++) {
         if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
             j++;
         } else {
@@ -1840,9 +1840,10 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
     }
 
     if (tot_products == present_shiipein_zero_count) {
-        for (i = 0; i <= tot_products + 1; i++) {
-        $('#present_shipping_'+i).addClass('error_validation');
-    }
+        for (var j = 0; j <= tot_products + 1; j++) {
+            console.log(j);
+            $('#present_shipping_' + j).addClass('error_validation');
+        }
         status_form = 1;
     }
 //    if (j == tot_products) {
@@ -2589,7 +2590,7 @@ $(function () {
                 },
             });
 
-  },
+        },
         _removeIfInvalid: function (event, ui) {
 
             // Selected an item, nothing to do
