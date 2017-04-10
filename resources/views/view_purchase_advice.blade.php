@@ -64,7 +64,7 @@
                                         <td><span>Remark</span></td>
                                     </tr>
                                     @foreach($purchase_advise['purchase_products'] as $product_data)
-                                    @if($product_data->order_type == 'purchase_advice')
+                                    @if($product_data->order_type == 'purchase_advice' && $product_data->actual_pieces > '0')
                                     <tr>
                                         <td>{{$product_data['purchase_product_details']->alias_name}}</td>
                                         <td>{{$product_data['unit']->unit_name}}</td>
