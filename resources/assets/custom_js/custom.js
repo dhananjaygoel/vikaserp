@@ -1838,7 +1838,7 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
             }
         }
     }
-
+    console.log(present_shiipein_zero_count);
     if (tot_products == present_shiipein_zero_count) {
         for (var j = 0; j <= tot_products + 1; j++) {
             console.log(j);
