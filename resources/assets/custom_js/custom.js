@@ -1837,13 +1837,10 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
                 status_form = 1;
             }
         }
-    }
-    console.log(present_shiipein_zero_count);
-    console.log(tot_products);
-
+    }   
     if (tot_products == present_shiipein_zero_count) {
 
-        for (var j = 0; j <= tot_products + 1; j++) {
+        for (var j = 0; j <= tot_products ; j++) {
 
             $('#present_shipping_' + j).addClass('error_validation');
         }
