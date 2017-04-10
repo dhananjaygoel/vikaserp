@@ -1806,6 +1806,7 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
     var tot_products = $(".add_product_row").length;
     var j = 0;
     var present_shiipein_zero_count = 0;
+    var total_shipping = 0;
     for (var i = 0; i <= tot_products + 1; i++) {
         if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
             j++;
@@ -1839,9 +1840,12 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
         }
     }
     console.log(present_shiipein_zero_count);
+    console.log(tot_products);
+
     if (tot_products == present_shiipein_zero_count) {
+
         for (var j = 0; j <= tot_products + 1; j++) {
-            console.log(j);
+
             $('#present_shipping_' + j).addClass('error_validation');
         }
         status_form = 1;
