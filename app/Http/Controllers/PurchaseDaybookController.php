@@ -122,21 +122,21 @@ class PurchaseDaybookController extends Controller {
             if ($date1 == $date2) {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
                         ->where('order_status', 'completed')
-                        ->where('created_at', 'like', $date1 . '%')
-                        ->orderBy('created_at', 'desc')
+                        ->where('updated_at', 'like', $date1 . '%')
+                        ->orderBy('updated_at', 'desc')
                         ->get();
             } else {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
                         ->where('order_status', 'completed')
-                        ->where('created_at', '>=', $date1)
-                        ->where('created_at', '<=', $date2.' 23:59:59')
-                        ->orderBy('created_at', 'desc')
+                        ->where('updated_at', '>=', $date1)
+                        ->where('updated_at', '<=', $date2.' 23:59:59')
+                        ->orderBy('updated_at', 'desc')
                         ->get();
             }
         } else {
             $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
                     ->where('order_status', 'completed')
-                    ->orderBy('created_at', 'desc')
+                    ->orderBy('updated_at', 'desc')
                     ->get();
         }
         Excel::create('Purchase Daybook', function($excel) use($purchase_daybook) {
