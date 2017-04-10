@@ -69,7 +69,7 @@
                                         <?php $key = 1; ?>
                                         @foreach($delivery_data['delivery_product'] as $product)
                                         @if($product->order_type =='delivery_order')
-                                        <tr id="add_row_{{$key}}" class="add_product_row">
+                                        <tr id="add_row_{{$key}}" class="add_product_row" {{($product->present_shipping==0)?'style = display:none':''}}>
                                             <td class="col-md-2">
                                                 <div class="form-group searchproduct">
                                                     {{ $product['order_product_details']->alias_name}}

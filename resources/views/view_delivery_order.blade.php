@@ -91,7 +91,7 @@
                                     </tr>
                                     <?php $grand = 0; ?>
                                     @foreach($delivery_data['delivery_product'] as $product)
-                                    @if($product->order_type =='delivery_order')
+                                    @if($product->order_type =='delivery_order' && isset($product->present_shipping) && $product->present_shipping > 0 )
                                     <tr>
                                         <td> {{ $product['order_product_details']->alias_name}}</td>
                                         <td>{{$product->present_shipping}}</td>
