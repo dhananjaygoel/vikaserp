@@ -126,7 +126,7 @@
                                     <tr id="challan_order_row_{{$challan->id}}">
                                         <td class="text-center">{{$k++}}</td>
                                         <td class="text-center">
-                                            {{ ($challan['customer']->tally_name != "") ? $challan['customer']->tally_name : $challan['customer']->owner_name }}
+                                            {{ (isset($challan['customer']->tally_name) && $challan['customer']->tally_name != "") ? $challan['customer']->tally_name : 'Anonymous User' }}
                                         </td>
                                         <td class="text-center">
                                             {{ ($challan->serial_number != '') ? $challan->serial_number : '' }}
@@ -172,7 +172,7 @@
                                     @elseif($challan->challan_status == 'completed')
                                     <tr id="challan_order_row_{{$challan->id}}">
                                         <td class="text-center">{{$k++}}</td>
-                                        <td class="text-center">{{ ($challan['customer']->tally_name != "") ? $challan['customer']->tally_name : $challan['customer']->owner_name }}</td>
+                                        <td class="text-center">{{ (isset($challan['customer']->tally_name) && $challan['customer']->tally_name != "") ? $challan['customer']->tally_name : 'Anonymous User' }}</td>
                                         <td class="text-center">
                                             @if($challan->serial_number == '')
                                             @elseif(isset($challan->serial_number) && $challan->serial_number != '')

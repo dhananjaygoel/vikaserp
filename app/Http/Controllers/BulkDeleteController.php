@@ -39,8 +39,8 @@ class BulkDeleteController extends Controller {
     }
 
     public function show_result() {
- if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $module = Input::get('select_module');
         $password = Input::get('password_delete');
@@ -94,21 +94,22 @@ class BulkDeleteController extends Controller {
                     }
                     if (isset($temp['customer']->tally_name) && $temp['customer']->tally_name != '')
                         $result_data[$key][0] = $temp['customer']->tally_name;
-                    elseif(isset($temp['customer']->owner_name))
+                    elseif (isset($temp['customer']->owner_name))
                         $result_data[$key][0] = $temp['customer']->owner_name;
                     $result_data[$key][1] = '';
                     if (isset($temp['inquiry_products'][0]))
                         $result_data[$key][1] = round($qty, 2);
-                    if(isset($temp['customer']->phone_number1)){
-                        $result_data[$key][2] = $temp['customer']->phone_number1;                           }
-                    
+                    if (isset($temp['customer']->phone_number1)) {
+                        $result_data[$key][2] = $temp['customer']->phone_number1;
+                    }
+
                     $result_data[$key][3] = '';
                     if (isset($temp['delivery_location']))
                         $result_data[$key][3] = $temp['delivery_location']->area_name;
                 }
                 break;
-                
-                 case 'inquiry-pending':
+
+            case 'inquiry-pending':
                 $head[0] = 'TALLY NAME';
                 $head[1] = 'TOTAL QUANTITY';
                 $head[2] = 'PHONE NUMBER';
@@ -143,17 +144,17 @@ class BulkDeleteController extends Controller {
                     }
                     if (isset($temp['customer']->tally_name) && $temp['customer']->tally_name != '')
                         $result_data[$key][0] = $temp['customer']->tally_name;
-                    elseif(isset ($temp['customer']->owner_name))
+                    elseif (isset($temp['customer']->owner_name))
                         $result_data[$key][0] = $temp['customer']->owner_name;
                     else
-                        $result_data[$key][0] ="";
+                        $result_data[$key][0] = "";
                     $result_data[$key][1] = '';
                     if (isset($temp['inquiry_products'][0]))
                         $result_data[$key][1] = round($qty, 2);
-                    if(isset($temp['customer']->phone_number1))
+                    if (isset($temp['customer']->phone_number1))
                         $result_data[$key][2] = $temp['customer']->phone_number1;
                     else
-                        $result_data[$key][2] ="";
+                        $result_data[$key][2] = "";
                     $result_data[$key][3] = '';
                     if (isset($temp['delivery_location']))
                         $result_data[$key][3] = $temp['delivery_location']->area_name;
@@ -233,19 +234,18 @@ class BulkDeleteController extends Controller {
                     if (isset($temp['customer']->tally_name) && $temp['customer']->tally_name != '')
                         $result_data[$key][0] = $temp['customer']->tally_name;
                     else
-                        $result_data[$key][0] = isset($temp['customer']->owner_name) ? $temp['customer']->owner_name :'';
+                        $result_data[$key][0] = isset($temp['customer']->owner_name) ? $temp['customer']->owner_name : '';
                     $total_size_quantity = 0;
                     foreach ($temp->all_order_products as $order_product_array) {
                         $total_size_quantity+=$order_product_array->quantity;
                     }
                     $result_data[$key][1] = round($total_size_quantity, 2);
-                    if(isset($temp['customer']->phone_number1)){
+                    if (isset($temp['customer']->phone_number1)) {
                         $result_data[$key][2] = $temp['customer']->phone_number1;
+                    } else {
+                        $result_data[$key][2] = 0;
                     }
-                    else{
-                        $result_data[$key][2] =0;
-                    }
-                    
+
                     if ($temp->delivery_location_id != 0)
                         $result_data[$key][3] = $temp['delivery_location']->area_name;
                     elseif ($temp->delivery_location_id == 0)
@@ -303,7 +303,7 @@ class BulkDeleteController extends Controller {
                     $result_data[$key][5] = $temp->vehicle_number;
                 }
                 break;
-                 case 'delivery_order_pending':
+            case 'delivery_order_pending':
                 $head[0] = 'DATE';
                 $head[1] = 'TALLY NAME';
                 $head[2] = 'DELIVERY LOCATION';
@@ -366,28 +366,31 @@ class BulkDeleteController extends Controller {
                 $newdate = ((strlen(Input::get('expected_date')) > 1) ? Input::get('expected_date') : date('Y-m-d')) . ' 23:59:59';
                 $result_temp = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'delivery_challan_products', 'delivery_order')
                                 ->where('created_at', '<=', $newdate)->orderBy('updated_at', 'desc')->Paginate(50);
-                
-                $present_shipping =0 ;
+
+                $present_shipping = 0;
                 foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;
-                    if ($temp['customer']->tally_name != '')
-                        $result_data[$key][0] = $temp['customer']->tally_name;
-                    else
-                        $result_data[$key][0] = $temp['customer']->owner_name;
+                    if (isset($temp['customer']->tally_name)) {
+                        if ($temp['customer']->tally_name != '')
+                            $result_data[$key][0] = $temp['customer']->tally_name;
+                        else
+                            $result_data[$key][0] = $temp['customer']->owner_name;                       
+                    }
+                    else{
+                       $result_data[$key][0]="Anonymous User"; 
+                    }
                     $result_data[$key][1] = $temp->serial_number;
-                    
-                    foreach($temp['delivery_challan_products'] as $delivery_challan_products)
-                    {
+                    foreach ($temp['delivery_challan_products'] as $delivery_challan_products) {
                         $present_shipping = $present_shipping + round($delivery_challan_products->present_shipping, 2);
                     }
-                    
+
                     $result_data[$key][2] = $present_shipping;
-                    $present_shipping=0;
+                    $present_shipping = 0;
                 }
-                
-                
+
+
                 break;
-                
+
             case 'delivery_challan_pending':
                 $head[0] = 'TALLY NAME';
                 $head[1] = 'SERIAL NUMBER';
@@ -406,7 +409,7 @@ class BulkDeleteController extends Controller {
                 $newdate = ((strlen(Input::get('expected_date')) > 1) ? Input::get('expected_date') : date('Y-m-d')) . ' 23:59:59';
                 $result_temp = DeliveryChallan::where('challan_status', '=', 'pending')->with('customer', 'delivery_challan_products', 'delivery_order')
                                 ->where('created_at', '<=', $newdate)->orderBy('updated_at', 'desc')->Paginate(50);
-                  $present_shipping =0 ;
+                $present_shipping = 0;
                 foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;
                     if ($temp['customer']->tally_name != '')
@@ -414,14 +417,13 @@ class BulkDeleteController extends Controller {
                     else
                         $result_data[$key][0] = $temp['customer']->owner_name;
                     $result_data[$key][1] = $temp->serial_number;
-                    
-                    foreach($temp['delivery_challan_products'] as $delivery_challan_products)
-                    {
+
+                    foreach ($temp['delivery_challan_products'] as $delivery_challan_products) {
                         $present_shipping = $present_shipping + round($delivery_challan_products->present_shipping, 2);
                     }
-                    
+
                     $result_data[$key][2] = $present_shipping;
-                      $present_shipping =0 ;
+                    $present_shipping = 0;
                 }
                 break;
 //----------------------------------------------------            
@@ -470,7 +472,7 @@ class BulkDeleteController extends Controller {
                 }
 
                 break;
-                
+
             case 'purchase_orders_pending':
                 $head[0] = 'SUPPLIER NAME';
                 $head[1] = 'MOBILE';
@@ -553,8 +555,8 @@ class BulkDeleteController extends Controller {
                 }
 
                 break;
-                
-                case 'purchase_advice_pending':
+
+            case 'purchase_advice_pending':
                 $head[0] = 'DATE';
                 $head[1] = 'TALLY NAME';
                 $head[2] = 'VECHILE NUMBER';
@@ -638,8 +640,8 @@ class BulkDeleteController extends Controller {
                     $result_data[$key][4] = round($temp['all_purchase_products']->sum('quantity'), 2);
                 }
                 break;
-                
-                case 'purchase_challan_pending':
+
+            case 'purchase_challan_pending':
                 $head[0] = 'TALLY NAME';
                 $head[1] = 'SERIAL NUMBER';
                 $head[2] = 'BILL NUMBER';
