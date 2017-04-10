@@ -110,7 +110,16 @@
                     $total_qunatity += ($total_qty->present_shipping * $total_qty['purchase_product_details']->weight);
                 }
                 if ($total_qty->unit_id == 3) {
-                    $total_qunatity += ($total_qty->present_shipping / $total_qty['purchase_product_details']->standard_length) * $total_qty['product_category']['product_sub_category']->weight;
+                    $wight;
+                    if(isset($total_qty['product_category']['product_sub_category']->weight)){
+                       $wight =$total_qty['product_category']['product_sub_category']->weight;
+                    }else if(isset($total_qty['purchase_product_details']->weight)){
+                       $wight =$total_qty['purchase_product_details']->weight;
+                    }else{
+                       $wight = 1; 
+                    }
+                    
+                    $total_qunatity += ($total_qty->present_shipping / $total_qty['purchase_product_details']->standard_length) * $wight;
                 }
                 ?>
                 @endforeach

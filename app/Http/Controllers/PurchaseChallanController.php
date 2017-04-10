@@ -519,7 +519,9 @@ class PurchaseChallanController extends Controller {
 
         $current_date = date("m/d");
         $date_letter = 'PC/' . $current_date . "/" . $id;
-        PurchaseChallan::where('id', $id)->update(array(
+        PurchaseChallan::where('id', $id)
+                ->where('order_status','<>','Completed')
+                ->update(array(
             'serial_number' => $date_letter,
             'order_status' => "Completed"
         ));

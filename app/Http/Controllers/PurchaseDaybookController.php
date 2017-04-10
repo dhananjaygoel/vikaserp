@@ -41,23 +41,23 @@ class PurchaseDaybookController extends Controller {
             if ($date1 == $date2) {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
                         ->where('order_status', 'completed')
-                        ->where('created_at', 'like', $date1 . '%')
+                        ->where('updated_at', 'like', $date1 . '%')
                         ->with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
-                        ->orderBy('created_at', 'desc')
+                        ->orderBy('updated_at', 'desc')
                         ->Paginate(20);
             } else {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
                         ->where('order_status', 'completed')
-                        ->where('created_at', '>=', $date1)
-                        ->where('created_at', '<=', $date2.' 23:59:59')
+                        ->where('updated_at', '>=', $date1)
+                        ->where('updated_at', '<=', $date2.' 23:59:59')
                         ->with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
-                        ->orderBy('created_at', 'desc')
+                        ->orderBy('updated_at', 'desc')
                         ->Paginate(20);
             }
         } else {
             $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details')
                     ->where('order_status', 'completed')
-                    ->orderBy('created_at', 'desc')
+                    ->orderBy('updated_at', 'desc')
                     ->Paginate(20);
         }
         $purchase_daybook->setPath('purchase_order_daybook');
