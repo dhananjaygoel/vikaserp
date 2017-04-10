@@ -1267,7 +1267,11 @@ $('body').delegate(".btn_edit_delivery_order", "click", function () {
 
         var tot_products = $(".add_product_row").length;
         var j = 0;
+        var present_shippein_zero_count = 0;
         for (i = 0; i <= tot_products + 1; i++) {
+            if ($("#present_shipping_" + i).val() == 0) {
+                present_shippein_zero_count++;
+            }
             if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
                 j++;
             } else {
@@ -1282,6 +1286,12 @@ $('body').delegate(".btn_edit_delivery_order", "click", function () {
                     console.log('#quantity_' + i + "--" + status_form);
                 }
             }
+        }
+        if (tot_products == present_shippein_zero_count) {
+            for (var j = 0; j <= tot_products; j++) {
+                $('#present_shipping_' + j).addClass('error_validation');
+            }
+            status_form = 1;
         }
 
         if (j == tot_products) {
@@ -1360,7 +1370,11 @@ $('body').delegate(".btn_edit_delivery_order", "click", function () {
 
         var tot_products = $(".add_product_row").length;
         var j = 0;
+        var present_shippein_zero_count = 0;
         for (i = 0; i <= tot_products + 1; i++) {
+            if ($("#present_shipping_" + i).val() == 0) {
+                present_shippein_zero_count++;
+            }
             if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
                 j++;
             } else {
@@ -1377,6 +1391,12 @@ $('body').delegate(".btn_edit_delivery_order", "click", function () {
                     status_form = 1;
                 }
             }
+        }     
+        if (tot_products == present_shippein_zero_count) {
+            for (var j = 0; j <= tot_products; j++) {
+                $('#present_shipping_' + j).addClass('error_validation');
+            }
+            status_form = 1;
         }
 
         if ($("#add_order_location").val() == "other") {
@@ -1806,7 +1826,7 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
     var tot_products = $(".add_product_row").length;
     var j = 0;
     var present_shippein_zero_count = 0;
-   
+
     for (var i = 0; i <= tot_products + 1; i++) {
         if ($("#present_shipping_" + i).val() == 0) {
             present_shippein_zero_count++;
@@ -1837,9 +1857,9 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
                 status_form = 1;
             }
         }
-    }   
+    }
     if (tot_products == present_shippein_zero_count) {
-        for (var j = 0; j <= tot_products ; j++) {
+        for (var j = 0; j <= tot_products; j++) {
             $('#present_shipping_' + j).addClass('error_validation');
         }
         status_form = 1;
