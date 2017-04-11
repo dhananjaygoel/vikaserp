@@ -638,13 +638,11 @@ class DeliveryChallanController extends Controller {
 //                $modified_id = $update_delivery_challan->ref_delivery_challan_id;
 //            }
             $date_letter = 'DC/' . $current_date . $modified_id . (($vat_applicable > 0) ? "P" : "A");
-
-
-
+            
             $update_delivery_challan->serial_number = $date_letter;
             $update_delivery_challan->challan_status = 'completed';
             $update_delivery_challan->save();
-            $this->checkpending_quantity();
+//            $this->checkpending_quantity(); 
             $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
                             ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
             $number = $allorder->grand_price;
