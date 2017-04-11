@@ -260,6 +260,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('upload_customer_excel', 'WelcomeController@upload_customer_excel');
     Route::resource('import_delivery_location', 'WelcomeController@import_delivery_location');
     Route::post('process_import_delivery_location', 'WelcomeController@process_import_delivery_location');
+    Route::get('getMyIP', 'WelcomeController@getMyIP');
     
     /*Labour*/
     Route::get('labour-performance', 'LabourController@labourPerformance');   
@@ -332,12 +333,12 @@ Route::get('dropbax-demo-functionality', function() {
 });
 
 
-Route::get('whatsappRegistration', function() {
-    $username = "919429786848";
-    $debug = true;
-    $r = new Registration($username, $debug);
-    $r->codeRequest('sms'); // could be 'voice' too
-});
+//Route::get('whatsappRegistration', function() {
+//    $username = "919429786848";
+//    $debug = true;
+//    $r = new Registration($username, $debug);
+//    $r->codeRequest('sms'); // could be 'voice' too
+//});
 
 
 

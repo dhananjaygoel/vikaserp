@@ -119,7 +119,6 @@ class WelcomeController extends Controller {
 //        curl_close($ch);
 //
 //        print "Response = " . print_r($http_result);
-
 //        $callback = NULL;
 //        $postData = array(
 ////            'from' => '917276393635',
@@ -144,18 +143,17 @@ class WelcomeController extends Controller {
 //            call_user_func($callback, json_decode($result, true));
 //        }
 //        var_dump($result);
-        
-        
+
+
         $postData = array(
 //            'from' => '917276393635',
             'to' => '917276393635',
             'message' => 'test',
 //            'type' => ''
         );
-        
-         $headers = array(
+
+        $headers = array(
             'Content-Type: application/json',
-           
         );
         $url = 'https://api.smsbump.com/send/1B9mOYKhejDQ.json?type=whatsapp&to=918983370270&message=Happy birthday!';
         $ch = curl_init($url);
@@ -166,8 +164,6 @@ class WelcomeController extends Controller {
         $response = curl_exec($ch);
         echo "Response: " . $response;
         curl_close($ch);
-        
-        
     }
 
     public function whatsapp() {
@@ -1179,42 +1175,82 @@ class WelcomeController extends Controller {
 
         exit(0);
     }
-    
-    
+
     public function make_approved() {
-        
+
         $order = \App\Order::
-          where('order_status', 'completed')
-          ->update(['is_approved' => 'yes']);
-        
+                where('order_status', 'completed')
+                ->update(['is_approved' => 'yes']);
+
         $order = \App\Order::with(['createdby'])
-            ->where('order_status', 'pending')
-            ->whereHas('createdby', function($query)
-            {
-                $query->where('role_id','=','0');
-            })
-                
-           ->update(['is_approved' => 'yes']);
-            
-            
+                ->where('order_status', 'pending')
+                ->whereHas('createdby', function($query) {
+                    $query->where('role_id', '=', '0');
+                })
+                ->update(['is_approved' => 'yes']);
+
+
         $inquiry = \App\Inquiry::
-          where('inquiry_status', 'completed')
-          ->update(['is_approved' => 'yes']);
-        
+                where('inquiry_status', 'completed')
+                ->update(['is_approved' => 'yes']);
+
         $inquiry = \App\Inquiry::with(['createdby'])
-            ->where('inquiry_status', 'pending')
-            ->whereHas('createdby', function($query)
-            {
-                $query->where('role_id','=','0');
-            })
-                
-           ->update(['is_approved' => 'yes']);
-       
+                ->where('inquiry_status', 'pending')
+                ->whereHas('createdby', function($query) {
+                    $query->where('role_id', '=', '0');
+                })
+                ->update(['is_approved' => 'yes']);
+
         echo "<pre>";
         print_r($order);
         echo "</pre>";
         exit;
+    }
+
+//    public function get_set_labours() {
+////        
+////        $labours = \App\DeliveryChallan::select('loaded_by')
+////        ->withTrashed()
+////                ->groupBy('loaded_by')
+////                ->get();
+//        
+//        $labours = \App\PurchaseChallan::select('unloaded_by')
+//                ->withTrashed()
+//                ->groupBy('unloaded_by')
+//                ->get();
+//
+//
+//        echo "<pre>";
+//        print_r($labours->toArray());
+//        echo "</pre>";
+//        exit;
+//    }
+
+
+
+    public function getMyIP() {
+
+        $ipaddress = '';
+        if (getenv('HTTP_CLIENT_IP'))
+            $ipaddress = getenv('HTTP_CLIENT_IP');
+        else if (getenv('HTTP_X_FORWARDED_FOR'))
+            $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+        else if (getenv('HTTP_X_FORWARDED'))
+            $ipaddress = getenv('HTTP_X_FORWARDED');
+        else if (getenv('HTTP_FORWARDED_FOR'))
+            $ipaddress = getenv('HTTP_FORWARDED_FOR');
+        else if (getenv('HTTP_FORWARDED'))
+            $ipaddress = getenv('HTTP_FORWARDED');
+        else if (getenv('REMOTE_ADDR'))
+            $ipaddress = getenv('REMOTE_ADDR');
+        else
+            $ipaddress = 'UNKNOWN';
         
+        echo "<pre>";
+        print_r($ipaddress);
+        echo "</pre>";
+        exit;
+       
     }
 
 }

@@ -283,7 +283,7 @@
                         Total Quantity: {{ round($purchase_challan['all_purchase_products']->sum('quantity'), 2) }}
                     </div>
 <!--                    <div class="ruppes">
-                        Rupees <?php// echo convert_number_to_words(round($purchase_challan->grand_total, 2)); ?> Only.
+                        Rupees <?php // echo convert_number_to_words(round($purchase_challan->grand_total, 2)); ?> Only.
                     </div>-->
                 </div>
                 <div class="total">
