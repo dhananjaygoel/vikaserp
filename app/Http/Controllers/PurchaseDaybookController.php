@@ -115,6 +115,7 @@ class PurchaseDaybookController extends Controller {
      */
 
     public function expert_purchase_daybook() {
+        set_time_limit(0);
         $data = Input::all();
         if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"]) ) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
