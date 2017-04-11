@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use App\Security;
 use App\Http\Requests\Request;
+use Auth;
 
 class validIpMiddleware {
 
@@ -39,7 +40,7 @@ class validIpMiddleware {
             else
                 $ipaddress = 'UNKNOWN';
             if ($ipaddress != 'UNKNOWN') {
-                if (!in_array($ipaddress, $ip_array)) {
+                if (!in_array($ipaddress, $ip_array) && Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 5) {
                     return redirect('dashboard');
                 }
             }
