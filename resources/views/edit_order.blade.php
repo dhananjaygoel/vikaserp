@@ -429,7 +429,7 @@
                             <label for="order_remark">Remark:</label>
                             <textarea class="form-control" id="order_remark" name="order_remark"  rows="3">{{$order->remarks}}</textarea>
                         </div>
-                        <div class="checkbox">
+                        <div class="checkbox customer_select">
                             <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email</span></label>
                         </div>
                         <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip btn_edit_order_sms" id="edit_order_sendSMS" >Save and Send SMS</button>

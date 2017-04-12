@@ -305,7 +305,7 @@
                                 <label for="order_remark">Remark</label>
                                 <textarea class="form-control" id="order_remark" name="order_remark" rows="3"></textarea>
                             </div>
-                            <div class="checkbox">
+                            <div class="checkbox customer_select_order">
                                 <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email</span></label>
                             </div>
                             <div>
