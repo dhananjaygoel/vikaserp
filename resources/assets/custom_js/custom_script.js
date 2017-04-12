@@ -396,7 +396,7 @@ $(document).ready(function () {
 //        $("#add_product_table_purchase").children("tbody").append(purchase_html);
 //    });
 
-    $("#add_purchase_advice_product_row").on("click", function () {
+    $("#add_purchase_advice_product_row1").on("click", function () {
 
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
@@ -839,8 +839,10 @@ function purchase_order_advise_product_autocomplete(id) {
         },
         select: function (event, ui) {
             $("#add_product_id_" + id).val(ui.item.id);
+            $("#product_price_" + id).val(ui.item.product_price);
              $("#quantity_" + id).removeClass('error_validation');
-             $('#quantity_' + id).focus();
+             $('#actual_pieces_' + id).focus();
+             jQuery('#add_purchase_advice_product_row')[0].click();
         }
     });
 }

@@ -108,13 +108,13 @@
                             @endforeach
                             </tbody>
                         </table>
-                        <table >
+<!--                        <table >
                             <tr class="row5">
                                 <td>
                                     <div class="add_button">
                                         <div class="form-group pull-left">
                                             <label for="addmore"></label>
-                                            <a href="#" class="table-link" title="add more" id="add_more_product1" onclick="create_purchase_challan_function();">
+                                            <a class="table-link" title="add more" id="add_more_product1" onclick="create_purchase_challan_function();">
                                                 <span class="fa-stack more_button" >
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
@@ -129,7 +129,7 @@
                                 <td></td>
                                 <td></td>
                             </tr>
-                        </table>
+                        </table>-->
                     </div>
                     <div class="form-group">
 
@@ -145,11 +145,11 @@
                     </div>
                     <div class="form-group">
                         <label for="vehicle_name"><b class="challan">Discount</b></label>
-                        <input id="discount" class="form-control" placeholder="Discount" name="discount" value="" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this,event,true,true);">
+                        <input id="discount" class="form-control" placeholder="Discount" name="discount" value="" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this, event, true, true);">
                     </div>
                     <div class="form-group">
                         <label for="driver_name"><b class="challan">Freight</b><span class="mandatory">*</span></label>
-                        <input id="freight" class="form-control" placeholder="Freight " name="Freight" value="" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this,event,true,true);">
+                        <input id="freight" class="form-control" placeholder="Freight " name="Freight" value="" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this, event, true, true);">
                     </div>
                     <div class="form-group">
                         <label for="total"><b class="challan">Total :</b> <div id="total_price">{{ $total_price }}</div></label>
@@ -187,7 +187,7 @@
                     </div>
                     <div class="form-group">
                         <label for="labour"><b class="challan">Round Off</b></label>
-                        <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this,event,true,true);">
+                        <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this, event, true, true);">
                     </div>
 
                     <div class="form-group">
@@ -219,6 +219,5 @@
     </div>
 </div>
 @endsection
-
 
 

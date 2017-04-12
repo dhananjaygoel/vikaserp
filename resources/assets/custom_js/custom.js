@@ -26,6 +26,43 @@ $(document).ready(function () {
     if (split_url[3] == 'place_order') {
         $('#add_product_row').trigger('click');
     }
+    if (split_url[4] == 'delivery_order' && split_url[6] == 'edit') {
+        $('#add_product_row_delivery_order').trigger('click');
+    }
+    if (split_url[4] == 'orders' && split_url[6] == 'edit') {
+        $('#add_product_row').trigger('click');
+    }
+    if (split_url[4] == 'inquiry' && split_url[6] == 'edit') {
+        $('#add_product_row').trigger('click');
+    }
+    if (split_url[4] == 'create_delivery_order') {
+        $('#add_product_row_delivery_order').trigger('click');
+    }
+    if (split_url[4] == 'place_order') {
+        $('#add_product_row').trigger('click');
+    }
+    if (split_url[3] == 'purchase_orders' && split_url[5] == 'edit') {
+//        $('#add_purchase_product_row').trigger('click');
+        jQuery('#add_purchase_product_row')[0].click();
+    }
+    if (split_url[4] == 'purchase_orders' && split_url[6] == 'edit') {
+//        $('#add_purchase_product_row').trigger('click');
+        jQuery('#add_purchase_product_row')[0].click();
+    }
+    if (split_url[3] == 'create_purchase_advice') {
+       jQuery('#add_purchase_advice_product_row')[0].click();
+    }
+     if (split_url[4] == 'create_purchase_advice') {       
+        jQuery('#add_purchase_advice_product_row')[0].click();
+    }
+    if (split_url[3] == 'purchaseorder_advise' && split_url[5] == 'edit') {
+//        $('#add_purchase_product_row').trigger('click');
+        jQuery('#add_purchase_advice_product_row')[0].click();
+    }
+    if (split_url[4] == 'purchaseorder_advise' && split_url[6] == 'edit') {
+//        $('#add_purchase_product_row').trigger('click');
+        jQuery('#add_purchase_advice_product_row')[0].click();
+    }
 
 
     window.setTimeout(function () {
@@ -1391,7 +1428,7 @@ $('body').delegate(".btn_edit_delivery_order", "click", function () {
                     status_form = 1;
                 }
             }
-        }     
+        }
         if (tot_products == present_shippein_zero_count) {
             for (var j = 0; j <= tot_products; j++) {
                 $('#present_shipping_' + j).addClass('error_validation');
@@ -1720,12 +1757,12 @@ $('body').delegate(".btn_purorder_to_puradvice", "click", function () {
     var tot_products = $(".add_product_row").length;
     var j = 0;
     var present_shippein_zero_count = 0;
-        for (var i = 0; i <= tot_products + 1; i++) {
+    for (var i = 0; i <= tot_products + 1; i++) {
         if ($("#actual_pieces_" + i).val() == 0) {
             present_shippein_zero_count++;
         }
-        
-     
+
+
     }
     if (tot_products == present_shippein_zero_count) {
         for (var j = 0; j <= tot_products; j++) {
@@ -1733,8 +1770,8 @@ $('body').delegate(".btn_purorder_to_puradvice", "click", function () {
         }
         status_form = 1;
     }
-    
-    
+
+
     if ($("#vehicle_number").val() == "") {
         $("#vehicle_number").addClass('error_validation');
         status_form = 1;
@@ -1744,7 +1781,7 @@ $('body').delegate(".btn_purorder_to_puradvice", "click", function () {
         status_form = 1;
     }
 
-     if (status_form == 1) {
+    if (status_form == 1) {
         $('html, body').animate({
             scrollTop: $('.breadcrumb').offset().top
         }, 1000);

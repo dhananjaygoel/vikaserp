@@ -31,6 +31,7 @@
     }
     $("#units_" + current_row_count).html(html);
     });
+    
             var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
             '<td class="col-md-2">' +
             '<div class="form-group searchproduct">' +
@@ -51,11 +52,18 @@
             '</select>' +
             '</div>' +
             '</td>' +
+            
+            
+            
             '<td class="col-md-1">' +
             '<div class="form-group">' +
             '<input id="present_shipping_' + current_row_count + '" class="form-control" placeholder="Present Shipping" name="product[' + current_row_count + '][present_shipping]" value="" type="text" onblur="change_quantity(' + current_row_count + ');">' +
             '</div>' +
             '</td>' +
+            
+            
+            
+            
             '<td class="col-md-2">' +
             '<div class="form-group">' +
             '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]" onblur="grand_total_delivery_order();">' +
@@ -241,7 +249,7 @@
                     return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
     }) !!}
     });
-    
+                
             $("#add_purchase_advise_product_row").on("click", function() {
     var current_row_count = $(".add_product_row").length + 1;
     var row_id = $(".add_product_row").length;
@@ -337,7 +345,7 @@
             type: "GET",
                     url: baseurl + '/get_units'
             }).done(function(data) {
-                $('#quantity_' + row_id).focus();
+                $('#actual_pieces_' + row_id).focus();
     var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
@@ -363,17 +371,17 @@
             '</td>' +
             '<td class="col-md-1">' +
             '<div class="form-group">' +
-            '<input type="text" class="form-control" placeholder="actual_pieces" id="actual_pieces' + current_row_count + '" name="product[' + current_row_count + '][actual_pieces]">' +
+            '<input type="text" class="form-control" placeholder="actual pieces" id="actual_pieces' + current_row_count + '" name="product[' + current_row_count + '][actual_pieces]">' +
             '</div>' +
             '</td>' +
             '<td>' +
             '<div class="form-group" >' +
-            '<input id="quantity_' + current_row_count + '" readonly="" class="form-control each_product_qty" placeholder="" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][quantity]" value="" type="tel">' +
+            '<input id="quantity_' + current_row_count + '" readonly="" class="form-control each_product_qty" placeholder="" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][quantity]" value="0" type="tel">' +
             '</div>' +
             '</td>' +
             '<td class="col-md-2">' +
             '<div class="form-group" style="width:100%;">' +
-            '<input type="text" class="form-control pshipping" placeholder="Present Shipping" id="present_shipping' + current_row_count + '" name="product[' + current_row_count + '][present_shipping]">' +
+            '<input type="text" class="form-control pshipping" placeholder="Present Shipping" onblur="calutate_pending_order(0,' + current_row_count + ')" id="present_shipping' + current_row_count + '" name="product[' + current_row_count + '][present_shipping]">' +
             '</div><div class="clearfix"></div>' +
             '</td>' +
             '<td class="col-md-1">' +
@@ -396,7 +404,7 @@
             $("#add_editadvice_product_row").on("click", function() {
     var current_row_count = $(".add_product_row").length + 1;
     var row_id = $(".add_product_row").length;
-     
+ 
             $.ajax({
             type: "GET",
                     url: baseurl + '/get_units'
@@ -440,7 +448,7 @@
             '</div>' +
             '</td>' +
             '</tr>';
-            $("#add_product_table").children("tbody").append(html);
+            $("#add_product_table_purchase").children("tbody").append(html);
         {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
                     return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
     }) !!}

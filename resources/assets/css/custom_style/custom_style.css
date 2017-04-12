@@ -85,6 +85,11 @@
 .custom_alert_success, #empty_select_completed, .delete_records_empty, #add_product_row_delivery_challan, #add_product_row, #add_product_row_delivery_order{
     display:none;
 }
+
+#add_purchase_product_row, #add_purchase_advice_product_row{
+    display:none;
+}
+    
 #password_delete_completetd{
     margin-bottom: 10px;
 }
