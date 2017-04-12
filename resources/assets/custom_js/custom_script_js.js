@@ -880,6 +880,28 @@ function product_autocomplete_purchase(id) {
             });
         }
     });
+     $("#add_product_name_" + id).autocomplete({
+        position: {
+            my: "left bottom",
+            at: "left top"
+        },
+        select: function (event, ui) {
+            var term = ui.item.value;
+//            var term = $("#add_purchase_product_name_" + id).val();
+            $.ajax({
+                url: baseurl + '/fetch_products',
+                data: {"term": term},
+                success: function (data) {
+                    var obj = jQuery.parseJSON(data);
+                    $("#add_product_id_" + id).val(obj.data_array[0].id);
+                    $("#product_price_" + id).val(obj.data_array[0].product_price);
+                    $('#quantity_' + id).focus();
+                    $('.more_button').parent().trigger('click');
+                    jQuery('#add_purchase_product_row')[0].click();
+                },
+            });
+        }
+    });
 }
 //function product_autocomplete_purchase1(id) {
 //

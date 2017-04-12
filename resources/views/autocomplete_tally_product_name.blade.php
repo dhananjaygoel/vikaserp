@@ -17,7 +17,7 @@
                     return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
     }) !!}
 //  --------------------------------------Dynamic delivery order product name---------------------------------------------           
-    $("#add_product_row_delivery_order").on("click", function () {
+            $("#add_product_row_delivery_order").on("click", function () {
     var current_row_count = $(".add_product_row").length + 2;
             $.ajax({
             type: "GET",
@@ -478,7 +478,7 @@
             var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
             '<td class="col-md-3">' +
             '<div class="form-group searchproduct">' +
-            '<input class="form-control each_product_detail" data-productid="' + current_row_count + '" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete(' + current_row_count + ');">' +
+            '<input class="form-control each_product_detail" data-productid="' + current_row_count + '" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="product_autocomplete_purchase(' + current_row_count + ');">' +
             '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '" value="">' +
             '<i class="fa fa-search search-icon"></i>' +
             '</div>' +

@@ -600,7 +600,6 @@ function product_autocomplete(id) {
         select: function (event, ui) {
             var term = ui.item.value;
             var result = $.grep(all_data.product_sub_category, function(e){ return e.alias_name == term; });
-             console.log("hi");
              if (result.length > 0) {
                 if (customer_id > 0) {
                     var temp = $.grep(all_data.customer_product_difference, function(e){ return (e.customer_id == customer_id); });
@@ -631,6 +630,7 @@ function product_autocomplete(id) {
                     $("#add_product_id_" + id).attr('data-curname', value);
                     $('#quantity_' + id).focus();
                     $('.more_button').parent().trigger('click');
+//                    jQuery('#add_purchase_product_row')[0].click();
                     $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
 
 //            $.ajax({
