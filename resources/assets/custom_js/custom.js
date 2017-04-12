@@ -1757,28 +1757,51 @@ $('body').delegate(".btn_purorder_to_puradvice", "click", function () {
     var tot_products = $(".add_product_row").length;
     var j = 0;
     var present_shippein_zero_count = 0;
-    for (var i = 0; i <= tot_products + 1; i++) {
-        if ($("#actual_pieces_" + i).val() == 0) {
-            present_shippein_zero_count++;
+    var actual_pieces_count = 0;
+    for (var i = 0; i <= tot_products - 1; i++) {
+        if ($("#actual_pieces" + i).val() == 0  | $("#actual_pieces" + i).val() =="") {
+            actual_pieces_count++;
         }
-
-
     }
-    if (tot_products == present_shippein_zero_count) {
-        for (var j = 0; j <= tot_products; j++) {
-            $('#actual_pieces_' + j).addClass('error_validation');
+    if ((tot_products-1) == actual_pieces_count) {
+        for (var j = 1; j <= tot_products-1; j++) {
+            $('#actual_pieces' + j).addClass('error_validation');
         }
         status_form = 1;
+    }else{
+        for (var j = 1; j <= tot_products-1; j++) {
+            $('#actual_pieces' + j).removeClass('error_validation');
+        }
+    }
+    
+    for (var i = 0; i <= tot_products - 1; i++) {
+        if ($("#present_shipping" + i).val() == 0  | $("#present_shipping" + i).val() =="") {
+            present_shippein_zero_count++;
+        }
+    }
+    if ((tot_products-1) == present_shippein_zero_count) {
+        for (var j = 1; j <= tot_products-1; j++) {
+            $('#present_shipping' + j).addClass('error_validation');
+        }
+        status_form = 1;
+    }else{
+        for (var j = 1; j <= tot_products-1; j++) {
+            $('#present_shipping' + j).removeClass('error_validation');
+        }
     }
 
 
     if ($("#vehicle_number").val() == "") {
         $("#vehicle_number").addClass('error_validation');
         status_form = 1;
+    }else{
+         $("#vehicle_number").removeClass('error_validation');
     }
     if ($("#datepickerDate").val() == "") {
         $("#datepickerDate").addClass('error_validation');
         status_form = 1;
+    }else{
+         $("#datepickerDate").removeClass('error_validation');
     }
 
     if (status_form == 1) {
