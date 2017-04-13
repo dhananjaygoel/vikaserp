@@ -162,7 +162,7 @@ class PurchaseOrderController extends Controller {
     public function index() {
         
         $data = Input::all();
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $q = PurchaseOrder::query();
@@ -241,7 +241,7 @@ class PurchaseOrderController extends Controller {
      */
     public function create() {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $units = Units::all();
@@ -281,7 +281,7 @@ class PurchaseOrderController extends Controller {
             Session::put('input_data', $input_data);
             return Redirect::back()->withErrors($validator)->withInput();
         }
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $i = 0;
@@ -491,7 +491,7 @@ class PurchaseOrderController extends Controller {
      */
     public function show($id) {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $purchase_orders = PurchaseOrder::with('purchase_products.unit', 'delivery_location', 'purchase_products.purchase_product_details', 'customer', 'user')->find($id);
@@ -507,7 +507,7 @@ class PurchaseOrderController extends Controller {
      */
     public function edit($id) {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $purchase_order = PurchaseOrder::with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')->find($id);
@@ -525,7 +525,7 @@ class PurchaseOrderController extends Controller {
      */
     public function update($id) {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $input_data = Input::all();
@@ -762,7 +762,7 @@ class PurchaseOrderController extends Controller {
         parse_str($inputData, $formFields);
         $password = $formFields['password'];
         $order_sort_type = $formFields['order_sort_type'];
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (Hash::check($password, Auth::user()->password)) {

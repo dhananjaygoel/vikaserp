@@ -46,7 +46,7 @@ class PurchaseAdviseController extends Controller {
     public function index() {
          $data = Input::all();
               
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4) {
            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
@@ -529,7 +529,7 @@ class PurchaseAdviseController extends Controller {
         parse_str($inputData, $formFields);
         $password = $formFields['password'];
         $order_sort_type = $formFields['order_sort_type'];
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if ($password == '') {

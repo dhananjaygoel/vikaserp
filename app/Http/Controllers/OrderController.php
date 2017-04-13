@@ -48,7 +48,7 @@ class OrderController extends Controller {
     public function index() {
         
         $data = Input::all();
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 5) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
         }
         
@@ -183,7 +183,7 @@ class OrderController extends Controller {
      */
     public function create() {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         
@@ -498,7 +498,7 @@ class OrderController extends Controller {
      */
     public function edit($id) {
         
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
        
@@ -814,7 +814,7 @@ class OrderController extends Controller {
 
     public function manual_complete_order() {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
             return redirect('orders')->with('error', 'You do not have permission.');
         }
         $formFields = Input::get('formData');
