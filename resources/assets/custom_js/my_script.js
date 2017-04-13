@@ -194,6 +194,26 @@ $('body').delegate("#sendSMSEditPurchaseOrder", "click", function () {
                 }
             }
         }
+         if ($("#purchase_other_location").val() == "-1") {
+            console.log("hii");
+            if ($("#location_difference").val() == "") {
+                $('#location_difference').addClass('error_validation');
+                status_form = 1;
+            } else {
+                $('#location_difference').removeClass('error_validation');
+                if (status_form != 1)
+                    status_form = 0;
+            }
+
+            if ($("#location").val() == "") {
+                $('#location').addClass('error_validation');
+                status_form = 1;
+            } else {
+                $('#location').removeClass('error_validation');
+                if (status_form != 1)
+                    status_form = 0;
+            }
+        }
         if (status_form == 1) {
             $('html, body').animate({
                 scrollTop: $('.breadcrumb').offset().top
@@ -234,6 +254,27 @@ $('body').delegate("#sendSMSEditPurchaseOrder", "click", function () {
                     $('#quantity_' + i).addClass('error_validation');
                     status_form = 1;
                 }
+            }
+        }
+       
+        if ($("#purchase_other_location").val() == "-1") {
+            console.log("hii");
+            if ($("#location_difference").val() == "") {
+                $('#location_difference').addClass('error_validation');
+                status_form = 1;
+            } else {
+                $('#location_difference').removeClass('error_validation');
+                if (status_form != 1)
+                    status_form = 0;
+            }
+
+            if ($("#location").val() == "") {
+                $('#location').addClass('error_validation');
+                status_form = 1;
+            } else {
+                $('#location').removeClass('error_validation');
+                if (status_form != 1)
+                    status_form = 0;
             }
         }
         if (status_form == 1) {
@@ -298,6 +339,26 @@ $('body').delegate("#sendSMSPurchaseOrder", "click", function () {
             }
             status_form = 1;
         }
+        if ($("#purchase_other_location").val() == "-1") {
+            console.log("hii");
+            if ($("#location_difference").val() == "") {
+                $('#location_difference').addClass('error_validation');
+                status_form = 1;
+            } else {
+                $('#location_difference').removeClass('error_validation');
+                if (status_form != 1)
+                    status_form = 0;
+            }
+
+            if ($("#location").val() == "") {
+                $('#location').addClass('error_validation');
+                status_form = 1;
+            } else {
+                $('#location').removeClass('error_validation');
+                if (status_form != 1)
+                    status_form = 0;
+            }
+        }
 
 //        alert(status_form);
         if (status_form == 1) {
@@ -345,6 +406,27 @@ $('body').delegate("#sendSMSPurchaseOrder", "click", function () {
             }
             status_form = 1;
         }
+        if ($("#purchase_other_location").val() == "-1") {
+            console.log("hii");
+            if ($("#location_difference").val() == "") {
+                $('#location_difference').addClass('error_validation');
+                status_form = 1;
+            } else {
+                $('#location_difference').removeClass('error_validation');
+                if (status_form != 1)
+                    status_form = 0;
+            }
+
+            if ($("#location").val() == "") {
+                $('#location').addClass('error_validation');
+                status_form = 1;
+            } else {
+                $('#location').removeClass('error_validation');
+                if (status_form != 1)
+                    status_form = 0;
+            }
+        }
+        
         if (status_form == 1) {
             $('html, body').animate({
                 scrollTop: $('.breadcrumb').offset().top

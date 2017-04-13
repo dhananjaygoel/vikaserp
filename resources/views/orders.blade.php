@@ -225,6 +225,9 @@
                                         <td class="text">{{$order['delivery_location']['area_name']}}</td>
                                         @elseif($order->delivery_location_id ==0 )
                                         <td class="text">{{$order['other_location']}}</td>
+                                        @else
+                                        <td class="text">{{Other}}</td>
+                                        
                                         @endif
                                         <td>{{ round($order->total_quantity, 2) }}</td>
                                         <td>{{ round($order->pending_quantity, 2) }}</td>                                        
