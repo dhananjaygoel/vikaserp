@@ -513,14 +513,11 @@ $('body').delegate(".btn_edit_purchase_advice", "click", function () {
     }
     
     for (var i = 0; i <= tot_products - 1; i++) {
-        console.log(i);
+        
         if ($("#actual_pieces" + i).val() == '0'  | $("#actual_pieces" + i).val() =="") {
             actual_pieces_count++;
         }
     }
-    
-    console.log(tot_products);
-    console.log(actual_pieces_count);
     if ((tot_products-1) == actual_pieces_count) {
         console.log("hi");
         for (var j = 0; j <= tot_products-1; j++) {
