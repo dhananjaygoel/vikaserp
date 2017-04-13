@@ -144,6 +144,14 @@ $(document).ready(function () {
             }
         });
     });
+    var myRadio = $('input[name=customer_status]');
+    var checkedValue = myRadio.filter(':checked').val();
+   
+    if(checkedValue == 'existing_customer'){
+        $(".exist_field").hide();
+        $(".customer_select").show();
+    }
+    
     $("#exist_customer").click(function () {
         $(".exist_field").hide();
         $(".customer_select").show();
