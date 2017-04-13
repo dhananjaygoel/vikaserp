@@ -174,16 +174,16 @@ class PurchaseOrderController extends Controller {
         } elseif ((isset($data['order_for_filter'])) && $data['order_for_filter'] == 'direct') {
             $q->where('order_for', '!=', 0)->get();
         }
-        
+       
                
-        if (Auth::user()->role_id > 2) {
+       
             if ((isset($data['order_filter'])) && $data['order_filter'] != '') {
                 $q = $q->where('order_status', '=', $data['order_filter'])
                         ->where('is_view_all', '=', 0);
             } else {
                 $q = $q->where('order_status', '=', 'pending')->where('is_view_all', '=', 0);
             }
-        }
+        
 //        $session_sort_type_order = Session::get('order-sort-type');
 //        $qstring_sort_type_order = $data['order_filter'];
         $session_sort_type_order = Session::get('purchase-order-sort-type');
@@ -201,13 +201,11 @@ class PurchaseOrderController extends Controller {
         if (Auth::user()->role_id < 2) {
             if ((isset($data['order_status'])) && $data['order_status'] != '') {
                 $q = $q->where('order_status', '=', $data['order_status']);
-            } else {
-                $q = $q->where('order_status', '=', 'pending');
             }
         }
         
 //        echo "<pre>";
-//        print_r($data);
+//        print_r($data['order_status']);
 //        echo "</pre>";
 //        exit;
         
@@ -230,6 +228,25 @@ class PurchaseOrderController extends Controller {
                 ->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')
                 ->Paginate(20);
         $purchase_orders = $this->quantity_calculation($purchase_orders);
+        
+        
+        
+//        exit;
+        
+        foreach ($purchase_orders as $key => $purchase_order) {
+            
+            if($purchase_order->pending_quantity == 0 && $purchase_order->order_status == 'pending'){
+               
+                
+               $po=  PurchaseOrder::where('id',$purchase_order->id)->update(['order_status' => 'completed']);
+              
+            
+                
+            }
+          
+        }
+        
+       
 
         $all_customers = Customer::where('customer_status', '=', 'permanent')->orderBy('tally_name', 'ASC')->get();
         $purchase_orders->setPath('purchase_orders');
