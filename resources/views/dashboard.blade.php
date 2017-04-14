@@ -162,11 +162,4 @@
     </div>
 </div>
 
-
-<script type="text/javascript">
-    var inquiry_stats = <?php echo json_encode(isset($inquiries_stats_all) ? $inquiries_stats_all : ''); ?>;
-    var order_stats = <?php echo json_encode(isset($orders_stats_all) ? $orders_stats_all : ''); ?>;
-    var delivery_challan_stats = <?php echo json_encode(isset($delivery_challan_stats_all) ? $delivery_challan_stats_all : ''); ?>;
-                            
-</script>
 @endsection
