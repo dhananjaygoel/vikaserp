@@ -157,6 +157,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('dashboard', 'DashboardController@index');
     Route::get('dashboard', 'DashboardController@index');
     Route::get('home', 'DashboardController@homeredirect');
+    Route::get('graph-inquiry', 'DashboardController@graph_inquiry');
+    Route::get('graph-order', 'DashboardController@graph_order');
+    Route::get('graph-delivery-challan', 'DashboardController@graph_delivery_challan');
     Route::resource('unit', 'UnitController');
     Route::resource('states', 'StatesController');
     Route::resource('city', 'CityController');
