@@ -5,7 +5,7 @@
  */
 
 $(document).ready(function () {
-        $('#loaded_by_select').multiselect({
+        $('#loaded_by_select,#multi-territory-location').multiselect({
             nonSelectedText :'Please Select',
             includeSelectAllOption: true,
             enableFiltering:true,
