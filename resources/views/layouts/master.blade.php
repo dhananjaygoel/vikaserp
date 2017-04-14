@@ -144,6 +144,8 @@
         <?php if (Route::getCurrentRoute()->getPath() == "dashboard" ) { ?>
             <script src="{{url()."/resources/assets/custom_js/graph.js?".time()}}"></script>
         <?php } ?>
+        <script src="{{url()."/resources/assets/custom_js/laravel.js?".time()}}"></script>    
+
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
             <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>-->
                     
@@ -152,7 +154,9 @@
             
 <!--            {!! HTML::style('/resources/assets/css/custom_style/bootstrap-multiselect.css') !!}
             <script type="text/javascript" src="{{url()."/js/bootstrap-multiselect.js"}}"></script>-->
+
         <script>
+        
 $(function($) {
     $('#datepickerDate').datepicker({
         format: 'dd-mm-yyyy'

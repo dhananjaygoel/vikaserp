@@ -40,7 +40,7 @@ class UsersController extends Controller {
         }
 //        $users_data = User::where('role_id', '!=', 0)->with('user_role')->orderBy('created_at', 'desc')->Paginate(20);
         $users_data = User::with('user_role')->where('first_name', '!=', 'Super')
-                ->Where('role_id', '!=', '5')
+                ->Where('role_id', '!=', '5')->Where('role_id', '!=', '6')
                 ->orderBy('created_at', 'desc')->Paginate(20);
         $users_data->setPath('users');
         return view('users', compact('users_data'));

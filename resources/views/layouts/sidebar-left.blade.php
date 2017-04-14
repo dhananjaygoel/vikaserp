@@ -354,6 +354,15 @@
                         </a>
                     </li>
                     @endif
+                    @if(Auth::user()->role_id == 0)
+                    <li class="{{ (Request::is('collectionusers') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Collection Users">
+                        <a href="{{url('collectionusers')}}">
+                            <i class="fa fa-users"></i>
+                            <span>Collection Users</span>
+                            <span class="label label-info label-circle pull-right"></span>
+                        </a>
+                    </li>
+                    @endif                    
                     @endif
                 @endif
                 </ul>
