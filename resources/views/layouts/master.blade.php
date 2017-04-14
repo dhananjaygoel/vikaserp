@@ -143,8 +143,9 @@
         <?php if (Route::getCurrentRoute()->getPath() == "dashboard" ) { ?>
             <script src="{{url()."/resources/assets/custom_js/graph.js?".time()}}"></script>
         <?php } ?>
-
+        <script src="{{url()."/resources/assets/custom_js/laravel.js?".time()}}"></script>    
         <script>
+        
 $(function($) {
     $('#datepickerDate').datepicker({
         format: 'dd-mm-yyyy'

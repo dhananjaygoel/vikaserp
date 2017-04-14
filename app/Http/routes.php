@@ -341,4 +341,8 @@ Route::get('dropbax-demo-functionality', function() {
 //});
 
 
+// Route::get('receipt-master','CustomerController@get_receipt_data');
+Route::resource('collectionusers', 'CollectionUserController');
+Route::post('export_collection_user','CollectionUserController@export_collection_users');
+
 
