@@ -168,7 +168,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('update_set_price', 'CustomerController@update_set_price');
     Route::get('bulk_set_price', 'CustomerController@bulk_set_price');
     Route::post('save_all_set_price', 'CustomerController@save_all_set_price');
-
+    Route::resource('territory', 'TerritoryController');
+    Route::get('inventory_report', 'InventoryController@inventoryReport');
 
     Route::resource('pending_customers', 'PendingCustomerController');
     Route::resource('customer_manager', 'CustomerManagerController');
@@ -262,9 +263,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('process_import_delivery_location', 'WelcomeController@process_import_delivery_location');
     Route::get('getMyIP', 'WelcomeController@getMyIP');
     
+    Route::get('performance/loaded-by/loaded-by-performance', 'LoadByController@performance');
+    Route::resource('performance/loaded-by', 'LoadByController');
+    
     /*Labour*/
-    Route::get('labour-performance', 'LabourController@labourPerformance');   
-    Route::resource('labours', 'LabourController');
+    Route::get('performance', 'LabourController@index');
+    Route::get('performance/labour-performance', 'LabourController@labourPerformance');   
+    Route::resource('performance/labours', 'LabourController');
     
     
     

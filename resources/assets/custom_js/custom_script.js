@@ -396,7 +396,7 @@ $(document).ready(function () {
 //        $("#add_product_table_purchase").children("tbody").append(purchase_html);
 //    });
 
-    $("#add_purchase_advice_product_row").on("click", function () {
+    $("#add_purchase_advice_product_row1").on("click", function () {
 
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
@@ -428,7 +428,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-1">' +
                 '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="actual_pieces" id="actual_pieces' + current_row_count + '" name="product[' + current_row_count + '][actual_pieces]">' +
+                '<input type="text" class="form-control" placeholder="actual pieces" id="actual_pieces' + current_row_count + '" name="product[' + current_row_count + '][actual_pieces]">' +
                 '</div>' +
                 '</td>' +
                 '<td>' +
@@ -600,7 +600,6 @@ function product_autocomplete(id) {
         select: function (event, ui) {
             var term = ui.item.value;
             var result = $.grep(all_data.product_sub_category, function(e){ return e.alias_name == term; });
-             console.log("hi");
              if (result.length > 0) {
                 if (customer_id > 0) {
                     var temp = $.grep(all_data.customer_product_difference, function(e){ return (e.customer_id == customer_id); });
@@ -839,8 +838,10 @@ function purchase_order_advise_product_autocomplete(id) {
         },
         select: function (event, ui) {
             $("#add_product_id_" + id).val(ui.item.id);
+            $("#product_price_" + id).val(ui.item.product_price);
              $("#quantity_" + id).removeClass('error_validation');
-             $('#quantity_' + id).focus();
+             $('#actual_pieces_' + id).focus();
+             jQuery('#add_purchase_advice_product_row')[0].click();
         }
     });
 }

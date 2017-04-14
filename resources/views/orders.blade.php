@@ -1,6 +1,7 @@
 @extends('layouts.master')
 @section('title','Orders')
 @section('content')
+
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
@@ -76,11 +77,10 @@
 
                 <input type="hidden" id="module" value="order">
                 <div class="filter-block">
-
                     <form action="{{url('orders')}}" method="GET" id="orderForm">
                         <h1 class="pull-left">Orders</h1>
                         <div class="pull-right">
-                            @if(Auth::user()->role_id != 4 && Auth::user()->role_id != 3 )
+                            @if(Auth::user()->role_id != 3 )
                             <a href="{{url('orders/create')}}" class="btn btn-primary">
                                 <i class="fa fa-plus-circle fa-lg"></i> Place Order
                             </a>
@@ -90,6 +90,7 @@
                             @if(Auth::user()->role_id <> 5)
                             <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
                                 <option <?php if ($qstring_sort_type_order == 'pending') echo 'selected=""'; ?> value="pending">Pending</option>
+                                <option <?php if ($qstring_sort_type_order == 'approval') echo 'selected=""'; ?> value="approval">Pending Approval</option>
                                 <option <?php if ($qstring_sort_type_order == 'completed') echo 'selected=""'; ?> value="completed">Completed</option>
                                 <option <?php if ($qstring_sort_type_order == 'cancelled') echo 'selected=""'; ?> value="cancelled">Canceled</option>
                             </select>
@@ -148,6 +149,10 @@
                 </div>
             </div>
         </div>
+        <hr style="border-color: #ddd -moz-use-text-color -moz-use-text-color;">
+
+
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
@@ -174,12 +179,12 @@
                         @else  
                         @if( Auth::user()->role_id <> 5)
                         <div class="table-responsive tablepending">
-                            <table id="table-example" class="table table-hover">
+                            <table id="table-example" class="table table-hover order-data-table">
                                 <?php
                                 $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
                                 ?>
                                 @foreach($allorders as $order)                              
-                                @if(isset($order->order_status) && $order->order_status == 'pending')
+                                @if(isset($order->order_status) && $order->order_status == 'pending' && $order->is_approved =='yes')
                                 @if($k==1)
                                 <thead>
                                     <tr>
@@ -225,6 +230,9 @@
                                         <td class="text">{{$order['delivery_location']['area_name']}}</td>
                                         @elseif($order->delivery_location_id ==0 )
                                         <td class="text">{{$order['other_location']}}</td>
+                                        @else
+                                        <td class="text">{{Other}}</td>
+                                        
                                         @endif
                                         <td>{{ round($order->total_quantity, 2) }}</td>
                                         <td>{{ round($order->pending_quantity, 2) }}</td>                                        
@@ -245,7 +253,7 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @if( Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 5 )
+                                            @if( Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 5 || Auth::user()->role_id == 4)
                                             <a href="{{url('orders/'.$order->id.'/edit')}}" class="table-link" title="Edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -273,6 +281,82 @@
                                         </td>
                                     </tr>
                                     @endif
+
+
+                                    @if(isset($order->order_status) && $order->order_status == 'pending' && $order->is_approved =='no')
+                                    @if($k==1)                                   
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tally Name</th>
+                                        <th>Mobile</th>
+                                        <th>Delivery Location</th>
+                                        <th>Total Quantity</th>
+                                        <th>Created By</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @endif
+                                    <tr id="order_row_{{$order->id}}">
+                                    <tr id="order_row_{{$order->id}}">
+                                        <td>{{$k++}}</td>
+                                        <td>
+                                            @if(isset($order["customer"]))
+                                            {{($order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}
+                                            @else
+                                            {{"Anonymous User"}}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if(isset($order["customer"]))
+                                            {{$order['customer']['phone_number1']}}
+                                            @else
+                                            {{"Anonymous User"}}
+                                            @endif
+                                        </td>
+                                        @if($order->delivery_location_id !=0)
+                                        <td class="text">{{$order['delivery_location']['area_name']}}</td>
+                                        @elseif($order->delivery_location_id ==0 )
+                                        <td class="text">{{$order['other_location']}}</td>
+                                        @endif
+                                        <td>{{ round($order->total_quantity, 2) }}</td>
+                                        <td>{{ ($order['createdby']->id  !== null? $order['createdby']->first_name." ".$order['createdby']->last_name:'' ) }}</td>
+                                        <td> 
+                                            @if( Auth::user()->role_id == 0)
+                                            <a href="{{url('orders/'.$order->id.'/edit')}}" class="btn btn-primary btn-sm" href="" title="Approve" > Approve </a>
+
+                                            <a href="#" class="btn btn-danger btn-sm" title="Reject" data-toggle="modal" data-target="#delete_orders_modal" onclick="delete_order_row({{$order->id}})">
+                                                Reject </a>
+                                            @else
+                                             <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                           
+                                            <a href="{{url('orders/'.$order->id.'/edit')}}" class="table-link" title="Edit">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                                
+                                            @endif
+                                        </td>
+                                        
+                                    </tr> 
+
+
+                                    </tr>
+
+                                    @endif
+
+
+
+
+
                                     @if(isset($order->order_status) && $order->order_status == 'completed')
                                     @if($k==1)
                                 <thead>
@@ -669,6 +753,7 @@
                                         </td>
                                         @endif
                                         <td class="text-center">
+
                                             <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -677,7 +762,6 @@
                                             </a>
                                             @if( Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 5 )
                                             
-                                           
                                             @if($order->order_status == 'pending')
                                             <a href="{{url('orders/'.$order->id.'/edit')}}" class="table-link" title="Edit">
                                                 <span class="fa-stack">
@@ -693,6 +777,7 @@
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                     <i class="fa fa-ban fa-stack-2x fa-rotate-90 text-danger"></i>
                                                 </span>
+                                            </a>
                                             @endif
                                             
                                             @if($order->order_status == 'completed')
@@ -727,9 +812,14 @@
                                             <a href="{{url('order/'.$order->id.'-track')}}" class="table-link" title="Track Order">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
+                                                    @if($order->is_approved=='no')
+                                                    <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
+                                                    @else
                                                     <i class="fa fa-truck fa-stack-1x fa-inverse"></i>
+                                                    @endif
                                                 </span>
                                             </a>
+
                                         </td>
                                     </tr>
                                     @endif

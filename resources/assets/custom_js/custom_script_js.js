@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $('form').attr('autocomplete', 'off');
-    
+
     $("#warehouse_radio").click(function () {
         $(".supplier_order").hide();
     });
@@ -336,7 +336,7 @@ function grand_total_delivery_order() {
 
 function  set_value(id)
 {
-    $('#quantity_'+$('#'+id.id).data().bind).val($('#'+id.id).val());
+    $('#quantity_' + $('#' + id.id).data().bind).val($('#' + id.id).val());
 }
 
 
@@ -347,20 +347,20 @@ function  set_value(id)
  */
 function  clear_data(id)
 {
-   // $('#quantity_'+$('#'+id.id).data().bind).val($('#'+id.id).val());
+    // $('#quantity_'+$('#'+id.id).data().bind).val($('#'+id.id).val());
     var retVal = confirm("Do you want to continue ?");
-    
-     if( retVal == true ){
-    var myID = id.id.split('delete_');   
-    
-    $('#delivery_challan_product_name_'+myID[1]).val('');
-    $('#actual_quantity_'+myID[1]).val('');
-    $('#actual_pieces_'+myID[1]).val('');
-    $('#product_price_'+myID[1]).val('');
-    $('#add_row_'+myID[1]).css('display','none');
-    
-     }
-   
+
+    if (retVal == true) {
+        var myID = id.id.split('delete_');
+
+        $('#delivery_challan_product_name_' + myID[1]).val('');
+        $('#actual_quantity_' + myID[1]).val('');
+        $('#actual_pieces_' + myID[1]).val('');
+        $('#product_price_' + myID[1]).val('');
+        $('#add_row_' + myID[1]).css('display', 'none');
+
+    }
+
 }
 
 /**
@@ -422,53 +422,53 @@ $("body").delegate(".calc_actual_quantity", "keyup", function (event) {
  *  DC : to check we get all data
  */
 function error_check() {
-        var rowId = 1;
-        
+    var rowId = 1;
+
     var current_row_count = $(".add_product_row").length;
-     for (var i = 0; i <= current_row_count + 1; i++) {
-         $('#actual_pieces_' + i).removeClass('error_validation');
-         $('#average_weight_' + i).removeClass('error_validation');
-         var actual_pieces = $('#actual_pieces_' + i).val();
-          if (actual_pieces == '') {
-              $('#actual_pieces_' + i).addClass('error_validation');
-              if(rowId == 1){
-               $('#actual_pieces_' + i).focus();
-               rowId =2;
-               $('#total_actual_qty').val(0);
+    for (var i = 0; i <= current_row_count + 1; i++) {
+        $('#actual_pieces_' + i).removeClass('error_validation');
+        $('#average_weight_' + i).removeClass('error_validation');
+        var actual_pieces = $('#actual_pieces_' + i).val();
+        if (actual_pieces == '') {
+            $('#actual_pieces_' + i).addClass('error_validation');
+            if (rowId == 1) {
+                $('#actual_pieces_' + i).focus();
+                rowId = 2;
+                $('#total_actual_qty').val(0);
                 $('#total_avg_qty').val(0);
                 $('#total_price').val('0.00');
                 $('#total_actual_quantity_calc').val(0);
-                 for (var j = 0; j <= current_row_count + 1; j++) {
-                     $('#amount_'+j).val(0);
-                 }
-           }
+                for (var j = 0; j <= current_row_count + 1; j++) {
+                    $('#amount_' + j).val(0);
+                }
+            }
         }
-        
+
         var actual_pieces = $('#average_weight_' + i).val();
-          if (actual_pieces == '') {
-              $('#average_weight_' + i).addClass('error_validation');
-              if(rowId == 1){
-               $('#average_weight_' + i).focus();
-               rowId =2;
-               $('#total_actual_qty').val(0);
+        if (actual_pieces == '') {
+            $('#average_weight_' + i).addClass('error_validation');
+            if (rowId == 1) {
+                $('#average_weight_' + i).focus();
+                rowId = 2;
+                $('#total_actual_qty').val(0);
                 $('#total_avg_qty').val(0);
                 $('#total_price').val('0.00');
                 $('#total_actual_quantity_calc').val(0);
-                 for (var j = 0; j <= current_row_count + 1; j++) {
-                     $('#amount_'+j).val(0);
-                 }
-           }
+                for (var j = 0; j <= current_row_count + 1; j++) {
+                    $('#amount_' + j).val(0);
+                }
+            }
         }
-     }
-   
-   
-   }
+    }
+
+
+}
 
 
 
-$("body").delegate(".error_check", "keyup", function (event) {    
-       error_check();
- 
+$("body").delegate(".error_check", "keyup", function (event) {
+    error_check();
+
 });
 
 /**
@@ -507,7 +507,7 @@ function default_delivery_location() {
  */
 function clear_actual_qty() {
 //    alert();
-    
+
     $("#total_actual_qty").val("");
 }
 
@@ -518,14 +518,14 @@ function clear_actual_qty() {
  * 
  */
 
-function fetch_average_quantity() {  
-   
+function fetch_average_quantity() {
+
     var total_avg_qty = 0;
     var current_row_count = $(".add_product_row").length;
     for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseFloat($('#product_price_' + i).val())) {
             var quantity = $("#actual_quantity_readonly_" + i).val();
-            if (quantity > 0) {               
+            if (quantity > 0) {
                 if ($("#actual_pieces_" + i).val() > 0 && $("#actual_pieces_" + i).val() != 0 || $("#actual_quantity_readonly_" + i).val() != '') {
                     quantity = parseFloat($("#actual_pieces_" + i).val());
                 }
@@ -540,17 +540,17 @@ function fetch_average_quantity() {
                     rate = parseFloat($("#average_weight_" + i).val());
                 }
             }
-           // var rate = $("#product_price_" + i).val();
-            
+            // var rate = $("#product_price_" + i).val();
+
             var amount = parseFloat(rate.toFixed(2)) * parseInt(quantity.toFixed(2));
-           
+
             total_avg_qty = total_avg_qty + amount;
 //            total_avg_qty = parseFloat(total_avg_qty.toFixed(2)) + parseInt(amount.toFixed(2));
-           
+
             if (amount > 0) {
                 $("#average_quantity_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
 //                $("#total_avg_qty").html('<span class="text-center">' + total_avg_qty.toFixed(2) + '</span>');
-                 $('#total_avg_qty').val(total_avg_qty.toFixed(2));
+                $('#total_avg_qty').val(total_avg_qty.toFixed(2));
             }
         }
     }
@@ -563,93 +563,93 @@ function fetch_average_quantity() {
  * 
  */
 
-function fetch_actual_quantity() {   
+function fetch_actual_quantity() {
     var total_avg_qty = 0;
     var current_row_count = $(".add_product_row").length;
-    
-    Total_Avg_qty = parseFloat($("#total_avg_qty").val()); 
+
+    Total_Avg_qty = parseFloat($("#total_avg_qty").val());
     Total_Actual_qty = parseFloat($("#total_actual_qty").val());
     Total_Actual_qty_calc = 0;
     Total_Amount = 0;
     for (var i = 0; i <= current_row_count + 1; i++) {
         if (parseFloat($('#product_price_' + i).val())) {
-            
+
             actual_pieces = parseFloat($("#actual_pieces_" + i).val());
             average_weight = parseFloat($("#average_weight_" + i).val());
-             
+
             var average_quantity = parseFloat(average_weight).toFixed(2) * parseInt(actual_pieces).toFixed(2);
             total_avg_qty = parseFloat(total_avg_qty).toFixed(2) + parseInt(average_quantity).toFixed(2);
-            
-           
-            var actual_qty =  (parseFloat(average_quantity)/parseFloat(Total_Avg_qty) * parseFloat(Total_Actual_qty));
-           actual_qty = parseFloat(actual_qty.toFixed(0));
-            if(! isNaN(actual_qty) ){
-            $("#actual_quantity_readonly_" + i).html('<span class="text-center">' + actual_qty.toFixed(0) + '</span>');
-           $("#actual_quantity_" + i).val(actual_qty);
+
+
+            var actual_qty = (parseFloat(average_quantity) / parseFloat(Total_Avg_qty) * parseFloat(Total_Actual_qty));
+            actual_qty = parseFloat(actual_qty.toFixed(0));
+            if (!isNaN(actual_qty)) {
+                $("#actual_quantity_readonly_" + i).html('<span class="text-center">' + actual_qty.toFixed(0) + '</span>');
+                $("#actual_quantity_" + i).val(actual_qty);
             }
-           
+
             product_price = parseFloat($("#product_price_" + i).val());
-            
-            var amount  = actual_qty* parseFloat(product_price);
+
+            var amount = actual_qty * parseFloat(product_price);
             if (amount > 0) {
                 $("#amount_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
             }
-            Total_Actual_qty_calc = parseFloat(Total_Actual_qty_calc)+ parseFloat(actual_qty);
-            Total_Amount = parseFloat(Total_Amount)+ parseFloat(amount);
-          
+            Total_Actual_qty_calc = parseFloat(Total_Actual_qty_calc) + parseFloat(actual_qty);
+            Total_Amount = parseFloat(Total_Amount) + parseFloat(amount);
+
         }
-         
+
     }
     $('#total_actual_quantity_calc').val(Total_Actual_qty_calc.toFixed(0));
     $('#total_price').val(Total_Amount.toFixed(2));
-    
+
     /*to check is actual qty and total avg qty have diffence less than 5%*/
-    
-    var aq =  $('#total_actual_quantity_calc').val();
-    var taq =  $('#total_actual_qty').val();
+
+    var aq = $('#total_actual_quantity_calc').val();
+    var taq = $('#total_actual_qty').val();
     var tavgq = $('#total_avg_qty').val();
-    
-    var diff = Math.abs( parseFloat(taq)- parseFloat(tavgq));
-    var percentage_diff = parseFloat(tavgq)* 0.05;    
-    
-    if(percentage_diff >= diff){
-         $('#total_actual_qty').removeClass('error_validation');         
-         
-         if(parseFloat(taq) != parseFloat(aq))
-         {
+
+    var diff = Math.abs(parseFloat(taq) - parseFloat(tavgq));
+    var percentage_diff = parseFloat(tavgq) * 0.05;
+
+    if (percentage_diff >= diff) {
+        $('#total_actual_qty').removeClass('error_validation');
+
+        if (parseFloat(taq) != parseFloat(aq))
+        {
             var diffreancce = parseFloat(taq) - parseFloat(aq);
             var current_row_count = $(".add_product_row").length;
             actual_qty = actual_qty + parseFloat(diffreancce);
-             
-            $("#actual_quantity_readonly_"+current_row_count).html('<span class="text-center">' + actual_qty.toFixed(0) + '</span>');
-            $("#actual_quantity_"+current_row_count).val(actual_qty.toFixed(0));
-            
+
+            $("#actual_quantity_readonly_" + current_row_count).html('<span class="text-center">' + actual_qty.toFixed(0) + '</span>');
+            $("#actual_quantity_" + current_row_count).val(actual_qty.toFixed(0));
+
             product_price = parseFloat($("#product_price_" + current_row_count).val());
-            
-            var amount  = actual_qty* parseFloat(product_price);
-            var all_toatl_after_calc =0;
+
+            var amount = actual_qty * parseFloat(product_price);
+            var all_toatl_after_calc = 0;
             $("#amount_" + current_row_count).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
-            $('#total_actual_quantity_calc').val(parseFloat(aq)+parseFloat(diffreancce));
-             for (var i = 1; i <= current_row_count ; i++) {
-                all_toatl_after_calc = parseFloat(all_toatl_after_calc) +(parseFloat($("#actual_quantity_"+i).val()) * parseFloat($("#product_price_" + i).val()));
-             }      
+            $('#total_actual_quantity_calc').val(parseFloat(aq) + parseFloat(diffreancce));
+            for (var i = 1; i <= current_row_count; i++) {
+                all_toatl_after_calc = parseFloat(all_toatl_after_calc) + (parseFloat($("#actual_quantity_" + i).val()) * parseFloat($("#product_price_" + i).val()));
+            }
             $("#total_price").val(all_toatl_after_calc.toFixed(2));
-           
-         }
-       
+
+        }
+
     }
-    else{
+    else {
         $('#total_actual_qty').addClass('error_validation');
         $('#total_actual_qty').focus();
-                
-                $('#total_price').val('0.00');
-                $('#total_actual_quantity_calc').val(0);
-                var current_row_count = $(".add_product_row").length;
-              
-                 for (var j = 0; j <= current_row_count + 1; j++) {
+
+        $('#total_price').val('0.00');
+        $('#total_actual_quantity_calc').val(0);
+        var current_row_count = $(".add_product_row").length;
+
+        for (var j = 0; j <= current_row_count + 1; j++) {
 //                     console.log(current_row_count);
-                     $("#amount_" + j).html('<span class="text-center">' + 0 + '</span>');
-                 }
+            $("#amount_" + j).html('<span class="text-center">' + 0 + '</span>');
+        }
     }
 }
 
@@ -864,7 +864,7 @@ function product_autocomplete_purchase(id) {
             at: "left top"
         },
         select: function (event, ui) {
-             var term = ui.item.value;
+            var term = ui.item.value;
 //            var term = $("#add_purchase_product_name_" + id).val();
             $.ajax({
                 url: baseurl + '/fetch_products',
@@ -872,7 +872,32 @@ function product_autocomplete_purchase(id) {
                 success: function (data) {
                     var obj = jQuery.parseJSON(data);
                     $("#add_product_id_" + id).val(obj.data_array[0].id);
+                    $("#product_price_" + id).val(obj.data_array[0].product_price);
                     $('#quantity_' + id).focus();
+                    $('.more_button').parent().trigger('click');
+                    jQuery('#add_purchase_product_row')[0].click();
+                },
+            });
+        }
+    });
+     $("#add_product_name_" + id).autocomplete({
+        position: {
+            my: "left bottom",
+            at: "left top"
+        },
+        select: function (event, ui) {
+            var term = ui.item.value;
+//            var term = $("#add_purchase_product_name_" + id).val();
+            $.ajax({
+                url: baseurl + '/fetch_products',
+                data: {"term": term},
+                success: function (data) {
+                    var obj = jQuery.parseJSON(data);
+                    $("#add_product_id_" + id).val(obj.data_array[0].id);
+                    $("#product_price_" + id).val(obj.data_array[0].product_price);
+                    $('#quantity_' + id).focus();
+                    $('.more_button').parent().trigger('click');
+                    jQuery('#add_purchase_product_row')[0].click();
                 },
             });
         }
@@ -939,7 +964,7 @@ function create_delivery_order_PS(row_id) {
 function validation_digit(evt) {
     var event = (evt.which) ? evt.which : event.keyCode
     return ((event >= 48 && event <= 57) || event == 46 || event == 8 || event == 46
- || event == 37 || event == 39);
+            || event == 37 || event == 39);
 }
 
 function validation_only_digit(evt) {
@@ -947,8 +972,8 @@ function validation_only_digit(evt) {
     return ((event >= 48 && event <= 57));
 }
 $(document).ready(function () {
-    $('body').on('keypress','.focus_on_enter',function(e){
-     
+    $('body').on('keypress', '.focus_on_enter', function (e) {
+
         if (e.which == 13) {
             e.preventDefault();
             var $next = $('[tabIndex=' + (+this.tabIndex + 1) + ']');
@@ -970,65 +995,73 @@ $(document).ready(function () {
     });
 });
 
-function numbersOnly(Sender,evt,isFloat,isNegative) {
-            if(Sender.readOnly) return false;       
+function numbersOnly(Sender, evt, isFloat, isNegative) {
+    if (Sender.readOnly)
+        return false;
 
-            var key   = evt.which || !window.event ? evt.which : event.keyCode;
-            var value = Sender.value;
+    var key = evt.which || !window.event ? evt.which : event.keyCode;
+    var value = Sender.value;
 
-            if((key == 46 || key == 44) && isFloat){                
-                var selected = document.selection ? document.selection.createRange().text : "";
-                if(selected.length == 0 && value.indexOf(".") == -1 && value.length > 0) Sender.value += ".";
-                return false;
+    if ((key == 46 || key == 44) && isFloat) {
+        var selected = document.selection ? document.selection.createRange().text : "";
+        if (selected.length == 0 && value.indexOf(".") == -1 && value.length > 0)
+            Sender.value += ".";
+        return false;
+    }
+    if (key == 45) { // minus sign '-'
+        if (!isNegative)
+            return false;
+        if (value.indexOf('-') == -1)
+            Sender.value = '-' + value;
+        else
+            Sender.value = value.substring(1);
+        if (Sender.onchange != null) {
+            if (Sender.fireEvent) {
+                Sender.fireEvent('onchange');
+            } else {
+                var e = document.createEvent('HTMLEvents');
+                e.initEvent('change', false, false);
+                Sender.dispatchEvent(e);
             }
-            if(key == 45) { // minus sign '-'
-                if(!isNegative) return false;
-                if(value.indexOf('-')== -1) Sender.value = '-'+value; else Sender.value = value.substring(1);
-                if(Sender.onchange != null) {
-                    if(Sender.fireEvent){
-                        Sender.fireEvent('onchange');
-                    } else {
-                        var e = document.createEvent('HTMLEvents');
-                            e.initEvent('change', false, false);
-                        Sender.dispatchEvent(e);
-                    }
-                }
-
-                var begin = Sender.value.indexOf('-') > -1 ? 1 : 0;
-                if(Sender.setSelectionRange){
-                    Sender.setSelectionRange(begin,Sender.value.length);
-                } else {
-                    var range = Sender.createTextRange();
-                    range.moveStart('character',begin);
-                    range.select();                 
-                }
-
-                return false;
-            }
-            if(key > 31 && (key < 48 || key > 57)) return false;
         }
-        
-    function onlyPercentage(evt) {
-            var val1;
-            evt = evt || window.event;
-            sVal = (evt.srcElement || evt.target).value;
-            var evt   = evt.which || !window.event ? evt.which : event.keyCode;
-            
-            if (!(evt == 46 || evt == 8 ||(evt >= 48 && evt <= 57)))
-                return false;
-            var parts = sVal.split('.');            
-            if (parts.length > 2)
-                return false;
-            if (evt == 46)
-                return (parts.length == 1);
-            if (evt != 46) {
-                var currVal = String.fromCharCode(evt);
-                val1 = parseFloat(String(parts[0]) + String(currVal));
-                if(parts.length==2)
-                    val1 = parseFloat(String(parts[0])+ "." + String(currVal));
-            }
- 
-            if (val1 > 99.99)
-                return false;
-            if (parts.length == 2 && parts[1].length >= 2) return false;
-        }    
+
+        var begin = Sender.value.indexOf('-') > -1 ? 1 : 0;
+        if (Sender.setSelectionRange) {
+            Sender.setSelectionRange(begin, Sender.value.length);
+        } else {
+            var range = Sender.createTextRange();
+            range.moveStart('character', begin);
+            range.select();
+        }
+
+        return false;
+    }
+    if (key > 31 && (key < 48 || key > 57))
+        return false;
+}
+
+function onlyPercentage(evt) {
+    var val1;
+    evt = evt || window.event;
+    sVal = (evt.srcElement || evt.target).value;
+    var evt = evt.which || !window.event ? evt.which : event.keyCode;
+
+    if (!(evt == 46 || evt == 8 || (evt >= 48 && evt <= 57)))
+        return false;
+    var parts = sVal.split('.');
+    if (parts.length > 2)
+        return false;
+    if (evt == 46)
+        return (parts.length == 1);
+    if (evt != 46) {
+        var currVal = String.fromCharCode(evt);
+        val1 = parseFloat(String(parts[0]) + String(currVal));
+        if (parts.length == 2)
+            val1 = parseFloat(String(parts[0]) + "." + String(currVal));
+    }
+
+    if (val1 > 99.99)
+        return false;
+    if (parts.length == 2 && parts[1].length >= 2)
+        return false;
+}    

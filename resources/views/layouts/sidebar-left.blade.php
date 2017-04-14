@@ -30,6 +30,38 @@
             ?>
             <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
                 <ul class="nav nav-pills nav-stacked" id="menuulbox">
+                    @if(isset($performance_index) && $performance_index==true)
+                    <li class="{{Request::is('performance/labours/*') || Request::is('performance/') ? 'active' : '' }} ">
+                        <a href="#" class="dropdown-toggle">
+                            <i class="fa fa-user"></i>
+                            <span>Labors</span>
+                            <i class="fa fa-chevron-circle-right drop-icon"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li class="{{ (Request::is('*performance/labours/*') ? 'active' : '') }}">
+                                <a href="{{url('performance/labours')}}" > Labours </a>
+                            </li>
+                            <li class="{{ (Request::is('*performance/labours/labour-performance*') ? 'active' : '') }}">
+                                <a href="{{url('performance/labours/labour-performance')}}" > Performance </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="{{Request::is('performance/loaded-by/*') ? 'active' : '' }} ">
+                        <a href="#" class="dropdown-toggle">
+                            <i class="fa fa-user"></i>
+                            <span>Loaded By</span>
+                            <i class="fa fa-chevron-circle-right drop-icon"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li class="{{ (Request::is('*performance/loaded-by/*') ? 'active' : '') }}">
+                                <a href="{{url('performance/loaded-by')}}" > Loaded-by </a>
+                            </li>
+                            <li class="{{ (Request::is('*performance/loaded-by/loaded-by-performance*') ? 'active' : '') }}">
+                                <a href="{{url('performance/loaded-by/loaded-by-performance')}}" > Performance </a>
+                            </li>
+                        </ul>
+                    </li>
+                @else
                     <?php
                     $full_name = $_SERVER['PHP_SELF'];
                     $name_array = explode('/', $full_name);
@@ -110,7 +142,7 @@
                             </li>
 
                             @endif
-                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 )
+                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4 )
                             <li class="{{ (Request::is('*orders*') ? 'active' : '') }}">
                                 <a href="{{url('orders')}}" >
                                     Order
@@ -154,7 +186,7 @@
                     </li>
                     @endif
                     
-                    @if((isset($ip_array) && in_array($ipaddress, $ip_array) && Auth::user()->role_id <> 5) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array) && Auth::user()->role_id <> 5) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
                     <li class="<?php
                     if (Request::is('*purchase_orders*') || Request::is('*purchaseorder_advise*') || Request::is('*purchase_challan*') || Request::is('*purchase_order_report*') || Request::is('*purchase_order_daybook*') || Request::is('*pending_purchase_advice*')) {
                         echo 'active';
@@ -166,14 +198,14 @@
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
                         <ul class="submenu">
-                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
+                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
                             <li class="{{ (Request::is('*purchase_orders*') ? 'active' : '') }}">
                                 <a href="{{url("purchase_orders")}}">
                                     Purchase Order
                                 </a>
                             </li>
                             @endif
-                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
+                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
                             <li class="{{ (Request::is('*purchaseorder_advise*') ? 'active' : '') }}">
                                 <a href="{{url('purchaseorder_advise')}}">
                                     Purchase Advice
@@ -274,6 +306,13 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="{{ (Request::is('territory*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Territory">
+                        <a href="{{url("territory")}}">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <span>Territory</span>
+                            <span class="label label-info label-circle pull-right"></span>
+                        </a>
+                    </li>
                     <li class="{{ (Request::is('inventory*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Inventory">
                         <a href="{{url("inventory")}}">
                             <i class="fa fa-cubes" aria-hidden="true"></i>
@@ -325,6 +364,7 @@
                     </li>
                     @endif                    
                     @endif
+                @endif
                 </ul>
             </div>
         </div>

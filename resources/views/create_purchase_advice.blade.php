@@ -78,7 +78,7 @@
                                                 <td class="col-md-3"><span>Remark</span></td>
                                             </tr>
                                             @foreach($purchase_orders['purchase_products'] as $key=>$product_data)
-                                            @if($product_data->order_type == 'purchase_order')
+                                            @if($product_data->order_type == 'purchase_order' && $product_data->pending_quantity > 0)
                                             <tr id="add_row_{{++$key}}" class="add_product_row">
                                                 <td>
                                                     {{$product_data['purchase_product_details']->alias_name}}
@@ -92,7 +92,7 @@
                                                 </td>
 
                                                 <td class="col-md-1">
-                                                    <input type="tel" class="form-control" name="product[{{$key}}][actual_pieces]" id="actual_pieces_{{$key}}" value="" onkeypress=" return numbersOnly(this,event,true,false);">
+                                                    <input type="tel" class="form-control" name="product[{{$key}}][actual_pieces]" value="" placeholder="actual pieces" onkeypress=" return numbersOnly(this,event,true,false);" id="actual_pieces{{$key}}">
 
                                                 </td>
 
@@ -103,9 +103,9 @@
                                                 <td>
                                                     <div class="form-group pshipping">
                                                         @if($product_data->present_shipping != 0)
-                                                        <input id="{{"present_shipping_".$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" onblur="calutate_pending_order(<?php echo $product_data->pending_quantity . ',' . $key; ?>)" value="{{$product_data->present_shipping}}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
+                                                        <input id="{{"present_shipping".$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" onblur="calutate_pending_order(<?php echo $product_data->pending_quantity . ',' . $key; ?>)" value="{{$product_data->present_shipping}}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                                                         @else
-                                                        <input id="{{"present_shipping_".$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" onblur="calutate_pending_order(<?php echo $product_data->pending_quantity . ',' . $key; ?>);" value="" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
+                                                        <input id="{{"present_shipping".$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" onblur="calutate_pending_order(<?php echo $product_data->pending_quantity . ',' . $key; ?>);" value="{{$product_data->present_shipping}}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                                                         @endif
                                                     </div>
                                                 </td>
@@ -130,7 +130,7 @@
                                                     <div class="add_button1">
                                                         <div class="form-group pull-left">
                                                             <label for="addmore"></label>
-                                                            <a href="#" class="table-link" title="add more" id="add_purchase_advice_product_row">
+                                                            <a class="table-link" title="add more" id="add_purchase_advice_product_row">
                                                                 <span class="fa-stack more_button" >
                                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                                     <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
@@ -215,4 +215,5 @@
         </div>
     </div>
 </div>
+@include('autocomplete_tally_product_name')
 @stop

@@ -83,7 +83,7 @@ class LabourController extends Controller {
         $city = City::all();
 
 
-        return view('labours', array('labours' => $labours, 'city' => $city));
+        return view('labours', array('labours' => $labours, 'city' => $city))->with('performance_index',true);
     }
 
     /**
@@ -99,7 +99,7 @@ class LabourController extends Controller {
 
         $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
 
-        return View::make('add_labours');
+        return View::make('add_labours')->with('performance_index',true);
     }
 
     /**
@@ -144,7 +144,7 @@ class LabourController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $labour = Labour::find($id);
-        return View::make('labour_details', array('labour' => $labour));
+        return View::make('labour_details', array('labour' => $labour))->with('performance_index',true);
     }
 
     /**
@@ -162,7 +162,7 @@ class LabourController extends Controller {
             return redirect('labours/')->with('error', 'Trying to access an invalid labour');
         }
 
-        return View::make('edit_labours', array('labour' => $labour));
+        return View::make('edit_labours', array('labour' => $labour))->with('performance_index',true);
     }
 
     /**
@@ -254,7 +254,7 @@ class LabourController extends Controller {
         
         $labours = Labour::get();
         
-        return View::make('labour_performance', array('labours' => $labours));
+        return View::make('labour_performance', array('labours' => $labours))->with('performance_index',true);
     }
     
     

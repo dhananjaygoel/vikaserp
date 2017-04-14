@@ -26,6 +26,43 @@ $(document).ready(function () {
     if (split_url[3] == 'place_order') {
         $('#add_product_row').trigger('click');
     }
+    if (split_url[4] == 'delivery_order' && split_url[6] == 'edit') {
+        $('#add_product_row_delivery_order').trigger('click');
+    }
+    if (split_url[4] == 'orders' && split_url[6] == 'edit') {
+        $('#add_product_row').trigger('click');
+    }
+    if (split_url[4] == 'inquiry' && split_url[6] == 'edit') {
+        $('#add_product_row').trigger('click');
+    }
+    if (split_url[4] == 'create_delivery_order') {
+        $('#add_product_row_delivery_order').trigger('click');
+    }
+    if (split_url[4] == 'place_order') {
+        $('#add_product_row').trigger('click');
+    }
+    if (split_url[3] == 'purchase_orders' && split_url[5] == 'edit') {
+//        $('#add_purchase_product_row').trigger('click');
+        jQuery('#add_purchase_product_row')[0].click();
+    }
+    if (split_url[4] == 'purchase_orders' && split_url[6] == 'edit') {
+//        $('#add_purchase_product_row').trigger('click');
+        jQuery('#add_purchase_product_row')[0].click();
+    }
+    if (split_url[3] == 'create_purchase_advice') {
+       jQuery('#add_purchase_advice_product_row')[0].click();
+    }
+     if (split_url[4] == 'create_purchase_advice') {       
+        jQuery('#add_purchase_advice_product_row')[0].click();
+    }
+    if (split_url[3] == 'purchaseorder_advise' && split_url[5] == 'edit') {
+//        $('#add_purchase_product_row').trigger('click');
+        jQuery('#add_purchase_advice_product_row')[0].click();
+    }
+    if (split_url[4] == 'purchaseorder_advise' && split_url[6] == 'edit') {
+//        $('#add_purchase_product_row').trigger('click');
+        jQuery('#add_purchase_advice_product_row')[0].click();
+    }
 
 
     window.setTimeout(function () {
@@ -107,6 +144,14 @@ $(document).ready(function () {
             }
         });
     });
+    var myRadio = $('input[name=customer_status]');
+    var checkedValue = myRadio.filter(':checked').val();
+   
+    if(checkedValue == 'existing_customer'){
+        $(".exist_field").hide();
+        $(".customer_select").show();
+    }
+    
     $("#exist_customer").click(function () {
         $(".exist_field").hide();
         $(".customer_select").show();
@@ -391,16 +436,36 @@ function create_purchase_challan_function() {
             '    </td>' +
             '    <td>' +
             '        <div class="form-group">' +
-            '            <input id="actual_quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Actual Quantity" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="purchase_challan_calculation();">' +
-            '        </div>' +
-            '    </td>' +
-            '    <td>' +
-            '        <div class="form-group">' +
-            '           <select class="form-control" name="product[' + current_row_count + '][unit_id]" id="units_' + current_row_count + '">' +
+            '           <select class="form-control" name="product[' + current_row_count + '][unit_id]" id="units_' + current_row_count + '" onchange="unitType(this);">' +
             '               ' +
             '           </select>' +
             '        </div>' +
             '    </td>  ' +
+            '    <td>' +
+            '        <div class="form-group meter_list_' + current_row_count + '" style="display:none">' +
+            '            <input id="actual_quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Actual Quantity" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="purchase_challan_calculation();">' +
+            '        </div>' +
+            '       <div class = "form-group kg_list_' + current_row_count + '" >' +
+            '           <select class = "form-control kg_list" name = "kg_list" id = "kg_list_' + current_row_count + '" onchange="setQty(this);">' +
+            '               <option value = "50">50</option>' +
+            '               <option value = "50">100</option>' +
+            '               <option value = "50">150</option>' +
+            '               <option value = "50">200</option>' +
+            '               <option value = "50">250</option>' +
+            '               <option value = "50">300</option>' +
+            '           </select>' +
+            '       </div>' +
+            '       <div class = "form-group pieces_list_' + current_row_count + '" style="display:none">' +
+            '           <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_' + current_row_count + '" onchange="setQty(this);">' +
+            '               <option value = "1">1</option>' +
+            '               <option value = "5">5</option>' +
+            '               <option value = "10">10</option>' +
+            '               <option value = "15">15</option>' +
+            '               <option value = "20">20</option>' +
+            '               <option value = "25">25</option>' +
+            '           </select>' +
+            '       </div>' +
+            '    </td>' +
             '    <td>  ' +
             '        <div class="form-group">' +
             '            <input id="shipping_' + current_row_count + '" class="form-control" placeholder="Present Shipping" name="product[' + current_row_count + '][present_shipping]" value="" type="text">' +
@@ -944,6 +1009,28 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
                 }
             }
         }
+        
+        if ($("#add_order_location").val() == "other") {
+
+            if ($("#location_difference").val() == "") {
+                $('#location_difference').addClass('error_validation');
+                status_form = 1;
+            } else {
+                $('#location_difference').removeClass('error_validation');
+                if (status_form != 1)
+                    status_form = 0;
+            }
+
+            if ($("#location").val() == "") {
+                $('#location').addClass('error_validation');
+                status_form = 1;
+            } else {
+                $('#location').removeClass('error_validation');
+                if (status_form != 1)
+                    status_form = 0;
+            }
+        }
+        
         if (j == tot_products) {
             if ($("#add_product_id_1").val() == "") {
                 $('#add_product_name_1').addClass('error_validation');
@@ -1151,6 +1238,25 @@ $('body').delegate(".btn_edit_order, .btn_edit_order_sms", "click", function () 
                 }
             }
         }
+        if ($("#add_order_location").val() == "other") {
+            if ($("#location_difference").val() == "") {
+                $('#location_difference').addClass('error_validation');
+                status_form = 1;
+            } else {
+                $('#location_difference').removeClass('error_validation');
+                if (status_form != 1)
+                    status_form = 0;
+            }
+
+            if ($("#location").val() == "") {
+                $('#location').addClass('error_validation');
+                status_form = 1;
+            } else {
+                $('#location').removeClass('error_validation');
+                if (status_form != 1)
+                    status_form = 0;
+            }
+        }
         if (j == tot_products) {
             if ($("#add_product_id_1").val() == "") {
                 $('#add_product_name_1').addClass('error_validation');
@@ -1230,6 +1336,26 @@ $('body').delegate(".btn_edit_order, .btn_edit_order_sms", "click", function () 
 //            }
 //            status_form = 1;
 //        }
+
+     if ($("#add_order_location").val() == "other") {
+            if ($("#location_difference").val() == "") {
+                $('#location_difference').addClass('error_validation');
+                status_form = 1;
+            } else {
+                $('#location_difference').removeClass('error_validation');
+                if (status_form != 1)
+                    status_form = 0;
+            }
+
+            if ($("#location").val() == "") {
+                $('#location').addClass('error_validation');
+                status_form = 1;
+            } else {
+                $('#location').removeClass('error_validation');
+                if (status_form != 1)
+                    status_form = 0;
+            }
+        }
         if (status_form == 1) {
             $('html, body').animate({
                 scrollTop: $('.breadcrumb').offset().top
@@ -1391,7 +1517,7 @@ $('body').delegate(".btn_edit_delivery_order", "click", function () {
                     status_form = 1;
                 }
             }
-        }     
+        }
         if (tot_products == present_shippein_zero_count) {
             for (var j = 0; j <= tot_products; j++) {
                 $('#present_shipping_' + j).addClass('error_validation');
@@ -1720,31 +1846,54 @@ $('body').delegate(".btn_purorder_to_puradvice", "click", function () {
     var tot_products = $(".add_product_row").length;
     var j = 0;
     var present_shippein_zero_count = 0;
-        for (var i = 0; i <= tot_products + 1; i++) {
-        if ($("#actual_pieces_" + i).val() == 0) {
-            present_shippein_zero_count++;
+    var actual_pieces_count = 0;
+    for (var i = 0; i <= tot_products - 1; i++) {
+        if ($("#actual_pieces" + i).val() == 0  | $("#actual_pieces" + i).val() =="") {
+            actual_pieces_count++;
         }
-        
-     
     }
-    if (tot_products == present_shippein_zero_count) {
-        for (var j = 0; j <= tot_products; j++) {
-            $('#actual_pieces_' + j).addClass('error_validation');
+    if ((tot_products-1) == actual_pieces_count) {
+        for (var j = 1; j <= tot_products-1; j++) {
+            $('#actual_pieces' + j).addClass('error_validation');
         }
         status_form = 1;
+    }else{
+        for (var j = 1; j <= tot_products-1; j++) {
+            $('#actual_pieces' + j).removeClass('error_validation');
+        }
     }
     
-    
+    for (var i = 0; i <= tot_products - 1; i++) {
+        if ($("#present_shipping" + i).val() == 0  | $("#present_shipping" + i).val() =="") {
+            present_shippein_zero_count++;
+        }
+    }
+    if ((tot_products-1) == present_shippein_zero_count) {
+        for (var j = 1; j <= tot_products-1; j++) {
+            $('#present_shipping' + j).addClass('error_validation');
+        }
+        status_form = 1;
+    }else{
+        for (var j = 1; j <= tot_products-1; j++) {
+            $('#present_shipping' + j).removeClass('error_validation');
+        }
+    }
+
+
     if ($("#vehicle_number").val() == "") {
         $("#vehicle_number").addClass('error_validation');
         status_form = 1;
+    }else{
+         $("#vehicle_number").removeClass('error_validation');
     }
     if ($("#datepickerDate").val() == "") {
         $("#datepickerDate").addClass('error_validation');
         status_form = 1;
+    }else{
+         $("#datepickerDate").removeClass('error_validation');
     }
 
-     if (status_form == 1) {
+    if (status_form == 1) {
         $('html, body').animate({
             scrollTop: $('.breadcrumb').offset().top
         }, 1000);
@@ -2674,5 +2823,87 @@ $(function () {
 $(window).load(function () {
     console.clear();
 });
+
+
+
+
+/**
+ * Comment
+ */
+function showProductCategory(el) {
+
+    var cur_product_id = $(el).attr("data-productid");
+
+    console.log(cur_product_id);
+    var token = $('#_token').val();
+    var url = $('#baseurl2').val();
+    $.ajax({
+        type: 'get',
+        url: 'http://localhost/steel-trading-automation/get_product_type',
+        data: {_token: token},
+        success: function (data) {
+            var main_array = JSON.parse(data);
+
+            var prod = main_array['prod'];
+
+            var str = '<ul class="custom-combobox-toggle ui-corner-right">';
+            var str2 = '';
+            for (var key in prod) {
+                console.log(prod);
+                str += '<li id="' + prod[key].id + '"> ' + prod[key].name + ' </li>';
+            }
+
+            $('#add_product_name_' + cur_product_id).html(str);
+            $('#add_product_name_' + cur_product_id).show();
+        }
+    });
+
+}
+
+
+
+function unitType(parameters) {
+    
+    var id = parameters.id.split("_");
+    id = id[id.length - 1];
+   
+    var i = $('#units_'+id).val();   
+ 
+    if (i == "1")
+    {
+        $('.kg_list_' + id).show();
+        $('.pieces_list_' + id).hide();
+        $('.meter_list_' + id).hide();
+        $('#quantity_' + id).val($('#kg_list_' + id).val());
+    }
+    if (i == "2") {
+
+        $('.kg_list_' + id).hide();
+        $('.pieces_list_' + id).show();
+        $('.meter_list_' + id).hide();
+        $('#quantity_' + id).val($('#pieces_list_' + id).val());
+
+    }
+    if (i == "3")
+    {
+        $('.kg_list_' + id).hide();
+        $('.pieces_list_' + id).hide();
+        $('.meter_list_' + id).show();
+        $('#quantity_' + id).val("");
+
+    }
+
+}
+
+function setQty(parameters) {
+   
+    var id = parameters.id.split("_");
+    id = id[id.length - 1];
+    $('#quantity_' + id).val(parameters.value);
+    $('#actual_quantity_' + id).val(parameters.value);
+
+}
+
+
 //
 

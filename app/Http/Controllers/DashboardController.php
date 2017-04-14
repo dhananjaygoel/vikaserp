@@ -157,40 +157,40 @@ class DashboardController extends Controller {
         
          /* To get Inquiry stats for graph*/
         
-//
-//        for ($i = 1; $i <= 7; $i++) {           
-//            $inquiries_stats_all[$i]['pipe'] = 0;
-//            $inquiries_stats_all[$i]['structure'] = 0;
-//            $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
-//            $inquiries_stats_all[$i]['day'] = $date_search;
-//            $inquiries_stats = Inquiry::with('inquiry_products.inquiry_product_details')
-//                    ->where('inquiry_status', '=', 'completed')
-//                    ->where('updated_at', 'like', $date_search . '%')
-//                    ->get();
-//
-//            foreach ($inquiries_stats as $inquiry) {
-//                
-//                foreach ($inquiry['inquiry_products'] as $inquiry_products) {
-//                    if (isset($inquiry_products['inquiry_product_details']['product_category']['product_type_id'])) {
-//                        if ($inquiry_products['inquiry_product_details']['product_category']['product_type_id'] == 1) {
-//                            if ($inquiry_products['unit_id'] == 1)
-//                                $inquiries_stats_all[$i]['pipe'] += $inquiry_products['quantity'];
-//                            elseif (($inquiry_products['unit_id'] == 2) || ($inquiry_products['unit_id'] == 3))
-//                                $inquiries_stats_all[$i]['pipe'] += $this->checkpending_quantity($inquiry_products['unit_id'], $inquiry_products['product_category_id'], $inquiry_products['quantity']);
-//                        }else {
-//                            if ($inquiry_products['unit_id'] == 1)
-//                                $inquiries_stats_all[$i]['structure'] += $inquiry_products['quantity'];
-//                            elseif (($inquiry_products['unit_id'] == 2) || ($inquiry_products['unit_id'] == 3))
-//                                $inquiries_stats_all[$i]['structure'] += $this->checkpending_quantity($inquiry_products['unit_id'], $inquiry_products['product_category_id'], $inquiry_products['quantity']);
-//                        }
-//                    }
-//                }
-//            }
-//
-//            $inquiries_stats_all[$i]['pipe'] = round($inquiries_stats_all[$i]['pipe'] / 1000, 2);
-//            $inquiries_stats_all[$i]['structure'] = round($inquiries_stats_all[$i]['structure'] / 1000, 2);
-//        }  
-//        
+
+        for ($i = 1; $i <= 7; $i++) {           
+            $inquiries_stats_all[$i]['pipe'] = 0;
+            $inquiries_stats_all[$i]['structure'] = 0;
+            $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
+            $inquiries_stats_all[$i]['day'] = $date_search;
+            $inquiries_stats = Inquiry::with('inquiry_products.inquiry_product_details')
+                    ->where('inquiry_status', '=', 'completed')
+                    ->where('updated_at', 'like', $date_search . '%')
+                    ->get();
+
+            foreach ($inquiries_stats as $inquiry) {
+                
+                foreach ($inquiry['inquiry_products'] as $inquiry_products) {
+                    if (isset($inquiry_products['inquiry_product_details']['product_category']['product_type_id'])) {
+                        if ($inquiry_products['inquiry_product_details']['product_category']['product_type_id'] == 1) {
+                            if ($inquiry_products['unit_id'] == 1)
+                                $inquiries_stats_all[$i]['pipe'] += $inquiry_products['quantity'];
+                            elseif (($inquiry_products['unit_id'] == 2) || ($inquiry_products['unit_id'] == 3))
+                                $inquiries_stats_all[$i]['pipe'] += $this->checkpending_quantity($inquiry_products['unit_id'], $inquiry_products['product_category_id'], $inquiry_products['quantity']);
+                        }else {
+                            if ($inquiry_products['unit_id'] == 1)
+                                $inquiries_stats_all[$i]['structure'] += $inquiry_products['quantity'];
+                            elseif (($inquiry_products['unit_id'] == 2) || ($inquiry_products['unit_id'] == 3))
+                                $inquiries_stats_all[$i]['structure'] += $this->checkpending_quantity($inquiry_products['unit_id'], $inquiry_products['product_category_id'], $inquiry_products['quantity']);
+                        }
+                    }
+                }
+            }
+
+            $inquiries_stats_all[$i]['pipe'] = round($inquiries_stats_all[$i]['pipe'] / 1000, 2);
+            $inquiries_stats_all[$i]['structure'] = round($inquiries_stats_all[$i]['structure'] / 1000, 2);
+        }  
+        
         
         
         /* To get Order stats for graph*/

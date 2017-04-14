@@ -535,7 +535,7 @@ class InventoryController extends Controller {
         $current = \Carbon\Carbon::now();
         if ($current->hour > 1) {
             $inventory = new Inventory();
-            if ($inventory_list->opening_qty_date != NULL) {
+            if (isset($inventory_list->opening_qty_date) && $inventory_list->opening_qty_date != NULL) {
                 $last_updated = explode(' ', $inventory_list->opening_qty_date);
                 $last_updated_date = $last_updated[0];
                 $last_updated_time = explode(':', $last_updated[1]);
@@ -585,6 +585,14 @@ class InventoryController extends Controller {
             }
         }
         echo "Inventory product listing updated successfully";
+    }
+    
+    public function inventoryReport() {
+
+        $product_cat = ProductCategory::orderBy('created_at', 'desc')->Paginate(20);
+        $product_last = ProductCategory::with('product_sub_categories')->orderBy('created_at', 'desc')->limit(1)->get();
+//        dd($product_last);
+        return view('inventory_report1')->with('product_cat',$product_cat)->with('product_last',$product_last);
     }
 
 }

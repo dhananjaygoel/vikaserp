@@ -57,11 +57,20 @@ class InquiryController extends Controller {
         }
         if (Auth::user()->role_id <> 5) {
             if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
-                $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')->orderBy('created_at', 'desc')->Paginate(20);
+                if ($data['inquiry_filter'] == 'Approval') {
+                    $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')
+                            ->where('is_approved', '=', 'no')
+                            ->where('inquiry_status', '=', 'pending')
+                            ->orderBy('created_at', 'desc')
+                            ->paginate(20);
+                } else {
+                    $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')->orderBy('created_at', 'desc')->where('is_approved', '=', 'yes')->Paginate(20);
+                }
             } else {
-                $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')
+                $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit', 'createdby')
                         ->where('inquiry_status', 'pending')
                         ->orderBy('created_at', 'desc')
+                        ->where('is_approved', '=', 'yes')
                         ->Paginate(20);
             }
         }
@@ -85,6 +94,11 @@ class InquiryController extends Controller {
             }
         }
 
+//        $non_approved_inquiry = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')
+//                ->where('is_approved', '=', 'no')
+//                ->where('inquiry_status', '=', 'pending')
+//                ->orderBy('created_at', 'desc')
+//                ->paginate(15);
 
         $inquiries->setPath('inquiry');
         return view('inquiry', compact('inquiries'));
@@ -197,6 +211,8 @@ class InquiryController extends Controller {
         $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
         $add_inquiry->remarks = $input_data['inquiry_remark'];
         $add_inquiry->inquiry_status = "Pending";
+        if ($add_inquiry->is_approved == 'no')
+            $add_inquiry->is_approved = (Auth::user()->role_id == 0 ? 'yes' : 'no');
         $add_inquiry->save();
         $inquiry_id = $add_inquiry->id;
         $inquiry_products = array();
@@ -277,9 +293,9 @@ class InquiryController extends Controller {
                 }
             }
         }
-        
-       
-        
+
+
+
         return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully added.');
     }
 
@@ -495,6 +511,10 @@ class InquiryController extends Controller {
             $location_difference = $input_data['location_difference'];
         }
         $inquiry = Inquiry::find($id);
+        if (count($inquiry) == 0) {
+            return redirect('inquiry')->with('flash_message', 'Inquiry details Rejected.');
+        }
+
         $update_inquiry = $inquiry->update([
             'customer_id' => $customer_id,
 //            'created_by' => Auth::id(),
@@ -534,6 +554,8 @@ class InquiryController extends Controller {
         }
         $inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->first();
         $inquiry->updated_at = $inquiry_products->updated_at;
+        if ($inquiry->is_approved == 'no')
+            $inquiry->is_approved = (Auth::user()->role_id == 0 ? 'yes' : 'no');
         $inquiry->save();
         /*
           |------------------------------------------------
@@ -661,27 +683,135 @@ class InquiryController extends Controller {
     public function fetch_products() {
 
 //        $delivery_location = Input::get('delivery_location');
+        $term = Input::get();
+        $term = Input::get('term');
         $customer_id = Input::get('customer_id');
+        if ($term != '' && strpos($term, '#') === false) {
+
 //        $location_diff = 0;
-        $products = ProductSubCategory::where('alias_name', 'like', '%' . Input::get('term') . '%')->with('product_category')->get();
-        if (count($products) > 0) {
-            foreach ($products as $product) {
-                $cust = 0;
-                if ($customer_id > 0) {
-                    $customer = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $product['product_category']->id)->first();
-                    if (count($customer) > 0) {
-                        $cust = $customer->difference_amount;
+            $products = ProductSubCategory::with('product_category.product_type')
+                            ->where('alias_name', 'like', '%' . Input::get('term') . '%')
+                            ->orWhereHas('product_category', function($query) {
+                                $query->where('product_category_name', 'like', '%' . Input::get('term') . '%');
+                            })
+                            ->orWhereHas('product_category.product_type', function($query) {
+                                $query->where('name', 'like', '%' . Input::get('term') . '%');
+                            })
+                            ->orderBy('alias_name')->get();
+
+            if (count($products) > 0) {
+                foreach ($products as $product) {
+                    $cust = 0;
+                    if ($customer_id > 0) {
+                        $customer = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $product['product_category']->id)->first();
+                        if (count($customer) > 0) {
+                            $cust = $customer->difference_amount;
+                        }
                     }
+                    $data_array[] = [
+                        'value' => $product->alias_name . " (" . $product['product_category']['product_type']->name . ") " . $product['product_category']->product_category_name,
+                        'id' => $product->id,
+                        'product_price' => $product['product_category']->price + $cust + Input::get('location_difference') + $product->difference
+                    ];
                 }
-                $data_array[] = [
-                    'value' => $product->alias_name,
-                    'id' => $product->id,
-                    'product_price' => $product['product_category']->price + $cust + Input::get('location_difference') + $product->difference
-                ];
+            } else {
+                $data_array[] = [ 'value' => 'No Products'];
             }
-        } else {
-            $data_array[] = [ 'value' => 'No Products'];
+        } elseif ($term == '') {
+            $products = \App\ProductType::get();
+            if (count($products) > 0) {
+
+                foreach ($products as $product) {
+                    $data_array[] = [
+                        'value' => $product['name'],
+                        'id' => $product['id'],
+                        'level' => '1',
+                        'product_price' => ''
+                    ];
+                }
+            } else {
+                $data_array[] = [ 'value' => 'No Products'];
+            }
+        } elseif (strpos($term, '#') !== false) {
+            $data = explode("#", $term);
+            $level = $data[1];
+            $id = $data[2];
+            if (Input::hasFile('level')) {
+                $level = Input::get('level');
+            }
+            if (Input::hasFile('id')) {
+                $id = Input::get('id');
+            }
+
+            if ($level == 1) {
+                $products = \App\ProductCategory::where('product_type_id', '=', $id)->get();
+                if (count($products) > 0) {
+                    $data_array[] = [
+                        'value' => '<-- Back',
+                        'id' => '0',
+                        'level' => '0',
+                        'product_price' => ''
+                    ];
+                    foreach ($products as $product) {
+                        $data_array[] = [
+                            'value' => $product['product_category_name'],
+                            'id' => $product['id'],
+                            'level' => '2',
+                            'product_price' => ''
+                        ];
+                    }
+                } else {
+                    $data_array[] = [ 'value' => 'No Products'];
+                }
+            }
+            if ($level == 2) {
+                $products = \App\ProductSubCategory::with('product_category')
+                        ->where('product_category_id', '=', $id)
+                        ->get();
+                $type_id = 1;
+
+                if (isset($products[0]['product_category']['product_type_id'])) {
+                    $type_id = $products[0]['product_category']['product_type_id'];
+                }
+
+                if (count($products) > 0) {
+                    $data_array[] = [
+                        'value' => '<-- Back',
+                        'id' => $type_id,
+                        'level' => '1',
+                        'product_price' => ''
+                    ];
+                    foreach ($products as $product) {
+                        $data_array[] = [
+                            'value' => $product['alias_name'],
+                            'id' => $product['id'],
+                            'level' => '3',
+                            'product_price' => ''
+                        ];
+                    }
+                } else {
+                    $data_array[] = [ 'value' => 'No Products'];
+                }
+            }
+            if ($level == 3) {
+                $products = \App\ProductSubCategory::where('id', '=', $id)->get();
+                foreach ($products as $product) {
+                    $cust = 0;
+                    if ($customer_id > 0) {
+                        $customer = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $product['product_category']->id)->first();
+                        if (count($customer) > 0) {
+                            $cust = $customer->difference_amount;
+                        }
+                    }
+                    $data_array[] = [
+                        'value' => $product->alias_name,
+                        'id' => $product->id,
+                        'product_price' => $product['product_category']->price + $cust + Input::get('location_difference') + $product->difference
+                    ];
+                }
+            }
         }
+
         echo json_encode(array('data_array' => $data_array));
     }
 
@@ -923,7 +1053,7 @@ class InquiryController extends Controller {
                 $msg = urlencode($str);
 //                $url = SMS_URL . "?user = " . PROFILE_ID . "&pwd = " . PASS . "&senderid = " . SENDER_ID . "&mobileno = " . $phone_number . "&msgtext = " . $msg . "&smstype = 0";
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                
+
                 if (SEND_SMS === true) {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
