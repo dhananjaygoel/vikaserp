@@ -263,9 +263,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('process_import_delivery_location', 'WelcomeController@process_import_delivery_location');
     Route::get('getMyIP', 'WelcomeController@getMyIP');
     
+    Route::get('performance/loaded-by/loaded-by-performance', 'LoadByController@performance');
+    Route::resource('performance/loaded-by', 'LoadByController');
+    
     /*Labour*/
-    Route::get('labour-performance', 'LabourController@labourPerformance');   
-    Route::resource('labours', 'LabourController');
+    Route::get('performance', 'LabourController@index');
+    Route::get('performance/labour-performance', 'LabourController@labourPerformance');   
+    Route::resource('performance/labours', 'LabourController');
     
     
     

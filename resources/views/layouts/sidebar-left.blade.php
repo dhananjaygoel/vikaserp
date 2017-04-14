@@ -30,6 +30,38 @@
             ?>
             <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
                 <ul class="nav nav-pills nav-stacked" id="menuulbox">
+                    @if(isset($performance_index) && $performance_index==true)
+                    <li class="{{Request::is('performance/labours/*') || Request::is('performance/') ? 'active' : '' }} ">
+                        <a href="#" class="dropdown-toggle">
+                            <i class="fa fa-user"></i>
+                            <span>Labors</span>
+                            <i class="fa fa-chevron-circle-right drop-icon"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li class="{{ (Request::is('*performance/labours/*') ? 'active' : '') }}">
+                                <a href="{{url('performance/labours')}}" > Labours </a>
+                            </li>
+                            <li class="{{ (Request::is('*performance/labours/labour-performance*') ? 'active' : '') }}">
+                                <a href="{{url('performance/labours/labour-performance')}}" > Performance </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="{{Request::is('performance/loaded-by/*') ? 'active' : '' }} ">
+                        <a href="#" class="dropdown-toggle">
+                            <i class="fa fa-user"></i>
+                            <span>Loaded By</span>
+                            <i class="fa fa-chevron-circle-right drop-icon"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li class="{{ (Request::is('*performance/loaded-by/*') ? 'active' : '') }}">
+                                <a href="{{url('performance/loaded-by')}}" > Loaded-by </a>
+                            </li>
+                            <li class="{{ (Request::is('*performance/loaded-by/loaded-by-performance*') ? 'active' : '') }}">
+                                <a href="{{url('performance/loaded-by/loaded-by-performance')}}" > Performance </a>
+                            </li>
+                        </ul>
+                    </li>
+                @else
                     <?php
                     $full_name = $_SERVER['PHP_SELF'];
                     $name_array = explode('/', $full_name);
@@ -323,6 +355,7 @@
                     </li>
                     @endif
                     @endif
+                @endif
                 </ul>
             </div>
         </div>
