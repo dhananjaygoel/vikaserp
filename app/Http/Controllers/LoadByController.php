@@ -57,7 +57,7 @@ class LoadByController extends Controller {
         $loader->phone_number = Input::get('mobile_number');
         $loader->password = Hash::make(Input::get('password'));
         if ($loader->save()) {
-            return redirect('loaded-by')->with('success', 'Loader Succesfully added');
+            return redirect('performance/loaded-by')->with('success', 'Loader Succesfully added');
         } else {
             return Redirect::back()->withInput()->with('error', 'Some error occoured while saving customer');
         }
@@ -115,7 +115,7 @@ class LoadByController extends Controller {
                 $loader->last_name = Input::get('last_name');
                 $loader->phone_number = Input::get('mobile_number');
                 if ($loader->save()) {
-                    return redirect('loaded-by')->with('success', 'Loader succesfully updated.');
+                    return redirect('performance/loaded-by')->with('success', 'Loader succesfully updated.');
                 } else {
                     return Redirect::back()->withInput()->with('error', 'Some error occoured while saving customer');
                 }
@@ -133,7 +133,7 @@ class LoadByController extends Controller {
         if (isset($id) && !empty($id)) {
             $loader = LoadedBy::find($id);
             if ($loader->delete()) {
-                return redirect('loaded-by')->with('success', 'Loader deleted succesfully');
+                return redirect('performance/loaded-by')->with('success', 'Loader deleted succesfully');
             } else {
                 return Redirect::back()->withInput()->with('error', 'Some error occoured while saving customer');
             }
