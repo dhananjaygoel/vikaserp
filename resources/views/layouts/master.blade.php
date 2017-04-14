@@ -12,6 +12,7 @@
         <!-- bootstrap -->
         {!! HTML::style('/resources/assets/css/bootstrap/bootstrap.min.css') !!}
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">-->
 
         <!-- RTL support - for demo only -->
         {!! HTML::style('/resources/assets/css/bootstrap/bootstrap.min.css') !!}
@@ -40,9 +41,9 @@
         {!! HTML::style('/resources/assets/css/custom_style/custom_styles.css') !!}
         {!! HTML::style('/resources/assets/css/custom_style/custom_media_query.css') !!}
 
-
-
-
+        <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>-->
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js" ></script>-->
+        
         <!-- google font libraries -->
         <link href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700,300|Titillium+Web:200,300,400' rel='stylesheet' type='text/css'>
         <!-- Favicon -->
@@ -136,14 +137,21 @@
         <script src="{{url()."/resources/assets/custom_js/my_script.js?".time()}}"></script>
 
         <!-- Custom Script Support -->
-
+        <script src="{{url()."/resources/assets/custom_js/custom1.js"}}"></script>
         <script src="{{url()."/resources/assets/custom_js/custom_script.js?".time()}}"></script>
         <script src="{{url()."/resources/assets/custom_js/custom_script_js.js?".time()}}"></script>
         <script src="{{url()."/resources/assets/custom_js/custom.js?".time()}}"></script>
         <?php if (Route::getCurrentRoute()->getPath() == "dashboard" ) { ?>
             <script src="{{url()."/resources/assets/custom_js/graph.js?".time()}}"></script>
         <?php } ?>
-
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
+            <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>-->
+                    
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"></script>
+            
+<!--            {!! HTML::style('/resources/assets/css/custom_style/bootstrap-multiselect.css') !!}
+            <script type="text/javascript" src="{{url()."/js/bootstrap-multiselect.js"}}"></script>-->
         <script>
 $(function($) {
     $('#datepickerDate').datepicker({
