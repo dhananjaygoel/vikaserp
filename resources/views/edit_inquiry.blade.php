@@ -44,11 +44,11 @@
                             <label>Customer<span class="mandatory">*</span></label>
                             <div class="radio">
                                 <input value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
-                                  @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
+                                @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
                                 <label for ="optionsRadios1">Existing</label>
                                 @endif
                                 <input checked="" value="new_customer" id="optionsRadios2" name="customer_status" type="radio" onchange="show_hide_customer('Pending');">
-                                  @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
+                                @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
                                 <label for="optionsRadios2">New</label>
                                 @endif
                             </div>
@@ -87,32 +87,32 @@
                             <label>Customer<span class="mandatory">*</span></label>
                             <div class="radio">
                                 <input checked="" value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
-                                 @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
+                                @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
                                 <label for="optionsRadios1">Existing</label>
                                 @endif
                                 <input  value="new_customer" id="optionsRadios2" name="customer_status" type="radio" onchange="show_hide_customer('Pending');">
-                                 @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
+                                @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
                                 <label for="optionsRadios2">New</label>
                                 @endif
                             </div>
                             <div class="customer_select" >
                                 <div class="col-md-4">
                                     <div class="form-group searchproduct">
-                                        
-                                         @if(Auth::user()->role_id <> 5  & $inquiry['createdby']->role_id <> 5)
-                                         <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name"  tabindex="1" >
-                                         @endif
-                                         
-                                          @if(Auth::user()->role_id == 5 & $inquiry['createdby']->role_id == 5)
+
+                                        @if(Auth::user()->role_id <> 5  & $inquiry['createdby']->role_id <> 5)
+                                        <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name"  tabindex="1" >
+                                        @endif
+
+                                        @if(Auth::user()->role_id == 5 & $inquiry['createdby']->role_id == 5)
                                         <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name1"  disabled="" tabindex="1" >
                                         @endif
-                                        
-                                          @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id == 5)
+
+                                        @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id == 5)
                                         <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name1"  disabled="" tabindex="1" >
                                         @endif
-                                        
-                                          
-                                        
+
+
+
                                         <input id="existing_customer_id" class="form-control" name="existing_customer_name" value="{{$inquiry['customer']->id}}" type="hidden">
                                         <!--<i class="fa fa-search search-icon"></i>-->
                                     </div>
@@ -132,12 +132,12 @@
                             </div>
                             <div class="form-group">
                                 <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
-                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" type="tel"  maxlength="10" onkeypress=" return numbersOnly(this,event,false,false);">
+                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" type="tel"  maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);">
                             </div>
 
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
-                                <input id="period" class="form-control" placeholder="Credit Period" onkeypress=" return numbersOnly(this,event,false,false);" name="credit_period" value="" type="text">
+                                <input id="period" class="form-control" placeholder="Credit Period" onkeypress=" return numbersOnly(this, event, false, false);" name="credit_period" value="" type="text">
                             </div>
                         </div>
                         @endif
@@ -165,7 +165,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="location">Freight</label>
-                                    <input id="location_difference" class="form-control focus_on_enter" placeholder="Freight " name="location_difference" value="{{$inquiry->location_difference}}" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" tabindex="3" >
+                                    <input id="location_difference" class="form-control focus_on_enter" placeholder="Freight " name="location_difference" value="{{$inquiry->location_difference}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >
                                 </div>
                             </div>
                         </div>
@@ -196,8 +196,9 @@
                                     <tbody>
                                         <tr class="headingunderline">
                                             <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
-                                            <td><span>Quantity</span></td>
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
+                                            <td><span>Quantity</span></td>
+
                                             <td><span>Price</span></td>
                                             <td class="inquiry_vat_chkbox"><span>Vat</span></td>
                                             <td><span>Remark</span></td>
@@ -214,26 +215,28 @@
                                                             <div class="form-group searchproduct">
                                                                 <input class="form-control each_product_detail each_product_detail_edit" data-productid="{{$i}} focus_on_enter" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>" tabindex="4" >
                                                                 <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="<?php if (isset($session_data['product'][$i]['id'])) { ?>{{$session_data['product'][$i]['id']}}<?php } ?>">
-                                                                <i class="fa fa-search search-icon"></i>
+                                                               
+ <!--<i class="fa fa-search search-icon"></i>-->
                                                             </div>
                                                         </td>
-                                                        <td class="col-md-1">
-                                                            <div class="form-group">
-                                                                <input id="quantity_{{$i}}" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
-                                                            </div>
-                                                        </td>
+
                                                         <td class="col-md-2">
                                                             <div class="form-group ">
-                                                                <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
+                                                                <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}" onchange="unitType(this);">
                                                                     @foreach($units as $unit)
                                                                     <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
                                                         </td>
+                                                        <td class="col-md-1">
+                                                            <div class="form-group">
+                                                                <input id="quantity_{{$i}}" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return numbersOnly(this, event, true, true);" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
+                                                            </div>
+                                                        </td>
                                                         <td class="col-md-2">
                                                             <div class="form-group">
-                                                                <input type="text" class="form-control" id="product_price_{{$i}}" onkeypress=" return numbersOnly(this,event,true,true);" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
+                                                                <input type="text" class="form-control" id="product_price_{{$i}}" onkeypress=" return numbersOnly(this, event, true, true);" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>">
                                                             </div>
                                                         </td>
                                                         <td class="col-md-1">
@@ -260,18 +263,14 @@
                                                     <div class="form-group searchproduct">
                                                         <input class="form-control each_product_detail each_product_detail_edit" data-productid="{{$key}}" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});" value="{{isset($product['inquiry_product_details'])?$product['inquiry_product_details']->alias_name: ''}}" @if($counter==0)tabindex="4" class="ui-dform-text" @endif >
                                                                <input type="hidden" name="product[{{$key}}][id]" value="{{$product->product_category_id}}" id="add_product_id_{{$key}}">
-                                                        <i class="fa fa-search search-icon"></i>
+                                                        <!--<i class="fa fa-search search-icon"></i>-->
                                                     </div>
                                                     <?php $counter++; ?>
                                                 </td>
-                                                <td class="col-md-1">
-                                                    <div class="form-group">
-                                                        <input id="quantity_{{$key}}" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel">
-                                                    </div>
-                                                </td>
+
                                                 <td class="col-md-2">
                                                     <div class="form-group ">
-                                                        <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}">
+                                                        <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" onchange="unitType(this);">
                                                             @foreach($units as $unit)
                                                             @if($product->unit_id == $unit->id)
                                                             <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
@@ -282,9 +281,34 @@
                                                         </select>
                                                     </div>
                                                 </td>
+                                                <td class="col-md-1">
+                                                    <div class="form-group meter_list_{{$key}}" {{($product->unit_id==3)?'':'style=display:none'}}>
+                                                        <input id="quantity_{{$key}}" class="form-control each_product_qty" placeholder="Qnty" onkeypress=" return numbersOnly(this, event, true, true);" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel">
+                                                    </div>
+                                                    <div class = "form-group kg_list_{{$key}}" {{($product->unit_id==1)?'':'style=display:none'}}>
+                                                        <select class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$key}}" onchange="setQty(this);">
+                                                            <?php for ($n = 50; $n <= 15000; $n++) { ?>
+                                                                <option {{($product->quantity == $n)?'selected':''}} value = "{{$n}}">{{$n}}</option>
+                                                                <?php
+                                                                $n = $n + 49;
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                    <div class = "form-group pieces_list_{{$key}}" {{($product->unit_id=='2')?'':'style=display:none'}}>
+                                                        <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$key}}" onchange="setQty(this);">
+                                                            <?php for ($z = 1; $z <= 1000; $z++) { ?>
+                                                                <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
+                                                                <?php
+//                                                                ($z == 1) ? $z = $z + 3 : $z = $z + 4;
+                                                            }
+                                                            ?>                                                 
+                                                        </select>
+                                                    </div>
+                                                </td>
                                                 <td class="col-md-2">
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control" value="{{$product->price}}" onkeypress=" return numbersOnly(this,event,true,true);" id="product_price_{{$key}}" name="product[{{$key}}][price]">
+                                                        <input type="text" class="form-control" value="{{$product->price}}" onkeypress=" return numbersOnly(this, event, true, true);" id="product_price_{{$key}}" name="product[{{$key}}][price]">
                                                     </div>
                                                 </td>
                                                 <td class="col-md-2">
@@ -300,7 +324,7 @@
                                                 </td>
                                             </tr>
                                             @endforeach
-                                        <?php } ?>
+<?php } ?>
                                     </tbody>
                                 </table>
                                 <table>
@@ -345,7 +369,7 @@
                                 </table>
                             </div>
                         </div>
-                        
+
                         @if($inquiry->vat_percentage == 0)
                         <!--
                         <div class="form-group">
