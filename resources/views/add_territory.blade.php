@@ -41,7 +41,7 @@
                                 <input  class="form-control" placeholder="Territory Name" name="territory_name" type="text">
                             </div>                            
                             <div class="form-group ">
-                                <label>Location <span class="req">*</span></label>
+                                <label>Location <span class="req">*</span></label><br>
                                 <select multiple="multiple" class="form-control" name="location[]" id="multi-territory-location">
                                     @foreach($locations as $key => $location)
                                         <option value="{{$location->id}}">{{$location->area_name}}</option>
@@ -62,9 +62,9 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
+<!--<script type="text/javascript">
     $(document).ready(function() {
         $('#multi-territory-location').multiselect();
     });
-</script>
+</script>-->
 @stop

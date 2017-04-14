@@ -43,8 +43,8 @@
                             <input id="territory_name" class="form-control" placeholder="Territory Name" name="territory_name" value="{{$territory->teritory_name}}" type="text">
                         </div>
                         <div class="form-group ">
-                            <label>Location <span class="req">*</span></label>
-                            <select multiple="multiple" class="form-control" name="location[]" id="sports">
+                            <label>Location <span class="req">*</span></label><br>
+                            <select multiple="multiple" class="form-control" name="location[]" id="multi-territory-location">
                                 @foreach($locations as $key => $location)                                    
                                     <?php $flag=0; ?>
                                     @foreach($territory['territorylocation'] as $territorylocation)
