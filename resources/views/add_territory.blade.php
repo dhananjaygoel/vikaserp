@@ -26,7 +26,7 @@
                         <hr>
                         <form id="" method="POST" action="{{URL::action('TerritoryController@store')}}">
 
-<!--                            @if (count($errors) > 0)
+                            @if (count($errors) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <ul>
                                     @foreach ($errors->all() as $error)
@@ -34,14 +34,14 @@
                                     @endforeach
                                 </ul>
                             </div>
-                            @endif-->
+                            @endif
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <div class="form-group">
                                 <label for="area_name">Territory Name<span class="mandatory">*</span></label>
                                 <input  class="form-control" placeholder="Territory Name" name="territory_name" type="text">
                             </div>                            
                             <div class="form-group ">
-                                <label>Location <span class="req">*</span></label>
+                                <label>Location <span class="req">*</span></label><br>
                                 <select multiple="multiple" class="form-control" name="location[]" id="multi-territory-location">
                                     @foreach($locations as $key => $location)
                                         <option value="{{$location->id}}">{{$location->area_name}}</option>
@@ -62,9 +62,9 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
+<!--<script type="text/javascript">
     $(document).ready(function() {
         $('#multi-territory-location').multiselect();
     });
-</script>
+</script>-->
 @stop

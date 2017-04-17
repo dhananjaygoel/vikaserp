@@ -24,6 +24,12 @@ class DeliveryChallan extends Model {
     protected $fillable = ['order_id', 'delivery_order_id', 'customer_id', 'created_by', 'bill_number', 'loaded_by', 'labours', 'discount', 'freight', 'loading_charge', 'vat_percentage', 'grand_total', 'challan_status', 'remarks'];
     protected $dates = ['deleted_at'];
 
+    public function challan_loaded_by() {
+        return $this->hasMany('App\DeliveryChallanLoadedBy','delivery_challan_id', 'id');
+//        return $this->belongsTo('App\DeliveryChallanLoadedBy', 'id', 'delivery_challan_id');
+//        return $this->hasMany('App\DeliveryChallanLoadedBy', 'id', 'delivery_challan_id');
+    }
+    
     public function customer() {
         return $this->hasOne('App\Customer', 'id', 'customer_id');
     }

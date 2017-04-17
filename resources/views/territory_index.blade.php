@@ -70,7 +70,7 @@
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a title="Delete"  href="" class="table-link danger delete-territory" data-id="{{$territory->id}}">
+                                            <a title="Delete"  style="cursor: pointer" class="table-link danger delete-territory" data-id="{{$territory->id}}">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -121,13 +121,4 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).on('click', '.delete-territory', function (event) {
-       event.preventDefault(); 
-       var territory_id = $(this).data('id');
-       var url=$('#baseurl').attr('name')+"/territory/"+territory_id;
-       $('#delete_teritory_form').attr('action',url);
-       $('#delete_location_modal').modal('show');       
-    });
-</script>
 @stop

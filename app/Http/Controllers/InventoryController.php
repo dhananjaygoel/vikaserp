@@ -20,6 +20,7 @@ use Input;
 use App\Vendor\Phpoffice\Phpexcel\Classes;
 use Maatwebsite\Excel\Facades\Excel;
 use App\ProductCategory;
+use Response;
 use Auth;
 
 class InventoryController extends Controller {
@@ -589,10 +590,23 @@ class InventoryController extends Controller {
     
     public function inventoryReport() {
 
-        $product_cat = ProductCategory::orderBy('created_at', 'desc')->Paginate(20);
-        $product_last = ProductCategory::with('product_sub_categories')->orderBy('created_at', 'desc')->limit(1)->get();
+        $product_cat = ProductCategory::orderBy('created_at', 'desc')->get();
+//        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
+        $product_last = ProductCategory::where('id', '=' , 43)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
 //        dd($product_last);
-        return view('inventory_report1')->with('product_cat',$product_cat)->with('product_last',$product_last);
+        return view('inventory_report')->with('product_cat',$product_cat)->with('product_last',$product_last);
     }
-
+    
+    public function getInventoryReport(Request $request) {
+        $product_id = $request->input('product_id');        
+        $product_cat = ProductCategory::orderBy('created_at', 'desc')->get();
+//        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
+        $product_last = ProductCategory::where('id', '=' , $product_id)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->get();        
+       
+        $html = view('_inventory_report')->with('product_cat',$product_cat)
+                                        ->with('product_last',$product_last)->render();
+        
+        return Response::json(['success' => true,'html' => $html]);
+//        return view('inventory_report')->with('product_cat',$product_cat)->with('product_last',$product_last);
+    }
 }

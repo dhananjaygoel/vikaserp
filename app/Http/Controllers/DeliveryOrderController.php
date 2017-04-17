@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Labour;
+use App\LoadedBy;
+use App\DeliveryChallanLoadedBy;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -566,7 +569,9 @@ class DeliveryOrderController extends Controller {
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
-        return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
+        $labours = Labour::all();
+        $loaders = LoadedBy::all();
+        return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'labours', 'loaders'));
     }
 
     /*
@@ -574,7 +579,7 @@ class DeliveryOrderController extends Controller {
      */
 
     public function store_delivery_challan_vat_wise($input_data, $id = "", $refid = NULL) {
-
+        
         $delivery_challan = new DeliveryChallan();
         $delivery_challan->order_id = $input_data['order_id'];
         $delivery_challan->delivery_order_id = $id;
@@ -587,8 +592,8 @@ class DeliveryOrderController extends Controller {
         $delivery_challan->freight = $input_data['freight'];
         $delivery_challan->loading_charge = $input_data['loading'];
         $delivery_challan->round_off = $input_data['round_off'];
-        $delivery_challan->loaded_by = $input_data['loadedby'];
-        $delivery_challan->labours = $input_data['labour'];
+        //$delivery_challan->loaded_by = $input_data['loadedby'];
+        $delivery_challan->labours = $input_data['labour'];        
         if (isset($input_data['vat_percentage'])) {
             $delivery_challan->vat_percentage = $input_data['vat_percentage'];
         } else {
@@ -617,6 +622,15 @@ class DeliveryOrderController extends Controller {
         }
         $delivery_challan->save();
         $delivery_challan_id = $delivery_challan->id;
+        if(isset($input_data['loaded_by'])){
+            $loaders = $input_data['loaded_by'];
+            foreach ($loaders as $loader){
+                $loaderObj = new DeliveryChallanLoadedBy(); 
+                $loaderObj->delivery_challan_id = $delivery_challan_id;
+                $loaderObj->loaded_by_id = $loader;
+                $loaderObj->save();
+            }
+        }
         $order_products = array();
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "" && $product_data['order'] != "") {

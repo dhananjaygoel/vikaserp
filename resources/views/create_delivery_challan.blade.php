@@ -250,11 +250,31 @@
                         </div>
                         <div class="form-group">
                             <label for="loadedby"><b class="challan">Loaded By</b></label>
-                            <input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby" value="" type="text">
+                            <div class="form-group clearfix">
+                                <select id="loaded_by_select" name='loaded_by[]' class="form-control" multiple="multiple">
+                                    @if(isset($loaders))
+                                        @foreach ($loaders as $loader)
+                                            <option value="{{$loader->id}}">{{$loader->first_name}} {{$loader->last_name}}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                            
+                            <!--<input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby" value="" type="text">-->
                         </div>
                         <div class="form-group">
                             <label for="labour"><b class="challan">Labour </b></label>
-                            <input id="labour" class="form-control" placeholder="Labour" name="labour" value="" type="tel">
+                            <div class="form-group clearfix">
+                                <select id="labour_select" name="labour" class="form-control" multiple="multiple">
+                                    @if(isset($labours))
+                                        @foreach ($labours as $labour)
+                                            <option value="{{$labour->id}}">{{$labour->labour_name}}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                            
+                            <!--<input id="labour" class="form-control" placeholder="Labour" name="labour" value="" type="tel">-->
                         </div>
                         <div class="form-group">
                                                     <label for="vatp"><b class="challan">VAT Percentage : </b>

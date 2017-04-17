@@ -57,7 +57,7 @@ class LoadByController extends Controller {
         $loader->phone_number = Input::get('mobile_number');
         $loader->password = Hash::make(Input::get('password'));
         if ($loader->save()) {
-            return redirect('loaded-by')->with('success', 'Loader Succesfully added');
+            return redirect('performance/loaded-by')->with('success', 'Loader Succesfully added');
         } else {
             return Redirect::back()->withInput()->with('error', 'Some error occoured while saving customer');
         }
@@ -115,7 +115,7 @@ class LoadByController extends Controller {
                 $loader->last_name = Input::get('last_name');
                 $loader->phone_number = Input::get('mobile_number');
                 if ($loader->save()) {
-                    return redirect('loaded-by')->with('success', 'Loader succesfully updated.');
+                    return redirect('performance/loaded-by')->with('success', 'Loader succesfully updated.');
                 } else {
                     return Redirect::back()->withInput()->with('error', 'Some error occoured while saving customer');
                 }
@@ -133,67 +133,49 @@ class LoadByController extends Controller {
         if (isset($id) && !empty($id)) {
             $loader = LoadedBy::find($id);
             if ($loader->delete()) {
-                return redirect('loaded-by')->with('success', 'Loader deleted succesfully');
+                return redirect('performance/loaded-by')->with('success', 'Loader deleted succesfully');
             } else {
                 return Redirect::back()->withInput()->with('error', 'Some error occoured while saving customer');
             }
         }
     }
     
-    public function performance(Request $request){
-        $loaders = LoadedBy::all();
-        $loaders_data = DeliveryChallanLoadedBy::with('dc_loaded_by')->with('dc_delivery_challan.delivery_order.delivery_product')->get();
-        $deliver_sum = 0;
-        
-//        dd($loaders_data);
+    public function performance(Request $request) {
+        $var = 0;
         $loader_arr = array();
-        foreach ($loaders_data as $loader) {
-            $loader_id = $loader->loaded_by_id;
-            foreach ($loader->dc_delivery_challan as $challan_info) {
-                $arr = array();
-                $deliver_pending_sum = 0;
-//                dd($challan_info);
-                if ($challan_info->delivery_order['order_status'] == 'completed') {
-                    foreach ($challan_info->delivery_order->delivery_product as $delivery_order_productinfo) {
-//                     dd($delivery_order_productinfo );
-//                        foreach ($delivery_order_info->delivery_product as $delivery_order_productinfo) {
+        $loader_array = array();
+        $loaders_data = array();
+        $loaded_by = LoadedBy::all();
+        $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')->get();
+        foreach ($delivery_order_data as $delivery_order_info) {
+            $arr = array();
+            $loaders = array();
+            if (isset($delivery_order_info->challan_loaded_by) && count($delivery_order_info->challan_loaded_by) > 0 && !empty($delivery_order_info->challan_loaded_by)) {
+                foreach ($delivery_order_info->challan_loaded_by as $challan_info) {
+                    $deliver_sum = 0;
+                    array_push($loaders, $challan_info->loaded_by_id);
+                    foreach ($challan_info->dc_delivery_challan as $info) {
+                        foreach ($info->delivery_order->delivery_product as $delivery_order_productinfo) {
                             if ($delivery_order_productinfo->unit_id == 1)
-                                $deliver_pending_sum += $delivery_order_productinfo->quantity;
+                                $deliver_sum += $delivery_order_productinfo->quantity;
                             elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
-                                $deliver_pending_sum += DashboardController::checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
-//                            dd($deliver_pending_sum);
-//                        } 
-                            
-//                            dd($arr);
+                                $deliver_sum += DashboardController::checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
+                        }
                     }
-                    $arr = array($loader_id,$deliver_pending_sum);
+                    array_push($arr, $deliver_sum);
+                    array_push($loader_array, $loaders);
+
+                    $loader_arr['delivery_id'] = $delivery_order_info['id'];
+                    $loader_arr['delivery_date'] = $delivery_order_info['created_at'];
+                    $loader_arr['loaders'] = $loaders;
+                    $loader_arr['delivery_sum'] = $arr;
                 }
             }
-            $loader_arr = array($loader_arr, $arr);
-//            $loader_arr = array_prepend($loader_arr , $arr);
+            $loaders_data[$var] = $loader_arr;
+            $var++;
         }
-        dd($loader_arr);
-//        $delivery_order = DeliveryOrder::with('delivery_product')->get();
-//        $deliver_sum = 0;s
-//        $deliver_pending_sum = 0;
-//        foreach ($delivery_order as $delivery_order_info) {
-//            if ($delivery_order_info->order_status == 'completed') {
-//                foreach ($delivery_order_info->delivery_product as $delivery_order_productinfo) {
-//                    if ($delivery_order_productinfo->unit_id == 1)
-//                        $deliver_pending_sum += $delivery_order_productinfo->quantity;
-//                    elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
-//                        $deliver_pending_sum += DashboardController::checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
-//                    
-//                }
-//            }
-//        }
-        
-//        dd($loaders_data);
-        dd($delivery_order_arr);
         return view('loaded_by_performance')->with('loaders_data', $loaders_data)
-                ->with('loaders',$loaders)
-                ->with('performance_index',true);
-        
+                        ->with('loaded_by', $loaded_by)
+                        ->with('performance_index', true);
     }
-        
 }

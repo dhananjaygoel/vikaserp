@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url('loaded-by')}}">Loaded By</a></li>
+                    <li><a href="{{url('performance/loaded-by')}}">Loaded By</a></li>
                 </ol>
             </div>
         </div>

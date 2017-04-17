@@ -81,18 +81,33 @@
                                                 <td>{{ $i }}</td>
                                             @endfor
                                         </tr>
-                                        @if(isset($loaders))
-                                            @foreach($loaders as $loader)
+                                        @if(isset($loaded_by))
+                                            <?php  ?>
+                                            @foreach($loaded_by as $loader_val)
                                             <tr>
-                                                <td rowspan="2"><b>{{$loader->first_name}}</B></td>
+                                                <td rowspan="2"><b>{{$loader_val->first_name}}</B></td>                                                
                                                 <td><b>Tonnage</b></td>
+                                                <?php 
+                                                $total = 0;
+                                                foreach($loaders_data as $data ){                                                    
+                                                    //print_r($data['delivery_id']);
+                                                    foreach($data['delivery_sum'] as $sum){
+                                                        $delivery = $sum;
+                                                    } ?>                                                
+                                                <?php foreach($data['loaders'] as $loader){                                                    
+                                                        if($loader_val->id == $loader[0] ){
+                                                            $val = $sum/count($data['loaders']); ?>
+                                                            <td>{{ $total += $val }}</td> 
+                                                    <?php }
+                                                    }
+                                                    //print_r($data['delivery_sum']);
+                                                } ?>
                                                 <tr>
-                                                    <td><b>Delivery</b></td>
-                                                </tr>   
+                                                    <td><b>Delivery</b></td>                                                                                                
+                                                </tr>
                                             </tr>
                                             @endforeach
                                         @endif
-
                                         <tr>
                                             <td rowspan="2"><b>Rakshit</B></td>
                                             <td><b>Tonnage</b></td>
@@ -112,21 +127,6 @@
                                             <td>74.33</td>
                                             <td>15.42</td>
                                             <td>20.44</td>
-                                            <td>42.25</td>
-                                            <td>66.24</td>
-                                            <td>24.36</td>
-                                            <td>30.42</td>
-                                            <td>47.58</td>
-                                            <td>32.25</td>
-                                            <td>38.35</td>
-                                            <td>46.06</td>
-                                            <td>61.47</td>
-                                            <td>63.09</td>
-                                            <td>06.45</td>
-                                            <td>22.75</td>
-                                            <td>34.65</td>
-                                            <td>55.44</td>
-                                            <td>68.65</td>
                                         </tr>
                                         <tr>
                                             <td><b>Delivery</b></td>
@@ -146,21 +146,6 @@
                                             <td>34.75</td>
                                             <td>36.96</td>
                                             <td>24.42</td>
-                                            <td>18.63</td>
-                                            <td>16.35</td>
-                                            <td>23.64</td>
-                                            <td>11.78</td>
-                                            <td>25.96</td>
-                                            <td>23.65</td>
-                                            <td>12.42</td>
-                                            <td>18.85</td>
-                                            <td>19.34</td>
-                                            <td>33.46</td>
-                                            <td>19.36</td>
-                                            <td>33.45</td>
-                                            <td>39.65</td>
-                                            <td>12.79</td>
-                                            <td>13.45</td>
                                         </tr>
 
                                         <tr>
@@ -182,21 +167,6 @@
                                             <td>74.52</td>
                                             <td>15.36</td>
                                             <td>20.36</td>
-                                            <td>42.04</td>
-                                            <td>66.36</td>
-                                            <td>24.12</td>
-                                            <td>30.42</td>
-                                            <td>47.85</td>
-                                            <td>32.96</td>
-                                            <td>38.75</td>
-                                            <td>46.75</td>
-                                            <td>61.35</td>
-                                            <td>63.21</td>
-                                            <td>06.46</td>
-                                            <td>22.47</td>
-                                            <td>34.68</td>
-                                            <td>55.42</td>
-                                            <td>68.36</td>
                                         </tr>
 
                                         <tr>
@@ -217,21 +187,6 @@
                                             <td>34.63</td>
                                             <td>36.42</td>
                                             <td>24.15</td>
-                                            <td>18.69</td>
-                                            <td>16.75</td>
-                                            <td>23.95</td>
-                                            <td>11.45</td>
-                                            <td>25.69</td>
-                                            <td>23.75</td>
-                                            <td>12.91</td>
-                                            <td>18.15</td>
-                                            <td>19.65</td>
-                                            <td>33.45</td>
-                                            <td>19.85</td>
-                                            <td>33.16</td>
-                                            <td>39.14</td>
-                                            <td>12.25</td>
-                                            <td>13.15</td>
                                         </tr>
                                     </tbody>
                                 </table>

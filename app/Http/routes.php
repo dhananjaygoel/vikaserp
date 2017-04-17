@@ -84,7 +84,7 @@ Route::get('app_customer_inquiry/{id}', 'HomeController@customerInquiry');
 Route::get('app_customer_orders/{id}', 'HomeController@customerOrders');
 Route::get('appprintdeliveryorder', 'HomeController@appprintdeliveryorder');
 Route::get('appprintdeliverychallan', 'HomeController@appprintdeliverychallan');
-
+Route::get('get_inventory_report', 'InventoryController@getInventoryReport');
 //app sms
 Route::post('test_sms', 'HomeController@test_sms');
 Route::post('appsyncinquiry_sms', 'HomeController@appsyncinquiry_sms');
@@ -157,6 +157,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('dashboard', 'DashboardController@index');
     Route::get('dashboard', 'DashboardController@index');
     Route::get('home', 'DashboardController@homeredirect');
+    Route::get('graph-inquiry', 'DashboardController@graph_inquiry');
+    Route::get('graph-order', 'DashboardController@graph_order');
+    Route::get('graph-delivery-challan', 'DashboardController@graph_delivery_challan');
     Route::resource('unit', 'UnitController');
     Route::resource('states', 'StatesController');
     Route::resource('city', 'CityController');

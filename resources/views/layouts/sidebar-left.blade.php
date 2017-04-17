@@ -30,6 +30,24 @@
             ?>
             <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
                 <ul class="nav nav-pills nav-stacked" id="menuulbox">
+                    <?php
+                    $full_name = $_SERVER['PHP_SELF'];
+                    $name_array = explode('/', $full_name);
+                    $count = count($name_array);
+                    $page_name = $name_array[$count - 1];
+                    ?>
+
+                    @if(Auth::user())
+                    @if(Request::is('*performance*'))
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
+                    <li class="{{ (Request::is('*dashboard*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Dashboard">
+                        <a href="{{url('dashboard')}}">
+                            <i class="fa fa-dashboard"></i>
+                            <span>Dashboard</span>
+                            <span class="label label-info label-circle pull-right"></span>
+                        </a>
+                    </li>
+
                     @if(isset($performance_index) && $performance_index==true)
                     <li class="{{Request::is('performance/labours/*') || Request::is('performance/') ? 'active' : '' }} ">
                         <a href="#" class="dropdown-toggle">
@@ -61,14 +79,9 @@
                             </li>
                         </ul>
                     </li>
-                @else
-                    <?php
-                    $full_name = $_SERVER['PHP_SELF'];
-                    $name_array = explode('/', $full_name);
-                    $count = count($name_array);
-                    $page_name = $name_array[$count - 1];
-                    ?>
-                    @if(Auth::user())
+                    @endif
+                    @endif
+                    @else
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 2)
                     <li class="{{ (Request::is('*dashboard*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Dashboard">
                         <a href="{{url('dashboard')}}">
@@ -185,7 +198,7 @@
                         </ul>
                     </li>
                     @endif
-                    
+
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array) && Auth::user()->role_id <> 5) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
                     <li class="<?php
                     if (Request::is('*purchase_orders*') || Request::is('*purchaseorder_advise*') || Request::is('*purchase_challan*') || Request::is('*purchase_order_report*') || Request::is('*purchase_order_daybook*') || Request::is('*pending_purchase_advice*')) {
@@ -373,7 +386,7 @@
                     </li>
                     @endif                   
                     @endif
-                @endif
+                    @endif
                 </ul>
             </div>
         </div>
