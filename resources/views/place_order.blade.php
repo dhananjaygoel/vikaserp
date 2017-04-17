@@ -58,21 +58,19 @@
                             </select>
                         </div>
                         <br/>
-                        <?php 
-                     
-                        
+                        <?php
                         ?>
-                        
+
                         @if($inquiry['customer']->customer_status =="pending")
                         <div class="form-group">
                             <label>Customer<span class="mandatory">*</span></label>
                             <div class="radio">
                                 <input value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
-                                 @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
+                                @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
                                 <label for ="optionsRadios1">Existing</label>
                                 @endif
                                 <input checked="" value="new_customer" id="optionsRadios2" name="customer_status" type="radio" onchange="show_hide_customer('Pending');">
-                                 @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
+                                @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
                                 <label for="optionsRadios2">New</label>
                                 @endif
                             </div>
@@ -82,13 +80,13 @@
                                         @if(Auth::user()->role_id <> 5)
                                         <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" name="existing_customer_name" id="existing_customer_name" tabindex="1" >
                                         @endif
-                                        
+
                                         @if(Auth::user()->role_id == 5 )
                                         <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" name="existing_customer_name" id="existing_customer_name1" disabled="" tabindex="1" >
                                         @endif
-                                        
-                                        
-                                        
+
+
+
                                         <input id="existing_customer_id" class="form-control" name="existing_customer_name" value="" type="hidden">
                                         <!--<i class="fa fa-search search-icon"></i>-->
                                     </div>
@@ -108,11 +106,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="mobile_number">Phone Number </label>
-                                <input id="mobile_number" class="form-control" placeholder="Phone Number " onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10" name="mobile_number" value="{{$inquiry['customer']->phone_number1}}" type="tel">
+                                <input id="mobile_number" class="form-control" placeholder="Phone Number " onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10" name="mobile_number" value="{{$inquiry['customer']->phone_number1}}" type="tel">
                             </div>
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)</label>
-                                <input id="period" class="form-control" placeholder="Credit Period" onkeypress=" return numbersOnly(this,event,false,false);" name="credit_period" value="{{$inquiry['customer']->credit_period}}" type="tel">
+                                <input id="period" class="form-control" placeholder="Credit Period" onkeypress=" return numbersOnly(this, event, false, false);" name="credit_period" value="{{$inquiry['customer']->credit_period}}" type="tel">
                             </div>
                         </div>
                         @elseif($inquiry['customer']->customer_status == "permanent")
@@ -134,15 +132,15 @@
                                         @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
                                         <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name" tabindex="1" >
                                         @endif
-                                        
-                                         @if(Auth::user()->role_id == 5 & $inquiry['createdby']->role_id == 5)
-                                         <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name1"  disabled="" tabindex="1" >
+
+                                        @if(Auth::user()->role_id == 5 & $inquiry['createdby']->role_id == 5)
+                                        <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name1"  disabled="" tabindex="1" >
                                         @endif
-                                        
-                                         @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id == 5)
-                                         <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name1"  disabled="" tabindex="1" >
+
+                                        @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id == 5)
+                                        <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name1"  disabled="" tabindex="1" >
                                         @endif
-                                        
+
                                         <input id="existing_customer_id" class="form-control" name="existing_customer_name" value="{{$inquiry['customer']->id}}" type="hidden">
                                         <!--<i class="fa fa-search search-icon"></i>-->
                                     </div>
@@ -162,11 +160,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="mobile_number">Mobile Number </label>
-                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10" type="tel">
+                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10" type="tel">
                             </div>
                             <div class="form-group">
                                 <label for="period">Credit Period(Days)</label>
-                                <input id="period" class="form-control" placeholder="Credit Period" onkeypress=" return numbersOnly(this,event,false,false);" name="credit_period" value="" type="tel">
+                                <input id="period" class="form-control" placeholder="Credit Period" onkeypress=" return numbersOnly(this, event, false, false);" name="credit_period" value="" type="tel">
                             </div>
                         </div>
                         @endif
@@ -176,8 +174,8 @@
                                     <tbody>
                                         <tr class="headingunderline">
                                             <td><span>Select Product(Alias)</span></td>
-                                            <td><span>Quantity</span></td>
                                             <td><span>Unit</span></td>
+                                            <td><span>Quantity</span></td>
                                             <td><span>Price</span></td>
                                             <td class="inquiry_vat_chkbox"><span>Vat </span></td>
                                             <td><span>Remark</span></td>
@@ -188,32 +186,53 @@
                                                 <div class="form-group searchproduct">
                                                     <input class="form-control focus_on_enter each_product_detail" placeholder="Enter Product name " type="text" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" value="{{isset($product['inquiry_product_details'])?$product['inquiry_product_details']->alias_name: ''}}" tabindex="2" >
                                                     <input type="hidden" name="product[{{$key}}][id]"  id="add_product_id_{{$key}}" value="{{$product->product_category_id}}">
-                                                    <i class="fa fa-search search-icon"></i>
+                                                    <!--<i class="fa fa-search search-icon"></i>-->
                                                 </div>
                                             </td>
-                                            <td class="col-md-1">
-                                                <div class="form-group">
-                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$product->quantity}}" type="tel">
-                                                </div>
-                                            </td>
+
                                             <td class="col-md-2">
                                                 <div class="form-group ">
-                                                    <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}">
+                                                    <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" onchange="unitType(this);">
                                                         @foreach($units as $unit)
                                                         <option value="{{$unit->id}}" {{($product->unit_id == $unit->id)?'selected':''}} >{{$unit->unit_name}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                             </td>
+                                            <td class="col-md-1">
+                                                <div class="form-group meter_list_{{$key}}" {{($product->unit_id==3)?'':'style=display:none'}} >
+                                                    <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" onkeypress=" return numbersOnly(this, event, true, true);" value="{{$product->quantity}}" type="tel">
+                                                </div>
+                                                <div class = "form-group kg_list_{{$key}}" {{($product->unit_id==1)?'':'style=display:none'}}>
+                                                    <select class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$key}}" onchange="setQty(this);">
+<?php for ($n = 50; $n <= 15000; $n++) { ?>
+                                                            <option {{($product->quantity == $n)?'selected':''}} value = "{{$n}}">{{$n}}</option>
+                                                            <?php
+                                                            $n = $n + 49;
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                                <div class = "form-group pieces_list_{{$key}}" {{($product->unit_id=='2')?'':'style=display:none'}}>
+                                                    <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$key}}" onchange="setQty(this);">
+<?php for ($z = 1; $z <= 1000; $z++) { ?>
+                                                            <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
+                                                            <?php
+//                                                            ($z == 1) ? $z = $z + 3 : $z = $z + 4;
+                                                        }
+                                                        ?>                                                 
+                                                    </select>
+                                                </div>
+                                            </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" onkeypress=" return numbersOnly(this,event,true,true);" name="product[{{$key}}][price]">
+                                                    <input type="text" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" onkeypress=" return numbersOnly(this, event, true, true);" name="product[{{$key}}][price]">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group inquiry_vat_chkbox">
                                                     <!--<input type="text" class="form-control" id="vat_percentage_{{$key}}" name="product[{{$key}}][vat_percentage]" placeholder="Vat percentage" value="{{$product->vat_percentage}}">-->
-                                                     <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes">
+                                                    <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -259,21 +278,21 @@
                                         <option value="0">Delivery Location</option>
                                         @foreach($delivery_location as $location)
                                         <option value="{{$location->id}}" <?php
-                                        if ($inquiry->delivery_location_id == $location->id) {
-                                            echo 'selected="selected"';
-                                        }
-                                        ?> data-location-difference="{{$location->difference}}">{{$location->area_name}}</option>
+                                                        if ($inquiry->delivery_location_id == $location->id) {
+                                                            echo 'selected="selected"';
+                                                        }
+                                                        ?> data-location-difference="{{$location->difference}}">{{$location->area_name}}</option>
                                         @endforeach
                                         <option id="other_location" value="other" <?php
                                         if ($inquiry->delivery_location_id == 0) {
                                             echo 'selected="selected"';
                                         }
-                                        ?>>Other</option>
+                                                        ?>>Other</option>
                                     </select>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="location">Freight</label>
-                                    <input id="location_difference" class="form-control" placeholder="Freight " onkeypress=" return numbersOnly(this,event,true,true);" name="location_difference" value="{{$inquiry->location_difference}}" type="tel">
+                                    <input id="location_difference" class="form-control" placeholder="Freight " onkeypress=" return numbersOnly(this, event, true, true);" name="location_difference" value="{{$inquiry->location_difference}}" type="tel">
                                 </div>
                             </div>
                         </div>

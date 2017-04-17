@@ -428,7 +428,7 @@ $(document).ready(function () {
                 '</td>' +
                 '<td class="col-md-1">' +
                 '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="actual_pieces" id="actual_pieces' + current_row_count + '" name="product[' + current_row_count + '][actual_pieces]">' +
+                '<input type="text" class="form-control" placeholder="actual pieces" id="actual_pieces' + current_row_count + '" name="product[' + current_row_count + '][actual_pieces]">' +
                 '</div>' +
                 '</td>' +
                 '<td>' +
@@ -630,7 +630,6 @@ function product_autocomplete(id) {
                     $("#add_product_id_" + id).attr('data-curname', value);
                     $('#quantity_' + id).focus();
                     $('.more_button').parent().trigger('click');
-//                    jQuery('#add_purchase_product_row')[0].click();
                     $.unblockUI({message: '<img src="' + baseurl + '/resources/assets/img/loading.gif" width="20" />'});
 
 //            $.ajax({
@@ -1191,8 +1190,6 @@ $('.delete_purchase_order_submit').click(function () {
             $('#flash_message').fadeIn();
             $('#flash_message').fadeOut(5000);
         }
-        
-        
     }, 'json'); //done
 });
 /*

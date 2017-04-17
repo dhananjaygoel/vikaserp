@@ -3,7 +3,51 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">
-        <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="{{url('dashboard')}}">Home</a></li>
+            <li class="active"><span>Inquiry</span></li>
+        </ol>
+        <div class="clearfix">
+
+            <div class="pull-right top-page-ui">                        
+                <a href="{{URL::action('InquiryController@create')}}" class="btn btn-primary pull-right">
+                    <i class="fa fa-plus-circle fa-lg"></i> Add New Inquiry
+                </a>
+                 @if( Auth::user()->role_id <> 5)
+                <div class="form-group pull-right">
+                    <div class="col-md-12">
+                        <form method="GET" action="{{url('inquiry')}}">
+                            <select class="form-control" id="inquiry_filter" name="inquiry_filter" onchange="this.form.submit();">
+                                <option <?php if (Input::get('inquiry_filter') == 'Pending') echo 'selected=""'; ?> value="Pending">Pending</option>
+                                <option <?php if (Input::get('inquiry_filter') == 'Approval') echo 'selected=""'; ?> value="Approval">Pending Approval</option>
+                                <option <?php if (Input::get('inquiry_filter') == 'Completed') echo 'selected=""'; ?> value="Completed">Completed</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+                
+                @if(sizeof($inquiries)!=0 && (Input::get('inquiry_filter') == 'Pending' ||Input::get('inquiry_filter')==''))
+                <a href="{{URL::action('InquiryController@exportinquiryBasedOnStatus',['inquiry_status'=>'Pending'])}}" class="btn btn-primary pull-right">
+                    Export
+                </a>
+                @endif
+                @if(sizeof($inquiries)!=0 && Input::get('inquiry_filter') == 'Completed')
+                <a href="{{URL::action('InquiryController@exportinquiryBasedOnStatus',['inquiry_status'=>'Completed'])}}" class="btn btn-primary pull-right">
+                    Export
+                </a>
+                @endif
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="pull-left">Inquiry</h1>
+        <!-- <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
                     <li><a href="{{url('dashboard')}}">Home</a></li>
@@ -38,7 +82,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
@@ -64,8 +108,9 @@
                                         <th class="text-center">Total Quantity</th>
                                         <th class="text-center">Phone Number</th>
                                         <th class="text-center">Delivery Location</th>
-                                        @if(Input::get('inquiry_filter') == 'Pending' || Input::get('inquiry_filter') == '')
+                                        @if((Input::get('inquiry_filter') == 'Pending' || Input::get('inquiry_filter') == ''))
                                         <th class="text-center">Place Order</th>
+
                                         @endif
                                         <th class="text-center">Action</th>
                                     </tr>
@@ -108,17 +153,32 @@
                                         <td class="text-center">{{$inquiry['other_location']}}</td>
                                         @endif
                                         @if($inquiry->inquiry_status != 'completed')
+                                         @if(Input::get('inquiry_filter') == 'Pending' || Input::get('inquiry_filter') == '')
                                         <td class="text-center">
-
+                                           
+                                            @if($inquiry->is_approved=='no')
+                                            <a href="javascript:void(0)" class="table-link" title="Need Admin Approval">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                            @else
                                             <a title="Place Order" href="{{ url('place_order/'. $inquiry['id']) }}" class="table-link">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-book fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a>                                          
+                                            </a> 
+                                            @endif
+                                           
                                         </td>
+                                         @endif
                                         @endif
-                                        <td class="text-center">
+                                        <td class="text-center">                                                                    @if($inquiry->is_approved=='no' &&   Auth::user()->role_id == 0 )
+                                            <a title="Approve" class="btn btn-primary btn-sm"  href="{{ Url::action('InquiryController@edit', ['id' => $inquiry['id']]) }}">Approve</a>                                   
+                                            <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" title="Reject" data-target="#delete_inquiry" onclick="delete_inquiry_row({{$inquiry['id']}})">Reject</a>  
+                                            @else
                                             <a title="View" href="{{ Url::action('InquiryController@show', ['id' => $inquiry['id']]) }}" class="table-link">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -142,7 +202,7 @@
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @endif
+                                            @endif                                                                                   @endif 
                                         </td>
                                     </tr>
 

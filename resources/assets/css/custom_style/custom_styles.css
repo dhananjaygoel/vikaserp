@@ -222,4 +222,20 @@
     background-size: 25px 25px;
     background-position:right center;
     background-repeat: no-repeat;
-}   
+}  
+
+
+.loading {    
+    background-color: #ffffff;
+    background-image: url("http://loadinggif.com/images/image-selection/3.gif");
+    background-size: 25px 25px;
+    background-position:right center;
+    background-repeat: no-repeat;
+}  
+
+.loading_graph {    
+    background-image: url("http://loadinggif.com/images/image-selection/3.gif");
+    background-size: 45px 45px;
+    background-position:center;
+    background-repeat: no-repeat;
+}  

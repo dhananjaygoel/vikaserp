@@ -64,9 +64,9 @@
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-2">
                                                 <div class="form-group searchproduct">
-                                                    <input type="text" class="form-control each_product_detail ui-autocomplete-input" placeholder="Enter Product name" autocomplete="off" name="product[{{$key}}][name]" id="delivery_challan_product_name_{{$key}}" value="{{ $product['order_product_details']->alias_name}}" onfocus="delivery_challan_product_autocomplete({{$key}});">
+                                                    <input type="text" class="form-control each_product_detail ui-autocomplete-input" data-productid="{{$key}}" placeholder="Enter Product name" autocomplete="off" name="product[{{$key}}][name]" id="delivery_challan_product_name_{{$key}}" value="{{ $product['order_product_details']->alias_name}}" onfocus="delivery_challan_product_autocomplete({{$key}});">
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']->id}}" data-curname="{{ $product['order_product_details']->alias_name}}">
-                                                    <i class="fa fa-search search-icon"></i>
+                                                    <!--<i class="fa fa-search search-icon"></i>-->
                                                 </div>
                                             </td>
                                              <td class="col-md-1">
@@ -354,5 +354,5 @@
         </div>
     </div>
 </div>
-
+@include('autocomplete_tally_product_name')
 @endsection

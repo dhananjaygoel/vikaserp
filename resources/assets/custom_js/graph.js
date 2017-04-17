@@ -1,10 +1,12 @@
 
 $(document).ready(function () {
+    $("#inquiry").removeClass('loading_graph');
     var baseurl = $('#baseurl').attr('name');
     $.ajax({
         type: 'get', url: baseurl + '/graph-inquiry',
 //        data: $('#save_all_price').serialize(),
         success: function (data) {
+            $("#inquiry").removeClass('loading_graph');
             new Morris.Line({
                 // ID of the element in which to draw the chart.
                 element: 'inquiry',
@@ -43,10 +45,12 @@ $(document).ready(function () {
 
 $(document).ready(function () {
     var baseurl = $('#baseurl').attr('name');
+    $("#order").addClass('loading_graph');
     $.ajax({
         type: 'get', url: baseurl + '/graph-order',
 //        data: $('#save_all_price').serialize(),
         success: function (data) {
+            $("#order").removeClass('loading_graph');
             new Morris.Line({
                 // ID of the element in which to draw the chart.
                 element: 'order',
@@ -83,11 +87,13 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
+    $("#deliverychallan").removeClass('loading_graph');
     var baseurl = $('#baseurl').attr('name');
     $.ajax({
         type: 'get', url: baseurl + '/graph-delivery-challan',
 //        data: $('#save_all_price').serialize(),
         success: function (data) {
+            $("#deliverychallan").removeClass('loading_graph');
             new Morris.Line({
                 // ID of the element in which to draw the chart.
                 element: 'deliverychallan',

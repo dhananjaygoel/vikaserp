@@ -436,16 +436,36 @@ function create_purchase_challan_function() {
             '    </td>' +
             '    <td>' +
             '        <div class="form-group">' +
-            '            <input id="actual_quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Actual Quantity" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="purchase_challan_calculation();">' +
-            '        </div>' +
-            '    </td>' +
-            '    <td>' +
-            '        <div class="form-group">' +
-            '           <select class="form-control" name="product[' + current_row_count + '][unit_id]" id="units_' + current_row_count + '">' +
+            '           <select class="form-control" name="product[' + current_row_count + '][unit_id]" id="units_' + current_row_count + '" onchange="unitType(this);">' +
             '               ' +
             '           </select>' +
             '        </div>' +
             '    </td>  ' +
+            '    <td>' +
+            '        <div class="form-group meter_list_' + current_row_count + '" style="display:none">' +
+            '            <input id="actual_quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Actual Quantity" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="purchase_challan_calculation();">' +
+            '        </div>' +
+            '       <div class = "form-group kg_list_' + current_row_count + '" >' +
+            '           <select class = "form-control kg_list" name = "kg_list" id = "kg_list_' + current_row_count + '" onchange="setQty(this);">' +
+            '               <option value = "50">50</option>' +
+            '               <option value = "50">100</option>' +
+            '               <option value = "50">150</option>' +
+            '               <option value = "50">200</option>' +
+            '               <option value = "50">250</option>' +
+            '               <option value = "50">300</option>' +
+            '           </select>' +
+            '       </div>' +
+            '       <div class = "form-group pieces_list_' + current_row_count + '" style="display:none">' +
+            '           <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_' + current_row_count + '" onchange="setQty(this);">' +
+            '               <option value = "1">1</option>' +
+            '               <option value = "5">5</option>' +
+            '               <option value = "10">10</option>' +
+            '               <option value = "15">15</option>' +
+            '               <option value = "20">20</option>' +
+            '               <option value = "25">25</option>' +
+            '           </select>' +
+            '       </div>' +
+            '    </td>' +
             '    <td>  ' +
             '        <div class="form-group">' +
             '            <input id="shipping_' + current_row_count + '" class="form-control" placeholder="Present Shipping" name="product[' + current_row_count + '][present_shipping]" value="" type="text">' +
@@ -2803,5 +2823,87 @@ $(function () {
 $(window).load(function () {
     console.clear();
 });
+
+
+
+
+/**
+ * Comment
+ */
+function showProductCategory(el) {
+
+    var cur_product_id = $(el).attr("data-productid");
+
+    console.log(cur_product_id);
+    var token = $('#_token').val();
+    var url = $('#baseurl2').val();
+    $.ajax({
+        type: 'get',
+        url: 'http://localhost/steel-trading-automation/get_product_type',
+        data: {_token: token},
+        success: function (data) {
+            var main_array = JSON.parse(data);
+
+            var prod = main_array['prod'];
+
+            var str = '<ul class="custom-combobox-toggle ui-corner-right">';
+            var str2 = '';
+            for (var key in prod) {
+                console.log(prod);
+                str += '<li id="' + prod[key].id + '"> ' + prod[key].name + ' </li>';
+            }
+
+            $('#add_product_name_' + cur_product_id).html(str);
+            $('#add_product_name_' + cur_product_id).show();
+        }
+    });
+
+}
+
+
+
+function unitType(parameters) {
+    
+    var id = parameters.id.split("_");
+    id = id[id.length - 1];
+   
+    var i = $('#units_'+id).val();   
+ 
+    if (i == "1")
+    {
+        $('.kg_list_' + id).show();
+        $('.pieces_list_' + id).hide();
+        $('.meter_list_' + id).hide();
+        $('#quantity_' + id).val($('#kg_list_' + id).val());
+    }
+    if (i == "2") {
+
+        $('.kg_list_' + id).hide();
+        $('.pieces_list_' + id).show();
+        $('.meter_list_' + id).hide();
+        $('#quantity_' + id).val($('#pieces_list_' + id).val());
+
+    }
+    if (i == "3")
+    {
+        $('.kg_list_' + id).hide();
+        $('.pieces_list_' + id).hide();
+        $('.meter_list_' + id).show();
+        $('#quantity_' + id).val("");
+
+    }
+
+}
+
+function setQty(parameters) {
+   
+    var id = parameters.id.split("_");
+    id = id[id.length - 1];
+    $('#quantity_' + id).val(parameters.value);
+    $('#actual_quantity_' + id).val(parameters.value);
+
+}
+
+
 //
 
