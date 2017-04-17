@@ -45,8 +45,8 @@
                             </div>
                             @endif
                             <div class="form-group">
-                                <label for="labour_name">Owner Name<span class="mandatory">*</span></label>
-                                <input id="labour_name" class="form-control" placeholder="Owner Name" name="labour_name" value="{{$labour->labour_name}}" type="text" maxlength="30">
+                                <label for="labour_name">Labour Name<span class="mandatory">*</span></label>
+                                <input id="labour_name" class="form-control" placeholder="Labour Name" name="labour_name" value="{{$labour->labour_name}}" type="text" maxlength="30">
                             </div>
                              
                             

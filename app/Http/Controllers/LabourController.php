@@ -127,7 +127,7 @@ class LabourController extends Controller {
         }
 
         if ($labour->save()) {
-            return redirect('labours')->with('success', 'Labour Succesfully added');
+            return redirect('performance/labours')->with('success', 'Labour Succesfully added');
         } else {
             return Redirect::back()->withInput()->with('error', 'Some error occoured while saving labour');
         }
@@ -159,7 +159,7 @@ class LabourController extends Controller {
         }
         $labour = Labour::find($id);
         if (count($labour) < 1) {
-            return redirect('labours/')->with('error', 'Trying to access an invalid labour');
+            return redirect('performance/labours/')->with('error', 'Trying to access an invalid labour');
         }
 
         return View::make('edit_labours', array('labour' => $labour))->with('performance_index',true);
@@ -190,7 +190,7 @@ class LabourController extends Controller {
         }
 
         if ($labour->save()) {
-            return redirect('labours')->with('success', 'Labours details updated successfully');
+            return redirect('performance/labours')->with('success', 'Labours details updated successfully');
         } else {
             return Redirect::back()->with('error', 'Some error occoured while saving labours');
         }
@@ -208,7 +208,7 @@ class LabourController extends Controller {
         }
         $password = Input::get('password');
         if ($password == '') {
-            return Redirect::to('labours')->with('error', 'Please enter your password');
+            return Redirect::to('performance/labours')->with('error', 'Please enter your password');
         }
 
         $current_user = User::find(Auth::id());
@@ -239,13 +239,13 @@ class LabourController extends Controller {
             }
 
             if ($cust_flag == 1) {
-                return Redirect::to('labours')->with('error', $cust_msg);
+                return Redirect::to('performance/labours')->with('error', $cust_msg);
             } else {
                 $labour->delete();                
-                return Redirect::to('labours')->with('success', 'Labour deleted successfully.');
+                return Redirect::to('performance/labours')->with('success', 'Labour deleted successfully.');
             }
         } else {
-            return Redirect::to('labours')->with('error', 'Invalid password');
+            return Redirect::to('performance/labours')->with('error', 'Invalid password');
         }
     }
     
@@ -253,6 +253,7 @@ class LabourController extends Controller {
     public function labourPerformance() {
         
         $labours = Labour::get();
+       
         
         return View::make('labour_performance', array('labours' => $labours))->with('performance_index',true);
     }
