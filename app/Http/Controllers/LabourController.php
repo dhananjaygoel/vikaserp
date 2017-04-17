@@ -57,23 +57,8 @@ class LabourController extends Controller {
             $term = '%' . Input::get('search') . '%';
 
             $labours = \App\Labour::orderBy('labour_name', 'asc')
-                    ->where(function($query) use($term) {
-                        $query->whereHas('city', function($q) use ($term) {
-                            $q->where('city_name', 'like', $term);
-                        });
-                    })
-                    ->orWhere(function($query) use($term) {
-                        $query->whereHas('deliverylocation', function($q) use ($term) {
-                            $q->where('area_name', 'like', $term);
-                        });
-                    })
-                    ->orWhere(function($query) use($term) {
-                        $query->whereHas('manager', function($q) use ($term) {
-                            $q->where('first_name', 'like', $term);
-                        });
-                    })
-                    ->orWhere('tally_name', 'like', $term)
-                    ->where('customer_status', '=', 'permanent')
+                                       
+                    ->where('labour_name', 'like', $term)
                     ->paginate(20);
         } else {
             $labours = Labour::orderBy('updated_at', 'desc')->paginate(20);

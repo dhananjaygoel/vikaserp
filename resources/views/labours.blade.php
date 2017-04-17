@@ -12,9 +12,7 @@
                 <div class="filter-block">
                     <h1 class="pull-left">Labours</h1>
                      @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
-<!--                    <a href="{{url('excel_export_customer')}}" class="btn btn-primary pull-right">
-                        <i class="fa fa-plus-circle fa-lg"></i> Download List
-                    </a>-->
+                    
 <!--                    <a href="{{url('excel_import_customer')}}" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Import Customer
                     </a>-->
@@ -22,18 +20,20 @@
                     <a href="{{url('performance/labours/create')}}" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Add Labour
                     </a>
-                    
+                    <a href="{{url('excel_export_labours')}}" class="btn btn-primary pull-right">
+                        <i class="fa fa-plus-circle fa-lg"></i> Download List
+                    </a>
                     @endif
                    
-<!--                    <form method="GET" id="searchCustomerForm">
+                    <form method="GET" id="searchCustomerForm">
                         <div class="input-group col-md-3 pull-right">
-                            <input type="text" class="form-control" name="search" id="search" placeholder="Labour Name, Location" value="{{Request::get('search')}}">
+                            <input type="text" class="form-control" name="search" id="search" placeholder="Labour Name" value="{{Request::get('search')}}">
                             <span class="input-group-btn">
                                 <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
                             </span>
                         </div>
                         
-                    </form>-->
+                    </form>
                 </div>
             </div>
         </div>
