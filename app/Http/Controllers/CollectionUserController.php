@@ -212,7 +212,7 @@ class CollectionUserController extends Controller {
 		$location_id = Input::get('location');
 		$collection_users = User::with('locations.location_data')->where('role_id', '=', 6);
 		if(isset($search_field) && !empty($search_field)){
-			$collection_users->where('first_name', 'like', '%' . $search_field . '%');
+			$collection_users->where('first_name', 'like', '%' . $search_field . '%')->orwhere('last_name', 'like', '%' . $search_field . '%')->orwhere('mobile_number', 'like', '%' . $search_field . '%')->orwhere('email', 'like', '%' . $search_field . '%');
 		}
 		if(isset($location_id) && !empty($location_id)){
 			$collection_users->whereHas('locations', function($query) use ($location_id){
