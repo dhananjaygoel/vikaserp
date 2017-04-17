@@ -47,8 +47,7 @@
                             <div class="form-group">
                                 <label for="last_name">Last Name<span class="mandatory">*</span></label>
                                 <input id="last_name" class="form-control" placeholder="Last Name" name="last_name" value="<?php echo(isset($data) ? $data[0]->last_name : old('last_name') )?>" type="text">
-                            </div> 
-                            <?php if(!isset($data)){ ?>                  
+                            </div>                                              
                             <div class="form-group">
                                 <label for="mobile_number">Mobile Number<span class="mandatory">*</span></label>
                                 <input id="mobile_number" class="form-control" placeholder="Mobile Number" name="mobile_number" value="<?php echo(isset($data) ? $data[0]->mobile_number : old('mobile_number') )?>" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10">
@@ -56,7 +55,8 @@
                             <div class="form-group">
                                 <label for="email">Email<span class="mandatory">*</span></label>
                                 <input id="email" class="form-control" placeholder="Email Id" name="email" value="<?php echo(isset($data) ? $data[0]->email : old('email') )?>" type="email">
-                            </div>                            
+                            </div>   
+                            <?php if(!isset($data)){ ?>                          
                             <div class="form-group">
                                 <label for="password">Password<span class="mandatory">*</span></label>
                                 <input id="password" class="form-control" placeholder="Password" name="password" value="{{ old('password') }}" type="password">

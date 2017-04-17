@@ -93,11 +93,15 @@
                                         <td>{{ $user->email }}</td>                
                                         <td>{{ $user->mobile_number }}</td>
                                         <td>
-                                        @foreach($user->locations as $loc)
-                                        <p>{{ $loc->location_data->area_name  }}</p>
-                                        @endforeach
+                                            {{count($user->locations)}}
                                         </td>
                                         <td class="text-center">
+                                            <a href="{{URL::route('collectionusers.show',$user->id)}}" class="table-link" title="view">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
                                             <a href="{{ URL::route('collectionusers.edit',$user->id) }}" class="table-link" title="Edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>

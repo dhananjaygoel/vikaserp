@@ -38,6 +38,7 @@
         {!! HTML::style('/resources/assets/css/libs/datepicker.css') !!}
         {!! HTML::style('/resources/assets/css/libs/daterangepicker.css') !!}
         {!! HTML::style('/resources/assets/css/libs/jquery-jvectormap-1.2.2.css') !!}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css">                   
         {!! HTML::style('/resources/assets/css/custom_style/custom_styles.css') !!}
         {!! HTML::style('/resources/assets/css/custom_style/custom_media_query.css') !!}
 
@@ -52,6 +53,19 @@
                 <script src="js/html5shiv.js"></script>
                 <script src="js/respond.min.js"></script>
         <![endif]-->
+        <style type="text/css">
+            .select2-container--default .select2-selection--single .select2-selection__rendered{
+                color: #555;
+                line-height: 33px;
+            }
+            .select2-container--default .select2-selection--single{
+                border: 1px solid #e7ebee;
+                border-radius: 2px;
+            }
+            .select2-container .select2-selection--single{
+                height: 35px;
+            }
+        </style>
 
     </head>
     <body>
@@ -137,6 +151,7 @@
         <script src="{{url()."/resources/assets/custom_js/my_script.js?".time()}}"></script>
 
         <!-- Custom Script Support -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script> 
         <script src="{{url()."/resources/assets/custom_js/custom1.js"}}"></script>
         <script src="{{url()."/resources/assets/custom_js/custom_script.js?".time()}}"></script>
         <script src="{{url()."/resources/assets/custom_js/custom_script_js.js?".time()}}"></script>

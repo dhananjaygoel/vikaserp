@@ -34,7 +34,7 @@ class CollectionUserController extends Controller {
 		$location_id = Input::get('location');
 		$collection_users = User::with('locations.location_data')->where('role_id', '=', 6);
 		if(isset($search_field) && !empty($search_field)){
-			$collection_users->where('first_name', 'like', '%' . $search_field . '%');
+			$collection_users->where('first_name', 'like', '%' . $search_field . '%')->orwhere('last_name', 'like', '%' . $search_field . '%')->orwhere('mobile_number', 'like', '%' . $search_field . '%')->orwhere('email', 'like', '%' . $search_field . '%');
 		}
 		if(isset($location_id) && !empty($location_id)){
 			$collection_users->whereHas('locations', function($query) use ($location_id){
@@ -117,7 +117,12 @@ class CollectionUserController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+		$user = User::with('locations')->find($id);
+		if($user){
+			return View::make('collection_user.show', array('user'=>$user));
+		}else{
+			
+		}
 	}
 
 	/**
@@ -146,13 +151,15 @@ class CollectionUserController extends Controller {
 			$updateuser_rules = array(
 							        'first_name' => 'required|min:2|max:100',
 							        'last_name' => 'required|min:2|max:100',
+							        'email' => 'required|email|unique:users,email,'.$id,
+							        'mobile_number' => 'integer|digits_between:10,15|required|unique:users,mobile_number,'.$id,
 							        'location' => 'required|array|min:1'
 							    );
 			$v = Validator::make(Input::all(), $updateuser_rules);
 			if ($v->fails()){
 				return back()->withErrors($v)->withInput();
 			}else{
-				$user_res = User::where('id',$id)->update(['first_name' => Input::get('first_name'),'last_name' => Input::get('last_name')]);
+				$user_res = User::where('id',$id)->update(['first_name' => Input::get('first_name'),'last_name' => Input::get('last_name'),'mobile_number' => Input::get('mobile_number'),'email' => Input::get('email')]);
 				if($user_res){
 					$locations = Input::get('location');
 					$del_res = CollectionUser::where('user_id','=',$id)->delete();

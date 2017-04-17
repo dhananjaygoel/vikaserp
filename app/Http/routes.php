@@ -345,9 +345,18 @@ Route::get('dropbax-demo-functionality', function() {
 //    $r->codeRequest('sms'); // could be 'voice' too
 //});
 
+Route::get('receipt-master/journal', 'ReceiptMasterController@create_journal_receipt');
+Route::get('receipt-master/bank', 'ReceiptMasterController@create_bank_receipt');
+Route::get('receipt-master/cash', 'ReceiptMasterController@create_cash_receipt');
+Route::get('receipt-master/store-journal', 'ReceiptMasterController@store-journal');
+Route::get('receipt-master/store-bank', 'ReceiptMasterController@store_bank');
+Route::get('receipt-master/store-cash', 'ReceiptMasterController@store_cash');
 
-// Route::get('receipt-master','CustomerController@get_receipt_data');
+Route::resource('receipt-master', 'ReceiptMasterController');
+
 Route::resource('collectionusers', 'CollectionUserController');
 Route::post('export_collection_user','CollectionUserController@export_collection_users');
+
+
 
 

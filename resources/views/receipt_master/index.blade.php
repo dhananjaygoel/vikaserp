@@ -23,7 +23,7 @@
                             <input type="text" placeholder="To" name="export_to_date" class="form-control export_to_date" id="export_to_date">
                             <input type="submit" name="search_data" value="Search" class="search_button btn btn-primary">
                         </form>                    
-                        <button class="btn btn-primary"><i class="fa fa-plus"></i> Add</button>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#add-receipt"><i class="fa fa-plus"></i> Add</button>
                     </div>                    
                 </div>
             </div>
@@ -69,6 +69,31 @@
                     </div>    
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="add-receipt">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Add Receipt</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-4 text-center">
+                            <a href="{{url()}}/receipt-master/journal" class="btn btn-sm btn-primary">Journal</a>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <a href="{{url()}}/receipt-master/bank" class="btn btn-sm btn-primary">Bank</a>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <a href="{{url()}}/receipt-master/cash" class="btn btn-sm btn-primary">Cash</a>
+                        </div>
+                    </div>
+                </div>    
+            </div>            
         </div>
     </div>
 </div>
