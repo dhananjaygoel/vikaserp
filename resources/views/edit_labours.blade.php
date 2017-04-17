@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url('labours')}}">Labours</a></li>
+                    <li><a href="{{url('performance/labours')}}">Labours</a></li>
                     <li class="active"><span>Edit Labour</span></li>
                 </ol>
             </div>
@@ -17,7 +17,7 @@
                 <div class="main-box">
                     <div class="main-box-body clearfix">
                           
-                        <form id="" method="POST" action="{{url('labours/'.$labour->id)}}" accept-charset="UTF-8" >
+                        <form id="" method="POST" action="{{url('performance/labours/'.$labour->id)}}" accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input name="_method" type="hidden" value="PUT">
                             @if (count($errors) > 0)
@@ -46,24 +46,20 @@
                             @endif
                             <div class="form-group">
                                 <label for="labour_name">Labour Name<span class="mandatory">*</span></label>
-                                <input id="labour_name" class="form-control" placeholder="Labour Name" name="labour_name" value="{{$labour->labour_name}}" type="text" maxlength="30">
+                                <input id="labour_name" class="form-control" placeholder="Labour Name" name="labour_name" value="{{$labour->labour_name}}" type="text" maxlength="30" required="">
                             </div>
                              
                             
-<!--                            <div class="form-group">
-                                <label for="location">Location</label>
-                                <input id="location" class="form-control" placeholder="Location" name="location" value="{{ $labour->location}}" type="text">
-                            </div>                         -->
                          
 
                             <div class="form-group">
                                 <label for="phone_number1">Phone number<span class="mandatory">*</span></label>
-                                <input id="phone_number" class="form-control" placeholder="Phone number " name="phone_number" value="{{$labour->phone_number}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10">
+                                <input id="phone_number" class="form-control" placeholder="Phone number " name="phone_number" value="{{$labour->phone_number}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10" required="">
                             </div>
                              <hr>
                             <div>
                                 <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
-                                <a href="{{url('labours')}}" class="btn btn-default form_button_footer">Back</a>
+                                <a href="{{url('performance/labours')}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>
                            

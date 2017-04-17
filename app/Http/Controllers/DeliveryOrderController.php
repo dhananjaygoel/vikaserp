@@ -593,7 +593,7 @@ class DeliveryOrderController extends Controller {
         $delivery_challan->loading_charge = $input_data['loading'];
         $delivery_challan->round_off = $input_data['round_off'];
         //$delivery_challan->loaded_by = $input_data['loadedby'];
-        $delivery_challan->labours = $input_data['labour'];        
+//        $delivery_challan->labours = $input_data['labour'];        
         if (isset($input_data['vat_percentage'])) {
             $delivery_challan->vat_percentage = $input_data['vat_percentage'];
         } else {
@@ -629,6 +629,15 @@ class DeliveryOrderController extends Controller {
                 $loaderObj->delivery_challan_id = $delivery_challan_id;
                 $loaderObj->loaded_by_id = $loader;
                 $loaderObj->save();
+            }
+        }
+        if(isset($input_data['labour'])){
+            $labours = $input_data['labour'];
+            foreach ($labours as $labour){
+                $labourObj = new App\DeliveryChallanLabours(); 
+                $labourObj->delivery_challan_id = $delivery_challan_id;
+                $labourObj->labours_id = $labour;
+                $labourObj->save();
             }
         }
         $order_products = array();

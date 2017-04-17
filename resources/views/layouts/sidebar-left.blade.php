@@ -51,7 +51,7 @@
                     @if(isset($performance_index) && $performance_index==true)
                     <li class="{{Request::is('performance/labours/*') || Request::is('performance/') ? 'active' : '' }} ">
                         <a href="#" class="dropdown-toggle">
-                            <i class="fa fa-user"></i>
+                            <i class="fa fa-users"></i>
                             <span>Labors</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
@@ -66,7 +66,7 @@
                     </li>
                     <li class="{{Request::is('performance/loaded-by/*') ? 'active' : '' }} ">
                         <a href="#" class="dropdown-toggle">
-                            <i class="fa fa-user"></i>
+                            <i class="fa fa-male"></i>
                             <span>Loaded By</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
