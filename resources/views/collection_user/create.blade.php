@@ -86,7 +86,7 @@
                             <hr>
                             <div >
                                 <button type="submit" class="btn btn-primary form_button_footer" ><?php echo(isset($data) ? 'Update' : 'Submit'); ?></button>
-                                <a href="{{url()}}/collectionusers" class="btn btn-default form_button_footer">Back</a>
+                                <a href="{{url()}}/account" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>
                         </form>

@@ -6,14 +6,14 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url('collectionusers')}}">Collection Users</a></li>
+                    <li><a href="{{url('account')}}">Collection Users</a></li>
                     <li class="active"><span>View Collection User</span></li>
                 </ol>
                 <div class="filter-block">
                     <h1 class="pull-left">View Collection User</h1>                                 
                     <div class="pull-right top-page-ui">
                         @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
-                        <a href="{{ URL::route('collectionusers.edit',$user->id) }}" class="btn btn-primary pull-right">
+                        <a href="{{ URL::route('account.edit',$user->id) }}" class="btn btn-primary pull-right">
                             Edit Collection User
                         </a>
                         @endif
@@ -52,7 +52,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <a href="{{url('collectionusers')}}" class="btn btn-default form_button_footer">Back</a>
+                            <a href="{{url('account')}}" class="btn btn-default form_button_footer">Back</a>
                         </div>
                     </div>
                 </div>

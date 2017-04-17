@@ -32,16 +32,21 @@ class CollectionUserController extends Controller {
 	{
 		$search_field = Input::get('search');
 		$location_id = Input::get('location');
-		$collection_users = User::with('locations.location_data')->where('role_id', '=', 6);
+		$collection_users = User::with('locations.location_data');
 		if(isset($search_field) && !empty($search_field)){
-			$collection_users->where('first_name', 'like', '%' . $search_field . '%')->orwhere('last_name', 'like', '%' . $search_field . '%')->orwhere('mobile_number', 'like', '%' . $search_field . '%')->orwhere('email', 'like', '%' . $search_field . '%');
+			$collection_users->where(function($query) use ($search_field){
+				$query->where('first_name', 'like', '%' . $search_field . '%');
+				$query->orwhere('last_name', 'like', '%' . $search_field . '%');
+				$query->orwhere('mobile_number', 'like', '%' . $search_field . '%');
+				$query->orwhere('email', 'like', '%' . $search_field . '%');					
+			});			
 		}
 		if(isset($location_id) && !empty($location_id)){
 			$collection_users->whereHas('locations', function($query) use ($location_id){
 			    $query->where('location_id', $location_id);
-			});
+			});			
 		}
-		$collection_users = $collection_users->get();
+		$collection_users = $collection_users->where('role_id', '=', 6)->get();
 		$locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
 		return View::make('collection_user.index', array('users' => $collection_users,'locations'=>$locations));
 	}
@@ -97,13 +102,13 @@ class CollectionUserController extends Controller {
 	        			$CLocation->save();
 	        		}        		
 	        	}
-	            return redirect('collectionusers')->with('flash_message', 'User details successfully added.');
+	            return redirect('account')->with('flash_message', 'User details successfully added.');
 	        } else {
-	            return redirect('collectionusers')->with('wrong', 'Unable to store user at this moment');
+	            return redirect('account')->with('wrong', 'Unable to store user at this moment');
 	        }
         	
         }else{
-        	return redirect('collectionusers/create')
+        	return redirect('account/create')
         		->withErrors($CLocation->getvalidatorobj())
                 ->withInput();
         }
@@ -172,7 +177,7 @@ class CollectionUserController extends Controller {
 		        		}        		
 		        	}		        	
 				}
-				return redirect('collectionusers')->with('flash_message', 'User details successfully updated.');
+				return redirect('account')->with('flash_message', 'User details successfully updated.');
 			}
 		}else{
 			return back()->with('flash_message', 'Error while updating records please try again later')->withInput();
@@ -201,7 +206,7 @@ class CollectionUserController extends Controller {
         	if($del_res){
         		CollectionUser::where('id',$id)->delete();        		
         	}
-        	return redirect('collectionusers')->with('flash_message', 'Record deleted successfully.');
+        	return redirect('account')->with('flash_message', 'Record deleted successfully.');
         }else{
         	return back()->with('flash_message', 'Invalid password');        	
         }
@@ -212,19 +217,24 @@ class CollectionUserController extends Controller {
 		$location_id = Input::get('location');
 		$collection_users = User::with('locations.location_data')->where('role_id', '=', 6);
 		if(isset($search_field) && !empty($search_field)){
-			$collection_users->where('first_name', 'like', '%' . $search_field . '%')->orwhere('last_name', 'like', '%' . $search_field . '%')->orwhere('mobile_number', 'like', '%' . $search_field . '%')->orwhere('email', 'like', '%' . $search_field . '%');
+			$collection_users->where(function($query) use ($search_field){
+				$query->where('first_name', 'like', '%' . $search_field . '%');
+				$query->orwhere('last_name', 'like', '%' . $search_field . '%');
+				$query->orwhere('mobile_number', 'like', '%' . $search_field . '%');
+				$query->orwhere('email', 'like', '%' . $search_field . '%');					
+			});	
 		}
 		if(isset($location_id) && !empty($location_id)){
 			$collection_users->whereHas('locations', function($query) use ($location_id){
 			    $query->where('location_id', $location_id);
 			});
 		}
-		$collection_users = $collection_users->get();
+		$collection_users = $collection_users->where('role_id', '=', 6)->get();
 		
 		$excel_name = 'Collectionuser-' . date('dmyhis');
 
 		Excel::create($excel_name, function($excel) use($collection_users) {
-            $excel->sheet('Collectionusers', function($sheet) use($collection_users) {
+            $excel->sheet('account', function($sheet) use($collection_users) {
                 $sheet->loadView('excelView.collection_user.export_collection_user', array('users' => $collection_users));
             });
         })->export('xls');

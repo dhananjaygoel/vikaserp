@@ -102,7 +102,7 @@ Exemples :
     var form = 
     $('<form>', {
       'method': 'POST',
-      'action': 'export_collection_user'
+      'action': 'account/export_collection_user'
     });
 
     var token = 

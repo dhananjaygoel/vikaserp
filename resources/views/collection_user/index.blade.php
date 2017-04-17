@@ -18,7 +18,7 @@
                     <h1 class="pull-left">Collection Users</h1>
                 </div>
                 <div class="col-lg-9">
-                        <form method="GET" action=" {{url()}}/collectionusers" id="st_collection_user_form">
+                        <form method="GET" action=" {{url()}}/account" id="st_collection_user_form">
                             <div class="col-lg-4">
                                 <div class="input-group pull-right">
                                     <input type="text" class="form-control" name="search" id="search" placeholder="Search Collection User" value="{{ Request::get('search') }}">
@@ -41,7 +41,7 @@
                             </div> 
                         </form>  
                         <div class="col-lg-5 pull-right"> 
-                        <a class="btn btn-primary" href="{{url()}}/collectionusers/create"><i class="fa fa-plus"></i> Add Collection User</a>
+                        <a class="btn btn-primary" href="{{url()}}/account/create"><i class="fa fa-plus"></i> Add Collection User</a>
                         <button class="btn btn-primary st_download_collection_u_list" data-token="{{csrf_token()}}"><i class="fa fa-plus"></i> Download List</button>
                         </div>
                     </div>
@@ -96,20 +96,20 @@
                                             {{count($user->locations)}}
                                         </td>
                                         <td class="text-center">
-                                            <a href="{{URL::route('collectionusers.show',$user->id)}}" class="table-link" title="view">
+                                            <a href="{{URL::route('account.show',$user->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="{{ URL::route('collectionusers.edit',$user->id) }}" class="table-link" title="Edit">
+                                            <a href="{{ URL::route('account.edit',$user->id) }}" class="table-link" title="Edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
                                             <!-- delete script is in custom_js/laravel.js -->
-                                            <a class="table-link danger" href="collectionusers/{{ $user->id }}" data-method="delete" 
+                                            <a class="table-link danger" href="account/{{ $user->id }}" data-method="delete" 
   data-token="{{csrf_token()}}" data-confirm="Are you sure?" >
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>

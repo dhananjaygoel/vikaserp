@@ -367,15 +367,15 @@
                         </a>
                     </li>
                     @endif
-                    @if(Auth::user()->role_id == 0)
-                    <li class="{{ (Request::is('collectionusers') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Collection Users">
-                        <a href="{{url('collectionusers')}}">
+<!--                     @if(Auth::user()->role_id == 0)
+                    <li class="{{ (Request::is('account') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Collection Users">
+                        <a href="{{url('account')}}">
                             <i class="fa fa-users"></i>
                             <span>Collection Users</span>
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
-                    @endif 
+                    @endif --> 
                     <!-- @if(Auth::user()->role_id == 0)
                     <li class="{{ (Request::is('receipt-master') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Receipt Master">
                         <a href="{{url('receipt-master')}}">

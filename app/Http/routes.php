@@ -357,8 +357,8 @@ Route::get('receipt-master/store-cash', 'ReceiptMasterController@store_cash');
 
 Route::resource('receipt-master', 'ReceiptMasterController');
 
-Route::resource('collectionusers', 'CollectionUserController');
-Route::post('export_collection_user','CollectionUserController@export_collection_users');
+Route::resource('account', 'CollectionUserController');
+Route::post('account/export_collection_user','CollectionUserController@export_collection_users');
 
 
 
