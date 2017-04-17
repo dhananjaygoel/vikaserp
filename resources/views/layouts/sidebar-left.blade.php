@@ -36,7 +36,52 @@
                     $count = count($name_array);
                     $page_name = $name_array[$count - 1];
                     ?>
+
                     @if(Auth::user())
+                    @if(Request::is('*performance*'))
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
+                    <li class="{{ (Request::is('*dashboard*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Dashboard">
+                        <a href="{{url('dashboard')}}">
+                            <i class="fa fa-dashboard"></i>
+                            <span>Dashboard</span>
+                            <span class="label label-info label-circle pull-right"></span>
+                        </a>
+                    </li>
+
+                    @if(isset($performance_index) && $performance_index==true)
+                    <li class="{{Request::is('performance/labours/*') || Request::is('performance/') ? 'active' : '' }} ">
+                        <a href="#" class="dropdown-toggle">
+                            <i class="fa fa-user"></i>
+                            <span>Labors</span>
+                            <i class="fa fa-chevron-circle-right drop-icon"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li class="{{ (Request::is('*performance/labours/*') ? 'active' : '') }}">
+                                <a href="{{url('performance/labours')}}" > Labours </a>
+                            </li>
+                            <li class="{{ (Request::is('*performance/labours/labour-performance*') ? 'active' : '') }}">
+                                <a href="{{url('performance/labours/labour-performance')}}" > Performance </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="{{Request::is('performance/loaded-by/*') ? 'active' : '' }} ">
+                        <a href="#" class="dropdown-toggle">
+                            <i class="fa fa-user"></i>
+                            <span>Loaded By</span>
+                            <i class="fa fa-chevron-circle-right drop-icon"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li class="{{ (Request::is('*performance/loaded-by/*') ? 'active' : '') }}">
+                                <a href="{{url('performance/loaded-by')}}" > Loaded-by </a>
+                            </li>
+                            <li class="{{ (Request::is('*performance/loaded-by/loaded-by-performance*') ? 'active' : '') }}">
+                                <a href="{{url('performance/loaded-by/loaded-by-performance')}}" > Performance </a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endif
+                    @endif
+                    @else
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 2)
                     <li class="{{ (Request::is('*dashboard*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Dashboard">
                         <a href="{{url('dashboard')}}">
@@ -153,7 +198,7 @@
                         </ul>
                     </li>
                     @endif
-                    
+
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array) && Auth::user()->role_id <> 5) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
                     <li class="<?php
                     if (Request::is('*purchase_orders*') || Request::is('*purchaseorder_advise*') || Request::is('*purchase_challan*') || Request::is('*purchase_order_report*') || Request::is('*purchase_order_daybook*') || Request::is('*pending_purchase_advice*')) {
@@ -331,6 +376,7 @@
                         </a>
                     </li>
                     @endif                    
+                    @endif
                     @endif
                 </ul>
             </div>

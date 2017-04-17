@@ -19,7 +19,7 @@
                         <i class="fa fa-plus-circle fa-lg"></i> Import Customer
                     </a>-->
 
-                    <a href="{{url('labours/create')}}" class="btn btn-primary pull-right">
+                    <a href="{{url('performance/labours/create')}}" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Add Labour
                     </a>
                     
@@ -80,14 +80,14 @@
                                            {{$labour->location}}
                                         </td>-->
                                         <td class="text-center">
-                                            <a href="{{url('labours/'.$labour->id)}}" class="table-link" title="view">
+                                            <a href="{{url('performance/labours/'.$labour->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
                                             @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
-                                            <a href="{{url('labours/'.$labour->id.'/edit')}}" class="table-link" title="edit">
+                                            <a href="{{url('performance/labours/'.$labour->id.'/edit')}}" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -108,7 +108,7 @@
                                 <div class="modal fade" id="myModal{{$labour->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
-                                            <form method="POST" action="{{url('labours/'.$labour->id)}}" id="deleteCustomerForm{{$labour->id}}">
+                                            <form method="POST" action="{{url('performance/labours/'.$labour->id)}}" id="deleteCustomerForm{{$labour->id}}">
                                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                                                 <input name="_method" type="hidden" value="DELETE">
                                                 <div class="modal-header">
@@ -123,7 +123,7 @@
                                                             <div class="pwdr"><input class="form-control" placeholder="" name="password" type="password" type="text"></div>
                                                         </div>
                                                         <div class="clearfix"></div>
-                                                        <div class="delp">Are you sure you want to <b>delete</b> this customer?</div>
+                                                        <div class="delp">Are you sure you want to <b>delete</b> this labour?</div>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
