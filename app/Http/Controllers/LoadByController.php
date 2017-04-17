@@ -156,10 +156,10 @@ class LoadByController extends Controller {
                     array_push($loaders, $challan_info->loaded_by_id);
                     foreach ($challan_info->dc_delivery_challan as $info) {
                         foreach ($info->delivery_order->delivery_product as $delivery_order_productinfo) {
+                            $dashboard = new DashboardController();
                             if ($delivery_order_productinfo->unit_id == 1)
                                 $deliver_sum += $delivery_order_productinfo->quantity;
                             elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
-                                $dashboard = new DashboardController();
                                 $deliver_sum += $dashboard->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
                         }
                     }
