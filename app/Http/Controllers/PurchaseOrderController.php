@@ -297,8 +297,8 @@ class PurchaseOrderController extends Controller {
             Session::forget('product');
             Session::put('input_data', $input_data);
             return Redirect::back()->withErrors($validator)->withInput();
-        }
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
+        }       
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $i = 0;
