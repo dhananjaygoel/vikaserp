@@ -145,9 +145,8 @@
                                     <tbody>
                                         <tr class="headingunderline">
                                             <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
-                                            <td><span>Unit</span><span class="mandatory">*</span></td>
                                             <td><span>Quantity</span></td>
-                                            
+                                            <td><span>Unit</span><span class="mandatory">*</span></td>
                                             <td><span>Present Shipping</span></td>
                                             <td><span>Price</span><span class="mandatory">*</span></td>
                                             <td class="inquiry_vat_chkbox"><span>Vat</span></td>
@@ -175,7 +174,11 @@
                                                                 </div>
                                                                 <input type="hidden" name="prod_id" value="{{$i}}">
                                                             </td>
-                                                            
+                                                            <td class="col-md-1">
+                                                                <div class="form-group">
+                                                                    <input onblur="change_quantity2({{$i}});" id="quantity_{{$i}}" class="form-control focus_on_enter" placeholder="Qnty" name="product[{{$i}}][quantity]" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$session_data['product'][$i]['quantity']}}" type="text" tabindex="4" >
+                                                                </div>
+                                                            </td>
                                                             <td class="col-md-1">
                                                                 <div class="form-group ">
                                                                     <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
@@ -185,11 +188,6 @@
                                                                         @endif
                                                                         @endforeach
                                                                     </select>
-                                                                </div>
-                                                            </td>
-                                                            <td class="col-md-1">
-                                                                <div class="form-group">
-                                                                    <input onblur="change_quantity2({{$i}});" id="quantity_{{$i}}" class="form-control focus_on_enter" placeholder="Qnty" name="product[{{$i}}][quantity]" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$session_data['product'][$i]['quantity']}}" type="text" tabindex="4" >
                                                                 </div>
                                                             </td>
                                                             <td class="col-md-1">
@@ -338,38 +336,17 @@
                                                     </div>
                                                     <input type="hidden" name="prod_id" value="{{$key}}">
                                                 </td>
-                                                
                                                 <td class="col-md-1">
-                                                    <div class="form-group ">
-                                                        <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" onchange="unitType(this);">
-                                                            @foreach($units as $unit)
-                                                            <option value="{{$unit->id}}" {{($product->unit_id == $unit->id)?'selected':''}}>{{$unit->unit_name}}</option>
-                                                            @endforeach
-                                                        </select>
+                                                    <div class="form-group">
+                                                        <input onblur="change_quantity2({{$key}});" id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" onkeypress=" return numbersOnly(this,event,true,true);" type="text" type="text" @if($counter==0) tabindex="4" class="ui-dform-text" @endif>                                                    <?php $counter++; ?>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-1">
-                                                    <div class="form-group meter_list_{{$key}}" {{($product->unit_id==3)?'':'style=display:none'}}>
-                                                        <input onblur="change_quantity2({{$key}});" id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" onkeypress=" return numbersOnly(this,event,true,true);" type="text" type="text" @if($counter==0) tabindex="4" class="ui-dform-text" @endif>                                                    <?php $counter++; ?>
-                                                    </div>
-                                                    <div class = "form-group kg_list_{{$key}}" {{($product->unit_id==1)?'':'style=display:none'}}>
-                                                        <select class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$key}}" onchange="setQty(this);">
-                                                            <?php for ($n = 50; $n <= 15000; $n++) { ?>
-                                                                <option {{($product->quantity == $n)?'selected':''}} value = "{{$n}}">{{$n}}</option>
-                                                                <?php
-                                                                $n = $n + 49;
-                                                            }
-                                                            ?>
-                                                        </select>
-                                                    </div>
-                                                    <div class = "form-group pieces_list_{{$key}}" {{($product->unit_id=='2')?'':'style=display:none'}}>
-                                                        <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$key}}" onchange="setQty(this);">
-                                                            <?php for ($z = 1; $z <= 1000; $z++) { ?>
-                                                                <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
-                                                                <?php
-//                                                                ($z == 1) ? $z = $z + 3 : $z = $z + 4;
-                                                            }
-                                                            ?>                                                 
+                                                    <div class="form-group ">
+                                                        <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}">
+                                                            @foreach($units as $unit)
+                                                            <option value="{{$unit->id}}" {{($product->unit_id == $unit->id)?'selected':''}}>{{$unit->unit_name}}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </td>

@@ -141,7 +141,7 @@
         <br/>
         <hr>  
         <!--graph-->
-        <div class="row text-center ">
+<!--        <div class="row text-center ">
             <div class="col-md-12">
                 <div class="col-lg-4 col-sm-6 col-xs-12">
                     <h4>Inquiry</h4>
@@ -156,10 +156,17 @@
                     <div id="deliverychallan" style="height: 250px;"></div>
                 </div>
             </div>
-        </div>
-        <br/>
-        <br/>
+        </div>-->
+<!--        <br/>
+        <br/>-->
     </div>
 </div>
 
+
+<script type="text/javascript">
+//    var inquiry_stats = <?php echo json_encode(isset($inquiries_stats_all) ? $inquiries_stats_all : ''); ?>;
+//    var order_stats = <?php echo json_encode(isset($orders_stats_all) ? $orders_stats_all : ''); ?>;
+//    var delivery_challan_stats = <?php echo json_encode(isset($delivery_challan_stats_all) ? $delivery_challan_stats_all : ''); ?>;
+//                            
+</script>
 @endsection

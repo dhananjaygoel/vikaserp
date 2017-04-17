@@ -52,19 +52,10 @@ use Illuminate\Support\Facades\Session;
                                     <label for="viewable_by_all">Viewable by all</label>
                                 </div>
                                 <div class="radio">
-                                    <input checked="" value="existing_supplier" id="existing_supplier" name="supplier_status" type="radio"
-                                    <?php
-                                    if (Input::old('supplier_status') == "existing_supplier") {
-                                        echo 'checked="checked"';
-                                    }
-                                    ?>>
+                                    <input checked="" value="existing_supplier" id="existing_supplier" name="supplier_status" type="radio" {{(Input::old('supplier_status') == "existing_supplier")? 'checked' : ''}}  class="existing_customer_order"
+                                           >
                                     <label for="existing_supplier">Existing Supplier</label>
-                                    <input value="new_supplier" id="new_supplier" name="supplier_status" type="radio"
-                                    <?php
-                                    if (Input::old('supplier_status') == "new_supplier") {
-                                        echo 'checked="checked"';
-                                    }
-                                    ?>>
+                                    <input value="new_supplier" id="new_supplier" name="supplier_status" type="radio" {{(Input::old('supplier_status') == "new_supplier")?'checked':''}} class="new_customer_order" >
                                     <label for="new_supplier">New Supplier</label>
                                 </div>
 
@@ -75,8 +66,8 @@ use Illuminate\Support\Facades\Session;
                                     $style = 'style="display: block"';
                                 }
                                 ?>
-                                <div class="customer_select_order" style="{{(Input::old('customer_status') == "new_customer")?'display:none':'display:block'}}">
-                                    <div class="col-md-4">
+                                <div class="supplier customer_select"  <?= $style ?>>
+                                    <div class="col-md-12">
                                         <div class="form-group searchproduct">
                                             <input class="form-control focus_on_enter tabindex1" placeholder="Enter Tally Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name" tabindex="1" >
                                             <input type="hidden" id="existing_customer_id" name="autocomplete_supplier_id">
@@ -189,9 +180,8 @@ use Illuminate\Support\Facades\Session;
                                         <tbody>
                                             <tr class="headingunderline">
                                                 <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
-                                                <td><span>Unit</span><span class="mandatory">*</span></td>
                                                 <td><span>Quantity</span></td>
-
+                                                <td><span>Unit</span><span class="mandatory">*</span></td>
                                                 <td><span>Price</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
@@ -208,41 +198,23 @@ use Illuminate\Support\Facades\Session;
                                                         <div class="form-group searchproduct">
                                                             <input class="form-control each_product_detail focus_on_enter tabindex{{$i}}" data-productid="{{$i}}" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_purchase_product_name_{{$i}}" onfocus="product_autocomplete_purchase({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>" tabindex="{{$z}}">
                                                             <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
-                                                            <!--<i class="fa fa-search search-icon"></i>-->
+                                                            <i class="fa fa-search search-icon"></i>
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-md-1">
+                                                        <div class="form-group">
+                                                            <input id="quantity_{{$i}}"  class="form-control each_product_qty" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>" onkeypress=" return numbersOnly(this, event, true, false);">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-2">
                                                         <div class="form-group ">
-                                                            <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}" onchange="unitType(this);">
+                                                            <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
                                                                 @foreach($units as $unit)
                                                                 <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                     </td>
-                                                    <td class="col-md-1">
-                                                        <div class="form-group meter_list_{{$i}}" style="display:none">
-                                                            <input id="quantity_{{$i}}"  class="form-control each_product_qty" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>" onkeypress=" return numbersOnly(this, event, true, false);">
-                                                        </div>
-                                                         <div class = "form-group kg_list_{{$i}}" >
-                                                            <select class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$i}}" onchange="setQty(this);">
-                                                                <?php for ($n = 50; $n <= 15000; $n++) { ?>
-                                                                    <option value = "{{$n}}">{{$n}}</option>
-                                                                    <?php $n = $n + 49;
-                                                                }
-                                                                ?>
-                                                            </select>
-                                                        </div>
-                                                        <div class = "form-group pieces_list_{{$i}}" style="display:none">
-                                                            <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$i}}" onchange="setQty(this);">
-                                                                <?php for ($z = 1; $z <= 1000; $z++) { ?>
-                                                                    <option value = "{{$z}}">{{$z}}</option>
-        <?php // ($z == 1) ? $z = $z + 3 : $z = $z + 4; 
-        } ?>                                                 
-                                                            </select>
-                                                        </div>
-                                                    </td>
-
                                                     <td class="col-md-2">
                                                         <div class="form-group">
                                                             <input type="tel" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>" onkeypress=" return numbersOnly(this, event, true, false);">

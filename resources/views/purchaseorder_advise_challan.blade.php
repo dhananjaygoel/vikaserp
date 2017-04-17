@@ -54,9 +54,8 @@
                             <tbody>
                                 <tr>
                                     <td class="col-md-2"><span>Product Name(Alias)<span class="mandatory">*</span> </span></td>
-                                    <td class="col-md-1"><span>Unit</span><span class="mandatory">*</span></td>
                                     <td class="col-md-2"><span>Actual Quantity</span></td>
-
+                                    <td class="col-md-1"><span>Unit</span><span class="mandatory">*</span></td>
                                     <td class="col-md-2 text-center"><span>Present Shipping</span></td>
                                     <td class="col-md-2"><span>Rate</span></td>
                                     <td class="col-md-2"><span>Amount</span></td>
@@ -75,37 +74,16 @@
                             </td>
                             <td>
                                 <div class="form-group">
+                                    <!--<input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="{{$products->present_shipping}}" type="text">-->
+                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][quantity]" value="{{$products->present_shipping}}" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this,event,true,false);">
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
                                     {{$products['unit']->unit_name}}
                                     <input id="unit_id{{$key}}" name="product[{{$key}}][unit_id]" value="{{$products['unit']->id}}" type="hidden">
                                 </div>
                             </td>
-                            <td>
-                                <div class="form-group meter_list_{{$key}}" {{($products->unit_id==3)?'':'style=display:none'}}>
-                                    <!--<input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="{{$products->present_shipping}}" type="text">-->
-                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][quantity]" value="{{$products->present_shipping}}" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this, event, true, false);">
-                                </div>
-                                <div class = "form-group kg_list_{{$key}}" {{($products->unit_id==1)?'':'style=display:none'}}>
-                                    <select class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$key}}" onchange="setQty(this);">
-                                        <?php for ($n = 50; $n <= 15000; $n++) { ?>
-                                            <option {{($products->quantity == $n)?'selected':''}} value = "{{$n}}">{{$n}}</option>
-                                            <?php
-                                            $n = $n + 49;
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class = "form-group pieces_list_{{$key}}" {{($products->unit_id=='2')?'':'style=display:none'}}>
-                                    <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$key}}" onchange="setQty(this);">
-                                        <?php for ($z = 1; $z <= 1000; $z++) { ?>
-                                            <option {{($products->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
-                                            <?php
-//                                            ($z == 1) ? $z = $z + 3 : $z = $z + 4;
-                                        }
-                                        ?>                                                 
-                                    </select>
-                                </div>
-                            </td>
-
                             <td>
                                 <div class="form-group text-center">
                                     {{$products->present_shipping}}
@@ -116,7 +94,7 @@
                                 <div class="row ">
                                     <div class="form-group col-md-12">
                                         <!--<input type="text" class="form-control" id="difference" value="{{$products->price}}" placeholder="Rate">-->
-                                        <input type="text" class="form-control" id="product_price_{{$key}}" value="{{$products->price}}" name="product[{{$key}}][price]" placeholder="Rate" onkeypress=" return numbersOnly(this, event, true, false);">
+                                        <input type="text" class="form-control" id="product_price_{{$key}}" value="{{$products->price}}" name="product[{{$key}}][price]" placeholder="Rate" onkeypress=" return numbersOnly(this,event,true,false);">
                                     </div>
                                 </div>
                             </td>
@@ -130,18 +108,18 @@
                             @endforeach
                             </tbody>
                         </table>
-                        <table >
+<!--                        <table >
                             <tr class="row5">
                                 <td>
                                     <div class="add_button">
                                         <div class="form-group pull-left">
                                             <label for="addmore"></label>
-<!--                                            <a href="#" class="table-link" title="add more" id="add_more_product1" >
+                                            <a class="table-link" title="add more" id="add_more_product1" onclick="create_purchase_challan_function();">
                                                 <span class="fa-stack more_button" >
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a>-->
+                                            </a>
                                         </div>
                                     </div>
                                 </td>
@@ -151,7 +129,7 @@
                                 <td></td>
                                 <td></td>
                             </tr>
-                        </table>
+                        </table>-->
                     </div>
                     <div class="form-group">
 

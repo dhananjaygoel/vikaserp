@@ -122,12 +122,12 @@ use Illuminate\Support\Facades\Session;
                                 </div>
                                 <div class="form-group">
                                     <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
-                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{ Input::old('mobile_number') }}" type="tel" onkeypress=" return numbersOnly(this, event, false, false);">
+                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number " name="mobile_number" value="{{ Input::old('mobile_number') }}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="credit_period">Credit Period(Days)<span class="mandatory">*</span></label>
-                                    <input id="credit_period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ Input::old('credit_period') }}" type="tel" onkeypress=" return numbersOnly(this, event, false, false);">
+                                    <input id="credit_period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ Input::old('credit_period') }}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);">
                                 </div>
                             </div>
                             <div class="inquiry_table col-md-12">
@@ -136,9 +136,8 @@ use Illuminate\Support\Facades\Session;
                                         <tbody>
                                             <tr class="headingunderline">
                                                 <td><span>Select Product(Alias)<span class="mandatory">*</span></span></td>
-                                                <td><span>Unit</span><span class="mandatory">*</span></td>
                                                 <td><span>Quantity</span></td>
-
+                                                <td><span>Unit</span><span class="mandatory">*</span></td>
                                                 <td><span>Price</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
@@ -153,58 +152,39 @@ use Illuminate\Support\Facades\Session;
                                                 $j = 10;
                                             }
                                             for ($i = 1; $i <= $j; $i++) {
-                                                if ($i == 1)
-                                                    $z = $i + 1;
-                                                else {
-                                                    $z = 0;
-                                                }
+                                                 if($i == 1)
+                                                $z = $i +1;
+                                            else {
+                                                $z = 0;
+                                            }
+                                                
                                                 ?>
                                                 <tr id="add_row_{{$i}}" class="add_product_row">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
-                                                            <input class="form-control each_product_detail focus_on_enter tabindex{{$i}}" data-productid="{{$i}}" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="purchase_order_advise_product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>" tabindex="{{$z}}">
+                                                            <input class="form-control each_product_detail focus_on_enter tabindex{{$i}}" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="purchase_order_advise_product_autocomplete({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>" tabindex="{{$z}}">
                                                             <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="">
                                                             <input type="hidden" name="product[{{$i}}][purchase]" value="">
-                                                            <!--<i class="fa fa-search search-icon"></i>-->
+                                                            <i class="fa fa-search search-icon"></i>
                                                         </div>
                                                     </td>
-
+                                                    <td class="col-md-1">
+                                                        <div class="form-group">
+                                                            <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>" onkeypress=" return numbersOnly(this,event,true,false);">
+                                                        </div>
+                                                    </td>
                                                     <td class="col-md-2">
                                                         <div class="form-group ">
-                                                            <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}" onchange="unitType(this);">
+                                                            <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
                                                                 @foreach($units as $unit)
                                                                 <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                     </td>
-                                                    <td class="col-md-1">
-                                                        <div class="form-group meter_list_{{$i}}" style="display:none">
-                                                            <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>" onkeypress=" return numbersOnly(this, event, true, false);">
-                                                        </div>
-                                                        <div class = "form-group kg_list_{{$i}}" >
-                                                            <select class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$i}}" onchange="setQty(this);">
-                                                                <?php for ($n = 50; $n <= 15000; $n++) { ?>
-                                                                    <option value = "{{$n}}">{{$n}}</option>
-                                                                    <?php
-                                                                    $n = $n + 49;
-                                                                }
-                                                                ?>
-                                                            </select>
-                                                        </div>
-                                                        <div class = "form-group pieces_list_{{$i}}" style="display:none">
-                                                            <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$i}}" onchange="setQty(this);">
-                                                                <?php for ($z = 1; $z <= 1000; $z++) { ?>
-                                                                    <option value = "{{$z}}">{{$z}}</option>
-                                                                    <?php // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
-                                                                }
-                                                                ?>                                                 
-                                                            </select>
-                                                        </div>
-                                                    </td>
                                                     <td class="col-md-2">
                                                         <div class="form-group">
-                                                            <input type="tel" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>" onkeypress=" return numbersOnly(this, event, true, false);">
+                                                            <input type="tel" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>" onkeypress=" return numbersOnly(this,event,true,false);">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-4">
@@ -214,7 +194,7 @@ use Illuminate\Support\Facades\Session;
                                                     </td>
                                                 </tr>
                                             <?php } ?>
-<?php Session::put('input_data', ''); ?>
+                                            <?php Session::put('input_data', ''); ?>
                                         </tbody>
                                     </table>
                                     <table>

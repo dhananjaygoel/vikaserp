@@ -109,11 +109,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
-                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10" name="mobile_number" value="{{old('mobile_number')}}" type="tel">
+                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10" name="mobile_number" value="{{old('mobile_number')}}" type="tel">
                                 </div>
                                 <div class="form-group">
                                     <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
-                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" onkeypress=" return numbersOnly(this, event, false, false);" value="{{old('credit_period')}}" type="tel">
+                                    <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" onkeypress=" return numbersOnly(this,event,false,false);" value="{{old('credit_period')}}" type="tel">
                                 </div>
                             </div>
                             <div class="row col-md-12">
@@ -156,12 +156,12 @@
                                     <div class="col-md-4">
                                         <label for="location">Freight</label>
                                           @if(Auth::user()->role_id <> 5)
-                                        <input id="location_difference" class="form-control focus_on_enter tabindex3" placeholder="Freight " name="location_difference" value="" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >
+                                        <input id="location_difference" class="form-control focus_on_enter tabindex3" placeholder="Freight " name="location_difference" value="" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" tabindex="3" >
                                         
                                         @endif
                                         
                                         @if(Auth::user()->role_id == 5)
-                                        <input id="location_difference" class="form-control focus_on_enter tabindex3" placeholder="Freight " name="location_difference" value="{{$order->delivery_location['difference']}}" type="tel" tabindex="3" onkeypress=" return numbersOnly(this, event, true, true);" >
+                                        <input id="location_difference" class="form-control focus_on_enter tabindex3" placeholder="Freight " name="location_difference" value="{{$order->delivery_location['difference']}}" type="tel" tabindex="3" onkeypress=" return numbersOnly(this,event,true,true);" >
                                         @endif
                                         
                                     </div>
@@ -203,43 +203,22 @@
                                                         <div class = "form-group searchproduct">
                                                             <input class = "form-control focus_on_enter each_product_detail tabindex4" placeholder = "Enter Product name" data-productid="{{$i}}" type = "text" name = "product[{{$i}}][name]" id = "add_product_name_{{$i}}" onfocus = "product_autocomplete({{$i}});" value = "<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>" tabindex="4" >
                                                             <input type = "hidden" name = "product[{{$i}}][id]" id = "add_product_id_{{$i}}" value = "">
-                                                            <!--<i class = "fa fa-search search-icon"></i>-->
+                                                            <i class = "fa fa-search search-icon"></i>
                                                         </div>
                                                     </td>
-
+                                                    <td class="col-md-1">
+                                                        <div class = "form-group">
+                                                            <input id = "quantity_{{$i}}" class = "form-control each_product_qty" data-productid="{{$i}}" placeholder = "Qnty" name = "product[{{$i}}][quantity]" type = "tel" onkeypress=" return numbersOnly(this,event,true,true);" value = "<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>">
+                                                        </div>
+                                                    </td>
                                                     <td class="col-md-2">
                                                         <div class = "form-group ">
-                                                            <select class = "form-control unit" onchange="unitType(this);" name = "product[{{$i}}][units]" id = "units_{{$i}}">
+                                                            <select class = "form-control" name = "product[{{$i}}][units]" id = "units_{{$i}}">
                                                                 @foreach($units as $unit)
                                                                 <option value = "{{$unit->id}}">{{$unit->unit_name}}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                    </td>
-
-                                                    <td class="col-md-1">
-                                                        <div class = "form-group meter_list_{{$i}}" style="display:none">
- <input id = "quantity_{{$i}}" class = "form-control each_product_qty" data-productid="{{$i}}" placeholder = "Qnty" name = "product[{{$i}}][quantity]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{ (isset($session_data['product'][$i]['quantity'])) ? $session_data['product'][$i]['quantity']:'50'}}"> 
-                                                        </div>
-                                                        <div class = "form-group kg_list_{{$i}}" >
-                                                            <select class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$i}}" onchange="setQty(this);">
-                                                                <?php for ($n = 50; $n <= 15000; $n++) { ?>
-                                                                    <option value = "{{$n}}">{{$n}}</option>
-                                                                    <?php $n = $n + 49;
-                                                                }
-                                                                ?>
-                                                            </select>
-                                                        </div>
-                                                        <div class = "form-group pieces_list_{{$i}}" style="display:none">
-                                                            <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$i}}" onchange="setQty(this);">
-                                                                <?php for ($z = 1; $z <= 1000; $z++) { ?>
-                                                                    <option value = "{{$z}}">{{$z}}</option>
-        <?php // ($z == 1) ? $z = $z + 3 : $z = $z + 4; 
-        } ?>                                                 
-                                                            </select>
-                                                        </div>
-                                                       
-                                                        
                                                     </td>
                                                     <td class="col-md-2">
                                                         <div class = "form-group">
