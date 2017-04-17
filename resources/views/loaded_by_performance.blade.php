@@ -87,21 +87,6 @@
                                             <tr>
                                                 <td rowspan="2"><b>{{$loader_val->first_name}}</B></td>                                                
                                                 <td><b>Tonnage</b></td>
-                                                <?php 
-                                                $total = 0;
-                                                foreach($loaders_data as $data ){                                                    
-                                                    //print_r($data['delivery_id']);
-                                                    foreach($data['delivery_sum'] as $sum){
-                                                        $delivery = $sum;
-                                                    } ?>                                                
-                                                <?php foreach($data['loaders'] as $loader){                                                    
-                                                        if($loader_val->id == $loader[0] ){
-                                                            $val = $sum/count($data['loaders']); ?>
-                                                            <td>{{ $total += $val }}</td> 
-                                                    <?php }
-                                                    }
-                                                    //print_r($data['delivery_sum']);
-                                                } ?>
                                                 <tr>
                                                     <td><b>Delivery</b></td>                                                                                                
                                                 </tr>
