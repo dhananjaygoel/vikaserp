@@ -23,7 +23,7 @@ $(document).ready(function () {
 
     $(document).on('click','.delete-loader',function(){
         var baseurl = $('#baseurl').attr('name');
-        $('#delete_loaded_by_form').attr('action', baseurl + '/loaded-by/' + $(this).data('id'));
+        $('#delete_loaded_by_form').attr('action', baseurl + '/performance/loaded-by/' + $(this).data('id'));
         $('#delete_loaded_by_modal').modal('show');
     });
     
@@ -31,50 +31,50 @@ $(document).ready(function () {
         return $.trim(value) != "";
     }, "This field is required");
 
-    $("form[id='add_loaded_by']").validate({
-        rules: {
-            "first_name": {required: true, noSpace: true, minlength: 2, maxlength: 100},
-            "last_name": {minlength: 2, maxlength: 100},
-            "mobile_number": {required: true, noSpace: true, minlength: 10, maxlength: 10, number: true},
-            "password": {required: true, noSpace: true, minlength: 6, maxlength: 10},
-            "confirm_password": {required: true, noSpace: true, minlength: 6, maxlength: 10, equalTo: "#password"},
-        },
-        messages: {
-            "first_name": {required: "Please enter the first name", minlength: "Minimum 2 characters required", maxlength: "First name should not be more than 100 characters"},
-            "last_name": {required: "Please enter the last name", minlength: "Minimum 2 characters required", maxlength: "Last name should not be more than 100 characters"},
-            "mobile_number": {required: "Please enter the mobile number", number: "MObile number must in digits"},
-        },
-        errorPlacement: function (error, element) {
-            error.insertAfter(element);
-        },
-        submitHandler: function (form) {
-            common_form_submit(form);
-        }
-    });
-    $("form[id='edit_loaded_by']").validate({
-        rules: {
-            "first_name": {required: true, noSpace: true, minlength: 2, maxlength: 100},
-            "last_name": {minlength: 2, maxlength: 100},
-            "mobile_number": {required: true, noSpace: true, minlength: 10, maxlength: 10, number: true},
-            "password": {required: function (element) {
-                    return $("#confirm_password").val() != "";
-                }, noSpace: true, minlength: 6, maxlength: 10},
-            "confirm_password": {required: function (element) {
-                    return $("#password").val() != "";
-                }, noSpace: true, minlength: 6, maxlength: 10, equalTo: "#password"},
-        },
-        messages: {
-            "first_name": {required: "Please enter the first name", minlength: "Minimum 2 characters required", maxlength: "First name should not be more than 10 characters"},
-            "last_name": {minlength: "Minimum 2 characters required", maxlength: "Last name should not be more than 10 characters"},
-            "mobile_number": {required: "Please enter the mobile number", number: "MObile number must in digits"},
-        },
-        errorPlacement: function (error, element) {
-            error.insertAfter(element);
-        },
-        submitHandler: function (form) {
-            common_form_submit(form);
-        }
-    });
+//    $("form[id='add_loaded_by']").validate({
+//        rules: {
+//            "first_name": {required: true, noSpace: true, minlength: 2, maxlength: 100},
+//            "last_name": {minlength: 2, maxlength: 100},
+//            "mobile_number": {required: true, noSpace: true, minlength: 10, maxlength: 10, number: true},
+//            "password": {required: true, noSpace: true, minlength: 6, maxlength: 10},
+//            "confirm_password": {required: true, noSpace: true, minlength: 6, maxlength: 10, equalTo: "#password"},
+//        },
+//        messages: {
+//            "first_name": {required: "Please enter the first name", minlength: "Minimum 2 characters required", maxlength: "First name should not be more than 100 characters"},
+//            "last_name": {required: "Please enter the last name", minlength: "Minimum 2 characters required", maxlength: "Last name should not be more than 100 characters"},
+//            "mobile_number": {required: "Please enter the mobile number", number: "MObile number must in digits"},
+//        },
+//        errorPlacement: function (error, element) {
+//            error.insertAfter(element);
+//        },
+//        submitHandler: function (form) {
+//            common_form_submit(form);
+//        }
+//    });
+//    $("form[id='edit_loaded_by']").validate({
+//        rules: {
+//            "first_name": {required: true, noSpace: true, minlength: 2, maxlength: 100},
+//            "last_name": {minlength: 2, maxlength: 100},
+//            "mobile_number": {required: true, noSpace: true, minlength: 10, maxlength: 10, number: true},
+//            "password": {required: function (element) {
+//                    return $("#confirm_password").val() != "";
+//                }, noSpace: true, minlength: 6, maxlength: 10},
+//            "confirm_password": {required: function (element) {
+//                    return $("#password").val() != "";
+//                }, noSpace: true, minlength: 6, maxlength: 10, equalTo: "#password"},
+//        },
+//        messages: {
+//            "first_name": {required: "Please enter the first name", minlength: "Minimum 2 characters required", maxlength: "First name should not be more than 10 characters"},
+//            "last_name": {minlength: "Minimum 2 characters required", maxlength: "Last name should not be more than 10 characters"},
+//            "mobile_number": {required: "Please enter the mobile number", number: "MObile number must in digits"},
+//        },
+//        errorPlacement: function (error, element) {
+//            error.insertAfter(element);
+//        },
+//        submitHandler: function (form) {
+//            common_form_submit(form);
+//        }
+//    });
 });
 function common_form_submit(form) {
     var url = $(form).attr('action');
