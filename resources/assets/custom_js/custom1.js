@@ -5,17 +5,13 @@
  */
 
 $(document).ready(function () {
-        $('#loaded_by_select,#multi-territory-location').multiselect({
+        $('#loaded_by_select,#multi-territory-location ,#labour_select').multiselect({
             nonSelectedText :'Please Select',
             includeSelectAllOption: true,
             enableFiltering:true,
             buttonWidth: '400px'
         });
-        $('#labour_select').multiselect({
-            nonSelectedText :'Please Select',
-            includeSelectAllOption: true,
-            enableFiltering:true,
-        });
+       
 //        $('#loaded_by_select').selectpicker({
 //            style: 'btn-info',
 //            size: 4
@@ -94,7 +90,6 @@ $(document).on('change','#inventory_report_filter',function(){
              product_id: product_id,                
          },
          success: function(data) {
-             console.log("hi");
              $('.report-table-content').html(data.html)
          },
          complete: function() {}
