@@ -31,7 +31,12 @@ $(document).ready(function () {
         return $.trim(value) != "";
     }, "This field is required");
         
-    
+    $(document).on('click', '.delete-territory', function (event) {
+           var territory_id = $(this).data('id');
+           var url=$('#baseurl').attr('name')+"/territory/"+territory_id;
+           $('#delete_teritory_form').attr('action',url);
+           $('#delete_location_modal').modal('show');
+        });
 
 //    $("form[id='add_loaded_by']").validate({
 //        rules: {
