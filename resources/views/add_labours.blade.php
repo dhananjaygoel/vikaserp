@@ -43,18 +43,14 @@
                             @endif
                             <div class="form-group">
                                 <label for="labour_name">Labour Name<span class="mandatory">*</span></label>
-                                <input id="labour_name" class="form-control" placeholder="Labour Name" name="labour_name" value="{{ Input::old('labour_name')}}" type="text" maxlength="30">
+                                <input id="labour_name" class="form-control" placeholder="Labour Name" name="labour_name" value="{{ Input::old('labour_name')}}" type="text" maxlength="30" required="">
                             </div>
                             
-<!--                             
-                            <div class="form-group">
-                                <label for="location">Location</label>
-                                <input id="location" class="form-control" placeholder="Location" name="location" value="{{ Input::old('location')}}" type="text">
-                            </div>-->
+
                           
                             <div class="form-group">
                                 <label for="phone_number">Phone number<span class="mandatory">*</span></label>
-                                <input id="phone_number" class="form-control" placeholder="Phone number " name="phone_number" value="{{ Input::old('phone_number')}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10">
+                                <input id="phone_number" class="form-control" placeholder="Phone number " name="phone_number" value="{{ Input::old('phone_number')}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10" required="">
                             </div>
                             
                           
