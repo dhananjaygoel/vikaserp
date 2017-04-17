@@ -1176,6 +1176,7 @@ $('.delete_purchase_order_submit').click(function () {
     var posting = $.post(url, {formData: $data});
     posting.done(function (data) {
         $("#pwdr").val('');
+        location.reload();
         if (data['message'] == 'success') {
             $("#purchase_order_row_" + purchase_order_id).remove();
             $('#flash_message').html("Purchase order deleted successfully");
@@ -1190,6 +1191,8 @@ $('.delete_purchase_order_submit').click(function () {
             $('#flash_message').fadeIn();
             $('#flash_message').fadeOut(5000);
         }
+        
+        
     }, 'json'); //done
 });
 /*
