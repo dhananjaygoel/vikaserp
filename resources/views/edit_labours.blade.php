@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url('labours')}}">Labours</a></li>
+                    <li><a href="{{url('performance/labours')}}">Labours</a></li>
                     <li class="active"><span>Edit Labour</span></li>
                 </ol>
             </div>
@@ -17,7 +17,7 @@
                 <div class="main-box">
                     <div class="main-box-body clearfix">
                           
-                        <form id="" method="POST" action="{{url('labours/'.$labour->id)}}" accept-charset="UTF-8" >
+                        <form id="" method="POST" action="{{url('performance/labours/'.$labour->id)}}" accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input name="_method" type="hidden" value="PUT">
                             @if (count($errors) > 0)
@@ -63,7 +63,7 @@
                              <hr>
                             <div>
                                 <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
-                                <a href="{{url('labours')}}" class="btn btn-default form_button_footer">Back</a>
+                                <a href="{{url('performance/labours')}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>
                            
