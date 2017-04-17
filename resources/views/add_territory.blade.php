@@ -26,7 +26,7 @@
                         <hr>
                         <form id="" method="POST" action="{{URL::action('TerritoryController@store')}}">
 
-<!--                            @if (count($errors) > 0)
+                            @if (count($errors) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <ul>
                                     @foreach ($errors->all() as $error)
@@ -34,7 +34,7 @@
                                     @endforeach
                                 </ul>
                             </div>
-                            @endif-->
+                            @endif
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <div class="form-group">
                                 <label for="area_name">Territory Name<span class="mandatory">*</span></label>

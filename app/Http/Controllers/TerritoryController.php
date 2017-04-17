@@ -8,6 +8,7 @@ use App\Territory;
 use App\DeliveryLocation;
 use App\TerritoryLocation;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
 
 class TerritoryController extends Controller {
 
@@ -42,6 +43,18 @@ class TerritoryController extends Controller {
 	 */
 	public function store(Request $request)
 	{            
+            $input = $request->input();
+            $message = array('territory_name.required' => 'Territory Name is required',
+            'location.required' => 'Location is required');
+
+            $rules = ['territory_name' => 'required',
+                'location' => 'required'];
+
+            $validator = Validator::make($input, $rules, $message);
+            if ($validator->fails()) {
+                return redirect()->back()->withInput()->withErrors($validator->errors());
+            }
+            
             $territory = new Territory();
             $territory->teritory_name = $request->input('territory_name');                 
             $territory->save();
@@ -93,6 +106,17 @@ class TerritoryController extends Controller {
 	 */
 	public function update($id, Request $request)
 	{
+            $input = $request->input();
+            $message = array('territory_name.required' => 'Territory Name is required',
+            'location.required' => 'Location is required');
+
+            $rules = ['territory_name' => 'required',
+                'location' => 'required'];
+
+            $validator = Validator::make($input, $rules, $message);
+            if ($validator->fails()) {
+                return redirect()->back()->withInput()->withErrors($validator->errors());
+            }
             $territory= Territory::find($id);
             $territory->teritory_name = $request->input('territory_name');            
             $territory->save();    
