@@ -376,7 +376,7 @@
                         </a>
                     </li>
                     @endif 
-                    @if(Auth::user()->role_id == 0)
+                    <!-- @if(Auth::user()->role_id == 0)
                     <li class="{{ (Request::is('receipt-master') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Receipt Master">
                         <a href="{{url('receipt-master')}}">
                             <i class="fa fa-print"></i>
@@ -384,7 +384,7 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
-                    @endif                   
+                    @endif                    -->
                     @endif
                     @endif
                 </ul>
