@@ -270,9 +270,11 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('performance/loaded-by', 'LoadByController');
     
     /*Labour*/
-    Route::get('performance', 'LabourController@index');
-    Route::get('performance/labour-performance', 'LabourController@labourPerformance');   
+     Route::get('performance/labours/labour-performance', 'LabourController@labourPerformance');
+
     Route::resource('performance/labours', 'LabourController');
+        Route::get('performance', 'LabourController@index');
+    
     
     
     

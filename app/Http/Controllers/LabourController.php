@@ -253,6 +253,7 @@ class LabourController extends Controller {
     public function labourPerformance() {
         
         $labours = Labour::get();
+        $labours_data = App\DeliveryChallanLabours::with('dc_labour')->with('dc_delivery_challan.delivery_order.delivery_product')->get();
        
         
         return View::make('labour_performance', array('labours' => $labours))->with('performance_index',true);

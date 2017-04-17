@@ -265,7 +265,7 @@
                         <div class="form-group">
                             <label for="labour"><b class="challan">Labour </b></label>
                             <div class="form-group clearfix">
-                                <select id="labour_select" name="labour" class="form-control" multiple="multiple">
+                                <select id="labour_select" name="labour[]" class="form-control" multiple="multiple">
                                     @if(isset($labours))
                                         @foreach ($labours as $labour)
                                             <option value="{{$labour->id}}">{{$labour->labour_name}}</option>
