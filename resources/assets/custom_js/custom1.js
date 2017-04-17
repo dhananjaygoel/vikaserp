@@ -31,26 +31,7 @@ $(document).ready(function () {
         return $.trim(value) != "";
     }, "This field is required");
         
-    $(document).on('change','#inventory_report_filter',function(){
-            var product_id = $(this).val();
-            var baseurl = $('#baseurl').attr('name');
-            var url = baseurl+'/get_inventory_report';
-            console.log(url);
-            $.ajax({
-                 url: url,
-                 type: 'get',
-                 data: {
-                     product_id: product_id,                
-                 },
-                 success: function(data) {
-                     console.log("hi");
-                     $('.report-table-content').html(data.html)
-                 },
-                 complete: function() {}
-            })
-        });
-
-    });
+    
 
 //    $("form[id='add_loaded_by']").validate({
 //        rules: {
@@ -96,6 +77,24 @@ $(document).ready(function () {
 //            common_form_submit(form);
 //        }
 //    });
+
+$(document).on('change','#inventory_report_filter',function(){
+    var product_id = $(this).val();
+    var baseurl = $('#baseurl').attr('name');
+    var url = baseurl+'/get_inventory_report';    
+    $.ajax({
+         url: url,
+         type: 'get',
+         data: {
+             product_id: product_id,                
+         },
+         success: function(data) {
+             console.log("hi");
+             $('.report-table-content').html(data.html)
+         },
+         complete: function() {}
+    })
+});    
 });
 function common_form_submit(form) {
     var url = $(form).attr('action');
