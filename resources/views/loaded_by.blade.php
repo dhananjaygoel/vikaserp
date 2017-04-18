@@ -9,13 +9,25 @@
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Loaded By</span></li>
                 </ol>
-                <div class="clearfix">
+                <div class="filter-block">
                     <h1 class="pull-left">Loaded By</h1>
-                    <div class="pull-right top-page-ui">
-                        <a href="{{URL::action('LoadByController@create')}}"  title="Add Loaded By" class="btn btn-primary pull-right">
-                            <i class="fa fa-plus-circle fa-lg"></i> Add Loaded By
-                        </a>
-                    </div>
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
+                    <a href="{{URL::action('LoadByController@create')}}"  title="Add Loaded By" class="btn btn-primary pull-right">
+                        <i class="fa fa-plus-circle fa-lg"></i> Add Loaded By
+                    </a>
+                    <a href="{{url('excel_export_labours')}}" class="btn btn-primary pull-right">
+                        <i class="fa fa-plus-circle fa-lg"></i> Download List
+                    </a>
+                    @endif                   
+                    <form method="GET" id="searchCustomerForm">
+                        <div class="input-group col-md-3 pull-right">
+                            <input type="text" class="form-control" name="search" id="search" placeholder="Loaded By Name" value="{{Request::get('search')}}">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                            </span>
+                        </div>
+                        
+                    </form>
                 </div>
             </div>
         </div>
