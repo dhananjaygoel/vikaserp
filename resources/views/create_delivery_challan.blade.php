@@ -268,7 +268,7 @@
                                 <select id="labour_select" name="labour[]" class="form-control" multiple="multiple">
                                     @if(isset($labours))
                                         @foreach ($labours as $labour)
-                                            <option value="{{$labour->id}}">{{$labour->labour_name}}</option>
+                                            <option value="{{$labour->id}}">{{$labour->first_name}} {{$labour->last_name}}</option>
                                         @endforeach
                                     @endif
                                 </select>
