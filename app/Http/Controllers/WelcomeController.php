@@ -943,16 +943,17 @@ class WelcomeController extends Controller {
     
     public function excel_export_territory() {
 
-        $allterritory = \App\Territory::get();
+        $allterritory = \App\Territory::orderBy('created_at', 'DESC')->get();
         Excel::create('Territory List', function($excel) use($allterritory) {
             $excel->sheet('Territory List', function($sheet) use($allterritory) {
                 $sheet->loadView('excelView.territory', array('allterritory' => $allterritory));
             });
         })->export('xls');
     }
+    
     public function excel_export_loaded_by() {
 
-        $all_loaded_bies = LoadedBy::get();
+        $all_loaded_bies = LoadedBy::orderBy('created_at', 'DESC')->get();
         Excel::create('Loaded By List', function($excel) use($all_loaded_bies) {
             $excel->sheet('Loaded By List', function($sheet) use($all_loaded_bies) {
                 $sheet->loadView('excelView.loaded_by', array('all_loaded_bies' => $all_loaded_bies));
