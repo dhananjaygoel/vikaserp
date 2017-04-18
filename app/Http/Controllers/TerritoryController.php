@@ -27,7 +27,8 @@ class TerritoryController extends Controller {
                 $territories = \App\Territory::where('teritory_name', 'like', $term)->orderBy('created_at', 'DESC')->paginate(20);
             } else {
                 $territories = Territory::with('territorylocation')->orderBy('created_at', 'DESC')->paginate(20);
-            }            
+            }
+            $territories->setPath('territory');
             $locations = DeliveryLocation::all();
             return view('territory.territory_index',compact('territories','locations'));
 	}
