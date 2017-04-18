@@ -245,3 +245,8 @@ button.multiselect.dropdown-toggle.btn.btn-default {
     color: gray;
     border: 1px solid #ddd;
 }
+
+.multiselect-container{
+    max-height: 200px;
+    overflow-y: scroll;
+}
