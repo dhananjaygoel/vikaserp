@@ -42,22 +42,22 @@
                             </div>
                             @endif
                             <div class="form-group">
-                                <label for="labour_name">First Name<span class="mandatory">*</span></label>
-                                <input id="first_name" class="form-control" placeholder="First Name" name="first_name" value="{{ Input::old('first_name')}}" type="text" maxlength="30" >
+                                <label for="first_name">First Name<span class="mandatory">*</span></label>
+                                <input id="first_name" class="form-control" placeholder="First Name" name="first_name" value="{{ Input::old('first_name')}}" type="text" maxlength="30" oninput="validateAlpha(this);">
                             </div>
                             <div class="form-group">
-                                <label for="labour_name">Last Name<span class="mandatory">*</span></label>
-                                <input id="last_name" class="form-control" placeholder="Last Name" name="last_name" value="{{ Input::old('last_name')}}" type="text" maxlength="30" >
+                                <label for="last_name">Last Name<span class="mandatory">*</span></label>
+                                <input id="last_name" class="form-control" placeholder="Last Name" name="last_name" value="{{ Input::old('last_name')}}" type="text" maxlength="30" oninput="validateAlpha(this);">
                             </div>
 
-                          
+
                             <div class="form-group">
                                 <label for="phone_number">Phone number<span class="mandatory">*</span></label>
-                                <input id="phone_number" class="form-control" placeholder="Phone number " name="phone_number" value="{{ Input::old('phone_number')}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10" >
+                                <input id="phone_number" class="form-control" placeholder="Phone number " name="phone_number" value="{{ Input::old('phone_number')}}" type="tel" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10" >
                             </div>
-                            
-                          
-                            
+
+
+
                             <div>
                                 <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
                                 <a href="{{url('performance/labours')}}" class="btn btn-default form_button_footer">Back</a>

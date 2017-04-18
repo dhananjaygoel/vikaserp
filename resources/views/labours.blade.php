@@ -74,9 +74,9 @@
                                     @foreach($labours as $labour)
                                     <tr>
                                         <td class="col-md-1">{{$i++}}</td>
-                                        <td>{{isset($labour->first_name)?$labour->first_name:'N/A'}}</td>
-                                        <td>{{isset($labour->last_name)?$labour->last_name:''}}</td>
-                                        <td>{{isset($labour->phone_number)?$labour->phone_number:''}}</td>
+                                        <td class="col-md-3">{{isset($labour->first_name)?$labour->first_name:'N/A'}}</td>
+                                        <td class="col-md-3">{{isset($labour->last_name)?$labour->last_name:''}}</td>
+                                        <td class="col-md-3">{{isset($labour->phone_number)?$labour->phone_number:''}}</td>
 
                                         <td class="text-center">
                                             <a href="{{url('performance/labours/'.$labour->id)}}" class="table-link" title="view">

@@ -46,12 +46,12 @@
                             @endif
                             <div class="form-group">
                                 <label for="first_name">First Name<span class="mandatory">*</span></label>
-                                <input id="labour_name" class="form-control" placeholder="First Name" name="first_name" value="{{$labour->first_name}}" type="text" maxlength="30" >
+                                <input id="labour_name" class="form-control" placeholder="First Name" name="first_name" value="{{$labour->first_name}}" type="text" maxlength="30" oninput="validateAlpha(this);">
                             </div>
                             
                             <div class="form-group">
                                 <label for="labour_name">Last Name<span class="mandatory">*</span></label>
-                                <input id="last_name" class="form-control" placeholder="Last Name" name="last_name" value="{{$labour->last_name}}" type="text" maxlength="30" >
+                                <input id="last_name" class="form-control" placeholder="Last Name" name="last_name" value="{{$labour->last_name}}" type="text" maxlength="30" oninput="validateAlpha(this);">
                             </div>
                              
                             

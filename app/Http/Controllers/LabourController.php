@@ -214,37 +214,44 @@ class LabourController extends Controller {
 
         $current_user = User::find(Auth::id());
         if (Hash::check($password, $current_user->password)) {
-            $labour = Labour::find($id);
-
-            $labour_exist = array();
             
-            $labour_exist['customer_delivery_challan'] = "";
-            $labour_exist['customer_purchase_challan'] = "";
-            
-            $labour_delivery_challan = DeliveryChallan::where('labours', $labour->id)->get();           
-            $labour_purchase_challan = PurchaseChallan::where('labours', $labour->id)->get();
-
-            $cust_msg = 'Labour can not be deleted as details are associated with one or more ';
-            $cust_flag = "";
-
-            if (isset($labour_delivery_challan) && (count($labour_delivery_challan) > 0)) {
-                $labour_exist['customer_delivery_challan'] = 1;
-                $cust_msg .= "Delievry Challan";
-                $cust_flag = 1;
-            }           
-
-            if (isset($labour_purchase_challan) && (count($labour_purchase_challan) > 0)) {
-                $labour_exist['customer_purchase_challan'] = 1;
-                $cust_msg .= "Purchase Challan";
-                $cust_flag = 1;
-            }
-
-            if ($cust_flag == 1) {
-                return Redirect::to('performance/labours')->with('error', $cust_msg);
-            } else {
-                $labour->delete();                
-                return Redirect::to('performance/labours')->with('success', 'Labour deleted successfully.');
-            }
+             $labour = Labour::find($id);
+                if ($labour->delete()) {
+                    return redirect('performance/labours')->with('success', 'Loader deleted succesfully');
+                } else {
+                    return Redirect::back()->withInput()->with('error', 'Some error occoured while deleting customer');
+                }
+//            $labour = Labour::find($id);
+//
+//            $labour_exist = array();
+//            
+//            $labour_exist['customer_delivery_challan'] = "";
+//            $labour_exist['customer_purchase_challan'] = "";
+//            
+//            $labour_delivery_challan = DeliveryChallan::where('labours', $labour->id)->get();           
+//            $labour_purchase_challan = PurchaseChallan::where('labours', $labour->id)->get();
+//
+//            $cust_msg = 'Labour can not be deleted as details are associated with one or more ';
+//            $cust_flag = "";
+//
+//            if (isset($labour_delivery_challan) && (count($labour_delivery_challan) > 0)) {
+//                $labour_exist['customer_delivery_challan'] = 1;
+//                $cust_msg .= "Delievry Challan";
+//                $cust_flag = 1;
+//            }           
+//
+//            if (isset($labour_purchase_challan) && (count($labour_purchase_challan) > 0)) {
+//                $labour_exist['customer_purchase_challan'] = 1;
+//                $cust_msg .= "Purchase Challan";
+//                $cust_flag = 1;
+//            }
+//
+//            if ($cust_flag == 1) {
+//                return Redirect::to('performance/labours')->with('error', $cust_msg);
+//            } else {
+//                $labour->delete();                
+//                return Redirect::to('performance/labours')->with('success', 'Labour deleted successfully.');
+//            }
         } else {
             return Redirect::to('performance/labours')->with('error', 'Invalid password');
         }

@@ -1040,6 +1040,12 @@ function numbersOnly(Sender, evt, isFloat, isNegative) {
         return false;
 }
 
+function validateAlpha(id){
+    var textInput = id.value;    
+    textInput = textInput.replace(/[^A-Za-z]/g, "");    
+    document.getElementById(id.id).value = textInput;
+}
+
 function onlyPercentage(evt) {
     var val1;
     evt = evt || window.event;
