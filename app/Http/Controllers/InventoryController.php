@@ -609,4 +609,13 @@ class InventoryController extends Controller {
         return Response::json(['success' => true,'html' => $html]);
 //        return view('inventory_report')->with('product_cat',$product_cat)->with('product_last',$product_last);
     }
+    
+    public function inventoryPriceList() {
+
+        $product_cat = ProductCategory::orderBy('created_at', 'desc')->get();
+//        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
+        $product_last = ProductCategory::where('id', '=' , 43)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
+//        dd($product_last);
+        return view('inventory_price_list')->with('product_cat',$product_cat)->with('product_last',$product_last);
+    }
 }

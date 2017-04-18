@@ -6,6 +6,14 @@
     max-height: 350px;
     overflow-y: scroll;
 }
+.multiselect.dropdown-toggle.btn.btn-default{
+    background: white none repeat scroll 0 0;
+    border: 1px solid gray;
+    color: #344644;
+}
+.caret{
+    border-top-color: #344644 !important;
+}
 </style>
 <div class="row">
     <div class="col-lg-12">
@@ -33,6 +41,9 @@
                         <input type="hidden" name="id" value="{{$territory->id}}">
                         @if (count($errors) > 0)
                         <div role="alert" class="alert alert-warning">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                             <ul>
                                 @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>

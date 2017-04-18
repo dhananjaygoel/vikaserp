@@ -173,6 +173,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('save_all_set_price', 'CustomerController@save_all_set_price');
     Route::resource('territory', 'TerritoryController');
     Route::get('inventory_report', 'InventoryController@inventoryReport');
+    Route::get('inventory_price_list', 'InventoryController@inventoryPriceList');
 
     Route::resource('pending_customers', 'PendingCustomerController');
     Route::resource('customer_manager', 'CustomerManagerController');
@@ -263,6 +264,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::any('excel_export_customer', 'WelcomeController@excel_export_customer');
     Route::post('upload_customer_excel', 'WelcomeController@upload_customer_excel');
     Route::any('excel_export_labours', 'WelcomeController@excel_export_labours');
+    Route::any('excel_export_territory', 'WelcomeController@excel_export_territory');
     Route::resource('import_delivery_location', 'WelcomeController@import_delivery_location');
     Route::post('process_import_delivery_location', 'WelcomeController@process_import_delivery_location');
     Route::get('getMyIP', 'WelcomeController@getMyIP');

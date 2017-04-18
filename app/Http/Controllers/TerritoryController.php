@@ -21,9 +21,14 @@ class TerritoryController extends Controller {
 	 */
 	public function index()
 	{
-            $territories = Territory::with('territorylocation')->orderBy('created_at', 'DESC')->paginate(10);
+            $territories = '';
+            if (Input::get('search') != '') {
+                $term = '%' . Input::get('search') . '%';
+                $territories = \App\Territory::where('teritory_name', 'like', $term)->orderBy('created_at', 'DESC')->paginate(20);
+            } else {
+                $territories = Territory::with('territorylocation')->orderBy('created_at', 'DESC')->paginate(20);
+            }            
             $locations = DeliveryLocation::all();
-//            dd($territories);
             return view('territory.territory_index',compact('territories','locations'));
 	}
 

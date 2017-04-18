@@ -927,6 +927,16 @@ class WelcomeController extends Controller {
             });
         })->export('xls');
     }
+    
+    public function excel_export_territory() {
+
+        $allterritory = \App\Territory::get();
+        Excel::create('Territory List', function($excel) use($allterritory) {
+            $excel->sheet('Territory List', function($sheet) use($allterritory) {
+                $sheet->loadView('excelView.territory', array('allterritory' => $allterritory));
+            });
+        })->export('xls');
+    }
 
     /**
      * This function displays all the php configuration info
