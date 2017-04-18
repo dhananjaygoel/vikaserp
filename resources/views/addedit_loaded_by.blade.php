@@ -57,11 +57,11 @@
                                 <input id="mobile_number" class="form-control" placeholder="Mobile number " name="mobile_number" value="{{isset($loader->phone_number) ? $loader->phone_number : Input::old('mobile_number')}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10">
                             </div>
                             <div class="form-group">
-                                <label for="password">Password <span class="mandatory">*</span></label>
+                                <label for="password">Password @if(isset($loader)) @else <span class="mandatory">*</span> @endif </label>
                                 <input id="password" class="form-control" placeholder=" Password" name="password" value="" type="password">
                             </div> 
                             <div class="form-group">
-                                <label for="confirm_password">Confirm Password <span class="mandatory">*</span></label>
+                                <label for="confirm_password">Confirm Password @if(isset($loader)) @else<span class="mandatory">*</span> @endif </label>
                                 <input id="confirm_password" class="form-control" placeholder="Confirm Password" name="confirm_password" value="" type="password">
                             </div>                            
                             <div class="clearfix"></div>

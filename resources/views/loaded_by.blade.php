@@ -96,22 +96,34 @@
 </div>
 <div class="modal fade" id="delete_loaded_by_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        {!! Form::open(array('method' => 'delete', 'id'=>'delete_loaded_by_form'))!!}
-        <input type="hidden" name="loader_hidden" id="loader_hidden" value="" >
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                 <h4 class="modal-title" id="myModalLabel"></h4>
             </div>
             <div class="modal-body">
+                {!! Form::open(array('method'=>'DELETE', 'id'=>'delete_loaded_by_form'))!!}
+                <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <div class="delete">
+                    <?php
+                    $us = Auth::user();
+                    $us['mobile_number']
+                    ?>
+                    <div><b>Mobile:</b>
+                        {{$us['mobile_number']}}
+                        <input type="hidden" name="mobile" value="{{$us['mobile_number']}}"/>
+                        <input type="hidden" name="territory_id" value=""/>
+                        <input type="hidden" name="loader_hidden" id="loader_hidden" value="" >
+                    </div>
+                    <div class="pwd">
+                        <div class="pwdl"><b>Password:</b></div>
+                        <div class="pwdr"><input class="form-control" id="model_pass" name="model_pass" placeholder="" required="required" type="password"></div>
+                    </div>
                     <div class="clearfix"></div>
-                    <div class="delp">Are you sure you want to <b>delete </b> ?</div>
+                    <div class="delp">Are you sure you want to <b>delete </b>?</div>
                 </div>
-
             </div>
             <div class="modal-footer">
-
                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
                 {!! Form::close() !!}

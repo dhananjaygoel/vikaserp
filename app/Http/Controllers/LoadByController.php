@@ -13,6 +13,7 @@ use App\DeliveryChallan;
 use App\DeliveryChallanLoadedBy;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
@@ -131,11 +132,15 @@ class LoadByController extends Controller {
      */
     public function destroy($id, Request $request) {
         if (isset($id) && !empty($id)) {
-            $loader = LoadedBy::find($id);
-            if ($loader->delete()) {
-                return redirect('performance/loaded-by')->with('success', 'Loader deleted succesfully');
-            } else {
-                return Redirect::back()->withInput()->with('error', 'Some error occoured while saving customer');
+            if (Hash::check(Input::get('model_pass'), Auth::user()->password)) {
+                $loader = LoadedBy::find($id);
+                if ($loader->delete()) {
+                    return redirect('performance/loaded-by')->with('success', 'Loader deleted succesfully');
+                } else {
+                    return Redirect::back()->withInput()->with('error', 'Some error occoured while saving customer');
+                }
+            }else{
+                return redirect('performance/loaded-by')->with('error', 'Please enter a correct password');
             }
         }
     }
@@ -150,6 +155,9 @@ class LoadByController extends Controller {
         foreach ($delivery_order_data as $delivery_order_info) {
             $arr = array();
             $loaders = array();
+//            $date = array();
+//            $cnt = 1;
+            
             if (isset($delivery_order_info->challan_loaded_by) && count($delivery_order_info->challan_loaded_by) > 0 && !empty($delivery_order_info->challan_loaded_by)) {
                 foreach ($delivery_order_info->challan_loaded_by as $challan_info) {
                     $deliver_sum = 0;
@@ -170,12 +178,42 @@ class LoadByController extends Controller {
                     $loader_arr['delivery_date'] = $delivery_order_info['created_at'];
                     $loader_arr['loaders'] = $loaders;
                     $loader_arr['delivery_sum'] = $arr;
+                    
+                    
+
+//                    
+
+//                    array_push($date, $delivery_order_info['created_at']);
                 }
             }
             $loaders_data[$var] = $loader_arr;
+//            $date_arr[$var] = $date;
             $var++;
+            
         }
-        return view('loaded_by_performance')->with('loaders_data', $loaders_data)
+        
+        $cnt = 0;
+        $counter = 0;        
+        foreach ($loaders_data as $data) {
+            $date_arr = array();
+            $date_val = $data['delivery_date']->toDateTimeString();
+            $date_arr['delivery_date'] = $date_val;
+            if (in_array($date_val, $date_arr)) {
+                $date_arr['delivery_id'] = $data['delivery_id'];
+                $date_arr['loaders'] = $data['loaders'];
+                $date_arr['delivery_sum'] = $data['delivery_sum'];
+                $cnt++;
+            }
+            $date_arr['count'] = $cnt;
+            $final_arary[$counter] = $date_arr;
+            $counter++;
+        }
+//        dd($final_arary);
+//        dd($date_arr);
+//        dd($loaders_data);
+        return view('loaded_by_performance')
+                        ->with('loaders_data', $final_arary)
+//                        ->with('loaders_data', $loaders_data)
                         ->with('loaded_by', $loaded_by)
                         ->with('performance_index', true);
     }
