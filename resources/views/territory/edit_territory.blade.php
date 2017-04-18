@@ -1,6 +1,12 @@
 @extends('layouts.master')
 @section('title','Edit Territory')
 @section('content')
+<style>
+    .multiselect-container.dropdown-menu {
+    max-height: 350px;
+    overflow-y: scroll;
+}
+</style>
 <div class="row">
     <div class="col-lg-12">
         <div class="row">

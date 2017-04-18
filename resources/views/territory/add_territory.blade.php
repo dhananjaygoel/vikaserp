@@ -1,8 +1,20 @@
 @extends('layouts.master')
 @section('title','Add Territory')
 @section('content')
-<link rel="stylesheet" href="dist/css/bootstrap-multiselect.css" type="text/css">
-<script type="text/javascript" src="dist/js/bootstrap-multiselect.js"></script>
+<style>
+    .multiselect-container.dropdown-menu {
+    max-height: 350px;
+    overflow-y: scroll;    
+}
+.multiselect.dropdown-toggle.btn.btn-default{
+    background: white none repeat scroll 0 0;
+    border: 1px solid gray;
+    color: #344644;
+}
+.caret{
+    border-top-color: #344644 !important;
+}
+</style>
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
