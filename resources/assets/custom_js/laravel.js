@@ -11,6 +11,7 @@ Exemples :
   $('#assign_location').multiselect({
       onInitialized: function(select, container) {
          $(container).find('.multiselect').addClass('form-control').removeClass('btn btn-default');
+         $(container).find('.multiselect-container').css({'max-height':'200px','overflow-y':'auto'});
       }
   });  
   $(".st_select_tally_user").select2();
