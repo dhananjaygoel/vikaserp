@@ -1,6 +1,11 @@
 @extends('layouts.master')
 @section('title','Territory')
 @section('content')
+<style>
+    #search{
+        height: 36px !important;
+    }
+</style>
 <div class="row">
     <div class="col-lg-12">        
         <div class="row">            
@@ -70,7 +75,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>          
-                                    <?php $i = 0 ?>
+                                    <?php $i = 1 ?>
                                     @foreach($territories as $territory)
                                     <tr>                            
                                         <td class="col-md-1">{{$i++}}</td>
