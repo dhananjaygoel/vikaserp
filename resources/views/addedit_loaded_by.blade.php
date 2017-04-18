@@ -46,11 +46,11 @@
                             @endif
                             <div class="form-group">
                                 <label for="first_name">First Name <span class="mandatory">*</span></label>
-                                <input id="first_name" class="form-control" placeholder="First Name" name="first_name" value="{{isset($loader->first_name) ? $loader->first_name : Input::old('first_name')}}" type="text" maxlength="30">
+                                <input id="first_name" class="form-control" placeholder="First Name" name="first_name" value="{{isset($loader->first_name) ? $loader->first_name : Input::old('first_name')}}" type="text" maxlength="30" oninput="validateAlpha(this);">
                             </div>
                             <div class="form-group">
                                 <label for="last_name">Last Name</label>
-                                <input id="last_name" class="form-control" placeholder="Last Name" name="last_name" value="{{isset($loader->last_name) ? $loader->last_name : Input::old('last_name')}}" type="text" maxlength="30">
+                                <input id="last_name" class="form-control" placeholder="Last Name" name="last_name" value="{{isset($loader->last_name) ? $loader->last_name : Input::old('last_name')}}" type="text" maxlength="30" oninput="validateAlpha(this);">
                             </div>
                             <div class="form-group">
                                 <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
