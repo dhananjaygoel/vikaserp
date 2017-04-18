@@ -15,10 +15,10 @@
                     <a href="{{URL::action('LoadByController@create')}}"  title="Add Loaded By" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Add Loaded By
                     </a>
-                    <a href="{{url('excel_export_labours')}}" class="btn btn-primary pull-right">
+                    <a href="{{url('excel_export_loaded_by')}}" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Download List
                     </a>
-                    @endif                   
+                    @endif
                     <form method="GET" id="searchCustomerForm">
                         <div class="input-group col-md-3 pull-right">
                             <input type="text" class="form-control" name="search" id="search" placeholder="Loaded By Name" value="{{Request::get('search')}}">
@@ -95,6 +95,10 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <span class="pull-right">
+                            <?php echo $loaders->render(); ?>
+                        </span>
+                        <div class="clearfix"></div>
                         @else
                         <div class="alert alert-info no_data_msg_container">
                             Currently no user available.

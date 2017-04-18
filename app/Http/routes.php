@@ -265,6 +265,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('upload_customer_excel', 'WelcomeController@upload_customer_excel');
     Route::any('excel_export_labours', 'WelcomeController@excel_export_labours');
     Route::any('excel_export_territory', 'WelcomeController@excel_export_territory');
+    Route::any('excel_export_loaded_by', 'WelcomeController@excel_export_loaded_by');
     Route::resource('import_delivery_location', 'WelcomeController@import_delivery_location');
     Route::post('process_import_delivery_location', 'WelcomeController@process_import_delivery_location');
     Route::get('getMyIP', 'WelcomeController@getMyIP');

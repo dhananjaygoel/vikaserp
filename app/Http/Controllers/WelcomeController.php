@@ -26,6 +26,7 @@ use Dropbox;
 use Auth;
 use Carbon\Carbon;
 use SmsBump;
+use App\LoadedBy;
 
 class WelcomeController extends Controller {
     /*
@@ -325,6 +326,18 @@ class WelcomeController extends Controller {
                                 'password',
                                 'credit_period',
                                 'relationship_manager',
+                            )
+                    );
+                });
+            })->export('xls');
+        }
+        if ($type == 'loaded_by') {
+            Excel::create('loaded_by', function($excel) {
+                $excel->sheet('Sheet 1', function($sheet) {
+                    $sheet->with(
+                            array('first_name',
+                                'last_name',
+                                'phone_number',
                             )
                     );
                 });
@@ -934,6 +947,15 @@ class WelcomeController extends Controller {
         Excel::create('Territory List', function($excel) use($allterritory) {
             $excel->sheet('Territory List', function($sheet) use($allterritory) {
                 $sheet->loadView('excelView.territory', array('allterritory' => $allterritory));
+            });
+        })->export('xls');
+    }
+    public function excel_export_loaded_by() {
+
+        $all_loaded_bies = LoadedBy::get();
+        Excel::create('Loaded By List', function($excel) use($all_loaded_bies) {
+            $excel->sheet('Loaded By List', function($sheet) use($all_loaded_bies) {
+                $sheet->loadView('excelView.loaded_by', array('all_loaded_bies' => $all_loaded_bies));
             });
         })->export('xls');
     }
