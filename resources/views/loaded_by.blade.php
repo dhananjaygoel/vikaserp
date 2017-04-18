@@ -9,13 +9,25 @@
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Loaded By</span></li>
                 </ol>
-                <div class="clearfix">
+                <div class="filter-block">
                     <h1 class="pull-left">Loaded By</h1>
-                    <div class="pull-right top-page-ui">
-                        <a href="{{URL::action('LoadByController@create')}}"  title="Add Loaded By" class="btn btn-primary pull-right">
-                            <i class="fa fa-plus-circle fa-lg"></i> Add Loaded By
-                        </a>
-                    </div>
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
+                    <a href="{{URL::action('LoadByController@create')}}"  title="Add Loaded By" class="btn btn-primary pull-right">
+                        <i class="fa fa-plus-circle fa-lg"></i> Add Loaded By
+                    </a>
+                    <a href="{{url('excel_export_labours')}}" class="btn btn-primary pull-right">
+                        <i class="fa fa-plus-circle fa-lg"></i> Download List
+                    </a>
+                    @endif                   
+                    <form method="GET" id="searchCustomerForm">
+                        <div class="input-group col-md-3 pull-right">
+                            <input type="text" class="form-control" name="search" id="search" placeholder="Loaded By Name" value="{{Request::get('search')}}">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                            </span>
+                        </div>
+                        
+                    </form>
                 </div>
             </div>
         </div>
@@ -96,22 +108,34 @@
 </div>
 <div class="modal fade" id="delete_loaded_by_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        {!! Form::open(array('method' => 'delete', 'id'=>'delete_loaded_by_form'))!!}
-        <input type="hidden" name="loader_hidden" id="loader_hidden" value="" >
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                 <h4 class="modal-title" id="myModalLabel"></h4>
             </div>
             <div class="modal-body">
+                {!! Form::open(array('method'=>'DELETE', 'id'=>'delete_loaded_by_form'))!!}
+                <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <div class="delete">
+                    <?php
+                    $us = Auth::user();
+                    $us['mobile_number']
+                    ?>
+                    <div><b>Mobile:</b>
+                        {{$us['mobile_number']}}
+                        <input type="hidden" name="mobile" value="{{$us['mobile_number']}}"/>
+                        <input type="hidden" name="territory_id" value=""/>
+                        <input type="hidden" name="loader_hidden" id="loader_hidden" value="" >
+                    </div>
+                    <div class="pwd">
+                        <div class="pwdl"><b>Password:</b></div>
+                        <div class="pwdr"><input class="form-control" id="model_pass" name="model_pass" placeholder="" required="required" type="password"></div>
+                    </div>
                     <div class="clearfix"></div>
-                    <div class="delp">Are you sure you want to <b>delete </b> ?</div>
+                    <div class="delp">Are you sure you want to <b>delete </b>?</div>
                 </div>
-
             </div>
             <div class="modal-footer">
-
                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                 <button type="submit" class="btn btn-default" id="yes">Yes</button>
                 {!! Form::close() !!}

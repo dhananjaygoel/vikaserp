@@ -12,5 +12,12 @@ class Labour extends Model {
     public function delivery_challan() {
         return $this->belongsToMany('App\DeliveryChallan');
     }
+    
+    public static $new_labours_inquiry_rules = array(
+        'first_name' => 'required|min:2|max:100',
+        'last_name' => 'required|min:2|max:100',
+        'phone_number' => 'required|numeric|digits:10',
+       
+    );
 
 }

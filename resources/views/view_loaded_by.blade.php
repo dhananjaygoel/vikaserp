@@ -33,6 +33,9 @@
                             <div class="col-md-7 col-sm-12" >{{$loader->phone_number}}</div>
                         </div>
                         <div class="clearfix"></div>
+                        <div>
+                            <a href="{{url('performance/loaded-by')}}" class="btn btn-default form_button_footer">Back</a>
+                        </div>
                     </div>
                 </div>
             </div>

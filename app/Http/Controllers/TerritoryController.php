@@ -9,6 +9,8 @@ use App\DeliveryLocation;
 use App\TerritoryLocation;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
+use Hash;
+use Illuminate\Support\Facades\Auth;
 
 class TerritoryController extends Controller {
 
@@ -19,10 +21,16 @@ class TerritoryController extends Controller {
 	 */
 	public function index()
 	{
-            $territories = Territory::with('territorylocation')->orderBy('created_at', 'DESC')->paginate(10);
+            $territories = '';
+            if (Input::get('search') != '') {
+                $term = '%' . Input::get('search') . '%';
+                $territories = \App\Territory::where('teritory_name', 'like', $term)->orderBy('created_at', 'DESC')->paginate(20);
+            } else {
+                $territories = Territory::with('territorylocation')->orderBy('created_at', 'DESC')->paginate(20);
+            }
+            $territories->setPath('territory');
             $locations = DeliveryLocation::all();
-//            dd($territories);
-            return view('territory_index',compact('territories','locations'));
+            return view('territory.territory_index',compact('territories','locations'));
 	}
 
 	/**
@@ -33,7 +41,7 @@ class TerritoryController extends Controller {
 	public function create()
 	{
             $locations = DeliveryLocation::all();
-            return view('add_territory')->with('locations',$locations);
+            return view('territory.add_territory')->with('locations',$locations);
 	}
 
 	/**
@@ -82,7 +90,7 @@ class TerritoryController extends Controller {
             $territory= Territory::with('territorylocation')->find($id);            
             $locations = DeliveryLocation::all();
 //            dd($territories);
-            return view('view_territory',compact('territory','locations'));            
+            return view('territory.view_territory',compact('territory','locations'));            
 	}
 
 	/**
@@ -95,7 +103,7 @@ class TerritoryController extends Controller {
 	{                       
             $locations = DeliveryLocation::all();
             $territory = Territory::with('territorylocation')->find($id);            
-            return view('edit_territory')->with('territory',$territory)->with('locations',$locations);        
+            return view('territory.edit_territory')->with('territory',$territory)->with('locations',$locations);        
 	}
 
 	/**
@@ -143,11 +151,15 @@ class TerritoryController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy($id, Request $request)
 	{
-            $territory = Territory::find($id);
-            $territory->delete();
-            return redirect('territory')->with('flash_success_message', 'Territory successfully deleted.');
+            if(Hash::check(Input::get('model_pass'), Auth::user()->password)){                
+                $territory = Territory::find($id);
+                $territory->delete();
+                return redirect('territory')->with('flash_success_message', 'Territory successfully deleted.');
+            }else{
+                return redirect('territory')->with('flash_message', 'Please enter a correct password');
+            }                    
+            
 	}
-
 }

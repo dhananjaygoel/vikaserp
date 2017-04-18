@@ -3,23 +3,33 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">        
-        <div class="row">
-            <?php //  dd($territories)?>
+        <div class="row">            
             <div class="col-lg-12">
                 <ol class="breadcrumb">
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Territory</span></li>
                 </ol>
 
-                <div class="clearfix">
+                <div class="clearfix filter-block">
                     <h1 class="pull-left">Territory</h1>
                     @if( Auth::user()->role_id == 0  )
-                    <div class="pull-right top-page-ui">
-                        <a href="{{URL::action('TerritoryController@create')}}" title="Add New Territory" class="btn btn-primary pull-right">
+                    <div class="pull-right">
+                        <a href="{{URL::action('TerritoryController@create')}}" title="Add New Territory" class="btn btn-primary pull-right territory-top-list">
                             <i class="fa fa-plus-circle fa-lg"></i> Add New Territory
+                        </a>
+                        <a href="{{url('excel_export_territory')}}" class="btn btn-primary pull-right territory-top-list">
+                            <i class="fa fa-plus-circle fa-lg"></i> Download List
                         </a>
                     </div>
                     @endif
+                    <form method="GET" id="searchCustomerForm">
+                        <div class="input-group col-md-3 pull-right territory-top-list">
+                            <input type="text" class="form-control" name="search" id="search" placeholder="Territory Name" value="{{Request::get('search')}}">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                            </span>
+                        </div>                        
+                    </form>
                 </div>
             </div>
         </div>
@@ -33,17 +43,27 @@
                         </div>
                         @else
                         @if (Session::has('flash_message'))
-                        <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('flash_message') }}</div>
+                        <div id="flash_error" class="alert alert-warning no_data_msg_container">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            {{ Session::get('flash_message') }}
+                        </div>
                         @endif
                         @if (Session::has('flash_success_message'))
-                        <div id="flash_error" class="alert alert-success no_data_msg_container">{{ Session::get('flash_success_message') }}</div>
+                        <div id="flash_error" class="alert alert-success no_data_msg_container">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            {{ Session::get('flash_success_message') }}
+                        </div>
                         @endif
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th class="col-md-1">#</th>
-                                        <th>Territory Name</th>                                        
+                                        <th class="col-md-9">Territory Name</th>                                        
                                         @if( Auth::user()->role_id == 0 )
                                         <th class="text-center">Actions</th>
                                         @endif
@@ -107,11 +127,26 @@
             </div>
             <div class="modal-body">
                 {!! Form::open(array('method'=>'DELETE', 'id'=>'delete_teritory_form'))!!}
-                <div class="delete">                                                   
+                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                <div class="delete">
+                    <?php
+                    $us = Auth::user();
+                    $us['mobile_number']
+                    ?>
+                    <div><b>Mobile:</b>
+                        {{$us['mobile_number']}}
+                        <input type="hidden" name="mobile" value="{{$us['mobile_number']}}"/>
+                        <input type="hidden" name="territory_id" value=""/>
+                    </div>
+                    <div class="pwd">
+                        <div class="pwdl"><b>Password:</b></div>
+                        <div class="pwdr"><input class="form-control" id="model_pass" name="model_pass" placeholder="" required="required" type="password"></div>
+                    </div>
+                    <div class="clearfix"></div>
                     <div class="delp">Are you sure you want to <b>delete </b>?</div>
                 </div>
-
             </div>
+            
             <div class="modal-footer">
 
                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>

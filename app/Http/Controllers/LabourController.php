@@ -30,6 +30,8 @@ use Config;
 use App\ProductType;
 use App\Labour;
 
+use Illuminate\Support\Facades\Validator;
+
 class LabourController extends Controller {
 
     public function __construct() {
@@ -56,24 +58,10 @@ class LabourController extends Controller {
         if (Input::get('search') != '') {
             $term = '%' . Input::get('search') . '%';
 
-            $labours = \App\Labour::orderBy('labour_name', 'asc')
-                    ->where(function($query) use($term) {
-                        $query->whereHas('city', function($q) use ($term) {
-                            $q->where('city_name', 'like', $term);
-                        });
-                    })
-                    ->orWhere(function($query) use($term) {
-                        $query->whereHas('deliverylocation', function($q) use ($term) {
-                            $q->where('area_name', 'like', $term);
-                        });
-                    })
-                    ->orWhere(function($query) use($term) {
-                        $query->whereHas('manager', function($q) use ($term) {
-                            $q->where('first_name', 'like', $term);
-                        });
-                    })
-                    ->orWhere('tally_name', 'like', $term)
-                    ->where('customer_status', '=', 'permanent')
+            $labours = \App\Labour::orderBy('first_name', 'asc')
+                    ->where('first_name', 'like', $term)
+                    ->orWhere('last_name', 'like', $term)
+                    ->orWhere('phone_number', 'like', $term)
                     ->paginate(20);
         } else {
             $labours = Labour::orderBy('updated_at', 'desc')->paginate(20);
@@ -107,23 +95,30 @@ class LabourController extends Controller {
      *
      * @return Response
      */
-    public function store() {
+    public function store(Request $request) {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+        
+        $validator = Validator::make($request->input(), Labour::$new_labours_inquiry_rules);
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator->errors());
+        }
         $labour = new \App\Labour();
 
+        
 
-
-
-        if (Input::has('labour_name')) {
-            $labour->labour_name = Input::get('labour_name');
+        if (Input::has('first_name')) {
+            $labour->first_name = trim(Input::get('first_name'));
         }
-        if (Input::has('location')) {
-            $labour->location = Input::get('location');
+        if (Input::has('last_name')) {
+            $labour->last_name = trim(Input::get('last_name'));
+        }
+        if (Input::has('password')) {
+            $labour->password = trim(Input::get('password'));
         }
         if (Input::has('phone_number')) {
-            $labour->phone_number = Input::get('phone_number');
+            $labour->phone_number = trim(Input::get('phone_number'));
         }
 
         if ($labour->save()) {
@@ -171,22 +166,28 @@ class LabourController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function update($id) {
+    public function update(Request $request, $id) {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+        $validator = Validator::make($request->input(), Labour::$new_labours_inquiry_rules);
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator->errors());
+        }
         $labour = Labour::find($id);
 
-        if (Input::has('labour_name')) {
-            $labour->labour_name = Input::get('labour_name');
+        if (Input::has('first_name')) {
+            $labour->first_name = trim(Input::get('first_name'));
         }
+        if (Input::has('last_name')) {
+            $labour->last_name = trim(Input::get('last_name'));        }
 
 
-        if (Input::has('location')) {
-            $labour->location = Input::get('location');
+        if (Input::has('password')) {
+            $labour->password = Input::get('password');
         }
         if (Input::has('phone_number')) {
-            $labour->phone_number = Input::get('phone_number');
+            $labour->phone_number = trim(Input::get('phone_number'));
         }
 
         if ($labour->save()) {
@@ -213,37 +214,44 @@ class LabourController extends Controller {
 
         $current_user = User::find(Auth::id());
         if (Hash::check($password, $current_user->password)) {
-            $labour = Labour::find($id);
-
-            $labour_exist = array();
             
-            $labour_exist['customer_delivery_challan'] = "";
-            $labour_exist['customer_purchase_challan'] = "";
-            
-            $labour_delivery_challan = DeliveryChallan::where('labours', $labour->id)->get();           
-            $labour_purchase_challan = PurchaseChallan::where('labours', $labour->id)->get();
-
-            $cust_msg = 'Labour can not be deleted as details are associated with one or more ';
-            $cust_flag = "";
-
-            if (isset($labour_delivery_challan) && (count($labour_delivery_challan) > 0)) {
-                $labour_exist['customer_delivery_challan'] = 1;
-                $cust_msg .= "Delievry Challan";
-                $cust_flag = 1;
-            }           
-
-            if (isset($labour_purchase_challan) && (count($labour_purchase_challan) > 0)) {
-                $labour_exist['customer_purchase_challan'] = 1;
-                $cust_msg .= "Purchase Challan";
-                $cust_flag = 1;
-            }
-
-            if ($cust_flag == 1) {
-                return Redirect::to('performance/labours')->with('error', $cust_msg);
-            } else {
-                $labour->delete();                
-                return Redirect::to('performance/labours')->with('success', 'Labour deleted successfully.');
-            }
+             $labour = Labour::find($id);
+                if ($labour->delete()) {
+                    return redirect('performance/labours')->with('success', 'Loader deleted succesfully');
+                } else {
+                    return Redirect::back()->withInput()->with('error', 'Some error occoured while deleting customer');
+                }
+//            $labour = Labour::find($id);
+//
+//            $labour_exist = array();
+//            
+//            $labour_exist['customer_delivery_challan'] = "";
+//            $labour_exist['customer_purchase_challan'] = "";
+//            
+//            $labour_delivery_challan = DeliveryChallan::where('labours', $labour->id)->get();           
+//            $labour_purchase_challan = PurchaseChallan::where('labours', $labour->id)->get();
+//
+//            $cust_msg = 'Labour can not be deleted as details are associated with one or more ';
+//            $cust_flag = "";
+//
+//            if (isset($labour_delivery_challan) && (count($labour_delivery_challan) > 0)) {
+//                $labour_exist['customer_delivery_challan'] = 1;
+//                $cust_msg .= "Delievry Challan";
+//                $cust_flag = 1;
+//            }           
+//
+//            if (isset($labour_purchase_challan) && (count($labour_purchase_challan) > 0)) {
+//                $labour_exist['customer_purchase_challan'] = 1;
+//                $cust_msg .= "Purchase Challan";
+//                $cust_flag = 1;
+//            }
+//
+//            if ($cust_flag == 1) {
+//                return Redirect::to('performance/labours')->with('error', $cust_msg);
+//            } else {
+//                $labour->delete();                
+//                return Redirect::to('performance/labours')->with('success', 'Labour deleted successfully.');
+//            }
         } else {
             return Redirect::to('performance/labours')->with('error', 'Invalid password');
         }

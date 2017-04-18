@@ -238,4 +238,10 @@
     background-size: 45px 45px;
     background-position:center;
     background-repeat: no-repeat;
-}  
+} 
+
+button.multiselect.dropdown-toggle.btn.btn-default {
+    background: transparent;
+    color: gray;
+    border: 1px solid #ddd;
+}

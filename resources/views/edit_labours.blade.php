@@ -45,8 +45,13 @@
                             </div>
                             @endif
                             <div class="form-group">
-                                <label for="labour_name">Labour Name<span class="mandatory">*</span></label>
-                                <input id="labour_name" class="form-control" placeholder="Labour Name" name="labour_name" value="{{$labour->labour_name}}" type="text" maxlength="30" required="">
+                                <label for="first_name">First Name<span class="mandatory">*</span></label>
+                                <input id="labour_name" class="form-control" placeholder="First Name" name="first_name" value="{{$labour->first_name}}" type="text" maxlength="30" oninput="validateAlpha(this);">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="labour_name">Last Name<span class="mandatory">*</span></label>
+                                <input id="last_name" class="form-control" placeholder="Last Name" name="last_name" value="{{$labour->last_name}}" type="text" maxlength="30" oninput="validateAlpha(this);">
                             </div>
                              
                             
@@ -54,7 +59,7 @@
 
                             <div class="form-group">
                                 <label for="phone_number1">Phone number<span class="mandatory">*</span></label>
-                                <input id="phone_number" class="form-control" placeholder="Phone number " name="phone_number" value="{{$labour->phone_number}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10" required="">
+                                <input id="phone_number" class="form-control" placeholder="Phone number " name="phone_number" value="{{$labour->phone_number}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10" >
                             </div>
                              <hr>
                             <div>

@@ -33,7 +33,10 @@
                             <table id="table-example" class="table customerview_table">
                                 <tbody>
                                     <tr>
-                                        <td><span>Owner Name:</span> {{(isset($labour->labour_name))?$labour->labour_name:''}}</td>
+                                        <td><span>First Name:</span> {{(isset($labour->first_name))?$labour->first_name:''}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span>Last Name:</span> {{(isset($labour->last_name))?$labour->last_name:''}}</td>
                                     </tr>
                                     
                                    

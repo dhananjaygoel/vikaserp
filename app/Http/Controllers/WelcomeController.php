@@ -918,6 +918,26 @@ class WelcomeController extends Controller {
         })->export('xls');
     }
 
+    public function excel_export_labours() {
+
+        $alllabours = \App\Labour::get();
+        Excel::create('Labours List', function($excel) use($alllabours) {
+            $excel->sheet('Labours List', function($sheet) use($alllabours) {
+                $sheet->loadView('excelView.labours', array('alllabours' => $alllabours));
+            });
+        })->export('xls');
+    }
+    
+    public function excel_export_territory() {
+
+        $allterritory = \App\Territory::get();
+        Excel::create('Territory List', function($excel) use($allterritory) {
+            $excel->sheet('Territory List', function($sheet) use($allterritory) {
+                $sheet->loadView('excelView.territory', array('allterritory' => $allterritory));
+            });
+        })->export('xls');
+    }
+
     /**
      * This function displays all the php configuration info
      */
@@ -1245,12 +1265,11 @@ class WelcomeController extends Controller {
             $ipaddress = getenv('REMOTE_ADDR');
         else
             $ipaddress = 'UNKNOWN';
-        
+
         echo "<pre>";
         print_r($ipaddress);
         echo "</pre>";
         exit;
-       
     }
 
 }
