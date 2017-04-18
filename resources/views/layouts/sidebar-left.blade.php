@@ -347,6 +347,7 @@
                             </li>
                         </ul>
                     </li>
+                    @if(Auth::user()->role_id == 0)
                     <li class="{{ (Request::is('territory*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Territory">
                         <a href="{{url("territory")}}">
                             <i class="fa fa-map-marker" aria-hidden="true"></i>
@@ -354,6 +355,7 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
+                    @endif
                     <li class="{{ (Request::is('inventory*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Inventory">
                         <a href="{{url("inventory")}}">
                             <i class="fa fa-cubes" aria-hidden="true"></i>
