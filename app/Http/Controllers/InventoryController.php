@@ -592,9 +592,40 @@ class InventoryController extends Controller {
 
         $product_cat = ProductCategory::orderBy('created_at', 'desc')->get();
 //        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
-        $product_last = ProductCategory::where('id', '=' , 43)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
-//        dd($product_last);
-        return view('inventory_report')->with('product_cat',$product_cat)->with('product_last',$product_last);
+        $product_last = ProductCategory::where('id', '=' , 52)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
+        $size_array=[];
+        $thickness_array=[];
+        $report_arr=[];
+        foreach($product_last[0]['product_sub_categories'] as $sub_cat){           
+            if(!in_array($sub_cat->thickness, $thickness_array)){
+               array_push($thickness_array, $sub_cat->thickness);
+            }
+        }
+        foreach($product_last[0]['product_sub_categories'] as $sub_cat){
+            if(!in_array($sub_cat->size, $size_array)){
+               array_push($size_array, $sub_cat->size);
+            }
+        }
+        
+        foreach($thickness_array as $thickness){
+            foreach($product_last[0]['product_sub_categories'] as $sub_cat){           
+                if($sub_cat->thickness==$thickness){
+                    $inventory=$sub_cat['product_inventory'];
+                    $total_qnty=0;
+                    if(isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)){
+                         $total_qnty = $inventory->physical_closing_qty+$inventory->pending_purchase_advise_qty;
+                    }else{
+                         $total_qnty = "-";
+                    }
+                    $report_arr[$sub_cat->size][$sub_cat->thickness]=$total_qnty;
+                }
+            }        
+        }
+       
+        return view('inventory_report')->with('product_cat',$product_cat)
+                                       ->with('product_last',$product_last)
+                                       ->with('thickness_array',$thickness_array)
+                                       ->with('report_arr',$report_arr);
     }
     
     public function getInventoryReport(Request $request) {
@@ -602,9 +633,41 @@ class InventoryController extends Controller {
         $product_cat = ProductCategory::orderBy('created_at', 'desc')->get();
 //        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
         $product_last = ProductCategory::where('id', '=' , $product_id)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->get();        
-       
+        $size_array=[];
+        $thickness_array=[];
+        $report_arr=[];
+        foreach($product_last[0]['product_sub_categories'] as $sub_cat){
+            if($sub_cat->thickness!=''){
+                if(!in_array($sub_cat->thickness, $thickness_array)){               
+                   array_push($thickness_array, $sub_cat->thickness);
+                }
+            }
+        }
+        foreach($product_last[0]['product_sub_categories'] as $sub_cat){
+            if(!in_array($sub_cat->size, $size_array)){
+               array_push($size_array, $sub_cat->size);
+            }
+        }
+        
+        foreach($thickness_array as $thickness){
+            foreach($product_last[0]['product_sub_categories'] as $sub_cat){           
+                if($sub_cat->thickness==$thickness){
+                    $inventory=$sub_cat['product_inventory'];
+                    $total_qnty=0;
+                    if(isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)){
+                         $total_qnty = $inventory->physical_closing_qty+$inventory->pending_purchase_advise_qty;
+                    }else{
+                         $total_qnty = "-";
+                    }
+                    $report_arr[$sub_cat->size][$sub_cat->thickness]=$total_qnty;
+                }
+            }        
+        }        
         $html = view('_inventory_report')->with('product_cat',$product_cat)
-                                        ->with('product_last',$product_last)->render();
+                                       ->with('product_last',$product_last)
+                                       ->with('thickness_array',$thickness_array)
+                                       ->with('report_arr',$report_arr)
+                                       ->render();
         
         return Response::json(['success' => true,'html' => $html]);
 //        return view('inventory_report')->with('product_cat',$product_cat)->with('product_last',$product_last);
@@ -614,7 +677,7 @@ class InventoryController extends Controller {
 
         $product_cat = ProductCategory::orderBy('created_at', 'desc')->get();
 //        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
-        $product_last = ProductCategory::where('id', '=' , 43)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
+        $product_last = ProductCategory::where('id', '=' , 52)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
 //        dd($product_last);
         return view('inventory_price_list')->with('product_cat',$product_cat)->with('product_last',$product_last);
     }
