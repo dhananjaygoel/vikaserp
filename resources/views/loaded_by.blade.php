@@ -54,10 +54,10 @@
                             <thead>
                                 <tr>
                                     <th class="col-md-1">#</th>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Mobile Number</th>
-                                    <th class="text-center">Actions</th>
+                                    <th class="col-md-4">First Name</th>
+                                    <th class="col-md-3">Last Name</th>
+                                    <th class="col-md-2">Mobile Number</th>
+                                    <th class="text-center col-md-2">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
