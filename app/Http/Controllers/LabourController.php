@@ -319,7 +319,7 @@ class LabourController extends Controller {
                             'labour_id' => $value,
                             'date' => $data['delivery_date'],
                             'tonnage' => $data['tonnage'],
-                            'delivery_sum_money' => $data['delivery_sum_money'],
+                            'delivery_sum_money' => isset($data['delivery_sum_money'])?$data['delivery_sum_money']:'0',
                         ];
                     }
                 }
