@@ -30,6 +30,11 @@ class DeliveryChallan extends Model {
 //        return $this->hasMany('App\DeliveryChallanLoadedBy', 'id', 'delivery_challan_id');
     }
     
+    public function challan_labours() {
+        return $this->hasMany('App\DeliveryChallanLabours','delivery_challan_id', 'id');
+//      
+    }
+    
     public function customer() {
         return $this->hasOne('App\Customer', 'id', 'customer_id');
     }
