@@ -54,18 +54,27 @@
                     <div class="main-box-body main_contents clearfix">
                         @if (Session::has('flash_message'))
                         <div class="alert alert-success alert-success1">
+                            <button type = "button" class = "close" data-dismiss = "alert" aria-hidden = "true">
+                                  &times;
+                                </button>
                             <i class="fa fa-check-circle fa-fw fa-lg"></i>
                             <strong>Well done!</strong> {{Session::get('flash_message')}}
                         </div> <br/>
                         @endif
                         @if (Session::has('success'))
                         <div class="alert alert-success alert-success1">
-                            {{Session::get('success')}}                            
+                            <button type = "button" class = "close" data-dismiss = "alert" aria-hidden = "true">
+                                  &times;
+                                </button>
+                            {{Session::get('success')}}
                         </div>
                         @endif
 
                         @if (Session::has('wrong'))
                         <div class="alert alert-danger alert-success1">
+                            <button type = "button" class = "close" data-dismiss = "alert" aria-hidden = "true">
+                                  &times;
+                                </button>
                             {{Session::get('wrong')}}
                         </div>
                         @endif

@@ -81,6 +81,34 @@
                     </li>
                     @endif
                     @endif
+                    @elseif(Request::is('*account*') || Request::is('*receipt-master*') || Request::is('*due-payment*'))
+                        @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
+                        <li class="{{ (Request::is('account') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Collection Users">
+                            <a href="{{url('account')}}">
+                                <i class="fa fa-users"></i>
+                                <span>Collection Users</span>
+                                <span class="label label-info label-circle pull-right"></span>
+                            </a>
+                        </li>
+                        @endif
+                        @if(Auth::user()->role_id == 0|| Auth::user()->role_id == 1)
+                        <li class="{{ (Request::is('receipt-master') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Receipt Master">
+                            <a href="{{url('receipt-master')}}">
+                                <i class="fa fa-print"></i>
+                                <span>Receipt Master</span>
+                                <span class="label label-info label-circle pull-right"></span>
+                            </a>
+                        </li>
+                        @endif
+                        @if(Auth::user()->role_id == 0|| Auth::user()->role_id == 1)
+                        <li class="{{ (Request::is('due-payment') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Due Payment">
+                            <a href="{{url('due-payment')}}">
+                                <i class="fa fa-money"></i>
+                                <span>Due Payment</span>
+                                <span class="label label-info label-circle pull-right"></span>
+                            </a>
+                        </li>
+                        @endif
                     @else
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 2)
                     <li class="{{ (Request::is('*dashboard*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Dashboard">
@@ -367,24 +395,6 @@
                         </a>
                     </li>
                     @endif
-<!--                     @if(Auth::user()->role_id == 0)
-                    <li class="{{ (Request::is('account') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Collection Users">
-                        <a href="{{url('account')}}">
-                            <i class="fa fa-users"></i>
-                            <span>Collection Users</span>
-                            <span class="label label-info label-circle pull-right"></span>
-                        </a>
-                    </li>
-                    @endif --> 
-                    <!-- @if(Auth::user()->role_id == 0)
-                    <li class="{{ (Request::is('receipt-master') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Receipt Master">
-                        <a href="{{url('receipt-master')}}">
-                            <i class="fa fa-print"></i>
-                            <span>Receipt Master</span>
-                            <span class="label label-info label-circle pull-right"></span>
-                        </a>
-                    </li>
-                    @endif                    -->
                     @endif
                     @endif
                 </ul>

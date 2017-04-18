@@ -34,9 +34,12 @@
                         @endif
                             @if (count($errors) > 0)
                             <div class="alert alert-warning">
+                                <button type = "button" class = "close" data-dismiss = "alert" aria-hidden = "true">
+                                  &times;
+                                </button>
                                 @foreach ($errors->all() as $error)
                                 <p>{{ $error }}</p>
-                                @endforeach
+                                @endforeach                                
                             </div>
                             @endif                            
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
@@ -66,9 +69,12 @@
                                 <input id="password_confirmation" class="form-control" placeholder="Confirm Password" name="password_confirmation" value="{{ old('password_confirmation') }}" type="password">
                             </div>
                             <?php }?>
-                            <div class="form-group">
-                                <label for="assign_location">Assign Location<span class="mandatory">*</span></label>
-                                <select id="assign_location" class="form-control" placeholder="Assign Location" name="location[]" multiple="">
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <label for="assign_location">Assign Location<span class="mandatory">*</span></label>    
+                                </div>
+                                <div class="col-md-12">
+                                <select id="assign_location" class="form-control" placeholder="Assign Location" name="location[]" multiple="multiple">
                                     <?php if(isset($data)){
                                         $ex_loc = array_column($data[0]->locations->toArray(), 'location_id');
                                         print_r($ex_loc);
@@ -81,7 +87,8 @@
                                         <option value="{{ $loc->id }}" <?php echo(isset($ex_loc)? (in_array($loc->id,$ex_loc) ? 'selected' : '') :( Input::old('location') ? (in_array($loc->id, Input::old('location'))? 'selected' : '') : '')) ?>>{{ $loc->area_name }}</option>
                                     @endforeach
                                     @endif  
-                                </select>                                
+                                </select>              
+                                </div>                  
                             </div>    
                             <hr>
                             <div >

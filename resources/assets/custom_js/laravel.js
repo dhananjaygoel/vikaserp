@@ -8,6 +8,11 @@ Exemples :
 
 (function() {
  
+  $('#assign_location').multiselect({
+      onInitialized: function(select, container) {
+         $(container).find('.multiselect').addClass('form-control').removeClass('btn btn-default');
+      }
+  });  
   $(".st_select_tally_user").select2();
   var laravel = {
     initialize: function() {
