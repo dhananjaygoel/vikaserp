@@ -30,6 +30,8 @@ use Config;
 use App\ProductType;
 use App\Labour;
 
+use Illuminate\Support\Facades\Validator;
+
 class LabourController extends Controller {
 
     public function __construct() {
@@ -56,9 +58,10 @@ class LabourController extends Controller {
         if (Input::get('search') != '') {
             $term = '%' . Input::get('search') . '%';
 
-            $labours = \App\Labour::orderBy('labour_name', 'asc')
-                                       
-                    ->where('labour_name', 'like', $term)
+            $labours = \App\Labour::orderBy('first_name', 'asc')
+                    ->where('first_name', 'like', $term)
+                    ->orWhere('last_name', 'like', $term)
+                    ->orWhere('phone_number', 'like', $term)
                     ->paginate(20);
         } else {
             $labours = Labour::orderBy('updated_at', 'desc')->paginate(20);
@@ -92,23 +95,30 @@ class LabourController extends Controller {
      *
      * @return Response
      */
-    public function store() {
+    public function store(Request $request) {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+        
+        $validator = Validator::make($request->input(), Labour::$new_labours_inquiry_rules);
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator->errors());
+        }
         $labour = new \App\Labour();
 
+        
 
-
-
-        if (Input::has('labour_name')) {
-            $labour->labour_name = Input::get('labour_name');
+        if (Input::has('first_name')) {
+            $labour->first_name = trim(Input::get('first_name'));
         }
-        if (Input::has('location')) {
-            $labour->location = Input::get('location');
+        if (Input::has('last_name')) {
+            $labour->last_name = trim(Input::get('last_name'));
+        }
+        if (Input::has('password')) {
+            $labour->password = trim(Input::get('password'));
         }
         if (Input::has('phone_number')) {
-            $labour->phone_number = Input::get('phone_number');
+            $labour->phone_number = trim(Input::get('phone_number'));
         }
 
         if ($labour->save()) {
@@ -156,22 +166,28 @@ class LabourController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function update($id) {
+    public function update(Request $request, $id) {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+        $validator = Validator::make($request->input(), Labour::$new_labours_inquiry_rules);
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator->errors());
+        }
         $labour = Labour::find($id);
 
-        if (Input::has('labour_name')) {
-            $labour->labour_name = Input::get('labour_name');
+        if (Input::has('first_name')) {
+            $labour->first_name = trim(Input::get('first_name'));
         }
+        if (Input::has('last_name')) {
+            $labour->last_name = trim(Input::get('last_name'));        }
 
 
-        if (Input::has('location')) {
-            $labour->location = Input::get('location');
+        if (Input::has('password')) {
+            $labour->password = Input::get('password');
         }
         if (Input::has('phone_number')) {
-            $labour->phone_number = Input::get('phone_number');
+            $labour->phone_number = trim(Input::get('phone_number'));
         }
 
         if ($labour->save()) {

@@ -4,7 +4,8 @@
     <table>
         <tr>
             <td class="heading1">#</td>
-            <td class="heading1">Labour name</td>
+            <td class="heading1">First Name</td>
+            <td class="heading1">Last Name</td>
             <td class="heading1">Mobile</td>
             
         </tr>
@@ -15,7 +16,8 @@
             ?>
             <tr>
                 <td>{{$k++}}</td>
-                <td>{{$value->labour_name}}</td>
+                <td>{{$value->first_name}}</td>
+                <td>{{$value->last_name}}</td>
                 <td>{{$value->phone_number}}</td>
                 
             </tr>

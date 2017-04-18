@@ -27,7 +27,7 @@
                    
                     <form method="GET" id="searchCustomerForm">
                         <div class="input-group col-md-3 pull-right">
-                            <input type="text" class="form-control" name="search" id="search" placeholder="Labour Name" value="{{Request::get('search')}}">
+                            <input type="text" class="form-control" name="search" id="search" placeholder="Labour Name, Mobile" value="{{Request::get('search')}}">
                             <span class="input-group-btn">
                                 <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
                             </span>
@@ -61,9 +61,9 @@
                                 <thead>
                                     <tr>
                                         <th class="col-md-1">#</th>
-                                        <th>Labour Name</th> 
+                                        <th>First Name</th> 
+                                        <th>Last Name</th> 
                                         <th>Mobile </th>
-                                        <!--<th>Location</th>-->
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -74,11 +74,10 @@
                                     @foreach($labours as $labour)
                                     <tr>
                                         <td class="col-md-1">{{$i++}}</td>
-                                        <td>{{$labour->labour_name}}</td>
-                                        <td>{{$labour->phone_number}}</td>
-<!--                                        <td>
-                                           {{$labour->location}}
-                                        </td>-->
+                                        <td>{{isset($labour->first_name)?$labour->first_name:'N/A'}}</td>
+                                        <td>{{isset($labour->last_name)?$labour->last_name:''}}</td>
+                                        <td>{{isset($labour->phone_number)?$labour->phone_number:''}}</td>
+
                                         <td class="text-center">
                                             <a href="{{url('performance/labours/'.$labour->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
