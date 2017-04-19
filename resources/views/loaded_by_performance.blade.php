@@ -22,7 +22,7 @@
                 <div class="col-lg-12" id="month_div">
                     <div class="form-group pull-right">
                         <div class="col-md-10 pull-right">
-                            <form class="search_form" method="GET" action="javascript:;">
+                            <form class="search_form loaded_by_performance_search_form" method="GET" action="javascript:;">
                                 <div class="col-md-8">
                                     <input name="performance" id="performance-days" class="form-control performance-days" value="{{date('F-Y', mktime(0, 0, 0))}}"/>
                                 </div>
@@ -36,7 +36,7 @@
                 <div class="col-lg-12" id="year_div" style="display: none;">
                     <div class="form-group pull-right">
                         <div class="col-md-10 pull-right">
-                            <form class="search_form" method="GET" action="javascript:;">
+                            <form class="search_form loaded_by_performance_search_form" method="GET" action="javascript:;">
                                 <div class="col-md-8">
                                     <input name="performance" id="performance-months" class="form-control performance-days" value="{{date('F-Y', mktime(0, 0, 0))}}"/>
                                 </div>

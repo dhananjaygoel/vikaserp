@@ -158,7 +158,7 @@ $(document).ready(function () {
             }
         })
     });
-    $(document).on('submit', '.search_form', function () {
+    $(document).on('submit', '.loaded_by_performance_search_form', function () {
         var val = $('#loaded_by_chart_filter').val();
         if (val == "Day") {
             var month_val = $('#performance-days').val();
