@@ -152,7 +152,7 @@
 
         <!-- Custom Script Support -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script> 
-        <script src="{{url()."/resources/assets/custom_js/custom1.js"}}"></script>
+        <script src="{{url()."/resources/assets/custom_js/common.js"}}"></script>
         <script src="{{url()."/resources/assets/custom_js/custom_script.js?".time()}}"></script>
         <script src="{{url()."/resources/assets/custom_js/custom_script_js.js?".time()}}"></script>
         <script src="{{url()."/resources/assets/custom_js/custom.js?".time()}}"></script>
