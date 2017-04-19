@@ -59,6 +59,8 @@
                             <?php
 //                                  
                                         $today = date("d", strtotime($enddate));
+                                        $today_year = date("Y", strtotime($enddate));
+                                        $today_month = date("m", strtotime($enddate));
                             ?>
                             
                             <div class="table-responsive day-wise report_table"  id="day-wise">
@@ -84,7 +86,7 @@
                                                 $k = 0;
                                                 $tangage = 0;
                                                 foreach ($data as $key => $value) {
-                                                    if ($value['date'] == '2017-04-' . $i) {
+                                                    if ($value['date'] == $today_year.'-'.$today_month.'-' . $i) {
                                                         if ($value['labour_id'] == $labour->id) {
                                                             $k++;
                                                             $tangage +=$value['tonnage'];
@@ -105,7 +107,7 @@
                                                 $k = 0;
                                                 $tangage = 0;
                                                 foreach ($data as $key => $value) {
-                                                    if ($value['date'] == '2017-04-' . $i) {
+                                                    if ($value['date'] == $today_year.'-'.$today_month.'-' . $i) {
                                                         if ($value['labour_id'] == $labour->id) {
                                                             $k++;
                                                             $tangage +=$value['tonnage'];
@@ -128,6 +130,7 @@
                                     <tbody>
                                         <?php
                                         $month = date('m');
+                                         $year = date('Y');
                                         ?>
                                         <tr>
                                             <td colspan="2" rowspan="1"></td>
@@ -150,8 +153,8 @@
                                                 if($i<10){
                                                    $temp_month = '0'.$i; 
                                                 }
-                                                $start_limit = '2017-'.$temp_month.'-1';
-                                                $end_limit = '2017-'.$temp_month.'-31';
+                                                $start_limit = $year.'-' . $temp_month . '-1';
+                                                $end_limit = $year.'-' . $temp_month . '-31';
                                                 
                                                 foreach ($data as $key => $value) {
                                                     if ($value['date'] >= $start_limit && $value['date'] <= $end_limit ) {
@@ -176,8 +179,8 @@
                                                 if($i<10){
                                                    $temp_month = '0'.$i; 
                                                 }
-                                                $start_limit = '2017-'.$temp_month.'-1';
-                                                $end_limit = '2017-'.$temp_month.'-31';
+                                                $start_limit = $year.'-' . $temp_month . '-1';
+                                                $end_limit = $year.'-' . $temp_month . '-31';
                                                 
                                                 foreach ($data as $key => $value) {
                                                     if ($value['date'] >= $start_limit && $value['date'] <= $end_limit ) {

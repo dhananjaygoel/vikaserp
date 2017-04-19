@@ -268,7 +268,8 @@ class LabourController extends Controller {
         $loader_array = array();
         $loaders_data = array();
         $labours = Labour::all();
-        $date = date('Y-03-01', time());
+        $date = date('Y-m-01', time());
+        
 
         if (Input::has('val')) {
             $val = Input::get('val');
