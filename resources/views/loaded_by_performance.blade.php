@@ -11,7 +11,7 @@
 
                     <div class="col-md-12">
                         <form method="GET" action="javascript:;">
-                            <select class="form-control" id="labour_chart_filter" name="labour_chart_filter">
+                            <select class="form-control" id="loaded_by_chart_filter" name="labour_chart_filter">
                                 <option value="Day" selected="selected">Day wise</option>
                                 <option value="Month">Month wise</option>
                             </select>
@@ -19,7 +19,7 @@
                     </div>
 
                 </div>
-                <div class="col-lg-12" id="month_div" style="display: none;">
+                <div class="col-lg-12" id="month_div">
                     <div class="form-group pull-right">
                         <div class="col-md-10 pull-right">
                             <form class="search_form" method="GET" action="javascript:;">
@@ -28,6 +28,20 @@
                                 </div>
                                 <div class="col-md-4  pull-right">
                                     <input type="submit" disabled="" name="search_data" id="search_month" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                                </div>
+                             </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12" id="year_div" style="display: none;">
+                    <div class="form-group pull-right">
+                        <div class="col-md-10 pull-right">
+                            <form class="search_form" method="GET" action="javascript:;">
+                                <div class="col-md-8">
+                                    <input name="performance" id="performance-months" class="form-control performance-days" value="{{date('F-Y', mktime(0, 0, 0))}}"/>
+                                </div>
+                                <div class="col-md-4  pull-right">
+                                    <input type="submit" disabled="" name="search_data" id="search_year" value="Search" class="search_button btn btn-primary pull-right export_btn">
                                 </div>
                              </form>
                         </div>

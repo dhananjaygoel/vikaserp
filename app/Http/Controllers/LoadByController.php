@@ -154,16 +154,24 @@ class LoadByController extends Controller {
         }
     }
     
-    public function performance(Request $request) {
+    public function performance(Request $request) {        
         $var = 0;
         $loader_arr = array();
         $loader_array = array();
         $loaders_data = array();
         $loaded_by = LoadedBy::all();
-        $date = date('Y-m-01', time());        
+        $date = date('Y-m-01', time());
         if(Input::has('val')){
             $val = Input::get('val');
             if($val == "Month"){
+                $year = trim(Input::get('month'));
+                $date = date("$year-01-01");
+                $enddate = date("$year-12-31");
+                $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
+                        ->where('created_at','>=', "$date")
+                        ->where('created_at','<=', "$enddate")
+                        ->get();
+            }else if($val == "Day"){
                 $month = Input::get('month');
                 $date = date("Y-m-01",  strtotime($month));
                 $enddate = date("Y-m-31",  strtotime($month));
@@ -171,10 +179,6 @@ class LoadByController extends Controller {
                         ->where('created_at','>', "$date")
                         ->where('created_at','<', "$enddate")
                         ->get();
-            }else if($val == "Day"){
-                $date = date('Y-m-01', time());
-                $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
-                        ->where('created_at','>', "$date")->get();
             }
         }else{            
             $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
@@ -228,14 +232,22 @@ class LoadByController extends Controller {
                 }
             }
         }
-
         if($request->ajax()){
+            if($val == "Month"){
+                $html = view('_loaded_by_year_performance')
+                            ->with('date', $date)
+                            ->with('final_array', $final_array)
+                            ->with('loaded_by', $loaded_by)
+                            ->with('performance_index', true)
+                            ->render();
+            }else{
             $html = view('_loaded_by_performance')
                             ->with('date', $date)
                             ->with('final_array', $final_array)
                             ->with('loaded_by', $loaded_by)
                             ->with('performance_index', true)
                             ->render();
+            }
             return Response::json(['success' => true, 'date' => $date, 'final_array' => $final_array, 'loaded_by' => $loaded_by, 'performance_index', true, 'html' => $html]);
         }else{
                     return view('loaded_by_performance')

@@ -16,7 +16,7 @@ $('#performance-days').datepicker({
 });
 
 $('#performance-months').datepicker({
-    format: 'MM-yyyy',
+    format: ' yyyy',
     showButtonPanel: true,
     endDate: new Date(),    
     viewMode: "years", 
@@ -163,7 +163,7 @@ $(document).ready(function () {
         if (val == "Day") {
             var month_val = $('#performance-days').val();
         } else if(val == "Month"){
-            var month_val = $('#performance-month').val();
+            var month_val = $('#performance-months').val();
         }
         var baseurl = $('#baseurl').attr('name');
         var url = baseurl + '/performance/loaded-by/loaded-by-performance';
