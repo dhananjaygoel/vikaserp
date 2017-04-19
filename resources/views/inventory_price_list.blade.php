@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','Inventory Report')
+@section('title','Inventory Price List')
 @section('content')
 <style>
 .crossout{
@@ -27,7 +27,7 @@
 
                     <div class="col-md-12">
                         <form method="GET" action="javascript:;">
-                            <select class="form-control" id="inventory_report_filter" name="labour_chart_filter">
+                            <select class="form-control" id="inventory_price_list_filter" name="labour_chart_filter">
                                 <!--<option value="">Product Name</option>-->
                                 @if(isset($product_cat))
                                 @foreach($product_cat as $product)
@@ -58,7 +58,7 @@
                                 <strong> {{ Session::get('error') }} </strong>
                             </div>
                             @endif
-                            <?php print_r($report_arr) ?>
+
                             <div class="table-responsive report-table-content">
                                 <table id="day-wise" class="table table-bordered text-center complex-data-table">
                                     <tbody>
