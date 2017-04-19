@@ -19,30 +19,21 @@
                     </div>
 
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-6"></div>
+                <div class="col-lg-6">
 
-                    <div class="form-group pull-right">
-                        <div class="col-md-6">
-                            <form method="GET" action="javascript:;">
-                                <select class="form-control" id="yesr_list" name="yesr_list">
-                                    <?php
-                                    for ($m = 1; $m <= 12; $m++) {
-                                        $month = date('M', mktime(0, 0, 0, $m));
-                                        $current_month = date('M', mktime(0, 0, 0));
-                                        ?>                                    
-                                        <option value="{{$month}}" {{($month == $current_month)?'selected':''}} >{{$month}}</option>
-<?php } ?>
-                                </select>
-                            </form>
-                        </div>
-                        <div class="col-md-6">
-                            <form method="GET" action="javascript:;">
-                                <select class="form-control" id="yesr_list" name="yesr_list">
-                                    <option value="2017">2017</option>
-                                    <option value="2016">2016</option>
-                                    <option value="2015">2015</option>
-                                </select>
-                            </form>
+                    <div class="form-group ">
+                       
+
+                        <div class="col-md-12">
+                            <div class="search_form_wrapper delivery_challan_search_form_wrapper">
+                                <form class="search_form" method="GET" action="{{url('performance/labours/labour-performance')}}">
+                                   <input name="performance" id="performance-days" class="form-control performance-days" value="{{date('F-Y', mktime(0, 0, 0))}}"/>                                   
+                                   
+                                    <input type="submit" disabled="" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                                </form>
+                                
+                            </div>
                         </div>
 
 
@@ -84,26 +75,25 @@
                                             <td>{{ $i }}</td>
                                             @endfor
                                         </tr>
-<?php foreach ($labours as $labour) { ?>
+                                        <?php foreach ($labours as $labour) { ?>
                                             <tr>
                                                 <td rowspan="2"><b>{{$labour->first_name}} {{$labour->last_name}}</B></td>
                                                 <td><b>Tonnage</b></td>
                                                 @for($i = 1; $i<= $today ; $i++ )
-                                                <?php 
-                                                $k=0;
-                                                $tangage=0;
-                                                    foreach ($data as $key => $value) {
-                                                        if($value['date']=='2017-04-'.$i){
-                                                            if($value['labour_id'] == $labour->id){
-                                                                $k++;
-                                                                $tangage +=$value['tonnage'];
-                                                            }
+                                                <?php
+                                                $k = 0;
+                                                $tangage = 0;
+                                                foreach ($data as $key => $value) {
+                                                    if ($value['date'] == '2017-04-' . $i) {
+                                                        if ($value['labour_id'] == $labour->id) {
+                                                            $k++;
+                                                            $tangage +=$value['tonnage'];
                                                         }
-//                                                       
-                                                        
                                                     }
+//                                                       
+                                                }
                                                 ?>
-                                                 <td>{{$tangage}}</td>
+                                                <td>{{$tangage}}</td>
 
                                                 @endfor
 
@@ -111,19 +101,18 @@
                                             <tr>
                                                 <td><b>Delivery</b></td>
                                                 @for($i = 1; $i<= $today ; $i++ )
-                                                 <?php 
-                                                $k=0;
-                                                $tangage=0;
-                                                    foreach ($data as $key => $value) {
-                                                        if($value['date']=='2017-04-'.$i){
-                                                            if($value['labour_id'] == $labour->id){
-                                                                $k++;
-                                                                $tangage +=$value['tonnage'];
-                                                            }
+                                                <?php
+                                                $k = 0;
+                                                $tangage = 0;
+                                                foreach ($data as $key => $value) {
+                                                    if ($value['date'] == '2017-04-' . $i) {
+                                                        if ($value['labour_id'] == $labour->id) {
+                                                            $k++;
+                                                            $tangage +=$value['tonnage'];
                                                         }
-//                                                       
-                                                        
                                                     }
+//                                                       
+                                                }
                                                 ?>
                                                 <td>{{$k}}</td>
                                                 @endfor

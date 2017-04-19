@@ -50,9 +50,9 @@ $(document).ready(function () {
         jQuery('#add_purchase_product_row')[0].click();
     }
     if (split_url[3] == 'create_purchase_advice') {
-       jQuery('#add_purchase_advice_product_row')[0].click();
+        jQuery('#add_purchase_advice_product_row')[0].click();
     }
-     if (split_url[4] == 'create_purchase_advice') {       
+    if (split_url[4] == 'create_purchase_advice') {
         jQuery('#add_purchase_advice_product_row')[0].click();
     }
     if (split_url[3] == 'purchaseorder_advise' && split_url[5] == 'edit') {
@@ -146,12 +146,12 @@ $(document).ready(function () {
     });
     var myRadio = $('input[name=customer_status]');
     var checkedValue = myRadio.filter(':checked').val();
-   
-    if(checkedValue == 'existing_customer'){
+
+    if (checkedValue == 'existing_customer') {
         $(".exist_field").hide();
         $(".customer_select").show();
     }
-    
+
     $("#exist_customer").click(function () {
         $(".exist_field").hide();
         $(".customer_select").show();
@@ -185,6 +185,15 @@ $(document).ready(function () {
 $('#datepickerDate').datepicker({
     format: 'mm-dd-yyyy',
     startDate: new Date(),
+    autoclose: true
+
+});
+$('#performance-days').datepicker({
+    format: 'MM-yyyy',
+    showButtonPanel: true,
+    endDate: new Date(),
+    viewMode: "months", 
+    minViewMode: "months",
     autoclose: true
 
 });
@@ -1009,7 +1018,7 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
                 }
             }
         }
-        
+
         if ($("#add_order_location").val() == "other") {
 
             if ($("#location_difference").val() == "") {
@@ -1030,7 +1039,7 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
                     status_form = 0;
             }
         }
-        
+
         if (j == tot_products) {
             if ($("#add_product_id_1").val() == "") {
                 $('#add_product_name_1').addClass('error_validation');
@@ -1337,7 +1346,7 @@ $('body').delegate(".btn_edit_order, .btn_edit_order_sms", "click", function () 
 //            status_form = 1;
 //        }
 
-     if ($("#add_order_location").val() == "other") {
+        if ($("#add_order_location").val() == "other") {
             if ($("#location_difference").val() == "") {
                 $('#location_difference').addClass('error_validation');
                 status_form = 1;
@@ -1848,33 +1857,33 @@ $('body').delegate(".btn_purorder_to_puradvice", "click", function () {
     var present_shippein_zero_count = 0;
     var actual_pieces_count = 0;
     for (var i = 0; i <= tot_products - 1; i++) {
-        if ($("#actual_pieces" + i).val() == 0  | $("#actual_pieces" + i).val() =="") {
+        if ($("#actual_pieces" + i).val() == 0 | $("#actual_pieces" + i).val() == "") {
             actual_pieces_count++;
         }
     }
-    if ((tot_products-1) == actual_pieces_count) {
-        for (var j = 1; j <= tot_products-1; j++) {
+    if ((tot_products - 1) == actual_pieces_count) {
+        for (var j = 1; j <= tot_products - 1; j++) {
             $('#actual_pieces' + j).addClass('error_validation');
         }
         status_form = 1;
-    }else{
-        for (var j = 1; j <= tot_products-1; j++) {
+    } else {
+        for (var j = 1; j <= tot_products - 1; j++) {
             $('#actual_pieces' + j).removeClass('error_validation');
         }
     }
-    
+
     for (var i = 0; i <= tot_products - 1; i++) {
-        if ($("#present_shipping" + i).val() == 0  | $("#present_shipping" + i).val() =="") {
+        if ($("#present_shipping" + i).val() == 0 | $("#present_shipping" + i).val() == "") {
             present_shippein_zero_count++;
         }
     }
-    if ((tot_products-1) == present_shippein_zero_count) {
-        for (var j = 1; j <= tot_products-1; j++) {
+    if ((tot_products - 1) == present_shippein_zero_count) {
+        for (var j = 1; j <= tot_products - 1; j++) {
             $('#present_shipping' + j).addClass('error_validation');
         }
         status_form = 1;
-    }else{
-        for (var j = 1; j <= tot_products-1; j++) {
+    } else {
+        for (var j = 1; j <= tot_products - 1; j++) {
             $('#present_shipping' + j).removeClass('error_validation');
         }
     }
@@ -1883,14 +1892,14 @@ $('body').delegate(".btn_purorder_to_puradvice", "click", function () {
     if ($("#vehicle_number").val() == "") {
         $("#vehicle_number").addClass('error_validation');
         status_form = 1;
-    }else{
-         $("#vehicle_number").removeClass('error_validation');
+    } else {
+        $("#vehicle_number").removeClass('error_validation');
     }
     if ($("#datepickerDate").val() == "") {
         $("#datepickerDate").addClass('error_validation');
         status_form = 1;
-    }else{
-         $("#datepickerDate").removeClass('error_validation');
+    } else {
+        $("#datepickerDate").removeClass('error_validation');
     }
 
     if (status_form == 1) {
@@ -2863,12 +2872,12 @@ function showProductCategory(el) {
 
 
 function unitType(parameters) {
-    
+
     var id = parameters.id.split("_");
     id = id[id.length - 1];
-   
-    var i = $('#units_'+id).val();   
- 
+
+    var i = $('#units_' + id).val();
+
     if (i == "1")
     {
         $('.kg_list_' + id).show();
@@ -2896,7 +2905,7 @@ function unitType(parameters) {
 }
 
 function setQty(parameters) {
-   
+
     var id = parameters.id.split("_");
     id = id[id.length - 1];
     $('#quantity_' + id).val(parameters.value);
@@ -2904,6 +2913,19 @@ function setQty(parameters) {
 
 }
 
+
+$(function () {
+    $('#startDate').datepicker({
+        changeMonth: false,
+        changeYear: false,
+        showButtonPanel: false,
+        dateFormat: 'MM yy',
+        showWeek: true,
+//        onClose: function(dateText, inst) { 
+//            $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+//        }
+    });
+});
 
 //
 
