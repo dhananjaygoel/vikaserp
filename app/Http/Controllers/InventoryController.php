@@ -592,8 +592,8 @@ class InventoryController extends Controller {
     
     public function inventoryReport() {
 
-        $product_cat = ProductCategory::orderBy('created_at', 'desc')->get();
-        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
+        $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
+        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'Asc')->limit(1)->get();
 //        $product_last = ProductCategory::where('id', '=' , 40)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
         $size_array=[];
         $thickness_array=[];
@@ -645,9 +645,9 @@ class InventoryController extends Controller {
     
     public function getInventoryReport(Request $request) {
         $product_id = $request->input('product_id');        
-        $product_cat = ProductCategory::orderBy('created_at', 'desc')->get();
+        $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
 //        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
-        $product_last = ProductCategory::where('id', '=' , $product_id)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->get();        
+        $product_last = ProductCategory::where('id', '=' , $product_id)->with('product_sub_categories.product_inventory')->get();
         $size_array=[];
         $thickness_array=[];
         $report_arr=[];
@@ -704,8 +704,8 @@ class InventoryController extends Controller {
     }
     
     public function inventoryPriceList() {
-        $product_cat = ProductCategory::orderBy('created_at', 'desc')->get();
-        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
+        $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
+        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'asc')->limit(1)->get();
 //        $product_last = ProductCategory::where('id', '=' , 40)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
         $product_id=$product_last[0]->id;
         $product_price=$product_last[0]->price;
@@ -754,9 +754,9 @@ class InventoryController extends Controller {
     
     public function getInventoryPriceList(Request $request) {
         $product_id = $request->input('product_id');        
-        $product_cat = ProductCategory::orderBy('created_at', 'desc')->get();
+        $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
 //        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
-        $product_last = ProductCategory::where('id', '=' , $product_id)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->get();
+        $product_last = ProductCategory::where('id', '=' , $product_id)->with('product_sub_categories.product_inventory')->get();
         $product_price=$product_last[0]->price;
         $size_array=[];
         $thickness_array=[];
