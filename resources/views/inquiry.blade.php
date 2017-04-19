@@ -36,6 +36,11 @@
                     Export
                 </a>
                 @endif
+                @if(sizeof($inquiries)!=0 && Input::get('inquiry_filter') == 'Approval')
+                <a href="{{URL::action('InquiryController@exportinquiryBasedOnStatus',['inquiry_status'=>'Pending_Approval'])}}" class="btn btn-primary pull-right">
+                    Export
+                </a>
+                @endif
                 @endif
             </div>
         </div>
@@ -257,7 +262,9 @@
                                 </tbody>
                             </table>
                             <span class="pull-right">
-                                <?php echo $inquiries->render(); ?>
+                                <?php  
+                                echo $inquiries->appends(Input::except('page'))->render();
+                                ?>
                             </span>
                             <div class="clearfix"></div>
                             @if($inquiries->lastPage() > 1)

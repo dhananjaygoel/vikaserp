@@ -1125,16 +1125,27 @@ class InquiryController extends Controller {
         if ($inquiry_status == 'Pending') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $inquiry_status = 'pending';
+            $is_approval='yes';
             $excel_sheet_name = 'Pending';
             $excel_name = 'Inquiry-Pending-' . date('dmyhis');
         } elseif ($inquiry_status == 'Completed') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $inquiry_status = 'completed';
+            $is_approval='yes';
             $excel_sheet_name = 'Completed';
             $excel_name = 'Inquiry-Completed-' . date('dmyhis');
+        }elseif ($inquiry_status == 'Pending_Approval') {
+//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+            $inquiry_status = 'pending';
+            $is_approval='no';
+            $excel_sheet_name = 'Pending_Approval';
+            $excel_name = 'Inquiry-Pending_Approval-' . date('dmyhis');
         }
 
-        $inquiry_objects = Inquiry::where('inquiry_status', $inquiry_status)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->get();
+        $inquiry_objects = Inquiry::where('inquiry_status', $inquiry_status)
+                ->where('is_approved', '=', $is_approval)
+                ->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')
+                ->get();
         if (count($inquiry_objects) == 0) {
             return redirect::back()->with('flash_message', 'No data found');
         } else {
