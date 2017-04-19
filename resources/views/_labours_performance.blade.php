@@ -5,6 +5,8 @@ $today = date("d", strtotime($enddate));
 if (date('m') == date("m", strtotime($enddate)) && date('y') == date("y", strtotime($enddate))) {
     $today = date("d");
 }
+$today_year = date("Y", strtotime($enddate));
+$today_month = date("m", strtotime($enddate));
 ?> 
 
 <div class="table-responsive day-wise report_table"  id="day-wise" style="display:{{($filter == 'Days')?'block':  'none'}}">
@@ -30,7 +32,7 @@ if (date('m') == date("m", strtotime($enddate)) && date('y') == date("y", strtot
                     $k = 0;
                     $tangage = 0;
                     foreach ($data as $key => $value) {
-                        if ($value['date'] == '2017-04-' . $i) {
+                        if ($value['date'] == $today_year.'-'.$today_month.'-' . $i) {
                             if ($value['labour_id'] == $labour->id) {
                                 $k++;
                                 $tangage +=$value['tonnage'];
@@ -51,7 +53,7 @@ if (date('m') == date("m", strtotime($enddate)) && date('y') == date("y", strtot
                     $k = 0;
                     $tangage = 0;
                     foreach ($data as $key => $value) {
-                        if ($value['date'] == '2017-04-' . $i) {
+                        if ($value['date'] == $today_year.'-'.$today_month.'-' . $i) {
                             if ($value['labour_id'] == $labour->id) {
                                 $k++;
                                 $tangage +=$value['tonnage'];
@@ -75,10 +77,10 @@ if (date('m') == date("m", strtotime($enddate)) && date('y') == date("y", strtot
     <table  class="table table-bordered complex-data-table" >
         <tbody>
             <?php
-            
-//            $today = date("d", strtotime($enddate));
 
            $month = date('m', strtotime($enddate));
+           $year = date('Y', strtotime($enddate));
+           
             if (date('y') == date("y", strtotime($enddate))) {
                 $month = date('m');
             }
@@ -104,8 +106,8 @@ if (date('m') == date("m", strtotime($enddate)) && date('y') == date("y", strtot
     if ($i < 10) {
         $temp_month = '0' . $i;
     }
-    $start_limit = '2017-' . $temp_month . '-1';
-    $end_limit = '2017-' . $temp_month . '-31';
+    $start_limit = $year.'-' . $temp_month . '-1';
+    $end_limit = $year.'-' . $temp_month . '-31';   
 
     foreach ($data as $key => $value) {
         if ($value['date'] >= $start_limit && $value['date'] <= $end_limit) {
@@ -130,8 +132,8 @@ if (date('m') == date("m", strtotime($enddate)) && date('y') == date("y", strtot
     if ($i < 10) {
         $temp_month = '0' . $i;
     }
-    $start_limit = '2017-' . $temp_month . '-1';
-    $end_limit = '2017-' . $temp_month . '-31';
+    $start_limit = $year.'-' . $temp_month . '-1';
+    $end_limit = $year.'-' . $temp_month . '-31';
 
     foreach ($data as $key => $value) {
         if ($value['date'] >= $start_limit && $value['date'] <= $end_limit) {
