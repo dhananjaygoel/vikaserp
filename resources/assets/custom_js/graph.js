@@ -45,6 +45,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
     var baseurl = $('#baseurl').attr('name');
+    $(".dashboard-nav").removeClass('nav-small');
     $("#order").addClass('loading_graph');
     $.ajax({
         type: 'get', url: baseurl + '/graph-order',
@@ -82,6 +83,7 @@ $(document).ready(function () {
                 labels: ['Pipe', 'Structure'],
                 lineColors: ["#3498DB", "#2ECC71"]
             });
+             $(".dashboard-nav").addClass('nav-small');
         }
     });
 });
