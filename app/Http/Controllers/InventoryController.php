@@ -651,6 +651,7 @@ class InventoryController extends Controller {
         $size_array=[];
         $thickness_array=[];
         $report_arr=[];
+        $final_arr=[];
         foreach($product_last[0]['product_sub_categories'] as $sub_cat){
             if($sub_cat->thickness!=''){
                 if(!in_array($sub_cat->thickness, $thickness_array)){               
@@ -710,6 +711,7 @@ class InventoryController extends Controller {
         $size_array=[];
         $thickness_array=[];
         $report_arr=[];
+        $final_arr=[];
         foreach($product_last[0]['product_sub_categories'] as $sub_cat){           
             if(!in_array($sub_cat->thickness, $thickness_array)){
                array_push($thickness_array, $sub_cat->thickness);
@@ -757,6 +759,7 @@ class InventoryController extends Controller {
         $size_array=[];
         $thickness_array=[];
         $report_arr=[];
+        $final_arr=[];
         foreach($product_last[0]['product_sub_categories'] as $sub_cat){
             if($sub_cat->thickness!=''){
                 if(!in_array($sub_cat->thickness, $thickness_array)){               
