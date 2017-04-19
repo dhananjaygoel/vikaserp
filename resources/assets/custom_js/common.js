@@ -4,6 +4,28 @@
  * and open the template in the editor.
  */
 
+
+$('#performance-days').datepicker({
+    format: 'MM-yyyy',
+    showButtonPanel: true,
+    endDate: new Date(),
+    viewMode: "months", 
+    minViewMode: "months",
+    autoclose: true
+
+});
+
+$('#performance-months').datepicker({
+    format: 'MM-yyyy',
+    showButtonPanel: true,
+    endDate: new Date(),    
+    viewMode: "years", 
+    minViewMode: "years",
+    autoclose: true
+
+});
+
+
 $(document).ready(function () {
     
     $('#loaded_by_select,#multi-territory-location ,#labour_select').multiselect({

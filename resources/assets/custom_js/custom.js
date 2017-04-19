@@ -188,15 +188,8 @@ $('#datepickerDate').datepicker({
     autoclose: true
 
 });
-$('#performance-days').datepicker({
-    format: 'MM-yyyy',
-    showButtonPanel: true,
-    endDate: new Date(),
-    viewMode: "months", 
-    minViewMode: "months",
-    autoclose: true
 
-});
+
 $('#datepickerDateComponent').datepicker();
 $('#datepickerDate1').datepicker({
     format: 'mm-dd-yyyy',

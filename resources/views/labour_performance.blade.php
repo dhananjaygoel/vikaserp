@@ -19,27 +19,25 @@
                     </div>
 
                 </div>
-                <div class="col-lg-6"></div>
-                <div class="col-lg-6">
-
-                    <div class="form-group ">
-                       
-
-                        <div class="col-md-12">
-                            <div class="search_form_wrapper delivery_challan_search_form_wrapper">
-                                <form class="search_form" method="GET" action="{{url('performance/labours/labour-performance')}}">
-                                   <input name="performance" id="performance-days" class="form-control performance-days" value="{{date('F-Y', mktime(0, 0, 0))}}"/>                                   
-                                   
-                                    <input type="submit" disabled="" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
-                                </form>
-                                
-                            </div>
+                 <div class="col-lg-12" >
+                    <div class="form-group pull-right">
+                        <div class="col-md-10 pull-right">
+                            <form class="search_form" method="GET" action="javascript:;">
+                                <div class="col-md-8">
+                                    <input name="performance" id="performance-days" class="form-control performance-days" value="{{date('F-Y', mktime(0, 0, 0))}}"/>
+                                </div>
+                                <div class="col-md-8" id="month_div" style="display: none">
+                                    <input name="performance" id="performance-months" class="form-control performance-month" value="{{date('Y', mktime(0, 0, 0))}}"/>
+                                </div>
+                                <div class="col-md-4  pull-right">
+                                    <input type="submit" disabled="" name="search_data" id="search_month" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                                </div>
+                             </form>
                         </div>
-
-
                     </div>
-                </div>
+                </div>                
             </div>
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="main-box clearfix">
@@ -117,7 +115,7 @@
                                                 <td>{{$k}}</td>
                                                 @endfor
                                             </tr>
-<?php } ?>
+                                        <?php } ?>
 
                                     </tbody>
                                 </table>
