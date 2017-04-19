@@ -340,8 +340,8 @@ class OrderController extends Controller {
         $order->expected_delivery_date = $datetime->format('Y-m-d');
         $order->remarks = $input_data['order_remark'];
         $order->order_status = "Pending";
-        if ($order->is_approved == 'no')
-            $order->is_approved = (Auth::user()->role_id == 0 ? 'yes' : 'no');
+         if (Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
+            $order->is_approved = 'yes';
         if (isset($input_data['location']) && ($input_data['location'] != "")) {
             $order->delivery_location_id = 0;
             $order->other_location = $input_data['location'];
@@ -675,8 +675,12 @@ class OrderController extends Controller {
         }
         $order_prod = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $id)->first();
         $order->updated_at = $order_prod->updated_at;
-        if ($order->is_approved == 'no')
-            $order->is_approved = (Auth::user()->role_id == 0 ? 'yes' : 'no');
+        if ($order->is_approved == 'no'){
+             if (Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4){
+                 $order->is_approved = 'yes';
+             }
+        }
+            
         $order->save();
 
         /*

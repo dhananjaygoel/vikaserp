@@ -211,8 +211,8 @@ class InquiryController extends Controller {
         $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
         $add_inquiry->remarks = $input_data['inquiry_remark'];
         $add_inquiry->inquiry_status = "Pending";
-        if ($add_inquiry->is_approved == 'no')
-            $add_inquiry->is_approved = (Auth::user()->role_id == 0 ? 'yes' : 'no');
+        if (Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
+            $add_inquiry->is_approved = 'yes';
         $add_inquiry->save();
         $inquiry_id = $add_inquiry->id;
         $inquiry_products = array();
@@ -554,8 +554,12 @@ class InquiryController extends Controller {
         }
         $inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->first();
         $inquiry->updated_at = $inquiry_products->updated_at;
-        if ($inquiry->is_approved == 'no')
-            $inquiry->is_approved = (Auth::user()->role_id == 0 ? 'yes' : 'no');
+
+        if ($inquiry->is_approved == 'no') {
+            if (Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4) {
+                $inquiry->is_approved = 'yes';
+            }
+        }
         $inquiry->save();
         /*
           |------------------------------------------------
@@ -1001,6 +1005,12 @@ class InquiryController extends Controller {
             $order->delivery_location_id = $input_data['add_inquiry_location'];
             $order->location_difference = $input_data['location_difference'];
         }
+        
+         if ($order->is_approved == 'no') {
+            if (Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4) {
+                $order->is_approved = 'yes';
+            }
+        }
         /*
          * ------------------- --------------
          * SEND SMS TO CUSTOMER FOR NEW ORDER
@@ -1125,19 +1135,19 @@ class InquiryController extends Controller {
         if ($inquiry_status == 'Pending') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $inquiry_status = 'pending';
-            $is_approval='yes';
+            $is_approval = 'yes';
             $excel_sheet_name = 'Pending';
             $excel_name = 'Inquiry-Pending-' . date('dmyhis');
         } elseif ($inquiry_status == 'Completed') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $inquiry_status = 'completed';
-            $is_approval='yes';
+            $is_approval = 'yes';
             $excel_sheet_name = 'Completed';
             $excel_name = 'Inquiry-Completed-' . date('dmyhis');
-        }elseif ($inquiry_status == 'Pending_Approval') {
+        } elseif ($inquiry_status == 'Pending_Approval') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $inquiry_status = 'pending';
-            $is_approval='no';
+            $is_approval = 'no';
             $excel_sheet_name = 'Pending_Approval';
             $excel_name = 'Inquiry-Pending_Approval-' . date('dmyhis');
         }
