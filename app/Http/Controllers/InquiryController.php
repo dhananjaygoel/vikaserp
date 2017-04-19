@@ -1145,6 +1145,7 @@ class InquiryController extends Controller {
         $inquiry_objects = Inquiry::where('inquiry_status', $inquiry_status)
                 ->where('is_approved', '=', $is_approval)
                 ->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')
+                ->orderBy('created_at', 'desc')
                 ->get();
         if (count($inquiry_objects) == 0) {
             return redirect::back()->with('flash_message', 'No data found');
