@@ -38,7 +38,7 @@
                         <div class="col-md-10 pull-right">
                             <form class="search_form loaded_by_performance_search_form" method="GET" action="javascript:;">
                                 <div class="col-md-8">
-                                    <input name="performance" id="performance-months" class="form-control performance-days" value="{{date('F-Y', mktime(0, 0, 0))}}"/>
+                                    <input name="performance" id="performance-months" class="form-control performance-days" value="{{date('Y', mktime(0, 0, 0))}}"/>
                                 </div>
                                 <div class="col-md-4  pull-right">
                                     <input type="submit" disabled="" name="search_data" id="search_year" value="Search" class="search_button btn btn-primary pull-right export_btn">
@@ -85,7 +85,7 @@
                                             <?php $date_val = substr($date,0,8); ?>
                                             @foreach($loaded_by as $loader_val)
                                             <tr>
-                                                <td rowspan="2"><b>{{$loader_val->first_name}}</B></td>                                                
+                                                <td rowspan="2"><b>{{$loader_val->first_name}} {{$loader_val->last_name}}</B></td>                                                
                                                 <td><b>Tonnage</b></td>    
                                                 @for($i = 1; $i<= $today ; $i++ )
                                                 <?php 

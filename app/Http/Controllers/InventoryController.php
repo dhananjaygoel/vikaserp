@@ -593,8 +593,8 @@ class InventoryController extends Controller {
     public function inventoryReport() {
 
         $product_cat = ProductCategory::orderBy('created_at', 'desc')->get();
-//        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
-        $product_last = ProductCategory::where('id', '=' , 40)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
+        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
+//        $product_last = ProductCategory::where('id', '=' , 40)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
         $size_array=[];
         $thickness_array=[];
         $report_arr=[];
@@ -705,8 +705,9 @@ class InventoryController extends Controller {
     
     public function inventoryPriceList() {
         $product_cat = ProductCategory::orderBy('created_at', 'desc')->get();
-//        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
-        $product_last = ProductCategory::where('id', '=' , 40)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();        
+        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
+//        $product_last = ProductCategory::where('id', '=' , 40)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
+        $product_id=$product_last[0]->id;
         $product_price=$product_last[0]->price;
         $size_array=[];
         $thickness_array=[];
@@ -745,6 +746,7 @@ class InventoryController extends Controller {
         
         $report_arr=$final_arr;
         return view('inventory_price_list')->with('product_cat',$product_cat)
+                                       ->with('product_id',$product_id) 
                                        ->with('product_last',$product_last)
                                        ->with('thickness_array',$thickness_array)
                                        ->with('report_arr',$report_arr);
@@ -798,6 +800,7 @@ class InventoryController extends Controller {
         $report_arr=$final_arr;
         
         $html = view('_inventory_price_list')->with('product_cat',$product_cat)
+                                       ->with('product_id',$product_id) 
                                        ->with('product_last',$product_last)
                                        ->with('thickness_array',$thickness_array)
                                        ->with('report_arr',$report_arr)
@@ -806,4 +809,25 @@ class InventoryController extends Controller {
         return Response::json(['success' => true,'html' => $html]);
 //        return view('inventory_report')->with('product_cat',$product_cat)->with('product_last',$product_last);
     }
+    
+    public function setInventoryPrice(Request $request) {
+        $product_id = $request->input('product_id');
+        $size = $request->input('size');
+        $thickness = $request->input('thickness');        
+        $new_price = $request->input('new_price');
+        if(isset($product_id) && isset($size) && isset($thickness)){
+            $subproduct=  ProductSubCategory::where('product_category_id', '=' , $product_id)
+                                              ->where('thickness', '=' , $thickness)
+                                              ->where('size', '=' , $size)->get();
+            $sub_prod_id= $subproduct[0]->id;            
+            $product_category = ProductCategory::where('id', '=' , $product_id)->get();
+            $product_base_price = $product_category[0]->price;
+            $difference = $new_price-$product_base_price;            
+            $update_sub_prod = ProductSubCategory::find($sub_prod_id);
+            $update_sub_prod->difference = $difference;
+            $update_sub_prod->save();
+        }
+        return Response::json(['success' => true]);
+    }
+            
 }
