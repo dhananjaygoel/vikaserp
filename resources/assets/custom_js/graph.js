@@ -1,5 +1,5 @@
-
-$(document).ready(function () {
+ 
+$(document).ready(function () {    
     $("#inquiry").removeClass('loading_graph');
     var baseurl = $('#baseurl').attr('name');
     $.ajax({
@@ -7,6 +7,7 @@ $(document).ready(function () {
 //        data: $('#save_all_price').serialize(),
         success: function (data) {
             $("#inquiry").removeClass('loading_graph');
+            $(".dashboard-nav").removeClass ('nav-small');
             new Morris.Line({
                 // ID of the element in which to draw the chart.
                 element: 'inquiry',
@@ -37,21 +38,22 @@ $(document).ready(function () {
                 labels: ['Pipe', 'Structure'],
                 lineColors: ["#3498DB", "#2ECC71"]
             });
+            $(".dashboard-nav").addClass('nav-small');
         }
     });
-});
 
 
 
-$(document).ready(function () {
-    var baseurl = $('#baseurl').attr('name');
-    $(".dashboard-nav").removeClass('nav-small');
+
+
+    var baseurl = $('#baseurl').attr('name');   
     $("#order").addClass('loading_graph');
     $.ajax({
         type: 'get', url: baseurl + '/graph-order',
 //        data: $('#save_all_price').serialize(),
         success: function (data) {
             $("#order").removeClass('loading_graph');
+            $(".dashboard-nav").removeClass ('nav-small');
             new Morris.Line({
                 // ID of the element in which to draw the chart.
                 element: 'order',
@@ -83,12 +85,12 @@ $(document).ready(function () {
                 labels: ['Pipe', 'Structure'],
                 lineColors: ["#3498DB", "#2ECC71"]
             });
-             $(".dashboard-nav").addClass('nav-small');
+           $(".dashboard-nav").addClass('nav-small'); 
         }
     });
-});
 
-$(document).ready(function () {
+
+
     $("#deliverychallan").removeClass('loading_graph');
     var baseurl = $('#baseurl').attr('name');
     $.ajax({
@@ -96,6 +98,7 @@ $(document).ready(function () {
 //        data: $('#save_all_price').serialize(),
         success: function (data) {
             $("#deliverychallan").removeClass('loading_graph');
+            $(".dashboard-nav").removeClass ('nav-small');
             new Morris.Line({
                 // ID of the element in which to draw the chart.
                 element: 'deliverychallan',
@@ -127,7 +130,11 @@ $(document).ready(function () {
                 labels: ['Pipe', 'Structure'],
                 lineColors: ["#3498DB", "#2ECC71"],
             });
+            $(".dashboard-nav").addClass('nav-small');
         }
+        
     });
+    
 });
 
+ 
