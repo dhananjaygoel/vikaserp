@@ -109,13 +109,16 @@ $(document).ready(function () {
             }
         })
     });
-    $(document).on('change', '#labour_chart_filter', function () {
+    $(document).on('change', '#loaded_by_chart_filter', function () {
         var val = $(this).val();
         var month_val = $('#performance-days').val();
-        if (val == "Month") {
+        if (val == "Day") {
             $('#month_div').css('display', 'block');
-        } else {
+            $('#year_div').css('display', 'none');
+        } else if(val == "Month"){
+            month_val = "all";
             $('#month_div').css('display', 'none');
+            $('#year_div').css('display', 'block');
         }
         var baseurl = $('#baseurl').attr('name');
         var url = baseurl + '/performance/loaded-by/loaded-by-performance';
@@ -134,14 +137,19 @@ $(document).ready(function () {
         })
     });
     $(document).on('submit', '.search_form', function () {
-        var month_val = $('#performance-days').val();
+        var val = $('#loaded_by_chart_filter').val();
+        if (val == "Day") {
+            var month_val = $('#performance-days').val();
+        } else if(val == "Month"){
+            var month_val = $('#performance-month').val();
+        }
         var baseurl = $('#baseurl').attr('name');
         var url = baseurl + '/performance/loaded-by/loaded-by-performance';
         $.ajax({
             url: url,
             type: 'get',
             data: {
-                val: 'Month',
+                val: val,
                 month: month_val
             },
             success: function (data) {
