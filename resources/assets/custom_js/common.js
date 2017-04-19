@@ -182,6 +182,64 @@ $(document).ready(function () {
         })
     });
 });
+
+
+
+
+$(document).on('change', '#labour_chart_filter', function () {
+        var val = $(this).val();
+        var month_val = $('#performance-days').val();
+        if (val == "Day") {
+            $('.day-wise').css('display', 'block');
+            $('.month-wise').css('display', 'none');
+        } else if(val == "Month"){
+            month_val = "all";
+            $('.day-wise').css('display', 'none');
+            $('.month-wise').css('display', 'block');
+        }
+        var baseurl = $('#baseurl').attr('name');
+        var url = baseurl + '/performance/loaded-by/loaded-by-performance';
+//        $.ajax({
+//            url: url,
+//            type: 'get',
+//            data: {
+//                val: val,
+//                month: month_val
+//            },
+//            success: function (data) {
+//                $('.report_table').html(data.html)
+//            },
+//            complete: function () {
+//            }
+//        })
+    });
+    
+    
+    $(document).on('submit', '.labours_performance_search_form', function () {
+       
+        var val = $('#labour_chart_filter').val();
+        if (val == "Day") {
+            var month_val = $('#performance-days').val();
+        } else if(val == "Month"){
+            var month_val = $('#performance-months').val();
+        }
+        var baseurl = $('#baseurl').attr('name');
+        var url = baseurl + '/performance/labours/labour-performance';
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+                val: val,
+                month: month_val
+            },
+            success: function (data) {
+                $('.report_table').html(data.html)
+            },
+            complete: function () {
+            }
+        })
+    });
+
 function common_form_submit(form) {
     var url = $(form).attr('action');
     var submit_text = $(form).find('input[type="submit"]').val();

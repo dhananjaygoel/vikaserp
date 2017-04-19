@@ -31,6 +31,9 @@ use App\ProductType;
 use App\Labour;
 use Illuminate\Support\Facades\Validator;
 
+
+use Illuminate\Support\Facades\Response;
+
 class LabourController extends Controller {
 
     public function __construct() {
@@ -257,7 +260,7 @@ class LabourController extends Controller {
         }
     }
 
-    public function labourPerformance() {
+    public function labourPerformance(Request $request) {
 
 
         $var = 0;
@@ -265,7 +268,35 @@ class LabourController extends Controller {
         $loader_array = array();
         $loaders_data = array();
         $labours = Labour::all();
-        $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')->get();
+        $date = date('Y-03-01', time());
+
+        if (Input::has('val')) {
+            $val = Input::get('val');
+            if ($val == "Month") {
+                $year = trim(Input::get('month'));
+                $date = date("$year-01-01");
+                $enddate = date("$year-12-t");
+                $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
+                        ->where('created_at', '>=', "$date")
+                        ->where('created_at', '<=', "$enddate")
+                        ->get();
+            } else if ($val == "Day") {
+                $month = Input::get('month');
+                $date = date("Y-m-01", strtotime($month));
+                $enddate = date("Y-m-t", strtotime($month));
+
+
+                $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
+                        ->where('created_at', '>', "$date")
+                        ->where('created_at', '<', "$enddate")
+                        ->get();
+            }
+        } else {
+            $enddate = date("Y-m-d");
+            $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
+                    ->where('created_at', '>', "$date")
+                    ->get();
+        }
         foreach ($delivery_order_data as $delivery_order_info) {
             $arr = array();
             $arr_money = array();
@@ -295,7 +326,7 @@ class LabourController extends Controller {
                     $loader_arr['delivery_id'] = $delivery_order_info['id'];
                     $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
                     $loader_arr['labours'] = $loaders;
-                    $loader_arr['tonnage'] = round($deliver_sum / count($loaders, 2));
+                    $loader_arr['tonnage'] = round($deliver_sum / count($loaders) / 1000, 2);
                     $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
                 }
             }
@@ -319,19 +350,38 @@ class LabourController extends Controller {
                             'labour_id' => $value,
                             'date' => $data['delivery_date'],
                             'tonnage' => $data['tonnage'],
-                            'delivery_sum_money' => isset($data['delivery_sum_money'])?$data['delivery_sum_money']:'0',
+                            'delivery_sum_money' => isset($data['delivery_sum_money']) ? $data['delivery_sum_money'] : '0',
                         ];
                     }
                 }
             }
         }
-
-
-        return view('labour_performance')
+        if ($request->ajax()) {
+            if ($val == "Month") {
+                $html = view('_labours_performance')
                         ->with('labours', $labours)
                         ->with('data', $final_array)
-                        ->with('performance_index', true);
-
+                        ->with('enddate', $enddate)
+                        ->with('filter', 'Months')
+                        ->with('performance_index', true)
+                        ->render();
+            } else {
+                $html = view('_labours_performance')
+                        ->with('labours', $labours)
+                        ->with('data', $final_array)
+                        ->with('enddate', $enddate)
+                        ->with('filter', 'Days')
+                        ->with('performance_index', true)
+                        ->render();
+            }
+            return Response::json(['success' => true, 'date' => $enddate, 'final_array' => $final_array, 'labours' => $labours, 'performance_index', true, 'html' => $html]);
+        } else {
+            return view('labour_performance')
+                            ->with('labours', $labours)
+                            ->with('data', $final_array)
+                            ->with('enddate', $enddate)
+                            ->with('performance_index', true);
+        }
     }
 
 }
