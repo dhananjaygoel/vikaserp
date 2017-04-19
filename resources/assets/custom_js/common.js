@@ -5,35 +5,30 @@
  */
 
 $(document).ready(function () {
-        $('#loaded_by_select,#multi-territory-location ,#labour_select').multiselect({
-            nonSelectedText :'Please Select',
-            includeSelectAllOption: true,
-            enableFiltering:true,
-            buttonWidth: '400px'
-        });
-       
-//        $('#loaded_by_select').selectpicker({
-//            style: 'btn-info',
-//            size: 4
-//          });
-
-    $(document).on('click','.delete-loader',function(){
+    
+    $('#loaded_by_select,#multi-territory-location ,#labour_select').multiselect({
+        nonSelectedText: 'Please Select',
+        includeSelectAllOption: true,
+        enableFiltering: true,
+        buttonWidth: '400px'
+    });
+    
+    $(document).on('click', '.delete-loader', function () {
         var baseurl = $('#baseurl').attr('name');
         $('#delete_loaded_by_form').attr('action', baseurl + '/performance/loaded-by/' + $(this).data('id'));
         $('#delete_loaded_by_modal').modal('show');
-    });
-    
-    $.validator.addMethod("noSpace", function (value, element) {
-        return $.trim(value) != "";
-    }, "This field is required");
-        
-    $(document).on('click', '.delete-territory', function (event) {
-           var territory_id = $(this).data('id');
-           var url=$('#baseurl').attr('name')+"/territory/"+territory_id;
-           $('#delete_teritory_form').attr('action',url);
-           $('#delete_location_modal').modal('show');
-        });
+    });    
 
+    $(document).on('click', '.delete-territory', function (event) {
+        var territory_id = $(this).data('id');
+        var url = $('#baseurl').attr('name') + "/territory/" + territory_id;
+        $('#delete_teritory_form').attr('action', url);
+        $('#delete_location_modal').modal('show');
+    });
+
+//    $.validator.addMethod("noSpace", function (value, element) {
+//        return $.trim(value) != "";
+//    }, "This field is required");
 //    $("form[id='add_loaded_by']").validate({
 //        rules: {
 //            "first_name": {required: true, noSpace: true, minlength: 2, maxlength: 100},
@@ -79,38 +74,81 @@ $(document).ready(function () {
 //        }
 //    });
 
-    $(document).on('change','#inventory_report_filter',function(){
+    $(document).on('change', '#inventory_report_filter', function () {
         var product_id = $(this).val();
         var baseurl = $('#baseurl').attr('name');
-        var url = baseurl+'/get_inventory_report';    
+        var url = baseurl + '/get_inventory_report';
         $.ajax({
-             url: url,
-             type: 'get',
-             data: {
-                 product_id: product_id,                
-             },
-             success: function(data) {
-                 $('.report-table-content').html(data.html)
-             },
-             complete: function() {}
+            url: url,
+            type: 'get',
+            data: {
+                product_id: product_id,
+            },
+            success: function (data) {
+                $('.report-table-content').html(data.html)
+            },
+            complete: function () {
+            }
         })
     });
-    
-    $(document).on('change','#inventory_price_list_filter',function(){
+
+    $(document).on('change', '#inventory_price_list_filter', function () {
         var product_id = $(this).val();
-        //alert(product_id);
         var baseurl = $('#baseurl').attr('name');
-        var url = baseurl+'/get_inventory_price_list';
+        var url = baseurl + '/get_inventory_price_list';
         $.ajax({
-             url: url,
-             type: 'get',
-             data: {
-                 product_id: product_id,                
-             },
-             success: function(data) {
-                 $('.report-table-content').html(data.html)
-             },
-             complete: function() {}
+            url: url,
+            type: 'get',
+            data: {
+                product_id: product_id,
+            },
+            success: function (data) {
+                $('.report-table-content').html(data.html)
+            },
+            complete: function () {
+            }
+        })
+    });
+    $(document).on('change', '#labour_chart_filter', function () {
+        var val = $(this).val();
+        var month_val = $('#performance-days').val();
+        if (val == "Month") {
+            $('#month_div').css('display', 'block');
+        } else {
+            $('#month_div').css('display', 'none');
+        }
+        var baseurl = $('#baseurl').attr('name');
+        var url = baseurl + '/performance/loaded-by/loaded-by-performance';
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+                val: val,
+                month: month_val
+            },
+            success: function (data) {
+                $('.report_table').html(data.html)
+            },
+            complete: function () {
+            }
+        })
+    });
+    $(document).on('submit', '.search_form', function () {
+        var month_val = $('#performance-days').val();
+        var baseurl = $('#baseurl').attr('name');
+        var url = baseurl + '/performance/loaded-by/loaded-by-performance';
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+                val: 'Month',
+                month: month_val
+            },
+            success: function (data) {
+                $('.report_table').html(data.html)
+            },
+            complete: function () {
+            }
         })
     });
 });

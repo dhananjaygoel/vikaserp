@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\DashboardController;
+use Illuminate\Support\Facades\Response;
 
 class LoadByController extends Controller {
 
@@ -159,7 +160,26 @@ class LoadByController extends Controller {
         $loader_array = array();
         $loaders_data = array();
         $loaded_by = LoadedBy::all();
-        $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')->get();
+        $date = date('Y-m-01', time());        
+        if(Input::has('val')){
+            $val = Input::get('val');
+            if($val == "Month"){
+                $month = Input::get('month');
+                $date = date("Y-m-01",  strtotime($month));
+                $enddate = date("Y-m-31",  strtotime($month));
+                $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
+                        ->where('created_at','>', "$date")
+                        ->where('created_at','<', "$enddate")
+                        ->get();
+            }else if($val == "Day"){
+                $date = date('Y-m-01', time());
+                $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
+                        ->where('created_at','>', "$date")->get();
+            }
+        }else{            
+            $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
+                    ->where('created_at','>', "$date")->get();
+        }
         foreach ($delivery_order_data as $delivery_order_info) {
             $arr = array();
             $loaders = array();
@@ -180,8 +200,9 @@ class LoadByController extends Controller {
                     array_push($loader_array, $loaders);
 
                     $loader_arr['delivery_id'] = $delivery_order_info['id'];
-                    $loader_arr['delivery_date'] = $delivery_order_info['created_at'];
-                    $loader_arr['delivery_sum'] = $arr;
+                    $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
+                    $loader_arr['tonnage'] = $deliver_sum / count($loaders, 2);
+//                    $loader_arr['tonnage'] = round($deliver_sum / count($loaders, 2));
                     $loader_arr['loaders'] = $loaders;
                     
                 }
@@ -189,62 +210,40 @@ class LoadByController extends Controller {
             $loaders_data[$var] = $loader_arr;
             $var++;            
         }
-        $cnt = 0;
-        $counter = 0;
-        $loader_cnt = array();
-        foreach ($loaders_data as $data) {
-            $date_arr = array();
-            $date_val = $data['delivery_date']->toDateTimeString();
-            $date_arr['delivery_date'] = $date_val;            
-            if (in_array($date_val, $date_arr)) {
-                foreach ($data['loaders'] as $key => $loader) {
-                    if (array_key_exists($loader, $loader_cnt)){
-                        $val = $loader_cnt[$loader];
-                        $loader_cnt[$loader] = $val +  ($data['delivery_sum'][0] / count($data['loaders']));
-//                        $sum1 = $date_arr['delivery_sum'];
-//                        $date_arr['delivery_sum'] = $sum1 + $data['delivery_sum'][0];
-                    }else{
-                        $loader_cnt[$loader] = $data['delivery_sum'][0] / count($data['loaders']);
-//                        $date_arr['delivery_sum'] = $data['delivery_sum'][0];
+        $loaders_data = array_filter(array_map('array_filter', $loaders_data));
+        $loaders_data = array_values($loaders_data);
+        $final_array = array();
+        $k = 0;
+        foreach ($loaded_by as $key => $labour) {
+            foreach ($loaders_data as $key_data => $data) {
+                foreach ($data['loaders'] as $key_value => $value) {
+                    if ($value == $labour['id']) {
+                        $final_array[$k++] = [
+                            'delivery_id' => $data['delivery_id'],
+                            'loader_id' => $value,
+                            'date' => $data['delivery_date'],
+                            'tonnage' => $data['tonnage']
+                        ];
                     }
-                    $date_arr['delivery_sum'] = $data['delivery_sum'][0];
                 }
-                
-                $cnt++;
             }
-            
-            $date_arr['count'] = $cnt;
-            $date_arr['loaders'] = $loader_cnt;
-            $final_arary[$counter] = $date_arr;
-            $counter++;
         }
-//        foreach ($loaders_data as $data) {
-//            $date_arr = array();
-//            $loader_cnt = array();
-//            $date_val = $data['delivery_date']->toDateTimeString();
-////            dd($data['delivery_sum'][0]/count($data['loaders']));
-//            $date_arr['delivery_date'] = $date_val;
-//            if (in_array($date_val, $date_arr)) {
-//                $date_arr['delivery_id'] = $data['delivery_id'];
-////                $date_arr['loaders'] = $data['loaders'];
-//                foreach ($data['loaders'] as $key => $loader) {
-//                    $loader_cnt[$loader] = $data['delivery_sum'][0] / count($data['loaders']);
-////                    $date_arr['loaders'][$loader] = $data['delivery_sum'][0] / count($data['loaders']);
-//                }
-//                $date_arr['delivery_sum'] = $data['delivery_sum'];
-//                $cnt++;
-//            }
-//            $date_arr['count'] = $cnt;
-//            $final_arary[$counter] = $date_arr;
-//            $counter++;
-//        }
-//        dd($final_arary);
-//        dd($loader_cnt);
-        dd($loaders_data);
-        return view('loaded_by_performance')
-                        ->with('loaders_data', $final_arary)
-//                        ->with('loaders_data', $loaders_data)
+
+        if($request->ajax()){
+            $html = view('_loaded_by_performance')
+                            ->with('date', $date)
+                            ->with('final_array', $final_array)
+                            ->with('loaded_by', $loaded_by)
+                            ->with('performance_index', true)
+                            ->render();
+            return Response::json(['success' => true, 'date' => $date, 'final_array' => $final_array, 'loaded_by' => $loaded_by, 'performance_index', true, 'html' => $html]);
+        }else{
+                    return view('loaded_by_performance')
+                        ->with('date', $date)
+                        ->with('final_array', $final_array)
                         ->with('loaded_by', $loaded_by)
                         ->with('performance_index', true);
+        }
+        
     }
 }

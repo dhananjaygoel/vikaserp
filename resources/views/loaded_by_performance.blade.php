@@ -12,37 +12,24 @@
                     <div class="col-md-12">
                         <form method="GET" action="javascript:;">
                             <select class="form-control" id="labour_chart_filter" name="labour_chart_filter">
-                                <option value="Day">Day wise</option>
+                                <option value="Day" selected="selected">Day wise</option>
                                 <option value="Month">Month wise</option>
                             </select>
                         </form>
                     </div>
 
                 </div>
-                <div class="col-lg-12">
-
+                <div class="col-lg-12" id="month_div" style="display: none;">
                     <div class="form-group pull-right">
-                        <div class="col-md-6">
-                            <form method="GET" action="javascript:;">
-                                <select class="form-control" id="yesr_list" name="yesr_list">
-                                    <?php
-                                    for ($m = 1; $m <= 12; $m++) {
-                                        $month = date('M', mktime(0, 0, 0, $m));
-                                        $current_month = date('M', mktime(0, 0, 0));
-                                        ?>                                    
-                                        <option value="{{$month}}" {{($month == $current_month)?'selected':''}} >{{$month}}</option>
-<?php } ?>
-                                </select>
-                            </form>
-                        </div>
-                        <div class="col-md-6">
-                            <form method="GET" action="javascript:;">
-                                <select class="form-control" id="yesr_list" name="yesr_list">
-                                    <option value="2017">2017</option>
-                                    <option value="2016">2016</option>
-                                    <option value="2015">2015</option>
-                                </select>
-                            </form>
+                        <div class="col-md-10 pull-right">
+                            <form class="search_form" method="GET" action="javascript:;">
+                                <div class="col-md-8">
+                                    <input name="performance" id="performance-days" class="form-control performance-days" value="{{date('F-Y', mktime(0, 0, 0))}}"/>
+                                </div>
+                                <div class="col-md-4  pull-right">
+                                    <input type="submit" disabled="" name="search_data" id="search_month" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                                </div>
+                             </form>
                         </div>
                     </div>
                 </div>
@@ -65,114 +52,63 @@
                                 <strong> {{ Session::get('error') }} </strong>
                             </div>
                             @endif
-                            <div class="table-responsive">
+                            <div class="table-responsive report_table">
                                 <table id="day-wise" class="table table-bordered complex-data-table">
                                     <tbody>
-                                        <?php
-                                            $today = date('d');
-                                        ?>
+                                        
+                                        <?php $today = date('d'); ?>
                                         <tr>
                                             <td colspan="2" rowspan="1"></td>
-                                            <td colspan="{{$today-1}}"><b>Date</b></td>
+                                            <td colspan="{{$today}}"><b>Date</b></td>
                                         </tr>
                                         <tr class="text-bold">
                                             <td colspan="2"></td>
-                                            @for($i = 1; $i< $today ; $i++ )
+                                            @for($i = 1; $i<= $today ; $i++ )
                                                 <td>{{ $i }}</td>
                                             @endfor
                                         </tr>
                                         @if(isset($loaded_by))
-                                            <?php  ?>
+                                            <?php $date_val = substr($date,0,8); ?>
                                             @foreach($loaded_by as $loader_val)
                                             <tr>
                                                 <td rowspan="2"><b>{{$loader_val->first_name}}</B></td>                                                
-                                                <td><b>Tonnage</b></td>
+                                                <td><b>Tonnage</b></td>    
+                                                @for($i = 1; $i<= $today ; $i++ )
+                                                <?php 
+                                                $k=0;
+                                                $tangage=0;
+                                                    foreach ($final_array as $key => $value) {
+                                                        if($value['date']=="$date_val".$i){
+                                                            if($value['loader_id'] == $loader_val->id){
+                                                                $k++;
+                                                                $tangage +=$value['tonnage'];
+                                                            }
+                                                        }
+                                                    }
+                                                ?>
+                                                 <td>{{ number_format((float)$tangage, 2, '.', '') }}</td>
+                                                @endfor
                                                 <tr>
-                                                    <td><b>Delivery</b></td>                                                                                                
+                                                    <td><b>Delivery</b></td>
+                                                    @for($i = 1; $i<= $today ; $i++ )
+                                                    <?php 
+                                                   $k=0;
+                                                   $tangage=0;
+                                                       foreach ($final_array as $key => $value) {
+                                                           if($value['date']=='2017-04-'.$i){
+                                                               if($value['loader_id'] == $loader_val->id){
+                                                                   $k++;
+                                                                   $tangage +=$value['tonnage'];
+                                                               }
+                                                           }
+                                                       }
+                                                   ?>
+                                                   <td>{{$k}}</td>
+                                                   @endfor
                                                 </tr>
                                             </tr>
                                             @endforeach
                                         @endif
-                                        <tr>
-                                            <td rowspan="2"><b>Rakshit</B></td>
-                                            <td><b>Tonnage</b></td>
-                                            <td>18.25</td>
-                                            <td>24.12</td>
-                                            <td>08.34</td>
-                                            <td>40.34</td>
-                                            <td>68.14</td>
-                                            <td>43.45</td>
-                                            <td>41.44</td>
-                                            <td>28.12</td>
-                                            <td>26.75</td>
-                                            <td>19.95</td>
-                                            <td>24.55</td>
-                                            <td>11.75</td>
-                                            <td>16.56</td>
-                                            <td>74.33</td>
-                                            <td>15.42</td>
-                                            <td>20.44</td>
-                                        </tr>
-                                        <tr>
-                                            <td><b>Delivery</b></td>
-                                            <td>12.45</td>
-                                            <td>16.65</td>
-                                            <td>24.75</td>
-                                            <td>20.12</td>
-                                            <td>34.24</td>
-                                            <td>16.75</td>
-                                            <td>32.35</td>
-                                            <td>17.14</td>
-                                            <td>23.04</td>
-                                            <td>17.12</td>
-                                            <td>16.33</td>
-                                            <td>26.42</td>
-                                            <td>38.33</td>
-                                            <td>34.75</td>
-                                            <td>36.96</td>
-                                            <td>24.42</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td rowspan="2"><b>Nikhil</b></td>
-                                            <td><b>Tonnage</b></td>
-                                            <td>18.45</td>
-                                            <td>24.65</td>
-                                            <td>08.41</td>
-                                            <td>40.23</td>
-                                            <td>68.41</td>
-                                            <td>43.23</td>
-                                            <td>41.12</td>
-                                            <td>28.78</td>
-                                            <td>26.98</td>
-                                            <td>19.75</td>
-                                            <td>24.25</td>
-                                            <td>11.96</td>
-                                            <td>16.36</td>
-                                            <td>74.52</td>
-                                            <td>15.36</td>
-                                            <td>20.36</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td><b>Delivery</b></td>
-                                            <td>12.46</td>
-                                            <td>16.34</td>
-                                            <td>24.42</td>
-                                            <td>20.34</td>
-                                            <td>34.02</td>
-                                            <td>16.36</td>
-                                            <td>32.15</td>
-                                            <td>17.11</td>
-                                            <td>23.21</td>
-                                            <td>17.32</td>
-                                            <td>16.42</td>
-                                            <td>26.15</td>
-                                            <td>38.42</td>
-                                            <td>34.63</td>
-                                            <td>36.42</td>
-                                            <td>24.15</td>
-                                        </tr>
                                     </tbody>
                                 </table>
 

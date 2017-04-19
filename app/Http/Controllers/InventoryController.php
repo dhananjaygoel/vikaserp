@@ -598,6 +598,7 @@ class InventoryController extends Controller {
         $size_array=[];
         $thickness_array=[];
         $report_arr=[];
+        $final_arr=[];
         foreach($product_last[0]['product_sub_categories'] as $sub_cat){           
             if(!in_array($sub_cat->thickness, $thickness_array)){
                array_push($thickness_array, $sub_cat->thickness);
@@ -610,7 +611,7 @@ class InventoryController extends Controller {
         }        
         foreach($size_array as $size){
             foreach($thickness_array as $thickness){
-                foreach($product_last[0]['product_sub_categories'] as $sub_cat){         
+                foreach($product_last[0]['product_sub_categories'] as $sub_cat){
                     if($sub_cat->thickness==$thickness && $size==$sub_cat->size){
                         $inventory=$sub_cat['product_inventory'];
                         $total_qnty=0;
@@ -621,14 +622,21 @@ class InventoryController extends Controller {
                         }
                         $report_arr[$size][$thickness]=$total_qnty;
                     }
-                    if(!isset($sub_cat->thickness) && !isset($sub_cat->size)){
-                        $total_qnty = "-";
-                        $report_arr[$size][$thickness]=$total_qnty;
-                    }
                 }
             }
         }
-       
+        
+        foreach($size_array as $size){
+            foreach($thickness_array as $thickness){
+                if(isset($report_arr[$size][$thickness])){
+                    $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
+                }else{
+                    $final_arr[$size][$thickness] = "-";
+                }
+            }
+        }       
+        
+        $report_arr=$final_arr;
         return view('inventory_report')->with('product_cat',$product_cat)
                                        ->with('product_last',$product_last)
                                        ->with('thickness_array',$thickness_array)
@@ -643,6 +651,7 @@ class InventoryController extends Controller {
         $size_array=[];
         $thickness_array=[];
         $report_arr=[];
+        $final_arr=[];
         foreach($product_last[0]['product_sub_categories'] as $sub_cat){
             if($sub_cat->thickness!=''){
                 if(!in_array($sub_cat->thickness, $thickness_array)){               
@@ -658,20 +667,32 @@ class InventoryController extends Controller {
         
         foreach($size_array as $size){
             foreach($thickness_array as $thickness){
-                    foreach($product_last[0]['product_sub_categories'] as $sub_cat){           
-                        if($sub_cat->thickness==$thickness){
-                            $inventory=$sub_cat['product_inventory'];
-                            $total_qnty=0;
-                            if(isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)){
-                                 $total_qnty = $inventory->physical_closing_qty+$inventory->pending_purchase_advise_qty;
-                            }else{
-                                 $total_qnty = "-";
-                            }
-                            $report_arr[$sub_cat->size][$sub_cat->thickness]=$total_qnty;
+                foreach($product_last[0]['product_sub_categories'] as $sub_cat){
+                    if($sub_cat->thickness==$thickness && $size==$sub_cat->size){
+                        $inventory=$sub_cat['product_inventory'];
+                        $total_qnty=0;
+                        if(isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)){
+                             $total_qnty = $inventory->physical_closing_qty+$inventory->pending_purchase_advise_qty;
+                        }else{
+                             $total_qnty = "-";
                         }
+                        $report_arr[$size][$thickness]=$total_qnty;
                     }
+                }
             }
         }
+        
+        foreach($size_array as $size){
+            foreach($thickness_array as $thickness){
+                if(isset($report_arr[$size][$thickness])){
+                    $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
+                }else{
+                    $final_arr[$size][$thickness] = "-";
+                }
+            }
+        }       
+        
+        $report_arr=$final_arr;
         $html = view('_inventory_report')->with('product_cat',$product_cat)
                                        ->with('product_last',$product_last)
                                        ->with('thickness_array',$thickness_array)
@@ -690,6 +711,7 @@ class InventoryController extends Controller {
         $size_array=[];
         $thickness_array=[];
         $report_arr=[];
+        $final_arr=[];
         foreach($product_last[0]['product_sub_categories'] as $sub_cat){           
             if(!in_array($sub_cat->thickness, $thickness_array)){
                array_push($thickness_array, $sub_cat->thickness);
@@ -711,7 +733,17 @@ class InventoryController extends Controller {
                 }
             }        
         }
-       
+        foreach($size_array as $size){
+            foreach($thickness_array as $thickness){
+                if(isset($report_arr[$size][$thickness])){
+                    $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
+                }else{
+                    $final_arr[$size][$thickness] = "-";
+                }
+            }
+        }       
+        
+        $report_arr=$final_arr;
         return view('inventory_price_list')->with('product_cat',$product_cat)
                                        ->with('product_last',$product_last)
                                        ->with('thickness_array',$thickness_array)
@@ -727,6 +759,7 @@ class InventoryController extends Controller {
         $size_array=[];
         $thickness_array=[];
         $report_arr=[];
+        $final_arr=[];
         foreach($product_last[0]['product_sub_categories'] as $sub_cat){
             if($sub_cat->thickness!=''){
                 if(!in_array($sub_cat->thickness, $thickness_array)){               
@@ -751,6 +784,18 @@ class InventoryController extends Controller {
                 }
             }        
         }
+        
+        foreach($size_array as $size){
+            foreach($thickness_array as $thickness){
+                if(isset($report_arr[$size][$thickness])){
+                    $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
+                }else{
+                    $final_arr[$size][$thickness] = "-";
+                }
+            }
+        }       
+        
+        $report_arr=$final_arr;
         
         $html = view('_inventory_price_list')->with('product_cat',$product_cat)
                                        ->with('product_last',$product_last)
