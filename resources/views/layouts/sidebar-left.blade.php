@@ -356,10 +356,24 @@
                         </a>
                     </li>
                     @endif
-                    <li class="{{ (Request::is('inventory*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Inventory">
+                    <li class="{{ (Request::is('inventory') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Inventory">
                         <a href="{{url("inventory")}}">
                             <i class="fa fa-cubes" aria-hidden="true"></i>
                             <span>Inventory</span>
+                            <span class="label label-info label-circle pull-right"></span>
+                        </a>
+                    </li>
+                    <li class="{{ (Request::is('inventory_report*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Inventory Report">
+                        <a href="{{url("inventory_report")}}">
+                            <i class="fa fa-table" aria-hidden="true"></i>
+                            <span>Inventory Report</span>
+                            <span class="label label-info label-circle pull-right"></span>
+                        </a>
+                    </li>
+                    <li class="{{ (Request::is('inventory_price_list*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Inventory Price List">
+                        <a href="{{url("inventory_price_list")}}">
+                            <i class="fa fa-table" aria-hidden="true"></i>
+                            <span>Inventory Price List</span>
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>

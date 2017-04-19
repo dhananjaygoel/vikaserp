@@ -131,6 +131,38 @@ $(document).ready(function () {
             }
         })
     });
+    
+    $(document).on('click','.inventory-price-value',function(){
+        var product_id = $(this).data('product');
+        var thickness = $(this).data('thickness');
+        var size = $(this).data('size');
+        var price = $(this).val();
+        $('#modal_price').attr("value",price);        
+        $('#modal_price').val(price);                
+        $('#modal_price').data("id",product_id);
+        $('#modal_price').attr("data-id",product_id);
+        $('#prod-thickness').val(thickness);
+        $('#prod-size').val(size);
+        $('#price_list_modal').modal('show');
+    });
+    
+    $(document).on('click','.modal-price-save',function(){
+        var new_price = $('#inventory_price_form').find('#modal_price').val();
+        var product_id = $('#inventory_price_form').find('#modal_price').data('id');
+        var thickness = $('#inventory_price_form').find('#prod-thickness').val();
+        var size = $('#inventory_price_form').find('#prod-size').val();
+        var url = baseurl+'/set_inventory_price';
+        $.ajax({
+             url: url,
+             type: 'get',
+             data: { product_id: product_id,size: size,thickness:thickness,new_price:new_price},
+             success: function(data) {
+                 $('.inventory-price-value[data-thickness="'+ thickness +'"][data-size="'+ size +'"]').val(new_price);
+             },
+             complete: function() {}
+        })
+    });
+    
     $(document).on('change', '#loaded_by_chart_filter', function () {
         var val = $(this).val();
         var month_val = $('#performance-days').val();

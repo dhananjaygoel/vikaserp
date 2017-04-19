@@ -9,15 +9,15 @@
             @endif                                            
         </tr>                                        
         @foreach($report_arr as $key=>$record)
-        <tr>                                            
+        <tr class="text-center">                                            
             <td>{{$key}}</td>                                                                                        
             @if(isset($record))
-                @foreach($record as $value)
-                <td>
-                   @if(isset($value))
-                        {{$value}}
+                @foreach($record as $key1=>$value)
+                <td class="text-center">
+                   @if(isset($value) && $value!="-")
+                   <input class="form-control inventory-price-value" type="text" value="{{$value}}" data-size="{{$key}}"  data-thickness="{{$key1}}" data-product="@if(isset($product_id)){{$product_id}}@endif">
                    @else
-                        {{"-"}}     
+                        {{$value}}     
                    @endif
                 </td>
                 @endforeach                                         
