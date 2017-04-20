@@ -22,6 +22,45 @@
     float: left;
     margin-top: 20px;
 }
+
+.table {
+    margin-bottom: 6px !important;
+}
+.table-bordered {
+    border: 1px solid #ddd;
+}
+.table {
+    margin-bottom: 20px;
+    max-width: 100%;
+    width: 100%;
+}
+.text-center {
+    text-align: center;
+}
+.table-bordered {
+    border: 1px solid #ddd;
+}
+.table {
+    margin-bottom: 20px;
+    max-width: 100%;
+    width: 100%;
+}
+.text-center {
+    text-align: center;
+}
+table {
+    background-color: transparent;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {
+    border-top: 1px solid #ddd;
+    line-height: 1.42857;
+    padding: 8px;
+    vertical-align: top;
+}
 </style>
 <table id="day-wise" class="table table-bordered text-center complex-data-table">
         <tbody>
