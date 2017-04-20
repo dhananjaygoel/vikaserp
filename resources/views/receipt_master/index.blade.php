@@ -41,11 +41,18 @@
                         </div>
                         @endif
                         @if (Session::has('success'))
-                        <div class="alert alert-success alert-success1">{{Session::get('success')}}</div>
+                        <div class="alert alert-success alert-success1">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">&times;</span></button>
+                            {{Session::get('success')}}
+                        </div>
                         @endif
                         @if (Session::has('flash_message'))
-                        <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
+                        <div id="flash_error" class="alert alert-info no_data_msg_container">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">&times;</span></button>
+                            {{ Session::get('flash_message') }}
+                        </div>
                         @endif
+                        @if(count($receipts)>0)
                         <div class="table-responsive tablepending">
                             <table id="table-example" class="table table-hover">
                                 <thead>
@@ -57,15 +64,25 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php $i = 1; ?>
+                                    @foreach($receipts as $receipt)
                                     <tr>
-                                        <td>1</td>
-                                        <td>2017-04-14</td>
-                                        <td>01:01:01</td>
+                                        <td>{{ $i }}</td>
+                                        <td>{{date("Y-m-d", strtotime($receipt['created_at'])) }}</td>
+                                        <td>{{date("H:i:s", strtotime($receipt['created_at'])) }}</td>
                                         <td><a href="#"><i class="fa fa-pencil"></i></a></td>
                                     </tr>
+                                    <?php 
+                                    $i++; ?>
+                                    @endforeach
                                 </tbody>
                             </table>
-                        </div>    
+                        </div>
+                        @else
+                        <div class="alert alert-info no_data_msg_container">
+                            Currently no user available.
+                        </div>
+                        @endif
                     </div>    
                 </div>
             </div>

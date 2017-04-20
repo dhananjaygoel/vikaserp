@@ -2,7 +2,7 @@
     <tbody>
         @if(count($report_arr)>0 && isset($report_arr))
         <tr style="width:50px; height:50px;">
-            <td class="crossout" colspan="1" rowspan="1"><span class="size-head">Size</span><span class="thickness-head">Thickness</span></td> 
+            <td class="crossout" colspan="1" rowspan="1"><span class="size-head">{{$product_column}}</span><span class="thickness-head">Thickness</span></td> 
             @if(isset($thickness_array))
                 @foreach($thickness_array as $thickness)
                    <td>{{$thickness}}</td>
