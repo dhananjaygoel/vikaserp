@@ -94,7 +94,7 @@
             <td></td>
             <td></td>
             <td>{{$product['order_product_details']->alias_name}}</td>
-            <td>{{$product->quantity}}</td>
+            <td>{{isset($product->quantity)?$product->quantity:'0'}}</td>
             <td>
                 @foreach($units as $unit)
                 {{($unit->id == $product->unit_id)? $unit->unit_name:''}}
