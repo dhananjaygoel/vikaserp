@@ -102,7 +102,7 @@
                                                         }
                                                     }
                                                 ?>
-                                                 <td>{{ number_format((float)$tangage, 2, '.', '') }}</td>
+                                                 <td>{{ $tangage }}</td>
                                                 @endfor
                                                 <tr>
                                                     <td><b>Delivery</b></td>
@@ -127,100 +127,7 @@
                                         @endif
                                     </tbody>
                                 </table>
-
                             </div>
-                            <div class="table-responsive" >
-                                <table id="month-wise" class="table table-bordered complex-data-table" style="display: none">
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="2" rowspan="1"></td>
-                                            <td colspan="31"><b>Month</b></td>
-                                        </tr>
-                                        <tr class="text-bold">
-                                            <td colspan="2"></td>
-                                            <td>Jan</td>
-                                            <td>Feb</td>
-                                            <td>March</td>
-                                            <td>April</td>
-                                            <td>May</td>
-                                            <td>Jun</td>
-                                            <td>Jully</td>
-                                            <td>Aug</td>
-                                            <td>Sep</td>
-                                            <td>Oct</td>
-                                            <td>Nov</td>
-                                            <td>Dec</td>
-                                        </tr>
-                                        <tr>
-                                            <td rowspan="2"><b>Rakshit</B></td>
-                                            <td><b>Tonnage</b></td>
-                                            <td>18.25</td>
-                                            <td>24.12</td>
-                                            <td>08.34</td>
-                                            <td>40.34</td>
-                                            <td>68.14</td>
-                                            <td>43.45</td>
-                                            <td>41.44</td>
-                                            <td>28.12</td>
-                                            <td>26.75</td>
-                                            <td>19.95</td>
-                                            <td>24.55</td>
-                                            <td>11.75</td>
-                                        </tr>
-                                        <tr>
-                                            <td><b>Delivery</b></td>
-                                            <td>12.45</td>
-                                            <td>16.65</td>
-                                            <td>24.75</td>
-                                            <td>20.12</td>
-                                            <td>34.24</td>
-                                            <td>16.75</td>
-                                            <td>32.35</td>
-                                            <td>17.14</td>
-                                            <td>23.04</td>
-                                            <td>17.12</td>
-                                            <td>16.33</td>
-                                            <td>26.42</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td rowspan="2"><b>Nikhil</b></td>
-                                            <td><b>Tonnage</b></td>
-                                            <td>18.45</td>
-                                            <td>24.65</td>
-                                            <td>08.41</td>
-                                            <td>40.23</td>
-                                            <td>68.41</td>
-                                            <td>43.23</td>
-                                            <td>41.12</td>
-                                            <td>28.78</td>
-                                            <td>26.98</td>
-                                            <td>19.75</td>
-                                            <td>24.25</td>
-                                            <td>11.96</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td><b>Delivery</b></td>
-                                            <td>12.46</td>
-                                            <td>16.34</td>
-                                            <td>24.42</td>
-                                            <td>20.34</td>
-                                            <td>34.02</td>
-                                            <td>16.36</td>
-                                            <td>32.15</td>
-                                            <td>17.11</td>
-                                            <td>23.21</td>
-                                            <td>17.32</td>
-                                            <td>16.42</td>
-                                            <td>26.15</td>
-                                        </tr>
-                                    </tbody>
-                                </table>          
-
-
-                            </div>
-
                         </div>
                     </div>
                 </div>
