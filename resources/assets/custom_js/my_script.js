@@ -711,7 +711,7 @@ $('.print_delivery_challan').click(function () {
 });
 
 $('.print_inventory_report_list').click(function () {
-    $('.print_inventory_report').html('Please wait..').prop('disabled', 'disabled');
+    $('.print_inventory_report_list').html('Please wait..').prop('disabled', 'disabled');
     var product_id = $(this).data('id');
     var base_url = $('#baseurl').attr('name');    
     $.ajax({
