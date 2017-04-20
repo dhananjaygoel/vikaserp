@@ -55,7 +55,13 @@
                                         <td>{{$c->owner_name}}</td>
                                         <td>{{$c->contact_person}}</td>
                                         <td>{{$c->phone_number1}} </td>
-                                        <td>Pune</td>
+                                         <?php $temp = 'N/A'?>
+                                        @foreach($locations as $l)
+                                    @if($l->id == $c->delivery_location_id)
+                                    <?php $temp = $l->area_name?>
+                                    @endif
+                                    @endforeach
+                                        <td>{{$temp}}</td>
                                         <td class="text-center">
                                             <a href="{{url('pending_customers/'.$c->id)}}" class="table-link" title="Add to customer">
                                                 <span class="fa-stack">
