@@ -603,6 +603,7 @@ class InventoryController extends Controller {
         $product_id = $product_last[0]->id;        
         $product_type= $product_last[0]->product_type_id;        
         if($product_type==1){
+            $product_column="Size";
             foreach($product_last[0]['product_sub_categories'] as $sub_cat){
                 if(!in_array($sub_cat->thickness, $thickness_array)){
                    array_push($thickness_array, $sub_cat->thickness);
@@ -631,6 +632,7 @@ class InventoryController extends Controller {
             }
         }
         if($product_type==2){
+            $product_column="Product Alias";
             array_push($thickness_array, "NA");
             foreach($product_last[0]['product_sub_categories'] as $sub_cat){
                 if(!in_array($sub_cat->alias_name, $size_array)){
@@ -669,7 +671,8 @@ class InventoryController extends Controller {
                                        ->with('product_id',$product_id)
                                        ->with('product_last',$product_last)
                                        ->with('thickness_array',$thickness_array)
-                                       ->with('report_arr',$report_arr);
+                                       ->with('report_arr',$report_arr)
+                                       ->with('product_column',$product_column);
     }
     
     public function getInventoryReport(Request $request) {
@@ -683,6 +686,7 @@ class InventoryController extends Controller {
         $final_arr=[];
         $product_type= $product_last[0]->product_type_id;        
         if($product_type==1){
+            $product_column="Size";
             foreach($product_last[0]['product_sub_categories'] as $sub_cat){
                 if(!in_array($sub_cat->thickness, $thickness_array)){
                    array_push($thickness_array, $sub_cat->thickness);
@@ -711,6 +715,7 @@ class InventoryController extends Controller {
             }
         }
         if($product_type==2){
+            $product_column="Product Alias";
             array_push($thickness_array, "NA");
             foreach($product_last[0]['product_sub_categories'] as $sub_cat){
                 if(!in_array($sub_cat->alias_name, $size_array)){
@@ -746,6 +751,7 @@ class InventoryController extends Controller {
                                        ->with('product_last',$product_last)
                                        ->with('thickness_array',$thickness_array)
                                        ->with('report_arr',$report_arr)
+                                       ->with('product_column',$product_column)
                                        ->render();
         
         return Response::json(['success' => true,'html' => $html]);
@@ -764,6 +770,7 @@ class InventoryController extends Controller {
         $final_arr=[];
         $product_type= $product_last[0]->product_type_id;
         if($product_type==1){
+            $product_column="Size";
             foreach($product_last[0]['product_sub_categories'] as $sub_cat){           
                 if(!in_array($sub_cat->thickness, $thickness_array)){
                    array_push($thickness_array, $sub_cat->thickness);
@@ -787,6 +794,7 @@ class InventoryController extends Controller {
             }
         }
         if($product_type==2){
+            $product_column="Product Alias";
             array_push($thickness_array, "NA");
             foreach($product_last[0]['product_sub_categories'] as $sub_cat){
                 if(!in_array($sub_cat->alias_name, $size_array)){
@@ -818,6 +826,7 @@ class InventoryController extends Controller {
                                        ->with('product_id',$product_id)
                                        ->with('product_last',$product_last)
                                        ->with('thickness_array',$thickness_array)
+                                       ->with('product_column',$product_column) 
                                        ->with('report_arr',$report_arr);
     }
     
@@ -833,6 +842,7 @@ class InventoryController extends Controller {
         $final_arr=[];
         $product_type= $product_last[0]->product_type_id;
         if($product_type==1){
+            $product_column="Size";
             foreach($product_last[0]['product_sub_categories'] as $sub_cat){           
                 if(!in_array($sub_cat->thickness, $thickness_array)){
                    array_push($thickness_array, $sub_cat->thickness);
@@ -856,6 +866,7 @@ class InventoryController extends Controller {
             }
         }
         if($product_type==2){
+            $product_column="Product Alias";
             array_push($thickness_array, "NA");
             foreach($product_last[0]['product_sub_categories'] as $sub_cat){
                 if(!in_array($sub_cat->alias_name, $size_array)){
@@ -889,6 +900,7 @@ class InventoryController extends Controller {
                                        ->with('product_id',$product_id) 
                                        ->with('product_last',$product_last)
                                        ->with('thickness_array',$thickness_array)
+                                       ->with('product_column',$product_column)
                                        ->with('report_arr',$report_arr)
                                        ->render();
         
@@ -943,6 +955,7 @@ class InventoryController extends Controller {
         $final_arr=[];
         $product_type= $product_last[0]->product_type_id;
         if($product_type==1){
+            $product_column="Size";
             foreach($product_last[0]['product_sub_categories'] as $sub_cat){           
                 if(!in_array($sub_cat->thickness, $thickness_array)){
                    array_push($thickness_array, $sub_cat->thickness);
@@ -966,6 +979,7 @@ class InventoryController extends Controller {
             }
         }
         if($product_type==2){
+            $product_column="Product Alias";
             array_push($thickness_array, "NA");
             foreach($product_last[0]['product_sub_categories'] as $sub_cat){
                 if(!in_array($sub_cat->alias_name, $size_array)){
@@ -994,9 +1008,9 @@ class InventoryController extends Controller {
         }
         
         $report_arr=$final_arr;
-        Excel::create('Inventory Price List', function($excel) use($product_last,$thickness_array,$report_arr) {
-            $excel->sheet('Inventory Price List', function($sheet) use($product_last,$thickness_array,$report_arr) {
-                $sheet->loadView('excelView.inventory_price_list', array('product_last' => $product_last,'thickness_array'=>$thickness_array,'report_arr'=>$report_arr));
+        Excel::create('Inventory Price List', function($excel) use($product_last,$thickness_array,$report_arr,$product_column) {
+            $excel->sheet('Inventory Price List', function($sheet) use($product_last,$thickness_array,$report_arr,$product_column) {
+                $sheet->loadView('excelView.inventory_price_list', array('product_last' => $product_last,'thickness_array'=>$thickness_array,'report_arr'=>$report_arr,'product_column'=>$product_column));
             });
         })->export('xls');
     }
@@ -1012,6 +1026,7 @@ class InventoryController extends Controller {
         $final_arr=[];
         $product_type= $product_last[0]->product_type_id;        
         if($product_type==1){
+            $product_column="Size";
             foreach($product_last[0]['product_sub_categories'] as $sub_cat){
                 if(!in_array($sub_cat->thickness, $thickness_array)){
                    array_push($thickness_array, $sub_cat->thickness);
@@ -1040,6 +1055,7 @@ class InventoryController extends Controller {
             }
         }
         if($product_type==2){
+            $product_column="Product Alias";
             array_push($thickness_array, "NA");
             foreach($product_last[0]['product_sub_categories'] as $sub_cat){
                 if(!in_array($sub_cat->alias_name, $size_array)){
@@ -1071,9 +1087,9 @@ class InventoryController extends Controller {
         }       
         
         $report_arr=$final_arr;
-        Excel::create('Inventory Report', function($excel) use($product_last,$thickness_array,$report_arr) {
-            $excel->sheet('Inventory Report', function($sheet) use($product_last,$thickness_array,$report_arr) {
-                $sheet->loadView('excelView.inventory_report', array('product_last' => $product_last,'thickness_array'=>$thickness_array,'report_arr'=>$report_arr));
+        Excel::create('Inventory Report', function($excel) use($product_last,$thickness_array,$report_arr,$product_column) {
+            $excel->sheet('Inventory Report', function($sheet) use($product_last,$thickness_array,$report_arr,$product_column) {
+                $sheet->loadView('excelView.inventory_report', array('product_last' => $product_last,'thickness_array'=>$thickness_array,'report_arr'=>$report_arr,'product_column'=>$product_column));
             });
         })->export('xls');
     }
@@ -1088,6 +1104,7 @@ class InventoryController extends Controller {
         $final_arr=[];
         $product_type= $product_last[0]->product_type_id;        
         if($product_type==1){
+            $product_column="Size";
             foreach($product_last[0]['product_sub_categories'] as $sub_cat){
                 if(!in_array($sub_cat->thickness, $thickness_array)){
                    array_push($thickness_array, $sub_cat->thickness);
@@ -1116,6 +1133,7 @@ class InventoryController extends Controller {
             }
         }
         if($product_type==2){
+            $product_column="Product Alias";
             array_push($thickness_array, "NA");
             foreach($product_last[0]['product_sub_categories'] as $sub_cat){
                 if(!in_array($sub_cat->alias_name, $size_array)){
@@ -1150,6 +1168,7 @@ class InventoryController extends Controller {
         
         return view('print_inventory_report')->with('product_last',$product_last)
                                             ->with('thickness_array',$thickness_array)
+                                            ->with('product_column',$product_column)
                                             ->with('report_arr',$report_arr);
     }
     
@@ -1165,6 +1184,7 @@ class InventoryController extends Controller {
         $final_arr=[];
         $product_type= $product_last[0]->product_type_id;
         if($product_type==1){
+            $product_column="Size";
             foreach($product_last[0]['product_sub_categories'] as $sub_cat){           
                 if(!in_array($sub_cat->thickness, $thickness_array)){
                    array_push($thickness_array, $sub_cat->thickness);
@@ -1188,6 +1208,7 @@ class InventoryController extends Controller {
             }
         }
         if($product_type==2){
+            $product_column="Product Alias";
             array_push($thickness_array, "NA");
             foreach($product_last[0]['product_sub_categories'] as $sub_cat){
                 if(!in_array($sub_cat->alias_name, $size_array)){
@@ -1219,6 +1240,7 @@ class InventoryController extends Controller {
         
         return view('print_inventory_report')->with('product_last',$product_last)
                                             ->with('thickness_array',$thickness_array)
+                                            ->with('product_column',$product_column)
                                             ->with('report_arr',$report_arr);
     }
     
