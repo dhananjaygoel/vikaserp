@@ -32,6 +32,7 @@ use App;
 use Config;
 use App\Labour;
 use App\LoadedBy;
+use App\CollectionUser;
 
 class HomeController extends Controller {
     /*
@@ -4310,22 +4311,19 @@ class HomeController extends Controller {
             $labour->password = Hash::make(Input::get('password'));
         if (Input::has('phone_number'))
             $labour->phone_number = Input::get('phone_number');
-        
+
         if ($labour->save())
             return json_encode(array('result' => true, 'labour_id' => $labour->id, 'message' => 'Labour added successfully'));
         else
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
-    
-    
-    
-    
-     public function appupdatelabour() {
+
+    public function appupdatelabour() {
 
         $labour = Labour::find(Input::get('labour_id'));
         if (!isset($labour->id)) {
             return json_encode(array('result' => false, 'message' => 'Labour not found'));
-        }        
+        }
         if (Input::has('first_name') && Input::get('first_name') != "")
             $labour->first_name = Input::get('first_name');
         if (Input::has('last_name') && Input::get('last_name') != "")
@@ -4334,31 +4332,29 @@ class HomeController extends Controller {
             $labour->phone_number = Input::get('phone_number');
         if (Input::has('password') && Input::get('password') != "")
             $labour->password = Hash::make(Input::get('password'));
-        
+
         if ($labour->save())
             return json_encode(array('result' => true, 'labour_id' => $labour->id, 'message' => 'Labour details updated successfully'));
         else
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
-    
-    
-    
-     public function applabourperformance() {
+
+    public function applabourperformance() {
 
         $enddate = date("Y-m-d");
         $date = date('Y-m-01', time());
         $loader_array = array();
         $var = 0;
-        
+
         $labours = Labour::all();
-        
+
         $loader_arr = array();
-            $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
-                    ->where('created_at', '>', "$date")
-                    ->get();
-            
-           
-            
+        $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
+                ->where('created_at', '>', "$date")
+                ->get();
+
+
+
         foreach ($delivery_order_data as $delivery_order_info) {
             $arr = array();
             $arr_money = array();
@@ -4382,7 +4378,7 @@ class HomeController extends Controller {
                         }
                     }
 
-                    
+
                     array_push($loader_array, $loaders);
 
                     $loader_arr['delivery_id'] = $delivery_order_info['id'];
@@ -4397,9 +4393,9 @@ class HomeController extends Controller {
         }
         $loaders_data = array_filter(array_map('array_filter', $loaders_data));
         $loaders_data = array_values($loaders_data);
-        
-        
-        
+
+
+
 
         $final_array = array();
         $k = 0;
@@ -4418,19 +4414,17 @@ class HomeController extends Controller {
                 }
             }
         }
-        
-        
-        
-        return json_encode(array('result' => true, 
+
+
+
+        return json_encode(array('result' => true,
             'labours' => $labours,
-            'data' =>$final_array,
+            'data' => $final_array,
             'enddate' => $enddate));
-     
+
 //            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
-    
-    
-    
+
     /**
      * App get all loadedby
      */
@@ -4472,21 +4466,18 @@ class HomeController extends Controller {
             $loadedby->password = Hash::make(Input::get('password'));
         if (Input::has('phone_number'))
             $loadedby->phone_number = Input::get('phone_number');
-        
+
         if ($loadedby->save())
             return json_encode(array('result' => true, 'loadedby_id' => $loadedby->id, 'message' => 'Loaded By User added successfully'));
         else
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
-    
-    
-    
-    
+
     public function appupdateloadedby() {
         $loadedby = LoadedBy::find(Input::get('loadedby_id'));
         if (!isset($loadedby->id)) {
             return json_encode(array('result' => false, 'message' => 'LoadedBy not found'));
-        }        
+        }
         if (Input::has('first_name') && Input::get('first_name') != "")
             $loadedby->first_name = Input::get('first_name');
         if (Input::has('last_name') && Input::get('last_name') != "")
@@ -4495,16 +4486,13 @@ class HomeController extends Controller {
             $loadedby->phone_number = Input::get('phone_number');
         if (Input::has('password') && Input::get('password') != "")
             $loadedby->password = Hash::make(Input::get('password'));
-        
+
         if ($loadedby->save())
             return json_encode(array('result' => true, 'loadedby_id' => $loadedby->id, 'message' => 'Loaded by User details updated successfully'));
         else
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
-    
-    
-    
-    
+
     public function apploadedbyperformance() {
         $var = 0;
         $loader_arr = array();
@@ -4513,11 +4501,11 @@ class HomeController extends Controller {
         $loaded_by = LoadedBy::all();
         $enddate = date("Y-m-d");
         $date = date('Y-03-01', time());
-        
+
         $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
-                            ->where('created_at', '>', "$date")->get();
-        
-         foreach ($delivery_order_data as $delivery_order_info) {
+                        ->where('created_at', '>', "$date")->get();
+
+        foreach ($delivery_order_data as $delivery_order_info) {
             $arr = array();
             $loaders = array();
             if (isset($delivery_order_info->challan_loaded_by) && count($delivery_order_info->challan_loaded_by) > 0 && !empty($delivery_order_info->challan_loaded_by)) {
@@ -4564,14 +4552,141 @@ class HomeController extends Controller {
                 }
             }
         }
-        
-        return json_encode(array('result' => true, 
+
+        return json_encode(array('result' => true,
             'loaded_by' => $loaded_by,
-            'data' =>$final_array,
-            'date' =>$date,
+            'data' => $final_array,
+            'date' => $date,
             'enddate' => $enddate));
-        
     }
-    
+
+    /**
+     * App get all collection
+     */
+    public function appallcollection_admin() {
+
+        if (Input::has('collection_sync_date') && Input::get('collection_sync_date') != '') {
+            $collection['all'] = User::with('locations.location_data')
+                    ->where('updated_at', '>', Input::get('loadedby_sync_date'))
+                    ->where('role_id', '=', 6)
+                    ->get();
+        } else {
+            $collection['all'] = User::with('locations.location_data')
+                    ->where('role_id', '=', 6)
+                    ->get();
+        }
+        $collection_date = LoadedBy::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($collection_date)) {
+            $collection['latest_date'] = $collection_date->updated_at->toDateTimeString();
+        } else {
+            $collection['latest_date'] = "";
+        }
+        return
+
+                json_encode($collection);
+    }
+
+    /**
+     * App to save collection
+     */
+    public function appaddcollection_admin() {
+
+
+        $collection_check = User::where('mobile_number', '=', Input::get('mobile_number'))
+                ->where('first_name', '=', Input::get('first_name'))
+                ->where('last_name', '=', Input::get('last_name'))
+                ->where('role_id', '=', '6')
+                ->first();
+        if (isset($collection_check->id)) {
+            return json_encode(array('result' => false, 'collection_id' => $collection_check->id, 'message' => 'Collection user already exist'));
+        }
+
+        $collection_check = User::where('mobile_number', '=', Input::get('mobile_number'))
+                ->first();
+        if (isset($collection_check->id)) {
+            return json_encode(array('result' => false, 'collection' => $collection_check->id, 'message' => 'Mobile already exist'));
+        }
+
+        if (Input::has('location')) {
+            $locations = (json_decode(Input::get('location')));
+            $Users_data = new User();
+            $Users_data->role_id = 6;
+            if (Input::has('first_name'))
+                $Users_data->first_name = Input::get('first_name');
+            if (Input::has('last_name'))
+                $Users_data->last_name = Input::get('last_name');
+            if (Input::has('password'))
+                $Users_data->password = Hash::make(Input::get('password'));
+            if (Input::has('mobile_number'))
+                $Users_data->mobile_number = Input::get('mobile_number');
+            if (Input::has('email'))
+                $Users_data->email = Input::get('email');
+            
+            if ($Users_data->save()) {
+                
+                foreach ($locations as $loc) {
+                    if (isset($loc)) {
+                        $CLocation = new CollectionUser();
+                        $CLocation->user_id = $Users_data->id;
+                        $CLocation->location_id = $loc;
+                        $CLocation->save();
+                    }
+                }
+            }
+
+
+            return json_encode(array('result' => true, 'collection_id' => $Users_data->id, 'message' => 'Collection User added successfully'));
+        } else
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+    }
+
+    public function appupdatecollection_admin() {
+        $collection_check = User::where('mobile_number', '=', Input::get('mobile_number'))
+                ->where('first_name', '=', Input::get('first_name'))
+                ->where('last_name', '=', Input::get('last_name'))
+                ->where('role_id', '=', '6')
+                ->first();
+        if (isset($collection_check->id)) {
+            return json_encode(array('result' => false, 'collection_id' => $collection_check->id, 'message' => 'Collection user already exist'));
+        }
+
+        $collection_check = User::where('mobile_number', '=', Input::get('mobile_number'))
+                ->first();
+        if (isset($collection_check->id)) {
+            return json_encode(array('result' => false, 'collection' => $collection_check->id, 'message' => 'Mobile already exist'));
+        }
+
+        if (Input::has('location')) {
+            $locations = (json_decode(Input::get('location')));
+            $Users_data = new User();
+            $Users_data->role_id = 6;
+            if (Input::has('first_name'))
+                $Users_data->first_name = Input::get('first_name');
+            if (Input::has('last_name'))
+                $Users_data->last_name = Input::get('last_name');
+            if (Input::has('password'))
+                $Users_data->password = Hash::make(Input::get('password'));
+            if (Input::has('mobile_number'))
+                $Users_data->mobile_number = Input::get('mobile_number');
+            if (Input::has('email'))
+                $Users_data->email = Input::get('email');
+            
+            if ($Users_data->save()) {
+                
+                foreach ($locations as $loc) {
+                    if (isset($loc)) {
+                        $CLocation = new CollectionUser();
+                        $CLocation->user_id = $Users_data->id;
+                        $CLocation->location_id = $loc;
+                        $CLocation->save();
+                    }
+                }
+            }
+
+
+            return json_encode(array('result' => true, 'collection_id' => $Users_data->id, 'message' => 'Collection User added successfully'));
+        } else
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+    }
 
 }

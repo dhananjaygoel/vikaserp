@@ -68,6 +68,7 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
         'appupdatelabour',        
         'appaddloadedby',
         'appupdateloadedby',        
+        'appaddcollection_admin',        
     ];
 
     /**
