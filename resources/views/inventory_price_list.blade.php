@@ -143,4 +143,26 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="price_list_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body text-center">
+                <form id="inventory_price_form">
+                    <div class="pwd">             
+                        <div class="pwdr"><input class="form-control" id="modal_price" name="model_price" data-id="" onkeypress=" return numbersOnly(this,event,true,true);"></div>
+                        <input type="hidden" id="prod-thickness" name="thickness">
+                        <input type="hidden" id="prod-size" name="size">
+                    </div>
+                    <span class="modal-price-save">
+                        <button class="btn btn-primary modal-price-save" data-dismiss="modal">Save</button>
+                    </span>
+                </form>    
+            </div>
+        </div>
+    </div>
+</div>
     @stop
