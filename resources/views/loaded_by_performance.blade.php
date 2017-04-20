@@ -36,12 +36,12 @@
                 <div class="col-lg-12" id="year_div" style="display: none;">
                     <div class="form-group pull-right">
                         <div class="col-md-10 pull-right">
-                            <form class="search_form loaded_by_performance_search_form" method="GET" action="javascript:;">
+                            <form class="search_form loaded_by_performance_search_form" id="loaded_by_performance_months_from" method="GET" action="javascript:;">
                                 <div class="col-md-8">
-                                    <input name="performance" id="performance-months" class="form-control performance-days" value="{{date('Y', mktime(0, 0, 0))}}"/>
+                                    <input name="performance" id="performance-months" class="form-control performance-month" value="{{date('Y', mktime(0, 0, 0))}}"/>
                                 </div>
                                 <div class="col-md-4  pull-right">
-                                    <input type="submit" disabled="" name="search_data" id="search_year" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                                    <input type="submit" disabled="" name="search_data"  id="search_year" value="Search" class="search_button btn btn-primary pull-right export_btn">
                                 </div>
                              </form>
                         </div>
@@ -70,7 +70,9 @@
                                 <table id="day-wise" class="table table-bordered complex-data-table">
                                     <tbody>
                                         
-                                        <?php $today = date('d'); ?>
+                                        <?php  $today = date('d');
+//                                            $today = date("d", strtotime($date));
+                                        ?>
                                         <tr>
                                             <td colspan="2" rowspan="1"></td>
                                             <td colspan="{{$today}}"><b>Date</b></td>
