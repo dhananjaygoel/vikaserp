@@ -159,7 +159,7 @@ class LoadByController extends Controller {
         $loader_array = array();
         $loaders_data = array();
         $loaded_by = LoadedBy::all();
-        $date = date('Y-03-01', time());
+        $date = date('Y-m-01', time());
         if (Input::has('val')) {
             $val = Input::get('val');
             if ($val == "Month") {
