@@ -657,7 +657,7 @@ function print_challan(delivery_order_id) {
  * print challan to new page on delivery order  
  */
 $('.print_delivery_order').click(function () {
-    $('.print_delivery_order').text('Please wait..').prop('disabled', 'disabled');
+//    $('.print_delivery_order').text('Please wait..').prop('disabled', 'disabled');
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
     if ($("#checksms").is(':checked'))
@@ -686,7 +686,7 @@ function print_delivery_challan(challan_id) {
     $('#print_delivery_challan').val(challan_id);
 }
 $('.print_delivery_challan').click(function () {
-    $('.print_delivery_challan').html('Please wait..').prop('disabled', 'disabled');
+//    $('.print_delivery_challan').html('Please wait..').prop('disabled', 'disabled');
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
     if ($("#checksms").is(':checked'))
