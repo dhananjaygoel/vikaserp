@@ -709,6 +709,28 @@ $('.print_delivery_challan').click(function () {
         }
     });
 });
+
+$('.print_inventory_report_list').click(function () {
+    $('.print_inventory_report').html('Please wait..').prop('disabled', 'disabled');
+    var product_id = $(this).data('id');
+    var base_url = $('#baseurl').attr('name');    
+    $.ajax({
+        type: "GET",
+        url: base_url + '/print_inventory_report/' + product_id,
+        success: function (data) {
+            $('#print_inventory_modal').modal('hide');
+            var printWindow = window.open('', '');
+            printWindow.document.write(data);
+            printWindow.print();
+            printWindow.close();
+            printWindow.onunload = function () {
+                $('.print_delivery_challan').html('Generate Challan').prop("disabled", false);
+                location.reload();
+            };
+        }
+    });
+});
+
 $('.print_sales_order_daybook').click(function () {
     var base_url = $('#baseurl').attr('name');
     $.ajax({

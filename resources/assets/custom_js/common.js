@@ -108,6 +108,8 @@ $(document).ready(function () {
             },
             success: function (data) {
                 $('#export_product_id').val(product_id);
+                $('#print-inventory-report').data("id",product_id);
+                $('#print-inventory-report').attr("data-id",product_id);
                 $('.report-table-content').html(data.html)                
             },
             complete: function () {
@@ -127,12 +129,18 @@ $(document).ready(function () {
             },
             success: function (data) {
                 $('#export_product_id').val(product_id);
+                $('#print-inventory-price-list').data("id",product_id);
+                $('#print-inventory-price-list').attr("data-id",product_id);
                 $('.report-table-content').html(data.html)                
             },
             complete: function () {
             }
         })
     });
+     $(document).on('click','#print-inventory-report',function(){
+         var product_id=$(this).data('id');
+         $('.print_inventory_report_list').attr('data-id',product_id);
+     });
     
     $(document).on('click','.inventory-price-value',function(){
         var product_id = $(this).data('product');
