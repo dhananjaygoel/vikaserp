@@ -107,7 +107,8 @@ $(document).ready(function () {
                 product_id: product_id,
             },
             success: function (data) {
-                $('.report-table-content').html(data.html)
+                $('#export_product_id').val(product_id);
+                $('.report-table-content').html(data.html)                
             },
             complete: function () {
             }
@@ -125,7 +126,8 @@ $(document).ready(function () {
                 product_id: product_id,
             },
             success: function (data) {
-                $('.report-table-content').html(data.html)
+                $('#export_product_id').val(product_id);
+                $('.report-table-content').html(data.html)                
             },
             complete: function () {
             }
