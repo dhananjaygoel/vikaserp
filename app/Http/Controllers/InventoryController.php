@@ -607,14 +607,14 @@ class InventoryController extends Controller {
             }
         }
         foreach($product_last[0]['product_sub_categories'] as $sub_cat){
-            if(!in_array($sub_cat->size, $size_array)){
-               array_push($size_array, $sub_cat->size);
+            if(!in_array($sub_cat->alias_name, $size_array)){
+               array_push($size_array, $sub_cat->alias_name);
             }
         }        
         foreach($size_array as $size){
             foreach($thickness_array as $thickness){
                 foreach($product_last[0]['product_sub_categories'] as $sub_cat){
-                    if($sub_cat->thickness==$thickness && $size==$sub_cat->size){
+                    if($sub_cat->thickness==$thickness && $size==$sub_cat->alias_name){
                         $inventory=$sub_cat['product_inventory'];
                         $total_qnty=0;
                         if(isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)){
@@ -663,15 +663,15 @@ class InventoryController extends Controller {
             }
         }
         foreach($product_last[0]['product_sub_categories'] as $sub_cat){
-            if(!in_array($sub_cat->size, $size_array)){
-               array_push($size_array, $sub_cat->size);
+            if(!in_array($sub_cat->alias_name, $size_array)){
+               array_push($size_array, $sub_cat->alias_name);
             }
         }
         
         foreach($size_array as $size){
             foreach($thickness_array as $thickness){
                 foreach($product_last[0]['product_sub_categories'] as $sub_cat){
-                    if($sub_cat->thickness==$thickness && $size==$sub_cat->size){
+                    if($sub_cat->thickness==$thickness && $size==$sub_cat->alias_name){
                         $inventory=$sub_cat['product_inventory'];
                         $total_qnty=0;
                         if(isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)){
@@ -722,8 +722,8 @@ class InventoryController extends Controller {
             }
         }
         foreach($product_last[0]['product_sub_categories'] as $sub_cat){
-            if(!in_array($sub_cat->size, $size_array)){
-               array_push($size_array, $sub_cat->size);
+            if(!in_array($sub_cat->alias_name, $size_array)){
+               array_push($size_array, $sub_cat->alias_name);
             }
         }        
         foreach($thickness_array as $thickness){
@@ -733,7 +733,7 @@ class InventoryController extends Controller {
                     $inventory=$sub_cat['product_inventory'];                    
                     $total_price=$product_price+$sub_cat->difference;
                     
-                    $report_arr[$sub_cat->size][$sub_cat->thickness]=$total_price;
+                    $report_arr[$sub_cat->alias_name][$sub_cat->thickness]=$total_price;
                 }
             }        
         }
@@ -773,8 +773,8 @@ class InventoryController extends Controller {
             }
         }
         foreach($product_last[0]['product_sub_categories'] as $sub_cat){
-            if(!in_array($sub_cat->size, $size_array)){
-               array_push($size_array, $sub_cat->size);
+            if(!in_array($sub_cat->alias_name, $size_array)){
+               array_push($size_array, $sub_cat->alias_name);
             }
         }
         
@@ -785,7 +785,7 @@ class InventoryController extends Controller {
                     $inventory=$sub_cat['product_inventory'];                    
                     $total_price=$product_price+$sub_cat->difference;
                     
-                    $report_arr[$sub_cat->size][$sub_cat->thickness]=$total_price;
+                    $report_arr[$sub_cat->alias_name][$sub_cat->thickness]=$total_price;
                 }
             }        
         }
