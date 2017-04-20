@@ -21,7 +21,7 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
             <?php $date_val = substr($date, 0, 8); ?>
             @foreach($loaded_by as $loader_val)
             <tr>
-                <td rowspan="2"><b>{{$loader_val->first_name}}</B></td>                                                
+                <td rowspan="2"><b>{{$loader_val->first_name}} {{$loader->last_name}}</B></td>                                                
                 <td><b>Tonnage</b></td>    
                 @for($i = 1; $i<= $today ; $i++ )
                 <?php
