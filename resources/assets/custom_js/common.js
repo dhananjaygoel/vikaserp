@@ -141,6 +141,10 @@ $(document).ready(function () {
          var product_id=$(this).data('id');
          $('.print_inventory_report_list').attr('data-id',product_id);
      });
+     $(document).on('click','#print-inventory-price-list',function(){
+         var product_id=$(this).data('id');
+         $('.print_inventory_price_list').attr('data-id',product_id);
+     });
     
     $(document).on('click','.inventory-price-value',function(){
         var product_id = $(this).data('product');

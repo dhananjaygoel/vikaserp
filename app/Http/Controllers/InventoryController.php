@@ -1002,6 +1002,58 @@ class InventoryController extends Controller {
                                             ->with('report_arr',$report_arr);
     }
     
+    public function print_inventory_price_list($id, DropboxStorageRepository $connection) {
+        $product_id = $id;        
+        $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
+//        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
+        $product_last = ProductCategory::where('id', '=' , $product_id)->with('product_sub_categories.product_inventory')->get();
+        $product_price=$product_last[0]->price;
+        $size_array=[];
+        $thickness_array=[];
+        $report_arr=[];
+        $final_arr=[];
+        foreach($product_last[0]['product_sub_categories'] as $sub_cat){
+            if($sub_cat->thickness!=''){
+                if(!in_array($sub_cat->thickness, $thickness_array)){               
+                   array_push($thickness_array, $sub_cat->thickness);
+                }
+            }
+        }
+        foreach($product_last[0]['product_sub_categories'] as $sub_cat){
+            if(!in_array($sub_cat->size, $size_array)){
+               array_push($size_array, $sub_cat->size);
+            }
+        }
+        
+        foreach($thickness_array as $thickness){
+            foreach($product_last[0]['product_sub_categories'] as $sub_cat){
+                $total_price=0;
+                if($sub_cat->thickness==$thickness){
+                    $inventory=$sub_cat['product_inventory'];                    
+                    $total_price=$product_price+$sub_cat->difference;
+                    
+                    $report_arr[$sub_cat->size][$sub_cat->thickness]=$total_price;
+                }
+            }        
+        }
+        
+        foreach($size_array as $size){
+            foreach($thickness_array as $thickness){
+                if(isset($report_arr[$size][$thickness])){
+                    $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
+                }else{
+                    $final_arr[$size][$thickness] = "-";
+                }
+            }
+        }       
+        
+        $report_arr=$final_arr;
+        
+        return view('print_inventory_report')->with('product_last',$product_last)
+                                            ->with('thickness_array',$thickness_array)
+                                            ->with('report_arr',$report_arr);
+    }
+    
     
             
 }
