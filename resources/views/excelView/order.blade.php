@@ -96,9 +96,13 @@
             <td>{{$product['order_product_details']->alias_name}}</td>
             <td>{{isset($product->quantity)?$product->quantity:'0'}}</td>
             <td>
+                @if(isset($product->unit_id))
                 @foreach($units as $unit)
                 {{($unit->id == $product->unit_id)? $unit->unit_name:''}}
                 @endforeach
+                @else
+                {{''}}
+                @endif
             </td>
             <td>{{$product->price}}</td>
             <td>{{($product->vat_percentage!='')?$product->vat_percentage:''}}</td>
