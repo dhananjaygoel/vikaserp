@@ -41,7 +41,6 @@
             <div class="col-lg-12">
                 <h1 class="pull-left">Inventory Report</h1>
                 <div class="form-group pull-right">
-
                     <div class="col-md-12">
                         <form method="GET" action="javascript:;">
                             <select class="form-control" id="inventory_price_list_filter" name="labour_chart_filter">
@@ -52,10 +51,19 @@
                                 @endforeach
                                 @endif
                             </select>
-                        </form>
+                        </form>                        
                     </div>
-
-                </div>                
+                </div>
+                <form class="pull-right" method="POST" action="{{URL::action('InventoryController@exportinventoryPriceList')}}">
+                    <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                    <input type="hidden" id="export_product_id" name="product_id" value="<?php echo $product_id;?>">
+                    <input type="submit"  name="export_data" value="Export" class="btn btn-primary pull-right " style=" float: left !important; margin-left: 2% !important;">
+                </form>
+<!--                <form class="pull-right" method="POST" action="{{URL::action('InventoryController@exportinventoryPriceList')}}">
+                    <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                    <input type="hidden"  name="product_id" value="<?php echo $product_id;?>">
+                    <input type="submit"  name="export_data" value="Print" class="btn btn-primary " style=" float: left !important; margin-right: 10% !important;">
+                </form>-->
             </div>
             <div class="row">
                 <div class="col-lg-12">

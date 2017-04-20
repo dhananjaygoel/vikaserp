@@ -87,6 +87,8 @@ Route::get('appprintdeliverychallan', 'HomeController@appprintdeliverychallan');
 Route::get('get_inventory_report', 'InventoryController@getInventoryReport');
 Route::get('get_inventory_price_list', 'InventoryController@getInventoryPriceList');
 Route::get('set_inventory_price', 'InventoryController@setInventoryPrice');
+Route::post('export_inventory_price_list', 'InventoryController@exportinventoryPriceList');
+Route::post('export_inventory_report', 'InventoryController@exportinventoryReport');
 //app sms
 Route::post('test_sms', 'HomeController@test_sms');
 Route::post('appsyncinquiry_sms', 'HomeController@appsyncinquiry_sms');
