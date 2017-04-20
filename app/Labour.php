@@ -8,6 +8,7 @@ class Labour extends Model {
 
     protected $table = 'labours';
     protected $dates = ['deleted_at'];
+    protected $hidden = ['password', 'remember_token','deleted_at'];
 
     public function delivery_challan() {
         return $this->belongsToMany('App\DeliveryChallan');

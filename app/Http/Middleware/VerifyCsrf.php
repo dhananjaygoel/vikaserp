@@ -64,6 +64,8 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
         'appsyncpurchaseorderedit_sms',
         'appsyncpurchasechallan_sms',
         'appsyncpurchaseadvise_sms',
+        'appaddlabour',
+        'appupdatelabour',        
     ];
 
     /**

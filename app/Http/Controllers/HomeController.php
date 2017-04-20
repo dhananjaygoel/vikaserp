@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App;
 use Config;
+use App\Labour;
 
 class HomeController extends Controller {
     /*
@@ -3897,7 +3898,7 @@ class HomeController extends Controller {
                     foreach ($purchaseadviceproducts as $product_data) {
                         $product_details = PurchaseProducts::with('purchase_product_details')->find($product_data->id);
 
-                        
+
                         if (isset($product_details['purchase_product_details']->alias_name) && $product_details['purchase_product_details']->alias_name != "") {
                             $str .= $product_details['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                         } else {
@@ -3905,7 +3906,7 @@ class HomeController extends Controller {
                             $result['reasons'] = "Purchase Advise not found.";
                             return json_encode($result);
                         }
-                        
+
                         $total_quantity = $total_quantity + $product_data->quantity;
                     }
                     $str .= " Trk No. " . $purchaseadvices[0]->vehicle_number . ".\nVIKAS ASSOCIATES";
@@ -3956,7 +3957,7 @@ class HomeController extends Controller {
             $user = (json_decode($input_data['user']));
             $customer_id = $customers[0]->id;
 
-          
+
             $send_sms = Input::get('sendsms');
             if ($send_sms == 'true') {
 //                $customer_id = $purchase_challan->supplier_id;
@@ -4139,5 +4140,290 @@ class HomeController extends Controller {
 
         return json_encode($result);
     }
+
+    public function appssyncgraph_inquiry() {
+        for ($i = 1; $i <= 7; $i++) {
+            $inquiries_stats_all[$i]['pipe'] = 0;
+            $inquiries_stats_all[$i]['structure'] = 0;
+            $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
+            $inquiries_stats_all[$i]['day'] = $date_search;
+            $inquiries_stats = Inquiry::with('inquiry_products.inquiry_product_details')
+                    ->where('inquiry_status', '=', 'completed')
+                    ->where('updated_at', 'like', $date_search . '%')
+                    ->get();
+
+            $dashboard = new DashboardController();
+
+            foreach ($inquiries_stats as $inquiry) {
+
+                foreach ($inquiry['inquiry_products'] as $inquiry_products) {
+                    if (isset($inquiry_products['inquiry_product_details']['product_category']['product_type_id'])) {
+                        if ($inquiry_products['inquiry_product_details']['product_category']['product_type_id'] == 1) {
+                            if ($inquiry_products['unit_id'] == 1)
+                                $inquiries_stats_all[$i]['pipe'] += $inquiry_products['quantity'];
+                            elseif (($inquiry_products['unit_id'] == 2) || ($inquiry_products['unit_id'] == 3))
+                                $inquiries_stats_all[$i]['pipe'] += $dashboard->checkpending_quantity($inquiry_products['unit_id'], $inquiry_products['product_category_id'], $inquiry_products['quantity']);
+                        }else {
+                            if ($inquiry_products['unit_id'] == 1)
+                                $inquiries_stats_all[$i]['structure'] += $inquiry_products['quantity'];
+                            elseif (($inquiry_products['unit_id'] == 2) || ($inquiry_products['unit_id'] == 3))
+                                $inquiries_stats_all[$i]['structure'] += $dashboard->checkpending_quantity($inquiry_products['unit_id'], $inquiry_products['product_category_id'], $inquiry_products['quantity']);
+                        }
+                    }
+                }
+            }
+
+            $inquiries_stats_all[$i]['pipe'] = round($inquiries_stats_all[$i]['pipe'] / 1000, 2);
+            $inquiries_stats_all[$i]['structure'] = round($inquiries_stats_all[$i]['structure'] / 1000, 2);
+        }
+
+
+        return json_encode($inquiries_stats_all);
+    }
+
+    public function appssyncgraph_order() {
+        $dashboard = new DashboardController();
+        for ($i = 1; $i <= 7; $i++) {
+            $orders_stats_all[$i]['pipe'] = 0;
+            $orders_stats_all[$i]['structure'] = 0;
+            $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
+            $orders_stats_all[$i]['day'] = $date_search;
+            $orders_stats = Order::with('all_order_products.order_product_details')
+                    ->where('order_status', '=', 'completed')
+                    ->where('updated_at', 'like', $date_search . '%')
+                    ->get();
+
+            foreach ($orders_stats as $order) {
+
+                foreach ($order['all_order_products'] as $order_products) {
+
+
+                    if (isset($order_products['order_product_details']['product_category']['product_type_id'])) {
+                        if ($order_products['order_product_details']['product_category']['product_type_id'] == 1) {
+                            if ($order_products['unit_id'] == 1)
+                                $orders_stats_all[$i]['pipe'] += $order_products['quantity'];
+                            elseif (($order_products['unit_id'] == 2) || ($order_products['unit_id'] == 3))
+                                $orders_stats_all[$i]['pipe'] += $dashboard->checkpending_quantity($order_products['unit_id'], $order_products['product_category_id'], $order_products['quantity']);
+                        }else {
+                            if ($order_products['unit_id'] == 1)
+                                $orders_stats_all[$i]['structure'] += $order_products['quantity'];
+                            elseif (($order_products['unit_id'] == 2) || ($order_products['unit_id'] == 3))
+                                $orders_stats_all[$i]['structure'] += $dashboard->checkpending_quantity($order_products['unit_id'], $order_products['product_category_id'], $order_products['quantity']);
+                        }
+                    }
+                }
+            }
+
+            $orders_stats_all[$i]['pipe'] = round($orders_stats_all[$i]['pipe'] / 1000, 2);
+            $orders_stats_all[$i]['structure'] = round($orders_stats_all[$i]['structure'] / 1000, 2);
+        }
+
+
+        return ($orders_stats_all);
+    }
+
+    /* To get Delivery Challan stats for graph */
+
+    public function appssyncgraph_delivery_challan() {
+        $dashboard = new DashboardController();
+
+        for ($i = 1; $i <= 7; $i++) {
+            $delivery_challan_stats_all[$i]['pipe'] = 0;
+            $delivery_challan_stats_all[$i]['structure'] = 0;
+            $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
+            $delivery_challan_stats_all[$i]['day'] = $date_search;
+            $delivery_challan_stats = DeliveryChallan::with('delivery_challan_products')
+                    ->where('challan_status', '=', 'completed')
+                    ->where('updated_at', 'like', $date_search . '%')
+                    ->get();
+
+            foreach ($delivery_challan_stats as $delivery_challan) {
+                foreach ($delivery_challan['delivery_challan_products'] as $delivery_challan_products) {
+
+                    if (isset($delivery_challan_products['order_product_details']['product_category']['product_type_id'])) {
+                        if ($delivery_challan_products['order_product_details']['product_category']['product_type_id'] == 1) {
+                            if ($delivery_challan_products['unit_id'] == 1)
+                                $delivery_challan_stats_all[$i]['pipe'] += $delivery_challan_products['quantity'];
+                            elseif (($delivery_challan_products['unit_id'] == 2) || ($delivery_challan_products['unit_id'] == 3))
+                                $delivery_challan_stats_all[$i]['pipe'] += $dashboard->checkpending_quantity($delivery_challan_products['unit_id'], $delivery_challan_products['product_category_id'], $delivery_challan_products['quantity']);
+                        }else {
+                            if ($delivery_challan_products['unit_id'] == 1)
+                                $delivery_challan_stats_all[$i]['structure'] += $delivery_challan_products['quantity'];
+                            elseif (($delivery_challan_products['unit_id'] == 2) || ($delivery_challan_products['unit_id'] == 3))
+                                $delivery_challan_stats_all[$i]['structure'] += $dashboard->checkpending_quantity($delivery_challan_products['unit_id'], $delivery_challan_products['product_category_id'], $delivery_challan_products['quantity']);
+                        }
+                    }
+                }
+            }
+
+            $delivery_challan_stats_all[$i]['pipe'] = round($delivery_challan_stats_all[$i]['pipe'] / 1000, 2);
+            $delivery_challan_stats_all[$i]['structure'] = round($delivery_challan_stats_all[$i]['structure'] / 1000, 2);
+        }
+
+
+        return ($delivery_challan_stats_all);
+    }
+
+    /**
+     * App get all labours
+     */
+    public function appalllabours() {
+
+        if (Input::has('labour_sync_date') && Input::get('labour_sync_date') != '') {
+            $labours['all'] = Labour::where('updated_at', '>', Input::get('customer_sync_date'))->get();
+        } else {
+            $labours['all'] = Labour::get();
+        }
+        $customer_date = Labour::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($customer_date)) {
+            $labours['latest_date'] = $customer_date->updated_at->toDateTimeString();
+        } else {
+            $labours['latest_date'] = "";
+        }
+        return
+
+                json_encode($labours);
+    }
+
+    /**
+     * App save labours
+     */
+    public function appaddlabour() {
+        $labour_check = Labour::where('phone_number', '=', Input::get('phone_number'))
+                ->where('first_name', '=', Input::get('first_name'))
+                ->where('last_name', '=', Input::get('last_name'))
+                ->first();
+        if (isset($labour_check->id)) {
+            return json_encode(array('result' => false, 'customer_id' => $labour_check->id, 'message' => 'Labour already exist'));
+        }
+        $labour = new Labour();
+        if (Input::has('first_name'))
+            $labour->first_name = Input::get('first_name');
+        if (Input::has('last_name'))
+            $labour->last_name = Input::get('last_name');
+        if (Input::has('password'))
+            $labour->password = Input::get('password');
+        if (Input::has('phone_number'))
+            $labour->phone_number = Input::get('phone_number');
+        
+        if ($labour->save())
+            return json_encode(array('result' => true, 'labour_id' => $labour->id, 'message' => 'Labour added successfully'));
+        else
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+    }
+    
+    
+    
+    
+     public function appupdatelabour() {
+
+        $labour = Labour::find(Input::get('labour_id'));
+        if (!isset($labour->id)) {
+            return json_encode(array('result' => false, 'message' => 'Labour not found'));
+        }        
+        if (Input::has('first_name') && Input::get('first_name') != "")
+            $labour->first_name = Input::get('first_name');
+        if (Input::has('last_name') && Input::get('last_name') != "")
+            $labour->last_name = Input::get('last_name');
+        if (Input::has('phone_number') && Input::get('phone_number') != "")
+            $labour->phone_number = Input::get('phone_number');
+        if (Input::has('password') && Input::get('password') != "")
+            $labour->password = Input::get('password');
+        
+        if ($labour->save())
+            return json_encode(array('result' => true, 'labour_id' => $labour->id, 'message' => 'Labour details updated successfully'));
+        else
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+    }
+    
+    
+    
+     public function applabourperformance() {
+
+        $enddate = date("Y-m-d");
+        $date = date('Y-m-01', time());
+        $loader_array = array();
+        $var = 0;
+        
+        $labours = Labour::all();
+        
+        $loader_arr = array();
+            $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
+                    ->where('created_at', '>', "$date")
+                    ->get();
+            
+           
+            
+        foreach ($delivery_order_data as $delivery_order_info) {
+            $arr = array();
+            $arr_money = array();
+            $loaders = array();
+
+
+            if (isset($delivery_order_info->challan_labours) && count($delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
+                foreach ($delivery_order_info->challan_labours as $challan_info) {
+                    $deliver_sum = 0;
+                    $money = 0;
+                    array_push($loaders, $challan_info->labours_id);
+                    foreach ($challan_info->dc_delivery_challan as $info) {
+
+
+                        foreach ($info->delivery_order->delivery_product as $delivery_order_productinfo) {
+                            $dashboard = new DashboardController();
+                            if ($delivery_order_productinfo->unit_id == 1)
+                                $deliver_sum += $delivery_order_productinfo->quantity;
+                            elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
+                                $deliver_sum += $dashboard->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
+                        }
+                    }
+
+                    
+                    array_push($loader_array, $loaders);
+
+                    $loader_arr['delivery_id'] = $delivery_order_info['id'];
+                    $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
+                    $loader_arr['labours'] = $loaders;
+                    $loader_arr['tonnage'] = round($deliver_sum / count($loaders) / 1000, 2);
+                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
+                }
+            }
+            $loaders_data[$var] = $loader_arr;
+            $var++;
+        }
+        $loaders_data = array_filter(array_map('array_filter', $loaders_data));
+        $loaders_data = array_values($loaders_data);
+        
+        
+        
+
+        $final_array = array();
+        $k = 0;
+        foreach ($labours as $key => $labour) {
+            foreach ($loaders_data as $key_data => $data) {
+                foreach ($data['labours'] as $key_value => $value) {
+                    if ($value == $labour['id']) {
+                        $final_array[$k++] = [
+                            'delivery_id' => $data['delivery_id'],
+                            'labour_id' => $value,
+                            'date' => $data['delivery_date'],
+                            'tonnage' => $data['tonnage'],
+                            'delivery_sum_money' => isset($data['delivery_sum_money']) ? $data['delivery_sum_money'] : '0',
+                        ];
+                    }
+                }
+            }
+        }
+        
+        
+        
+        return json_encode(array('result' => true, 
+            'labours' => $labours,
+            'data' =>$final_array,
+            'enddate' => $enddate));
+     
+//            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+    }
+    
+    
 
 }

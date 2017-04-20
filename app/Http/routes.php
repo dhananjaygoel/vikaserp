@@ -101,6 +101,22 @@ Route::post('appsyncpurchasechallan_sms', 'HomeController@appsyncpurchasechallan
 Route::post('appsyncpurchaseadvise_sms', 'HomeController@appsyncpurchaseadvise_sms');
 Route::post('userotp_sms', 'HomeController@userotp_sms');
 
+//app graphs
+Route::get('appssyncgraph_inquiry', 'HomeController@appssyncgraph_inquiry');
+Route::get('appssyncgraph_order', 'HomeController@appssyncgraph_order');
+Route::get('appssyncgraph_delivery_challan', 'HomeController@appssyncgraph_delivery_challan');
+
+
+//app aproval process - inquiry
+
+
+
+//performance module- labours
+Route::get('appalllabours', 'HomeController@appalllabours');
+Route::post('appaddlabour', 'HomeController@appaddlabour');
+Route::post('appupdatelabour', 'HomeController@appupdatelabour');
+Route::get('applabourperformance', 'HomeController@applabourperformance');
+
 
 
 Route::get('getinfo', 'PasswordController@getinfo');
