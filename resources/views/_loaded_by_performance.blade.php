@@ -36,7 +36,7 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
                     }
                 }
                 ?>
-                <td>{{ number_format((float)$tangage, 2, '.', '') }}</td>
+                <td>{{ $tangage }}</td>
                 @endfor
             <tr>
                 <td><b>Delivery</b></td>
