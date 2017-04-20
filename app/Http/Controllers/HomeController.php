@@ -1819,6 +1819,7 @@ class HomeController extends Controller {
                     }
                     $inquiry_products = InquiryProducts::where('inquiry_id', '=', $value->server_id)->first();
                     $add_inquiry->updated_at = $inquiry_products->updated_at;
+                    $add_inquiry->is_approved = 'yes';
                     $add_inquiry->save();
                     $inquiry_response[$value->server_id] = Inquiry::find($value->server_id);
                     $inquiry_response[$value->server_id]['inquiry_products'] = InquiryProducts::where('inquiry_id', '=', $value->server_id)->get();
@@ -1853,6 +1854,7 @@ class HomeController extends Controller {
                     $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
                     $add_inquiry->remarks = ($value->remarks != '') ? $value->remarks : '';
                     $add_inquiry->inquiry_status = $value->inquiry_status;
+                    $add_inquiry->is_approved = 'yes';
                     $add_inquiry->save();
                     $inquiry_id = $add_inquiry->id;
                     $inquiry_products_track = 0;
