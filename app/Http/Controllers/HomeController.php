@@ -1422,6 +1422,7 @@ class HomeController extends Controller {
                     $order->other_location = $value->other_location;
                     $order->location_difference = $value->other_location_difference;
                 }
+                $order->is_approved = 'yes';
                 $order->save();
                 $order_id = $order->id;
                 $order_products = array();
@@ -1497,6 +1498,7 @@ class HomeController extends Controller {
                 }
                 $order_prod = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $value->server_id)->first();
                 $order->updated_at = $order_prod->updated_at;
+                $order->is_approved = 'yes';
                 $order->save();
                 $order_response[$value->server_id] = Order::find($value->server_id);
                 $order_response[$value->server_id]['all_order_products'] = AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->get();

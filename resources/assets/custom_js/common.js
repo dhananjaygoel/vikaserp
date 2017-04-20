@@ -11,7 +11,7 @@ $('#performance-days').datepicker({
     endDate: new Date(),
     viewMode: "months", 
     minViewMode: "months",
-    autoclose: true
+    autoclose: true,
 
 });
 
@@ -22,7 +22,7 @@ $('#performance-months').datepicker({
     viewMode: "years", 
     minViewMode: "years",
     autoclose: true,
-    startDate: '2001'
+    startDate: '2001',
 });
 
 
@@ -184,7 +184,7 @@ $(document).ready(function () {
             $('#month_div').css('display', 'block');
             $('#year_div').css('display', 'none');
         } else if(val == "Month"){
-            month_val = "all";
+            month_val = $("#performance-months").val();
             $('#month_div').css('display', 'none');
             $('#year_div').css('display', 'block');
         }
