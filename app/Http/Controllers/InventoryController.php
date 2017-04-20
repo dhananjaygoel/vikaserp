@@ -21,6 +21,7 @@ use App\Vendor\Phpoffice\Phpexcel\Classes;
 use Maatwebsite\Excel\Facades\Excel;
 use App\ProductCategory;
 use Response;
+use App\Repositories\DropboxStorageRepository;
 use Auth;
 
 class InventoryController extends Controller {
@@ -945,5 +946,62 @@ class InventoryController extends Controller {
             });
         })->export('xls');
     }
+    
+    
+    public function print_inventory_report($id, DropboxStorageRepository $connection) {
+        $product_id = $id;        
+        $product_last = ProductCategory::where('id', '=' , $product_id)->with('product_sub_categories.product_inventory')->get();
+        $size_array=[];
+        $thickness_array=[];
+        $report_arr=[];
+        $final_arr=[];
+        foreach($product_last[0]['product_sub_categories'] as $sub_cat){
+            if($sub_cat->thickness!=''){
+                if(!in_array($sub_cat->thickness, $thickness_array)){               
+                   array_push($thickness_array, $sub_cat->thickness);
+                }
+            }
+        }
+        foreach($product_last[0]['product_sub_categories'] as $sub_cat){
+            if(!in_array($sub_cat->size, $size_array)){
+               array_push($size_array, $sub_cat->size);
+            }
+        }
+        
+        foreach($size_array as $size){
+            foreach($thickness_array as $thickness){
+                foreach($product_last[0]['product_sub_categories'] as $sub_cat){
+                    if($sub_cat->thickness==$thickness && $size==$sub_cat->size){
+                        $inventory=$sub_cat['product_inventory'];
+                        $total_qnty=0;
+                        if(isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)){
+                             $total_qnty = $inventory->physical_closing_qty+$inventory->pending_purchase_advise_qty;
+                        }else{
+                             $total_qnty = "-";
+                        }
+                        $report_arr[$size][$thickness]=$total_qnty;
+                    }
+                }
+            }
+        }
+        
+        foreach($size_array as $size){
+            foreach($thickness_array as $thickness){
+                if(isset($report_arr[$size][$thickness])){
+                    $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
+                }else{
+                    $final_arr[$size][$thickness] = "-";
+                }
+            }
+        }       
+        
+        $report_arr=$final_arr;
+        
+        return view('print_inventory_report')->with('product_last',$product_last)
+                                            ->with('thickness_array',$thickness_array)
+                                            ->with('report_arr',$report_arr);
+    }
+    
+    
             
 }
