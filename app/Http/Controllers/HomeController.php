@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Mail;
 use App;
 use Config;
 use App\Labour;
+use App\LoadedBy;
 
 class HomeController extends Controller {
     /*
@@ -4274,13 +4275,13 @@ class HomeController extends Controller {
     public function appalllabours() {
 
         if (Input::has('labour_sync_date') && Input::get('labour_sync_date') != '') {
-            $labours['all'] = Labour::where('updated_at', '>', Input::get('customer_sync_date'))->get();
+            $labours['all'] = Labour::where('updated_at', '>', Input::get('labour_sync_date'))->get();
         } else {
             $labours['all'] = Labour::get();
         }
-        $customer_date = Labour::select('updated_at')->orderby('updated_at', 'DESC')->first();
-        if (!empty($customer_date)) {
-            $labours['latest_date'] = $customer_date->updated_at->toDateTimeString();
+        $labour_date = Labour::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($labour_date)) {
+            $labours['latest_date'] = $labour_date->updated_at->toDateTimeString();
         } else {
             $labours['latest_date'] = "";
         }
@@ -4298,7 +4299,7 @@ class HomeController extends Controller {
                 ->where('last_name', '=', Input::get('last_name'))
                 ->first();
         if (isset($labour_check->id)) {
-            return json_encode(array('result' => false, 'customer_id' => $labour_check->id, 'message' => 'Labour already exist'));
+            return json_encode(array('result' => false, 'labour_id' => $labour_check->id, 'message' => 'Labour already exist'));
         }
         $labour = new Labour();
         if (Input::has('first_name'))
@@ -4306,7 +4307,7 @@ class HomeController extends Controller {
         if (Input::has('last_name'))
             $labour->last_name = Input::get('last_name');
         if (Input::has('password'))
-            $labour->password = Input::get('password');
+            $labour->password = Hash::make(Input::get('password'));
         if (Input::has('phone_number'))
             $labour->phone_number = Input::get('phone_number');
         
@@ -4332,7 +4333,7 @@ class HomeController extends Controller {
         if (Input::has('phone_number') && Input::get('phone_number') != "")
             $labour->phone_number = Input::get('phone_number');
         if (Input::has('password') && Input::get('password') != "")
-            $labour->password = Input::get('password');
+            $labour->password = Hash::make(Input::get('password'));
         
         if ($labour->save())
             return json_encode(array('result' => true, 'labour_id' => $labour->id, 'message' => 'Labour details updated successfully'));
@@ -4428,6 +4429,149 @@ class HomeController extends Controller {
 //            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
     
+    
+    
+    /**
+     * App get all loadedby
+     */
+    public function appallloadedby() {
+
+        if (Input::has('loadedby_sync_date') && Input::get('loadedby_sync_date') != '') {
+            $loadedby['all'] = LoadedBy::where('updated_at', '>', Input::get('loadedby_sync_date'))->get();
+        } else {
+            $loadedby['all'] = LoadedBy::get();
+        }
+        $loadedby_date = LoadedBy::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($loadedby_date)) {
+            $loadedby['latest_date'] = $loadedby_date->updated_at->toDateTimeString();
+        } else {
+            $loadedby['latest_date'] = "";
+        }
+        return
+
+                json_encode($loadedby);
+    }
+
+    /**
+     * App to save loadedby
+     */
+    public function appaddloadedby() {
+        $loadedby_check = LoadedBy::where('phone_number', '=', Input::get('phone_number'))
+                ->where('first_name', '=', Input::get('first_name'))
+                ->where('last_name', '=', Input::get('last_name'))
+                ->first();
+        if (isset($loadedby_check->id)) {
+            return json_encode(array('result' => false, 'loadedby_id' => $loadedby_check->id, 'message' => 'Loaded By user already exist'));
+        }
+        $loadedby = new LoadedBy();
+        if (Input::has('first_name'))
+            $loadedby->first_name = Input::get('first_name');
+        if (Input::has('last_name'))
+            $loadedby->last_name = Input::get('last_name');
+        if (Input::has('password'))
+            $loadedby->password = Hash::make(Input::get('password'));
+        if (Input::has('phone_number'))
+            $loadedby->phone_number = Input::get('phone_number');
+        
+        if ($loadedby->save())
+            return json_encode(array('result' => true, 'loadedby_id' => $loadedby->id, 'message' => 'Loaded By User added successfully'));
+        else
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+    }
+    
+    
+    
+    
+    public function appupdateloadedby() {
+        $loadedby = LoadedBy::find(Input::get('loadedby_id'));
+        if (!isset($loadedby->id)) {
+            return json_encode(array('result' => false, 'message' => 'LoadedBy not found'));
+        }        
+        if (Input::has('first_name') && Input::get('first_name') != "")
+            $loadedby->first_name = Input::get('first_name');
+        if (Input::has('last_name') && Input::get('last_name') != "")
+            $loadedby->last_name = Input::get('last_name');
+        if (Input::has('phone_number') && Input::get('phone_number') != "")
+            $loadedby->phone_number = Input::get('phone_number');
+        if (Input::has('password') && Input::get('password') != "")
+            $loadedby->password = Hash::make(Input::get('password'));
+        
+        if ($loadedby->save())
+            return json_encode(array('result' => true, 'loadedby_id' => $loadedby->id, 'message' => 'Loaded by User details updated successfully'));
+        else
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+    }
+    
+    
+    
+    
+    public function apploadedbyperformance() {
+        $var = 0;
+        $loader_arr = array();
+        $loader_array = array();
+        $loaders_data = array();
+        $loaded_by = LoadedBy::all();
+        $enddate = date("Y-m-d");
+        $date = date('Y-03-01', time());
+        
+        $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
+                            ->where('created_at', '>', "$date")->get();
+        
+         foreach ($delivery_order_data as $delivery_order_info) {
+            $arr = array();
+            $loaders = array();
+            if (isset($delivery_order_info->challan_loaded_by) && count($delivery_order_info->challan_loaded_by) > 0 && !empty($delivery_order_info->challan_loaded_by)) {
+                foreach ($delivery_order_info->challan_loaded_by as $challan_info) {
+                    $deliver_sum = 0;
+                    array_push($loaders, $challan_info->loaded_by_id);
+                    foreach ($challan_info->dc_delivery_challan as $info) {
+                        foreach ($info->delivery_order->delivery_product as $delivery_order_productinfo) {
+                            $dashboard = new DashboardController();
+                            if ($delivery_order_productinfo->unit_id == 1)
+                                $deliver_sum += $delivery_order_productinfo->quantity;
+                            elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
+                                $deliver_sum += $dashboard->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
+                        }
+                    }
+                    array_push($arr, $deliver_sum);
+                    array_push($loader_array, $loaders);
+
+                    $loader_arr['delivery_id'] = $delivery_order_info['id'];
+                    $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
+                    $loader_arr['tonnage'] = round($deliver_sum / count($loaders) / 1000, 2);
+//                    $loader_arr['tonnage'] = round($deliver_sum / count($loaders, 2));
+                    $loader_arr['loaders'] = $loaders;
+                }
+            }
+            $loaders_data[$var] = $loader_arr;
+            $var++;
+        }
+        $loaders_data = array_filter(array_map('array_filter', $loaders_data));
+        $loaders_data = array_values($loaders_data);
+        $final_array = array();
+        $k = 0;
+        foreach ($loaded_by as $key => $labour) {
+            foreach ($loaders_data as $key_data => $data) {
+                foreach ($data['loaders'] as $key_value => $value) {
+                    if ($value == $labour['id']) {
+                        $final_array[$k++] = [
+                            'delivery_id' => $data['delivery_id'],
+                            'loader_id' => $value,
+                            'date' => $data['delivery_date'],
+                            'tonnage' => $data['tonnage']
+                        ];
+                    }
+                }
+            }
+        }
+        
+        return json_encode(array('result' => true, 
+            'loaded_by' => $loaded_by,
+            'data' =>$final_array,
+            'date' =>$date,
+            'enddate' => $enddate));
+        
+    }
     
 
 }

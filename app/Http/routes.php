@@ -119,6 +119,11 @@ Route::post('appaddlabour', 'HomeController@appaddlabour');
 Route::post('appupdatelabour', 'HomeController@appupdatelabour');
 Route::get('applabourperformance', 'HomeController@applabourperformance');
 
+//performance module- loadedby
+Route::get('appallloadedby', 'HomeController@appallloadedby');
+Route::post('appaddloadedby', 'HomeController@appaddloadedby');
+Route::post('appupdateloadedby', 'HomeController@appupdateloadedby');
+Route::get('apploadedbyperformance', 'HomeController@apploadedbyperformance');
 
 
 Route::get('getinfo', 'PasswordController@getinfo');
