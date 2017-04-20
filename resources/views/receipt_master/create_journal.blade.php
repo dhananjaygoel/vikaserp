@@ -22,6 +22,7 @@
                         <form method="post" action="{{url()}}/receipt-master/store-journal" accept-charset="UTF-8" >
                             @if (count($errors) > 0)
                             <div class="alert alert-warning">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">&times;</span></button>
                                 @foreach ($errors->all() as $error)
                                 <p>{{ $error }}</p>
                                 @endforeach
@@ -30,11 +31,11 @@
                             <div class="form-group">
                                 <select style="display:none" id="st_select_tally_user_master" name="tally_users">
                                     <option value="">Select Tally User</option>
-                                    <option value="1"> Alice </option>
-                                    <option value="2"> Bob </option>
-                                    <option value="3"> Phil </option>
-                                    <option value="4"> Bobby </option>
-                                    <option value="5"> Sadio </option>
+                                    @if(isset($tally_users))
+                                        @foreach($tally_users as $tally_user)
+                                            <option value="{{$tally_user->id}}">{{$tally_user->tally_name}}</option>
+                                        @endforeach
+                                    @endif
                                 </select>
                                 <div class="row" id="st-settle-container">
                                     <div class="st-settle-block">
@@ -42,11 +43,11 @@
                                             <div class="col-md-3">
                                                 <select data-lastsel="" class="st_select_tally_user form-control" name="tally_users[]">
                                                     <option value="">Select Tally User</option>
-                                                    <option value="1"> Alice </option>
-                                    <option value="2"> Bob </option>
-                                    <option value="3"> Phil </option>
-                                    <option value="4"> Bobby </option>
-                                    <option value="5"> Sadio </option>
+                                                    @if(isset($tally_users))
+                                                        @foreach($tally_users as $tally_user)
+                                                            <option value="{{$tally_user->id}}">{{$tally_user->tally_name}}</option>
+                                                        @endforeach
+                                                    @endif
                                                 </select>
                                             </div>
                                             <div class="col-md-4 settle-input-elem">
