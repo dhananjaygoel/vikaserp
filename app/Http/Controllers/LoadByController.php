@@ -159,13 +159,13 @@ class LoadByController extends Controller {
         $loader_array = array();
         $loaders_data = array();
         $loaded_by = LoadedBy::all();
-        $date = date('Y-m-01', time());
+        $date = date('Y-03-01', time());
         if (Input::has('val')) {
             $val = Input::get('val');
             if ($val == "Month") {
                 $year = trim(Input::get('month'));
                 $date = date("$year-01-01");
-                $enddate = date("$year-12-31");
+                $enddate = date("$year-12-t");
                 $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
                         ->where('created_at', '>=', "$date")
                         ->where('created_at', '<=', "$enddate")
@@ -173,7 +173,7 @@ class LoadByController extends Controller {
             } else if ($val == "Day") {
                 $month = Input::get('month');
                 $date = date("Y-m-01", strtotime($month));
-                $enddate = date("Y-m-31", strtotime($month));
+                $enddate = date("Y-m-t", strtotime($month));
                 $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
                         ->where('created_at', '>', "$date")
                         ->where('created_at', '<', "$enddate")
@@ -204,7 +204,7 @@ class LoadByController extends Controller {
 
                     $loader_arr['delivery_id'] = $delivery_order_info['id'];
                     $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
-                    $loader_arr['tonnage'] = $deliver_sum / count($loaders, 2);
+                    $loader_arr['tonnage'] = round($deliver_sum / count($loaders) / 1000, 2);
 //                    $loader_arr['tonnage'] = round($deliver_sum / count($loaders, 2));
                     $loader_arr['loaders'] = $loaders;
                 }
@@ -232,11 +232,12 @@ class LoadByController extends Controller {
         }
         if ($request->ajax()) {
             if ($val == "Month") {
-                $html = view('_loaded_by_year_performance')
-                        ->with('enddate', $date)
-                        ->with('data', $final_array)
+                $html = view('_loaded_by_performance')
+                        ->with('date', $enddate)
+                        ->with('final_array', $final_array)
                         ->with('loaded_by', $loaded_by)
                         ->with('performance_index', true)
+                        ->with('filter_with',"months")
                         ->render();
             } else {
                 $html = view('_loaded_by_performance')
@@ -244,6 +245,7 @@ class LoadByController extends Controller {
                         ->with('final_array', $final_array)
                         ->with('loaded_by', $loaded_by)
                         ->with('performance_index', true)
+                        ->with('filter_with',"days")
                         ->render();
             }
             return Response::json(['success' => true, 'date' => $date, 'final_array' => $final_array, 'loaded_by' => $loaded_by, 'performance_index', true, 'html' => $html]);

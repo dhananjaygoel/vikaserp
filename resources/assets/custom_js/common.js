@@ -21,8 +21,8 @@ $('#performance-months').datepicker({
     endDate: new Date(),    
     viewMode: "years", 
     minViewMode: "years",
-    autoclose: true
-
+    autoclose: true,
+    startDate: '2001'
 });
 
 
