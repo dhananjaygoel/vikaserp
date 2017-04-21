@@ -6,8 +6,8 @@
         <div class="row">
             <div class="col-lg-12">                
                 <div class="form-group col-md-12 col-lg-12 pull-right">
-                    <h1 class="pull-left">Loaded by chart</h1>
-                    <div class="col-md-2 pull-right">
+                    <h1 class="pull-left">Loaded by performance</h1>
+                    <div class="form-group pull-right">
                         <form method="GET" action="javascript:;">
                             <select class="form-control" id="loaded_by_chart_filter" name="labour_chart_filter">
                                 <option value="Day" selected="selected">Day wise</option>
