@@ -126,6 +126,23 @@ Route::post('appupdateloadedby', 'HomeController@appupdateloadedby');
 Route::get('apploadedbyperformance', 'HomeController@apploadedbyperformance');
 
 
+//account module- Collection
+Route::get('appallcollection_admin', 'HomeController@appallcollection_admin');
+Route::post('appaddcollection_admin', 'HomeController@appaddcollection_admin');
+
+
+
+//account module- Territory
+Route::get('appallterritory_admin', 'HomeController@appallterritory_admin');
+Route::post('appaddterritory_admin', 'HomeController@appaddterritory_admin');
+Route::post('appupdateterritory_admin', 'HomeController@appupdateterritory_admin');
+Route::post('appdeleteterritory_admin', 'HomeController@appdeleteterritory_admin');
+
+
+
+
+
+
 Route::get('getinfo', 'PasswordController@getinfo');
 /* All customer app routes ends here */
 /*

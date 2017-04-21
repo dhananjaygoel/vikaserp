@@ -33,6 +33,8 @@ use Config;
 use App\Labour;
 use App\LoadedBy;
 use App\CollectionUser;
+use App\Territory;
+use App\TerritoryLocation;
 
 class HomeController extends Controller {
     /*
@@ -4621,9 +4623,9 @@ class HomeController extends Controller {
                 $Users_data->mobile_number = Input::get('mobile_number');
             if (Input::has('email'))
                 $Users_data->email = Input::get('email');
-            
+
             if ($Users_data->save()) {
-                
+
                 foreach ($locations as $loc) {
                     if (isset($loc)) {
                         $CLocation = new CollectionUser();
@@ -4670,9 +4672,9 @@ class HomeController extends Controller {
                 $Users_data->mobile_number = Input::get('mobile_number');
             if (Input::has('email'))
                 $Users_data->email = Input::get('email');
-            
+
             if ($Users_data->save()) {
-                
+
                 foreach ($locations as $loc) {
                     if (isset($loc)) {
                         $CLocation = new CollectionUser();
@@ -4685,6 +4687,109 @@ class HomeController extends Controller {
 
 
             return json_encode(array('result' => true, 'collection_id' => $Users_data->id, 'message' => 'Collection User added successfully'));
+        } else
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+    }
+
+    /**
+     * App get all territory
+     */
+    public function appallterritory_admin() {
+
+        if (Input::has('territory_sync_date') && Input::get('territory_sync_date') != '') {
+            $territories['all'] = Territory::where('updated_at', '>', Input::get('territory_sync_date'))->get();
+        } else {
+            $territories['all'] = Territory::get();
+        }
+        $territory_date = Territory::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($territory_date)) {
+            $territories['latest_date'] = $territory_date->updated_at->toDateTimeString();
+        } else {
+            $territories['latest_date'] = "";
+        }
+        return json_encode($territories);
+    }
+
+    /**
+     * App save territory
+     */
+    public function appaddterritory_admin() {
+
+        if (Input::has('territory_name') && Input::has('location')) {
+            $territory_check = Territory::where('teritory_name', '=', Input::get('territory_name'))->first();
+            if (isset($territory_check->id)) {
+                return json_encode(array('result' => false, 'territory_check' => $territory_check->id, 'message' => 'Territory already exist'));
+            }
+
+            $territory = new Territory();
+            $locations = (json_decode(Input::get('location')));
+            $territory->teritory_name = Input::get('territory_name');
+            $territory->save();
+            $teritory_id = $territory->id;
+
+            if (isset($teritory_id)) {
+                foreach ($locations as $loc) {
+
+                    $territory_loc = new TerritoryLocation();
+                    $territory_loc->teritory_id = $teritory_id;
+                    $territory_loc->location_id = $loc;
+                    $territory_loc->save();
+                }
+            } else {
+                return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+            }
+            return json_encode(array('result' => true, 'territory_id' => $territory->id, 'message' => 'Territory added successfully'));
+        }
+
+        return json_encode(array('result' => false, 'message' => 'Territory Name and Location are required. Please try again'));
+    }
+
+    /**
+     * App update territory
+     */
+    public function appupdateterritory_admin() {
+        if (Input::has('territory_name') && Input::has('location') && Input::has('territory_id')) {
+            $id = Input::get('territory_id');
+
+
+            $territory = Territory::find($id);
+            if (!isset($territory->id)) {
+                return json_encode(array('result' => false, 'message' => 'Territory not found'));
+            }
+            $territory->teritory_name = Input::get('territory_name');
+            $territory->save();
+            $locations = (json_decode(Input::get('location')));
+
+            $territory_loc = TerritoryLocation::where('teritory_id', '=', $id)->get();
+            foreach ($territory_loc as $loc) {
+                $territory_old = TerritoryLocation::find($loc->id);
+                $territory_old->delete();
+            }
+            foreach ($locations as $loc) {
+                $territory_loc = new TerritoryLocation();
+                $territory_loc->teritory_id = $id;
+                $territory_loc->location_id = $loc;
+                $territory_loc->save();
+            }
+
+            return json_encode(array('result' => true, 'labour_id' => $territory->id, 'message' => 'Territory details updated successfully'));
+        } else
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+    }
+
+    public function appdeleteterritory_admin() {
+        if (Input::has('territory_id')) {
+            $id = Input::get('territory_id');
+
+            $territory = Territory::find($id);
+            $territory->delete();
+            $territory_loc = TerritoryLocation::where('teritory_id', '=', $id)->get();
+            foreach ($territory_loc as $loc) {
+                $territory_old = TerritoryLocation::find($loc->id);
+                $territory_old->delete();
+            }           
+
+            return json_encode(array('result' => true, 'labour_id' => $territory->id, 'message' => 'Territory deleted successfully'));
         } else
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
