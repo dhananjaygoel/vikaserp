@@ -18,7 +18,8 @@ class AlterCustomers02Index extends Migration {
 
 
             if (!$schema_builder->hasIndex('owner_name'))
-                DB::statement('ALTER TABLE customers ADD FULLTEXT INDEX owner_name(owner_name)');
+                $table->index('owner_name');
+//                DB::statement('ALTER TABLE customers ADD FULLTEXT INDEX owner_name(owner_name)');
 
             //
         });
