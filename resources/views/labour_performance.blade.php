@@ -5,38 +5,40 @@
     <div class="col-lg-12">
 
         <div class="row">
-            <div class="col-lg-12">
-                <h1 class="pull-left">Labours by chart</h1>
-                <div class="form-group pull-right">
-
-                    <div class="col-md-12">
-                        <form method="GET" action="javascript:;">
-                            <select class="form-control" id="labour_chart_filter" name="labour_chart_filter">
-                                <option value="Day">Day wise</option>
-                                <option value="Month">Month wise</option>
-                            </select>
-                        </form>
-                    </div>
-
-                </div>
-                <div class="col-lg-12" >
+            <div class="col-lg-12">                
+                <div class="form-group col-md-12 col-lg-12 pull-right">
+                    <h1 class="pull-left">Labours by chart</h1>
                     <div class="form-group pull-right">
-                        <div class="col-md-10 pull-right">
-                            <form class="search_form labours_performance_search_form" method="GET" action="javascript:;">
-                                <div class="col-md-8 day-wise" id="day-wise">
-                                    <input name="performance" id="performance-days" class="form-control performance-days" value="{{date('F-Y', mktime(0, 0, 0))}}"/>
-                                </div>
-                                <div class="col-md-8 month-wise" id="month-wise" style="display: none">
-                                    <input name="performance" id="performance-months" class="form-control performance-month" value="{{date('Y', mktime(0, 0, 0))}}"/>
-                                </div>
-                                <div class="col-md-4  pull-right">
-                                    <input type="submit" disabled="" name="search_data" id="search_month" value="Search" class="search_button btn btn-primary pull-right export_btn ">
-                                </div>
+
+                        <div class="col-md-12">
+                            <form method="GET" action="javascript:;">
+                                <select class="form-control" id="labour_chart_filter" name="labour_chart_filter">
+                                    <option value="Day">Day wise</option>
+                                    <option value="Month">Month wise</option>
+                                </select>
                             </form>
+                        </div>
+
+                    </div>
+                    <div class="col-md-4 pull-right" id="month_div">
+                        <div class="form-group">
+                            <div class="col-md-10 pull-right">
+                                <form class="search_form labours_performance_search_form" method="GET" action="javascript:;">
+                                    <div class="col-md-8 day-wise" id="day-wise">
+                                        <input name="performance" id="performance-days" class="form-control performance-days" value="{{date('F-Y', mktime(0, 0, 0))}}"/>
+                                    </div>
+                                    <div class="col-md-8 month-wise" id="month-wise" style="display: none">
+                                        <input name="performance" id="performance-months" class="form-control performance-month" value="{{date('Y', mktime(0, 0, 0))}}"/>
+                                    </div>
+                                    <div class="col-md-4  pull-right">
+                                        <input type="submit" disabled="" name="search_data" id="search_month" value="Search" class="search_button btn btn-primary pull-right export_btn ">
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>                
-            </div>
+            </div>           
 
             <div class="row">
                 <div class="col-lg-12">
@@ -58,15 +60,15 @@
                             @endif
                             <?php
 //                                  
-                                        $today = date("d", strtotime($enddate));
-                                        $today_year = date("Y", strtotime($enddate));
-                                        $today_month = date("m", strtotime($enddate));
+                            $today = date("d", strtotime($enddate));
+                            $today_year = date("Y", strtotime($enddate));
+                            $today_month = date("m", strtotime($enddate));
                             ?>
-                            
+
                             <div class="table-responsive day-wise report_table"  id="day-wise">
                                 <table class="table table-bordered complex-data-table ">
                                     <tbody>
-                                        
+
                                         <tr>
                                             <td colspan="2" rowspan="1"></td>
                                             <td colspan="{{$today}}"><b>Date</b></td>
@@ -86,7 +88,7 @@
                                                 $k = 0;
                                                 $tangage = 0;
                                                 foreach ($data as $key => $value) {
-                                                    if ($value['date'] == $today_year.'-'.$today_month.'-' . $i) {
+                                                    if ($value['date'] == $today_year . '-' . $today_month . '-' . $i) {
                                                         if ($value['labour_id'] == $labour->id) {
                                                             $k++;
                                                             $tangage +=$value['tonnage'];
@@ -107,7 +109,7 @@
                                                 $k = 0;
                                                 $tangage = 0;
                                                 foreach ($data as $key => $value) {
-                                                    if ($value['date'] == $today_year.'-'.$today_month.'-' . $i) {
+                                                    if ($value['date'] == $today_year . '-' . $today_month . '-' . $i) {
                                                         if ($value['labour_id'] == $labour->id) {
                                                             $k++;
                                                             $tangage +=$value['tonnage'];
@@ -130,7 +132,7 @@
                                     <tbody>
                                         <?php
                                         $month = date('m');
-                                         $year = date('Y');
+                                        $year = date('Y');
                                         ?>
                                         <tr>
                                             <td colspan="2" rowspan="1"></td>
@@ -150,16 +152,16 @@
                                                 <?php
                                                 $k = 0;
                                                 $tangage = 0;
-                                                if($i<10){
-                                                   $temp_month = '0'.$i; 
+                                                if ($i < 10) {
+                                                    $temp_month = '0' . $i;
                                                 }
-                                                $start_limit = $year.'-' . $temp_month . '-1';
-                                                $end_limit = $year.'-' . $temp_month . '-31';
-                                                
+                                                $start_limit = $year . '-' . $temp_month . '-1';
+                                                $end_limit = $year . '-' . $temp_month . '-31';
+
                                                 foreach ($data as $key => $value) {
-                                                    if ($value['date'] >= $start_limit && $value['date'] <= $end_limit ) {
+                                                    if ($value['date'] >= $start_limit && $value['date'] <= $end_limit) {
                                                         if ($value['labour_id'] == $labour->id) {
-                                                            
+
                                                             $k++;
                                                             $tangage +=$value['tonnage'];
                                                         }
@@ -172,24 +174,24 @@
                                             </tr>
                                             <tr>
                                                 <td><b>Delivery</b></td>
-                                                 @for($i = 1; $i<= $month ; $i++ )
+                                                @for($i = 1; $i<= $month ; $i++ )
                                                 <?php
                                                 $k = 0;
                                                 $tangage = 0;
-                                                if($i<10){
-                                                   $temp_month = '0'.$i; 
+                                                if ($i < 10) {
+                                                    $temp_month = '0' . $i;
                                                 }
-                                                $start_limit = $year.'-' . $temp_month . '-1';
-                                                $end_limit = $year.'-' . $temp_month . '-31';
-                                                
+                                                $start_limit = $year . '-' . $temp_month . '-1';
+                                                $end_limit = $year . '-' . $temp_month . '-31';
+
                                                 foreach ($data as $key => $value) {
-                                                    if ($value['date'] >= $start_limit && $value['date'] <= $end_limit ) {
+                                                    if ($value['date'] >= $start_limit && $value['date'] <= $end_limit) {
                                                         if ($value['labour_id'] == $labour->id) {
-                                                            
+
                                                             $k++;
                                                             $tangage +=$value['tonnage'];
                                                         }
-                                                    }   
+                                                    }
                                                 }
                                                 ?>
                                                 <td>{{$k}}</td>
